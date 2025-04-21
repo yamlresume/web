@@ -1,4 +1,4 @@
-import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared'
 import { Logo } from './components'
 
 /**
@@ -24,4 +24,4 @@ export const baseOptions: BaseLayoutProps = {
       active: 'nested-url',
     },
   ],
-};
+}
