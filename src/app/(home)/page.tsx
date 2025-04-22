@@ -1,5 +1,6 @@
 import 'react-medium-image-zoom/dist/styles.css'
 import {
+  FaqSection,
   FeaturesSection,
   Footer,
   HeroSection,
@@ -15,6 +16,7 @@ export default function HomePage() {
         <HeroSection />
         <ImageSection />
         <FeaturesSection />
+        <FaqSection />
       </div>
       <Footer />
     </main>
