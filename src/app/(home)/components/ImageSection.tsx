@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import Image from 'next/image'
 import Zoom from 'react-medium-image-zoom'
+import resumeImage from '../static/images/yamlresume-yaml-and-pdf.webp'
 
 export function ImageSection() {
   return (
@@ -17,13 +18,10 @@ export function ImageSection() {
           borderRadius: '6px',
         }}
       >
-        <Zoom>
+        <Zoom zoomMargin={32}>
           <Image
-            src="/static/assets/landing/yamlresume-yaml-and-pdf.png"
+            src={resumeImage}
             alt="YAMLResume preview showing YAML code and PDF output"
-            width={1200}
-            height={663}
-            className="w-full h-auto"
             priority
           />
         </Zoom>
