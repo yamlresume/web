@@ -1,0 +1,124 @@
+---
+title: CLI
+---
+
+YAMLResume provides a CLI tool to help you manage your resume. You can follow
+the [installation guide](/docs/getting-started#installation) to install it.
+
+## Help
+
+Show CLI help and all available commands:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version   output the version number
+  -h, --help      display help for command
+
+Commands:
+  new [filename]  create a new resume
+  build <source>  build a resume to LaTeX and PDF
+  languages       i18n and l10n support
+  templates       manage resume templates
+  help [command]  display help for command
+```
+
+Show YAMLResume CLI version:
+
+```console
+$ yamlresume -V
+0.1.0
+```
+
+## New
+
+Create a new resume. The default resume filename is `resume.yml`, but you
+can specify a custom filename:
+
+```console
+$ yamlresume new --help
+Usage: yamlresume new [options] [filename]
+
+create a new resume
+
+Arguments:
+  filename    output filename (default: "resume.yml")
+
+Options:
+  -h, --help  display help for command
+
+$ yamlresume new my-resume.yml
+Successfully created my-resume.yml.
+```
+
+## Build
+
+Build a resume from YAML to PDF. It will generate the latex code and PDF at the
+same time, with some intermediate files `.aux`, `.log` etc, if you use
+[XeTeX](/docs/installation#xetex) as the typesetting engine.
+
+```console
+$ yamlresume build --help
+Usage: yamlresume build [options] <source>
+
+build a resume to LaTeX and PDF
+
+Arguments:
+  source      the source resume file
+
+Options:
+  -h, --help  display help for command
+
+$ yamlresume build my-resume.yml
+-> generating resume PDF with command: `xelatex -halt-on-error my-resume.tex`...
+-> resume PDF generated successfully.
+```
+
+## Languages
+
+List all available languages. The language code follows the spec in [ISO
+639 specification](https://www.iso.org/iso-639-language-code). You can specify
+the language code in `layout.locale.language` in order to change the language of
+your resume. Changing the language of your resume will automatically translate
+all fixed terms. You can check more details from PPResume docs [multi
+languages](https://docs.ppresume.com/content/multi-languages).
+
+```console
+$ yamlresume languages list
+
+| `layout.locale.language` | Language Name                   |
+| ------------------------ | ------------------------------- |
+| en                       | English                         |
+| zh-Hans                  | Simplified Chinese              |
+| zh-Hans-HK               | Traditional Chinese (Hong Kong) |
+| zh-Hans-TW               | Traditional Chinese (Taiwan)    |
+| es                       | Spanish                         |
+```
+
+
+## Templates
+
+List all available templates. You can change the resume template by setting
+`layout.template` in your YAML resume. [PPResume
+Templates](https://docs.ppresume.com/typesetting/templates) for more details.
+
+```console
+$ yamlresume templates list
+
+| `layout.template` | Template Name    | Description                          |
+| ----------------- | ---------------- | ------------------------------------ |
+| moderncv-banking  | ModernCV Banking | ModernCV template with banking style |
+| moderncv-casual   | ModernCV Casual  | ModernCV template with casual style  |
+| moderncv-classic  | ModernCV Classic | ModernCV template with classic style |
+```

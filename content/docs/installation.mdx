@@ -1,0 +1,311 @@
+---
+title: Installation
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+YAMLResume is a Node.js tool, under the hood, it transform your resumes from the
+YAML format to LaTeX code and then call a LaTeX typesetting engine to compile
+the generated LaTeX code to PDF. Besides, to get optimal PDF output, we also
+suggest to install some fonts. In a nutshell, you need to install the followings
+to get started with YAMLResume:
+
+- Node.js
+- [yamlresume package](https://www.npmjs.com/package/yamlresume)
+- a typesetting engine
+- [optional] some fonts
+
+Please follow the appropriate instructions below to install the necessary tools
+based on your operating system. At the time of writing, our guide covers MacOS,
+Windows, and some Linux distributions.
+
+## Node.js
+
+Node.js 20.x or newer is required.
+
+There may be like 100+ methods to install Node.js on different OS, you can check
+the official [Node.js Download](https://nodejs.org/en/download) to get started.
+
+We recommend using a [package
+manager](https://nodejs.org/en/download/package-manager/all) to install Node.js.
+
+## yamlresume
+
+Installing `yamlresume` is a breeze. You can install it using your favourite
+Node.js package manager:
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```console tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+</Tabs>
+
+Verify that `yamlresume` is installed successfully:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version   output the version number
+  -h, --help      display help for command
+
+Commands:
+  new [filename]  create a new resume
+  build <source>  build a resume to LaTeX and PDF
+  languages       i18n and l10n support
+  templates       manage resume templates
+  help [command]  display help for command
+```
+
+If you just want to give `yamlresume` a try without installing it, you can use
+`npx`, `pnpx` or other similar tools:
+
+<Tabs groupId='package-manager' persist items={['npx', 'pnpx', 'bun']}>
+```console tab="npx"
+npx yamlresume help
+```
+
+```console tab="pnpx"
+pnpx yamlresume help
+```
+
+```console tab="bun"
+bun exec yamlresume help
+```
+</Tabs>
+
+## Typesetting Engine
+
+Under the hood, `yamlresume` does the job of a compiler, parsing a YAML resume
+to an
+[AST](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/ast.ts)
+and then [transforming the AST to LaTeX
+code](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/codegen/latex.ts).
+
+As a mini-compiler, `yamlresume` relies on a typesetting engine to compile the
+generated LaTeX code to PDFs. Therefore you must first install a typesetting
+engine first before you can use `yamlresume` to generate resume PDFs.
+
+YAMLResume currently supports two typesetting engines: [XeTeX](#xetex) and
+[Tectonic](#tectonic).
+
+<Callout title="Why LaTeX?">
+  At the time of writing, [LaTeX](https://www.latex-project.org/) is still the
+  best choice of typesetting engine for producing professional looking PDFs.
+  [Typst](https://typst.app/) is a great alternative, but it is still in its
+  early stage and its CJK support is not mature and production ready yet.
+  Previously I wrote a post [On Typesetting
+  Engines](https://blog.ppresume.com/posts/on-typesetting-engines) explaining
+  the reasons why I chose LaTeX over other typesetting engines when I founded
+  [PPResume](https://ppresume.com).
+</Callout>
+
+### XeTeX
+
+[XeTeX](https://tug.org/xetex/) is a [TeX](https://en.wikipedia.org/wiki/TeX)
+typesetting engine using [Unicode](https://en.wikipedia.org/wiki/Unicode) and
+supporting modern font technologies such as
+[OpenType](https://en.wikipedia.org/wiki/OpenType),
+[Graphite](https://fonts.adobe.com/fonts/graphite) and [Apple Advanced
+Typography (AAT)](https://en.wikipedia.org/wiki/Apple_Advanced_Typography).
+
+It is a very mature, stable typesetting engine that is widely used by many
+academic and scientific people.
+
+<Tabs groupId='os' persist items={['macOS', 'Windows', 'Linux']}>
+<Tab value="macOS">
+The easiest way is to install the **MacTeX** distribution.
+
+It includes XeTeX along with many other TeX-related programs and packages. You
+can download it from the [MacTeX website](https://www.tug.org/mactex/) or
+install it via homebrew:
+
+```sh
+brew install mactex
+```
+</Tab>
+
+<Tab value='Windows'>
+[MiKTeX distribution](https://miktex.org) is a popular choice for Windows and
+includes XeTeX. You can download it from the [MiKTeX
+website](https://miktex.org/download).
+
+Alternatively, you can install **TeX Live** for Windows, which also includes
+XeTeX. Download it from the [TeX Live
+website](https://www.tug.org/texlive/acquire-netinstall.html).
+</Tab>
+
+<Tab value="Linux">
+Most Linux distributions offer TeX Live through their package managers. XeTeX is
+typically included in the `texlive-xetex` package or a larger `texlive-full`
+meta-package.
+
+For Debian/Ubuntu:
+
+```sh
+sudo apt update
+sudo apt install texlive-xetex
+
+# Or for a full installation, which would occupy more disk space though sudo apt
+# install texlive-full
+```
+
+Alternatively, you can install TeX Live directly from the [TeX Live
+website](https://www.tug.org/texlive/acquire-netinstall.html) using their
+installer, which works across different Linux distributions.
+</Tab>
+</Tabs>
+
+Verify that XeTeX is installed successfully:
+
+```console
+$ xetex -v
+XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+kpathsea version 6.3.4
+Copyright 2022 SIL International, Jonathan Kew and Khaled Hosny.
+There is NO warranty.  Redistribution of this software is
+covered by the terms of both the XeTeX copyright and
+the Lesser GNU General Public License.
+For more information about these matters, see the file
+named COPYING and the XeTeX source.
+Primary author of XeTeX: Jonathan Kew.
+Compiled with ICU version 70.1; using 70.1
+Compiled with zlib version 1.2.11; using 1.2.11
+Compiled with FreeType2 version 2.11.1; using 2.11.1
+Compiled with Graphite2 version 1.3.14; using 1.3.14
+Compiled with HarfBuzz version 3.4.0; using 3.4.0
+Compiled with libpng version 1.6.37; using 1.6.37
+Compiled with pplib version v2.05 less toxic i hope
+Using Mac OS X Core Text and Cocoa frameworks
+```
+
+### Tectonic
+
+[Tectonic](https://tectonic-typesetting.github.io) is a modernized, complete,
+self-contained
+[TeX](https://en.wikipedia.org/wiki/TeX)/[LaTeX](https://www.latex-project.org/)
+engine, powered by [XeTeX](https://tug.org/xetex/) and
+[TeXLive](https://www.tug.org/texlive/).
+
+A full TeX Live distribution typically takes up several GB of disk space, while
+tectonic's initial installation takes up only 10+ MB. It automatically downloads
+support files, so you don't have to install a complete LaTeX distribution. When
+you start using a new LaTeX package, Tectonic simply downloads the files it
+needs and continues processing.
+
+Tectonic provides an official [installation
+guide](https://tectonic-typesetting.github.io/en-US/install.html), but this
+would just put tectonic in the directory where you ran the installation command,
+`yamlresume` needs a global `tectonic` command in your `$PATH`, so you need to
+figure that out with some shell hacks on your own.
+
+If you're a macOS user, you're in luck because Homebrew provides prebuilt
+package:
+
+```sh
+brew install tectonic
+```
+
+In to my experience, tectonic still has some minor compatibility issues with
+official XeTeX, so if you do not mind the long download tim eof a full TeX Live
+distribution, XeTeX is still the recommended choice here.
+
+## Font
+
+### Linux Libertine
+
+YAMLResume adopts [Linux Libertine](https://www.dafont.com/linux-libertine.font)
+as the default font for Latin characters. It is highly recommended to install it
+in order to get an optimal PDF output.
+
+<Tabs groupId='font-os' persist items={['macOS', 'Windows', 'Linux']}>
+<Tab value="macOS">
+For Homebrew users:
+
+```sh
+brew install font-linux-libertine
+```
+
+Otherwise you can download the latest version of [Linux
+Libertine](https://www.dafont.com/linux-libertine.font) from the website and
+install the font with macOS's [Font
+Book](https://support.apple.com/en-gb/guide/font-book/fntbk1000/mac).
+</Tab>
+
+<Tab value="Windows">
+Download the latest version of [Linux
+Libertine](https://www.dafont.com/linux-libertine.font) from the website and
+extract the archive and install the font.
+</Tab>
+
+<Tab value="Linux">
+For Debian/Ubuntu users:
+
+```sh
+sudo apt install fonts-linuxlibertine
+```
+</Tab>
+</Tabs>
+
+### Google Noto
+
+If you need CJK resumes, you will also need to install [Google Noto
+fonts](https://fonts.google.com/noto/) for [best unicode
+coverage](https://github.com/ppresume/community/issues/63).
+
+<Tabs groupId='os' persist items={['macOS', 'Windows', 'Linux']}>
+
+<Tab value='macOS'>
+For Homebrew users:
+
+```sh
+brew install font-noto-sans-cjk font-noto-serif-cjk
+```
+</Tab>
+
+<Tab value="Windows">
+Download Noto fonts and follow the [official
+guide](https://fonts.google.com/noto/use#use-noto-fonts) to install on Windows.
+</Tab>
+
+<Tab value="Linux">
+For Debian/Ubuntu users:
+
+```sh
+sudo apt install fonts-noto-cjk fonts-noto-cjk-extra
+```
+</Tab>
+</Tabs>
+
+## Troubleshooting
+
+You can [raise an issue](https://github.com/yamlresume/yamlresume/issues/new) if
+you have trouble to install `yamlresume` or its dependencies.
+
+### Getting Tired?
+
+If you are getting tired of the installation process, you can try
+[PPResume](https://ppresume.com), which is a hosted, commercial resume builder
+solution who open sourced YAMLResume.

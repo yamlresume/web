@@ -1,13 +1,434 @@
 ---
-title: Hello World
-description: Your first document
+title: Quick Start
 ---
 
-Welcome to the docs! You can start writing documents in `/content/docs`.
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { Step, Steps } from "fumadocs-ui/components/steps";
 
-## What is Next?
+import { PDFViewer } from '../../src/app/components'
+
+## Introduction
+
+Creating a resume may not be difficult, but it is definitely a boring, lengthy
+and tedious process.
+
+With YAMLResume, you can create and version control your resumes with YAML and
+create pixel perfect PDFs with professional layout and typesetting in a breeze.
+
+YAMLResume is the core engine of [PPResume](https://ppresume.com), a LaTeX based
+builder. It has helped [thousands of
+people](https://blog.ppresume.com/posts/2024-recap) around the world create
+pixel perfect, professional looking resumes and land their dream jobs. Here we
+decided to open source the engine, in order to give people the right and freedom
+to say [no to vendor lock-in](https://blog.ppresume.com/posts/no-vendor-lock-in)
+
+![YAMLResume preview showing YAML code and PDF output](./static/images/yamlresume-init-and-build.webp)
+
+## Getting Started
+
+Let's assume that you're using macOS with [Homebrew](https://brew.sh/) as the
+package manager. If you are not, please see the
+[Installation](/docs/installation) guide for detailed instructions for your
+operating system.
+
+<Steps>
+
+<Step>
+### Install Node.js
+
+You need to [install
+Node.js](https://nodejs.org/en/download/package-manager/all#macos) 20.x or
+newer.
+
+```console
+$ brew install node
+```
+</Step>
+
+<Step>
+### Install Typesetting Engine
+
+YAMLResume needs a [typesetting
+engine](/docs/getting-started#typesetting-engine) to generate PDF. Currently it
+supports two typesetting engines:
+
+- [XeTeX](/docs/getting-started#xetex)
+- [Tectonic](/docs/getting-started#tectonic)
+
+<Tabs groupId="typesetting-engine" persist items={["XeTeX", "Tectonic"]}>
+```sh tab="XeTeX"
+brew install mactex
+```
+
+```sh tab="Tectonic"
+brew install tectonic
+```
+</Tabs>
+</Step>
+
+<Step>
+### Install YAMLResume
+
+Installing `yamlresume` is a breeze. You can install it using your favourite
+Node.js package manager:
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```sh tab="npm"
+npm install -g yamlresume
+```
+
+```sh tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```sh tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+</Tabs>
+
+Verify `yamlresume` is installed successfully:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version   output the version number
+  -h, --help      display help for command
+
+Commands:
+  new [filename]  create a new resume
+  build <source>  build a resume to LaTeX and PDF
+  languages       i18n and l10n support
+  templates       manage resume templates
+  help [command]  display help for command
+```
+</Step>
+
+<Step>
+### [Optional] Install Fonts
+
+#### Linux Libertine Font
+
+We also recommend installing the [Linux
+Libertine font](/docs/getting-started#linux-libertine) for the best looking PDF
+output, but this is optional.
+
+```sh
+brew install font-linux-libertine
+```
+
+#### Noto Fonts
+
+If you need to create a CJK (Chinese, Japanese, Korean) resume, we recommend
+that you install the [Noto font](https://fonts.google.com/noto):
+
+```sh
+brew install font-noto-sans-cjk font-noto-serif-cjk
+```
+</Step>
+
+<Step>
+### Create Your First YAML Resume
+
+OK, we have everything ready, we can now create a yaml resume now with
+`yamlresume new`:
+
+```console
+$ yamlresume new
+Successfully created resume.yml.
+```
+
+Edit `resume.yml` accordingly, then you can generate a PDF with `yamlresume
+build`:
+
+```console
+$ yamlresume build resume.yml
+-> generating resume PDF with command: `xelatex -halt-on-error resume.tex`...
+-> resume PDF generated successfully.
+```
+</Step>
+</Steps>
+
+## Sample Resume
+
+Here is the complete YAML code for a two-page sample resume, tailored for a
+[software
+engineer](https://github.com/yamlresume/yamlresume/blob/main/packages/cli/resources/resume.yml):
+
+```yaml
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@ppresume.com
+    url: https://ppresume.com/gallery
+    # All summary fields supports a limited rich text capabilities in markdown
+    # syntax:
+    #
+    # - bold, (e.g, `**bold**`)
+    # - italic, (e.g, `*italic*`)
+    # - ordered list, unordored list and nested sub list
+    # - links (e.g. `[link](https://ppresume.com)`)
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    city: Sacramento
+    region: California
+    country: United States
+    postalCode: "95814"
+  profiles:
+    - network: Line
+      url: https://line.com/PPResumeX
+      username: PPResumeX
+    - network: Twitter
+      url: https://twitter.com/PPResumeX
+      username: PPResumeX
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      # Valid degree options:
+      #
+      # - 'Middle School'
+      # - 'High School'
+      # - 'Diploma'
+      # - 'Associate'
+      # - 'Bachelor'
+      # - 'Master'
+      # - 'Doctor'
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      # Should be a valid date string that can be parsed by `new Date(dateStr)`
+      # in JavaScript, eg. '2020-01', '2020-02-03', 'Jul 1, 2023' etc.
+      #
+      # The date part would be removed in the final output as most of the time
+      # people won't really care about the exact date for your working
+      # experience or education background, etc.
+      # ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
+      startDate: Sep 1, 2016
+      # Leave endDate blank to indicate "Present"
+      endDate: Jul 1, 2020
+      courses:
+        - Discrete Methods in Computer Science
+        - Programming Language Concepts
+        - Data Structures and Object-Oriented Design
+        - Operating Systems
+        - Computer Architecture
+        - Database Systems
+        - Computer Networking
+        - Introduction to the Theory of Computing
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+  work:
+    - name: PPResume
+      url: https://ppresume.com
+      startDate: Dec 1, 2022
+      endDate: ""
+      position: Senior Software Engineer
+      summary: |
+        - Developed and implemented efficient and scalable code, ensuring high-quality and maintainable web applications
+        - Collaborated with cross-functional teams to gather project requirements and translate them into technical solutions
+        - Conducted thorough testing and debugging to identify and resolve any issues or bugs in the software
+        - Actively participated in code reviews, providing valuable feedback to improve code quality and adherence to best practices
+        - Mentored and guided junior developers, fostering a collaborative and growth-oriented team environment
+      keywords:
+        - Scalibility
+        - Growth
+        - Quality
+        - Mentorship
+    - name: PPResume
+      url: https://ppresume.com
+      startDate: Sep 1, 2020
+      endDate: Dec 1, 2022
+      position: Software Engineer
+      summary: |
+        - Created reusable React components to ensure code efficiency and maintainability
+        - Integrated with RESTful APIs to fetch and display dynamic data on the frontend
+        - Implemented client-side routing using React Router for smooth navigation between pages
+        - Actively participated in Agile development methodologies, attending daily stand-up meetings and sprint planning sessions
+      keywords:
+        - RESTful
+        - React
+        - Agile
+  languages:
+    # Valid language fluency options:
+    #
+    # - 'Elementary Proficiency'
+    # - 'Limited Working Proficiency'
+    # - 'Minimum Professional Proficiency'
+    # - 'Full Professional Proficiency'
+    # - 'Native or Bilingual Proficiency'
+    - language: English
+      fluency: Native or Bilingual Proficiency
+      keywords:
+        - TOEFL 110
+        - IELTS 7.5
+    - language: Chinese
+      fluency: Elementary Proficiency
+      keywords: []
+  skills:
+    # Valid skill level options:
+    #
+    # - 'Novice'
+    # - 'Beginner'
+    # - 'Intermediate'
+    # - 'Advanced'
+    # - 'Expert'
+    # - 'Master'
+    - name: Web Development
+      level: Expert
+      keywords:
+        - Python
+        - Ruby
+        - CSS
+        - React
+        - JavaScript
+    - name: DevOps
+      level: Intermediate
+      keywords:
+        - Python
+        - Kubernetes
+        - Docker
+        - Shell
+        - Ansible
+    - name: Design
+      level: Intermediate
+      keywords:
+        - Sketch
+        - Figma
+        - Photoshop
+  awards:
+    - title: Dean's List
+      awarder: University of Southern California
+      date: Oct 2016
+      summary: |
+        Awarded to students who achieve a high academic standing by maintaining a specified grade point average (GPA) during a semester.
+  certificates:
+    - name: AWS Certified Developer - Associate
+      url: https://aws.amazon.com/certification/
+      issuer: AWS
+      date: Mar 2021
+  publications:
+    - publisher: ACM Transactions on Interactive Intelligent Systems
+      url: https://dl.acm.org/journal/tiis
+      name: Enhancing Human-Computer Interaction through Augmented Reality
+      releaseDate: Dec 2017
+      summary: |
+        - Explores the potential of augmented reality (AR) in improving interaction between humans and computers
+        - Highlights benefits of AR in various areas such as gaming, education, healthcare, and design
+        - Discusses challenges and future directions of AR technology in enhancing user experience
+  references:
+    - name: Dr. Amanda Reynolds
+      phone: "(555) 123-4567"
+      relationship: Computer Science Professor
+      email: amanda.reynolds@usc.edu
+      summary: |
+        Andy Dufresne shows exceptional problem-solving skills and a solid understanding of programming concepts, he would bring immense value to any team or organization he becomes a part of.
+  projects:
+    - name: EduWeb
+      url: https://www.eduweb.xyz/
+      description: A web-based educational platform for interactive learning
+      startDate: Sep 2016
+      endDate: Dec 2016
+      summary: |
+        - Designed to enhance online learning experiences
+        - Facilitates students' engagement and collaboration through interactive features and user-friendly interface
+        - Offers a wide range of courses across various subjects
+        - Aims to improve the way students learn through the power of the web
+      keywords:
+        - Education
+        - Online Learning
+        - HCI
+  interests:
+    - name: Sports
+      keywords:
+        - Soccer
+        - Swimming
+        - Bicycling
+        - Hiking
+    - name: Music
+      keywords:
+        - Piano
+        - Guitar
+  volunteer:
+    - organization: USC Computer Science and Engineering Society
+      url: https://www.usccsesociety.org/
+      position: Tech Mentor
+      startDate: Sep 2015
+      endDate: Jul 2023
+      summary: |
+        - Volunteered as a Tech Mentor at USC Computer Science and Engineering Society
+        - Provided guidance and assistance to fellow students in their technical projects and coursework
+        - Assisted in organizing workshops, coding competitions, and networking events for the society members
+        - Contributed to fostering a collaborative and supportive environment within the student community
+
+layout:
+  locale:
+    # Use `yamlresume languages list` to get the list of supported languages
+    language: en
+  margins:
+    top: 2.5cm
+    left: 1.5cm
+    right: 1.5cm
+    bottom: 2.5cm
+  page:
+    showPageNumbers: true
+  # Use `yamlresume templates list` to get the list of available templates
+  template: moderncv-banking
+  typography:
+    # LaTeX engine only supports 10pt, 11pt, and 12pt
+    fontSize: 11pt
+```
+
+Here are the screenshots of the [generated
+PDF](https://github.com/yamlresume/yamlresume/blob/main/packages/cli/resources/resume.pdf):
+
+![Sample Resume Page 1](./static/images/resume-1.webp)
+![Sample Resume Page 2](./static/images/resume-2.webp)
+
+You can check [PPResume Gallery](https://ppresume.com/gallery) for more
+examples, with support for different
+[templates](https://ppresume.com/gallery/templates) and
+[multi-languages](https://ppresume.com/gallery/languages).
+
+## Learn More
 
 <Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.vercel.app" />
+  <Card
+    href="/docs/installation"
+    title="Installation Guide"
+    description="Detailed instructions to install YAMLResume on different OS"
+  />
+  <Card
+    href="/docs/cli"
+    title="CLI"
+    description="Manual for YAMLResume CLI"
+  />
+  <Card
+    href="https://github.com/yamlresume/yamlresume/discussions"
+    title="Discussions"
+    description="Ask questions, share ideas, and get help from the community"
+  />
 </Cards>

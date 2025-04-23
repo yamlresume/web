@@ -40,15 +40,15 @@ export function HeroSection() {
             Resumes as Code in YAML
           </h1>
           <p className="text-xl text-fd-muted-foreground8">
-            YAMLResume allows you to manage and version control your resumes
-            using YAML and generate great looking PDFs with professional layout
+            YAMLResume allows you to create and version control your resumes
+            using YAML and generate pixel perfect PDFs with professional layout
             and typesetting in a breeze.
           </p>
         </div>
         <div className="flex flex-wrap items-start justify-center gap-4">
           <Link href="/docs" className={linkClasses}>
             <IconBook className="h-5 w-5" />
-            Getting Started
+            Quick Start
           </Link>
           <Link
             href="https://github.com/yamlresume/yamlresume"
