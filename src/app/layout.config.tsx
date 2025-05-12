@@ -23,6 +23,14 @@ export const baseOptions: BaseLayoutProps = {
       url: '/docs',
       active: 'nested-url',
     },
+    {
+      text: 'Chat',
+      url: 'https://discord.gg/khWmsBmp',
+    },
+    {
+      text: 'Discussions',
+      url: 'https://github.com/yamlresume/yamlresume/discussions',
+    },
   ],
   githubUrl: 'https://github.com/yamlresume/yamlresume',
 }
