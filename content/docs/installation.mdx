@@ -23,11 +23,48 @@ Windows, and some Linux distributions.
 
 Node.js 20.x or newer is required.
 
+<Callout title="Why Node.js 20.x or newer?">
+Theoretically `yamlresume` should work with Node.js 18, however it is highly
+recommended to use Node.js 20 or newer because Node.js 18 LTS is scheduled to
+reach End-of-Life on [30 April
+2025](https://nodejs.org/en/blog/release/v18.20.8).
+</Callout>
+
 There may be like 100+ methods to install Node.js on different OS, you can check
 the official [Node.js Download](https://nodejs.org/en/download) to get started.
 
 We recommend using a [package
 manager](https://nodejs.org/en/download/package-manager/all) to install Node.js.
+
+<Tabs groupId='node.js' persist items={['macOS', 'Windows', 'Linux']}>
+<Tab value="macOS">
+For [Homebrew](https://brew.sh/) users:
+
+```sh
+brew install node
+```
+</Tab>
+
+<Tab value="Windows">
+For [Chocolatey](https://chocolatey.org/) users:
+
+```sh
+choco install nodejs.install
+```
+</Tab>
+
+<Tab value="Linux">
+For Ubuntu 24.10 or newer:
+
+```sh
+sudo apt install nodejs
+```
+
+For Ubuntu 24.04 or older, please take a look at
+[NodeSource](https://downloads.nodesource.com/#debian) to get Node.js 20 or
+newer.
+</Tab>
+</Tabs>
 
 ## yamlresume
 
@@ -162,14 +199,17 @@ Most Linux distributions offer TeX Live through their package managers. XeTeX is
 typically included in the `texlive-xetex` package or a larger `texlive-full`
 meta-package.
 
-For Debian/Ubuntu:
+For Ubuntu, if your network is good and you have around 10GB of disk spaces, you
+can install the full texlive distribution:
 
 ```sh
-sudo apt update
-sudo apt install texlive-xetex
+sudo apt install texlive-full
+```
 
-# Or for a full installation, which would occupy more disk space though sudo apt
-# install texlive-full
+Otherwise, you can install the minimum required packages:
+
+```sh
+sudo apt install texlive-xetex texlive-fonts-extra texlive-lang-all
 ```
 
 Alternatively, you can install TeX Live directly from the [TeX Live
@@ -261,7 +301,9 @@ extract the archive and install the font.
 </Tab>
 
 <Tab value="Linux">
-For Debian/Ubuntu users:
+For Debian/Ubuntu users, Linux Libertine font is already included in
+`texlive-fonts-extra` package, however, if you want to install it manually, you
+can do so by:
 
 ```sh
 sudo apt install fonts-linuxlibertine
