@@ -49,7 +49,7 @@ function FeatureCard({ title, description, icon }: FeatureCardProps) {
 
 export function FeaturesSection() {
   return (
-    <section className="max-w-screen-xl py-4">
+    <section className="container py-4">
       <div
         className={clsx([
           'grid',

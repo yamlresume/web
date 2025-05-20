@@ -5,7 +5,7 @@ import resumeImage from '../static/images/yamlresume-yaml-and-pdf.webp'
 
 export function ImageSection() {
   return (
-    <section className="max-w-screen-xl mx-auto">
+    <section className="container mx-auto">
       <div
         className={clsx([
           'relative',

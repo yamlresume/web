@@ -1,0 +1,356 @@
+---
+title: Introducing YAMLResume
+description: 'YAMLResume: Resumes as Code in YAML'
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-05-21
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+Every developer needs a resume unless you are a world-famous professional.
+Writing a resume may not be hard, but it is definitely not fun and tedious. Many
+spend days crafting their resumes, chasing after a 100% typo-free, grammar
+checked resumes with professional layout and typesetting.
+
+[YAMLResume](https://yamlresume.dev) allows you to create and version control
+your resumes using [YAML](https://yaml.org/) and generate professional looking
+PDFs with beautiful typesetting in a breeze.
+
+It started as the core typesetting engine for [PPResume](https://ppresume.com)—a
+[LaTeX](https://www.latex-project.org/) based, commercial, pixel perfect resume
+builder—which already helps thousands of people create beautifully typeset
+resumes. Without too much hesitation, we decided to open source it so that
+people can always have the right to say [no to vendor
+lock-in](https://blog.ppresume.com/posts/no-vendor-lock-in).
+
+![YAMLResume New and Build Resume](./static/images/introducing-yamlresume/yamlresume-new-and-build.webp)
+
+## Quick Start
+
+YAMLResume provides a [CLI tool](https://www.npmjs.com/package/yamlresume),
+besides, it has a mandatory dependency on a typesetting engine in order to
+generate PDF. In other words, you should [install a typesetting
+engine](/docs/installation#typesetting-engine) first if you want to generate
+PDF.
+
+Installing `yamlresume` CLI is a breeze. You can install it using your favourite
+Node.js package manager:
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```console tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+</Tabs>
+
+Verify `yamlresume` is installed successfully:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version   output the version number
+  -v, --verbose   verbose output
+  -h, --help      display help for command
+
+Commands:
+  new [filename]  create a new resume
+  build <source>  build a resume to LaTeX and PDF
+  languages       i18n and l10n support
+  templates       manage resume templates
+  help [command]  display help for command
+```
+
+We also recommend that you install [Linux
+Libertine](http://yamlresume.dev/docs/getting-started#linux-libertine) font in
+order to get the best looking PDFs.
+
+Last but not least, if you want to create a CJK resume, we also recommend that
+you  install [Google Noto fonts](https://fonts.google.com/noto/) for [best
+unicode coverage](https://github.com/ppresume/community/issues/63).
+
+### Create a New Resume
+
+You can create a new resume with a one-liner:
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+Under the hood `yamlresume new` would clone a sample resume from
+[here](https://github.com/yamlresume/yamlresume/blob/main/packages/cli/resources/resume.yml).
+Then you can get a PDF with a one-liner again:
+
+```console
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF successfully.
+```
+
+You are done! Check out the generated resume PDF:
+
+![Resume Page 1](./static/images/introducing-yamlresume/resume-1.webp)
+![Resume Page 2](./static/images/introducing-yamlresume/resume-2.webp)
+
+You can check [PPResume Gallery](https://ppresume.com/gallery) for more examples
+powered by YAMLResume as the typesetting engine.
+
+### Troubleshooting
+
+YAMLResume CLI provides a verbose flag `-v`/`--verbose` to show more detailed
+logging information. If you have trouble building a resume, you can try to run
+the commands again with this verbose flag and paste the output into [github
+issues](https://github.com/yamlresume/yamlresume/issues), I will take a look and
+get back to you.
+
+## How Does It Work?
+
+Under the hood, YAMLResume works like a mini compiler, i.e, it takes an input,
+parses it to an [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) and
+then generates an output.
+
+<Mermaid
+  chart="
+  flowchart TD
+    A[Resumes in YAML]
+    A --> B[Parsing YAML to AST]
+    A --> C[Parsing summary field]
+    C --> D[Transform AST to LaTeX]
+    B --> D
+    D --> E[Compile LaTeX to PDF]
+"
+/>
+
+The core design principle of YAMLResume is [separation of
+concerns](https://en.wikipedia.org/wiki/Separation_of_concerns). One of the most
+famous examples that follows this principle is HTML & CSS, which are the
+foundation of the modern web—HTML is used to organize the content in a webpage,
+CSS is used to define the content presentation style.
+
+Following the core principle, YAMLResume is designed based on the following
+requirements:
+
+- the resume content should be written in plain text, which is version control
+  friendly
+- the plain text should use a fully structured format, which gives us more
+  control and flexibility
+- YAML is better than JSON because it is more human-readable and human-writable
+- the YAML plain text is then rendered into a PDF with a pluggable typesetting
+  engine
+- an opinionated layout should be provided out of the box, while still allowing
+  people to adjust options accordingly like font sizes, page margins, etc.
+
+## Why YAML?
+
+[JSON Resume](https://jsonresume.org/) is another project that allows people to
+create resumes in a structured format. However, most developers would agree that
+YAML is better than JSON with regard to human readability and writability. For
+example, it is quite inconvenient to represent multi-line strings in JSON, while
+YAML has native support for it.
+
+Compare a resume snippet in JSON and YAML:
+
+```json
+{
+  "content": {
+    "basics": {
+      "name": "Andy Dufresne",
+      "headline": "Headed for the Pacific",
+      "phone": "(213) 555-9876",
+      "email": "hi@ppresume.com",
+      "url": "https://ppresume.com/gallery",
+      "summary": "- Computer Science major with strong foundation in data structures, algorithms, and software development\n- Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites\n- Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)\n- Team player, with detail-oriented mindset and a keen eye for design and user experiences"
+    }
+  }
+}
+```
+
+```yml
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@ppresume.com
+    url: https://ppresume.com/gallery
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+Which one is more readable and writable? The answer is obvious.
+
+JSON Resume has no concern about the layout of the resume. In the real world,
+you can't just send a JSON file to recruiters right? The structured resume
+format needs to be converted to a human-readable document format like docx, PDF,
+etc.  YAMLResume offers an opinionated layout configuration, and guarantees
+pixel perfect PDF output.
+
+At the time of writing, YAMLResume's opinionated layout supports:
+
+- locale languages
+  - English
+  - Simplified Chinese
+  - Traditional Chinese
+  - Spanish
+- margins
+  - top
+  - left
+  - right
+  - bottom
+- page numbers
+- template
+- typography
+  - font size
+
+Here is a sample code snippet for layout configuration in YAMLResume:
+
+```yml
+layout:
+  locale:
+    language: en
+  margins:
+    top: 2.5cm
+    left: 1.5cm
+    right: 1.5cm
+    bottom: 2.5cm
+  page:
+    showPageNumbers: true
+  template: moderncv-banking
+  typography:
+    fontSize: 11pt
+```
+
+## Why Not Markdown?
+
+[Markdown](https://en.wikipedia.org/wiki/Markdown) is a another popular choice
+for writing resumes, there are also some resume builders that adopt markdown as
+the main input format. However, markdown is a general-purpose markup language
+for creating formatted text, while resumes only use a very limited set of
+markdown features.
+
+For example, the following markdown syntax are very unlikely to be used in a
+resume:
+
+- blockquote
+- code block
+- horizontal rules
+- images
+- tables
+- html markup
+- etc.
+
+Second, markdown is far too flexible, often giving users more freedom than they
+need to create a resume. It would be pretty hard to reliably parse a generic
+markdown document as a resume.
+
+Third, features like templates switching, precise layout control (like `\hfill`
+and `\hspace` in LaTeX) is very hard to implement in markdown.
+
+In conclusion, using a fully structured format such as YAML/JSON gives us more
+control and reliability over formatting and layout for resumes.
+
+## Why still LaTeX?
+
+[LaTeX](https://www.latex-project.org/) is a very mature and stable typesetting
+engine that can produce extremely high-quality PDFs. However, many LaTeX users,
+even LaTeX enthusiasts, would agree that the LaTeX language is somewhat
+outdated—its error messages are often quite confusing, and the reliance on
+global variables often leads to conflicts between packages, the compilation
+speed is slow for large documents and often quite complicated, and it produces
+ugly intermediate files (`.aux`, `.log`, etc.).
+
+Some suggest to replace LaTeX with [typst](https://github.com/typst/typst),
+which is a modern typesetting engine, with much better DX and much faster
+compilation. However, after careful evaluation, I decided to stick with LaTeX.
+The deal breaker here is that, YAMLResume is designed to support multi languages
+with the best possible typesetting quality, however, typst [CJK
+support](https://blog.ppresume.com/posts/on-typesetting-engines#cjk-3) is still
+unstable and lacking.
+
+Later on I may add a new
+[renderer](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/base.ts)
+backend to support typst.
+
+## Rich Text Support
+
+Although we have decided not to use markdown as the resume input format, we do
+support a limited set of markdown rich text syntax for the `summary` field in
+various sections.
+
+For now, we support the following markdown syntax:
+
+- `**bold**`
+- `*italic*`
+- `[link](https://www.google.com)`
+- ordered list
+- unordered list
+- nested list
+- paragraphs
+
+For example, this is a sample snippet for the `content.basics.summary` field:
+
+```yml
+---
+content:
+  basics:
+    # ...
+    summary: |
+      This is a sample YAML resume that support limited set of markdown rich text syntax (bold, italics, links, lists):
+
+      - Computer Science major with **strong foundation** in data structures, *algorithms*, and software development
+        1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+        2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+And this is the generated PDF:
+
+![Rich Text Support in Summary Field](./static/images/introducing-yamlresume/rich-text-support-in-summary-field.webp)
+
+You can see that the rich text syntax is rendered correctly with bold, italics,
+links, lists, pretty solid, right?
+
+## Roadmap
+
+Overall the project is still in a very early stage, we have a long way to go.
+I've already planned a list of features to do in the near future:
+
+1. more languages, Japanese, Germany, French, etc
+2. more templates
+3. [section alias](https://github.com/yamlresume/yamlresume/issues/11)
+4. [section reordering](https://github.com/yamlresume/yamlresume/issues/12)
+5. [schema validation](https://github.com/yamlresume/yamlresume/issues/10)
+
+For any trouble, you can:
+
+- raise an [issue](https://github.com/yamlresume/yamlresume/issues/)
+- open a [discussion](https://github.com/yamlresume/yamlresume/discussions)
+- leave a [message](https://discord.gg/khWmsBmp)
+
+Stay tuned!

@@ -18,7 +18,6 @@ export default function HomePage() {
         <FeaturesSection />
         <FaqSection />
       </div>
-      <Footer />
     </main>
   )
 }

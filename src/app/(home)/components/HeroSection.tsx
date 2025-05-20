@@ -23,7 +23,7 @@ export function HeroSection() {
   ])
 
   return (
-    <section className="max-w-screen-xl mx-auto py-4">
+    <section className="container mx-auto py-4">
       <div className="flex flex-col items-start gap-8">
         <div className="flex flex-col items-start gap-4">
           <p className="text-sm text-fd-muted-foreground2">

@@ -24,6 +24,11 @@ export const baseOptions: BaseLayoutProps = {
       active: 'nested-url',
     },
     {
+      text: 'Blog',
+      url: '/blog',
+      active: 'nested-url',
+    },
+    {
       text: 'Chat',
       url: 'https://discord.gg/khWmsBmp',
     },
