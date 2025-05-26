@@ -17,6 +17,9 @@ export const baseOptions: BaseLayoutProps = {
       </>
     ),
   },
+  themeSwitch: {
+    mode: 'light-dark-system',
+  },
   links: [
     {
       text: 'Documentation',
