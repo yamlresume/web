@@ -5,6 +5,8 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { useState } from 'react'
 
+import { SectionTitle } from './SectionTitle'
+
 type FaqItem = {
   id: string
   question: string
@@ -127,9 +129,7 @@ export function FaqSection() {
 
   return (
     <section className="w-full max-w-screen-lg mx-auto">
-      <h2 className="text-3xl font-bold mb-8 text-center">
-        Frequently Asked Questions
-      </h2>
+      <SectionTitle title="Frequently Asked Questions" />
       <div className="space-y-4">
         {faqs.map((faq, index) => (
           <div

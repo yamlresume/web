@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Zoom from 'react-medium-image-zoom'
 import resumeImage from '../static/images/yamlresume-yaml-and-pdf.webp'
 
-export function ImageSection() {
+export function YAMLResumePDFSection() {
   return (
     <section className="container mx-auto">
       <div

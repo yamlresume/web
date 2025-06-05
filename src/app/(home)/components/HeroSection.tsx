@@ -1,6 +1,35 @@
 import { IconBook, IconBrandGithub } from '@tabler/icons-react'
 import clsx from 'clsx'
+import Image from 'next/image'
 import Link from 'next/link'
+import Zoom from 'react-medium-image-zoom'
+import resumeImage from '../static/images/yamlresume-yaml-and-pdf.webp'
+
+function YAMLResumePDFSection() {
+  return (
+    <div
+      className={clsx([
+        'relative',
+        'overflow-hidden',
+        'border',
+        'border-gray-400',
+        'shadow-lg',
+        'mt-2',
+      ])}
+      style={{
+        borderRadius: '6px',
+      }}
+    >
+      <Zoom zoomMargin={32}>
+        <Image
+          src={resumeImage}
+          alt="YAMLResume preview showing YAML code and PDF output"
+          priority
+        />
+      </Zoom>
+    </div>
+  )
+}
 
 export function HeroSection() {
   const linkClasses = clsx([
@@ -23,7 +52,7 @@ export function HeroSection() {
   ])
 
   return (
-    <section className="container mx-auto py-4">
+    <section className="container mx-auto pt-4">
       <div className="flex flex-col items-start gap-8">
         <div className="flex flex-col items-start gap-4">
           <p className="text-sm text-fd-muted-foreground2">
@@ -59,6 +88,7 @@ export function HeroSection() {
             Check Github
           </Link>
         </div>
+        <YAMLResumePDFSection />
       </div>
     </section>
   )

@@ -26,7 +26,7 @@ export function BlogPostCard({ title, description, date }: BlogPostProps) {
       <div className="flex items-center gap-3 mb-3">
         <h3 className="text-xl font-semibold">{title}</h3>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="space-y-2">
         <p className="text-fd-muted-foreground8">{description}</p>
         <p className="text-fd-muted-foreground9 text-sm">
           {date instanceof Date ? date.toDateString() : date}
