@@ -15,11 +15,63 @@ to get started with YAMLResume:
 - a typesetting engine
 - [optional] some fonts
 
-Please follow the appropriate instructions below to install the necessary tools
-based on your operating system. At the time of writing, our guide covers MacOS,
-Windows, and some Linux distributions.
+This sounds a bit complicated, but don't worry, we have your back.
 
-## Node.js
+## Docker Users
+
+If you are a docker user, you are in luck, we have a [docker
+image](https://hub.docker.com/r/yamlresume/yamlresume) for you. This image has
+everything pre-packaged, including:
+
+- [Node.js](/docs/installation#nodejs)
+- [yamlresume CLI](/docs/installation#yamlresume)
+- [XeTeX](/docs/installation#xetex)
+- [some recommended fonts](/docs/installation#font)
+
+You can create a new resume instantly with the following command:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+<Callout title="How does this docker magic work?">
+This command will create a new resume called `my-resume.yml` in your current
+directory. Steps:
+
+1. `docker run ... yamlresume/yamlresume` - runs a new container from the
+   `yamlresume/yamlresume` image, if this image is not existed in your local
+   machine, it will pull it from the [docker
+   hub](https://hub.docker.com/r/yamlresume/yamlresume).
+2. `--rm` - automatically removes the container when it exits
+3. `-v $(pwd):/home/yamlresume` - mounts the current directory (`$(pwd)`) into
+   the container at `/home/yamlresume`, allowing the container to access local
+   files
+4. `new my-resume.yml` - run yamlresume CLI [new](/docs/cli#new) sub-command to
+   create a new resume with the filename `my-resume.yml`
+</Callout>
+
+Edit `my-resume.yml` accordingly and then build the resume from yaml to pdf:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+Basically, you can call all of the `yamlresume` [CLI sub-commands](/cli) in this
+way—just append the sub-command after `yamlresume/yamlresume` and then follow
+the corresponding usage guide.
+
+The `-v` flag here is quite important here because it mounts the current
+directory (`$(pwd)`) into the container at `/home/yamlresume`, allowing a two
+way file sync between the local directory and the container.
+
+## Non-Docker Users
+
+If you are not a docker user, please follow the appropriate instructions below
+to install yamlresume CLI and all the necessary dependencies based on your
+operating system. At the time of writing, our guide covers macOS, Windows, and
+some Linux distros (Ubuntu and and RHEL based distros).
+
+### Node.js
 
 Node.js 20.x or newer is required.
 
@@ -78,7 +130,7 @@ sudo dnf install nodejs
 </Tab>
 </Tabs>
 
-## yamlresume
+### YAMLResume CLI
 
 Installing `yamlresume` is a breeze. You can install it using your favourite
 Node.js package manager:
@@ -149,7 +201,7 @@ bun exec yamlresume help
 ```
 </Tabs>
 
-## Typesetting Engine
+### Typesetting Engine
 
 Under the hood, `yamlresume` does the job of a compiler, parsing a YAML resume
 to an
@@ -175,7 +227,7 @@ YAMLResume currently supports two typesetting engines: [XeTeX](#xetex) and
   [PPResume](https://ppresume.com).
 </Callout>
 
-### XeTeX
+#### XeTeX
 
 [XeTeX](https://tug.org/xetex/) is a [TeX](https://en.wikipedia.org/wiki/TeX)
 typesetting engine using [Unicode](https://en.wikipedia.org/wiki/Unicode) and
@@ -280,7 +332,7 @@ Compiled with pplib version v2.05 less toxic i hope
 Using Mac OS X Core Text and Cocoa frameworks
 ```
 
-### Tectonic
+#### Tectonic
 
 [Tectonic](https://tectonic-typesetting.github.io) is a modernized, complete,
 self-contained
@@ -311,9 +363,9 @@ In to my experience, tectonic still has some minor compatibility issues with
 official XeTeX, so if you do not mind the long download tim eof a full TeX Live
 distribution, XeTeX is still the recommended choice here.
 
-## Font
+### Font
 
-### Linux Libertine
+#### Linux Libertine
 
 YAMLResume adopts [Linux Libertine](https://www.dafont.com/linux-libertine.font)
 as the default font for Latin characters. It is highly recommended to install it
@@ -363,7 +415,7 @@ sudo dnf install linux-libertine-fonts
 </Tab>
 </Tabs>
 
-### Google Noto
+#### Google Noto
 
 If you need CJK resumes, you will also need to install [Google Noto
 fonts](https://fonts.google.com/noto/) for [best unicode

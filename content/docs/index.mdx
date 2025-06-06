@@ -26,6 +26,28 @@ to say [no to vendor lock-in](https://blog.ppresume.com/posts/no-vendor-lock-in)
 
 ## Getting Started
 
+### Docker Users
+
+If you are a docker user, you are in luck, we have a [docker
+image](https://hub.docker.com/r/yamlresume/yamlresume) for you, which has
+[yamlresume cli](https://www.npmjs.com/package/yamlresume) installed with all
+its dependencies, such as [XeTeX](https://www.tug.org/xetex/) and some
+[recommended fonts](/docs/installation#font).
+
+You can just create a new resume with the following command:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+Edit `my-resume.yml` accordingly and then build the resume from yaml to pdf:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+### macOS Users
+
 Let's assume that you're using macOS with [Homebrew](https://brew.sh/) as the
 package manager. If you are not, please see the
 [Installation](/docs/installation) guide for detailed instructions for your
@@ -34,19 +56,19 @@ operating system.
 <Steps>
 
 <Step>
-### Install Node.js
+#### Install Node.js
 
 You need to [install
 Node.js](https://nodejs.org/en/download/package-manager/all#macos) 20.x or
 newer.
 
-```console
-$ brew install node
+```sh
+brew install node
 ```
 </Step>
 
 <Step>
-### Install Typesetting Engine
+#### Install Typesetting Engine
 
 YAMLResume needs a [typesetting
 engine](/docs/getting-started#typesetting-engine) to generate PDF. Currently it
@@ -67,7 +89,7 @@ brew install tectonic
 </Step>
 
 <Step>
-### Install YAMLResume
+#### Install YAMLResume
 
 Installing `yamlresume` is a breeze. You can install it using your favourite
 Node.js package manager:
@@ -106,23 +128,23 @@ YAMLResume — Resume as Code in YAML
 
 
 Options:
-  -V, --version   output the version number
-  -v, --verbose   verbose output
-  -h, --help      display help for command
+  -V, --version             output the version number
+  -v, --verbose             verbose output
+  -h, --help                display help for command
 
 Commands:
-  new [filename]  create a new resume
-  build <source>  build a resume to LaTeX and PDF
-  languages       i18n and l10n support
-  templates       manage resume templates
-  help [command]  display help for command
+  new [filename]            create a new resume
+  build [options] <source>  build a resume to LaTeX and PDF
+  languages                 i18n and l10n support
+  templates                 manage resume templates
+  help [command]            display help for command
 ```
 </Step>
 
 <Step>
-### [Optional] Install Fonts
+#### [Optional] Install Fonts
 
-#### Linux Libertine Font
+##### Linux Libertine Font
 
 We also recommend installing the [Linux
 Libertine font](/docs/getting-started#linux-libertine) for the best looking PDF
@@ -132,7 +154,7 @@ output, but this is optional.
 brew install font-linux-libertine
 ```
 
-#### Noto Fonts
+##### Noto Fonts
 
 If you need to create a CJK (Chinese, Japanese, Korean) resume, we recommend
 that you install the [Noto font](https://fonts.google.com/noto):
@@ -143,23 +165,23 @@ brew install font-noto-sans-cjk font-noto-serif-cjk
 </Step>
 
 <Step>
-### Create Your First YAML Resume
+#### Create Your First YAML Resume
 
 OK, we have everything ready, we can now create a yaml resume now with
 `yamlresume new`:
 
 ```console
-$ yamlresume new
-✔ Created resume.yml successfully.
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
 ```
 
 Edit `resume.yml` accordingly, then you can generate a PDF with `yamlresume
 build`:
 
 ```console
-$ yamlresume build resume.yml
-◐ Generating resume PDF with command: xelatex -halt-on-error resume.tex...
-✔ Generated resume PDF successfully.
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resumep PDF file successfully.
 ```
 </Step>
 </Steps>

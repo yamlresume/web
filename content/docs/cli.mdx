@@ -5,6 +5,27 @@ title: CLI
 YAMLResume provides a CLI tool to help you manage your resume. You can follow
 the [installation guide](/docs/getting-started#installation) to install it.
 
+<Callout title="YAMLResume CLI in docker">
+Please note that we have a [docker image](/docs/installation#docker-users)
+for you, which has `yamlresume` CLI installed with all the necessary
+dependencies.
+
+For each sub-command in this guide, you can run it in docker by appending the
+sub-command after `yamlresume/yamlresume`.
+
+For example, to create a new resume in yamlresume CLI:
+
+```sh
+yamlresume new my-resume.yml
+```
+
+You can also run it in docker by:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+</Callout>
+
 ## Help
 
 Show CLI help and all available commands:
@@ -23,23 +44,23 @@ YAMLResume — Resume as Code in YAML
 
 
 Options:
-  -V, --version   output the version number
-  -v, --verbose   verbose output
-  -h, --help      display help for command
+  -V, --version             output the version number
+  -v, --verbose             verbose output
+  -h, --help                display help for command
 
 Commands:
-  new [filename]  create a new resume
-  build <source>  build a resume to LaTeX and PDF
-  languages       i18n and l10n support
-  templates       manage resume templates
-  help [command]  display help for command
+  new [filename]            create a new resume
+  build [options] <source>  build a resume to LaTeX and PDF
+  languages                 i18n and l10n support
+  templates                 manage resume templates
+  help [command]            display help for command
 ```
 
 Show YAMLResume CLI version:
 
 ```console
 $ yamlresume -V
-0.3.0
+0.4.0
 ```
 
 ## New
@@ -79,11 +100,12 @@ Arguments:
   source      the source resume file
 
 Options:
+  --no-pdf    only generate TeX file without PDF
   -h, --help  display help for command
 
 $ yamlresume build my-resume.yml
-◐ Generating resume PDF with command: xelatex -halt-on-error my-resume.tex...
-✔ Generated resume PDF successfully.
+◐ Generating resume PDF file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF file successfully.
 ```
 
 ## Languages
