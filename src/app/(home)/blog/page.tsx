@@ -5,7 +5,11 @@ import Link from 'next/link'
 import { BlogPostCard } from './components'
 
 export default function Home() {
-  const posts = blog.getPages()
+  const posts = blog.getPages().sort((a, b) => {
+    const dateA = new Date(a.data.date)
+    const dateB = new Date(b.data.date)
+    return dateB.getTime() - dateA.getTime()
+  })
 
   return (
     <main className="container mx-auto py-8 mt-24 min-h-[900px]">
