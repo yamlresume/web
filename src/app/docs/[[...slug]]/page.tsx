@@ -1,4 +1,4 @@
-import { source } from '@/lib/source'
+import { docsSource } from '@/lib/source'
 import { getMDXComponents } from '@/mdx-components'
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import {
@@ -13,7 +13,7 @@ export default async function Page(props: {
   params: Promise<{ slug?: string[] }>
 }) {
   const params = await props.params
-  const page = source.getPage(params.slug)
+  const page = docsSource.getPage(params.slug)
   if (!page) notFound()
 
   const MDXContent = page.data.body
@@ -35,7 +35,7 @@ export default async function Page(props: {
       <DocsBody>
         <MDXContent
           components={getMDXComponents({
-            a: createRelativeLink(source, page),
+            a: createRelativeLink(docsSource, page),
           })}
         />
       </DocsBody>
@@ -44,14 +44,14 @@ export default async function Page(props: {
 }
 
 export async function generateStaticParams() {
-  return source.generateParams()
+  return docsSource.generateParams()
 }
 
 export async function generateMetadata(props: {
   params: Promise<{ slug?: string[] }>
 }) {
   const params = await props.params
-  const page = source.getPage(params.slug)
+  const page = docsSource.getPage(params.slug)
   if (!page) notFound()
 
   return {

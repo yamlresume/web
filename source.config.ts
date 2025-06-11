@@ -17,7 +17,7 @@ export default defineConfig({
   },
 })
 
-export const blogPosts = defineCollections({
+export const blog = defineCollections({
   type: 'doc',
   dir: 'content/blog',
   schema: frontmatterSchema.extend({

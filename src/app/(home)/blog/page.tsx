@@ -1,11 +1,11 @@
-import { blog } from '@/lib/source'
+import { blogSource } from '@/lib/source'
 import clsx from 'clsx'
 import Link from 'next/link'
 
 import { BlogPostCard } from './components'
 
 export default function Home() {
-  const posts = blog.getPages().sort((a, b) => {
+  const posts = blogSource.getPages().sort((a, b) => {
     const dateA = new Date(a.data.date)
     const dateB = new Date(b.data.date)
     return dateB.getTime() - dateA.getTime()
