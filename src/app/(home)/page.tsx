@@ -5,7 +5,6 @@ import {
   FeaturesSection,
   HeroSection,
   TypographyBackground,
-  YAMLResumePDFSection,
 } from './components'
 
 export default function HomePage() {

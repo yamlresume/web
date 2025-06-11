@@ -1,5 +1,4 @@
 export * from './HeroSection'
-export * from './YAMLResumePDFSection'
 export * from './DockerDemoSection'
 export * from './FeaturesSection'
 export * from './Footer'
