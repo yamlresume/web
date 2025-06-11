@@ -33,7 +33,7 @@ export const baseOptions: BaseLayoutProps = {
     },
     {
       text: 'Chat',
-      url: 'https://discord.gg/khWmsBmp',
+      url: 'https://discord.gg/9SyT7mVV4K',
     },
     {
       text: 'Discussions',
