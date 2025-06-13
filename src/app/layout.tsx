@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 import { Analytics } from './components'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('http://yamlresume.dev'),
   title: 'YAMLResume',
   description: [
     'YAMLResume allows you to create and version control your resumes',

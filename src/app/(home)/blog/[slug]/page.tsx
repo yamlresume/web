@@ -44,22 +44,31 @@ export default async function Page(props: {
   )
 }
 
-export async function generateMetadata(props: {
-  params: Promise<{ slug: string }>
-}): Promise<Metadata> {
-  const params = await props.params
-  const page = blogSource.getPage([params.slug])
-
-  if (!page) notFound()
-
-  return {
-    title: page.data.title,
-    description: page.data.description,
-  }
-}
-
 export function generateStaticParams(): { slug: string }[] {
   return blogSource.getPages().map((page) => ({
     slug: page.slugs[0],
   }))
+}
+
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await props.params
+  const page = blogSource.getPage([slug])
+
+  if (!page) notFound()
+
+  const image = ['/api', 'og', 'blog', slug, 'open-graph.png'].join('/')
+
+  return {
+    title: page.data.title,
+    description: page.data.description,
+    openGraph: {
+      images: image,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: image,
+    },
+  }
 }

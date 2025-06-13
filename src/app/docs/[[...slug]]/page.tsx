@@ -47,15 +47,25 @@ export async function generateStaticParams() {
   return docsSource.generateParams()
 }
 
-export async function generateMetadata(props: {
+export async function generateMetadata({
+  params,
+}: {
   params: Promise<{ slug?: string[] }>
 }) {
-  const params = await props.params
-  const page = docsSource.getPage(params.slug)
+  const { slug = [] } = await params
+  const page = docsSource.getPage(slug)
   if (!page) notFound()
 
+  const image = ['api', 'og', 'docs', ...slug, 'open-graph.png'].join('/')
   return {
     title: page.data.title,
     description: page.data.description,
+    openGraph: {
+      images: image,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: image,
+    },
   }
 }
