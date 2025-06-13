@@ -15,6 +15,7 @@ export default defineConfig({
   mdxOptions: {
     // MDX options
   },
+  lastModifiedTime: 'git',
 })
 
 export const blog = defineCollections({
