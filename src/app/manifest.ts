@@ -1,14 +1,11 @@
+import { siteConfig } from '@/config/site'
 import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'YAMLResume',
-    short_name: 'YResume',
-    description: [
-      'YAMLResume allows you to create and version control your resumes',
-      'using YAML and generate pixel perfect PDFs',
-      'with professional layout and typesetting in a breeze.',
-    ].join(' '),
+    name: siteConfig.name,
+    short_name: siteConfig.shortName,
+    description: siteConfig.description,
     icons: [
       {
         src: '/static/favicons/web-app-manifest-192x192.png',

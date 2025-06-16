@@ -1,3 +1,4 @@
+import { siteConfig } from '@/config/site'
 import { getLLMText } from '@/lib/llm'
 import { blogSource, docsSource } from '@/lib/source'
 
@@ -12,9 +13,7 @@ export async function GET() {
 
   const front = `# YAMLResume: Resumes as Code in YAML
 
-YAMLResume allows you to create and version control your resumes using YAML and
-generate pixel perfect PDFs with professional layout and typesetting in a
-breeze.
+${siteConfig.description}
 
 ${scanned.join('\n\n')}
 `

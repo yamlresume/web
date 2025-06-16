@@ -1,3 +1,4 @@
+import { siteConfig } from '@/config/site'
 import { IconBook, IconBrandGithub } from '@tabler/icons-react'
 import clsx from 'clsx'
 import Image from 'next/image'
@@ -69,9 +70,7 @@ export function HeroSection() {
             Resumes as Code in YAML
           </h1>
           <p className="text-xl text-fd-muted-foreground8">
-            YAMLResume allows you to create and version control your resumes
-            using YAML and generate pixel perfect PDFs with professional layout
-            and typesetting in a breeze.
+            {siteConfig.description}
           </p>
         </div>
         <div className="flex flex-wrap items-start justify-center gap-4">
