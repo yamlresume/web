@@ -1,0 +1,382 @@
+---
+title: Types
+---
+
+This document outlines the TypeScript types that define the structure of a
+resume with YAMLResume. As a TypeScript project, YAMLResume employs static
+typing to ensure data consistency. This file provides an overview of the core
+data structures used to represent resume information, including personal
+details, education, experience, skills and more.
+
+You can check
+[types.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types.ts)
+for the source of truth details.
+
+Understanding these types is essential for contributors and developers who want
+to customize or extend YAMLResume's functionality.
+
+This document serves as a definitive reference for users seeking to create a
+valid YAMLResume, clarifying the distinction between optional and mandatory
+fields. To guarantee successful compilation within YAMLResume, a minimal resume
+must incorporate the following essential fields:
+
+- `content.basics.name`
+- `education[number].area`
+- `education[number].degree`
+- `education[number].institution`
+- `education[number].startDate`
+
+So theoretically a minimum viable resumes looks like the following:
+
+```yml
+content:
+  basics:
+    name: Xiao Hanyu
+  education:
+    - area: Computer Science and Technology
+      degree: Bachelor
+      institution: Zhejiang University
+      startDate: Sep, 2007
+```
+
+## Resume
+
+Defines the overall resume structure, including content and layout.
+
+| Prop      | Type                              | Required | Description                                          |
+| --------- | --------------------------------- | -------- | ---------------------------------------------------- |
+| `content` | [`ResumeContent`](#resumecontent) | ✅       | Defines the structure for the entire resume content. |
+| `layout?` | [`ResumeLayout`](#resumelayout)   | ⬜       | Defines the overall layout configuration.            |
+
+### ResumeContent
+
+Defines the structure for the entire resume content.
+
+| Prop            | Type                                    | Required | Description                                                          |
+| --------------- | --------------------------------------- | -------- | -------------------------------------------------------------------- |
+| `basics`        | [`BasicsItem`](#basicsitem)             | ✅       | Represents the core personal and contact information.                |
+| `education`     | [`EducationItem[]`](#educationitem)     | ✅       | Contains a collection of educational experiences.                    |
+| `awards?`       | [`AwardItem[]`](#awarditem)             | ⬜       | Contains a collection of awards and recognitions.                    |
+| `certificates?` | [`CertificateItem[]`](#certificateitem) | ⬜       | Contains a collection of certifications and credentials.             |
+| `interests?`    | [`InterestItem[]`](#interestitem)       | ⬜       | Contains a collection of interests, hobbies, or personal activities. |
+| `languages?`    | [`LanguageItem[]`](#languageitem)       | ⬜       | Contains a collection of language proficiencies.                     |
+| `location?`     | [`LocationItem`](#locationitem)         | ⬜       | Contains location information.                                       |
+| `projects?`     | [`ProjectItem[]`](#projectitem)         | ⬜       | Contains a collection of projects.                                   |
+| `profiles?`     | [`ProfileItem[]`](#profileitem)         | ⬜       | Contains a collection of online profiles.                            |
+| `publications?` | [`PublicationItem[]`](#publicationitem) | ⬜       | Contains a collection of publications.                               |
+| `references?`   | [`ReferenceItem[]`](#referenceitem)     | ⬜       | Contains a collection of references.                                 |
+| `skills?`       | [`SkillItem[]`](#skillitem)             | ⬜       | Contains a collection of skills.                                     |
+| `volunteer?`    | [`VolunteerItem[]`](#volunteeritem)     | ⬜       | Contains a collection of volunteer experiences.                      |
+| `work?`         | [`WorkItem[]`](#workitem)               | ⬜       | Contains a collection of work experiences and employment history.    |
+
+#### AwardItem
+
+Represents a single award, honor, or recognition received.
+
+| Prop       | Type     | Required | Description                                                 |
+| ---------- | -------- | -------- | ----------------------------------------------------------- |
+| `awarder`  | `string` | ✅       | The organization or entity that gave the award.             |
+| `title`    | `string` | ✅       | The name or title of the award.                             |
+| `date?`    | `string` | ⬜       | The date the award was received (e.g., "2020", "Oct 2020"). |
+| `summary?` | `string` | ⬜       | A short description or details about the award.             |
+
+#### BasicsItem
+
+Represents the core personal and contact information.
+
+| Prop        | Type     | Required | Description                                                         |
+| ----------- | -------- | -------- | ------------------------------------------------------------------- |
+| `name`      | `string` | ✅       | Full name.                                                          |
+| `email?`    | `string` | ⬜       | Email address.                                                      |
+| `headline?` | `string` | ⬜       | A brief professional headline or title (e.g., "Software Engineer"). |
+| `phone?`    | `string` | ⬜       | Phone number.                                                       |
+| `summary?`  | `string` | ⬜       | A professional summary or objective statement.                      |
+| `url?`      | `string` | ⬜       | Personal website or portfolio URL.                                  |
+
+#### CertificateItem
+
+Represents a single certification, credential, or professional qualification.
+
+| Prop     | Type     | Required | Description                                                       |
+| -------- | -------- | -------- | ----------------------------------------------------------------- |
+| `issuer` | `string` | ✅       | The organization that issued the certificate.                     |
+| `name`   | `string` | ✅       | The name of the certificate.                                      |
+| `date?`  | `string` | ⬜       | The date the certificate was obtained (e.g., "2021", "Nov 2021"). |
+| `url?`   | `string` | ⬜       | URL related to the certificate (e.g., verification link).         |
+
+#### EducationItem
+
+Represents a single educational experience or degree program.
+
+| Prop          | Type                | Required | Description                                                            |
+| ------------- | ------------------- | -------- | ---------------------------------------------------------------------- |
+| `area`        | `string`            | ✅       | Area of study (e.g., "Computer Science").                              |
+| `degree`      | [`Degree`](#degree) | ✅       | The type of degree obtained.                                           |
+| `institution` | `string`            | ✅       | Name of the institution.                                               |
+| `startDate`   | `string`            | ✅       | Start date of study (e.g., "2016", "Sep 2016").                        |
+| `courses?`    | `string[]`          | ⬜       | List of courses taken.                                                 |
+| `endDate?`    | `string`            | ⬜       | End date of study (e.g., "2020", "May 2020"), empty implies "Present". |
+| `summary?`    | `string`            | ⬜       | Description of accomplishments or details.                             |
+| `score?`      | `string`            | ⬜       | GPA or academic score.                                                 |
+| `url?`        | `string`            | ⬜       | URL related to the institution or degree.                              |
+
+#### InterestItem
+
+Represents a single interest, hobby, or personal activity.
+
+| Prop        | Type       | Required | Description                                                     |
+| ----------- | ---------- | -------- | --------------------------------------------------------------- |
+| `name`      | `string`   | ✅       | Name of the interest category (e.g., "Reading", "Photography"). |
+| `keywords?` | `string[]` | ⬜       | Keywords related to the interest.                               |
+
+#### LanguageItem
+
+Represents a single language proficiency item.
+
+| Prop        | Type                    | Required | Description                                                         |
+| ----------- | ----------------------- | -------- | ------------------------------------------------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅       | The level of proficiency of the language.                           |
+| `language`  | [`Language`](#language) | ✅       | The language.                                                       |
+| `keywords?` | `string[]`              | ⬜       | Specific keywords related to language skills (e.g., "Translation"). |
+
+#### LocationItem
+
+Represents location and address information.
+
+| Prop          | Type                  | Required | Description                 |
+| ------------- | --------------------- | -------- | --------------------------- |
+| `city`        | `string`              | ✅       | City name.                  |
+| `address?`    | `string`              | ⬜       | Street address.             |
+| `country?`    | [`Country`](#country) | ⬜       | Country code or name.       |
+| `postalCode?` | `string`              | ⬜       | Postal or ZIP code.         |
+| `region?`     | `string`              | ⬜       | State, province, or region. |
+
+#### ProfileItem
+
+Represents a single online profile or social media presence.
+
+| Prop       | Type                  | Required | Description                          |
+| ---------- | --------------------- | -------- | ------------------------------------ |
+| `network`  | [`Network`](#network) | ✅       | The name of the network or platform. |
+| `username` | `string`              | ✅       | The username on the platform.        |
+| `url?`     | `string`              | ⬜       | The URL of the profile.              |
+
+#### ProjectItem
+
+Represents a single project, portfolio piece, or technical work.
+
+| Prop           | Type       | Required | Description                                               |
+| -------------- | ---------- | -------- | --------------------------------------------------------- |
+| `name`         | `string`   | ✅       | Name of the project.                                      |
+| `startDate`    | `string`   | ✅       | Start date of the project (e.g., "2021", "Jan 2021").     |
+| `summary`      | `string`   | ✅       | Detailed accomplishments for the project.                 |
+| `description?` | `string`   | ⬜       | Description of the project.                               |
+| `endDate?`     | `string`   | ⬜       | End date of the project (e.g., "2022", "Jul 2022").       |
+| `keywords?`    | `string[]` | ⬜       | Keywords or technologies used in the project.             |
+| `url?`         | `string`   | ⬜       | URL related to the project (e.g., repository, live demo). |
+
+#### PublicationItem
+
+Represents a single publication, research work, or academic paper.
+
+| Prop           | Type     | Required | Description                                       |
+| -------------- | -------- | -------- | ------------------------------------------------- |
+| `name`         | `string` | ✅       | Name or title of the publication.                 |
+| `publisher`    | `string` | ✅       | Publisher of the work.                            |
+| `releaseDate?` | `string` | ⬜       | Date of publication (e.g., "2023", "Mar 2023").   |
+| `summary?`     | `string` | ⬜       | Summary or abstract of the publication.           |
+| `url?`         | `string` | ⬜       | URL related to the publication (e.g., DOI, link). |
+
+#### ReferenceItem
+
+Represents a single professional reference or recommendation.
+
+| Prop            | Type     | Required | Description                                             |
+| --------------- | -------- | -------- | ------------------------------------------------------- |
+| `name`          | `string` | ✅       | Name of the reference.                                  |
+| `summary`       | `string` | ✅       | A brief note about the reference.                       |
+| `email?`        | `string` | ⬜       | Email address of the reference.                         |
+| `phone?`        | `string` | ⬜       | Phone number of the reference.                          |
+| `relationship?` | `string` | ⬜       | Relationship to the reference (e.g., "Former Manager"). |
+
+#### SkillItem
+
+Represents a single skill, competency, or technical ability.
+
+| Prop        | Type              | Required | Description                                             |
+| ----------- | ----------------- | -------- | ------------------------------------------------------- |
+| `level`     | [`Level`](#level) | ✅       | Proficiency level in the skill.                         |
+| `name`      | `string`          | ✅       | Name of the skill.                                      |
+| `keywords?` | `string[]`        | ⬜       | Specific keywords or technologies related to the skill. |
+
+#### VolunteerItem
+
+Represents a single volunteer experience or community service.
+
+| Prop           | Type     | Required | Description                                                  |
+| -------------- | -------- | -------- | ------------------------------------------------------------ |
+| `organization` | `string` | ✅       | Name of the organization.                                    |
+| `position`     | `string` | ✅       | Role or position held.                                       |
+| `startDate`    | `string` | ✅       | Start date of the volunteer work (e.g., "2019", "Jun 2019"). |
+| `summary`      | `string` | ✅       | Summary of responsibilities or achievements.                 |
+| `endDate?`     | `string` | ⬜       | End date of the volunteer work (e.g., "2020", "Dec 2020").   |
+| `url?`         | `string` | ⬜       | URL related to the organization or work.                     |
+
+#### WorkItem
+
+Represents a single work experience or employment position.
+
+| Prop        | Type       | Required | Description                                          |
+| ----------- | ---------- | -------- | ---------------------------------------------------- |
+| `name`      | `string`   | ✅       | Name of the company or employer.                     |
+| `position`  | `string`   | ✅       | Job title or position held.                          |
+| `startDate` | `string`   | ✅       | Start date of employment (e.g., "2021", "Apr 2021"). |
+| `summary`   | `string`   | ✅       | Summary of responsibilities and accomplishments.     |
+| `endDate?`  | `string`   | ⬜       | End date of employment (e.g., "2023", "Aug 2023").   |
+| `keywords?` | `string[]` | ⬜       | Keywords related to the role or technologies used.   |
+| `url?`      | `string`   | ⬜       | URL related to the company or work.                  |
+
+### ResumeLayout
+
+Defines the overall layout configuration.
+
+| Prop          | Type                                                | Required | Description                                                        |
+| ------------- | --------------------------------------------------- | -------- | ------------------------------------------------------------------ |
+| `locale?`     | [`ResumeLayoutLocale`](#resumelayoutlocale)         | ⬜       | Defines locale settings for internationalization and localization. |
+| `margins?`    | [`ResumeLayoutMargins`](#resumelayoutmargins)       | ⬜       | Defines page margin settings for document layout.                  |
+| `page?`       | [`ResumeLayoutPage`](#resumelayoutpage)             | ⬜       | Defines page-level settings for document presentation.             |
+| `template?`   | [`Template`](#template)                             | ⬜       | Defines the selected template.                                     |
+| `typography?` | [`ResumeLayoutTypography`](#resumelayouttypography) | ⬜       | Defines typography settings for document formatting.               |
+| `latex?`      | [`ResumeLayoutLaTeX`](#resumelayoutlatex)           | ⬜       | Defines LaTeX-specific configuration options.                      |
+
+#### ResumeLayoutLocale
+
+Defines locale settings for internationalization and localization.
+
+| Prop        | Type                                | Required | Description                                                      |
+| ----------- | ----------------------------------- | -------- | ---------------------------------------------------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | The selected language for the resume content and template terms. |
+
+#### ResumeLayoutMargins
+
+Defines page margin settings for document layout.
+
+| Prop      | Type     | Required | Description                          |
+| --------- | -------- | -------- | ------------------------------------ |
+| `top?`    | `string` | ⬜       | Top margin value (e.g., "2.5cm").    |
+| `bottom?` | `string` | ⬜       | Bottom margin value (e.g., "2.5cm"). |
+| `left?`   | `string` | ⬜       | Left margin value (e.g., "1.5cm").   |
+| `right?`  | `string` | ⬜       | Right margin value (e.g., "1.5cm").  |
+
+#### ResumeLayoutPage
+
+Defines page-level settings for document presentation.
+
+| Prop               | Type      | Required | Description                      |
+| ------------------ | --------- | -------- | -------------------------------- |
+| `showPageNumbers?` | `boolean` | ⬜       | Whether to display page numbers. |
+
+#### ResumeLayoutTypography
+
+Defines typography settings for document formatting.
+
+| Prop        | Type     | Required | Description                                             |
+| ----------- | -------- | -------- | ------------------------------------------------------- |
+| `fontSize?` | `string` | ⬜       | Base font size for the document (e.g., "10pt", "11pt"). |
+
+#### ResumeLayoutLaTeX
+
+Defines LaTeX-specific configuration options.
+
+| Prop        | Type                            | Required | Description                            |
+| ----------- | ------------------------------- | -------- | -------------------------------------- |
+| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | LaTeX fontspec package configurations. |
+
+## Enum Types
+
+### Country
+
+A union type for all possible countries and regions in the world.
+
+### Degree
+
+A union type for all possible degrees.
+
+- `Associate`
+- `Bachelor`
+- `Diploma`
+- `Doctor`
+- `High School`
+- `Master`
+- `Middle School`
+
+### Fluency
+
+A union type for all possible language fluency levels.
+
+- `Elementary Proficiency`
+- `Full Professional Proficiency`
+- `Limited Working Proficiency`
+- `Minimum Professional Proficiency`
+- `Native or Bilingual Proficiency`
+
+### Language
+
+A union type for all supported languages.
+
+### Level
+
+A union type for all possible skill proficiency levels.
+
+- `Advanced`
+- `Beginner`
+- `Expert`
+- `Intermediate`
+- `Master`
+- `Novice`
+
+### Network
+
+A union type for all possible social network options.
+
+### Template
+
+A union type for all possible template options.
+
+See also: [templates](https://yamlresume.dev/docs/layout/templates)
+
+- `moderncv-banking`
+- `moderncv-casual`
+- `moderncv-classic`
+
+### LocaleLanguage
+
+A union type for all possible locale languages.
+
+See also: [multi-languages](https://yamlresume.dev/docs/content/multi-languages)
+
+- `en`
+- `es`
+- `zh-hans`
+- `zh-hant-hk`
+- `zh-hant-tw`
+
+### FontspecNumbers
+
+A union type for all possible latex fontspec numbers options.
+
+- `Auto` - allowing the style to be automatically determined based on the
+  selected `LocaleLanguage` (default)
+- `Lining` - standard lining figures (default for CJK languages)
+- `OldStyle` - old style figures with varying heights (default for Latin
+  languages)
+
+### FontSize
+
+A union type for all possible font size options.
+
+For now only 3 options are supported:
+
+- `10pt` - 10pt font size (default)
+- `11pt` - 11pt font size
+- `12pt` - 12pt font size
