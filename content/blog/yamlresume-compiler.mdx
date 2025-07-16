@@ -1,0 +1,268 @@
+---
+title: "YAMLResume v0.5: The Resume Compiler"
+description: >-
+  Introducing YAMLResume v0.5, a resume compiler that brings the power of
+  static analysis to your resume.
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-07-16
+---
+
+We are thrilled to announce the release of [YAMLResume
+v0.5](https://github.com/yamlresume/yamlresume/releases/tag/v0.5.0), a
+significant milestone that transforms YAMLResume from a simple tool into a
+full-fledged **resume compiler**. This release introduces a robust
+architecture, powerful schema validation, and an enhanced CLI to make your
+resume creation process more reliable, efficient, and error-free.
+
+## The Problem with Manual Resume Writing
+
+Drafting a resume is often a tedious and error-prone process. Whether you're
+using a word processor or a simple markup language, it's easy to make
+mistakes:
+
+- A typo in a key field like `degree` or `fluency`.
+- An incorrectly formatted email address or URL.
+- Inconsistent date formats.
+- Forgetting a required field for a job application.
+
+These small errors can lead to a frustrating cycle of editing, generating, and
+proofreading. The core issue is the lack of a system to enforce structure and
+validate data _before_ the final document is generated.
+
+## The Solution: A Resume Compiler
+
+Inspired by programming language compilers, [YAMLResume
+v0.5](https://github.com/yamlresume/yamlresume/releases/tag/v0.5.0) introduces
+a new compiler architecture that treats your resume's source file (in YAML) as
+code. This "code" is then processed through a pipeline to produce a polished,
+professional PDF.
+
+<Mermaid chart="
+  flowchart TD
+    subgraph Input
+      A[resume.yaml]
+    end
+    subgraph Compiler
+      B[Parsing & Validation]
+      C[Transformation]
+      D[Code Generation]
+    end
+    subgraph Output
+      E[resume.pdf]
+    end
+
+    A --> B --> C --> D --> E
+"/>
+
+This new architecture defines two core components:
+
+1.  A [standard data format](/docs/compiler/types) for a resume, along with a
+    [schema](/docs/compiler/schema) to validate the data.
+2.  A reference [compiler](/docs/compiler) that implements the data format and
+    schema validation.
+
+This approach brings several key advantages:
+
+- **Separation of Concerns**: You focus solely on the **content** of your
+  resume. The compiler handles the **presentation**—layout, typography, and
+  formatting.
+- **Early Error Detection**: The compiler validates your resume against a
+  predefined schema, catching errors instantly with clear, actionable
+  feedback.
+- **Consistency and Reliability**: By enforcing a standard structure, the
+  compiler ensures your resume data is always consistent and ready for any
+  template.
+
+### See It in Action
+
+For example, consider the following resume with several common errors:
+
+```yml title="invalid-resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp # [!code highlight]
+    url: https//ppresume.com/gallery # [!code highlight]
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S # [!code highlight]
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D # [!code highlight]
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layout:
+  typography:
+    fontSize: 13pt # [!code highlight]
+```
+
+We have several issues:
+
+1. `email: hi@pp` - format is invalid
+2. `url: https//ppresume.com/gallery` - protocol part is missing a `:`
+3. `city: S` - too short, should be 2 characters or more, is there any city in the
+world whose name is only 1 character?
+4. `- D` - the first course is just too short, should be 2 characters or
+more
+5. `fontSize: 13pt` - should be 10pt, 11pt or 12pt, 13pt is just too large and make
+little sense in resume drafting scenario
+
+These errors, which might have gone unnoticed previously, are now caught
+instantly. You can run `yamlresume validate my-resume.yml` or simply `yamlresume
+build my-resume.yml`. YAMLResume will report all issues in the widely adopted
+[clang-style error format](https://clang.llvm.org/diagnostics.html), allowing
+you to fix them before the final PDF is generated.
+
+![YAMLResume Validate Command Output](../docs/compiler/schema/static/images/yamlresume-validate.webp)
+
+## At the Heart of the Compiler: The Schema
+
+The cornerstone of this new release is the **[YAMLResume
+Schema](/docs/compiler/schema)**. We provide a comprehensive schema that
+defines the structure and rules for every piece of data in your resume.
+
+We use two powerful technologies for this:
+
+- **[Zod](https://zod.dev)**: For runtime validation within the compiler,
+  providing a robust safety net and detailed error messages.
+- **[JSON Schema](https://json-schema.org)**: For editor and IDE integration.
+  By adding a single line to your YAML file, you unlock auto-completion,
+  inline on-hover property documentation, and real-time format validation
+  right in your editor.
+
+If you have a resume created prior to v0.5, you can still take advantage of
+schema validation. Just add the following line to your resume file and install
+the [YAML Language
+Server](https://github.com/redhat-developer/yaml-language-server) for your
+editor.
+
+```yml
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+```
+
+This integration provides a suite of benefits that dramatically improve the
+resume writing experience:
+
+### Auto-Completion
+
+Spend less time looking up field names. Your editor will suggest valid
+properties as you type, ensuring you use the correct fields every time.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-auto-completion.mp4"
+/>
+
+### Real-time Format Validation
+
+Catch errors as they happen. The schema validation provides instant feedback on
+everything from simple typos to incorrect email formats or missing required
+fields.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-field-error.mp4"
+/>
+
+If a required key is missing, the warning is escalated to its parent object,
+making it easy to spot and fix.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-object-error.mp4"
+/>
+
+### Inline Property Documentation
+
+No more guessing what a field does. Hover over any property to get instant
+documentation explaining its purpose, expected format, and allowed values.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-property-docs.mp4"
+/>
+
+## The Enhanced CLI
+
+The `yamlresume` [CLI](/docs/cli) is now more powerful than ever. The
+[build](/docs/cli#build) command runs the entire compiler pipeline, from
+validation to PDF generation, while the new [validate](/docs/cli#validate)
+command lets you check your resume without building it.
+
+[![YAMLResume Compiler Demo](https://asciinema.org/a/728098.svg)](https://asciinema.org/a/728098)
+
+This seamless workflow transforms your resume creation process, making it more
+efficient and reliable while minimizing errors.
+
+## What This Means for You
+
+With [YAMLResume
+v0.5](https://github.com/yamlresume/yamlresume/releases/tag/v0.5.0), you can:
+
+- **Write with Confidence**: Know that your resume's structure is sound and
+  your data is valid.
+- **Save Time**: Catch errors early and eliminate the tedious proofreading
+  cycle.
+- **Stay Flexible**: Swap between different resume templates effortlessly.
+- **Enjoy a Better Editing Experience**: Get real-time feedback and
+  auto-completion in your favorite editor.
+
+We invite you to experience the power and simplicity of the new YAMLResume
+compiler:
+
+- **Install or update** to the latest version: `npm install -g
+  yamlresume@latest`
+- **Read the new [Compiler Documentation](/docs/compiler)** to learn more about
+  the architecture and schema.
+- **Join our community** on
+  [GitHub](https://github.com/yamlresume/yamlresume/discussions) to ask
+  questions, report issues, or contribute.
+
+We believe this release marks a new era for resume creation, bringing the power
+and reliability of compilers to everyone. We can't wait to see the amazing
+resumes you'll build!
+
+And don't forget, you can try out the new compiler with our [Docker
+image](/blog/yamlresume-docker):
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
