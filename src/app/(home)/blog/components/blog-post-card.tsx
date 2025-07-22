@@ -10,6 +10,7 @@ export function BlogPostCard({ title, description, date }: BlogPostProps) {
   return (
     <div
       className={clsx([
+        'pt-12',
         'p-8',
         'border-b',
         'border-r',
@@ -21,6 +22,8 @@ export function BlogPostCard({ title, description, date }: BlogPostProps) {
         'dark:hover:bg-black',
         'hover:scale-[1.02]',
         'cursor-pointer',
+        'h-full',
+        'min-h-[200px]',
       ])}
     >
       <div className="flex items-center gap-3 mb-3">
