@@ -22,17 +22,18 @@ export function NewsChannel() {
         <div className="flex items-center gap-2 py-3">
           <IconSpeakerphone size={20} stroke={1.5} />
           <div className="text-sm text-fd-foreground">
-            <Link
-              href="https://yamlresume.dev/blog/yamlresume-compiler"
-              className="underline"
-            >
-              YAMLResume v0.5
-            </Link>
-            &nbsp;is now available! A
-            <Link href="/docs/compiler" className="underline">
-              &nbsp;Resume Compiler
+            <Link href="/blog/section-customization" className="underline">
+              YAMLResume v0.6
             </Link>{' '}
-            that brings the power of static analysis to your resume.
+            is released with the long awaited section customization:{' '}
+            <Link href="/docs/layout/sections/aliases" className="underline">
+              section aliases
+            </Link>{' '}
+            and{' '}
+            <Link href="/docs/layout/sections/reorder" className="underline">
+              section reorder
+            </Link>
+            .
           </div>
         </div>
       </div>
