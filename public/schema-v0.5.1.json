@@ -1,0 +1,2490 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yamlresume.dev/schema.json",
+  "title": "YAMLResume Schema",
+  "description": "JSON Schema for YAMLResume resume format.",
+  "version": "0.5.1",
+  "license": "MIT",
+  "keywords": [
+    "Resume",
+    "CV",
+    "YAML",
+    "LaTeX",
+    "PDF",
+    "YAMLResume"
+  ],
+  "type": "object",
+  "properties": {
+    "content": {
+      "type": "object",
+      "properties": {
+        "basics": {
+          "title": "Basics",
+          "description": "The basics section contains your personal information, such as your name, email, phone number, and a brief summary.",
+          "type": "object",
+          "properties": {
+            "name": {
+              "title": "Name",
+              "description": "Your personal name.",
+              "examples": [
+                "Andy Dufrane",
+                "Xiao Hanyu",
+                "Jane Smith",
+                "Dr. Robert John"
+              ],
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 128
+            },
+            "email": {
+              "title": "[optional] Email",
+              "description": "A valid email address or `null`.",
+              "examples": [
+                "hi@ppresume.com",
+                "first.last@company.org",
+                "test+tag@domain.co.uk"
+              ],
+              "anyOf": [
+                {
+                  "title": "[optional] Email",
+                  "description": "A valid email address or `null`.",
+                  "examples": [
+                    "hi@ppresume.com",
+                    "first.last@company.org",
+                    "test+tag@domain.co.uk"
+                  ],
+                  "$ref": "#/$defs/email"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "headline": {
+              "title": "[optional] Headline",
+              "description": "A short and catchy headline for your resume or `null`.",
+              "examples": [
+                "Full-stack software engineer",
+                "Data Scientist with a passion for Machine Learning",
+                "Product Manager driving innovation"
+              ],
+              "anyOf": [
+                {
+                  "title": "[optional] Headline",
+                  "description": "A short and catchy headline for your resume or `null`.",
+                  "examples": [
+                    "Full-stack software engineer",
+                    "Data Scientist with a passion for Machine Learning",
+                    "Product Manager driving innovation"
+                  ],
+                  "type": "string",
+                  "minLength": 8,
+                  "maxLength": 128
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "phone": {
+              "title": "[optional] Phone",
+              "description": "A valid phone number that may include country code, parentheses, spaces, and hyphens or `null`.",
+              "examples": [
+                "555-123-4567",
+                "+44 20 7946 0958",
+                "(555) 123-4567"
+              ],
+              "anyOf": [
+                {
+                  "title": "[optional] Phone",
+                  "description": "A valid phone number that may include country code, parentheses, spaces, and hyphens or `null`.",
+                  "examples": [
+                    "555-123-4567",
+                    "+44 20 7946 0958",
+                    "(555) 123-4567"
+                  ],
+                  "$ref": "#/$defs/phone"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "summary": {
+              "title": "[optional] Summary",
+              "description": "A summary text between 16 and 1024 characters or `null`.",
+              "examples": [
+                "Experienced software engineer with 5+ years in full-stack development.",
+                "Creative designer passionate about user experience and modern design principles.",
+                "Dedicated project manager with proven track record of delivering complex projects on time and budget."
+              ],
+              "anyOf": [
+                {
+                  "title": "[optional] Summary",
+                  "description": "A summary text between 16 and 1024 characters or `null`.",
+                  "examples": [
+                    "Experienced software engineer with 5+ years in full-stack development.",
+                    "Creative designer passionate about user experience and modern design principles.",
+                    "Dedicated project manager with proven track record of delivering complex projects on time and budget."
+                  ],
+                  "$ref": "#/$defs/summary"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "url": {
+              "title": "[optional] URL",
+              "description": "A valid URL with maximum length of 256 characters or `null`.",
+              "examples": [
+                "https://yamlresume.dev",
+                "https://ppresume.com",
+                "https://github.com/yamlresume/yamlresume",
+                "https://linkedin.com/in/xiaohanyu1988",
+                "https://www.example.com"
+              ],
+              "anyOf": [
+                {
+                  "title": "[optional] URL",
+                  "description": "A valid URL with maximum length of 256 characters or `null`.",
+                  "examples": [
+                    "https://yamlresume.dev",
+                    "https://ppresume.com",
+                    "https://github.com/yamlresume/yamlresume",
+                    "https://linkedin.com/in/xiaohanyu1988",
+                    "https://www.example.com"
+                  ],
+                  "$ref": "#/$defs/url"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "additionalProperties": false
+        },
+        "education": {
+          "title": "Education",
+          "description": "The education section contains your academic background, including degrees, institutions, and relevant coursework.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "area": {
+                "title": "Area",
+                "description": "Your field of study or major.",
+                "examples": [
+                  "Computer Science",
+                  "Business Administration",
+                  "Engineering",
+                  "Arts"
+                ],
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 64
+              },
+              "institution": {
+                "title": "Institution",
+                "description": "The institution that awarded the degree.",
+                "examples": [
+                  "University of California, Los Angeles",
+                  "Harvard University",
+                  "Zhejiang University"
+                ],
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 128
+              },
+              "degree": {
+                "title": "Degree Option",
+                "description": "A predefined option from the available degree choices.",
+                "type": "string",
+                "enum": [
+                  "Middle School",
+                  "High School",
+                  "Diploma",
+                  "Associate",
+                  "Bachelor",
+                  "Master",
+                  "Doctor"
+                ]
+              },
+              "startDate": {
+                "title": "Start Date",
+                "description": "A valid date string that can be parsed by `Date.parse`.",
+                "examples": [
+                  "2025-01-01",
+                  "Jul 2025",
+                  "July 3, 2025",
+                  "2025-02-02T00:00:03.123Z"
+                ],
+                "type": "string",
+                "minLength": 4,
+                "maxLength": 32
+              },
+              "courses": {
+                "title": "[optional] Courses",
+                "description": "A list of relevant courses you have taken or `null`.",
+                "examples": [
+                  [
+                    "Data Structures",
+                    "Algorithms",
+                    "Database Systems"
+                  ],
+                  [
+                    "Marketing",
+                    "Finance",
+                    "Operations Management"
+                  ],
+                  [
+                    "Calculus",
+                    "Physics",
+                    "Chemistry"
+                  ]
+                ],
+                "anyOf": [
+                  {
+                    "title": "[optional] Courses",
+                    "description": "A list of relevant courses you have taken or `null`.",
+                    "examples": [
+                      [
+                        "Data Structures",
+                        "Algorithms",
+                        "Database Systems"
+                      ],
+                      [
+                        "Marketing",
+                        "Finance",
+                        "Operations Management"
+                      ],
+                      [
+                        "Calculus",
+                        "Physics",
+                        "Chemistry"
+                      ]
+                    ],
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 128
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "endDate": {
+                "title": "[optional] End Date",
+                "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                "examples": [
+                  "2025-01-01",
+                  "Jul 2025",
+                  "July 3, 2025",
+                  "2025-02-02T00:00:03.123Z"
+                ],
+                "anyOf": [
+                  {
+                    "title": "[optional] End Date",
+                    "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                    "examples": [
+                      "2025-01-01",
+                      "Jul 2025",
+                      "July 3, 2025",
+                      "2025-02-02T00:00:03.123Z"
+                    ],
+                    "type": "string",
+                    "minLength": 4,
+                    "maxLength": 32
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "summary": {
+                "title": "[optional] Summary",
+                "description": "A summary text between 16 and 1024 characters or `null`.",
+                "examples": [
+                  "Experienced software engineer with 5+ years in full-stack development.",
+                  "Creative designer passionate about user experience and modern design principles.",
+                  "Dedicated project manager with proven track record of delivering complex projects on time and budget."
+                ],
+                "anyOf": [
+                  {
+                    "title": "[optional] Summary",
+                    "description": "A summary text between 16 and 1024 characters or `null`.",
+                    "examples": [
+                      "Experienced software engineer with 5+ years in full-stack development.",
+                      "Creative designer passionate about user experience and modern design principles.",
+                      "Dedicated project manager with proven track record of delivering complex projects on time and budget."
+                    ],
+                    "$ref": "#/$defs/summary"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "score": {
+                "title": "[optional] Score",
+                "description": "Your GPA, grade, or other academic score or `null`.",
+                "examples": [
+                  "3.8",
+                  "3.8/4.0",
+                  "A+",
+                  "95%",
+                  "First Class Honours"
+                ],
+                "anyOf": [
+                  {
+                    "title": "[optional] Score",
+                    "description": "Your GPA, grade, or other academic score or `null`.",
+                    "examples": [
+                      "3.8",
+                      "3.8/4.0",
+                      "A+",
+                      "95%",
+                      "First Class Honours"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 32
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "title": "[optional] URL",
+                "description": "A valid URL with maximum length of 256 characters or `null`.",
+                "examples": [
+                  "https://yamlresume.dev",
+                  "https://ppresume.com",
+                  "https://github.com/yamlresume/yamlresume",
+                  "https://linkedin.com/in/xiaohanyu1988",
+                  "https://www.example.com"
+                ],
+                "anyOf": [
+                  {
+                    "title": "[optional] URL",
+                    "description": "A valid URL with maximum length of 256 characters or `null`.",
+                    "examples": [
+                      "https://yamlresume.dev",
+                      "https://ppresume.com",
+                      "https://github.com/yamlresume/yamlresume",
+                      "https://linkedin.com/in/xiaohanyu1988",
+                      "https://www.example.com"
+                    ],
+                    "$ref": "#/$defs/url"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "area",
+              "institution",
+              "degree",
+              "startDate"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "awards": {
+          "title": "Awards",
+          "description": "The awards section contains your achievements and recognitions, including awards, honors, and special acknowledgments.",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "awarder": {
+                    "title": "Awarder",
+                    "description": "The organization or institution that presented the award.",
+                    "examples": [
+                      "Academy Awards",
+                      "Tech Conference",
+                      "Microsoft Scholarship"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 128
+                  },
+                  "title": {
+                    "title": "Title",
+                    "description": "The title of the award.",
+                    "examples": [
+                      "Dean's List",
+                      "Outstanding Student",
+                      "Best Supporting Engineer"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 128
+                  },
+                  "date": {
+                    "title": "[optional] Date",
+                    "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                    "examples": [
+                      "2025-01-01",
+                      "Jul 2025",
+                      "July 3, 2025",
+                      "2025-02-02T00:00:03.123Z"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Date",
+                        "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                        "examples": [
+                          "2025-01-01",
+                          "Jul 2025",
+                          "July 3, 2025",
+                          "2025-02-02T00:00:03.123Z"
+                        ],
+                        "type": "string",
+                        "minLength": 4,
+                        "maxLength": 32
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "summary": {
+                    "title": "[optional] Summary",
+                    "description": "A summary text between 16 and 1024 characters or `null`.",
+                    "examples": [
+                      "Experienced software engineer with 5+ years in full-stack development.",
+                      "Creative designer passionate about user experience and modern design principles.",
+                      "Dedicated project manager with proven track record of delivering complex projects on time and budget."
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Summary",
+                        "description": "A summary text between 16 and 1024 characters or `null`.",
+                        "examples": [
+                          "Experienced software engineer with 5+ years in full-stack development.",
+                          "Creative designer passionate about user experience and modern design principles.",
+                          "Dedicated project manager with proven track record of delivering complex projects on time and budget."
+                        ],
+                        "$ref": "#/$defs/summary"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "awarder",
+                  "title"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "certificates": {
+          "title": "Certificates",
+          "description": "The certificates section contains your professional certifications, including training programs and industry-recognized credentials.",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "issuer": {
+                    "title": "Issuer",
+                    "description": "The organization that issued the certificate.",
+                    "examples": [
+                      "AWS",
+                      "Microsoft",
+                      "Coursera",
+                      "Google Cloud"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 128
+                  },
+                  "name": {
+                    "title": "Name",
+                    "description": "The name of the certificate.",
+                    "examples": [
+                      "Andy Dufrane",
+                      "Xiao Hanyu",
+                      "Jane Smith",
+                      "Dr. Robert John"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 128
+                  },
+                  "date": {
+                    "title": "[optional] Date",
+                    "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                    "examples": [
+                      "2025-01-01",
+                      "Jul 2025",
+                      "July 3, 2025",
+                      "2025-02-02T00:00:03.123Z"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Date",
+                        "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                        "examples": [
+                          "2025-01-01",
+                          "Jul 2025",
+                          "July 3, 2025",
+                          "2025-02-02T00:00:03.123Z"
+                        ],
+                        "type": "string",
+                        "minLength": 4,
+                        "maxLength": 32
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "url": {
+                    "title": "[optional] URL",
+                    "description": "A valid URL with maximum length of 256 characters or `null`.",
+                    "examples": [
+                      "https://yamlresume.dev",
+                      "https://ppresume.com",
+                      "https://github.com/yamlresume/yamlresume",
+                      "https://linkedin.com/in/xiaohanyu1988",
+                      "https://www.example.com"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] URL",
+                        "description": "A valid URL with maximum length of 256 characters or `null`.",
+                        "examples": [
+                          "https://yamlresume.dev",
+                          "https://ppresume.com",
+                          "https://github.com/yamlresume/yamlresume",
+                          "https://linkedin.com/in/xiaohanyu1988",
+                          "https://www.example.com"
+                        ],
+                        "$ref": "#/$defs/url"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "issuer",
+                  "name"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "interests": {
+          "title": "Interests",
+          "description": "The interests section contains your personal interests and hobbies, including activities and topics you are passionate about.",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "title": "Name",
+                    "description": "The name of the interest.",
+                    "examples": [
+                      "Andy Dufrane",
+                      "Xiao Hanyu",
+                      "Jane Smith",
+                      "Dr. Robert John"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 128
+                  },
+                  "keywords": {
+                    "title": "[optional] Keywords",
+                    "description": "An array of keyword, each between 1 and 32 characters or `null`.",
+                    "examples": [
+                      [
+                        "Javascript",
+                        "React",
+                        "Typescript"
+                      ],
+                      [
+                        "Design",
+                        "UI",
+                        "UX"
+                      ],
+                      [
+                        "Python",
+                        "Data Science"
+                      ]
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Keywords",
+                        "description": "An array of keyword, each between 1 and 32 characters or `null`.",
+                        "examples": [
+                          [
+                            "Javascript",
+                            "React",
+                            "Typescript"
+                          ],
+                          [
+                            "Design",
+                            "UI",
+                            "UX"
+                          ],
+                          [
+                            "Python",
+                            "Data Science"
+                          ]
+                        ],
+                        "$ref": "#/$defs/keywords"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "languages": {
+          "title": "Languages",
+          "description": "The languages section contains your language proficiencies, including fluency levels and related skills.",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "fluency": {
+                    "title": "Fluency Option",
+                    "description": "A predefined option from the available fluency choices.",
+                    "type": "string",
+                    "enum": [
+                      "Elementary Proficiency",
+                      "Limited Working Proficiency",
+                      "Minimum Professional Proficiency",
+                      "Full Professional Proficiency",
+                      "Native or Bilingual Proficiency"
+                    ]
+                  },
+                  "language": {
+                    "title": "Language Option",
+                    "description": "A predefined option from the available language choices.",
+                    "type": "string",
+                    "enum": [
+                      "Afrikaans",
+                      "Albanian",
+                      "Amharic",
+                      "Arabic",
+                      "Azerbaijani",
+                      "Belarusian",
+                      "Bengali",
+                      "Bhojpuri",
+                      "Bulgarian",
+                      "Burmese",
+                      "Cantonese",
+                      "Catalan",
+                      "Chinese",
+                      "Croatian",
+                      "Czech",
+                      "Danish",
+                      "Dutch",
+                      "English",
+                      "Estonian",
+                      "Farsi",
+                      "Filipino",
+                      "Finnish",
+                      "French",
+                      "German",
+                      "Greek",
+                      "Gujarati",
+                      "Hausa",
+                      "Hebrew",
+                      "Hindi",
+                      "Hungarian",
+                      "Icelandic",
+                      "Igbo",
+                      "Indonesian",
+                      "Irish",
+                      "Italian",
+                      "Japanese",
+                      "Javanese",
+                      "Kazakh",
+                      "Khmer",
+                      "Korean",
+                      "Lahnda",
+                      "Latvian",
+                      "Lithuanian",
+                      "Malay",
+                      "Mandarin",
+                      "Marathi",
+                      "Nepali",
+                      "Norwegian",
+                      "Oromo",
+                      "Pashto",
+                      "Polish",
+                      "Portuguese",
+                      "Romanian",
+                      "Russian",
+                      "Serbian",
+                      "Shona",
+                      "Sinhala",
+                      "Slovak",
+                      "Slovene",
+                      "Somali",
+                      "Spanish",
+                      "Sundanese",
+                      "Swahili",
+                      "Swedish",
+                      "Tagalog",
+                      "Tamil",
+                      "Telugu",
+                      "Thai",
+                      "Turkish",
+                      "Ukrainian",
+                      "Urdu",
+                      "Uzbek",
+                      "Vietnamese",
+                      "Yoruba",
+                      "Zulu"
+                    ]
+                  },
+                  "keywords": {
+                    "title": "[optional] Keywords",
+                    "description": "An array of keyword, each between 1 and 32 characters or `null`.",
+                    "examples": [
+                      [
+                        "Javascript",
+                        "React",
+                        "Typescript"
+                      ],
+                      [
+                        "Design",
+                        "UI",
+                        "UX"
+                      ],
+                      [
+                        "Python",
+                        "Data Science"
+                      ]
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Keywords",
+                        "description": "An array of keyword, each between 1 and 32 characters or `null`.",
+                        "examples": [
+                          [
+                            "Javascript",
+                            "React",
+                            "Typescript"
+                          ],
+                          [
+                            "Design",
+                            "UI",
+                            "UX"
+                          ],
+                          [
+                            "Python",
+                            "Data Science"
+                          ]
+                        ],
+                        "$ref": "#/$defs/keywords"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "fluency",
+                  "language"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "location": {
+          "title": "Location",
+          "description": "The location section contains your geographical information, such as city, address, country, and postal code.",
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "title": "City",
+                  "description": "The city where you are located.",
+                  "examples": [
+                    "San Francisco",
+                    "New York",
+                    "London",
+                    "Tokyo"
+                  ],
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 64
+                },
+                "address": {
+                  "title": "[optional] Address",
+                  "description": "Your full address including street, apartment, etc or `null`.",
+                  "examples": [
+                    "123 Main Street, Apt 4B",
+                    "456 Oak Avenue",
+                    "789 Pine Road, Suite 100"
+                  ],
+                  "anyOf": [
+                    {
+                      "title": "[optional] Address",
+                      "description": "Your full address including street, apartment, etc or `null`.",
+                      "examples": [
+                        "123 Main Street, Apt 4B",
+                        "456 Oak Avenue",
+                        "789 Pine Road, Suite 100"
+                      ],
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 256
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "country": {
+                  "title": "[optional] Country Option",
+                  "description": "A predefined option from the available country choices or `null`.",
+                  "anyOf": [
+                    {
+                      "title": "[optional] Country Option",
+                      "description": "A predefined option from the available country choices or `null`.",
+                      "type": "string",
+                      "enum": [
+                        "Afghanistan",
+                        "Aland Islands",
+                        "Albania",
+                        "Algeria",
+                        "American Samoa",
+                        "Andorra",
+                        "Angola",
+                        "Anguilla",
+                        "Antarctica",
+                        "Antigua And Barbuda",
+                        "Argentina",
+                        "Armenia",
+                        "Aruba",
+                        "Australia",
+                        "Austria",
+                        "Azerbaijan",
+                        "Bahrain",
+                        "Bangladesh",
+                        "Barbados",
+                        "Belarus",
+                        "Belgium",
+                        "Belize",
+                        "Benin",
+                        "Bermuda",
+                        "Bhutan",
+                        "Bolivia",
+                        "Bonaire, Sint Eustatius and Saba",
+                        "Bosnia and Herzegovina",
+                        "Botswana",
+                        "Bouvet Island",
+                        "Brazil",
+                        "British Indian Ocean Territory",
+                        "Brunei",
+                        "Bulgaria",
+                        "Burkina Faso",
+                        "Burundi",
+                        "Cambodia",
+                        "Cameroon",
+                        "Canada",
+                        "Cape Verde",
+                        "Cayman Islands",
+                        "Central African Republic",
+                        "Chad",
+                        "Chile",
+                        "China",
+                        "Christmas Island",
+                        "Cocos (Keeling) Islands",
+                        "Colombia",
+                        "Comoros",
+                        "Congo",
+                        "Cook Islands",
+                        "Costa Rica",
+                        "Cote D'Ivoire (Ivory Coast)",
+                        "Croatia",
+                        "Cuba",
+                        "Curaçao",
+                        "Cyprus",
+                        "Czech Republic",
+                        "Democratic Republic of the Congo",
+                        "Denmark",
+                        "Djibouti",
+                        "Dominica",
+                        "Dominican Republic",
+                        "East Timor",
+                        "Ecuador",
+                        "Egypt",
+                        "El Salvador",
+                        "Equatorial Guinea",
+                        "Eritrea",
+                        "Estonia",
+                        "Ethiopia",
+                        "Falkland Islands",
+                        "Faroe Islands",
+                        "Fiji Islands",
+                        "Finland",
+                        "France",
+                        "French Guiana",
+                        "French Polynesia",
+                        "French Southern Territories",
+                        "Gabon",
+                        "Gambia The",
+                        "Georgia",
+                        "Germany",
+                        "Ghana",
+                        "Gibraltar",
+                        "Greece",
+                        "Greenland",
+                        "Grenada",
+                        "Guadeloupe",
+                        "Guam",
+                        "Guatemala",
+                        "Guernsey and Alderney",
+                        "Guinea",
+                        "Guinea-Bissau",
+                        "Guyana",
+                        "Haiti",
+                        "Heard Island and McDonald Islands",
+                        "Honduras",
+                        "Hong Kong S.A.R.",
+                        "Hungary",
+                        "Iceland",
+                        "India",
+                        "Indonesia",
+                        "Iran",
+                        "Iraq",
+                        "Ireland",
+                        "Israel",
+                        "Italy",
+                        "Jamaica",
+                        "Japan",
+                        "Jersey",
+                        "Jordan",
+                        "Kazakhstan",
+                        "Kenya",
+                        "Kiribati",
+                        "Kosovo",
+                        "Kuwait",
+                        "Kyrgyzstan",
+                        "Laos",
+                        "Latvia",
+                        "Lebanon",
+                        "Lesotho",
+                        "Liberia",
+                        "Libya",
+                        "Liechtenstein",
+                        "Lithuania",
+                        "Luxembourg",
+                        "Macau S.A.R.",
+                        "Madagascar",
+                        "Malawi",
+                        "Malaysia",
+                        "Maldives",
+                        "Mali",
+                        "Malta",
+                        "Man (Isle of)",
+                        "Marshall Islands",
+                        "Martinique",
+                        "Mauritania",
+                        "Mauritius",
+                        "Mayotte",
+                        "Mexico",
+                        "Micronesia",
+                        "Moldova",
+                        "Monaco",
+                        "Mongolia",
+                        "Montenegro",
+                        "Montserrat",
+                        "Morocco",
+                        "Mozambique",
+                        "Myanmar",
+                        "Namibia",
+                        "Nauru",
+                        "Nepal",
+                        "Netherlands",
+                        "New Caledonia",
+                        "New Zealand",
+                        "Nicaragua",
+                        "Niger",
+                        "Nigeria",
+                        "Niue",
+                        "Norfolk Island",
+                        "North Korea",
+                        "North Macedonia",
+                        "Northern Mariana Islands",
+                        "Norway",
+                        "Oman",
+                        "Pakistan",
+                        "Palau",
+                        "Palestinian Territory Occupied",
+                        "Panama",
+                        "Papua new Guinea",
+                        "Paraguay",
+                        "Peru",
+                        "Philippines",
+                        "Pitcairn Island",
+                        "Poland",
+                        "Portugal",
+                        "Puerto Rico",
+                        "Qatar",
+                        "Reunion",
+                        "Romania",
+                        "Russia",
+                        "Rwanda",
+                        "Saint Helena",
+                        "Saint Kitts And Nevis",
+                        "Saint Lucia",
+                        "Saint Pierre and Miquelon",
+                        "Saint Vincent And The Grenadines",
+                        "Saint-Barthelemy",
+                        "Saint-Martin (French part)",
+                        "Samoa",
+                        "San Marino",
+                        "Sao Tome and Principe",
+                        "Saudi Arabia",
+                        "Senegal",
+                        "Serbia",
+                        "Seychelles",
+                        "Sierra Leone",
+                        "Singapore",
+                        "Sint Maarten (Dutch part)",
+                        "Slovakia",
+                        "Slovenia",
+                        "Solomon Islands",
+                        "Somalia",
+                        "South Africa",
+                        "South Georgia",
+                        "South Korea",
+                        "South Sudan",
+                        "Spain",
+                        "Sri Lanka",
+                        "Sudan",
+                        "Suriname",
+                        "Svalbard And Jan Mayen Islands",
+                        "Swaziland",
+                        "Sweden",
+                        "Switzerland",
+                        "Syria",
+                        "Taiwan",
+                        "Tajikistan",
+                        "Tanzania",
+                        "Thailand",
+                        "The Bahamas",
+                        "Togo",
+                        "Tokelau",
+                        "Tonga",
+                        "Trinidad And Tobago",
+                        "Tunisia",
+                        "Turkey",
+                        "Turkmenistan",
+                        "Turks And Caicos Islands",
+                        "Tuvalu",
+                        "Uganda",
+                        "Ukraine",
+                        "United Arab Emirates",
+                        "United Kingdom",
+                        "United States",
+                        "United States Minor Outlying Islands",
+                        "Uruguay",
+                        "Uzbekistan",
+                        "Vanuatu",
+                        "Vatican City State (Holy See)",
+                        "Venezuela",
+                        "Vietnam",
+                        "Virgin Islands (British)",
+                        "Virgin Islands (US)",
+                        "Wallis And Futuna Islands",
+                        "Western Sahara",
+                        "Yemen",
+                        "Zambia",
+                        "Zimbabwe"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "postalCode": {
+                  "title": "[optional] Postal Code",
+                  "description": "Your postal or ZIP code or `null`.",
+                  "examples": [
+                    "94102",
+                    "10001",
+                    "SW1A 1AA",
+                    "100-0001"
+                  ],
+                  "anyOf": [
+                    {
+                      "title": "[optional] Postal Code",
+                      "description": "Your postal or ZIP code or `null`.",
+                      "examples": [
+                        "94102",
+                        "10001",
+                        "SW1A 1AA",
+                        "100-0001"
+                      ],
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 16
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "region": {
+                  "title": "[optional] Region",
+                  "description": "Your state, province, or region or `null`.",
+                  "examples": [
+                    "California",
+                    "New York",
+                    "England",
+                    "Tokyo"
+                  ],
+                  "anyOf": [
+                    {
+                      "title": "[optional] Region",
+                      "description": "Your state, province, or region or `null`.",
+                      "examples": [
+                        "California",
+                        "New York",
+                        "England",
+                        "Tokyo"
+                      ],
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 64
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "city"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "profiles": {
+          "title": "Profiles",
+          "description": "The profiles section contains your online presence, including social media and professional network profiles.",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "network": {
+                    "title": "Network Option",
+                    "description": "A predefined option from the available network choices.",
+                    "type": "string",
+                    "enum": [
+                      "Behance",
+                      "Dribbble",
+                      "Facebook",
+                      "GitHub",
+                      "Gitlab",
+                      "Instagram",
+                      "Line",
+                      "LinkedIn",
+                      "Medium",
+                      "Pinterest",
+                      "Reddit",
+                      "Snapchat",
+                      "Stack Overflow",
+                      "Telegram",
+                      "TikTok",
+                      "Twitch",
+                      "Twitter",
+                      "Vimeo",
+                      "Weibo",
+                      "WeChat",
+                      "WhatsApp",
+                      "YouTube",
+                      "Zhihu"
+                    ]
+                  },
+                  "username": {
+                    "title": "Username",
+                    "description": "Your username or handle on the social network.",
+                    "examples": [
+                      "john_doe",
+                      "jane.smith",
+                      "dev_engineer",
+                      "designer_123"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 64
+                  },
+                  "url": {
+                    "title": "[optional] URL",
+                    "description": "A valid URL with maximum length of 256 characters or `null`.",
+                    "examples": [
+                      "https://yamlresume.dev",
+                      "https://ppresume.com",
+                      "https://github.com/yamlresume/yamlresume",
+                      "https://linkedin.com/in/xiaohanyu1988",
+                      "https://www.example.com"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] URL",
+                        "description": "A valid URL with maximum length of 256 characters or `null`.",
+                        "examples": [
+                          "https://yamlresume.dev",
+                          "https://ppresume.com",
+                          "https://github.com/yamlresume/yamlresume",
+                          "https://linkedin.com/in/xiaohanyu1988",
+                          "https://www.example.com"
+                        ],
+                        "$ref": "#/$defs/url"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "network",
+                  "username"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "projects": {
+          "title": "Projects",
+          "description": "The projects section contains your personal and professional projects, including technical details, timelines, and outcomes.",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "title": "Name",
+                    "description": "The name of the project.",
+                    "examples": [
+                      "Andy Dufrane",
+                      "Xiao Hanyu",
+                      "Jane Smith",
+                      "Dr. Robert John"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 128
+                  },
+                  "startDate": {
+                    "title": "Start Date",
+                    "description": "A valid date string that can be parsed by `Date.parse`.",
+                    "examples": [
+                      "2025-01-01",
+                      "Jul 2025",
+                      "July 3, 2025",
+                      "2025-02-02T00:00:03.123Z"
+                    ],
+                    "type": "string",
+                    "minLength": 4,
+                    "maxLength": 32
+                  },
+                  "summary": {
+                    "$ref": "#/$defs/summary"
+                  },
+                  "description": {
+                    "title": "[optional] Description",
+                    "description": "A detailed description of the project and your role or `null`.",
+                    "examples": [
+                      "Led development of a full-stack web application",
+                      "Designed and implemented REST API endpoints",
+                      "Managed team of 5 developers for mobile app development"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Description",
+                        "description": "A detailed description of the project and your role or `null`.",
+                        "examples": [
+                          "Led development of a full-stack web application",
+                          "Designed and implemented REST API endpoints",
+                          "Managed team of 5 developers for mobile app development"
+                        ],
+                        "type": "string",
+                        "minLength": 4,
+                        "maxLength": 128
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "endDate": {
+                    "title": "[optional] End Date",
+                    "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                    "examples": [
+                      "2025-01-01",
+                      "Jul 2025",
+                      "July 3, 2025",
+                      "2025-02-02T00:00:03.123Z"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] End Date",
+                        "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                        "examples": [
+                          "2025-01-01",
+                          "Jul 2025",
+                          "July 3, 2025",
+                          "2025-02-02T00:00:03.123Z"
+                        ],
+                        "type": "string",
+                        "minLength": 4,
+                        "maxLength": 32
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "keywords": {
+                    "title": "[optional] Keywords",
+                    "description": "An array of keyword, each between 1 and 32 characters or `null`.",
+                    "examples": [
+                      [
+                        "Javascript",
+                        "React",
+                        "Typescript"
+                      ],
+                      [
+                        "Design",
+                        "UI",
+                        "UX"
+                      ],
+                      [
+                        "Python",
+                        "Data Science"
+                      ]
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Keywords",
+                        "description": "An array of keyword, each between 1 and 32 characters or `null`.",
+                        "examples": [
+                          [
+                            "Javascript",
+                            "React",
+                            "Typescript"
+                          ],
+                          [
+                            "Design",
+                            "UI",
+                            "UX"
+                          ],
+                          [
+                            "Python",
+                            "Data Science"
+                          ]
+                        ],
+                        "$ref": "#/$defs/keywords"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "url": {
+                    "title": "[optional] URL",
+                    "description": "A valid URL with maximum length of 256 characters or `null`.",
+                    "examples": [
+                      "https://yamlresume.dev",
+                      "https://ppresume.com",
+                      "https://github.com/yamlresume/yamlresume",
+                      "https://linkedin.com/in/xiaohanyu1988",
+                      "https://www.example.com"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] URL",
+                        "description": "A valid URL with maximum length of 256 characters or `null`.",
+                        "examples": [
+                          "https://yamlresume.dev",
+                          "https://ppresume.com",
+                          "https://github.com/yamlresume/yamlresume",
+                          "https://linkedin.com/in/xiaohanyu1988",
+                          "https://www.example.com"
+                        ],
+                        "$ref": "#/$defs/url"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "startDate",
+                  "summary"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "publications": {
+          "title": "Publications",
+          "description": "The publications section contains your academic and professional publications, including papers, articles, and research works.",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "title": "Name",
+                    "description": "The name of the publication.",
+                    "examples": [
+                      "Andy Dufrane",
+                      "Xiao Hanyu",
+                      "Jane Smith",
+                      "Dr. Robert John"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 128
+                  },
+                  "publisher": {
+                    "title": "Publisher",
+                    "description": "The organization that published the work.",
+                    "examples": [
+                      "ACM",
+                      "IEEE",
+                      "Springer",
+                      "Nature Publishing Group"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 128
+                  },
+                  "releaseDate": {
+                    "title": "[optional] Release Date",
+                    "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                    "examples": [
+                      "2025-01-01",
+                      "Jul 2025",
+                      "July 3, 2025",
+                      "2025-02-02T00:00:03.123Z"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Release Date",
+                        "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                        "examples": [
+                          "2025-01-01",
+                          "Jul 2025",
+                          "July 3, 2025",
+                          "2025-02-02T00:00:03.123Z"
+                        ],
+                        "type": "string",
+                        "minLength": 4,
+                        "maxLength": 32
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "summary": {
+                    "title": "[optional] Summary",
+                    "description": "A summary text between 16 and 1024 characters or `null`.",
+                    "examples": [
+                      "Experienced software engineer with 5+ years in full-stack development.",
+                      "Creative designer passionate about user experience and modern design principles.",
+                      "Dedicated project manager with proven track record of delivering complex projects on time and budget."
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Summary",
+                        "description": "A summary text between 16 and 1024 characters or `null`.",
+                        "examples": [
+                          "Experienced software engineer with 5+ years in full-stack development.",
+                          "Creative designer passionate about user experience and modern design principles.",
+                          "Dedicated project manager with proven track record of delivering complex projects on time and budget."
+                        ],
+                        "$ref": "#/$defs/summary"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "url": {
+                    "title": "[optional] URL",
+                    "description": "A valid URL with maximum length of 256 characters or `null`.",
+                    "examples": [
+                      "https://yamlresume.dev",
+                      "https://ppresume.com",
+                      "https://github.com/yamlresume/yamlresume",
+                      "https://linkedin.com/in/xiaohanyu1988",
+                      "https://www.example.com"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] URL",
+                        "description": "A valid URL with maximum length of 256 characters or `null`.",
+                        "examples": [
+                          "https://yamlresume.dev",
+                          "https://ppresume.com",
+                          "https://github.com/yamlresume/yamlresume",
+                          "https://linkedin.com/in/xiaohanyu1988",
+                          "https://www.example.com"
+                        ],
+                        "$ref": "#/$defs/url"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "publisher"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "references": {
+          "title": "References",
+          "description": "The references section contains your professional references, including contact information and relationships.",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "title": "Name",
+                    "description": "The name of the reference.",
+                    "examples": [
+                      "Andy Dufrane",
+                      "Xiao Hanyu",
+                      "Jane Smith",
+                      "Dr. Robert John"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 128
+                  },
+                  "summary": {
+                    "$ref": "#/$defs/summary"
+                  },
+                  "email": {
+                    "title": "[optional] Email",
+                    "description": "A valid email address or `null`.",
+                    "examples": [
+                      "hi@ppresume.com",
+                      "first.last@company.org",
+                      "test+tag@domain.co.uk"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Email",
+                        "description": "A valid email address or `null`.",
+                        "examples": [
+                          "hi@ppresume.com",
+                          "first.last@company.org",
+                          "test+tag@domain.co.uk"
+                        ],
+                        "$ref": "#/$defs/email"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "phone": {
+                    "title": "[optional] Phone",
+                    "description": "A valid phone number that may include country code, parentheses, spaces, and hyphens or `null`.",
+                    "examples": [
+                      "555-123-4567",
+                      "+44 20 7946 0958",
+                      "(555) 123-4567"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Phone",
+                        "description": "A valid phone number that may include country code, parentheses, spaces, and hyphens or `null`.",
+                        "examples": [
+                          "555-123-4567",
+                          "+44 20 7946 0958",
+                          "(555) 123-4567"
+                        ],
+                        "$ref": "#/$defs/phone"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "relationship": {
+                    "title": "[optional] Relationship",
+                    "description": "Your professional relationship with the reference or `null`.",
+                    "examples": [
+                      "Former Manager",
+                      "Colleague",
+                      "Professor",
+                      "Client"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Relationship",
+                        "description": "Your professional relationship with the reference or `null`.",
+                        "examples": [
+                          "Former Manager",
+                          "Colleague",
+                          "Professor",
+                          "Client"
+                        ],
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 128
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "summary"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skills": {
+          "title": "Skills",
+          "description": "The skills section contains your technical and professional skills, including proficiency levels and related keywords.",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "title": "Level Option",
+                    "description": "A predefined option from the available level choices.",
+                    "type": "string",
+                    "enum": [
+                      "Novice",
+                      "Beginner",
+                      "Intermediate",
+                      "Advanced",
+                      "Expert",
+                      "Master"
+                    ]
+                  },
+                  "name": {
+                    "title": "Name",
+                    "description": "The name of the skill.",
+                    "examples": [
+                      "Andy Dufrane",
+                      "Xiao Hanyu",
+                      "Jane Smith",
+                      "Dr. Robert John"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 128
+                  },
+                  "keywords": {
+                    "title": "[optional] Keywords",
+                    "description": "An array of keyword, each between 1 and 32 characters or `null`.",
+                    "examples": [
+                      [
+                        "Javascript",
+                        "React",
+                        "Typescript"
+                      ],
+                      [
+                        "Design",
+                        "UI",
+                        "UX"
+                      ],
+                      [
+                        "Python",
+                        "Data Science"
+                      ]
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Keywords",
+                        "description": "An array of keyword, each between 1 and 32 characters or `null`.",
+                        "examples": [
+                          [
+                            "Javascript",
+                            "React",
+                            "Typescript"
+                          ],
+                          [
+                            "Design",
+                            "UI",
+                            "UX"
+                          ],
+                          [
+                            "Python",
+                            "Data Science"
+                          ]
+                        ],
+                        "$ref": "#/$defs/keywords"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "level",
+                  "name"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "volunteer": {
+          "title": "Volunteer",
+          "description": "The volunteer section contains your community service and volunteer work, including organizations, roles, and contributions.",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "organization": {
+                    "title": "Organization",
+                    "description": "The organization where you volunteered.",
+                    "examples": [
+                      "Red Cross",
+                      "Habitat for Humanity",
+                      "Local Food Bank",
+                      "Animal Shelter"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 128
+                  },
+                  "position": {
+                    "title": "Position",
+                    "description": "Your role or position in the volunteer organization.",
+                    "examples": [
+                      "Event Coordinator",
+                      "Tutor",
+                      "Fundraiser",
+                      "Board Member"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 64
+                  },
+                  "startDate": {
+                    "title": "Start Date",
+                    "description": "A valid date string that can be parsed by `Date.parse`.",
+                    "examples": [
+                      "2025-01-01",
+                      "Jul 2025",
+                      "July 3, 2025",
+                      "2025-02-02T00:00:03.123Z"
+                    ],
+                    "type": "string",
+                    "minLength": 4,
+                    "maxLength": 32
+                  },
+                  "summary": {
+                    "$ref": "#/$defs/summary"
+                  },
+                  "endDate": {
+                    "title": "[optional] End Date",
+                    "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                    "examples": [
+                      "2025-01-01",
+                      "Jul 2025",
+                      "July 3, 2025",
+                      "2025-02-02T00:00:03.123Z"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] End Date",
+                        "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                        "examples": [
+                          "2025-01-01",
+                          "Jul 2025",
+                          "July 3, 2025",
+                          "2025-02-02T00:00:03.123Z"
+                        ],
+                        "type": "string",
+                        "minLength": 4,
+                        "maxLength": 32
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "url": {
+                    "title": "[optional] URL",
+                    "description": "A valid URL with maximum length of 256 characters or `null`.",
+                    "examples": [
+                      "https://yamlresume.dev",
+                      "https://ppresume.com",
+                      "https://github.com/yamlresume/yamlresume",
+                      "https://linkedin.com/in/xiaohanyu1988",
+                      "https://www.example.com"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] URL",
+                        "description": "A valid URL with maximum length of 256 characters or `null`.",
+                        "examples": [
+                          "https://yamlresume.dev",
+                          "https://ppresume.com",
+                          "https://github.com/yamlresume/yamlresume",
+                          "https://linkedin.com/in/xiaohanyu1988",
+                          "https://www.example.com"
+                        ],
+                        "$ref": "#/$defs/url"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "organization",
+                  "position",
+                  "startDate",
+                  "summary"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "work": {
+          "title": "Work",
+          "description": "The work section contains your professional experience, including job titles, companies, and responsibilities.",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "title": "Name",
+                    "description": "The name of the company or organization you worked for.",
+                    "examples": [
+                      "Google",
+                      "Microsoft",
+                      "Apple",
+                      "Amazon"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 128
+                  },
+                  "position": {
+                    "title": "Position",
+                    "description": "Your job title or position at the company.",
+                    "examples": [
+                      "Software Engineer",
+                      "Product Manager",
+                      "Data Scientist",
+                      "UX Designer"
+                    ],
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 64
+                  },
+                  "startDate": {
+                    "title": "Start Date",
+                    "description": "A valid date string that can be parsed by `Date.parse`.",
+                    "examples": [
+                      "2025-01-01",
+                      "Jul 2025",
+                      "July 3, 2025",
+                      "2025-02-02T00:00:03.123Z"
+                    ],
+                    "type": "string",
+                    "minLength": 4,
+                    "maxLength": 32
+                  },
+                  "summary": {
+                    "$ref": "#/$defs/summary"
+                  },
+                  "endDate": {
+                    "title": "[optional] End Date",
+                    "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                    "examples": [
+                      "2025-01-01",
+                      "Jul 2025",
+                      "July 3, 2025",
+                      "2025-02-02T00:00:03.123Z"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] End Date",
+                        "description": "A valid date string that can be parsed by `Date.parse` or `null`.",
+                        "examples": [
+                          "2025-01-01",
+                          "Jul 2025",
+                          "July 3, 2025",
+                          "2025-02-02T00:00:03.123Z"
+                        ],
+                        "type": "string",
+                        "minLength": 4,
+                        "maxLength": 32
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "keywords": {
+                    "title": "[optional] Keywords",
+                    "description": "An array of keyword, each between 1 and 32 characters or `null`.",
+                    "examples": [
+                      [
+                        "Javascript",
+                        "React",
+                        "Typescript"
+                      ],
+                      [
+                        "Design",
+                        "UI",
+                        "UX"
+                      ],
+                      [
+                        "Python",
+                        "Data Science"
+                      ]
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] Keywords",
+                        "description": "An array of keyword, each between 1 and 32 characters or `null`.",
+                        "examples": [
+                          [
+                            "Javascript",
+                            "React",
+                            "Typescript"
+                          ],
+                          [
+                            "Design",
+                            "UI",
+                            "UX"
+                          ],
+                          [
+                            "Python",
+                            "Data Science"
+                          ]
+                        ],
+                        "$ref": "#/$defs/keywords"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "url": {
+                    "title": "[optional] URL",
+                    "description": "A valid URL with maximum length of 256 characters or `null`.",
+                    "examples": [
+                      "https://yamlresume.dev",
+                      "https://ppresume.com",
+                      "https://github.com/yamlresume/yamlresume",
+                      "https://linkedin.com/in/xiaohanyu1988",
+                      "https://www.example.com"
+                    ],
+                    "anyOf": [
+                      {
+                        "title": "[optional] URL",
+                        "description": "A valid URL with maximum length of 256 characters or `null`.",
+                        "examples": [
+                          "https://yamlresume.dev",
+                          "https://ppresume.com",
+                          "https://github.com/yamlresume/yamlresume",
+                          "https://linkedin.com/in/xiaohanyu1988",
+                          "https://www.example.com"
+                        ],
+                        "$ref": "#/$defs/url"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "position",
+                  "startDate",
+                  "summary"
+                ],
+                "additionalProperties": false
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "basics",
+        "education"
+      ],
+      "additionalProperties": false
+    },
+    "layout": {
+      "title": "Layout",
+      "description": "The layout section contains all layout-related configurations, including LaTeX, locale, margins, template, typography, etc.",
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "latex": {
+              "title": "LaTeX",
+              "description": "The LaTeX section contains LaTeX-specific settings, including fontspec package configurations.",
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "fontspec": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "numbers": {
+                              "anyOf": [
+                                {
+                                  "title": "Fontspec Numbers Option",
+                                  "description": "A predefined option from the available fontspec numbers choices.",
+                                  "type": "string",
+                                  "enum": [
+                                    "Lining",
+                                    "OldStyle",
+                                    "Auto"
+                                  ]
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "locale": {
+              "title": "Locale",
+              "description": "The locale section contains locale language settings, determining the language used for the resume.",
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "language": {
+                      "anyOf": [
+                        {
+                          "title": "Locale Language Option",
+                          "description": "A predefined option from the available locale language choices.",
+                          "type": "string",
+                          "enum": [
+                            "en",
+                            "zh-hans",
+                            "zh-hant-hk",
+                            "zh-hant-tw",
+                            "es"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "margins": {
+              "title": "Margins",
+              "description": "The margins section contains page margin settings, including top, bottom, left, and right margins.",
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "top": {
+                      "anyOf": [
+                        {
+                          "title": "Top Margin Size",
+                          "description": "A positive number followed by valid units: cm, pt, or in. Examples: \"2.5cm\", \"1in\", \"72pt\".",
+                          "examples": [
+                            "2.5cm",
+                            "1in",
+                            "72pt",
+                            "0.5cm",
+                            "12pt"
+                          ],
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 32
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "bottom": {
+                      "anyOf": [
+                        {
+                          "title": "Bottom Margin Size",
+                          "description": "A positive number followed by valid units: cm, pt, or in. Examples: \"2.5cm\", \"1in\", \"72pt\".",
+                          "examples": [
+                            "2.5cm",
+                            "1in",
+                            "72pt",
+                            "0.5cm",
+                            "12pt"
+                          ],
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 32
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "left": {
+                      "anyOf": [
+                        {
+                          "title": "Left Margin Size",
+                          "description": "A positive number followed by valid units: cm, pt, or in. Examples: \"2.5cm\", \"1in\", \"72pt\".",
+                          "examples": [
+                            "2.5cm",
+                            "1in",
+                            "72pt",
+                            "0.5cm",
+                            "12pt"
+                          ],
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 32
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "right": {
+                      "anyOf": [
+                        {
+                          "title": "Right Margin Size",
+                          "description": "A positive number followed by valid units: cm, pt, or in. Examples: \"2.5cm\", \"1in\", \"72pt\".",
+                          "examples": [
+                            "2.5cm",
+                            "1in",
+                            "72pt",
+                            "0.5cm",
+                            "12pt"
+                          ],
+                          "type": "string",
+                          "minLength": 2,
+                          "maxLength": 32
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "page": {
+              "title": "Page",
+              "description": "The page section contains page display settings, including whether to show page numbers.",
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "showPageNumbers": {
+                      "title": "Show Page Numbers",
+                      "description": "Whether to show page numbers on the page.",
+                      "anyOf": [
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "template": {
+              "title": "Template",
+              "description": "The template section contains the resume template selection, determining the overall visual style and layout.",
+              "anyOf": [
+                {
+                  "title": "Template Option",
+                  "description": "A predefined option from the available template choices.",
+                  "type": "string",
+                  "enum": [
+                    "moderncv-banking",
+                    "moderncv-casual",
+                    "moderncv-classic"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "typography": {
+              "title": "Typography",
+              "description": "The typography section contains font settings, including font size options.",
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "fontSize": {
+                      "anyOf": [
+                        {
+                          "title": "Font Size Option",
+                          "description": "A predefined option from the available font size choices.",
+                          "type": "string",
+                          "enum": [
+                            "10pt",
+                            "11pt",
+                            "12pt"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "content"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "email": {
+      "id": "email",
+      "title": "Email",
+      "description": "A valid email address.",
+      "examples": [
+        "hi@ppresume.com",
+        "first.last@company.org",
+        "test+tag@domain.co.uk"
+      ],
+      "type": "string",
+      "format": "email",
+      "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+    },
+    "phone": {
+      "id": "phone",
+      "title": "Phone",
+      "description": "A valid phone number that may include country code, parentheses, spaces, and hyphens.",
+      "examples": [
+        "555-123-4567",
+        "+44 20 7946 0958",
+        "(555) 123-4567"
+      ],
+      "type": "string",
+      "pattern": "^[+]?[(]?[0-9\\s-]{1,15}[)]?[0-9\\s-]{1,15}$"
+    },
+    "summary": {
+      "id": "summary",
+      "title": "Summary",
+      "description": "A summary text between 16 and 1024 characters.",
+      "examples": [
+        "Experienced software engineer with 5+ years in full-stack development.",
+        "Creative designer passionate about user experience and modern design principles.",
+        "Dedicated project manager with proven track record of delivering complex projects on time and budget."
+      ],
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 1024
+    },
+    "url": {
+      "id": "url",
+      "title": "URL",
+      "description": "A valid URL with maximum length of 256 characters.",
+      "examples": [
+        "https://yamlresume.dev",
+        "https://ppresume.com",
+        "https://github.com/yamlresume/yamlresume",
+        "https://linkedin.com/in/xiaohanyu1988",
+        "https://www.example.com"
+      ],
+      "type": "string",
+      "maxLength": 256,
+      "format": "uri"
+    },
+    "keywords": {
+      "id": "keywords",
+      "title": "Keywords",
+      "description": "An array of keyword, each between 1 and 32 characters.",
+      "examples": [
+        [
+          "Javascript",
+          "React",
+          "Typescript"
+        ],
+        [
+          "Design",
+          "UI",
+          "UX"
+        ],
+        [
+          "Python",
+          "Data Science"
+        ]
+      ],
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32
+      }
+    }
+  }
+}
