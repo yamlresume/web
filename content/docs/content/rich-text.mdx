@@ -1,0 +1,104 @@
+---
+title: Rich Text
+---
+
+In YAMLResume, you're not limited to plain text. The `summary` fields across
+different sections (like `work`, `education`, `projects`, etc.), support a
+limited set of [Markdown](https://en.wikipedia.org/wiki/Markdown) syntax to
+allow for rich text formatting. This enables you to create more expressive and
+readable resume content.
+
+## Supported Syntax
+
+Here's a quick rundown of the Markdown features you can use:
+
+### Bold and Italic
+
+You can emphasize text using bold or italic styling.
+
+-   **Bold:** `**your bold text**`
+-   **Italic:** `*your italic text*`
+-   **Both:** `***your bold and italic text***`
+
+### Links
+
+You can embed hyperlinks within your text.
+
+-   **Syntax:** `[link text](https://example.com)`
+
+### Lists
+
+Both ordered and unordered lists are supported, including nesting.
+
+<Callout title="Understanding the `|` character for multi-line strings in YAML">
+  The `|` (pipe) character in YAML is used to create a "literal block scalar,"
+  which is a way to write [multi-line
+  strings](https://stackoverflow.com/a/21699210/2310396) while preserving
+  newlines. This is particularly useful for fields like `summary` where you
+  might want to include lists or paragraphs. Everything indented under the `|`
+  will be treated as a single string, with line breaks maintained.
+</Callout>
+
+#### Unordered Lists
+
+Use a hyphen (`-`) or an asterisk (`*`) for each list item.
+
+```yml lineNumbers
+summary: |
+  - First item
+  - Second item
+  - Third item
+```
+
+#### Ordered Lists
+
+Use numbers followed by a period for ordered lists.
+
+```yml lineNumbers
+summary: |
+  1. First item
+  2. Second item
+  3. Third item
+```
+
+#### Nested Lists
+
+You can indent lists to create nested structures.
+
+```yml lineNumbers
+summary: |
+  - Team player with a detail-oriented mindset.
+  - Experienced in databases (SQL, NoSQL).
+    - Proficient in PostgreSQL and MongoDB.
+    - Familiar with Redis for caching.
+  - Strong foundation in data structures and algorithms.
+```
+
+## A Complete Example
+
+Here is a `summary` field from a `work` entry that combines several of the
+supported syntax features:
+
+```yml lineNumbers
+---
+content:
+  basics:
+    # ...
+    summary: |
+      This is a sample YAML resume that support limited set of markdown rich text syntax (bold, italics, links, lists):
+
+      - Computer Science major with **strong foundation** in data structures, *algorithms*, and software development
+        1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+        2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+Here is the generated PDF:
+
+![Rich Text Support in Summary Field](./static/images/rich-text-support-in-summary-field.webp)
+
+## What's Not Supported?
+
+YAMLResume only supports the syntax listed above. Other common Markdown features
+such as headings, blockquotes, images, horizontal rules, and tables are **not
+supported and will be ignored during processing**.
