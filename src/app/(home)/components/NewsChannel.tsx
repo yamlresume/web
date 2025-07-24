@@ -10,15 +10,16 @@ export function NewsChannel() {
         'bg-fd-secondary',
         'border-b',
         'border-fd-accent',
+        'py-1',
         'relative',
         'top-14',
-        'h-12',
+        'px-4',
         'flex',
         'items-center',
         'justify-center'
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center gap-2 py-3">
           <IconSpeakerphone size={20} stroke={1.5} />
           <div className="text-sm text-fd-foreground">
