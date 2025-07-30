@@ -1,5 +1,7 @@
+import { LLMCopyButton, ViewOptions } from '@/components/ai/page-actions'
 import { docsSource } from '@/lib/source'
 import { getMDXComponents } from '@/mdx-components'
+import clsx from 'clsx'
 import { getGithubLastEdit } from 'fumadocs-core/server'
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import {
@@ -18,10 +20,12 @@ export default async function Page(props: {
   if (!page) notFound()
 
   const MDXContent = page.data.body
+  const owner = 'yamlresume'
+  const repo = 'web'
 
   const time = await getGithubLastEdit({
-    owner: 'yamlresume',
-    repo: 'web',
+    owner,
+    repo,
     path: `content/docs/${page.file.path}`,
   })
 
@@ -31,8 +35,8 @@ export default async function Page(props: {
       tableOfContent={{ style: 'clerk', single: false }}
       full={page.data.full}
       editOnGithub={{
-        owner: 'yamlresume',
-        repo: 'web',
+        owner,
+        repo,
         sha: 'main',
         path: `content/docs/${page.file.path}`,
       }}
@@ -40,6 +44,23 @@ export default async function Page(props: {
       lastUpdate={time}
     >
       <DocsTitle>{page.data.title}</DocsTitle>
+      <div
+        className={clsx(
+          'flex',
+          'flex-row',
+          'gap-2',
+          'items-center',
+          'border-b-[1px]',
+          'border-fd-foreground',
+          'pb-6'
+        )}
+      >
+        <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
+        <ViewOptions
+          markdownUrl={`${page.url}.mdx`}
+          githubUrl={`https://github.com/${owner}/${repo}/blob/main/content/docs/${page.file.path}`}
+        />
+      </div>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
         <MDXContent
