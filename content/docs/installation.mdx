@@ -34,14 +34,14 @@ You can create a new resume instantly with the following command:
 docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
 ```
 
-<Callout title="How does this docker magic work?">
+<Callout title="How does this Docker magic work?">
 This command will create a new resume called `my-resume.yml` in your current
 directory. Steps:
 
 1. `docker run ... yamlresume/yamlresume` - runs a new container from the
    `yamlresume/yamlresume` image, if this image is not existed in your local
-   machine, it will pull it from the [docker
-   hub](https://hub.docker.com/r/yamlresume/yamlresume).
+   machine, it will pull it from the [Docker
+   Hub](https://hub.docker.com/r/yamlresume/yamlresume).
 2. `--rm` - automatically removes the container when it exits
 3. `-v $(pwd):/home/yamlresume` - mounts the current directory (`$(pwd)`) into
    the container at `/home/yamlresume`, allowing the container to access local
@@ -65,8 +65,8 @@ directory (`$(pwd)`) into the container at `/home/yamlresume`, allowing a two
 way file sync between the local directory and the container.
 
 <Callout title="Github Mirror">
-If you have trouble to pull down `yamlresume/yamlresume` image from [docker
-hub](https://hub.docker.com/r/yamlresume/yamlresume), don't worry, we have a
+If you have trouble to pull down `yamlresume/yamlresume` image from [Docker
+Hub](https://hub.docker.com/r/yamlresume/yamlresume), don't worry, we have a
 [github mirror](https://github.com/yamlresume/yamlresume/pkgs/container/yamlresume)
 for you.
 
@@ -76,6 +76,45 @@ You can get the ghcr image by:
 docker pull ghcr.io/yamlresume/yamlresume
 ```
 </Callout>
+
+### Permission Issues
+
+Sometimes you may run into [permission
+issues](https://github.com/yamlresume/yamlresume/issues/24) when running the
+Docker container because the `yamlresume/yamlresume` image is built with a `USER
+yamlresume` instruction, which by default runs with less privilege.
+
+There are two ways to solve this issue:
+
+1. Use your host username/group ID to run the container:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume -u $(id -u):$(id -g) yamlresume/yamlresume new my-resume.yml
+```
+
+This is the recommended way to run the container. As long as your host user has
+access to the current directory, you can run the container with your host
+username/group ID.
+
+2. Use `-u root` to run the container with root access:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume -u root yamlresume/yamlresume new my-resume.yml
+```
+
+This is the least recommended way to run the container. It is not recommended
+because it may cause security issues, so you should only do this if you
+are sure about what you are doing.
+
+Last but not least, if you are running the `yamlresume` Docker container in GitHub
+Actions, then root access may be required as per [GitHub's
+documentation](https://docs.github.com/en/actions/reference/runners/github-hosted-runners#docker-container-filesystem):
+
+> Note: GitHub Actions must be run by the default Docker user (root). Ensure
+> your Dockerfile does not set the USER instruction, otherwise you will not be
+> able to access GITHUB_WORKSPACE.
+
+Ref: [Understanding the Docker USER Instruction](https://www.docker.com/blog/understanding-the-docker-user-instruction/)
 
 ## Non-Docker Users
 
