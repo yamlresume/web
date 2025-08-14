@@ -1,13 +1,18 @@
+'use client'
+
 import clsx from 'clsx'
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import Zoom from 'react-medium-image-zoom'
 
-import Link from 'next/link'
 import dockerDemoImage from '../static/images/yamlresume-docker-demo.svg'
 import { SectionTitle } from './SectionTitle'
 
 export function DockerDemoSection() {
+  const t = useTranslations('quickStart')
+  
   const line1 = [
     'docker run --rm -v $(pwd):/home/yamlresume',
     'yamlresume/yamlresume new my-resume.yml',
@@ -45,7 +50,7 @@ export function DockerDemoSection() {
                     'hover:translate-y-[2px]',
                   ])}
                 >
-                  Quick Start in One Second
+                  {t('title')}
                 </Link>
               }
             />

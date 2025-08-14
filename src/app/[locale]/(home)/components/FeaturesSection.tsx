@@ -1,3 +1,5 @@
+'use client'
+
 import {
   IconBoxMargin,
   IconBrandGit,
@@ -7,6 +9,7 @@ import {
   IconTex,
 } from '@tabler/icons-react'
 import clsx from 'clsx'
+import { useTranslations } from 'next-intl'
 
 interface FeatureCardProps {
   title: string
@@ -48,6 +51,8 @@ function FeatureCard({ title, description, icon }: FeatureCardProps) {
 }
 
 export function FeaturesSection() {
+  const t = useTranslations('features')
+  
   return (
     <section className="container py-4">
       <div
@@ -62,44 +67,33 @@ export function FeaturesSection() {
       >
         <FeatureCard
           icon={<IconBrandGit className="h-6 w-6" />}
-          title="Plain Text in YAML"
-          description={`Create resumes in YAML, which is more human readable and
-          writable than JSON, enabling version control and eliminating vendor
-          lock-in.`}
+          title={t('plainText.title')}
+          description={t('plainText.description')}
         />
         <FeatureCard
           icon={<IconMarkdown className="h-6 w-6" />}
-          title="Rich Text in Summaries"
-          description={`Express yourself freely with rich text formatting in
-          summaries fields for all sections, allowing for more detailed and
-          compelling personal statements.`}
+          title={t('richText.title')}
+          description={t('richText.description')}
         />
         <FeatureCard
           icon={<IconLayoutBoard className="h-6 w-6" />}
-          title="Flexible Section Structure"
-          description={`Draft and polish your resume with various section types
-          to highlight your unique skills, experiences, and achievements in the
-          most effective way.`}
+          title={t('flexibleSection.title')}
+          description={t('flexibleSection.description')}
         />
         <FeatureCard
           icon={<IconTex className="h-6 w-6" />}
-          title="LaTeX Typesetting Engine"
-          description={`Leverage the power of LaTeX for professional-grade
-          typesetting quality that ensures your resume stands out with perfect
-          spacing and typography.`}
+          title={t('latexTypesetting.title')}
+          description={t('latexTypesetting.description')}
         />
         <FeatureCard
           icon={<IconBoxMargin className="h-6 w-6" />}
-          title="Customizable Layout Options"
-          description={`Fine-tune your resume with customizable page margins,
-          font selections, and sizing options to create the perfect visual
-          presentation.`}
+          title={t('customizable.title')}
+          description={t('customizable.description')}
         />
         <FeatureCard
           icon={<IconLanguage className="h-6 w-6" />}
-          title="Multilingual Support"
-          description={`Create and translate your resume into multiple languages
-          with built-in internationalization and localization capabilities.`}
+          title={t('multilingual.title')}
+          description={t('multilingual.description')}
         />
       </div>
     </section>

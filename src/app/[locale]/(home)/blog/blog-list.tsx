@@ -1,19 +1,28 @@
-import { blogSource } from '@/lib/source'
+'use client'
+
 import clsx from 'clsx'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import { BlogPostCard } from './components'
 
-export default function Home() {
-  const posts = blogSource.getPages().sort((a, b) => {
-    const dateA = new Date(a.data.date)
-    const dateB = new Date(b.data.date)
-    return dateB.getTime() - dateA.getTime()
-  })
+interface BlogPost {
+  url: string
+  title: string
+  description: string
+  date: string
+}
+
+interface BlogListProps {
+  posts: BlogPost[]
+}
+
+export function BlogList({ posts }: BlogListProps) {
+  const t = useTranslations('blog')
 
   return (
     <main className="container mx-auto py-8 mt-24 min-h-[900px]">
-      <h1 className="text-4xl font-bold mb-8">YAMLResume Blog</h1>
+      <h1 className="text-4xl font-bold mb-8">{t('title')}</h1>
       <div
         className={clsx([
           'grid',
@@ -26,9 +35,9 @@ export default function Home() {
         {posts.map((post) => (
           <Link key={post.url} href={post.url}>
             <BlogPostCard
-              title={post.data.title}
-              description={post.data.description ?? ''}
-              date={post.data.date}
+              title={post.title}
+              description={post.description}
+              date={post.date}
             />
           </Link>
         ))}

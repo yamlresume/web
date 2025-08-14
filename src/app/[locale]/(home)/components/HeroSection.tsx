@@ -1,8 +1,11 @@
+'use client'
+
 import { siteConfig } from '@/config/site'
 import { IconBook, IconBrandGithub } from '@tabler/icons-react'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import Zoom from 'react-medium-image-zoom'
 import resumeImage from '../static/images/yamlresume-yaml-and-pdf.webp'
 
@@ -33,6 +36,8 @@ function YAMLResumePDFSection() {
 }
 
 export function HeroSection() {
+  const t = useTranslations('hero')
+  
   const linkClasses = clsx([
     'border',
     'border-gray-400',
@@ -57,7 +62,7 @@ export function HeroSection() {
       <div className="flex flex-col items-start gap-8">
         <div className="flex flex-col items-start gap-4">
           <p className="text-sm text-fd-muted-foreground2">
-            Brought to you with ❤️ by{' '}
+            {t('tagline')}{' '}
             <Link
               href="https://ppresume.com"
               target="_blank"
@@ -67,16 +72,16 @@ export function HeroSection() {
             </Link>
           </p>
           <h1 className="text-4xl md:text-5xl font-bold">
-            Resumes as Code in YAML
+            {t('title')}
           </h1>
           <p className="text-xl text-fd-muted-foreground8">
-            {siteConfig.description}
+            {t('description')}
           </p>
         </div>
         <div className="flex flex-wrap items-start justify-center gap-4">
           <Link href="/docs" className={linkClasses}>
             <IconBook className="h-5 w-5" />
-            Quick Start
+            {t('quickStart')}
           </Link>
           <Link
             href="https://github.com/yamlresume/yamlresume"
@@ -84,7 +89,7 @@ export function HeroSection() {
             className={linkClasses}
           >
             <IconBrandGithub className="h-5 w-5" />
-            Check Github
+            {t('checkGithub')}
           </Link>
         </div>
         <YAMLResumePDFSection />

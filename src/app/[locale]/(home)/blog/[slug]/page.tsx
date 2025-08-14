@@ -28,14 +28,14 @@ export default async function Page(props: {
         <div className="flex flex-col gap-4 border-l p-4 text-sm flex-1/5">
           <div>
             <p className="mb-1 text-fd-muted-foreground">Written by</p>
-            <Link className="font-medium underline" href={page.data.profile}>
-              {page.data.author}
+            <Link className="font-medium underline" href={page.data.profile as string}>
+              {page.data.author as string}
             </Link>
           </div>
           <div>
             <p className="mb-1 text-sm text-fd-muted-foreground">At</p>
             <p className="font-medium">
-              {new Date(page.data.date ?? page.file.name).toDateString()}
+              {new Date((page.data.date as string) ?? page.file.name).toDateString()}
             </p>
           </div>
         </div>

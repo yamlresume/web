@@ -23,11 +23,12 @@ export default async function Page(props: {
   const owner = 'yamlresume'
   const repo = 'web'
 
-  const time = await getGithubLastEdit({
-    owner,
-    repo,
-    path: `content/docs/${page.file.path}`,
-  })
+  // const time = await getGithubLastEdit({
+  //   owner,
+  //   repo,
+  //   path: `content/docs/${page.file.path}`,
+  // })
+  const time = undefined
 
   return (
     <DocsPage
