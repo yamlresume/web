@@ -44,13 +44,14 @@ YAMLResume — Resume as Code in YAML
 
 
 Options:
-  -V, --version             output the version number
-  -v, --verbose             verbose output
-  -h, --help                display help for command
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
 
 Commands:
   new [filename]                 create a new resume
   build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
   languages                      i18n and l10n support
   templates                      manage resume templates
   validate <resume-path>         validate a resume against the YAMLResume schema
@@ -126,6 +127,29 @@ option.
 
 ```console
 $ yamlresume build --no-validate my-resume.yml
+```
+
+## Dev
+
+Build a resume from YAML to PDF on file changes. It accepts the same options as
+[`build`](#build) however it will automatically rebuild the resume when the YAML
+file is changed (aka, watch mode). This would be very convenient for you to
+preview your resume changes in real time.
+
+```console
+$ yamlresume dev --help
+Usage: yamlresume dev [options] <resume-path>
+
+build a resume on file changes (watch mode)
+
+Arguments:
+  resume-path    the resume file path
+
+Options:
+  --no-pdf       only generate TeX file without PDF
+  --no-validate  skip resume schema validation
+  -h, --help     display help for command
+
 ```
 
 ## Validate
