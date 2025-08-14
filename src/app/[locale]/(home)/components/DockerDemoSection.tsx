@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import Zoom from 'react-medium-image-zoom'
 
 import dockerDemoImage from '../static/images/yamlresume-docker-demo.svg'
@@ -12,6 +12,12 @@ import { SectionTitle } from './SectionTitle'
 
 export function DockerDemoSection() {
   const t = useTranslations('quickStart')
+  const locale = useLocale()
+  
+  // Generate locale-aware URLs
+  const getLocalizedUrl = (path: string) => {
+    return locale === 'en' ? path : `/${locale}${path}`
+  }
   
   const line1 = [
     'docker run --rm -v $(pwd):/home/yamlresume',
@@ -33,7 +39,7 @@ export function DockerDemoSection() {
             <SectionTitle
               title={
                 <Link
-                  href="/docs/installation#docker-users"
+                  href={getLocalizedUrl('/docs/installation#docker-users')}
                   className={clsx([
                     'max-w-4/5',
                     'font-medium',

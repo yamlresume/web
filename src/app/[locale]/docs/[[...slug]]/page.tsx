@@ -1,5 +1,5 @@
 import { LLMCopyButton, ViewOptions } from '@/components/ai/page-actions'
-import { docsSource } from '@/lib/source'
+import { getLocalizedSources } from '@/lib/source'
 import { getMDXComponents } from '@/mdx-components'
 import clsx from 'clsx'
 import { getGithubLastEdit } from 'fumadocs-core/server'
@@ -13,20 +13,26 @@ import {
 import { notFound } from 'next/navigation'
 
 export default async function Page(props: {
-  params: Promise<{ slug?: string[] }>
+  params: Promise<{ slug?: string[]; locale: string }>
 }) {
   const params = await props.params
-  const page = docsSource.getPage(params.slug)
+  const { docs } = getLocalizedSources(params.locale)
+  const page = docs.getPage(params.slug)
   if (!page) notFound()
 
   const MDXContent = page.data.body
   const owner = 'yamlresume'
   const repo = 'web'
 
+  // Get the correct content path based on locale
+  const contentPath = params.locale === 'en' 
+    ? `content/docs/${page.file.path}`
+    : `content/${params.locale}/docs/${page.file.path}`
+
   // const time = await getGithubLastEdit({
   //   owner,
   //   repo,
-  //   path: `content/docs/${page.file.path}`,
+  //   path: contentPath,
   // })
   const time = undefined
 
@@ -39,7 +45,7 @@ export default async function Page(props: {
         owner,
         repo,
         sha: 'main',
-        path: `content/docs/${page.file.path}`,
+        path: contentPath,
       }}
       // @ts-ignore
       lastUpdate={time}
@@ -59,14 +65,14 @@ export default async function Page(props: {
         <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
         <ViewOptions
           markdownUrl={`${page.url}.mdx`}
-          githubUrl={`https://github.com/${owner}/${repo}/blob/main/content/docs/${page.file.path}`}
+          githubUrl={`https://github.com/${owner}/${repo}/blob/main/${contentPath}`}
         />
       </div>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
         <MDXContent
           components={getMDXComponents({
-            a: createRelativeLink(docsSource, page),
+            a: createRelativeLink(docs, page),
           })}
         />
       </DocsBody>
@@ -75,16 +81,22 @@ export default async function Page(props: {
 }
 
 export async function generateStaticParams() {
-  return docsSource.generateParams()
+  // Generate params for all locales
+  const enParams = getLocalizedSources('en').docs.generateParams().map(p => ({ ...p, locale: 'en' }))
+  const zhCNParams = getLocalizedSources('zh-CN').docs.generateParams().map(p => ({ ...p, locale: 'zh-CN' }))
+  const zhTWParams = getLocalizedSources('zh-TW').docs.generateParams().map(p => ({ ...p, locale: 'zh-TW' }))
+  
+  return [...enParams, ...zhCNParams, ...zhTWParams]
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug?: string[] }>
+  params: Promise<{ slug?: string[]; locale: string }>
 }) {
-  const { slug = [] } = await params
-  const page = docsSource.getPage(slug)
+  const { slug = [], locale } = await params
+  const { docs } = getLocalizedSources(locale)
+  const page = docs.getPage(slug)
   if (!page) notFound()
 
   const image = ['api', 'og', 'docs', ...slug, 'open-graph.png'].join('/')

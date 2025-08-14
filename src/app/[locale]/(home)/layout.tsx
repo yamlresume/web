@@ -5,8 +5,20 @@ import { LocaleSelect } from '@/components/locale-select'
 import { Logo } from '../components'
 import { Footer } from './components'
 
-export default async function Layout({ children }: { children: ReactNode }) {
+export default async function Layout({ 
+  children,
+  params 
+}: { 
+  children: ReactNode
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
   const t = await getTranslations('navbar')
+  
+  // Generate locale-aware URLs
+  const getLocalizedUrl = (path: string) => {
+    return locale === 'en' ? path : `/${locale}${path}`
+  }
   
   const baseOptions = {
     nav: {
@@ -23,12 +35,12 @@ export default async function Layout({ children }: { children: ReactNode }) {
     links: [
       {
         text: t('documentation'),
-        url: '/docs',
+        url: getLocalizedUrl('/docs'),
         active: 'nested-url' as const,
       },
       {
         text: t('blog'),
-        url: '/blog',
+        url: getLocalizedUrl('/blog'),
         active: 'nested-url' as const,
       },
       {

@@ -1,4 +1,4 @@
-import { blogSource } from '@/lib/source'
+import { getLocalizedSources } from '@/lib/source'
 import { getMDXComponents } from '@/mdx-components'
 import { InlineTOC } from 'fumadocs-ui/components/inline-toc'
 import type { Metadata } from 'next'
@@ -6,10 +6,11 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 export default async function Page(props: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string; locale: string }>
 }) {
   const params = await props.params
-  const page = blogSource.getPage([params.slug])
+  const { blog } = getLocalizedSources(params.locale)
+  const page = blog.getPage([params.slug])
 
   if (!page) notFound()
   const Mdx = page.data.body
@@ -44,17 +45,31 @@ export default async function Page(props: {
   )
 }
 
-export function generateStaticParams(): { slug: string }[] {
-  return blogSource.getPages().map((page) => ({
+export function generateStaticParams(): { slug: string; locale: string }[] {
+  const enParams = getLocalizedSources('en').blog.getPages().map((page) => ({
     slug: page.slugs[0],
+    locale: 'en',
   }))
+  
+  const zhCNParams = getLocalizedSources('zh-CN').blog.getPages().map((page) => ({
+    slug: page.slugs[0],
+    locale: 'zh-CN',
+  }))
+  
+  const zhTWParams = getLocalizedSources('zh-TW').blog.getPages().map((page) => ({
+    slug: page.slugs[0],
+    locale: 'zh-TW',
+  }))
+  
+  return [...enParams, ...zhCNParams, ...zhTWParams]
 }
 
 export async function generateMetadata(props: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string; locale: string }>
 }): Promise<Metadata> {
-  const { slug } = await props.params
-  const page = blogSource.getPage([slug])
+  const { slug, locale } = await props.params
+  const { blog } = getLocalizedSources(locale)
+  const page = blog.getPage([slug])
 
   if (!page) notFound()
 

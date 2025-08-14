@@ -5,7 +5,7 @@ import { IconBook, IconBrandGithub } from '@tabler/icons-react'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import Zoom from 'react-medium-image-zoom'
 import resumeImage from '../static/images/yamlresume-yaml-and-pdf.webp'
 
@@ -37,6 +37,12 @@ function YAMLResumePDFSection() {
 
 export function HeroSection() {
   const t = useTranslations('hero')
+  const locale = useLocale()
+  
+  // Generate locale-aware URLs
+  const getLocalizedUrl = (path: string) => {
+    return locale === 'en' ? path : `/${locale}${path}`
+  }
   
   const linkClasses = clsx([
     'border',
@@ -79,7 +85,7 @@ export function HeroSection() {
           </p>
         </div>
         <div className="flex flex-wrap items-start justify-center gap-4">
-          <Link href="/docs" className={linkClasses}>
+          <Link href={getLocalizedUrl('/docs')} className={linkClasses}>
             <IconBook className="h-5 w-5" />
             {t('quickStart')}
           </Link>

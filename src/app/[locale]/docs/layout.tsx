@@ -1,12 +1,25 @@
-import { docsSource } from '@/lib/source'
+import { getLocalizedSources } from '@/lib/source'
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import { getTranslations } from 'next-intl/server'
 import type { ReactNode } from 'react'
 import { LocaleSelect } from '@/components/locale-select'
 import { Logo } from '../components'
 
-export default async function Layout({ children }: { children: ReactNode }) {
+export default async function Layout({ 
+  children,
+  params 
+}: { 
+  children: ReactNode
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
   const t = await getTranslations('navbar')
+  const { docs } = getLocalizedSources(locale)
+  
+  // Generate locale-aware URLs
+  const getLocalizedUrl = (path: string) => {
+    return locale === 'en' ? path : `/${locale}${path}`
+  }
   
   const baseOptions = {
     nav: {
@@ -23,12 +36,12 @@ export default async function Layout({ children }: { children: ReactNode }) {
     links: [
       {
         text: t('documentation'),
-        url: '/docs',
+        url: getLocalizedUrl('/docs'),
         active: 'nested-url' as const,
       },
       {
         text: t('blog'),
-        url: '/blog',
+        url: getLocalizedUrl('/blog'),
         active: 'nested-url' as const,
       },
       {
@@ -48,7 +61,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
       <div className="fixed top-4 right-4 z-50">
         <LocaleSelect />
       </div>
-      <DocsLayout tree={docsSource.pageTree} {...baseOptions}>
+      <DocsLayout tree={docs.pageTree} {...baseOptions}>
         {children}
       </DocsLayout>
     </>
