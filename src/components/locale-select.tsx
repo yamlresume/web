@@ -13,9 +13,14 @@ export function LocaleSelect() {
 
   const handleLocaleChange = (newLocale: string) => {
     startTransition(() => {
-      // Remove current locale from pathname if it exists
-      const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/'
-      // Add new locale to pathname if it's not the default
+      // Get the path without any locale prefix
+      let pathWithoutLocale = pathname
+      if (locale !== 'en') {
+        // Current locale is not default, remove it from path
+        pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/'
+      }
+      
+      // Build new path with appropriate locale prefix
       const newPath = newLocale === 'en' ? pathWithoutLocale : `/${newLocale}${pathWithoutLocale}`
       router.push(newPath)
     })

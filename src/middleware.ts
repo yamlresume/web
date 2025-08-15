@@ -8,6 +8,6 @@ export default createMiddleware({
 });
 
 export const config = {
-  // Match only internationalized pathnames
-  matcher: ['/', '/(zh-CN|zh-TW)/:path*']
+  // Match all internationalized pathnames including default locale routes
+  matcher: ['/((?!_next|api|.*\\.|favicon.ico|robots.txt|sitemap.xml).*)']
 };
