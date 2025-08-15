@@ -1,0 +1,284 @@
+---
+title: 介绍 YAMLResume
+description: 'YAMLResume: 将简历作为 YAML 代码'
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-05-21
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+每个开发者都需要一份简历，除非你是世界知名的专家。写简历可能并不困难，但绝对不有趣且很繁琐。许多人花费数天时间精心制作简历，追求 100% 无错字、语法检查过的专业布局和排版的简历。
+
+[YAMLResume](https://yamlresume.dev) 允许你使用 [YAML](https://yaml.org/) 创建和版本控制你的简历，并轻松生成具有精美排版的专业外观 PDF。
+
+它起初是 [PPResume](https://ppresume.com)——一个基于 [LaTeX](https://www.latex-project.org/) 的商业化像素完美简历构建器——的核心排版引擎，已经帮助成千上万的人创建了精美排版的简历。我们毫不犹豫地决定将其开源，这样人们就能永远拥有[拒绝供应商锁定](https://blog.ppresume.com/posts/no-vendor-lock-in)的权利。
+
+![YAMLResume 新建和构建简历](../../blog/static/images/introducing-yamlresume/yamlresume-new-and-build.webp)
+
+## 快速开始
+
+YAMLResume 提供了一个 [CLI 工具](https://www.npmjs.com/package/yamlresume)，此外，它对排版引擎有强制依赖以生成 PDF。换句话说，如果你想生成 PDF，应该首先[安装排版引擎](/zh-CN/docs/installation#typesetting-engine)。
+
+安装 `yamlresume` CLI 非常简单。你可以使用你喜欢的 Node.js 包管理器来安装它：
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```console tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+</Tabs>
+
+验证 `yamlresume` 安装成功：
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version   output the version number
+  -v, --verbose   verbose output
+  -h, --help      display help for command
+
+Commands:
+  new [filename]  create a new resume
+  build <source>  build a resume to LaTeX and PDF
+  languages       i18n and l10n support
+  templates       manage resume templates
+  help [command]  display help for command
+```
+
+我们还建议你安装 [Linux Libertine](http://yamlresume.dev/zh-CN/docs/getting-started#linux-libertine) 字体以获得最佳的 PDF 外观。
+
+最后但同样重要的是，如果你想创建 CJK 简历，我们还建议你安装 [Google Noto 字体](https://fonts.google.com/noto/)以获得[最佳的 Unicode 覆盖](https://github.com/ppresume/community/issues/63)。
+
+### 创建新简历
+
+你可以用一行命令创建一个新简历：
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+在底层，`yamlresume new` 会从[这里](https://github.com/yamlresume/yamlresume/blob/main/packages/cli/resources/resume.yml)克隆一个示例简历。然后你可以再用一行命令生成 PDF：
+
+```console
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF successfully.
+```
+
+完成了！查看生成的简历 PDF：
+
+![简历第 1 页](../../blog/static/images/introducing-yamlresume/resume-1.webp)
+![简历第 2 页](../../blog/static/images/introducing-yamlresume/resume-2.webp)
+
+你可以查看 [PPResume 画廊](https://ppresume.com/gallery)获取更多由 YAMLResume 作为排版引擎驱动的示例。
+
+### 故障排除
+
+YAMLResume CLI 提供了详细标志 `-v`/`--verbose` 来显示更详细的日志信息。如果你在构建简历时遇到问题，可以尝试使用此详细标志重新运行命令，并将输出粘贴到 [github issues](https://github.com/yamlresume/yamlresume/issues)，我会查看并回复你。
+
+## 它是如何工作的？
+
+在底层，YAMLResume 就像一个迷你编译器，即它接受一个输入，将其解析为 [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree)，然后生成输出。
+
+<Mermaid
+  chart="
+  flowchart TD
+    A[YAML 格式的简历]
+    A --> B[解析 YAML 到 AST]
+    A --> C[解析摘要字段]
+    C --> D[转换 AST 到 LaTeX]
+    B --> D
+    D --> E[编译 LaTeX 到 PDF]
+"
+/>
+
+YAMLResume 的核心设计原则是[关注点分离](https://en.wikipedia.org/wiki/Separation_of_concerns)。遵循这一原则的最著名例子之一是 HTML 和 CSS，它们是现代网络的基础——HTML 用于组织网页中的内容，CSS 用于定义内容的呈现样式。
+
+遵循核心原则，YAMLResume 基于以下要求设计：
+
+- 简历内容应该用纯文本编写，这样对版本控制友好
+- 纯文本应该使用完全结构化的格式，这给我们更多的控制和灵活性
+- YAML 比 JSON 更好，因为它更易于人类阅读和编写
+- YAML 纯文本然后通过可插拔的排版引擎渲染成 PDF
+- 应该提供开箱即用的主观布局，同时仍然允许人们相应地调整选项，如字体大小、页边距等
+
+## 为什么选择 YAML？
+
+[JSON Resume](https://jsonresume.org/) 是另一个允许人们以结构化格式创建简历的项目。然而，大多数开发者都会同意，在人类可读性和可写性方面，YAML 比 JSON 更好。例如，在 JSON 中表示多行字符串相当不方便，而 YAML 对此有原生支持。
+
+比较 JSON 和 YAML 中的简历片段：
+
+```json
+{
+  "content": {
+    "basics": {
+      "name": "Andy Dufresne",
+      "headline": "Headed for the Pacific",
+      "phone": "(213) 555-9876",
+      "email": "hi@ppresume.com",
+      "url": "https://ppresume.com/gallery",
+      "summary": "- Computer Science major with strong foundation in data structures, algorithms, and software development\n- Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites\n- Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)\n- Team player, with detail-oriented mindset and a keen eye for design and user experiences"
+    }
+  }
+}
+```
+
+```yml lineNumbers
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@ppresume.com
+    url: https://ppresume.com/gallery
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+哪个更易读和易写？答案是显而易见的。
+
+JSON Resume 不关心简历的布局。在现实世界中，你不能直接向招聘人员发送 JSON 文件，对吧？结构化的简历格式需要转换为人类可读的文档格式，如 docx、PDF 等。YAMLResume 提供主观的布局配置，并保证像素完美的 PDF 输出。
+
+在撰写本文时，YAMLResume 的主观布局支持：
+
+- 区域语言
+  - 英语
+  - 简体中文
+  - 繁体中文
+  - 西班牙语
+- 边距
+  - 顶部
+  - 左侧
+  - 右侧
+  - 底部
+- 页码
+- 模板
+- 排版
+  - 字体大小
+
+这是 YAMLResume 中布局配置的示例代码片段：
+
+```yml lineNumbers
+layout:
+  locale:
+    language: zh-CN
+  margins:
+    top: 2.5cm
+    left: 1.5cm
+    right: 1.5cm
+    bottom: 2.5cm
+  page:
+    showPageNumbers: true
+  template: moderncv-banking
+  typography:
+    fontSize: 11pt
+```
+
+## 为什么不用 Markdown？
+
+[Markdown](https://en.wikipedia.org/wiki/Markdown) 是编写简历的另一个流行选择，也有一些简历构建器采用 markdown 作为主要输入格式。然而，markdown 是一种用于创建格式化文本的通用标记语言，而简历只使用非常有限的 markdown 功能集。
+
+例如，以下 markdown 语法在简历中很不可能被使用：
+
+- 引用块
+- 代码块
+- 水平线
+- 图片
+- 表格
+- html 标记
+- 等等
+
+其次，markdown 过于灵活，经常给用户提供超出创建简历所需的自由度。要可靠地将通用 markdown 文档解析为简历将相当困难。
+
+第三，模板切换、精确布局控制（如 LaTeX 中的 `\hfill` 和 `\hspace`）等功能在 markdown 中很难实现。
+
+总之，使用完全结构化的格式如 YAML/JSON 为我们提供了对简历格式和布局的更多控制和可靠性。
+
+## 为什么还是 LaTeX？
+
+[LaTeX](https://www.latex-project.org/) 是一个非常成熟和稳定的排版引擎，可以产生极高质量的 PDF。然而，许多 LaTeX 用户，甚至 LaTeX 爱好者，都会同意 LaTeX 语言在某种程度上已经过时——它的错误消息通常相当令人困惑，对全局变量的依赖经常导致包之间的冲突，对大型文档的编译速度很慢且通常相当复杂，并且它会产生丑陋的中间文件（`.aux`、`.log` 等）。
+
+有人建议用 [typst](https://github.com/typst/typst) 替换 LaTeX，这是一个现代的排版引擎，具有更好的开发体验和更快的编译速度。然而，经过仔细评估，我决定坚持使用 LaTeX。这里的决定因素是，YAMLResume 被设计为支持多语言且具有最佳的排版质量，然而，typst 的 [CJK 支持](https://blog.ppresume.com/posts/on-typesetting-engines#cjk-3)仍然不稳定且缺乏。
+
+稍后我可能会添加一个新的[渲染器](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/base.ts)后端来支持 typst。
+
+## 富文本支持
+
+虽然我们决定不使用 markdown 作为简历输入格式，但我们确实支持各个部分中 `summary` 字段的有限 markdown 富文本语法集。
+
+目前，我们支持以下 markdown 语法：
+
+- `**粗体**`
+- `*斜体*`
+- `[链接](https://www.google.com)`
+- 有序列表
+- 无序列表
+- 嵌套列表
+- 段落
+
+例如，这是 `content.basics.summary` 字段的示例片段：
+
+```yml lineNumbers
+---
+content:
+  basics:
+    # ...
+    summary: |
+      这是一个支持有限 markdown 富文本语法集（粗体、斜体、链接、列表）的示例 YAML 简历：
+
+      - 计算机科学专业，在数据结构、**算法**和软件开发方面有*坚实基础*
+        1. 像素完美的全栈网页开发者，专门创建高质量、视觉吸引力的网站
+        2. 在数据库（SQL、NoSQL）方面有经验，熟悉服务器端技术（[Node.js](https://nodejs.org/en)、Express 等）
+      - 团队合作者，具有注重细节的思维和对设计和用户体验的敏锐眼光
+```
+
+这是生成的 PDF：
+
+![摘要字段中的富文本支持](../../blog/static/images/introducing-yamlresume/rich-text-support-in-summary-field.webp)
+
+你可以看到富文本语法被正确渲染，包括粗体、斜体、链接、列表，相当不错，对吧？
+
+## 路线图
+
+总的来说，该项目仍处于非常早期的阶段，我们还有很长的路要走。我已经计划了近期要做的功能列表：
+
+1. 更多语言，日语、德语、法语等
+2. 更多模板
+3. [节别名](https://github.com/yamlresume/yamlresume/issues/11)
+4. [节重排序](https://github.com/yamlresume/yamlresume/issues/12)
+5. [模式验证](https://github.com/yamlresume/yamlresume/issues/10)
+
+如有任何问题，你可以：
+
+- 提出 [issue](https://github.com/yamlresume/yamlresume/issues/)
+- 开启 [讨论](https://github.com/yamlresume/yamlresume/discussions)
+- 留言 [消息](https://discord.gg/9SyT7mVV4K)
+
+敬请期待！

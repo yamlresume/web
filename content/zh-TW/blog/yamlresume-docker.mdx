@@ -1,0 +1,145 @@
+---
+title: Docker 中的 YAMLResume
+description: '使用 Docker 立即運行 YAMLResume'
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-06-06
+---
+
+我非常興奮地宣布 YAMLResume 現在有了一個 [docker
+鏡像](https://hub.docker.com/r/yamlresume/yamlresume)，您可以[使用 docker 立即運行
+YAMLResume](https://asciinema.org/a/722057)。
+
+![YAMLResume Docker
+asciinema](./static/images/yamlresume-docker/yamlresume-docker-asciinema.gif)
+
+## 為什麼選擇 Docker？
+
+YAMLResume 是一個 Node.js CLI 工具和一個
+[庫](https://www.npmjs.com/package/@yamlresume/core)。安裝 YAMLResume
+本身並不困難，因為它只需要 Node.js。實際上，我們甚至可以將其編譯
+為二進位檔案並直接運行而無需安裝 Node.js。
+
+然而，YAMLResume 對 LaTeX 有強制依賴，這帶來了一些新的
+問題：
+
+- 安裝 LaTeX 需要時間；通常需要大約 5-10 分鐘來下載
+  適當的 LaTeX 發行版並配置它。
+- LaTeX 不是一個單一的二進位程式；它是程式的集合。一些
+  使用者[不喜歡在他們的機器上安裝許多程式](https://github.com/yamlresume/yamlresume/issues/6#issuecomment-2916479009)。
+
+雖然我們已經提供了一個非常全面的[安裝
+指南](/docs/installation)，涵蓋 macOS、Windows、Ubuntu 和 RHEL，甚至包括
+安裝 YAMLResume 和 LaTeX 並讓它們協同工作的說明，
+這個過程對一些使用者來說仍然可能是痛苦的。
+
+Docker 是解決這些問題的絕佳方案：它可以將所有內容打包到
+單個鏡像中，使安裝和配置變得容易。
+
+## 如何使用
+
+一圖勝千言。這裡是一個展示如何使用它的截圖：
+
+![YAMLResume Docker
+演示](./static/images/yamlresume-docker/yamlresume-docker-demo.svg)
+
+我們的 [docker 鏡像](https://hub.docker.com/r/yamlresume/yamlresume)包含了
+所有預打包的內容，包括：
+
+- [Node.js](/docs/installation#nodejs)
+- [yamlresume CLI](/docs/installation#yamlresume)
+- [XeTeX](/docs/installation#xetex)
+- [一些推薦的字型](/docs/installation#font)
+
+您可以使用以下命令立即建立新履歷：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+相應地編輯 `my-resume.yml`，然後從 YAML 構建履歷到 PDF：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+#### 底層原理
+
+如果您熟悉 docker，您可能已經知道這是如何工作的。如果不熟悉，
+這裡是一個快速解釋：
+
+1. `docker run ... yamlresume/yamlresume` - 從
+   `yamlresume/yamlresume` 鏡像運行新容器。如果此鏡像在您的本地
+   機器上不存在，它將從 [docker
+   Hub](https://hub.docker.com/r/yamlresume/yamlresume) 拉取。
+2. `--rm` - 在退出時自動刪除容器。
+3. `-v $(pwd):/home/yamlresume` - 將當前目錄 (`$(pwd)`) 掛載到
+   容器中的 `/home/yamlresume`，允許容器存取本地檔案。
+4. `new my-resume.yml` 或 `build my-resume.yml` - 運行 yamlresume CLI
+   [new](/docs/cli#new) 或 [build](/docs/cli#build) 子命令來建立或
+   構建檔案名稱為 `my-resume.yml` 的履歷。
+
+基本上，您可以以這種方式調用所有 `yamlresume` [CLI 子命令](/cli)——只需在 `yamlresume/yamlresume` 後附加子命令，然後按照
+相應的使用指南進行操作。
+
+`-v` 標誌非常重要，因為它將當前目錄
+(`$(pwd)`) 掛載到容器中的 `/home/yamlresume`，允許本地目錄和容器之間進行雙向檔案同步。沒有這個標誌，構建輸出工件將在容器退出後丟失。
+
+## 工程設計
+
+如果您對 docker 有一點了解，構建 docker 鏡像並不困難。然而，
+將 YAMLResume 包裝在 docker 中並不像聽起來那麼容易。以下是一些
+挑戰。
+
+### LaTeX 配置很繁瑣
+
+安裝可工作的 LaTeX 發行版需要時間；通常需要大約 5-10
+分鐘來下載和配置適當的 LaTeX 發行版。在 GitHub Action
+運行器中，這個過程[甚至更長——長達 20 多分鐘](https://github.com/yamlresume/yamlresume/actions/runs/15438395862/job/43450134447)。
+
+```docker
+RUN apt update && \
+    apt install -y \
+    texlive-xetex \
+    texlive-fonts-extra \
+    texlive-lang-all \
+    fonts-noto-cjk \
+    fonts-noto-cjk-extra \
+```
+
+我們將構建 [yamlresume 的 docker
+鏡像](https://hub.docker.com/r/yamlresume/yamlresume)作為一個 3 步過程：
+
+1. 從 Node.js 鏡像作為基礎開始。
+2. 安裝和配置 LaTeX 發行版。
+3. 安裝 yamlresume CLI。
+
+如前所述，步驟 2 是最耗時的部分。如果我們每次需要更新 docker 鏡像時都必須重新開始，在 github action 運行器中構建 docker 鏡像將需要 30 分鐘。
+
+為了避免這種情況，我們使用多階段構建來快取 LaTeX 發行版，因此我們
+每次更新 docker 鏡像時不需要從頭安裝它。
+
+因此，我們建立了一個新的
+[yamlresume/yamlresume-base](https://hub.docker.com/r/yamlresume/yamlresume-base)，
+這是一個安裝了 Node.js 和 LaTeX 發行版的基礎鏡像。這個
+基礎鏡像是穩定的，不會經常更新，我們的 `yamlresume/yamlresume`
+鏡像構建在這個基礎鏡像之上。只需 3 分鐘就可以拉取
+`yamlresume/yamlresume-base` 鏡像並在其上安裝 yamlresume CLI，
+這大大減少了迭代時間。
+
+### 多平台支援
+
+另一個挑戰是支援[多平台
+構建](https://docs.docker.com/build/building/multi-platform/)。眾所周知，
+macOS M1 及更高版本是基於 ARM 的機器。雖然它們可以通過模擬運行 AMD64 架構的 docker 鏡像，但性能要差 10 倍。
+
+因此，我們必須為 `yamlresume/yamlresume` 支援多平台鏡像。
+幸運的是，docker 官方提供了關於如何[在 github
+actions 中構建多平台鏡像](https://docs.docker.com/build/ci/github-actions/multi-platform/)的詳細指南。
+
+YAMLResume 的 docker 鏡像支援[兩個
+平台](https://hub.docker.com/r/yamlresume/yamlresume/tags)：`linux/amd64`
+和 `linux/arm64`，這應該足以涵蓋大多數桌面和伺服器
+機器。
+
+享受使用 docker 的 YAMLResume！
