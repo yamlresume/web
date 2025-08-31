@@ -23,18 +23,18 @@ export function NewsChannel() {
         <div className="flex items-center gap-2 py-3">
           <IconSpeakerphone size={20} stroke={1.5} />
           <div className="text-sm text-fd-foreground">
-            <Link href="/blog/section-customization" className="underline">
-              YAMLResume v0.6
+            <Link href="/blog/dev-mode" className="underline">
+              YAMLResume v0.7
             </Link>{' '}
-            is released with the long awaited section customization:{' '}
-            <Link href="/docs/layout/sections/aliases" className="underline">
-              section aliases
-            </Link>{' '}
-            and{' '}
-            <Link href="/docs/layout/sections/reorder" className="underline">
-              section reorder
+            is released with the new{' '}
+            <Link href="/docs/cli#dev" className="underline">
+              dev mode
             </Link>
-            .
+            . Check out the{' '}
+            <Link href="https://youtu.be/xytlzedEQ_w" className="underline">
+              youtube demo
+            </Link>{' '}
+            for more details.
           </div>
         </div>
       </div>
