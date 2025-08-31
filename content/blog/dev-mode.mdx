@@ -46,25 +46,25 @@ flow and slows down the process of refining your resume.
 <Mermaid
   chart={`
 graph TD
-    A[Edit my-resume.yml] --> B{Save File};
-    B --> C[Switch to Terminal];
-    C --> D[Run 'yamlresume build'];
-    D --> E{Wait for Build};
-    E --> F[Switch to PDF Viewer];
-    F --> G{Refresh PDF};
-    G --> H{Review Changes};
-    H -- Correction Needed --> A;
-    H -- Looks Good --> I[Done];
-    subgraph Manual Build Cycle
-        A
-        B
-        C
-        D
-        E
-        F
-        G
-        H
-    end
+  A[Edit my-resume.yml] --> B{Save File};
+  B --> C[Switch to Terminal];
+  C --> D[Run 'yamlresume build'];
+  D --> E{Wait for Build};
+  E --> F[Switch to PDF Viewer];
+  F --> G{Refresh PDF};
+  G --> H{Review Changes};
+  H -- Correction Needed --> A;
+  H -- Looks Good --> I[Done];
+  subgraph Manual Build Cycle
+    A
+    B
+    C
+    D
+    E
+    F
+    G
+    H
+  end
 `}
 />
 
@@ -88,29 +88,28 @@ To start the development mode, simply run:
 yamlresume dev my-resume.yml
 ```
 
-Now, you can open your `my-resume.yml` file and your PDF side-by-side. Every time
-you save a change to your YAML file, YAMLResume will automatically detect it and
-trigger a rebuild. Your PDF viewer will update moments later, showing you the
-latest version of your resume.
+Now, you can open your `my-resume.yml` file and your PDF side-by-side. Every
+time you save a change to your YAML file, YAMLResume will automatically detect
+it and trigger a rebuild. Your PDF viewer will update moments later, showing you
+the latest version of your resume.
 
 The new workflow is significantly simpler and more efficient:
 
 <Mermaid chart={`
 graph TD
-    A[Start 'yamlresume dev'] --> B[Edit my-resume.yml];
-    B --> C{Save File};
-    C --> D{PDF Automatically Rebuilt};
-    D --> E{Review Changes in PDF};
-    E -- Correction Needed --> B;
-    E -- Looks Good --> F[Stop Dev Mode];
+  A[Start 'yamlresume dev'] --> B[Edit my-resume.yml];
+  B --> C{Save File};
+  C --> D{PDF Automatically Rebuilt};
+  D --> E{Review Changes in PDF};
+  E -- Correction Needed --> B;
+  E -- Looks Good --> F[Stop Dev Mode];
 
-    subgraph Real-Time Workflow
-        B
-        C
-        D
-        E
-    end
-
+  subgraph Real-Time Workflow
+    B
+    C
+    D
+    E
+  end
 `}/>
 
 This instant feedback loop allows you to iterate quickly, experiment with
@@ -189,22 +188,21 @@ Here is a diagram illustrating the coalescing logic:
 
 <Mermaid chart={`
 sequenceDiagram
-    participant User
-    participant Watcher
-    participant Coalesce
-    participant Builder
+  participant User
+  participant Watcher
+  participant Coalesce
+  participant Builder
 
-    User->>Watcher: Save file (t=0s)
-    Watcher->>Coalesce: Trigger build
-    Coalesce->>Builder: Start Build #1
-    User->>Watcher: Save file (t=1s)
-    Watcher->>Coalesce: Trigger build (ignored, build in progress)
-    User->>Watcher: Save file (t=2s)
-    Watcher->>Coalesce: Trigger build (ignored, build in progress)
-    Builder-->>Coalesce: Finish Build #1 (t=3s)
-    Coalesce->>Builder: Start Build #2 (with latest file content)
-    Builder-->>Coalesce: Finish Build #2 (t=6s)
-
+  User->>Watcher: Save file (t=0s)
+  Watcher->>Coalesce: Trigger build
+  Coalesce->>Builder: Start Build #1
+  User->>Watcher: Save file (t=1s)
+  Watcher->>Coalesce: Trigger build (ignored, build in progress)
+  User->>Watcher: Save file (t=2s)
+  Watcher->>Coalesce: Trigger build (ignored, build in progress)
+  Builder-->>Coalesce: Finish Build #1 (t=3s)
+  Coalesce->>Builder: Start Build #2 (with latest file content)
+  Builder-->>Coalesce: Finish Build #2 (t=6s)
 `}/>
 
 ## Advanced Control
