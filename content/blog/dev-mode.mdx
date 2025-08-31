@@ -1,0 +1,274 @@
+---
+title: "YAMLResume v0.7: Dev Mode"
+description: |
+  YAMLResume v0.7 introduces a new `dev` mode that provides a real-time,
+  watch-mode experience for resume creation, drastically improving developer
+  experience.
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-08-30
+---
+
+I am super excited to introduce [YAMLResume
+v0.7](https://github.com/yamlresume/yamlresume/releases/tag/v0.7.0), a release
+focused on enhancing your developer experience (DX). The centerpiece of this
+update is the new [`dev` mode](/docs/cli#dev)—a feature that brings a
+seamless, real-time development workflow to your resume creation process.
+
+![Dev Mode Workflow](./static/images/dev-mode/dev-mode-vs-code.webp)
+
+Gone are the days of the tedious edit-save-build cycle. With `dev` mode,
+YAMLResume now watches your resume file for changes and automatically rebuilds
+the PDF in near real-time. This seemingly simple addition transforms the
+experience of crafting a resume into a fluid, interactive, and much more
+enjoyable process.
+
+## The Friction of the Old Workflow
+
+Before v0.7, creating a resume with YAMLResume, while powerful, involved a
+repetitive, manual process. You would:
+
+1.  Open your `my-resume.yml` file in your favorite text editor.
+2.  Make a change—perhaps updating a job description or adding a new skill.
+3.  Save the file.
+4.  Switch to your terminal.
+5.  Run the `yamlresume build my-resume.yml` command.
+6.  Wait for the command to finish.
+7.  Switch to your PDF viewer and refresh it to see the result.
+8.  Notice a small typo or a formatting issue.
+9.  Repeat the entire cycle.
+
+This loop, illustrated below, introduced significant friction into the resume
+creation process. Each change, no matter how small, required a context switch
+and a manual command execution. This constant interruption breaks the creative
+flow and slows down the process of refining your resume.
+
+<Mermaid
+  chart={`
+graph TD
+    A[Edit my-resume.yml] --> B{Save File};
+    B --> C[Switch to Terminal];
+    C --> D[Run 'yamlresume build'];
+    D --> E{Wait for Build};
+    E --> F[Switch to PDF Viewer];
+    F --> G{Refresh PDF};
+    G --> H{Review Changes};
+    H -- Correction Needed --> A;
+    H -- Looks Good --> I[Done];
+    subgraph Manual Build Cycle
+        A
+        B
+        C
+        D
+        E
+        F
+        G
+        H
+    end
+`}
+/>
+
+In the world of modern software development, we've become accustomed to tools
+that provide instant feedback. Web developers have
+[hot-reloading](https://webpack.js.org/concepts/hot-module-replacement/), which
+updates the browser automatically as they change the code. This tight feedback
+loop is crucial for productivity and is a core tenet of a great developer
+experience. We believed that crafting your resume as code should be no
+different.
+
+## The Solution: A Seamless Dev Mode
+
+The `yamlresume dev` command eliminates the manual build cycle entirely. You
+start it once, and it works quietly in the background, watching for your
+changes and rebuilds the resume automatically.
+
+To start the development mode, simply run:
+
+```bash
+yamlresume dev my-resume.yml
+```
+
+Now, you can open your `my-resume.yml` file and your PDF side-by-side. Every time
+you save a change to your YAML file, YAMLResume will automatically detect it and
+trigger a rebuild. Your PDF viewer will update moments later, showing you the
+latest version of your resume.
+
+The new workflow is significantly simpler and more efficient:
+
+<Mermaid chart={`
+graph TD
+    A[Start 'yamlresume dev'] --> B[Edit my-resume.yml];
+    B --> C{Save File};
+    C --> D{PDF Automatically Rebuilt};
+    D --> E{Review Changes in PDF};
+    E -- Correction Needed --> B;
+    E -- Looks Good --> F[Stop Dev Mode];
+
+    subgraph Real-Time Workflow
+        B
+        C
+        D
+        E
+    end
+
+`}/>
+
+This instant feedback loop allows you to iterate quickly, experiment with
+different phrasing, and perfect the layout of your resume without the constant
+context switching. It makes the process feel less like a chore and more like a
+creative endeavor.
+
+Here is a live demo of the `dev` mode in action:
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/blog/dev-mode/dev-mode-vs-code-demo.mp4"
+/>
+
+You can watch the [youtube demo](https://youtu.be/xytlzedEQ_w) for more details.
+
+## How It Works: A Look Under the Hood
+
+While the `dev` mode is simple to use, there's some interesting technology
+working behind the scenes to ensure it's both robust and efficient.
+
+### The File Watcher: `chokidar`
+
+At the heart of the `dev` mode is a file watcher. A naive approach would be to
+use Node.js's built-in [`fs.watch`
+API](https://nodejs.org/docs/latest/api/fs.html#fswatchfilename-options-listener).
+However, `fs.watch` has known limitations and inconsistencies across different
+operating systems. More importantly, it struggles with certain text editor
+behaviors.
+
+For example, editors like Vim use an "atomic save" strategy. When you save a
+file, Vim doesn't directly write to the original file. Instead, it writes the
+changes to a temporary file (the well-known `.swp` file), then renames that
+temporary file to replace the original. This process can confuse basic file
+watchers, which might miss the change entirely or trigger multiple events.
+
+To provide a reliable experience, we adopted
+**[chokidar](https://github.com/paulmillr/chokidar)**, a popular and
+battle-tested file-watching library. Chokidar abstracts away the cross-platform
+inconsistencies and is specifically designed to handle these tricky editor
+behaviors gracefully. We've configured it to wait until a file has finished
+writing before triggering a rebuild, ensuring that we don't try to build a
+partially saved file.
+
+### Preventing Build Storms: `coalescifn`
+
+What happens if you save the file multiple times in quick succession? A simple
+implementation might try to start a new build for every single save event. This
+could lead to a "build storm," where multiple build processes are running
+concurrently, consuming unnecessary system resources and potentially leading to
+race conditions.
+
+To solve this, we wrote and open sourced a clever little utility called
+[coalescifn](https://github.com/yamlresume/coalescifn). This utility helps us
+**coalesce** multiple calls into one. Here's how it works in the context of
+`dev` mode:
+
+1.  When the first file change is detected, we immediately start a build.
+2.  If more changes are detected _while that build is running_, we don't start
+new builds. We simply make a note that the file has changed again.
+3.  Once the initial build is complete, we check if any more changes occurred
+during that time.
+4.  If there were subsequent changes, we run exactly _one_ more build to ensure
+the final PDF reflects the latest version of the file. If there were no new
+changes, we do nothing and wait for the next save event.
+
+This strategy ensures that there is only one build running at a time, and it
+guarantees that the final build always uses the most recent version of your
+resume file. It's an efficient approach that keeps the `dev` mode responsive and
+light on system resources.
+
+Here is a diagram illustrating the coalescing logic:
+
+<Mermaid chart={`
+sequenceDiagram
+    participant User
+    participant Watcher
+    participant Coalesce
+    participant Builder
+
+    User->>Watcher: Save file (t=0s)
+    Watcher->>Coalesce: Trigger build
+    Coalesce->>Builder: Start Build #1
+    User->>Watcher: Save file (t=1s)
+    Watcher->>Coalesce: Trigger build (ignored, build in progress)
+    User->>Watcher: Save file (t=2s)
+    Watcher->>Coalesce: Trigger build (ignored, build in progress)
+    Builder-->>Coalesce: Finish Build #1 (t=3s)
+    Coalesce->>Builder: Start Build #2 (with latest file content)
+    Builder-->>Coalesce: Finish Build #2 (t=6s)
+
+`}/>
+
+## Advanced Control
+
+The `dev` command also comes with options to give you more control over the
+build process, mirroring the flags available on the `build` command.
+
+### Skipping PDF Generation
+
+Sometimes, you might only want to inspect the intermediate LaTeX (`.tex`) file
+that YAMLResume generates. This can be useful for debugging or for those who
+want to manually tweak the LaTeX code. Generating the PDF is the most
+time-consuming part of the build process. If you don't need it, you can tell
+`dev` mode to skip it:
+
+```bash
+yamlresume dev my-resume.yml --no-pdf
+```
+
+With this flag, `dev` mode will still watch for changes and regenerate the
+`.tex` file instantly, but it won't run the `xelatex` command. This makes the
+rebuild process almost instantaneous.
+
+### Disabling Validation
+
+As of [v0.5](/blog/yamlresume-compiler), YAMLResume includes a powerful schema
+validation step that catches potential errors in your resume during building.
+While this is incredibly useful for ensuring correctness, there might be times
+when you want to temporarily disable it. For example, you might be in the middle
+of a large refactoring of your resume structure and don't want to be interrupted
+by validation errors.
+
+You can disable validation with the `--no-validate` flag:
+
+```bash
+yamlresume dev my-resume.yml --no-validate
+```
+
+This allows you to work more freely, with the understanding that you should
+re-enable validation later to ensure your resume is well-formed.
+
+## A New DX for "Resume as Code"
+
+The introduction of `dev` mode is more than just a new feature; it's a step
+towards fulfilling the true promise of "Resume as Code." It elevates the
+experience from a static, command-line-driven process to a dynamic, interactive
+one that feels much more like modern software development.
+
+You might be used to `npm run build` and `npm run dev` in the past? YAMLResume
+now has the same workflow built in.
+
+By closing the feedback loop, we're making it easier and faster for you to
+create beautiful, professional resumes. We believe this will encourage more
+experimentation and allow you to focus on what truly matters: the content of
+your resume and how it tells your professional story.
+
+We invite you to update to YAMLResume v0.7 and experience the new `dev` mode for
+yourself.
+
+- **Install or update** to the latest version: `npm install -g yamlresume@latest`
+- **Try it out** with your existing resume: `yamlresume dev my-resume.yml`
+- **Join our community** on
+[GitHub](https://github.com/yamlresume/yamlresume/discussions) to share your
+feedback, ask questions, or contribute to the future of YAMLResume.
+
+We're committed to building the best possible developer experience for resume
+creation, and we can't wait to hear what you think of this new release!
