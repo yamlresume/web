@@ -76,6 +76,7 @@ export function HeroSection() {
                   href="https://ppresume.com"
                   target="_blank"
                   className="underline"
+                  key="ppresume"
                 >
                   {chunks}
                 </Link>

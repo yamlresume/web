@@ -282,13 +282,15 @@ export function getTranslations(locale: string, namespace: string) {
     // Simple rich text parser for tags like <ppresume>content</ppresume>
     const parts = text.split(/(<[^>]+>.*?<\/[^>]+>)/g)
 
-    return parts.map((part, index) => {
+    return parts.map((part) => {
       const tagMatch = part.match(/<([^>]+)>(.*?)<\/[^>]+>/)
+
       if (tagMatch) {
         const [, tagName, content] = tagMatch
         const tagFn = tags[tagName]
         return tagFn ? tagFn(content) : part
       }
+
       return part
     })
   }
