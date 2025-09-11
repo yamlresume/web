@@ -2,7 +2,6 @@ import { LLMCopyButton, ViewOptions, getMDXComponents } from '@/components'
 import { defaultLanguage } from '@/i18n'
 import { getLocalizedSources } from '@/lib'
 import clsx from 'clsx'
-import { getGithubLastEdit } from 'fumadocs-core/server'
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import {
   DocsBody,
@@ -28,14 +27,10 @@ export default async function Page(props: {
   // Get the correct content path based on language
   const contentPath =
     language === defaultLanguage
-      ? `content/docs/${page.file.path}`
-      : `content/${language}/docs/${page.file.path}`
+      ? `content/docs/${page.path}`
+      : `content/${language}/docs/${page.path}`
 
-  const time = await getGithubLastEdit({
-    owner,
-    repo,
-    path: contentPath,
-  })
+  const lastUpdate = page.data.lastModified
 
   return (
     <DocsPage
@@ -48,8 +43,7 @@ export default async function Page(props: {
         sha: 'main',
         path: contentPath,
       }}
-      // @ts-ignore
-      lastUpdate={time}
+      lastUpdate={lastUpdate}
     >
       <DocsTitle>{page.data.title}</DocsTitle>
       <div
