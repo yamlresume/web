@@ -1,0 +1,92 @@
+---
+title: 富文本
+---
+
+在 YAMLResume 中，您不会被纯文本限制。不同章节（如 `work`、`education`、`projects` 等）的 `summary` 字段支持有限的 [Markdown](https://en.wikipedia.org/wiki/Markdown) 语法，以允许富文本格式。这使您能够创建更具表现力和可读性的简历内容。
+
+## 支持的语法
+
+以下是您可以使用的 Markdown 功能的快速概述：
+
+### 粗体和斜体
+
+您可以使用粗体或斜体样式来强调文本。
+
+-   **粗体：** `**your bold text**`
+-   **斜体：** `*your italic text*`
+-   **两者：** `***your bold and italic text***`
+
+### 链接
+
+您可以在文本中嵌入超链接。
+
+-   **语法：** `[link text](https://example.com)`
+
+### 列表
+
+支持有序和无序列表，包括嵌套。
+
+<Callout title="理解 YAML 中用于多行字符串的 `|` 字符">
+  YAML 中的 `|`（管道）字符用于创建"字面块标量"，这是一种编写[多行字符串](https://stackoverflow.com/a/21699210/2310396)同时保留换行符的方法。这对于像 `summary` 这样的字段特别有用，您可能想要包含列表或段落。在 `|` 下缩进的所有内容都将被视为单个字符串，并保持换行符。
+</Callout>
+
+#### 无序列表
+
+每个列表项使用连字符（`-`）或星号（`*`）。
+
+```yml lineNumbers
+summary: |
+  - First item
+  - Second item
+  - Third item
+```
+
+#### 有序列表
+
+使用数字后跟句点来创建有序列表。
+
+```yml lineNumbers
+summary: |
+  1. First item
+  2. Second item
+  3. Third item
+```
+
+#### 嵌套列表
+
+您可以缩进列表来创建嵌套结构。
+
+```yml lineNumbers
+summary: |
+  - Team player with a detail-oriented mindset.
+  - Experienced in databases (SQL, NoSQL).
+    - Proficient in PostgreSQL and MongoDB.
+    - Familiar with Redis for caching.
+  - Strong foundation in data structures and algorithms.
+```
+
+## 完整示例
+
+以下是一个 `work` 条目的 `summary` 字段，它结合了多个支持的语法功能：
+
+```yml lineNumbers
+---
+content:
+  basics:
+    # ...
+    summary: |
+      This is a sample YAML resume that support limited set of markdown rich text syntax (bold, italics, links, lists):
+
+      - Computer Science major with **strong foundation** in data structures, *algorithms*, and software development
+        1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+        2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+以下是生成的 PDF：
+
+![摘要字段中的富文本支持](/static/images/docs/content/rich-text/rich-text-support-in-summary-field.webp)
+
+## 不支持什么？
+
+YAMLResume 仅支持上面列出的语法。其他常见的 Markdown 功能，如标题、块引用、图像、水平规则和表格**不受支持，在处理过程中将被忽略**。

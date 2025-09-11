@@ -1,0 +1,251 @@
+---
+title: CLI
+---
+
+YAMLResume 提供了 CLI 工具来帮助您管理简历。您可以按照 [安装指南](/zh-cn/docs/getting-started#installation) 来安装它。
+
+<Callout title="Docker 中的 YAMLResume CLI">
+请注意，我们为您提供了一个 [docker 镜像](/zh-cn/docs/installation#docker-users)，其中已安装了 `yamlresume` CLI 以及所有必要的依赖项。
+
+对于本指南中的每个子命令，您可以通过在 `yamlresume/yamlresume` 后附加子命令在 docker 中运行它。
+
+例如，在 yamlresume CLI 中创建新简历：
+
+```sh
+yamlresume new my-resume.yml
+```
+
+您也可以在 docker 中运行：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+</Callout>
+
+## 帮助
+
+显示 CLI 帮助和所有可用命令：
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+显示 YAMLResume CLI 版本：
+
+```console
+$ yamlresume -V
+0.5.0
+```
+
+## New
+
+创建新简历。默认简历文件名是 `resume.yml`，但您可以指定自定义文件名：
+
+```console
+$ yamlresume new --help
+Usage: yamlresume new [options] [filename]
+
+create a new resume
+
+Arguments:
+  filename    output filename (default: "resume.yml")
+
+Options:
+  -h, --help  display help for command
+
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+## Build
+
+从 YAML 构建简历到 PDF。它将同时生成 latex 代码和 PDF，如果您使用 [XeTeX](/zh-cn/docs/installation#xetex) 作为排版引擎，还会生成一些中间文件 `.aux`、`.log` 等。
+
+```console
+$ yamlresume build --help
+Usage: yamlresume build [options] <resume-path>
+
+build a resume to LaTeX and PDF
+
+Arguments:
+  resume-path    the resume file path
+
+Options:
+  --no-pdf       only generate TeX file without PDF
+  --no-validate  skip resume schema validation
+  -h, --help     display help for command
+
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF file successfully.
+```
+
+### `--no-pdf`
+
+如果您只想生成 LaTeX 文件而不生成 PDF，可以使用 `--no-pdf` 选项。
+
+```console
+$ yamlresume build --no-pdf my-resume.yml
+```
+
+### `--no-validate`
+
+如果您想跳过简历架构验证，可以使用 `--no-validate` 选项。
+
+```console
+$ yamlresume build --no-validate my-resume.yml
+```
+
+## Dev
+
+在文件更改时从 YAML 构建简历到 PDF。它接受与 [`build`](#build) 相同的选项，但是当 YAML 文件更改时会自动重建简历（即监视模式）。这对于您实时预览简历更改非常方便。
+
+```console
+$ yamlresume dev --help
+Usage: yamlresume dev [options] <resume-path>
+
+build a resume on file changes (watch mode)
+
+Arguments:
+  resume-path    the resume file path
+
+Options:
+  --no-pdf       only generate TeX file without PDF
+  --no-validate  skip resume schema validation
+  -h, --help     display help for command
+```
+
+## Validate
+
+根据 YAMLResume [架构](/zh-cn/docs/compiler/schema) 验证简历。
+
+```console
+$ yamlresume validate --help
+Usage: yamlresume validate [options] <resume-path>
+
+validate a resume against the YAMLResume schema
+
+Arguments:
+  resume-path  the resume file path
+
+Options:
+  -h, --help   display help for command
+```
+
+例如，对于以下简历：
+
+```yml lineNumbers
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp
+    url: https//ppresume.com/gallery
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layout:
+  typography:
+    fontSize: 13pt
+```
+
+`yamlresume validate` 将为您提供潜在错误列表，并提供清晰的位置信息
+
+```console
+$ yamlresume validate my-resume.yml
+invalid-resume.yml:9:12: warning: email is invalid.
+    email: hi@pp
+           ^
+invalid-resume.yml:19:11: warning: city should be 2 characters or more.
+    city: S
+          ^
+invalid-resume.yml:31:11: warning: courses should be 2 characters or more.
+        - D
+          ^
+invalid-resume.yml:40:15: warning: font size option is invalid, it must be one of the following: ["10pt", "11pt", "12pt"]
+    fontSize: 13pt
+              ^
+✖ Resume validation failed.
+```
+
+## Languages
+
+列出所有可用语言。语言代码遵循 [ISO 639 规范](https://www.iso.org/iso-639-language-code) 中的规范。您可以在 `layout.locale.language` 中指定语言代码以更改简历的语言。更改简历的语言将自动翻译所有固定术语。您可以在我们的 [内容 -> 多语言](/zh-cn/docs/content/multi-languages) 章节查看更多详细信息。
+
+```console
+$ yamlresume languages list
+
+| `layout.locale.language` | Language Name                   |
+| ------------------------ | ------------------------------- |
+| en                       | English                         |
+| zh-hans                  | Simplified Chinese              |
+| zh-hant-hk               | Traditional Chinese (Hong Kong) |
+| zh-hant-tw               | Traditional Chinese (Taiwan)    |
+| es                       | Spanish                         |
+```
+
+## Templates
+
+列出所有可用模板。您可以通过在 YAML 简历中设置 `layout.template` 来更改简历模板。更多详细信息请参见 [PPResume 模板](https://docs.ppresume.com/typesetting/templates)。
+
+```console
+$ yamlresume templates list
+
+| `layout.template` | Template Name    | Description                          |
+| ----------------- | ---------------- | ------------------------------------ |
+| moderncv-banking  | ModernCV Banking | ModernCV template with banking style |
+| moderncv-casual   | ModernCV Casual  | ModernCV template with casual style  |
+| moderncv-classic  | ModernCV Classic | ModernCV template with classic style |
+```

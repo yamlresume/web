@@ -1,0 +1,200 @@
+---
+title: 贡献指南
+---
+
+首先，感谢您考虑为 YAMLResume 做出贡献！正是像您这样的人让开源变得伟大。我们欢迎任何类型的贡献，不仅仅是代码。您可以帮助：
+
+- 报告错误
+- 讨论代码的当前状态
+- 提交修复
+- 提出新功能
+- 改进文档
+
+以下是一些特定工作的快捷方式：
+
+<Cards>
+  <Card
+    title="CLI"
+    href="./contributing/cli"
+    description="构建和测试 CLI"
+  />
+  <Card
+    title="Docker"
+    href="./contributing/docker"
+    description="Docker 自定义"
+  />
+  <Card
+    title="测试"
+    href="./contributing/test"
+    description="测试和质量保证"
+  />
+  <Card
+    title="新语言"
+    href="./contributing/new-language"
+    description="在 YAMLResume 中添加新语言支持。"
+  />
+</Cards>
+
+## 开始使用
+
+### 先决条件
+
+- [Node.js](https://nodejs.org/)（版本 >= 20，检查 `.nvmrc` 或 `package.json` engines 字段）
+- [pnpm](https://pnpm.io/)（版本 >= 10，检查 `package.json` packageManager 字段）
+- Git
+
+### 设置
+
+1. **Fork 仓库：** 在 [YAMLResume GitHub 页面](https://github.com/yamlresume/yamlresume) 点击 "Fork" 按钮。这会创建您自己的项目副本。
+
+2. **克隆您的 fork：**
+
+   ```bash
+   git clone https://github.com/<your-username>/yamlresume.git
+   cd yamlresume
+   ```
+
+3. **安装依赖：**
+
+   ```bash
+   pnpm install
+   ```
+
+   此命令为整个工作区安装所有必要的依赖。
+
+## 开发工作流
+
+### 构建包
+
+- 一次性构建所有包：
+
+  ```bash
+  pnpm build
+  ```
+
+- 构建所有包并监听变化：
+
+  ```bash
+  pnpm build:watch
+  ```
+
+- 生产构建（包括类型定义、压缩）：
+
+  ```bash
+  pnpm build:prod
+  ```
+
+### 运行测试
+
+- 运行所有包的测试：
+
+  ```bash
+  pnpm test
+  ```
+
+- 在监听模式下运行测试：
+
+  ```bash
+  pnpm test:watch
+  ```
+
+- 运行测试并生成覆盖率报告：
+
+  ```bash
+  pnpm test:cov
+  ```
+
+查看[测试](./contributing/test)了解更多详情和用例。
+
+### 代码格式化和代码检查
+
+我们使用 [Biome](https://biomejs.dev/) 进行代码格式化和代码检查。在提交之前，确保您的代码符合项目的样式指南。
+
+- 检查并自动修复问题：
+
+  ```bash
+  pnpm check
+  ```
+
+- 运行检查但不应用修复（对 CI 有用）：
+
+  ```bash
+  pnpm check:ci
+  ```
+
+我们还使用 [addlicense](https://github.com/google/addlicense) 确保源文件具有正确的许可证头。您需要安装它才能运行以下命令。
+
+- 添加缺失的许可证头：
+
+  ```bash
+  pnpm license:add
+  ```
+
+- 检查缺失的许可证头：
+
+  ```bash
+  pnpm license:check
+  ```
+
+## 提交贡献
+
+### 报告问题
+
+如果您发现错误或有功能请求，请在 GitHub 上[打开一个问题](https://github.com/yamlresume/yamlresume/issues)。提供尽可能多的详细信息，包括：
+
+- 清晰描述性的标题。
+- 重现错误的步骤（如果适用）。
+- 预期行为和实际行为。
+- 截图或代码片段（如果有帮助）。
+- 您的环境详情（操作系统、Node 版本、pnpm 版本）。
+
+###  Pull Request（PR）
+
+我们喜欢 Pull Request！以下是快速指南：
+
+1. **创建分支：** 从 `main` 分支开始，创建描述性的分支名称（例如，`fix/login-bug`、`feat/new-template-option`）。
+
+   ```bash
+   git checkout main
+   git pull origin main
+   git checkout -b your-branch-name
+   ```
+
+2. **进行更改：** 编写您的代码或文档改进。
+
+3. **测试您的更改：** 确保所有测试通过：
+
+   ```bash
+   pnpm test
+   ```
+
+4. **检查代码质量：** 确保格式化和代码检查通过：
+
+   ```bash
+   pnpm check
+   ```
+
+5. **提交您的更改：** 我们使用[约定式提交](https://www.conventionalcommits.org/)进行提交消息，由 `commitlint` 强制执行。这有助于自动化变更日志和版本控制。典型的提交消息看起来像 `feat: add new command` 或 `fix: resolve issue with parsing`。如果需要，您可以使用 `pnpm commitlint` 帮助格式化您的消息，或者如果您已安装，可以使用 [git cz](https://github.com/commitizen/cz-cli) 等工具。
+
+   ```bash
+   git add .
+   git commit -m "feat: your descriptive commit message"
+   ```
+
+6. **推送您的分支：**
+
+   ```bash
+   git push origin your-branch-name
+   ```
+
+7. **打开 Pull Request：** 转到 GitHub 上的 YAMLResume 仓库，点击"New pull request"按钮。将您的分支与 `main` 分支进行比较。
+
+8. **描述您的 PR：** 提供您所做更改的清晰描述。链接任何相关的问题（例如，"Closes #123"）。
+
+9. **审查：** 维护者将审查您的 PR。解决任何反馈或请求的更改。
+
+10. **合并：** 一旦获得批准，您的 PR 将被合并。感谢您的贡献！
+
+## 许可证
+
+通过为 YAMLResume 做出贡献，您同意您的贡献将根据其[MIT 许可证](LICENSE)进行许可。

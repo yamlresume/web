@@ -1,7 +1,0 @@
-export * from './HeroSection'
-export * from './DockerDemoSection'
-export * from './FeaturesSection'
-export * from './Footer'
-export * from './TypographyBackground'
-export * from './FaqSection'
-export * from './NewsChannel'

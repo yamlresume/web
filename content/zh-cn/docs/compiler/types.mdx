@@ -1,0 +1,416 @@
+---
+title: 类型
+---
+
+本文档概述了定义 YAMLResume 简历结构的 TypeScript 类型。作为 TypeScript 项目，YAMLResume 采用静态类型来确保数据一致性。此文件提供了用于表示简历信息的核心数据结构概述，包括个人详细信息、教育、经验、技能等。
+
+您可以查看 [types.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types.ts) 了解真实来源的详细信息。
+
+理解这些类型对于想要自定义或扩展 YAMLResume 功能的贡献者和开发者至关重要。
+
+本文档为寻求创建有效 YAMLResume 的用户提供权威参考，阐明可选和必填字段之间的区别。为了确保在 YAMLResume 中成功编译，最小简历必须包含以下基本字段：
+
+- `content.basics.name`
+- `education[number].area`
+- `education[number].degree`
+- `education[number].institution`
+- `education[number].startDate`
+
+因此，理论上最小可行简历如下所示：
+
+```yml lineNumbers
+content:
+  basics:
+    name: Xiao Hanyu
+  education:
+    - area: Computer Science and Technology
+      degree: Bachelor
+      institution: Zhejiang University
+      startDate: Sep, 2007
+```
+
+## Resume
+
+定义整体简历结构，包括内容和布局。
+
+| 属性      | 类型                              | 必需 | 描述                                          |
+| --------- | --------------------------------- | -------- | ---------------------------------------------------- |
+| `content` | [`ResumeContent`](#resumecontent) | ✅       | 定义整个简历内容的结构。 |
+| `layout?` | [`ResumeLayout`](#resumelayout)   | ⬜       | 定义整体布局配置。            |
+
+以下是简历结构的高级图表：
+
+<Mermaid chart='
+flowchart LR
+  A[Resume]
+  B[ResumeLayout]
+  C[ResumeContent]
+
+subgraph Layout
+direction TB
+B1[locale]
+B2[margins]
+B3[page]
+B4[template]
+B5[typography]
+end
+
+subgraph Content
+direction TB
+C1[basics]
+C2["education[]"]
+C3[location]
+C4[profiles]
+C5["work[]"]
+C6["skills[]"]
+C7["languages[]"]
+C8["..."]
+end
+
+A --> B
+A --> C
+B --> B1
+B --> B2
+B --> B3
+B --> B4
+B --> B5
+C --> C1
+C --> C2
+C --> C3
+C --> C4
+C --> C5
+C --> C6
+C --> C7
+C --> C8
+'/>
+
+### ResumeContent
+
+定义整个简历内容的结构。
+
+| 属性            | 类型                                    | 必需 | 描述                                                          |
+| --------------- | --------------------------------------- | -------- | -------------------------------------------------------------------- |
+| `basics`        | [`BasicsItem`](#basicsitem)             | ✅       | 表示核心个人和联系信息。                |
+| `education`     | [`EducationItem[]`](#educationitem)     | ✅       | 包含教育经历集合。                    |
+| `awards?`       | [`AwardItem[]`](#awarditem)             | ⬜       | 包含奖项和认可集合。                    |
+| `certificates?` | [`CertificateItem[]`](#certificateitem) | ⬜       | 包含认证和证书集合。             |
+| `interests?`    | [`InterestItem[]`](#interestitem)       | ⬜       | 包含兴趣、爱好或个人活动集合。 |
+| `languages?`    | [`LanguageItem[]`](#languageitem)       | ⬜       | 包含语言能力集合。                     |
+| `location?`     | [`LocationItem`](#locationitem)         | ⬜       | 包含位置信息。                                       |
+| `projects?`     | [`ProjectItem[]`](#projectitem)         | ⬜       | 包含项目集合。                                   |
+| `profiles?`     | [`ProfileItem[]`](#profileitem)         | ⬜       | 包含在线个人资料集合。                            |
+| `publications?` | [`PublicationItem[]`](#publicationitem) | ⬜       | 包含出版物集合。                               |
+| `references?`   | [`ReferenceItem[]`](#referenceitem)     | ⬜       | 包含推荐人集合。                                 |
+| `skills?`       | [`SkillItem[]`](#skillitem)             | ⬜       | 包含技能集合。                                     |
+| `volunteer?`    | [`VolunteerItem[]`](#volunteeritem)     | ⬜       | 包含志愿者经历集合。                      |
+| `work?`         | [`WorkItem[]`](#workitem)               | ⬜       | 包含工作经历和就业历史集合。    |
+
+#### AwardItem
+
+表示获得的单个奖项、荣誉或认可。
+
+| 属性       | 类型     | 必需 | 描述                                                 |
+| ---------- | -------- | -------- | ----------------------------------------------------------- |
+| `awarder`  | `string` | ✅       | 颁发奖项的组织或实体。             |
+| `title`    | `string` | ✅       | 奖项的名称或标题。                             |
+| `date?`    | `string` | ⬜       | 获奖日期（例如："2020"、"Oct 2020"）。 |
+| `summary?` | `string` | ⬜       | 关于奖项的简短描述或详细信息。             |
+
+#### BasicsItem
+
+表示核心个人和联系信息。
+
+| 属性        | 类型     | 必需 | 描述                                                         |
+| ----------- | -------- | -------- | ------------------------------------------------------------------- |
+| `name`      | `string` | ✅       | 全名。                                                          |
+| `email?`    | `string` | ⬜       | 电子邮件地址。                                                      |
+| `headline?` | `string` | ⬜       | 简短的专业标题或职位（例如："软件工程师"）。 |
+| `phone?`    | `string` | ⬜       | 电话号码。                                                       |
+| `summary?`  | `string` | ⬜       | 专业摘要或目标声明。                      |
+| `url?`      | `string` | ⬜       | 个人网站或作品集 URL。                                  |
+
+#### CertificateItem
+
+表示单个认证、证书或专业资格。
+
+| 属性     | 类型     | 必需 | 描述                                                       |
+| -------- | -------- | -------- | ----------------------------------------------------------------- |
+| `issuer` | `string` | ✅       | 颁发证书的组织。                     |
+| `name`   | `string` | ✅       | 证书名称。                                      |
+| `date?`  | `string` | ⬜       | 获得证书的日期（例如："2021"、"Nov 2021"）。 |
+| `url?`   | `string` | ⬜       | 与证书相关的 URL（例如：验证链接）。         |
+
+#### EducationItem
+
+表示单个教育经历或学位课程。
+
+| 属性          | 类型                | 必需 | 描述                                                            |
+| ------------- | ------------------- | -------- | ---------------------------------------------------------------------- |
+| `area`        | `string`            | ✅       | 学习领域（例如："计算机科学"）。                              |
+| `degree`      | [`Degree`](#degree) | ✅       | 获得的学位类型。                                           |
+| `institution` | `string`            | ✅       | 机构名称。                                               |
+| `startDate`   | `string`            | ✅       | 学习开始日期（例如："2016"、"Sep 2016"）。                        |
+| `courses?`    | `string[]`          | ⬜       | 所修课程列表。                                                 |
+| `endDate?`    | `string`            | ⬜       | 学习结束日期（例如："2020"、"May 2020"），空值表示"现在"。 |
+| `summary?`    | `string`            | ⬜       | 成就或详细信息的描述。                             |
+| `score?`      | `string`            | ⬜       | GPA 或学术成绩。                                                 |
+| `url?`        | `string`            | ⬜       | 与机构或学位相关的 URL。                              |
+
+#### InterestItem
+
+表示单个兴趣、爱好或个人活动。
+
+| 属性        | 类型       | 必需 | 描述                                                     |
+| ----------- | ---------- | -------- | --------------------------------------------------------------- |
+| `name`      | `string`   | ✅       | 兴趣类别名称（例如："阅读"、"摄影"）。 |
+| `keywords?` | `string[]` | ⬜       | 与兴趣相关的关键词。                               |
+
+#### LanguageItem
+
+表示单个语言能力项目。
+
+| 属性        | 类型                    | 必需 | 描述                                                         |
+| ----------- | ----------------------- | -------- | ------------------------------------------------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅       | 语言熟练程度。                           |
+| `language`  | [`Language`](#language) | ✅       | 语言。                                                       |
+| `keywords?` | `string[]`              | ⬜       | 与语言技能相关的特定关键词（例如："翻译"）。 |
+
+#### LocationItem
+
+表示位置和地址信息。
+
+| 属性          | 类型                  | 必需 | 描述                 |
+| ------------- | --------------------- | -------- | --------------------------- |
+| `city`        | `string`              | ✅       | 城市名称。                  |
+| `address?`    | `string`              | ⬜       | 街道地址。             |
+| `country?`    | [`Country`](#country) | ⬜       | 国家代码或名称。       |
+| `postalCode?` | `string`              | ⬜       | 邮政编码。         |
+| `region?`     | `string`              | ⬜       | 州、省或地区。 |
+
+#### ProfileItem
+
+表示单个在线个人资料或社交媒体存在。
+
+| 属性       | 类型                  | 必需 | 描述                          |
+| ---------- | --------------------- | -------- | ------------------------------------ |
+| `network`  | [`Network`](#network) | ✅       | 网络或平台名称。 |
+| `username` | `string`              | ✅       | 平台上的用户名。        |
+| `url?`     | `string`              | ⬜       | 个人资料的 URL。              |
+
+#### ProjectItem
+
+表示单个项目、作品集作品或技术工作。
+
+| 属性           | 类型       | 必需 | 描述                                               |
+| -------------- | ---------- | -------- | --------------------------------------------------------- |
+| `name`         | `string`   | ✅       | 项目名称。                                      |
+| `startDate`    | `string`   | ✅       | 项目开始日期（例如："2021"、"Jan 2021"）。     |
+| `summary`      | `string`   | ✅       | 项目的详细成就。                 |
+| `description?` | `string`   | ⬜       | 项目描述。                               |
+| `endDate?`     | `string`   | ⬜       | 项目结束日期（例如："2022"、"Jul 2022"）。       |
+| `keywords?`    | `string[]` | ⬜       | 项目中使用的关键词或技术。             |
+| `url?`         | `string`   | ⬜       | 与项目相关的 URL（例如：仓库、实时演示）。 |
+
+#### PublicationItem
+
+表示单个出版物、研究工作或学术论文。
+
+| 属性           | 类型     | 必需 | 描述                                       |
+| -------------- | -------- | -------- | ------------------------------------------------- |
+| `name`         | `string` | ✅       | 出版物的名称或标题。                 |
+| `publisher`    | `string` | ✅       | 作品的出版商。                            |
+| `releaseDate?` | `string` | ⬜       | 发布日期（例如："2023"、"Mar 2023"）。   |
+| `summary?`     | `string` | ⬜       | 出版物的摘要或摘要。           |
+| `url?`         | `string` | ⬜       | 与出版物相关的 URL（例如：DOI、链接）。 |
+
+#### ReferenceItem
+
+表示单个专业推荐人或推荐。
+
+| 属性            | 类型     | 必需 | 描述                                             |
+| --------------- | -------- | -------- | ------------------------------------------------------- |
+| `name`          | `string` | ✅       | 推荐人姓名。                                  |
+| `summary`       | `string` | ✅       | 关于推荐人的简短说明。                       |
+| `email?`        | `string` | ⬜       | 推荐人的电子邮件地址。                         |
+| `phone?`        | `string` | ⬜       | 推荐人的电话号码。                          |
+| `relationship?` | `string` | ⬜       | 与推荐人的关系（例如："前经理"）。 |
+
+#### SkillItem
+
+表示单个技能、能力或技术能力。
+
+| 属性        | 类型              | 必需 | 描述                                             |
+| ----------- | ----------------- | -------- | ------------------------------------------------------- |
+| `level`     | [`Level`](#level) | ✅       | 技能熟练程度。                         |
+| `name`      | `string`          | ✅       | 技能名称。                                      |
+| `keywords?` | `string[]`        | ⬜       | 与技能相关的特定关键词或技术。 |
+
+#### VolunteerItem
+
+表示单个志愿者经历或社区服务。
+
+| 属性           | 类型     | 必需 | 描述                                                  |
+| -------------- | -------- | -------- | ------------------------------------------------------------ |
+| `organization` | `string` | ✅       | 组织名称。                                    |
+| `position`     | `string` | ✅       | 担任的角色或职位。                                       |
+| `startDate`    | `string` | ✅       | 志愿者工作开始日期（例如："2019"、"Jun 2019"）。 |
+| `summary`      | `string` | ✅       | 职责或成就摘要。                 |
+| `endDate?`     | `string` | ⬜       | 志愿者工作结束日期（例如："2020"、"Dec 2020"）。   |
+| `url?`         | `string` | ⬜       | 与组织或工作相关的 URL。                     |
+
+#### WorkItem
+
+表示单个工作经历或就业职位。
+
+| 属性        | 类型       | 必需 | 描述                                          |
+| ----------- | ---------- | -------- | ---------------------------------------------------- |
+| `name`      | `string`   | ✅       | 公司或雇主名称。                     |
+| `position`  | `string`   | ✅       | 职位或担任的职位。                          |
+| `startDate` | `string`   | ✅       | 就业开始日期（例如："2021"、"Apr 2021"）。 |
+| `summary`   | `string`   | ✅       | 职责和成就摘要。     |
+| `endDate?`  | `string`   | ⬜       | 就业结束日期（例如："2023"、"Aug 2023"）。   |
+| `keywords?` | `string[]` | ⬜       | 与角色或使用的技术相关的关键词。   |
+| `url?`      | `string`   | ⬜       | 与公司或工作相关的 URL。                  |
+
+### ResumeLayout
+
+定义整体布局配置。
+
+| 属性          | 类型                                                | 必需 | 描述                                                        |
+| ------------- | --------------------------------------------------- | -------- | ------------------------------------------------------------------ |
+| `locale?`     | [`ResumeLayoutLocale`](#resumelayoutlocale)         | ⬜       | 定义国际化和本地化的区域设置。 |
+| `margins?`    | [`ResumeLayoutMargins`](#resumelayoutmargins)       | ⬜       | 定义文档布局的页边距设置。                  |
+| `page?`       | [`ResumeLayoutPage`](#resumelayoutpage)             | ⬜       | 定义文档演示的页面级设置。             |
+| `template?`   | [`Template`](#template)                             | ⬜       | 定义选定的模板。                                     |
+| `typography?` | [`ResumeLayoutTypography`](#resumelayouttypography) | ⬜       | 定义文档格式的排版设置。               |
+| `latex?`      | [`ResumeLayoutLaTeX`](#resumelayoutlatex)           | ⬜       | 定义 LaTeX 特定配置选项。                      |
+
+#### ResumeLayoutLocale
+
+定义国际化和本地化的区域设置。
+
+| 属性        | 类型                                | 必需 | 描述                                                      |
+| ----------- | ----------------------------------- | -------- | ---------------------------------------------------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | 简历内容和模板术语的选定语言。 |
+
+#### ResumeLayoutMargins
+
+定义文档布局的页边距设置。
+
+| 属性      | 类型     | 必需 | 描述                          |
+| --------- | -------- | -------- | ------------------------------------ |
+| `top?`    | `string` | ⬜       | 上边距值（例如："2.5cm"）。    |
+| `bottom?` | `string` | ⬜       | 下边距值（例如："2.5cm"）。 |
+| `left?`   | `string` | ⬜       | 左边距值（例如："1.5cm"）。   |
+| `right?`  | `string` | ⬜       | 右边距值（例如："1.5cm"）。  |
+
+#### ResumeLayoutPage
+
+定义文档演示的页面级设置。
+
+| 属性               | 类型      | 必需 | 描述                      |
+| ------------------ | --------- | -------- | -------------------------------- |
+| `showPageNumbers?` | `boolean` | ⬜       | 是否显示页码。 |
+
+#### ResumeLayoutTypography
+
+定义文档格式的排版设置。
+
+| 属性        | 类型     | 必需 | 描述                                             |
+| ----------- | -------- | -------- | ------------------------------------------------------- |
+| `fontSize?` | `string` | ⬜       | 文档的基础字体大小（例如："10pt"、"11pt"）。 |
+
+#### ResumeLayoutLaTeX
+
+定义 LaTeX 特定配置选项。
+
+| 属性        | 类型                            | 必需 | 描述                            |
+| ----------- | ------------------------------- | -------- | -------------------------------------- |
+| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | LaTeX fontspec 包配置。 |
+
+## 枚举类型
+
+### Country
+
+世界上所有可能国家和地区的联合类型。
+
+### Degree
+
+所有可能学位的联合类型。
+
+- `Associate`
+- `Bachelor`
+- `Diploma`
+- `Doctor`
+- `High School`
+- `Master`
+- `Middle School`
+
+### Fluency
+
+所有可能语言熟练程度的联合类型。
+
+- `Elementary Proficiency`
+- `Full Professional Proficiency`
+- `Limited Working Proficiency`
+- `Minimum Professional Proficiency`
+- `Native or Bilingual Proficiency`
+
+### Language
+
+所有支持语言的联合类型。
+
+### Level
+
+所有可能技能熟练程度的联合类型。
+
+- `Advanced`
+- `Beginner`
+- `Expert`
+- `Intermediate`
+- `Master`
+- `Novice`
+
+### Network
+
+所有可能社交网络选项的联合类型。
+
+### Template
+
+所有可能模板选项的联合类型。
+
+另请参阅：[模板](https://yamlresume.dev/docs/layout/templates)
+
+- `moderncv-banking`
+- `moderncv-casual`
+- `moderncv-classic`
+
+### LocaleLanguage
+
+所有可能区域语言的联合类型。
+
+另请参阅：[多语言](https://yamlresume.dev/docs/content/multi-languages)
+
+- `en`
+- `es`
+- `zh-hans`
+- `zh-hant-hk`
+- `zh-hant-tw`
+
+### FontspecNumbers
+
+所有可能 latex fontspec 数字选项的联合类型。
+
+- `Auto` - 允许根据选定的 `LocaleLanguage` 自动确定样式（默认）
+- `Lining` - 标准衬线数字（CJK 语言的默认值）
+- `OldStyle` - 不同高度的旧式数字（拉丁语言的默认值）
+
+### FontSize
+
+所有可能字体大小选项的联合类型。
+
+目前只支持 3 个选项：
+
+- `10pt` - 10pt 字体大小（默认）
+- `11pt` - 11pt 字体大小
+- `12pt` - 12pt 字体大小

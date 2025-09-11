@@ -1,14 +1,29 @@
 import { siteConfig } from '@/config/site'
-import { getLLMText } from '@/lib/llm'
-import { blogSource, docsSource } from '@/lib/source'
+import { getLLMText } from '@/lib'
+import {
+  blogSource,
+  blogSourceZhCN,
+  blogSourceZhTW,
+  docsSource,
+  docsSourceZhCN,
+  docsSourceZhTW,
+} from '@/lib'
 
 // cached forever
 export const revalidate = false
 
 export async function GET() {
-  const scan = [...docsSource.getPages(), ...blogSource.getPages()].map(
-    getLLMText
-  )
+  // Get all pages from all locales
+  const allPages = [
+    ...docsSource.getPages(),
+    ...docsSourceZhCN.getPages(),
+    ...docsSourceZhTW.getPages(),
+    ...blogSource.getPages(),
+    ...blogSourceZhCN.getPages(),
+    ...blogSourceZhTW.getPages(),
+  ]
+
+  const scan = allPages.map(getLLMText)
   const scanned = await Promise.all(scan)
 
   const front = `# YAMLResume: Resumes as Code in YAML

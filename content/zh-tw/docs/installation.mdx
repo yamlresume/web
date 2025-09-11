@@ -1,0 +1,424 @@
+---
+title: 安裝
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+YAMLResume 是一個 Node.js 工具，在底層，它將您的履歷從 YAML 格式轉換為 LaTeX 代碼，然後調用 LaTeX 排版引擎來編譯生成的 LaTeX 代碼為 PDF。此外，為了獲得最佳的 PDF 輸出，我們還建議安裝一些字型。簡而言之，您需要安裝以下內容才能開始使用 YAMLResume：
+
+- Node.js
+- [yamlresume 套件](https://www.npmjs.com/package/yamlresume)
+- 排版引擎
+- [可選] 一些字型
+
+這聽起來有點複雜，但不用擔心，我們會支援您。
+
+## Docker 使用者
+
+如果您是 docker 使用者，您很幸運，我們為您提供了一個 [docker 鏡像](https://hub.docker.com/r/yamlresume/yamlresume)。這個鏡像包含了所有預打包的內容，包括：
+
+- [Node.js](/zh-tw/docs/installation#nodejs)
+- [yamlresume CLI](/zh-tw/docs/installation#yamlresume)
+- [XeTeX](/zh-tw/docs/installation#xetex)
+- [一些推薦的字型](/zh-tw/docs/installation#font)
+
+您可以使用以下命令立即建立新履歷：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+<Callout title="Docker 魔法是如何工作的？">
+這個命令將在您的當前目錄中建立一個名為 `my-resume.yml` 的新履歷。步驟：
+
+1. `docker run ... yamlresume/yamlresume` - 從 `yamlresume/yamlresume` 鏡像運行新容器，如果此鏡像在您的本地機器中不存在，它將從 [Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume) 拉取。
+2. `--rm` - 在退出時自動刪除容器
+3. `-v $(pwd):/home/yamlresume` - 將當前目錄 (`$(pwd)`) 掛載到容器中的 `/home/yamlresume`，允許容器存取本地檔案
+4. `new my-resume.yml` - 運行 yamlresume CLI [new](/zh-tw/docs/cli#new) 子命令來建立檔案名稱為 `my-resume.yml` 的新履歷
+</Callout>
+
+相應地編輯 `my-resume.yml`，然後從 yaml 構建履歷到 pdf：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+基本上，您可以以這種方式調用所有 `yamlresume` [CLI 子命令](/cli)——只需在 `yamlresume/yamlresume` 後附加子命令，然後按照相應的使用指南進行操作。
+
+這裡的 `-v` 標誌非常重要，因為它將當前目錄 (`$(pwd)`) 掛載到容器中的 `/home/yamlresume`，允許本地目錄和容器之間進行雙向檔案同步。
+
+<Callout title="Github 鏡像">
+如果您在從 [Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume) 拉取 `yamlresume/yamlresume` 鏡像時遇到問題，不用擔心，我們為您提供了 [github 鏡像](https://github.com/yamlresume/yamlresume/pkgs/container/yamlresume)。
+
+您可以通過以下方式獲取 ghcr 鏡像：
+
+```sh
+docker pull ghcr.io/yamlresume/yamlresume
+```
+</Callout>
+
+### 權限問題
+
+有時您在運行 Docker 容器時可能會遇到[權限問題](https://github.com/yamlresume/yamlresume/issues/24)，因為 `yamlresume/yamlresume` 鏡像是使用 `USER yamlresume` 指令構建的，預設情況下以較少的權限運行。
+
+解決此問題有兩種方法：
+
+1. 使用您的主機使用者名稱/群組 ID 來運行容器：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume -u $(id -u):$(id -g) yamlresume/yamlresume new my-resume.yml
+```
+
+這是運行容器的推薦方式。只要您的主機使用者有存取當前目錄的權限，您就可以使用您的主機使用者名稱/群組 ID 運行容器。
+
+2. 使用 `-u root` 以 root 存取權限運行容器：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume -u root yamlresume/yamlresume new my-resume.yml
+```
+
+這是最不推薦的運行容器的方式。不推薦這樣做因為它可能導致安全問題，所以您只應該在確信自己在做什麼的情況下才這樣做。
+
+最後但同樣重要的是，如果您在 GitHub Actions 中運行 `yamlresume` Docker 容器，那麼根據 [GitHub 的文件](https://docs.github.com/en/actions/reference/runners/github-hosted-runners#docker-container-filesystem)，可能需要 root 存取權限：
+
+> 注意：GitHub Actions 必須由預設的 Docker 使用者 (root) 運行。確保您的 Dockerfile 不設定 USER 指令，否則您將無法存取 GITHUB_WORKSPACE。
+
+參考：[Understanding the Docker USER Instruction](https://www.docker.com/blog/understanding-the-docker-user-instruction/)
+
+## 非 Docker 使用者
+
+如果您不是 docker 使用者，請按照下面的相應說明根據您的作業系統安裝 yamlresume CLI 和所有必要的依賴項。在撰寫本文時，我們的指南涵蓋了 macOS、Windows 和一些 Linux 發行版（Ubuntu 和基於 RHEL 的發行版）。
+
+### Node.js
+
+需要 Node.js 20.x 或更新版本。
+
+<Callout title="為什麼需要 Node.js 20.x 或更新版本？">
+理論上 `yamlresume` 應該可以與 Node.js 18 一起工作，但是強烈建議使用 Node.js 20 或更新版本，因為 Node.js 18 LTS 計劃在 [2025 年 4 月 30 日](https://nodejs.org/en/blog/release/v18.20.8) 到達生命週期結束。
+</Callout>
+
+在不同的作業系統上可能有 100 多種安裝 Node.js 的方法，您可以查看官方的 [Node.js 下載](https://nodejs.org/en/download) 來開始。
+
+我們建議使用[套件管理器](https://nodejs.org/en/download/package-manager/all)來安裝 Node.js。
+
+<Tabs groupId='node.js' persist items={['macOS', 'Windows', 'Linux']}>
+<Tab value="macOS">
+對於 [Homebrew](https://brew.sh/) 使用者：
+
+```sh
+brew install node
+```
+</Tab>
+
+<Tab value="Windows">
+對於 [Chocolatey](https://chocolatey.org/) 使用者：
+
+```sh
+choco install nodejs.install
+```
+</Tab>
+
+<Tab value="Linux">
+<Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
+<Tab value="Ubuntu">
+對於 Ubuntu 24.10 或更新版本：
+
+```sh
+sudo apt install nodejs
+```
+
+對於 Ubuntu 24.04 或更舊版本，請查看 [NodeSource](https://downloads.nodesource.com/#debian) 來獲取 Node.js 20 或更新版本。
+</Tab>
+
+<Tab value="RHEL">
+對於基於 RHEL 的 linux，如 Fedora、AlmaLinux、Rocky Linux 等：
+
+```sh
+sudo dnf install nodejs
+```
+</Tab>
+</Tabs>
+</Tab>
+</Tabs>
+
+### YAMLResume CLI
+
+安裝 `yamlresume` 非常簡單。您可以使用您喜歡的 Node.js 套件管理器來安裝它：
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```console tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+</Tabs>
+
+驗證 `yamlresume` 是否安裝成功：
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+如果您只是想試用 `yamlresume` 而不安裝它，您可以使用
+`npx`、`pnpx` 或其他類似工具：
+
+<Tabs groupId='package-manager' persist items={['npx', 'yarn', 'pnpx', 'bun']}>
+```console tab="npx"
+npx yamlresume help
+```
+```console tab="yarn"
+yarn dlx yamlresume help
+```
+
+```console tab="pnpx"
+pnpx yamlresume help
+```
+
+```console tab="bun"
+bun exec yamlresume help
+```
+</Tabs>
+
+### 排版引擎
+
+在底層，`yamlresume` 完成編譯器的工作，將 YAML 履歷解析為 [AST](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/ast.ts)，然後[將 AST 轉換為 LaTeX 代碼](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/codegen/latex.ts)。
+
+作為一個小型編譯器，`yamlresume` 依賴排版引擎來編譯生成的 LaTeX 代碼為 PDF。因此，您必須首先安裝排版引擎，然後才能使用 `yamlresume` 生成履歷 PDF。
+
+YAMLResume 目前支援兩個排版引擎：[XeTeX](#xetex) 和
+[Tectonic](#tectonic)。
+
+<Callout title="為什麼選擇 LaTeX？">
+  在撰寫本文時，[LaTeX](https://www.latex-project.org/) 仍然是
+  生成專業外觀 PDF 的最佳排版引擎選擇。
+  [Typst](https://typst.app/) 是一個很好的替代品，但它仍然處於
+  早期階段，其 CJK 支援還不成熟，不適合生產使用。
+  之前我寫了一篇文章[關於排版引擎](https://blog.ppresume.com/posts/on-typesetting-engines)，解釋了我在創立 [PPResume](https://ppresume.com) 時為什麼選擇 LaTeX 而不是其他排版引擎的原因。
+</Callout>
+
+#### XeTeX
+
+[XeTeX](https://tug.org/xetex/) 是一個使用 [Unicode](https://en.wikipedia.org/wiki/Unicode) 並支援現代字型技術（如 [OpenType](https://en.wikipedia.org/wiki/OpenType)、[Graphite](https://fonts.adobe.com/fonts/graphite) 和 [Apple Advanced Typography (AAT)](https://en.wikipedia.org/wiki/Apple_Advanced_Typography)）的 [TeX](https://en.wikipedia.org/wiki/TeX) 排版引擎。
+
+它是一個非常成熟、穩定的排版引擎，被許多學術和科學人員廣泛使用。
+
+<Tabs groupId='os' persist items={['macOS', 'Windows', 'Linux']}>
+<Tab value="macOS">
+最簡單的方法是安裝 **MacTeX** 發行版。
+
+它包括 XeTeX 以及許多其他與 TeX 相關的程式和套件。您可以從 [MacTeX 網站](https://www.tug.org/mactex/) 下載它，或通過 homebrew 安裝：
+
+```sh
+brew install mactex
+```
+</Tab>
+
+<Tab value='Windows'>
+[MiKTeX 發行版](https://miktex.org) 是 Windows 的熱門選擇，包括 XeTeX。您可以從 [MiKTeX 網站](https://miktex.org/download) 下載它。
+
+或者，您可以為 Windows 安裝 **TeX Live**，它也包括 XeTeX。從 [TeX Live 網站](https://www.tug.org/texlive/acquire-netinstall.html) 下載。
+</Tab>
+
+<Tab value="Linux">
+大多數 Linux 發行版通過其套件管理器提供 TeX Live。XeTeX 通常包含在 `texlive-xetex` 套件或更大的 `texlive-full` 元套件中。
+
+<Tabs items={['Ubuntu', 'RHEL']}>
+<Tab value="Ubuntu">
+對於 Ubuntu，如果您的網路良好並且有大約 10GB 的磁碟空間，您可以安裝完整的 texlive 發行版：
+
+```sh
+sudo apt install texlive-full
+```
+
+否則，您可以安裝最低要求的套件：
+
+```sh
+sudo apt install texlive-xetex texlive-fonts-extra texlive-lang-all
+```
+</Tab>
+
+<Tab value="RHEL">
+對於基於 RHEL 的 linux，如 Fedora、AlmaLinux、Rocky Linux，如果您有足夠的磁碟空間和良好的網路，您可以安裝完整的 TeX Live 發行版：
+
+```sh
+sudo dnf install texlive-scheme-full
+```
+
+否則您可以安裝最低要求的套件：
+
+```sh
+sudo dnf install \
+  texlive-scheme-medium \
+  texlive-moderncv \
+  texlive-ctex \
+  texlive-academicons
+```
+</Tab>
+</Tabs>
+
+或者，您始終可以直接從 [TeX Live 網站](https://www.tug.org/texlive/acquire-netinstall.html) 使用他們的安裝程式安裝 TeX Live，這適用於不同的 Linux 發行版。
+</Tab>
+</Tabs>
+
+驗證 XeTeX 是否安裝成功：
+
+```console
+$ xetex -v
+XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+kpathsea version 6.3.4
+Copyright 2022 SIL International, Jonathan Kew and Khaled Hosny.
+There is NO warranty.  Redistribution of this software is
+covered by the terms of both the XeTeX copyright and
+the Lesser GNU General Public License.
+For more information about these matters, see the file
+named COPYING and the XeTeX source.
+Primary author of XeTeX: Jonathan Kew.
+Compiled with ICU version 70.1; using 70.1
+Compiled with zlib version 1.2.11; using 1.2.11
+Compiled with FreeType2 version 2.11.1; using 2.11.1
+Compiled with Graphite2 version 1.3.14; using 1.3.14
+Compiled with HarfBuzz version 3.4.0; using 3.4.0
+Compiled with libpng version 1.6.37; using 1.6.37
+Compiled with pplib version v2.05 less toxic i hope
+Using Mac OS X Core Text and Cocoa frameworks
+```
+
+#### Tectonic
+
+[Tectonic](https://tectonic-typesetting.github.io) 是一個現代化、完整、自包含的 [TeX](https://en.wikipedia.org/wiki/TeX)/[LaTeX](https://www.latex-project.org/) 引擎，由 [XeTeX](https://tug.org/xetex/) 和 [TeXLive](https://www.tug.org/texlive/) 提供支援。
+
+完整的 TeX Live 發行版通常佔用幾 GB 的磁碟空間，而 tectonic 的初始安裝只佔用 10+ MB。它自動下載支援檔案，所以您不必安裝完整的 LaTeX 發行版。當您開始使用新的 LaTeX 套件時，Tectonic 只需下載它需要的檔案並繼續處理。
+
+Tectonic 提供官方[安裝指南](https://tectonic-typesetting.github.io/en-US/install.html)，但這只會將 tectonic 放在您運行安裝命令的目錄中，`yamlresume` 需要在您的 `$PATH` 中有一個全域的 `tectonic` 命令，所以您需要通过一些 shell 技巧自己解決這個問題。
+
+如果您是 macOS 使用者，您很幸運，因為 Homebrew 提供預構建的套件：
+
+```sh
+brew install tectonic
+```
+
+根據我的經驗，tectonic 與官方 XeTeX 仍然存在一些小的相容性問題，所以如果您不介意完整 TeX Live 發行版的長下載時間，XeTeX 仍然是這裡的推薦選擇。
+
+### 字型
+
+#### Linux Libertine
+
+YAMLResume 採用 [Linux Libertine](https://www.dafont.com/linux-libertine.font) 作為拉丁字元的預設字型。強烈建議安裝它以獲得最佳的 PDF 輸出。
+
+<Tabs groupId='font-os' persist items={['macOS', 'Windows', 'Linux']}>
+<Tab value="macOS">
+對於 Homebrew 使用者：
+
+```sh
+brew install font-linux-libertine
+```
+
+否則您可以從網站下載最新版本的 [Linux Libertine](https://www.dafont.com/linux-libertine.font) 并使用 macOS 的 [Font Book](https://support.apple.com/en-gb/guide/font-book/fntbk1000/mac) 安裝字型。
+</Tab>
+
+<Tab value="Windows">
+從網站下載最新版本的 [Linux Libertine](https://www.dafont.com/linux-libertine.font) 並解壓縮檔案並安裝字型。
+</Tab>
+
+<Tab value="Linux">
+<Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
+<Tab value="Ubuntu">
+對於 Ubuntu 使用者，Linux Libertine 字型已包含在 `texlive-fonts-extra` 套件中，但是，如果您想手動安裝它，您可以這樣做：
+
+```sh
+sudo apt install fonts-linuxlibertine
+```
+</Tab>
+
+<Tab value="RHEL">
+對於基於 RHEL 的 linux，如 Fedora、AlmaLinux、Rocky Linux，您可以通過以下方式安裝 Linux Libertine 字型：
+
+```sh
+sudo dnf install linux-libertine-fonts
+```
+</Tab>
+</Tabs>
+</Tab>
+</Tabs>
+
+#### Google Noto
+
+如果您需要 CJK 履歷，您還需要安裝 [Google Noto 字型](https://fonts.google.com/noto/) 以獲得[最佳的 unicode 覆蓋](https://github.com/ppresume/community/issues/63)。
+
+<Tabs groupId='os' persist items={['macOS', 'Windows', 'Linux']}>
+
+<Tab value='macOS'>
+對於 Homebrew 使用者：
+
+```sh
+brew install font-noto-sans-cjk font-noto-serif-cjk
+```
+</Tab>
+
+<Tab value="Windows">
+下載 Noto 字型並按照[官方指南](https://fonts.google.com/noto/use#use-noto-fonts)在 Windows 上安裝。
+</Tab>
+
+<Tab value="Linux">
+<Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
+<Tab value="Ubuntu">
+對於 Ubuntu 使用者：
+
+```sh
+sudo apt install fonts-noto-cjk fonts-noto-cjk-extra
+```
+</Tab>
+<Tab value="RHEL">
+對於基於 RHEL 的 linux，如 Fedora、AlmaLinux、Rocky Linux，您可以通過以下方式安裝 Noto 字型：
+
+```sh
+sudo dnf install google-noto-sans-cjk-fonts google-noto-serif-cjk-fonts
+```
+</Tab>
+</Tabs>
+</Tab>
+</Tabs>
+
+## 故障排除
+
+如果您在安裝 `yamlresume` 或其依賴項時遇到問題，您可以[提出問題](https://github.com/yamlresume/yamlresume/issues/new)。
+
+您可以通過向 `yamlresume` 或其子命令傳遞 `--verbose` 標誌來啟用詳細日誌記錄。
+
+### 感到疲憊？
+
+如果您對安裝過程感到疲憊，您可以嘗試 [PPResume](https://ppresume.com)，這是一個託管的商業履歷構建器解決方案，它開源了 YAMLResume。

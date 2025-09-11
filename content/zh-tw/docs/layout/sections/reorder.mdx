@@ -1,0 +1,107 @@
+---
+title: 重排
+---
+
+默認情況下，YAMLResume 按標準順序排列章節。但是，您可以通過提供自定義 `order` 列表輕鬆更改此設置。這允許您首先突出顯示最重要的資訊。
+
+## 如何使用
+
+例如，如果您想將「Skills」和「Projects」章節放在「Work」經歷之前，您可以這樣定義順序：
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:
+  sections:
+    order:
+      - skills
+      - projects
+      - work
+```
+
+包含在 `order` 列表中的任何章節將首先出現，按您指定的順序。未包含在列表中的章節將在後面追加，遵循其默認順序。
+
+## 示例
+
+### 優先考慮工作經歷
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - work
+      - education
+```
+
+結果：工作經歷首先出現，然後是教育，然後是所有其他章節按默認順序。
+
+### 突出技能和語言
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - skills
+      - languages
+      - work
+```
+
+結果：技能和語言在頂部突出顯示，然後是工作經歷，然後是其餘章節。
+
+### 學術重點
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - education
+      - publications
+      - awards
+      - certificates
+```
+
+結果：學術章節首先出現，然後是其他章節按默認順序。
+
+## 默認章節順序
+
+當未指定自定義順序時，章節按此默認順序渲染：
+
+1. `basics`（默認渲染到履歷頂部作為摘要章節）
+2. `education`
+3. `work`
+4. `languages`
+5. `skills`
+6. `awards`
+7. `certificates`
+8. `publications`
+9. `references`
+10. `projects`
+11. `interests`
+12. `volunteer`
+
+## 實現細節
+
+- **優先級**：在 `order` 中指定的章節按指定序列首先出現
+- **回退**：其餘章節按默認順序跟隨
+- **去重**：順序數組中的重複章節會被去重（保留第一次出現）
+- **空章節**：沒有內容的章節會自動過濾掉
+- **靈活性**：用戶可以指定任何可排序章節的子集
+
+## 可排序的章節
+
+以下章節可以重排：
+
+- `basics`
+- `education`
+- `work`
+- `volunteer`
+- `awards`
+- `certificates`
+- `publications`
+- `skills`
+- `languages`
+- `interests`
+- `references`
+- `projects`

@@ -1,0 +1,106 @@
+---
+title: JSON Schema
+---
+
+## 概述
+
+YAMLResume 提供了一個官方的 [JSON Schema](https://json-schema.org) 用於驗證履歷資料。
+
+最新的官方 JSON Schema 託管在：
+[https://yamlresume.com/schema.json](https://yamlresume.com/schema.json)。但是，如果您想要一個精簡版本用於您的 IDE/編輯器，您也可以使用我們 GitHub 倉庫中的 canary 版本 [schema.json](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/schema.json)。
+
+同時，隨著 YAMLResume 的發展，官方 JSON Schema 將不斷更新，因此我們還在以下位置提供所有歸檔版本的 JSON Schema：
+`https://yamlresume.com/schemas/<version>/schema.json`。
+
+目前我們有以下歸檔版本：
+
+- [v0.5.0](/schemas/v0.5.0/schema.json)
+- [v0.5.1](/schemas/v0.5.1/schema.json)
+- [v0.6.0](/schemas/v0.6.0/schema.json)
+- [v0.7.0](/schemas/v0.7.0/schema.json)
+
+## 什麼是 JSON Schema？
+
+[JSON Schema](https://json-schema.org) 是一種基於 JSON 的格式，用於定義 JSON 資料的結構。它是驗證和記錄 JSON 資料的強大工具。
+
+JSON Schema 允許您指定 JSON 資料的預期結構、類型和約束。使用 JSON Schema，您可以定義哪些屬性是可選的，允許什麼類型的值（如字串、數字、陣列或物件），甚至為值格式設置規則（如電子郵件地址或 URL）。
+
+通過使用 JSON Schema，開發人員和工具可以自動驗證 JSON 資料，以確保它在處理前符合預期格式。這有助於早期捕獲錯誤，提高資料品質，並在現代程式碼編輯器中啟用自動完成和內聯文件等功能。
+
+JSON Schema 得到廣泛支援，可用於配置檔案、API 負載，在 YAMLResume 的情況下，用於驗證履歷資料以確保一致性和正確性。
+
+## 優勢
+
+在製作履歷時將 YAMLResume 的 JSON Schema 整合到您的 IDE/編輯器中會帶來幾個好處：
+
+- **自動完成**：當您開始輸入時，您的 IDE/編輯器將建議屬性及其預期類型，幫助您更快地起草履歷並減少錯誤。
+
+- **格式驗證**：您的 IDE/編輯器將在您輸入時突出顯示任何格式錯誤（如無效日期或 URL），防止您提交錯誤資訊。
+
+- **屬性文件**：獲取每個屬性的內聯文件，解釋其用途、允許的值和任何特殊格式要求。
+
+### 自動完成
+
+所有[枚舉類型](http://localhost:3000/docs/compiler/types#enum-types)在輸入時都會自動完成。您只需輸入選項的前幾個字母，IDE/編輯器就會建議有效選項列表，然後您可以使用上下箭頭鍵選擇正確的選項。
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-auto-completion.mp4"
+/>
+
+### 格式驗證
+
+每個鍵值對都會根據預定義模式進行即時驗證。您的 IDE/編輯器將用精確的錯誤訊息警告您，幫助避免低級錯誤，如錯誤的電子郵件格式、無效的學位選項、語言熟練程度級別的拼寫錯誤等。
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-field-error.mp4"
+/>
+
+如果缺少必需的鍵，警告訊息將預設升級到其父物件，因此您可以輕鬆找到缺少的鍵。
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-object-error.mp4"
+/>
+
+### 屬性文件
+
+最後但同樣重要的是，您可以獲取每個屬性的內聯文件，解釋其用途、允許的值和任何特殊格式要求。您可以將滑鼠懸停在屬性鍵或值上以查看文件。
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-property-docs.mp4"
+/>
+
+## 如何使用 JSON Schema？
+
+您需要安裝 [yaml-language-server](https://github.com/redhat-developer/yaml-language-server) 來為您的履歷使用 YAMLResume 的 JSON 模式。根據您的 IDE/編輯器，您可能需要安裝不同的[擴展](https://github.com/redhat-developer/yaml-language-server?tab=readme-ov-file#clients)。
+
+安裝後，您需要在履歷檔案頂部添加以下行：
+
+```
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+```
+
+然後您就可以享受[自動完成](#auto-completion)、[格式驗證](#format-validation)和[屬性文件](#property-docs)功能，一切盡在您的指尖。
+
+## 工程實現
+
+在底層，YAMLResume 的 JSON 模式是在 [Zod v4](https://zod.dev/json-schema) 的幫助下生成的，這是一個出色的 TypeScript 優先模式驗證庫。
+
+我們在 [schema/resume.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/resume.ts) 中定義模式，然後在[測試用例](https://github.com/yamlresume/yamlresume/blob/99de/packages/core/src/schema/resume.test.ts#L272-L277)中生成 JSON 模式。
+
+這不是很酷嗎？

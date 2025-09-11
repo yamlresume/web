@@ -1,0 +1,190 @@
+---
+title: "YAMLResume v0.7: 開發模式"
+description: |
+  YAMLResume v0.7 引入了新的 `dev` 模式，提供即時、監視模式的履歷創建體驗，大幅提升開發者體驗。
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-08-30
+---
+
+我非常興奮地介紹 [YAMLResume v0.7](https://github.com/yamlresume/yamlresume/releases/tag/v0.7.0)，這是一個專注於提升您開發者體驗（DX）的版本。此次更新的核心是新的 [`dev` 模式](/zh-tw/docs/cli#dev)——一個為您的履歷創建過程帶來無縫、即時開發工作流程的功能。
+
+![開發模式工作流程](/static/images/blog/dev-mode/dev-mode-vs-code.webp)
+
+繁瑣的編輯-保存-構建循環的日子已經一去不復返了。通過 `dev` 模式，YAMLResume 現在會監視您的履歷文件變化，並近乎即時地自動重新構建 PDF。這個看似簡單的添加將製作履歷的體驗轉變為一個流暢、互動且更加愉快的過程。
+
+## 舊工作流程的摩擦
+
+在 v0.7 之前，使用 YAMLResume 創建履歷雖然功能強大，但涉及一個重複的手動過程。您需要：
+
+1. 在您喜歡的文字編輯器中打開 `my-resume.yml` 文件。
+2. 進行更改——也許是更新工作描述或添加新技能。
+3. 保存文件。
+4. 切換到終端。
+5. 運行 `yamlresume build my-resume.yml` 命令。
+6. 等待命令完成。
+7. 切換到 PDF 查看器並刷新以查看結果。
+8. 注意到一個小錯字或格式問題。
+9. 重複整個循環。
+
+下面展示的這個循環為履歷創建過程引入了顯著的摩擦。每個更改，無論多麼微小，都需要上下文切換和手動命令執行。這種持續的中斷會破壞創作流程並減慢完善履歷的過程。
+
+<Mermaid
+  chart={`
+graph TD
+  A[編輯 my-resume.yml] --> B{保存文件};
+  B --> C[切換到終端];
+  C --> D[運行 'yamlresume build'];
+  D --> E{等待構建};
+  E --> F[切換到 PDF 查看器];
+  F --> G{刷新 PDF};
+  G --> H{查看更改};
+  H -- 需要修正 --> A;
+  H -- 看起來不錯 --> I[完成];
+  subgraph 手動構建循環
+    A
+    B
+    C
+    D
+    E
+    F
+    G
+    H
+  end
+`}
+/>
+
+在現代軟體開發的世界中，我們已經習慣了提供即時反饋的工具。Web 開發者有[熱重載](https://webpack.js.org/concepts/hot-module-replacement/)，當程式碼更改時瀏覽器會自動更新。這種緊密的反饋循環對生產力至關重要，是優秀開發者體驗的核心原則。我們相信，將履歷作為程式碼製作應該沒有什麼不同。
+
+## 解決方案：無縫的開發模式
+
+`yamlresume dev` 命令完全消除了手動構建循環。您啟動一次，它就會在後台安靜地工作，監視您的更改並自動重新構建履歷。
+
+要啟動開發模式，只需運行：
+
+```bash
+yamlresume dev my-resume.yml
+```
+
+現在，您可以並排打開 `my-resume.yml` 文件和您的 PDF。每次您保存對 YAML 文件的更改時，YAMLResume 都會自動檢測並觸發重新構建。您的 PDF 查看器將在片刻後更新，顯示您履歷的最新版本。
+
+新的工作流程顯著更簡單、更高效：
+
+<Mermaid chart={`
+graph TD
+  A[啟動 'yamlresume dev'] --> B[編輯 my-resume.yml];
+  B --> C{保存文件};
+  C --> D{PDF 自動重新構建};
+  D --> E{在 PDF 中查看更改};
+  E -- 需要修正 --> B;
+  E -- 看起來不錯 --> F[停止開發模式];
+
+  subgraph 即時工作流程
+    B
+    C
+    D
+    E
+  end
+`}/>
+
+這種即時反饋循環允許您快速迭代、嘗試不同的措辭，並在沒有持續上下文切換的情況下完善履歷的佈局。它使這個過程感覺不那麼像瑣事，更像是一種創作努力。
+
+以下是 `dev` 模式的實際演示：
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/blog/dev-mode/dev-mode-vs-code-demo.mp4"
+/>
+
+您可以觀看 [YouTube 演示](https://youtu.be/xytlzedEQ_w) 了解更多詳情。
+
+## 工作原理：深入了解
+
+雖然 `dev` 模式使用簡單，但背後有一些有趣的技術來確保它既強大又高效。
+
+### 文件監視器：`chokidar`
+
+`dev` 模式的核心是文件監視器。一個天真的方法是使用 Node.js 內建的 [`fs.watch` API](https://nodejs.org/docs/latest/api/fs.html#fswatchfilename-options-listener)。然而，`fs.watch` 有已知的限制和跨不同作業系統的不一致性。更重要的是，它在某些文字編輯器行為方面存在困難。
+
+例如，像 Vim 這樣的編輯器使用"原子保存"策略。當您保存文件時，Vim 不會直接寫入原始文件。相反，它將更改寫入臨時文件（著名的 `.swp` 文件），然後將該臨時文件重命名以替換原始文件。這個過程可能會混淆基本的文件監視器，它們可能會完全錯過更改或觸發多個事件。
+
+為了提供可靠的體驗，我們採用了 **[chokidar](https://github.com/paulmillr/chokidar)**，一個流行且經過實戰考驗的文件監視庫。Chokidar 抽象了跨平台的不一致性，專門設計用於優雅地處理這些棘手的編輯器行為。我們配置它在文件完成寫入之前等待，確保我們不會嘗試構建部分保存的文件。
+
+### 防止構建風暴：`coalescifn`
+
+如果您快速連續保存文件多次會發生什麼？一個簡單的實現可能會為每個保存事件嘗試啟動新的構建。這可能導致"構建風暴"，其中多個構建進程並發運行，消耗不必要的系統資源並可能導致競爭條件。
+
+為了解決這個問題，我們編寫並開源了一個巧妙的小工具 [coalescifn](https://github.com/yamlresume/coalescifn)。這個工具幫助我們**合併**多個調用為一個。以下是在 `dev` 模式上下文中的工作原理：
+
+1. 當檢測到第一個文件更改時，我們立即開始構建。
+2. 如果該構建運行時檢測到更多更改，我們不會啟動新構建。我們只是記錄文件再次更改。
+3. 一旦初始構建完成，我們檢查在那段時間是否發生了更多更改。
+4. 如果有後續更改，我們運行恰好**一個**更多構建以確保最終 PDF 反映文件的最新版本。如果沒有新更改，我們什麼都不做，等待下一個保存事件。
+
+這種策略確保一次只有一個構建在運行，並保證最終構建始終使用您履歷文件的最新版本。這是一種高效的方法，使 `dev` 模式響應迅速且對系統資源消耗較少。
+
+以下是說明合併邏輯的圖表：
+
+<Mermaid chart={`
+sequenceDiagram
+  participant User
+  participant Watcher
+  participant Coalesce
+  participant Builder
+
+  User->>Watcher: 保存文件 (t=0s)
+  Watcher->>Coalesce: 觸發構建
+  Coalesce->>Builder: 開始構建 #1
+  User->>Watcher: 保存文件 (t=1s)
+  Watcher->>Coalesce: 觸發構建 (忽略，構建進行中)
+  User->>Watcher: 保存文件 (t=2s)
+  Watcher->>Coalesce: 觸發構建 (忽略，構建進行中)
+  Builder-->>Coalesce: 完成構建 #1 (t=3s)
+  Coalesce->>Builder: 開始構建 #2 (使用最新文件內容)
+  Builder-->>Coalesce: 完成構建 #2 (t=6s)
+`}/>
+
+## 高級控制
+
+`dev` 命令還帶有選項，讓您對構建過程有更多控制，鏡像 `build` 命令上可用的標誌。
+
+### 跳過 PDF 生成
+
+有時，您可能只想檢查 YAMLResume 生成的中間 LaTeX (`.tex`) 文件。這對於調試或對於那些想要手動調整 LaTeX 程式碼的人很有用。生成 PDF 是構建過程中最耗時的部分。如果您不需要它，您可以告訴 `dev` 模式跳過它：
+
+```bash
+yamlresume dev my-resume.yml --no-pdf
+```
+
+使用此標誌，`dev` 模式仍會監視更改並即時重新生成 `.tex` 文件，但不會運行 `xelatex` 命令。這使得重新構建過程幾乎瞬間完成。
+
+### 禁用驗證
+
+從 [v0.5](/zh-tw/blog/yamlresume-compiler) 開始，YAMLResume 包含一個強大的模式驗證步驟，在構建過程中捕獲您履歷中的潛在錯誤。雖然這對於確保正確性非常有用，但有時您可能想要暫時禁用它。例如，您可能正在進行履歷結構的大型重構，不想被驗證錯誤打斷。
+
+您可以使用 `--no-validate` 標誌禁用驗證：
+
+```bash
+yamlresume dev my-resume.yml --no-validate
+```
+
+這允許您更自由地工作，但理解您應該稍後重新啟用驗證以確保您的履歷格式良好。
+
+## "履歷即程式碼"的新 DX
+
+`dev` 模式的引入不僅僅是一個新功能；它是朝著實現"履歷即程式碼"真正承諾邁出的一步。它將體驗從靜態的、命令行驅動的過程提升為動態的、互動的過程，感覺更像現代軟體開發。
+
+您可能過去習慣使用 `npm run build` 和 `npm run dev`？YAMLResume 現在內建了相同的工作流程。
+
+通過關閉反饋循環，我們讓您更容易、更快地創建美觀、專業的履歷。我們相信這將鼓勵更多實驗，讓您專注於真正重要的：履歷的內容以及它如何講述您的專業故事。
+
+我們邀請您更新到 YAMLResume v0.7 並親自體驗新的 `dev` 模式：
+
+- **安裝或更新**到最新版本：`npm install -g yamlresume@latest`
+- **試用**您現有的履歷：`yamlresume dev my-resume.yml`
+- **加入我們的社群**在 [GitHub](https://github.com/yamlresume/yamlresume/discussions) 分享您的反饋、提問或為 YAMLResume 的未來做出貢獻。
+
+我們致力於為履歷創建構建最佳的開發者體驗，我們迫不及待想聽到您對這個新版本的看法！

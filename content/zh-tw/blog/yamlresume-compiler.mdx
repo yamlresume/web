@@ -1,0 +1,207 @@
+---
+title: "YAMLResume v0.5: 履歷編譯器"
+description: >-
+  介紹 YAMLResume v0.5，一個為您的履歷帶來靜態分析力量的履歷編譯器。
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-07-16
+---
+
+我們非常興奮地宣布 [YAMLResume v0.5](https://github.com/yamlresume/yamlresume/releases/tag/v0.5.0) 的發布，這是一個重要的里程碑，將 YAMLResume 從一個簡單工具轉變為一個成熟的**履歷編譯器**。此版本引入了強大的架構、強大的模式驗證和增強的 CLI，使您的履歷創建過程更加可靠、高效且無錯誤。
+
+## 手動履歷編寫的問題
+
+起草履歷通常是一個繁瑣且容易出錯的過程。無論您使用的是文字處理器還是簡單的標記語言，都容易出錯：
+
+- 關鍵欄位如 `degree` 或 `fluency` 中的拼寫錯誤。
+- 格式不正確的電子郵件地址或 URL。
+- 不一致的日期格式。
+- 忘記求職申請所需的欄位。
+
+這些小的錯誤可能導致編輯、生成和校對的無休止循環。核心問題是缺乏一個系統來在最終文件生成之前強制執行結構和驗證資料。
+
+## 解決方案：履歷編譯器
+
+受程式語言編譯器的啟發，[YAMLResume v0.5](https://github.com/yamlresume/yamlresume/releases/tag/v0.5.0) 引入了新的編譯器架構，將您的履歷源文件（YAML 格式）視為程式碼。然後這個"程式碼"通過管道處理，產生一個精美的專業 PDF。
+
+<Mermaid chart="
+  flowchart TD
+    subgraph Input
+      A[resume.yaml]
+    end
+    subgraph Compiler
+      B[解析與驗證]
+      C[轉換]
+      D[程式碼生成]
+    end
+    subgraph Output
+      E[resume.pdf]
+    end
+
+    A --> B --> C --> D --> E
+"/>
+
+這個新架構定義了兩個核心組件：
+
+1. 履歷的[標準資料格式](/zh-tw/docs/compiler/types)，以及用於驗證資料的[模式](/zh-tw/docs/compiler/schema)。
+2. 實現資料格式和模式驗證的參考[編譯器](/zh-tw/docs/compiler)。
+
+這種方法帶來了幾個關鍵優勢：
+
+- **關注點分離**：您只專注於履歷的**內容**。編譯器處理**呈現**——佈局、排版和格式。
+- **早期錯誤檢測**：編譯器根據預定義模式驗證您的履歷，立即捕獲錯誤並提供清晰、可操作的反饋。
+- **一致性和可靠性**：通過強制執行標準結構，編譯器確保您的履歷資料始終一致，並準備好用於任何模板。
+
+### 實際演示
+
+例如，考慮以下包含幾個常見錯誤的履歷：
+
+```yml lineNumbers title="invalid-resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp # [!code highlight]
+    url: https//ppresume.com/gallery # [!code highlight]
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S # [!code highlight]
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D # [!code highlight]
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layout:
+  typography:
+    fontSize: 13pt # [!code highlight]
+```
+
+我們有幾個問題：
+
+1. `email: hi@pp` - 格式無效
+2. `url: https//ppresume.com/gallery` - 協議部分缺少 `:`
+3. `city: S` - 太短，應該是 2 個字元或更多，世界上有名字只有 1 個字元的城市嗎？
+4. `- D` - 第一門課程太短，應該是 2 個字元或更多
+5. `fontSize: 13pt` - 應該是 10pt、11pt 或 12pt，13pt 太大，在履歷起草場景中意義不大
+
+這些錯誤，以前可能被忽視，現在可以立即捕獲。您可以運行 `yamlresume validate my-resume.yml` 或簡單地運行 `yamlresume build my-resume.yml`。YAMLResume 將以廣泛採用的[clang 風格錯誤格式](https://clang.llvm.org/diagnostics.html)報告所有問題，允許您在生成最終 PDF 之前修復它們。
+
+![YAMLResume 驗證命令輸出](/static/images/blog/yamlresume-validate.webp)
+
+## 編譯器的核心：模式
+
+此新版本的基石是 **[YAMLResume 模式](/zh-tw/docs/compiler/schema)**。我們提供了一個全面的模式，定義了您履歷中每個資料片段的結構和規則。
+
+我們為此使用兩種強大的技術：
+
+- **[Zod](https://zod.dev)**：用於編譯器內的運行時驗證，提供強大的安全網和詳細的錯誤訊息。
+- **[JSON Schema](https://json-schema.org)**：用於編輯器和 IDE 整合。通過在您的 YAML 文件中添加一行，您就可以在編輯器中解鎖自動完成、懸停屬性文件和即時格式驗證。
+
+如果您有在 v0.5 之前創建的履歷，您仍然可以利用模式驗證。只需在您的履歷文件中添加以下行，並為您的編輯器安裝 [YAML 語言伺服器](https://github.com/redhat-developer/yaml-language-server)。
+
+```yml lineNumbers
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+```
+
+這種整合提供了一系列好處，極大地改善了履歷編寫體驗：
+
+### 自動完成
+
+減少查找欄位名稱的時間。您的編輯器會在您輸入時建議有效屬性，確保您每次都使用正確的欄位。
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-auto-completion.mp4"
+/>
+
+### 即時格式驗證
+
+在錯誤發生時捕獲它們。模式驗證提供即時反饋，從簡單的拼寫錯誤到不正確的電子郵件格式或缺少必需欄位。
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-field-error.mp4"
+/>
+
+如果缺少必需鍵，警告會升級到其父物件，使其易於發現和修復。
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-object-error.mp4"
+/>
+
+### 內聯屬性文件
+
+不再猜測欄位的作用。懸停在任何屬性上即可獲得即時文件，解釋其用途、預期格式和允許值。
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-property-docs.mp4"
+/>
+
+## 增強的 CLI
+
+`yamlresume` [CLI](/zh-tw/docs/cli) 現在比以往更強大。[構建](/zh-tw/docs/cli#build) 命令運行整個編譯器管道，從驗證到 PDF 生成，而新的 [驗證](/zh-tw/docs/cli#validate) 命令讓您無需構建即可檢查履歷。
+
+[![YAMLResume 編譯器演示](https://asciinema.org/a/728098.svg)](https://asciinema.org/a/728098)
+
+這種無縫工作流程轉變了您的履歷創建過程，使其更高效、更可靠，同時最小化錯誤。
+
+## 這對您意味著什麼
+
+通過 [YAMLResume v0.5](https://github.com/yamlresume/yamlresume/releases/tag/v0.5.0)，您可以：
+
+- **自信地編寫**：知道您的履歷結構是健全的，資料是有效的。
+- **節省時間**：早期捕獲錯誤並消除繁瑣的校對循環。
+- **保持靈活性**：在不同履歷模板之間輕鬆切換。
+- **享受更好的編輯體驗**：在您喜歡的編輯器中獲得即時反饋和自動完成。
+
+我們邀請您體驗新 YAMLResume 編譯器的強大功能和簡單性：
+
+- **安裝或更新**到最新版本：`npm install -g yamlresume@latest`
+- **閱讀新的[編譯器文件](/zh-tw/docs/compiler)**以了解更多關於架構和模式的資訊。
+- **加入我們的社群**在 [GitHub](https://github.com/yamlresume/yamlresume/discussions) 提問、報告問題或貢獻。
+
+我們相信此版本標誌著履歷創建的新時代，為每個人帶來編譯器的強大功能和可靠性。我們迫不及待想看到您將構建的驚人履歷！
+
+別忘了，您可以使用我們的 [Docker 鏡像](/zh-tw/blog/yamlresume-docker) 試用新編譯器：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```

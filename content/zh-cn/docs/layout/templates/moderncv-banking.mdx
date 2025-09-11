@@ -1,0 +1,49 @@
+---
+title: Moderncv Banking
+---
+
+## 实现
+
+Moderncv banking 是一个基于 [xdanaux/moderncv](https://github.com/xdanaux/moderncv) 的现代简洁简历模板。
+
+在底层，我们使用以下代码作为 LaTeX 前言：
+
+```latex lineNumbers
+\documentclass[a4paper, serif, 11pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% needed by moderncv for showing icons
+\usepackage{fontawesome5}
+```
+
+对于 moderncv banking 样式，我们还采用了一些特殊的标点符号处理，以便与 CJK 配合使用。
+
+从技术上讲，英语和中文有不同的冒号。英语冒号是 `:`，Unicode 为 `U+003A`，而中文冒号是 `：`，Unicode 为 `U+FF1A`。所以当简历语言是中文时，我们会通过覆盖一些神奇的 LaTeX 宏来为 moderncv 采用中文冒号：
+
+```latex lineNumbers
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}<= &templateTranslations.punctuations.Colon =>}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}<= &templateTranslations.punctuations.Colon =>}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+```
+
+查看我们的博客[文章](https://blog.ppresume.com/posts/multi-languagues-support#colon)了解更多详情。
+
+## 预览
+
+![Moderncv Banking Template](/static/images/docs/layout/templates/moderncv-banking-template.png)
+
+从 [Github](https://github.com/yamlresume/web/tree/main/content/docs/layout/templates/static/resources/moderncv-banking-template.yml) 下载 YAML 代码。

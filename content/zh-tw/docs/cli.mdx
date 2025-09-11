@@ -1,0 +1,251 @@
+---
+title: CLI
+---
+
+YAMLResume 提供了 CLI 工具來幫助您管理履歷。您可以按照 [安裝指南](/zh-tw/docs/getting-started#installation) 來安裝它。
+
+<Callout title="Docker 中的 YAMLResume CLI">
+請注意，我們為您提供了一個 [docker 鏡像](/zh-tw/docs/installation#docker-users)，其中已安裝了 `yamlresume` CLI 以及所有必要的依賴項。
+
+對於本指南中的每個子命令，您可以通過在 `yamlresume/yamlresume` 後附加子命令在 docker 中運行它。
+
+例如，在 yamlresume CLI 中建立新履歷：
+
+```sh
+yamlresume new my-resume.yml
+```
+
+您也可以在 docker 中運行：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+</Callout>
+
+## 幫助
+
+顯示 CLI 幫助和所有可用命令：
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+顯示 YAMLResume CLI 版本：
+
+```console
+$ yamlresume -V
+0.5.0
+```
+
+## New
+
+建立新履歷。預設履歷檔案名稱是 `resume.yml`，但您可以指定自訂檔案名稱：
+
+```console
+$ yamlresume new --help
+Usage: yamlresume new [options] [filename]
+
+create a new resume
+
+Arguments:
+  filename    output filename (default: "resume.yml")
+
+Options:
+  -h, --help  display help for command
+
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+## Build
+
+從 YAML 構建履歷到 PDF。它將同時生成 latex 代碼和 PDF，如果您使用 [XeTeX](/zh-tw/docs/installation#xetex) 作為排版引擎，還會生成一些中間檔案 `.aux`、`.log` 等。
+
+```console
+$ yamlresume build --help
+Usage: yamlresume build [options] <resume-path>
+
+build a resume to LaTeX and PDF
+
+Arguments:
+  resume-path    the resume file path
+
+Options:
+  --no-pdf       only generate TeX file without PDF
+  --no-validate  skip resume schema validation
+  -h, --help     display help for command
+
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF file successfully.
+```
+
+### `--no-pdf`
+
+如果您只想生成 LaTeX 檔案而不生成 PDF，可以使用 `--no-pdf` 選項。
+
+```console
+$ yamlresume build --no-pdf my-resume.yml
+```
+
+### `--no-validate`
+
+如果您想跳過履歷架構驗證，可以使用 `--no-validate` 選項。
+
+```console
+$ yamlresume build --no-validate my-resume.yml
+```
+
+## Dev
+
+在檔案更改時從 YAML 構建履歷到 PDF。它接受與 [`build`](#build) 相同的選項，但是當 YAML 檔案更改時會自動重建履歷（即監視模式）。這對於您即時預覽履歷更改非常方便。
+
+```console
+$ yamlresume dev --help
+Usage: yamlresume dev [options] <resume-path>
+
+build a resume on file changes (watch mode)
+
+Arguments:
+  resume-path    the resume file path
+
+Options:
+  --no-pdf       only generate TeX file without PDF
+  --no-validate  skip resume schema validation
+  -h, --help     display help for command
+```
+
+## Validate
+
+根據 YAMLResume [架構](/zh-tw/docs/compiler/schema) 驗證履歷。
+
+```console
+$ yamlresume validate --help
+Usage: yamlresume validate [options] <resume-path>
+
+validate a resume against the YAMLResume schema
+
+Arguments:
+  resume-path  the resume file path
+
+Options:
+  -h, --help   display help for command
+```
+
+例如，對於以下履歷：
+
+```yml lineNumbers
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp
+    url: https//ppresume.com/gallery
+    summary: |
+      - 電腦科學專業，在資料結構、演算法和軟體開發方面有紮實的基礎
+      - 像素級完美的全端網路開發者，專門建立高品質、視覺吸引力的網站
+      - 熟悉資料庫（SQL、NoSQL），熟悉伺服器端技術（Node.js、Express 等）
+      - 團隊合作者，具有注重細節的思維和對設計和使用者體驗的敏銳眼光
+  location:
+    address: 123 Main Street
+    region: California
+    city: S
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D
+        - Programming Language Concepts
+      summary: |
+        - 掌握了 Java、C++ 和 Python 等程式設計語言
+        - 通過各種專案和作業獲得了軟體開發的實務經驗
+        - 通過小組專案和演示獲得了強大的溝通和團隊合作技能
+
+layout:
+  typography:
+    fontSize: 13pt
+```
+
+`yamlresume validate` 將為您提供潛在錯誤清單，並提供清晰的位置資訊
+
+```console
+$ yamlresume validate my-resume.yml
+invalid-resume.yml:9:12: warning: email is invalid.
+    email: hi@pp
+           ^
+invalid-resume.yml:19:11: warning: city should be 2 characters or more.
+    city: S
+          ^
+invalid-resume.yml:31:11: warning: courses should be 2 characters or more.
+        - D
+          ^
+invalid-resume.yml:40:15: warning: font size option is invalid, it must be one of the following: ["10pt", "11pt", "12pt"]
+    fontSize: 13pt
+              ^
+✖ Resume validation failed.
+```
+
+## Languages
+
+列出所有可用語言。語言代碼遵循 [ISO 639 規範](https://www.iso.org/iso-639-language-code) 中的規範。您可以在 `layout.locale.language` 中指定語言代碼以更改履歷的語言。更改履歷的語言將自動翻譯所有固定術語。您可以在我們的 [內容 -> 多語言](/zh-tw/docs/content/multi-languages) 章节查看更多詳細資訊。
+
+```console
+$ yamlresume languages list
+
+| `layout.locale.language` | Language Name                   |
+| ------------------------ | ------------------------------- |
+| en                       | English                         |
+| zh-hans                  | Simplified Chinese              |
+| zh-hant-hk               | Traditional Chinese (Hong Kong) |
+| zh-hant-tw               | Traditional Chinese (Taiwan)    |
+| es                       | Spanish                         |
+```
+
+## Templates
+
+列出所有可用模板。您可以通過在 YAML 履歷中設定 `layout.template` 來更改履歷模板。更多詳細資訊請參見 [PPResume 模板](https://docs.ppresume.com/typesetting/templates)。
+
+```console
+$ yamlresume templates list
+
+| `layout.template` | Template Name    | Description                          |
+| ----------------- | ---------------- | ------------------------------------ |
+| moderncv-banking  | ModernCV Banking | ModernCV template with banking style |
+| moderncv-casual   | ModernCV Casual  | ModernCV template with casual style  |
+| moderncv-classic  | ModernCV Classic | ModernCV template with classic style |
+```

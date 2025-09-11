@@ -1,0 +1,100 @@
+---
+title: 架构
+---
+
+像任何编译器一样，YAMLResume 也包含一个管道，通过多个阶段将简历数据从输入转换为输出。
+
+- **输入阶段**：接受 YAML 和 JSON 简历文件作为输入。
+- **解析阶段**：解析并验证输入文件中的简历内容和布局。
+- **转换阶段**：使用管道转换简历内容和布局数据。
+- **代码生成阶段**：使用 LaTeX 模板渲染简历内容和布局数据。
+- **输出阶段**：生成最终的 PDF 文档。
+
+以下是 YAMLResume 的架构图：
+
+<Mermaid chart="
+  flowchart TD
+    subgraph A[输入阶段]
+      A1[YAML 简历文件]
+      A2[JSON 简历文件]
+    end
+
+    subgraph B[解析阶段]
+      B1[yaml.parse]
+      B2[模式验证]
+      B3[MarkdownParser]
+    end
+
+    subgraph C[转换阶段]
+      C1[escape-latex 处理]
+      C2[日期本地化]
+      C3[URL 转换]
+      C4[位置转换]
+      C5[...]
+    end
+
+    subgraph D[代码生成阶段]
+      D1[模板渲染器]
+      D2[moderncv-banking]
+      D3[moderncv-classic]
+      D4[moderncv-casual]
+      E1[LaTeX 文档]
+    end
+
+    subgraph E[输出阶段]
+      F1[xetex]
+      F2[tectonic]
+      G[resume.pdf]
+    end
+
+    A1 --> B1
+    A2 --> B1
+    B1 --> B2
+    B2 --> B3
+    B3 --> C1
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4
+    C4 --> C5
+    C5 --> D1
+    D1 --> D2
+    D1 --> D3
+    D1 --> D4
+    D2 --> E1
+    D3 --> E1
+    D4 --> E1
+    E1 --> F1
+    E1 --> F2
+    F1 --> G
+    F2 --> G
+
+"/>
+
+## 数据处理管道
+
+转换管道负责处理来自 YAML 文件的原始简历数据，并为其准备 LaTeX 渲染。它在两个主要阶段运行：内容转换和布局转换：
+
+- 内容转换阶段处理所有文本数据，应用本地化规则，转义 LaTeX 特殊字符，并计算派生值。
+- 布局转换阶段将用户提供的布局设置与默认值合并，并应用特定于区域的排版规则。
+
+<Mermaid
+  chart="
+flowchart TD
+  A[原始简历数据] --> B[transformResume]
+  B --> B1[transformResumeContent]
+  B1 --> B2[transformEducationCourse]
+  B2 --> B3[transformEducationDegree]
+  B3 --> B4[transformDate]
+  B4 --> B5[transformEndDate]
+  B5 --> B6[transformKeywords]
+  B6 --> B7[...]
+  B --> C1[transformResumeLayout]
+  C1 --> C2[设置默认值]
+  C2 --> C3[设置区域调整]
+  B7 --> D[转换后的简历]
+  C3 --> D
+  D --> D1[准备代码生成]
+"
+/>
+
+对于像这样的长数据处理管道，代码比文字更有说服力，如果您对实现感兴趣，可以查看 [transform.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/preprocess/transform.ts) 了解详情。

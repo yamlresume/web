@@ -1,0 +1,431 @@
+---
+title: Zod Schema
+---
+
+YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
+
+本文档概述了 YAMLResume 中使用的所有 zod 模式。如果您对实现细节感兴趣，可以在[这里](https://github.com/yamlresume/yamlresume/tree/main/packages/core/src/schema)找到源代码。
+
+## 简历模式
+
+定义整体简历结构验证，包括内容和布局验证。
+
+| 属性      | 类型                                          | 必需 |
+| --------- | --------------------------------------------- | -------- |
+| `content` | [`ResumeContentSchema`](#resumecontentschema) | ✅       |
+| `layout?` | [`ResumeLayoutSchema`](#resumelayoutschema)   | ⬜       |
+
+### ResumeContentSchema
+
+定义整个简历内容的验证结构。
+
+| 属性            | 类型                                                | 必需 |
+| --------------- | --------------------------------------------------- | -------- |
+| `basics`        | [`BasicsItemSchema`](#basicsitemschema)             | ✅       |
+| `education`     | [`EducationItemSchema[]`](#educationitemschema)     | ✅       |
+| `awards?`       | [`AwardItemSchema[]`](#awarditemschema)             | ⬜       |
+| `certificates?` | [`CertificateItemSchema[]`](#certificateitemschema) | ⬜       |
+| `interests?`    | [`InterestItemSchema[]`](#interestitemschema)       | ⬜       |
+| `languages?`    | [`LanguageItemSchema[]`](#languageitemschema)       | ⬜       |
+| `location?`     | [`LocationItemSchema`](#locationitemschema)         | ⬜       |
+| `projects?`     | [`ProjectItemSchema[]`](#projectitemschema)         | ⬜       |
+| `profiles?`     | [`ProfileItemSchema[]`](#profileitemschema)         | ⬜       |
+| `publications?` | [`PublicationItemSchema[]`](#publicationitemschema) | ⬜       |
+| `references?`   | [`ReferenceItemSchema[]`](#referenceitemschema)     | ⬜       |
+| `skills?`       | [`SkillItemSchema[]`](#skillitemschema)             | ⬜       |
+| `volunteer?`    | [`VolunteerItemSchema[]`](#volunteeritemschema)     | ⬜       |
+| `work?`         | [`WorkItemSchema[]`](#workitemschema)               | ⬜       |
+
+#### AwardItemSchema
+
+验证获得的单个奖项、荣誉或认可。
+
+| 属性       | 类型     | 必需 | 验证规则                      |
+| ---------- | -------- | -------- | ------------------------------------- |
+| `awarder`  | `string` | ✅       | 2-128 个字符                      |
+| `title`    | `string` | ✅       | 2-128 个字符                      |
+| `date?`    | `string` | ⬜       | 参见[日期模式](#date-schema)       |
+| `summary?` | `string` | ⬜       | 参见[摘要模式](#summary-schema) |
+
+#### BasicsItemSchema
+
+验证核心个人和联系信息。
+
+| 属性        | 类型     | 必需 | 验证规则                      |
+| ----------- | -------- | -------- | ------------------------------------- |
+| `name`      | `string` | ✅       | 2-128 个字符                      |
+| `email?`    | `string` | ⬜       | 参见[电子邮件模式](#email-schema)     |
+| `headline?` | `string` | ⬜       | 8-128 个字符                      |
+| `phone?`    | `string` | ⬜       | 参见[电话模式](#phone-schema)     |
+| `summary?`  | `string` | ⬜       | 参见[摘要模式](#summary-schema) |
+| `url?`      | `string` | ⬜       | 参见[URL 模式](#url-schema)         |
+
+#### CertificateItemSchema
+
+验证单个认证、证书或专业资格。
+
+| 属性     | 类型     | 必需 | 验证规则                |
+| -------- | -------- | -------- | ------------------------------- |
+| `issuer` | `string` | ✅       | 2-128 个字符                |
+| `name`   | `string` | ✅       | 2-128 个字符                |
+| `date?`  | `string` | ⬜       | 参见[日期模式](#date-schema) |
+| `url?`   | `string` | ⬜       | 参见[URL 模式](#url-schema)   |
+
+#### EducationItemSchema
+
+验证单个教育经历或学位课程。
+
+| 属性          | 类型                | 必需 | 验证规则                                  |
+| ------------- | ------------------- | -------- | ------------------------------------------------- |
+| `area`        | `string`            | ✅       | 2-64 个字符                                   |
+| `degree`      | [`Degree`](#degree) | ✅       | 必须来自预定义的[学位选项](#degree) |
+| `institution` | `string`            | ✅       | 2-128 个字符                                  |
+| `startDate`   | `string`            | ✅       | 参见[日期模式](#date-schema)                   |
+| `courses?`    | `string[]`          | ⬜       | 每个项目 2-128 个字符                        |
+| `endDate?`    | `string`            | ⬜       | 参见[日期模式](#date-schema)                   |
+| `summary?`    | `string`            | ⬜       | 参见[摘要模式](#summary-schema)             |
+| `score?`      | `string`            | ⬜       | 2-32 个字符                                   |
+| `url?`        | `string`            | ⬜       | 参见[URL 模式](#url-schema)                     |
+
+#### InterestItemSchema
+
+验证单个兴趣、爱好或个人活动。
+
+| 属性        | 类型       | 必需 | 验证规则                        |
+| ----------- | ---------- | -------- | --------------------------------------- |
+| `name`      | `string`   | ✅       | 2-128 个字符                        |
+| `keywords?` | `string[]` | ⬜       | 参见[关键词模式](#keywords-schema) |
+
+#### LanguageItemSchema
+
+验证单个语言能力项目。
+
+| 属性        | 类型                    | 必需 | 验证规则                                      |
+| ----------- | ----------------------- | -------- | ----------------------------------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅       | 必须来自预定义的[熟练程度选项](#fluency)   |
+| `language`  | [`Language`](#language) | ✅       | 必须来自预定义的[语言选项](#language) |
+| `keywords?` | `string[]`              | ⬜       | 每个项目 1-32 个字符                             |
+
+#### LocationItemSchema
+
+验证位置和地址信息。
+
+| 属性          | 类型                  | 必需 | 验证规则                                    |
+| ------------- | --------------------- | -------- | --------------------------------------------------- |
+| `city`        | `string`              | ✅       | 2-128 个字符                                    |
+| `address?`    | `string`              | ⬜       | 2-128 个字符                                    |
+| `country?`    | [`Country`](#country) | ⬜       | 必须来自预定义的[国家选项](#country) |
+| `postalCode?` | `string`              | ⬜       | 2-128 个字符                                    |
+| `region?`     | `string`              | ⬜       | 2-128 个字符                                    |
+
+#### ProfileItemSchema
+
+验证单个在线个人资料或社交媒体存在。
+
+| 属性       | 类型                  | 必需 | 验证规则                                    |
+| ---------- | --------------------- | -------- | --------------------------------------------------- |
+| `network`  | [`Network`](#network) | ✅       | 必须来自预定义的[网络选项](#network) |
+| `username` | `string`              | ✅       | 2-128 个字符                                    |
+| `url?`     | `string`              | ⬜       | 有效 URL，最多 256 个字符                            |
+
+#### ProjectItemSchema
+
+验证单个项目、作品集作品或技术工作。
+
+| 属性           | 类型       | 必需 | 验证规则                      |
+| -------------- | ---------- | -------- | ------------------------------------- |
+| `name`         | `string`   | ✅       | 2-128 个字符                      |
+| `startDate`    | `string`   | ✅       | 参见[日期模式](#date-schema)       |
+| `summary`      | `string`   | ✅       | 参见[摘要模式](#summary-schema) |
+| `description?` | `string`   | ⬜       | 4-128 个字符                      |
+| `endDate?`     | `string`   | ⬜       | 参见[日期模式](#date-schema)       |
+| `keywords?`    | `string[]` | ⬜       | 每个项目 1-32 个字符             |
+| `url?`         | `string`   | ⬜       | 有效 URL，最多 256 个字符              |
+
+#### PublicationItemSchema
+
+验证单个出版物、研究工作或学术论文。
+
+| 属性           | 类型     | 必需 | 验证规则                      |
+| -------------- | -------- | -------- | ------------------------------------- |
+| `name`         | `string` | ✅       | 2-128 个字符                      |
+| `publisher`    | `string` | ✅       | 2-128 个字符                      |
+| `releaseDate?` | `string` | ⬜       | 参见[日期模式](#date-schema)       |
+| `summary?`     | `string` | ⬜       | 参见[摘要模式](#summary-schema) |
+| `url?`         | `string` | ⬜       | 有效 URL，最多 256 个字符              |
+
+#### ReferenceItemSchema
+
+验证单个专业推荐人或推荐。
+
+| 属性            | 类型     | 必需 | 验证规则                      |
+| --------------- | -------- | -------- | ------------------------------------- |
+| `name`          | `string` | ✅       | 2-128 个字符                      |
+| `summary`       | `string` | ✅       | 参见[摘要模式](#summary-schema) |
+| `email?`        | `string` | ⬜       | 参见[电子邮件模式](#email-schema)     |
+| `phone?`        | `string` | ⬜       | 有效电话格式                    |
+| `relationship?` | `string` | ⬜       | 2-128 个字符                      |
+
+#### SkillItemSchema
+
+验证单个技能、能力或技术能力。
+
+| 属性        | 类型              | 必需 | 验证规则                                |
+| ----------- | ----------------- | -------- | ----------------------------------------------- |
+| `level`     | [`Level`](#level) | ✅       | 必须来自预定义的[级别选项](#level) |
+| `name`      | `string`          | ✅       | 2-128 个字符                                |
+| `keywords?` | `string[]`        | ⬜       | 每个项目 1-32 个字符                       |
+
+#### VolunteerItemSchema
+
+验证单个志愿者经历或社区服务。
+
+| 属性           | 类型     | 必需 | 验证规则                      |
+| -------------- | -------- | -------- | ------------------------------------- |
+| `organization` | `string` | ✅       | 2-128 个字符                      |
+| `position`     | `string` | ✅       | 2-128 个字符                      |
+| `startDate`    | `string` | ✅       | 参见[日期模式](#date-schema)       |
+| `summary`      | `string` | ✅       | 参见[摘要模式](#summary-schema) |
+| `endDate?`     | `string` | ⬜       | 参见[日期模式](#date-schema)       |
+| `url?`         | `string` | ⬜       | 有效 URL，最多 256 个字符              |
+
+#### WorkItemSchema
+
+验证单个工作经历或就业职位。
+
+| 属性        | 类型       | 必需 | 验证规则                      |
+| ----------- | ---------- | -------- | ------------------------------------- |
+| `name`      | `string`   | ✅       | 2-128 个字符                      |
+| `position`  | `string`   | ✅       | 2-128 个字符                      |
+| `startDate` | `string`   | ✅       | 参见[日期模式](#date-schema)       |
+| `summary`   | `string`   | ✅       | 参见[摘要模式](#summary-schema) |
+| `endDate?`  | `string`   | ⬜       | 参见[日期模式](#date-schema)       |
+| `keywords?` | `string[]` | ⬜       | 每个项目 1-32 个字符             |
+| `url?`      | `string`   | ⬜       | 有效 URL，最多 256 个字符              |
+
+### ResumeLayoutSchema
+
+定义整体布局验证配置。
+
+| 属性          | 类型                                                            | 必需 |
+| ------------- | --------------------------------------------------------------- | -------- |
+| `locale?`     | [`ResumeLayoutLocaleSchema`](#resumelayoutlocaleschema)         | ⬜       |
+| `margins?`    | [`ResumeLayoutMarginsSchema`](#resumelayoutmarginsschema)       | ⬜       |
+| `page?`       | [`ResumeLayoutPageSchema`](#resumelayoutpageschema)             | ⬜       |
+| `template?`   | [`Template`](#template)                                         | ⬜       |
+| `typography?` | [`ResumeLayoutTypographySchema`](#resumelayouttypographyschema) | ⬜       |
+| `latex?`      | [`ResumeLayoutLaTeXSchema`](#resumelayoutlatexschema)           | ⬜       |
+
+#### ResumeLayoutLocaleSchema
+
+验证国际化和本地化的区域设置。
+
+| 属性        | 类型                                | 必需 | 验证规则                                                    |
+| ----------- | ----------------------------------- | -------- | ------------------------------------------------------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | 必须来自预定义的[区域语言选项](#locale-language) |
+
+#### ResumeLayoutMarginsSchema
+
+验证文档布局的页边距设置。
+
+| 属性      | 类型     | 必需 | 验证规则                              |
+| --------- | -------- | -------- | --------------------------------------------- |
+| `top?`    | `string` | ⬜       | 参见[页边距大小模式](#margin-size-schema) |
+| `bottom?` | `string` | ⬜       | 参见[页边距大小模式](#margin-size-schema) |
+| `left?`   | `string` | ⬜       | 参见[页边距大小模式](#margin-size-schema) |
+| `right?`  | `string` | ⬜       | 参见[页边距大小模式](#margin-size-schema) |
+
+#### ResumeLayoutPageSchema
+
+验证文档演示的页面级设置。
+
+| 属性               | 类型      | 必需 | 验证规则 |
+| ------------------ | --------- | -------- | ---------------- |
+| `showPageNumbers?` | `boolean` | ⬜       | true/false       |
+
+#### ResumeLayoutTypographySchema
+
+验证文档格式的排版设置。
+
+| 属性        | 类型     | 必需 | 验证规则                                       |
+| ----------- | -------- | -------- | ------------------------------------------------------ |
+| `fontSize?` | `string` | ⬜       | 必须来自预定义的[字体大小选项](#fontsize) |
+
+#### ResumeLayoutLaTeXSchema
+
+验证 LaTeX 特定配置选项。
+
+| 属性        | 类型                            | 必需 | 验证规则                                                     |
+| ----------- | ------------------------------- | -------- | -------------------------------------------------------------------- |
+| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | 必须来自预定义的[fontspec 数字选项](#fontspecnumbers) |
+
+## 原始验证模式
+
+### 电子邮件模式
+
+使用严格格式要求验证电子邮件地址。
+
+**验证规则：**
+
+- 必须是有效的电子邮件格式
+- 模式：`^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$`
+- 示例：`hi@ppresume.com`、`first.last@company.org`、`test+tag@domain.co.uk`
+
+### 电话模式
+
+使用灵活格式支持验证电话号码。
+
+**验证规则：**
+
+- 模式：`^[+]?[(]?[0-9\\s-]{1,15}[)]?[0-9\\s-]{1,15}$`
+- 可能包括国家代码、括号、空格和连字符
+- 示例：`555-123-4567`、`+44 20 7946 0958`、`(555) 123-4567`
+
+### 摘要模式
+
+使用长度约束验证摘要文本。
+
+**验证规则：**
+
+- 必须在 16 到 1024 个字符之间
+- 示例：
+  - "具有 5 年以上全栈开发经验的软件工程师。"
+  - "热衷于用户体验和现代设计原则的创意设计师。"
+  - "在按时按预算交付复杂项目方面有良好记录的项目经理。"
+
+### URL 模式
+
+使用长度约束验证 URL。
+
+**验证规则：**
+
+- 必须是有效的 URL 格式
+- 最大长度为 256 个字符
+- 示例：`https://yamlresume.dev`、`https://ppresume.com`、`https://github.com/yamlresume/yamlresume`
+
+### 关键词模式
+
+使用单个项目约束验证关键词数组。
+
+**验证规则：**
+
+- 字符串数组
+- 每个关键词必须在 1 到 32 个字符之间
+- 示例：`["Javascript", "React", "Typescript"]`、`["Design", "UI", "UX"]`
+
+### 日期模式
+
+使用格式要求验证日期字符串。
+
+**验证规则：**
+
+- 必须在 4 到 32 个字符之间
+- 必须可被 `Date.parse()` 解析
+- 示例：`2025-01-01`、`Jul 2025`、`July 3, 2025`、`2025-02-02T00:00:03.123Z`
+
+### 页边距大小模式
+
+使用单位要求验证页边距大小字符串。
+
+**验证规则：**
+
+- 必须在 2 到 32 个字符之间
+- 模式：`^\\d+(\\.\\d+)?(cm|pt|in)$`
+- 必须是正数后跟有效单位：cm、pt 或 in
+- 示例：`2.5cm`、`1in`、`72pt`、`0.5cm`、`12pt`
+
+## 枚举验证模式
+
+### 国家
+
+世界上所有可能国家和地区的联合类型。
+
+**验证规则：**
+
+- 必须是预定义的国家选项之一
+- 示例：`United States`、`China`、`United Kingdom`、`Germany`
+
+### 学位
+
+所有可能学位的联合类型。
+
+**验证规则：**
+
+- 必须是以下之一：`Associate`、`Bachelor`、`Diploma`、`Doctor`、`High School`、`Master`、`Middle School`
+
+### 熟练程度
+
+所有可能语言熟练程度的联合类型。
+
+**验证规则：**
+
+- 必须是以下之一：
+  - `Elementary Proficiency`
+  - `Full Professional Proficiency`
+  - `Limited Working Proficiency`
+  - `Minimum Professional Proficiency`
+  - `Native or Bilingual Proficiency`
+
+### 语言
+
+所有支持语言的联合类型。
+
+**验证规则：**
+
+- 必须是预定义的语言选项之一
+- 示例：`English`、`Chinese`、`Spanish`、`French`、`German`
+
+### 级别
+
+所有可能技能熟练程度的联合类型。
+
+**验证规则：**
+
+- 必须是以下之一：`Advanced`、`Beginner`、`Expert`、`Intermediate`、`Master`、`Novice`
+
+### 网络
+
+所有可能社交网络选项的联合类型。
+
+**验证规则：**
+
+- 必须是预定义的网络选项之一
+- 示例：`GitHub`、`LinkedIn`、`Twitter`、`Facebook`、`Instagram`
+
+### 模板
+
+所有可能模板选项的联合类型。
+
+**验证规则：**
+
+- 必须是以下之一：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
+- 另请参阅：[模板](https://yamlresume.dev/docs/layout/templates)
+
+### 区域语言
+
+所有可能区域语言的联合类型。
+
+**验证规则：**
+
+- 必须是以下之一：`en`、`es`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`
+- 另请参阅：[多语言](https://yamlresume.dev/docs/content/multi-languages)
+
+### FontspecNumbers
+
+所有可能 latex fontspec 数字选项的联合类型。
+
+**验证规则：**
+
+- 必须是以下之一：
+  - `Auto` - 允许根据选定的 `LocaleLanguage` 自动确定样式（默认）
+  - `Lining` - 标准衬线数字（CJK 语言的默认值）
+  - `OldStyle` - 不同高度的旧式数字（拉丁语言的默认值）
+
+### 字体大小
+
+所有可能字体大小选项的联合类型。
+
+**验证规则：**
+
+- 必须是以下之一：`10pt`、`11pt`、`12pt`
+- `10pt` 是默认字体大小

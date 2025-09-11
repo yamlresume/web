@@ -1,4 +1,11 @@
-import { blogSource, docsSource } from '@/lib/source'
+import {
+  blogSource,
+  blogSourceZhCN,
+  blogSourceZhTW,
+  docsSource,
+  docsSourceZhCN,
+  docsSourceZhTW,
+} from '@/lib'
 import type { MetadataRoute } from 'next'
 
 export const revalidate = false
@@ -6,6 +13,19 @@ export const revalidate = false
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://yamlresume.dev'
   const url = (path: string): string => new URL(path, baseUrl).toString()
+
+  // Get all pages from all locales
+  const allDocsPages = [
+    ...docsSource.getPages(),
+    ...docsSourceZhCN.getPages(),
+    ...docsSourceZhTW.getPages(),
+  ]
+
+  const allBlogPages = [
+    ...blogSource.getPages(),
+    ...blogSourceZhCN.getPages(),
+    ...blogSourceZhTW.getPages(),
+  ]
 
   return [
     {
@@ -23,8 +43,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    // Add locale-specific home pages
+    {
+      url: url('/zh-cn'),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: url('/zh-tw'),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
     ...(await Promise.all(
-      docsSource.getPages().map(async (page) => {
+      allDocsPages.map(async (page) => {
         const lastmod = page.data.lastModified
 
         return {
@@ -36,7 +67,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
     )),
     ...(await Promise.all(
-      blogSource.getPages().map(async (page) => {
+      allBlogPages.map(async (page) => {
         const lastmod = page.data.lastModified
 
         return {

@@ -1,0 +1,39 @@
+---
+title: Docker
+---
+
+除了 [CLI 包](https://www.npmjs.com/package/yamlresume)，YAMLResume 还提供了 [docker 镜像](https://hub.docker.com/r/yamlresume/yamlresume)以便于快速上手。
+
+正如我们[文档](/zh-cn/docs/installation#docker-users)中所述，您可以使用以下命令运行 yamlresume docker 容器：
+
+```bash
+docker run --rm -v $(pwd):/app -w /app yamlresume/yamlresume <command>
+```
+
+但是，如果您感兴趣，可以自定义 Docker 镜像以满足您的需求。
+
+## 构建 Docker 镜像
+
+YAMLResume 的 Docker 镜像在两个阶段中定义和生成：
+
+### Dockerfile.base
+
+[Dockerfile.base](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base) 包含运行 YAMLResume 的基础环境，包括所有必要的依赖，如来自 [TeX Live](https://www.tug.org/texlive/) 的 [XeTeX](/zh-cn/docs/installation#xetex) 和 [Google Noto 字体](/zh-cn/docs/installation#google-noto)。
+
+这是一个基础镜像，主要用于加速 GitHub Actions 上的构建过程——通过 `apt install texlive-xetex` 安装 texlive 大约需要 [30 分钟](https://github.com/yamlresume/yamlresume/actions/runs/15438395862)，这对于每次 docker 构建来说太长了，所以我们决定构建并[发布这个基础镜像一次](https://hub.docker.com/r/yamlresume/yamlresume-base)，并在每次后续构建中重复使用。
+
+通常您不需要自己构建这个镜像，您可以直接重复使用 dockerhub 上发布的镜像。
+
+### Dockerfile
+
+[Dockerfile](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile) 定义了如何构建 `yamlresume/yamlresume` 镜像，它非常简单直接，只是通过 `npm install -g yamlresume@latest` 从 npmjs 安装 `yamlresume`，并根据 Docker 的[安全最佳实践](https://www.docker.com/blog/understanding-the-docker-user-instruction/)创建必要的用户和组。
+
+在本地构建 yamlresume 镜像是一个简单的任务。您只需要运行
+
+```bash
+docker build -t yamlresume/yamlresume .
+```
+
+如果您遇到为不同架构构建 docker 镜像的问题，您可能需要查看 [docker 多平台构建](https://docs.docker.com/build/building/multi-platform/)。
+
+我在 [X 上写了一些技巧](https://x.com/xiaohanyu1988/status/1931178628785778722)，如果您感兴趣可以看看。

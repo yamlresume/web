@@ -1,4 +1,5 @@
 'use client'
+
 import { cva } from 'class-variance-authority'
 import { buttonVariants } from 'fumadocs-ui/components/ui/button'
 import {
@@ -7,13 +8,7 @@ import {
   PopoverTrigger,
 } from 'fumadocs-ui/components/ui/popover'
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button'
-import {
-  Check,
-  ChevronDown,
-  Copy,
-  ExternalLinkIcon,
-  MessageCircleIcon,
-} from 'lucide-react'
+import { Check, ChevronDown, Copy, ExternalLinkIcon } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { cn } from '../../../lib/cn'
 

@@ -1,17 +1,35 @@
 import { siteConfig } from '@/config/site'
-import { getLLMLink, getLLMText } from '@/lib/llm'
-import { blogSource, docsSource } from '@/lib/source'
+import { getLLMLink } from '@/lib'
+import {
+  blogSource,
+  blogSourceZhCN,
+  blogSourceZhTW,
+  docsSource,
+  docsSourceZhCN,
+  docsSourceZhTW,
+} from '@/lib'
 
 // cached forever
 export const revalidate = false
 
 export async function GET() {
-  const docsLink = docsSource
-    .getPages()
+  // Get all pages from all locales
+  const allDocsPages = [
+    ...docsSource.getPages(),
+    ...docsSourceZhCN.getPages(),
+    ...docsSourceZhTW.getPages(),
+  ]
+
+  const allBlogPages = [
+    ...blogSource.getPages(),
+    ...blogSourceZhCN.getPages(),
+    ...blogSourceZhTW.getPages(),
+  ]
+
+  const docsLink = allDocsPages
     .map((item) => `- ${getLLMLink(item)}`)
     .join('\n')
-  const blogLink = blogSource
-    .getPages()
+  const blogLink = allBlogPages
     .map((item) => `- ${getLLMLink(item)}`)
     .join('\n')
 

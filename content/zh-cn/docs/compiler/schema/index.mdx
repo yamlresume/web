@@ -1,0 +1,82 @@
+---
+title: 模式
+---
+
+## 概述
+
+起草简历是一个漫长、无聊且繁琐的过程。人们经常需要花费数小时挑剔细节，但错误仍然会发生。例如，教育学位可能有拼写错误，电子邮件格式可能错误，课程名称可能太短等。
+
+除了[静态类型定义](/zh-cn/docs/compiler/types)之外，YAMLResume 还提供了一个内置模式，可用于运行时验证。这是使 YAMLResume 成为**简历编译器**的核心——YAMLResume 提供**clang 风格的警告/错误消息**，帮助在简历起草的早期阶段捕获潜在错误。
+
+例如，对于以下简历：
+
+```yml lineNumbers title="invalid-resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp # [!code highlight]
+    url: https//ppresume.com/gallery # [!code highlight]
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S # [!code highlight]
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D # [!code highlight]
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layout:
+  typography:
+    fontSize: 13pt # [!code highlight]
+```
+
+`yamlresume validate` 将为您提供潜在错误列表，并提供清晰的位置信息，帮助精确定位错误位置，同时，借助 [yaml-language-server](https://github.com/redhat-developer/yaml-language-server)，您可以通过[自动完成](/zh-cn/docs/compiler/schema/json#auto-completion)、[悬停属性文档](/zh-cn/docs/compiler/schema/json#property-docs)、[格式验证](/zh-cn/docs/compiler/schema/json#format-validation)等功能获得更好的编辑体验。
+
+![YAMLResume 验证](/static/images/docs/compiler/schema/yamlresume-validate.webp)
+
+在底层，YAMLResume 采用 [Zod](https://zod.dev) 在运行时验证简历数据。Zod 是一个 TypeScript 优先的模式验证库，允许您为简历数据定义模式，作为强大的安全网，确保简历数据可靠、一致，并准备好渲染成专业的 PDF。
+
+模式验证是确保简历数据正确性的非常强大的工具。它可以在简历起草的整个生命周期中捕获错误，这对于从一开始就避免低级错误非常有帮助。
+
+## 了解更多
+
+<Cards>
+  <Card
+    description="JSON 模式验证"
+    href="/docs/compiler/schema/json"
+    title="JSON 模式"
+  />
+  <Card
+    description="Zod 模式验证"
+    href="/docs/compiler/schema/zod"
+    title="Zod 模式"
+  />
+  <Card
+    description="YAMLResume CLI 验证命令"
+    href="/docs/cli#validate"
+    title="验证"
+  />
+</Cards>

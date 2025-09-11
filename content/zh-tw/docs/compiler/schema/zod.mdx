@@ -1,0 +1,431 @@
+---
+title: Zod Schema
+---
+
+YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
+
+本文檔概述了 YAMLResume 中使用的所有 zod 模式。如果您對實現細節感興趣，可以在[這裡](https://github.com/yamlresume/yamlresume/tree/main/packages/core/src/schema)找到原始碼。
+
+## 履歷模式
+
+定義整體履歷結構驗證，包括內容和佈局驗證。
+
+| 屬性      | 類型                                          | 必需 |
+| --------- | --------------------------------------------- | -------- |
+| `content` | [`ResumeContentSchema`](#resumecontentschema) | ✅       |
+| `layout?` | [`ResumeLayoutSchema`](#resumelayoutschema)   | ⬜       |
+
+### ResumeContentSchema
+
+定義整個履歷內容的驗證結構。
+
+| 屬性            | 類型                                                | 必需 |
+| --------------- | --------------------------------------------------- | -------- |
+| `basics`        | [`BasicsItemSchema`](#basicsitemschema)             | ✅       |
+| `education`     | [`EducationItemSchema[]`](#educationitemschema)     | ✅       |
+| `awards?`       | [`AwardItemSchema[]`](#awarditemschema)             | ⬜       |
+| `certificates?` | [`CertificateItemSchema[]`](#certificateitemschema) | ⬜       |
+| `interests?`    | [`InterestItemSchema[]`](#interestitemschema)       | ⬜       |
+| `languages?`    | [`LanguageItemSchema[]`](#languageitemschema)       | ⬜       |
+| `location?`     | [`LocationItemSchema`](#locationitemschema)         | ⬜       |
+| `projects?`     | [`ProjectItemSchema[]`](#projectitemschema)         | ⬜       |
+| `profiles?`     | [`ProfileItemSchema[]`](#profileitemschema)         | ⬜       |
+| `publications?` | [`PublicationItemSchema[]`](#publicationitemschema) | ⬜       |
+| `references?`   | [`ReferenceItemSchema[]`](#referenceitemschema)     | ⬜       |
+| `skills?`       | [`SkillItemSchema[]`](#skillitemschema)             | ⬜       |
+| `volunteer?`    | [`VolunteerItemSchema[]`](#volunteeritemschema)     | ⬜       |
+| `work?`         | [`WorkItemSchema[]`](#workitemschema)               | ⬜       |
+
+#### AwardItemSchema
+
+驗證獲得的單個獎項、榮譽或認可。
+
+| 屬性       | 類型     | 必需 | 驗證規則                      |
+| ---------- | -------- | -------- | ------------------------------------- |
+| `awarder`  | `string` | ✅       | 2-128 個字元                      |
+| `title`    | `string` | ✅       | 2-128 個字元                      |
+| `date?`    | `string` | ⬜       | 參見[日期模式](#date-schema)       |
+| `summary?` | `string` | ⬜       | 參見[摘要模式](#summary-schema) |
+
+#### BasicsItemSchema
+
+驗證核心個人和聯繫資訊。
+
+| 屬性        | 類型     | 必需 | 驗證規則                      |
+| ----------- | -------- | -------- | ------------------------------------- |
+| `name`      | `string` | ✅       | 2-128 個字元                      |
+| `email?`    | `string` | ⬜       | 參見[電子郵件模式](#email-schema)     |
+| `headline?` | `string` | ⬜       | 8-128 個字元                      |
+| `phone?`    | `string` | ⬜       | 參見[電話模式](#phone-schema)     |
+| `summary?`  | `string` | ⬜       | 參見[摘要模式](#summary-schema) |
+| `url?`      | `string` | ⬜       | 參見[URL 模式](#url-schema)         |
+
+#### CertificateItemSchema
+
+驗證單個認證、證書或專業資格。
+
+| 屬性     | 類型     | 必需 | 驗證規則                |
+| -------- | -------- | -------- | ------------------------------- |
+| `issuer` | `string` | ✅       | 2-128 個字元                |
+| `name`   | `string` | ✅       | 2-128 個字元                |
+| `date?`  | `string` | ⬜       | 參見[日期模式](#date-schema) |
+| `url?`   | `string` | ⬜       | 參見[URL 模式](#url-schema)   |
+
+#### EducationItemSchema
+
+驗證單個教育經歷或學位課程。
+
+| 屬性          | 類型                | 必需 | 驗證規則                                  |
+| ------------- | ------------------- | -------- | ------------------------------------------------- |
+| `area`        | `string`            | ✅       | 2-64 個字元                                   |
+| `degree`      | [`Degree`](#degree) | ✅       | 必須來自預定義的[學位選項](#degree) |
+| `institution` | `string`            | ✅       | 2-128 個字元                                  |
+| `startDate`   | `string`            | ✅       | 參見[日期模式](#date-schema)                   |
+| `courses?`    | `string[]`          | ⬜       | 每個專案 2-128 個字元                        |
+| `endDate?`    | `string`            | ⬜       | 參見[日期模式](#date-schema)                   |
+| `summary?`    | `string`            | ⬜       | 參見[摘要模式](#summary-schema)             |
+| `score?`      | `string`            | ⬜       | 2-32 個字元                                   |
+| `url?`        | `string`            | ⬜       | 參見[URL 模式](#url-schema)                     |
+
+#### InterestItemSchema
+
+驗證單個興趣、愛好或個人活動。
+
+| 屬性        | 類型       | 必需 | 驗證規則                        |
+| ----------- | ---------- | -------- | --------------------------------------- |
+| `name`      | `string`   | ✅       | 2-128 個字元                        |
+| `keywords?` | `string[]` | ⬜       | 參見[關鍵詞模式](#keywords-schema) |
+
+#### LanguageItemSchema
+
+驗證單個語言能力專案。
+
+| 屬性        | 類型                    | 必需 | 驗證規則                                      |
+| ----------- | ----------------------- | -------- | ----------------------------------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅       | 必須來自預定義的[熟練程度選項](#fluency)   |
+| `language`  | [`Language`](#language) | ✅       | 必須來自預定義的[語言選項](#language) |
+| `keywords?` | `string[]`              | ⬜       | 每個專案 1-32 個字元                             |
+
+#### LocationItemSchema
+
+驗證位置和地址資訊。
+
+| 屬性          | 類型                  | 必需 | 驗證規則                                    |
+| ------------- | --------------------- | -------- | --------------------------------------------------- |
+| `city`        | `string`              | ✅       | 2-128 個字元                                    |
+| `address?`    | `string`              | ⬜       | 2-128 個字元                                    |
+| `country?`    | [`Country`](#country) | ⬜       | 必須來自預定義的[國家選項](#country) |
+| `postalCode?` | `string`              | ⬜       | 2-128 個字元                                    |
+| `region?`     | `string`              | ⬜       | 2-128 個字元                                    |
+
+#### ProfileItemSchema
+
+驗證單個線上個人資料或社交媒體存在。
+
+| 屬性       | 類型                  | 必需 | 驗證規則                                    |
+| ---------- | --------------------- | -------- | --------------------------------------------------- |
+| `network`  | [`Network`](#network) | ✅       | 必須來自預定義的[網路選項](#network) |
+| `username` | `string`              | ✅       | 2-128 個字元                                    |
+| `url?`     | `string`              | ⬜       | 有效 URL，最多 256 個字元                            |
+
+#### ProjectItemSchema
+
+驗證單個專案、作品集作品或技術工作。
+
+| 屬性           | 類型       | 必需 | 驗證規則                      |
+| -------------- | ---------- | -------- | ------------------------------------- |
+| `name`         | `string`   | ✅       | 2-128 個字元                      |
+| `startDate`    | `string`   | ✅       | 參見[日期模式](#date-schema)       |
+| `summary`      | `string`   | ✅       | 參見[摘要模式](#summary-schema) |
+| `description?` | `string`   | ⬜       | 4-128 個字元                      |
+| `endDate?`     | `string`   | ⬜       | 參見[日期模式](#date-schema)       |
+| `keywords?`    | `string[]` | ⬜       | 每個專案 1-32 個字元             |
+| `url?`         | `string`   | ⬜       | 有效 URL，最多 256 個字元              |
+
+#### PublicationItemSchema
+
+驗證單個出版物、研究工作或學術論文。
+
+| 屬性           | 類型     | 必需 | 驗證規則                      |
+| -------------- | -------- | -------- | ------------------------------------- |
+| `name`         | `string` | ✅       | 2-128 個字元                      |
+| `publisher`    | `string` | ✅       | 2-128 個字元                      |
+| `releaseDate?` | `string` | ⬜       | 參見[日期模式](#date-schema)       |
+| `summary?`     | `string` | ⬜       | 參見[摘要模式](#summary-schema) |
+| `url?`         | `string` | ⬜       | 有效 URL，最多 256 個字元              |
+
+#### ReferenceItemSchema
+
+驗證單個專業推薦人或推薦。
+
+| 屬性            | 類型     | 必需 | 驗證規則                      |
+| --------------- | -------- | -------- | ------------------------------------- |
+| `name`          | `string` | ✅       | 2-128 個字元                      |
+| `summary`       | `string` | ✅       | 參見[摘要模式](#summary-schema) |
+| `email?`        | `string` | ⬜       | 參見[電子郵件模式](#email-schema)     |
+| `phone?`        | `string` | ⬜       | 有效電話格式                    |
+| `relationship?` | `string` | ⬜       | 2-128 個字元                      |
+
+#### SkillItemSchema
+
+驗證單個技能、能力或技術能力。
+
+| 屬性        | 類型              | 必需 | 驗證規則                                |
+| ----------- | ----------------- | -------- | ----------------------------------------------- |
+| `level`     | [`Level`](#level) | ✅       | 必須來自預定義的[級別選項](#level) |
+| `name`      | `string`          | ✅       | 2-128 個字元                                |
+| `keywords?` | `string[]`        | ⬜       | 每個專案 1-32 個字元                       |
+
+#### VolunteerItemSchema
+
+驗證單個志願者經歷或社區服務。
+
+| 屬性           | 類型     | 必需 | 驗證規則                      |
+| -------------- | -------- | -------- | ------------------------------------- |
+| `organization` | `string` | ✅       | 2-128 個字元                      |
+| `position`     | `string` | ✅       | 2-128 個字元                      |
+| `startDate`    | `string` | ✅       | 參見[日期模式](#date-schema)       |
+| `summary`      | `string` | ✅       | 參見[摘要模式](#summary-schema) |
+| `endDate?`     | `string` | ⬜       | 參見[日期模式](#date-schema)       |
+| `url?`         | `string` | ⬜       | 有效 URL，最多 256 個字元              |
+
+#### WorkItemSchema
+
+驗證單個工作經歷或就業職位。
+
+| 屬性        | 類型       | 必需 | 驗證規則                      |
+| ----------- | ---------- | -------- | ------------------------------------- |
+| `name`      | `string`   | ✅       | 2-128 個字元                      |
+| `position`  | `string`   | ✅       | 2-128 個字元                      |
+| `startDate` | `string`   | ✅       | 參見[日期模式](#date-schema)       |
+| `summary`   | `string`   | ✅       | 參見[摘要模式](#summary-schema) |
+| `endDate?`  | `string`   | ⬜       | 參見[日期模式](#date-schema)       |
+| `keywords?` | `string[]` | ⬜       | 每個專案 1-32 個字元             |
+| `url?`      | `string`   | ⬜       | 有效 URL，最多 256 個字元              |
+
+### ResumeLayoutSchema
+
+定義整體佈局驗證配置。
+
+| 屬性          | 類型                                                            | 必需 |
+| ------------- | --------------------------------------------------------------- | -------- |
+| `locale?`     | [`ResumeLayoutLocaleSchema`](#resumelayoutlocaleschema)         | ⬜       |
+| `margins?`    | [`ResumeLayoutMarginsSchema`](#resumelayoutmarginsschema)       | ⬜       |
+| `page?`       | [`ResumeLayoutPageSchema`](#resumelayoutpageschema)             | ⬜       |
+| `template?`   | [`Template`](#template)                                         | ⬜       |
+| `typography?` | [`ResumeLayoutTypographySchema`](#resumelayouttypographyschema) | ⬜       |
+| `latex?`      | [`ResumeLayoutLaTeXSchema`](#resumelayoutlatexschema)           | ⬜       |
+
+#### ResumeLayoutLocaleSchema
+
+驗證國際化和本地化的區域設置。
+
+| 屬性        | 類型                                | 必需 | 驗證規則                                                    |
+| ----------- | ----------------------------------- | -------- | ------------------------------------------------------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | 必須來自預定義的[區域語言選項](#locale-language) |
+
+#### ResumeLayoutMarginsSchema
+
+驗證文件佈局的頁邊距設置。
+
+| 屬性      | 類型     | 必需 | 驗證規則                              |
+| --------- | -------- | -------- | --------------------------------------------- |
+| `top?`    | `string` | ⬜       | 參見[頁邊距大小模式](#margin-size-schema) |
+| `bottom?` | `string` | ⬜       | 參見[頁邊距大小模式](#margin-size-schema) |
+| `left?`   | `string` | ⬜       | 參見[頁邊距大小模式](#margin-size-schema) |
+| `right?`  | `string` | ⬜       | 參見[頁邊距大小模式](#margin-size-schema) |
+
+#### ResumeLayoutPageSchema
+
+驗證文件演示的頁面級設置。
+
+| 屬性               | 類型      | 必需 | 驗證規則 |
+| ------------------ | --------- | -------- | ---------------- |
+| `showPageNumbers?` | `boolean` | ⬜       | true/false       |
+
+#### ResumeLayoutTypographySchema
+
+驗證文件格式的排版設置。
+
+| 屬性        | 類型     | 必需 | 驗證規則                                       |
+| ----------- | -------- | -------- | ------------------------------------------------------ |
+| `fontSize?` | `string` | ⬜       | 必須來自預定義的[字體大小選項](#fontsize) |
+
+#### ResumeLayoutLaTeXSchema
+
+驗證 LaTeX 特定配置選項。
+
+| 屬性        | 類型                            | 必需 | 驗證規則                                                     |
+| ----------- | ------------------------------- | -------- | -------------------------------------------------------------------- |
+| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | 必須來自預定義的[fontspec 數字選項](#fontspecnumbers) |
+
+## 原始驗證模式
+
+### 電子郵件模式
+
+使用嚴格格式要求驗證電子郵件地址。
+
+**驗證規則：**
+
+- 必須是有效的電子郵件格式
+- 模式：`^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$`
+- 示例：`hi@ppresume.com`、`first.last@company.org`、`test+tag@domain.co.uk`
+
+### 電話模式
+
+使用靈活格式支援驗證電話號碼。
+
+**驗證規則：**
+
+- 模式：`^[+]?[(]?[0-9\\s-]{1,15}[)]?[0-9\\s-]{1,15}$`
+- 可能包括國家代碼、括號、空格和連字元
+- 示例：`555-123-4567`、`+44 20 7946 0958`、`(555) 123-4567`
+
+### 摘要模式
+
+使用長度約束驗證摘要文字。
+
+**驗證規則：**
+
+- 必須在 16 到 1024 個字元之間
+- 示例：
+  - "具有 5 年以上全棧開發經驗的軟體工程師。"
+  - "熱衷於使用者體驗和現代設計原則的創意設計師。"
+  - "在按時按預算交付複雜專案方面有良好記錄的專案經理。"
+
+### URL 模式
+
+使用長度約束驗證 URL。
+
+**驗證規則：**
+
+- 必須是有效的 URL 格式
+- 最大長度為 256 個字元
+- 示例：`https://yamlresume.dev`、`https://ppresume.com`、`https://github.com/yamlresume/yamlresume`
+
+### 關鍵詞模式
+
+使用單個專案約束驗證關鍵詞陣列。
+
+**驗證規則：**
+
+- 字串陣列
+- 每個關鍵詞必須在 1 到 32 個字元之間
+- 示例：`["Javascript", "React", "Typescript"]`、`["Design", "UI", "UX"]`
+
+### 日期模式
+
+使用格式要求驗證日期字串。
+
+**驗證規則：**
+
+- 必須在 4 到 32 個字元之間
+- 必須可被 `Date.parse()` 解析
+- 示例：`2025-01-01`、`Jul 2025`、`July 3, 2025`、`2025-02-02T00:00:03.123Z`
+
+### 頁邊距大小模式
+
+使用單位要求驗證頁邊距大小字串。
+
+**驗證規則：**
+
+- 必須在 2 到 32 個字元之間
+- 模式：`^\\d+(\\.\\d+)?(cm|pt|in)$`
+- 必須是正數後跟有效單位：cm、pt 或 in
+- 示例：`2.5cm`、`1in`、`72pt`、`0.5cm`、`12pt`
+
+## 枚舉驗證模式
+
+### 國家
+
+世界上所有可能國家和地區的聯合類型。
+
+**驗證規則：**
+
+- 必須是預定義的國家選項之一
+- 示例：`United States`、`China`、`United Kingdom`、`Germany`
+
+### 學位
+
+所有可能學位的聯合類型。
+
+**驗證規則：**
+
+- 必須是以下之一：`Associate`、`Bachelor`、`Diploma`、`Doctor`、`High School`、`Master`、`Middle School`
+
+### 熟練程度
+
+所有可能語言熟練程度的聯合類型。
+
+**驗證規則：**
+
+- 必須是以下之一：
+  - `Elementary Proficiency`
+  - `Full Professional Proficiency`
+  - `Limited Working Proficiency`
+  - `Minimum Professional Proficiency`
+  - `Native or Bilingual Proficiency`
+
+### 語言
+
+所有支援語言的聯合類型。
+
+**驗證規則：**
+
+- 必須是預定義的語言選項之一
+- 示例：`English`、`Chinese`、`Spanish`、`French`、`German`
+
+### 級別
+
+所有可能技能熟練程度的聯合類型。
+
+**驗證規則：**
+
+- 必須是以下之一：`Advanced`、`Beginner`、`Expert`、`Intermediate`、`Master`、`Novice`
+
+### 網路
+
+所有可能社交網路選項的聯合類型。
+
+**驗證規則：**
+
+- 必須是預定義的網路選項之一
+- 示例：`GitHub`、`LinkedIn`、`Twitter`、`Facebook`、`Instagram`
+
+### 模板
+
+所有可能模板選項的聯合類型。
+
+**驗證規則：**
+
+- 必須是以下之一：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
+- 另請參閱：[模板](https://yamlresume.dev/docs/layout/templates)
+
+### 區域語言
+
+所有可能區域語言的聯合類型。
+
+**驗證規則：**
+
+- 必須是以下之一：`en`、`es`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`
+- 另請參閱：[多語言](https://yamlresume.dev/docs/content/multi-languages)
+
+### FontspecNumbers
+
+所有可能 latex fontspec 數字選項的聯合類型。
+
+**驗證規則：**
+
+- 必須是以下之一：
+  - `Auto` - 允許根據選定的 `LocaleLanguage` 自動確定樣式（預設）
+  - `Lining` - 標準襯線數字（CJK 語言的預設值）
+  - `OldStyle` - 不同高度的舊式數字（拉丁語言的預設值）
+
+### 字體大小
+
+所有可能字體大小選項的聯合類型。
+
+**驗證規則：**
+
+- 必須是以下之一：`10pt`、`11pt`、`12pt`
+- `10pt` 是預設字體大小

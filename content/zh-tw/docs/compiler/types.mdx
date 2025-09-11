@@ -1,0 +1,416 @@
+---
+title: 類型
+---
+
+本文檔概述了定義 YAMLResume 履歷結構的 TypeScript 類型。作為 TypeScript 專案，YAMLResume 採用靜態類型來確保資料一致性。此文件提供了用於表示履歷資訊的核心資料結構概述，包括個人詳細資訊、教育、經驗、技能等。
+
+您可以查看 [types.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types.ts) 了解真實來源的詳細資訊。
+
+理解這些類型對於想要自定義或擴展 YAMLResume 功能的貢獻者和開發者至關重要。
+
+本文檔為尋求創建有效 YAMLResume 的使用者提供權威參考，闡明可選和必填欄位之間的區別。為了確保在 YAMLResume 中成功編譯，最小履歷必須包含以下基本欄位：
+
+- `content.basics.name`
+- `education[number].area`
+- `education[number].degree`
+- `education[number].institution`
+- `education[number].startDate`
+
+因此，理論上最小可行履歷如下所示：
+
+```yml lineNumbers
+content:
+  basics:
+    name: Xiao Hanyu
+  education:
+    - area: Computer Science and Technology
+      degree: Bachelor
+      institution: Zhejiang University
+      startDate: Sep, 2007
+```
+
+## Resume
+
+定義整體履歷結構，包括內容和佈局。
+
+| 屬性      | 類型                              | 必需 | 描述                                          |
+| --------- | --------------------------------- | -------- | ---------------------------------------------------- |
+| `content` | [`ResumeContent`](#resumecontent) | ✅       | 定義整個履歷內容的結構。 |
+| `layout?` | [`ResumeLayout`](#resumelayout)   | ⬜       | 定義整體佈局配置。            |
+
+以下是履歷結構的高級圖表：
+
+<Mermaid chart='
+flowchart LR
+  A[Resume]
+  B[ResumeLayout]
+  C[ResumeContent]
+
+subgraph Layout
+direction TB
+B1[locale]
+B2[margins]
+B3[page]
+B4[template]
+B5[typography]
+end
+
+subgraph Content
+direction TB
+C1[basics]
+C2["education[]"]
+C3[location]
+C4[profiles]
+C5["work[]"]
+C6["skills[]"]
+C7["languages[]"]
+C8["..."]
+end
+
+A --> B
+A --> C
+B --> B1
+B --> B2
+B --> B3
+B --> B4
+B --> B5
+C --> C1
+C --> C2
+C --> C3
+C --> C4
+C --> C5
+C --> C6
+C --> C7
+C --> C8
+'/>
+
+### ResumeContent
+
+定義整個履歷內容的結構。
+
+| 屬性            | 類型                                    | 必需 | 描述                                                          |
+| --------------- | --------------------------------------- | -------- | -------------------------------------------------------------------- |
+| `basics`        | [`BasicsItem`](#basicsitem)             | ✅       | 表示核心個人和聯繫資訊。                |
+| `education`     | [`EducationItem[]`](#educationitem)     | ✅       | 包含教育經歷集合。                    |
+| `awards?`       | [`AwardItem[]`](#awarditem)             | ⬜       | 包含獎項和認可集合。                    |
+| `certificates?` | [`CertificateItem[]`](#certificateitem) | ⬜       | 包含認證和證書集合。             |
+| `interests?`    | [`InterestItem[]`](#interestitem)       | ⬜       | 包含興趣、愛好或個人活動集合。 |
+| `languages?`    | [`LanguageItem[]`](#languageitem)       | ⬜       | 包含語言能力集合。                     |
+| `location?`     | [`LocationItem`](#locationitem)         | ⬜       | 包含位置資訊。                                       |
+| `projects?`     | [`ProjectItem[]`](#projectitem)         | ⬜       | 包含專案集合。                                   |
+| `profiles?`     | [`ProfileItem[]`](#profileitem)         | ⬜       | 包含線上個人資料集合。                            |
+| `publications?` | [`PublicationItem[]`](#publicationitem) | ⬜       | 包含出版物集合。                               |
+| `references?`   | [`ReferenceItem[]`](#referenceitem)     | ⬜       | 包含推薦人集合。                                 |
+| `skills?`       | [`SkillItem[]`](#skillitem)             | ⬜       | 包含技能集合。                                     |
+| `volunteer?`    | [`VolunteerItem[]`](#volunteeritem)     | ⬜       | 包含志願者經歷集合。                      |
+| `work?`         | [`WorkItem[]`](#workitem)               | ⬜       | 包含工作經歷和就業歷史集合。    |
+
+#### AwardItem
+
+表示獲得的單個獎項、榮譽或認可。
+
+| 屬性       | 類型     | 必需 | 描述                                                 |
+| ---------- | -------- | -------- | ----------------------------------------------------------- |
+| `awarder`  | `string` | ✅       | 頒發獎項的組織或實體。             |
+| `title`    | `string` | ✅       | 獎項的名稱或標題。                             |
+| `date?`    | `string` | ⬜       | 獲獎日期（例如："2020"、"Oct 2020"）。 |
+| `summary?` | `string` | ⬜       | 關於獎項的簡短描述或詳細資訊。             |
+
+#### BasicsItem
+
+表示核心個人和聯繫資訊。
+
+| 屬性        | 類型     | 必需 | 描述                                                         |
+| ----------- | -------- | -------- | ------------------------------------------------------------------- |
+| `name`      | `string` | ✅       | 全名。                                                          |
+| `email?`    | `string` | ⬜       | 電子郵件地址。                                                      |
+| `headline?` | `string` | ⬜       | 簡短的專業標題或職位（例如："軟體工程師"）。 |
+| `phone?`    | `string` | ⬜       | 電話號碼。                                                       |
+| `summary?`  | `string` | ⬜       | 專業摘要或目標聲明。                      |
+| `url?`      | `string` | ⬜       | 個人網站或作品集 URL。                                  |
+
+#### CertificateItem
+
+表示單個認證、證書或專業資格。
+
+| 屬性     | 類型     | 必需 | 描述                                                       |
+| -------- | -------- | -------- | ----------------------------------------------------------------- |
+| `issuer` | `string` | ✅       | 頒發證書的組織。                     |
+| `name`   | `string` | ✅       | 證書名稱。                                      |
+| `date?`  | `string` | ⬜       | 獲得證書的日期（例如："2021"、"Nov 2021"）。 |
+| `url?`   | `string` | ⬜       | 與證書相關的 URL（例如：驗證連結）。         |
+
+#### EducationItem
+
+表示單個教育經歷或學位課程。
+
+| 屬性          | 類型                | 必需 | 描述                                                            |
+| ------------- | ------------------- | -------- | ---------------------------------------------------------------------- |
+| `area`        | `string`            | ✅       | 學習領域（例如："電腦科學"）。                              |
+| `degree`      | [`Degree`](#degree) | ✅       | 獲得的學位類型。                                           |
+| `institution` | `string`            | ✅       | 機構名稱。                                               |
+| `startDate`   | `string`            | ✅       | 學習開始日期（例如："2016"、"Sep 2016"）。                        |
+| `courses?`    | `string[]`          | ⬜       | 所修課程列表。                                                 |
+| `endDate?`    | `string`            | ⬜       | 學習結束日期（例如："2020"、"May 2020"），空值表示"現在"。 |
+| `summary?`    | `string`            | ⬜       | 成就或詳細資訊的描述。                             |
+| `score?`      | `string`            | ⬜       | GPA 或學術成績。                                                 |
+| `url?`        | `string`            | ⬜       | 與機構或學位相關的 URL。                              |
+
+#### InterestItem
+
+表示單個興趣、愛好或個人活動。
+
+| 屬性        | 類型       | 必需 | 描述                                                     |
+| ----------- | ---------- | -------- | --------------------------------------------------------------- |
+| `name`      | `string`   | ✅       | 興趣類別名稱（例如："閱讀"、"攝影"）。 |
+| `keywords?` | `string[]` | ⬜       | 與興趣相關的關鍵詞。                               |
+
+#### LanguageItem
+
+表示單個語言能力專案。
+
+| 屬性        | 類型                    | 必需 | 描述                                                         |
+| ----------- | ----------------------- | -------- | ------------------------------------------------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅       | 語言熟練程度。                           |
+| `language`  | [`Language`](#language) | ✅       | 語言。                                                       |
+| `keywords?` | `string[]`              | ⬜       | 與語言技能相關的特定關鍵詞（例如："翻譯"）。 |
+
+#### LocationItem
+
+表示位置和地址資訊。
+
+| 屬性          | 類型                  | 必需 | 描述                 |
+| ------------- | --------------------- | -------- | --------------------------- |
+| `city`        | `string`              | ✅       | 城市名稱。                  |
+| `address?`    | `string`              | ⬜       | 街道地址。             |
+| `country?`    | [`Country`](#country) | ⬜       | 國家代碼或名稱。       |
+| `postalCode?` | `string`              | ⬜       | 郵政編碼。         |
+| `region?`     | `string`              | ⬜       | 州、省或地區。 |
+
+#### ProfileItem
+
+表示單個線上個人資料或社交媒體存在。
+
+| 屬性       | 類型                  | 必需 | 描述                          |
+| ---------- | --------------------- | -------- | ------------------------------------ |
+| `network`  | [`Network`](#network) | ✅       | 網路或平台名稱。 |
+| `username` | `string`              | ✅       | 平台上的使用者名稱。        |
+| `url?`     | `string`              | ⬜       | 個人資料的 URL。              |
+
+#### ProjectItem
+
+表示單個專案、作品集作品或技術工作。
+
+| 屬性           | 類型       | 必需 | 描述                                               |
+| -------------- | ---------- | -------- | --------------------------------------------------------- |
+| `name`         | `string`   | ✅       | 專案名稱。                                      |
+| `startDate`    | `string`   | ✅       | 專案開始日期（例如："2021"、"Jan 2021"）。     |
+| `summary`      | `string`   | ✅       | 專案的詳細成就。                 |
+| `description?` | `string`   | ⬜       | 專案描述。                               |
+| `endDate?`     | `string`   | ⬜       | 專案結束日期（例如："2022"、"Jul 2022"）。       |
+| `keywords?`    | `string[]` | ⬜       | 專案中使用的關鍵詞或技術。             |
+| `url?`         | `string`   | ⬜       | 與專案相關的 URL（例如：倉庫、即時演示）。 |
+
+#### PublicationItem
+
+表示單個出版物、研究工作或學術論文。
+
+| 屬性           | 類型     | 必需 | 描述                                       |
+| -------------- | -------- | -------- | ------------------------------------------------- |
+| `name`         | `string` | ✅       | 出版物的名稱或標題。                 |
+| `publisher`    | `string` | ✅       | 作品的出版商。                            |
+| `releaseDate?` | `string` | ⬜       | 發布日期（例如："2023"、"Mar 2023"）。   |
+| `summary?`     | `string` | ⬜       | 出版物的摘要或摘要。           |
+| `url?`         | `string` | ⬜       | 與出版物相關的 URL（例如：DOI、連結）。 |
+
+#### ReferenceItem
+
+表示單個專業推薦人或推薦。
+
+| 屬性            | 類型     | 必需 | 描述                                             |
+| --------------- | -------- | -------- | ------------------------------------------------------- |
+| `name`          | `string` | ✅       | 推薦人姓名。                                  |
+| `summary`       | `string` | ✅       | 關於推薦人的簡短說明。                       |
+| `email?`        | `string` | ⬜       | 推薦人的電子郵件地址。                         |
+| `phone?`        | `string` | ⬜       | 推薦人的電話號碼。                          |
+| `relationship?` | `string` | ⬜       | 與推薦人的關係（例如："前經理"）。 |
+
+#### SkillItem
+
+表示單個技能、能力或技術能力。
+
+| 屬性        | 類型              | 必需 | 描述                                             |
+| ----------- | ----------------- | -------- | ------------------------------------------------------- |
+| `level`     | [`Level`](#level) | ✅       | 技能熟練程度。                         |
+| `name`      | `string`          | ✅       | 技能名稱。                                      |
+| `keywords?` | `string[]`        | ⬜       | 與技能相關的特定關鍵詞或技術。 |
+
+#### VolunteerItem
+
+表示單個志願者經歷或社區服務。
+
+| 屬性           | 類型     | 必需 | 描述                                                  |
+| -------------- | -------- | -------- | ------------------------------------------------------------ |
+| `organization` | `string` | ✅       | 組織名稱。                                    |
+| `position`     | `string` | ✅       | 擔任的角色或職位。                                       |
+| `startDate`    | `string` | ✅       | 志願者工作開始日期（例如："2019"、"Jun 2019"）。 |
+| `summary`      | `string` | ✅       | 職責或成就摘要。                 |
+| `endDate?`     | `string` | ⬜       | 志願者工作結束日期（例如："2020"、"Dec 2020"）。   |
+| `url?`         | `string` | ⬜       | 與組織或工作相關的 URL。                     |
+
+#### WorkItem
+
+表示單個工作經歷或就業職位。
+
+| 屬性        | 類型       | 必需 | 描述                                          |
+| ----------- | ---------- | -------- | ---------------------------------------------------- |
+| `name`      | `string`   | ✅       | 公司或雇主名稱。                     |
+| `position`  | `string`   | ✅       | 職位或擔任的職位。                          |
+| `startDate` | `string`   | ✅       | 就業開始日期（例如："2021"、"Apr 2021"）。 |
+| `summary`   | `string`   | ✅       | 職責和成就摘要。     |
+| `endDate?`  | `string`   | ⬜       | 就業結束日期（例如："2023"、"Aug 2023"）。   |
+| `keywords?` | `string[]` | ⬜       | 與角色或使用的技術相關的關鍵詞。   |
+| `url?`      | `string`   | ⬜       | 與公司或工作相關的 URL。                  |
+
+### ResumeLayout
+
+定義整體佈局配置。
+
+| 屬性          | 類型                                                | 必需 | 描述                                                        |
+| ------------- | --------------------------------------------------- | -------- | ------------------------------------------------------------------ |
+| `locale?`     | [`ResumeLayoutLocale`](#resumelayoutlocale)         | ⬜       | 定義國際化和本地化的區域設置。 |
+| `margins?`    | [`ResumeLayoutMargins`](#resumelayoutmargins)       | ⬜       | 定義文件佈局的頁邊距設置。                  |
+| `page?`       | [`ResumeLayoutPage`](#resumelayoutpage)             | ⬜       | 定義文件演示的頁面級設置。             |
+| `template?`   | [`Template`](#template)                             | ⬜       | 定義選定的模板。                                     |
+| `typography?` | [`ResumeLayoutTypography`](#resumelayouttypography) | ⬜       | 定義文件格式的排版設置。               |
+| `latex?`      | [`ResumeLayoutLaTeX`](#resumelayoutlatex)           | ⬜       | 定義 LaTeX 特定配置選項。                      |
+
+#### ResumeLayoutLocale
+
+定義國際化和本地化的區域設置。
+
+| 屬性        | 類型                                | 必需 | 描述                                                      |
+| ----------- | ----------------------------------- | -------- | ---------------------------------------------------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | 履歷內容和模板術語的選定語言。 |
+
+#### ResumeLayoutMargins
+
+定義文件佈局的頁邊距設置。
+
+| 屬性      | 類型     | 必需 | 描述                          |
+| --------- | -------- | -------- | ------------------------------------ |
+| `top?`    | `string` | ⬜       | 上邊距值（例如："2.5cm"）。    |
+| `bottom?` | `string` | ⬜       | 下邊距值（例如："2.5cm"）。 |
+| `left?`   | `string` | ⬜       | 左邊距值（例如："1.5cm"）。   |
+| `right?`  | `string` | ⬜       | 右邊距值（例如："1.5cm"）。  |
+
+#### ResumeLayoutPage
+
+定義文件演示的頁面級設置。
+
+| 屬性               | 類型      | 必需 | 描述                      |
+| ------------------ | --------- | -------- | -------------------------------- |
+| `showPageNumbers?` | `boolean` | ⬜       | 是否顯示頁碼。 |
+
+#### ResumeLayoutTypography
+
+定義文件格式的排版設置。
+
+| 屬性        | 類型     | 必需 | 描述                                             |
+| ----------- | -------- | -------- | ------------------------------------------------------- |
+| `fontSize?` | `string` | ⬜       | 文件的基礎字體大小（例如："10pt"、"11pt"）。 |
+
+#### ResumeLayoutLaTeX
+
+定義 LaTeX 特定配置選項。
+
+| 屬性        | 類型                            | 必需 | 描述                            |
+| ----------- | ------------------------------- | -------- | -------------------------------------- |
+| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | LaTeX fontspec 包配置。 |
+
+## 枚舉類型
+
+### Country
+
+世界上所有可能國家和地區的聯合類型。
+
+### Degree
+
+所有可能學位的聯合類型。
+
+- `Associate`
+- `Bachelor`
+- `Diploma`
+- `Doctor`
+- `High School`
+- `Master`
+- `Middle School`
+
+### Fluency
+
+所有可能語言熟練程度的聯合類型。
+
+- `Elementary Proficiency`
+- `Full Professional Proficiency`
+- `Limited Working Proficiency`
+- `Minimum Professional Proficiency`
+- `Native or Bilingual Proficiency`
+
+### Language
+
+所有支援語言的聯合類型。
+
+### Level
+
+所有可能技能熟練程度的聯合類型。
+
+- `Advanced`
+- `Beginner`
+- `Expert`
+- `Intermediate`
+- `Master`
+- `Novice`
+
+### Network
+
+所有可能社交網路選項的聯合類型。
+
+### Template
+
+所有可能模板選項的聯合類型。
+
+另請參閱：[模板](https://yamlresume.dev/docs/layout/templates)
+
+- `moderncv-banking`
+- `moderncv-casual`
+- `moderncv-classic`
+
+### LocaleLanguage
+
+所有可能區域語言的聯合類型。
+
+另請參閱：[多語言](https://yamlresume.dev/docs/content/multi-languages)
+
+- `en`
+- `es`
+- `zh-hans`
+- `zh-hant-hk`
+- `zh-hant-tw`
+
+### FontspecNumbers
+
+所有可能 latex fontspec 數字選項的聯合類型。
+
+- `Auto` - 允許根據選定的 `LocaleLanguage` 自動確定樣式（預設）
+- `Lining` - 標準襯線數字（CJK 語言的預設值）
+- `OldStyle` - 不同高度的舊式數字（拉丁語言的預設值）
+
+### FontSize
+
+所有可能字體大小選項的聯合類型。
+
+目前只支援 3 個選項：
+
+- `10pt` - 10pt 字體大小（預設）
+- `11pt` - 11pt 字體大小
+- `12pt` - 12pt 字體大小

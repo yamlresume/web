@@ -1,0 +1,138 @@
+---
+title: CLI
+---
+
+YAMLResume 採用單倉庫（mono-repo）結構，這意味著所有包都包含在單個倉庫中。得益於 [pnpm workspace](https://pnpm.io/workspaces)，這種方法簡化了包之間的依賴管理和版本控制。
+
+在撰寫本文時，YAMLResume 倉庫有兩個包：
+
+- [yamlresume/cli](https://github.com/yamlresume/yamlresume/tree/main/packages/cli)：YAMLResume 的 CLI 介面。
+- [yamlresume/core](https://github.com/yamlresume/yamlresume/tree/main/packages/core)：包含 YAMLResume 的核心引擎。它處理基於官方[模式](/zh-tw/docs/compiler/schema)的解析、驗證和渲染履歷。
+
+## yamlresume/core 構建
+
+`yamlresume/cli` 依賴於 `yamlresume/core` 才能正常工作。因此，當您想要測試 `yamlresume/cli` 時，您需要確保 `yamlresume/core` 也已構建並可用。
+
+您可以使用以下命令來做到這一點：
+
+```bash
+# build for dev purpose
+pnpm core build
+
+# build for production, which will minify the output and generate TypeScript
+# DTS files `.d.ts`
+pnpm core build:prod
+
+# watch for file changes and build automatically
+pnpm core build:watch
+```
+
+## yamlresume/cli 構建
+
+一旦 `yamlresume/core` 構建完成，您可以通過兩種方式運行 CLI 命令：
+
+1. 本地構建 `yamlresume/cli` 並使用 `dist/cli.js` 運行 node.js：
+
+```bash
+pnpm cli build
+node packages/cli/dist/cli.js <command> [options]
+```
+
+2. 借助 [tsx](https://tsx.is/) 直接運行 `yamlresume/cli`：
+
+```bash
+pnpm cli dev <command> [options]
+
+# this command will translate to
+# tsx src/cli.ts
+```
+
+## 演示
+
+`yamlresume/core` 構建：
+
+```console
+$ pnpm core build
+
+> @yamlresume/yamlresume@0.7.1 core /Users/hanyu/work/yamlresume/yamlresume
+> pnpm --filter @yamlresume/core build
+
+> @yamlresume/core@0.7.1 build /Users/hanyu/work/yamlresume/yamlresume/packages/core
+> tsup
+
+CLI Building entry: src/index.ts
+CLI Using tsconfig: tsconfig.json
+CLI tsup v8.4.0
+CLI Using tsup config: /Users/hanyu/work/yamlresume/yamlresume/packages/core/tsup.config.ts
+CLI Target: esnext
+CLI Cleaning output folder
+ESM Build start
+ESM dist/index.js 160.91 KB
+ESM ⚡️ Build success in 111ms
+```
+
+`yamlresume/cli` 構建：
+
+```console
+$ pnpm cli build
+
+> @yamlresume/yamlresume@0.7.1 cli /Users/hanyu/work/yamlresume/yamlresume
+> pnpm --filter yamlresume build
+
+> yamlresume@0.7.1 build /Users/hanyu/work/yamlresume/yamlresume/packages/cli
+> tsup
+
+CLI Building entry: src/cli.ts
+CLI Using tsconfig: tsconfig.json
+CLI tsup v8.4.0
+CLI Using tsup config: /Users/hanyu/work/yamlresume/yamlresume/packages/cli/tsup.config.ts
+CLI Target: esnext
+CLI Cleaning output folder
+ESM Build start
+ESM dist/cli.js 11.36 KB
+ESM ⚡️ Build success in 42ms
+```
+
+通過 `pnpm cli dev` 使用 tsx 測試 `yamlresume/cli`：
+
+```console
+$ pnpm cli dev help
+
+> @yamlresume/yamlresume@0.7.1 cli /Users/hanyu/work/yamlresume/yamlresume
+> pnpm --filter yamlresume dev help
+
+> yamlresume@0.7.1 dev /Users/hanyu/work/yamlresume/yamlresume/packages/cli
+> tsx src/cli.ts help
+
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+使用 Node.js 測試 `yamlresume/cli`：
+
+```console
+$ node packages/cli/dist/cli.js -V
+0.7.1
+```

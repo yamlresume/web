@@ -1,9 +1,11 @@
 import './global.css'
+import { Analytics } from '@/components'
 import { siteConfig } from '@/config/site'
+import { i18nConfig, languages } from '@/i18n/config'
+import { defineI18nUI } from 'fumadocs-ui/i18n'
 import { RootProvider } from 'fumadocs-ui/provider'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
-import { Analytics } from './components'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -63,17 +65,40 @@ export const metadata: Metadata = {
   appleWebApp: {
     title: 'YResume',
   },
-  manifest: '/site.webmanifest',
+  manifest: '/manifest.webmanifest',
 }
 
-export default function Layout({ children }: { children: ReactNode }) {
+const { provider } = defineI18nUI(i18nConfig, {
+  translations: {
+    en: {
+      displayName: 'English',
+    },
+    'zh-cn': {
+      displayName: '简体中文',
+    },
+    'zh-tw': {
+      displayName: '繁體中文',
+    },
+  },
+})
+
+export function generateStaticParams() {
+  return languages.map((language) => ({ language }))
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: ReactNode
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <Analytics />
-      </head>
+      <head />
       <body className="flex flex-col min-h-screen">
-        <RootProvider>{children}</RootProvider>
+        <RootProvider i18n={provider('en')}>
+          <Analytics />
+          {children}
+        </RootProvider>
       </body>
     </html>
   )

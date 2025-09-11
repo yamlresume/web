@@ -1,0 +1,78 @@
+---
+title: 新语言
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+YAMLResume 设计为从底层支持[多语言](/zh-cn/docs/content/multi-languages)，允许用户使用他们偏好的语言创建简历。
+
+在撰写本文时，YAMLResume 支持以下语言：
+
+- [英语](/zh-cn/docs/content/multi-languages/english)
+- [中文](/zh-cn/docs/content/multi-languages/chinese)
+- [挪威语](/zh-cn/docs/content/multi-languages/norwegian)
+- [西班牙语](/zh-cn/docs/content/multi-languages/spanish)
+
+如果您偏好的语言未列出，您可以按照以下步骤贡献，为新语言添加支持。
+
+<Steps>
+
+<Step>
+## 注册您的语言
+
+要为 YAMLResume 添加新的 `layout.locale.language` 选项，首先在 [models/resume.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/resume.ts) 中注册您的语言，通过向 `LOCALE_LANGUAGE_OPTIONS` 添加新条目。
+
+**检查清单：**
+
+- [ ] 将您的语言添加到 `LOCALE_LANGUAGE_OPTIONS`。
+- [ ] [构建并测试新的 CLI](/zh-cn/docs/contributing/cli#yamlresumecli-build)，使用 `pnpm cli dev languages list`，确保您的语言出现在列表中。
+
+</Step>
+
+<Step>
+## 添加翻译
+
+为 YAMLResume 中使用的所有相关[选项](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/translations/options.ts)、[标点符号和术语](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/translations/template.ts)提供翻译。这确保用户可以使用准确标签、选项、术语翻译和章节名称生成新语言的简历。以下是添加挪威语翻译的参考 [PR](https://github.com/yamlresume/yamlresume/pull/44)。
+
+**检查清单：**
+
+- [ ] 为[国家名称](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/country.ts)添加翻译
+- [ ] 为 `degrees`、`fluency`、`languages`、`sections` 和 `skills` 添加选项翻译
+- [ ] 为 `comma`、`colon` 和 `separator` 添加标点符号翻译
+- [ ] 为 `courses`、`keywords` 和 `score` 添加术语翻译
+
+</Step>
+
+<Step>
+## 更新 Babel 配置
+
+YAMLResume 使用 LaTeX 进行 PDF 生成，为了获得最佳排版效果，我们需要设置适当的 [babel 包配置](https://latex3.github.io/babel/)。以下是挪威语的参考[提交](https://github.com/yamlresume/yamlresume/commit/b72a4441ad2542873f449bc35a265e7208eafbe7)。
+
+**检查清单：**
+
+- [ ] 更新 [preamble.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/preamble.ts) 中的 `renderBabelConfig()` 函数，为您的语言包含 babel 包。
+
+</Step>
+
+<Step>
+## 使用新语言测试
+
+[构建](/zh-cn/docs/contributing/cli#yamlresumecore-build) `yamlresume/core` 和 `yamlresume/cli` 包，然后：
+
+- [ ] 创建新简历 `pnpm cli dev new my-resume.yml`
+- [ ] 将 `layout.locale.language` 设置为您刚添加的新语言
+- [ ] 通过 `pnpm cli dev build my-resume.yml` 生成新语言的简历来测试您的更改
+- [ ] 确保两个 PDF 输出都按预期工作。
+
+</Step>
+
+<Step>
+## 提交您的 PR
+
+一旦您完成了上述步骤，请提交您的 Pull Request，并清楚描述更改和您添加的语言。维护者将审查您的 PR，并可能请求更改或澄清。
+
+</Step>
+
+</Steps>
+
+感谢您帮助让 YAMLResume 为世界各地的更多人提供便利！

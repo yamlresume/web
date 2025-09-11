@@ -1,0 +1,214 @@
+---
+title: json2yamlresume
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+[json2yamlresume](https://yamlresume.dev/docs/ecosystem/json2yamlresume) 是一个用于将 [JSON Resume](https://jsonresume.org/) 转换为 [YAMLResume](https://yamlresume.dev/) 格式的[命令行工具](https://npmjs.com/package/json2yamlresume)。
+
+## 功能
+
+- **格式转换**：无缝将 JSON Resume 转换为 YAMLResume 格式
+- **[结构转换](#conversion-rules)**
+- **CLI 接口**：简单的命令行接口，便于转换
+- **验证**：基于 YAMLResume 强大的[模式验证](/zh-cn/docs/compiler/schema)构建
+
+## 安装
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g json2yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g json2yamlresume
+```
+
+```console tab="yarn"
+yarn global add json2yamlresume
+```
+
+```console tab="bun"
+bun add -g json2yamlresume
+```
+
+</Tabs>
+
+## 使用方法
+
+### 将 JSON Resume 转换为 YAMLResume
+
+```bash
+$ json2yamlresume input.json output.yaml
+
+# 或者调用命令时不指定可选的输出路径，在这种情况下
+# 输出将写入与输入文件相同的目录，使用相同的名称但扩展名为 .yml
+$ json2yamlresume input.json
+```
+
+### 显示帮助
+
+```bash
+$ json2yamlresume --help
+Usage: json2yamlresume [options] <input-file> [output-file]
+
+Convert JSON Resume to YAMLResume format
+
+Arguments:
+  input-file     Input JSON Resume file path
+  output-file    Output YAMLResume file path
+
+Options:
+  -V, --version  output the version number
+  -h, --help     display help for command
+```
+
+### 显示版本
+
+```bash
+$ json2yamlresume --version
+0.7.4
+```
+
+## 示例
+
+以下是 JSON Resume 格式的示例简历：
+
+```json lineNumbers title="json-resume.json"
+{
+  "basics": {
+    "name": "John Doe",
+    "label": "Software Engineer",
+    "email": "john@example.com",
+    "location": {
+      "city": "San Francisco",
+      "countryCode": "US"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "johndoe",
+        "url": "https://github.com/johndoe"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Tech Corp",
+      "position": "Senior Developer",
+      "startDate": "2020-01",
+      "summary": "Led development of web applications.",
+      "highlights": [
+        "Increased performance by 40%",
+        "Mentored 5 junior developers"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of California",
+      "area": "Computer Science",
+      "studyType": "Bachelor of Science",
+      "startDate": "2018"
+    }
+  ]
+}
+```
+
+您可以调用以下命令将 JSON Resume 转换为 YAMLResume：
+
+```bash
+$ json2yamlresume json-resume.json yamlresume.yml
+```
+
+以下是 YAMLResume 格式的输出：
+
+```yaml lineNumbers title="yamlresume.yml"
+---
+content:
+  basics:
+    name: John Doe
+    headline: Software Engineer
+    email: john@example.com
+  education:
+    - institution: University of California
+      area: Computer Science
+      degree: Bachelor of Science
+      startDate: "2018"
+  location:
+    city: San Francisco
+    country: US
+  profiles:
+    - network: GitHub
+      username: johndoe
+      url: https://github.com/johndoe
+  work:
+    - name: Tech Corp
+      position: Senior Developer
+      startDate: 2020-01
+      summary: |-
+        - Increased performance by 40%
+        - Mentored 5 junior developers
+```
+
+## 转换规则
+
+### 1. location/profiles 移动到顶级
+
+- `basics.location` → 顶级 `location`
+- `basics.profiles` → 顶级 `profiles`
+- `basics.label` → `basics.headline`
+
+### 2. education 字段映射
+
+- `education[].studyType` → `education[].degree`
+
+### 3. highlights 合并到 summary 字段
+
+转换器将 `highlights` 数组合并到这些章节的 `summary` 字段中作为 markdown 无序列表：
+
+- `work[]`
+- `volunteer[]`
+- `projects[]`
+
+示例：
+
+```json
+{
+  "summary": "Led development team.",
+  "highlights": ["Increased performance", "Mentored developers"]
+}
+```
+
+变为：
+
+```yaml
+summary: |-
+  Led development team.
+
+  - Increased performance
+  - Mentored developers
+```
+
+请记住，YAMLResume 的 summary 字段支持[富文本](/zh-cn/docs/content/rich-text)！
+
+### 4. references 字段映射
+
+- `references[].reference` → `references[].summary`
+
+## 支持的 JSON Resume 章节
+
+转换器支持所有标准 JSON Resume 章节：
+
+- ✅ `basics`
+- ✅ `work`
+- ✅ `volunteer`
+- ✅ `education`
+- ✅ `awards`
+- ✅ `certificates`
+- ✅ `publications`
+- ✅ `skills`
+- ✅ `languages`
+- ✅ `interests`
+- ✅ `references`
+- ✅ `projects`

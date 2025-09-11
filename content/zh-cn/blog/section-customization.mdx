@@ -1,0 +1,187 @@
+---
+title: "YAMLResume v0.6: 章节自定义"
+description: |
+  YAMLResume v0.6 引入了章节别名和重排功能，进一步增强了其 i18n 能力以支持不支持的语言。
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-07-22
+---
+
+YAMLResume [v0.6](https://github.com/yamlresume/yamlresume/releases/tag/v0.6.0) 已经发布，它带来了两个强大的功能来定制您简历的结构：[章节别名](/zh-cn/docs/layout/sections/aliases) 和 [章节重排](/zh-cn/docs/layout/sections/reorder)。这些功能允许您重命名章节标题并控制它们在最终 PDF 中的顺序，为您提供更大的灵活性来定制您的简历。
+
+让我们深入了解它们的工作原理。
+
+## 章节别名
+
+YAMLResume 中的默认章节标题（例如，`education`、`work`）会根据您选择的[区域语言](/zh-cn/docs/layout#locale)自动[翻译](/zh-cn/docs/layout/sections/docs/content/multi-languages)。但是，您可能更喜欢不同的标题。例如，您可能希望将"工作"更改为"专业经验"。
+
+要定义别名，请在您的 `resume.yml` 中使用 `layout.sections.aliases` 映射。
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:                               # [!code focus]
+  sections:                           # [!code focus]
+    aliases:                          # [!code focus]
+      work: 专业经验                   # [!code focus]
+      education: 学术背景              # [!code focus]
+      skills: 技术技能                 # [!code focus]
+```
+
+
+## 章节重排
+
+默认情况下，章节按照[标准顺序](/zh-cn/docs/layout/sections/reorder#default-section-order)渲染。`layout.sections.order` 功能让您更改此序列，以首先突出显示您最重要的信息。
+
+例如，要将您的"技能"和"项目"章节放在"工作"经验之前，您可以这样定义顺序：
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:           #[!code focus]
+  sections:       #[!code focus]
+    order:        #[!code focus]
+      - skills    #[!code focus]
+      - projects  #[!code focus]
+      - work      #[!code focus]
+```
+
+`order` 列表中的章节将首先出现，然后是其余章节按默认顺序排列。
+
+## 综合应用：完整示例
+
+让我们创建一个使用这两个功能的一页简历。我们将同时为某些章节设置别名和重排。
+
+```yml lineNumbers title="resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+
+layout:
+  sections:                          # [!code highlight]
+    aliases:                         # [!code highlight]
+      work: Professional Experience  # [!code highlight]
+      education: Academic Background # [!code highlight]
+      skills: Technical Skills       # [!code highlight]
+    order:                           # [!code highlight]
+      - basics                       # [!code highlight]
+      - work                         # [!code highlight]
+      - education                    # [!code highlight]
+      - skills                       # [!code highlight]
+  template: moderncv-banking
+  typography:
+    fontSize: 11pt
+
+content:
+  basics:
+    name: Jane Doe
+    headline: Senior Software Engineer
+    email: jane.doe@example.com
+    phone: "555-123-4567"
+    summary: |
+      A passionate and experienced software engineer with a proven track record
+      of designing, developing, and deploying robust web applications. Skilled
+      in both front-end and back-end development, with a keen eye for detail and
+      a dedication to writing clean, efficient code.
+  education:
+    - institution: Tech University
+      area: Software Engineering
+      degree: Master
+      startDate: 2018-09-01
+      endDate: 2020-06-01
+      summary: Specialized in distributed systems and cloud computing.
+    - institution: State University
+      area: Computer Science
+      degree: Bachelor
+      startDate: 2014-09-01
+      endDate: 2018-06-01
+      summary: |
+        - Graduated with honors.
+        - Focused on algorithms, data structures, and distributed systems.
+      courses:
+        - Data Structures & Algorithms
+        - Operating Systems
+        - Computer Networks
+        - Database Systems
+  work:
+    - name: Tech Solutions Inc.
+      position: Senior Software Engineer
+      startDate: 2020-07-01
+      summary: |
+        - Led the development of a new microservices-based architecture, improving system scalability and reliability.
+        - Mentored junior engineers, providing guidance on best practices and code quality.
+        - Optimized application performance, reducing API response times by 30%.
+    - name: Innovate Corp.
+      position: Software Engineer
+      startDate: 2018-07-01
+      endDate: 2020-06-30
+      summary: |
+        - Developed and maintained features for a large-scale e-commerce platform using React and Node.js.
+        - Collaborated with product managers and designers to deliver high-quality user experiences.
+        - Participated in on-call rotation to ensure application stability.
+    - name: Data Systems LLC
+      position: Software Engineer Intern
+      startDate: 2017-06-01
+      endDate: 2017-08-31
+      summary: |
+        - Assisted in the development of a data processing pipeline.
+        - Wrote unit tests to ensure code quality.
+        - Gained experience with Agile development methodologies.
+  skills:
+    - name: Programming Languages
+      level: Expert
+      keywords:
+        - JavaScript (ES6+)
+        - TypeScript
+        - Python
+        - Go
+    - name: Technologies & Frameworks
+      level: Advanced
+      keywords:
+        - React
+        - Node.js
+        - Express
+        - Docker
+        - Kubernetes
+        - PostgreSQL
+    - name: Developer Tools
+      level: Advanced
+      keywords:
+        - Git & GitHub
+        - Webpack
+        - Jest
+        - CircleCI
+  languages:
+    - language: English
+      fluency: Native or Bilingual Proficiency
+    - language: Spanish
+      fluency: Limited Working Proficiency
+```
+
+在这里，我们为 `work`、`education` 和 `skills` 章节设置了别名，并通过将 `work` 的优先级高于 `education`，然后是 `skills` 章节来重排章节：
+
+现在，让我们构建简历：
+
+```bash
+yamlresume build resume.yml
+```
+
+您将得到一个包含以下内容的 PDF 文件——我突出了自定义章节：
+
+![章节自定义](/static/images/blog/section-customization/resume-highlight.webp)
+
+太好了，它按预期工作！这不是很酷吗？
+
+## 总结
+
+通过章节别名和重排，您现在可以精细控制简历的结构。我们希望这些功能帮助您创建更加个性化和有效的简历。
+
+章节自定义的最佳方面是，您总是可以[扩展 YAMLResume 的 i18n 能力以支持更多语言](/zh-cn/docs/layout/sections/reorder#default-section-order)。默认情况下，默认章节标题将根据目标区域语言（通过 `layout.locale.language` 设置）自动翻译。但是，总是有 YAMLResume [尚未支持您的目标语言](https://github.com/yamlresume/yamlresume/discussions/36) 的情况，因此您可以用自己的标题覆盖默认章节标题。
+
+同时，不同背景的人对章节顺序有不同的偏好。例如，寻找行业工作的候选人可能会将 `work` 排在 `education` 前面，而寻找学术职位的博士后研究人员会将 `education` 排在 `work` 前面。
+
+希望您喜欢这些新功能！

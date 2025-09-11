@@ -1,0 +1,436 @@
+---
+title: 快速開始
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+## 簡介
+
+創建履歷可能並不困難，但這絕對是一個枯燥、冗長且繁瑣的過程。
+
+使用 YAMLResume，你可以用 YAML 創建和版本控制你的履歷，並輕鬆生成具有專業版式和排版的完美 PDF。
+
+YAMLResume 是 [PPResume](https://ppresume.com) 的核心引擎，這是一個基於 LaTeX 的建構器。它已經幫助[世界各地成千上萬的人](https://blog.ppresume.com/posts/2024-recap)創建像素完美、外觀專業的履歷，並找到理想的工作。我們在這裡決定開源這個引擎，以便給人們拒絕[供應商鎖定](https://blog.ppresume.com/posts/no-vendor-lock-in)的權利和自由。
+
+![YAMLResume 新建和建構履歷](/static/images/docs/yamlresume-new-and-build.webp)
+
+## 開始使用
+
+### Docker 使用者
+
+如果你是 docker 使用者，你很幸運，我們為你準備了一個 [docker 映像](https://hub.docker.com/r/yamlresume/yamlresume)，其中安裝了 [yamlresume cli](https://www.npmjs.com/package/yamlresume) 及其所有依賴項，如 [XeTeX](https://www.tug.org/xetex/) 和一些[推薦字體](/zh-tw/docs/installation#font)。
+
+你只需使用以下命令創建一個新履歷：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+相應地編輯 `my-resume.yml`，然後從 yaml 建構履歷到 pdf：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+### macOS 使用者
+
+假設你正在使用 macOS 並將 [Homebrew](https://brew.sh/) 作為套件管理器。如果不是，請查看[安裝](/zh-tw/docs/installation)指南，了解你的作業系統的詳細說明。
+
+<Steps>
+
+<Step>
+#### 安裝 Node.js
+
+你需要[安裝 Node.js](https://nodejs.org/en/download/package-manager/all#macos) 20.x 或更新版本。
+
+```sh
+brew install node
+```
+</Step>
+
+<Step>
+#### 安裝排版引擎
+
+YAMLResume 需要一個[排版引擎](/zh-tw/docs/getting-started#typesetting-engine)來生成 PDF。目前它支援兩個排版引擎：
+
+- [XeTeX](/zh-tw/docs/getting-started#xetex)
+- [Tectonic](/zh-tw/docs/getting-started#tectonic)
+
+<Tabs groupId="typesetting-engine" persist items={["XeTeX", "Tectonic"]}>
+```sh tab="XeTeX"
+brew install mactex
+```
+
+```sh tab="Tectonic"
+brew install tectonic
+```
+</Tabs>
+</Step>
+
+<Step>
+#### 安裝 YAMLResume
+
+安裝 `yamlresume` 非常簡單。你可以使用你喜歡的 Node.js 套件管理器來安裝它：
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```sh tab="npm"
+npm install -g yamlresume
+```
+
+```sh tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```sh tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+</Tabs>
+
+驗證 `yamlresume` 安裝成功：
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+</Step>
+
+<Step>
+#### [可選] 安裝字體
+
+##### Linux Libertine 字體
+
+我們還建議安裝 [Linux Libertine 字體](/zh-tw/docs/getting-started#linux-libertine)以獲得最佳的 PDF 輸出外觀，但這是可選的。
+
+```sh
+brew install font-linux-libertine
+```
+
+##### Noto 字體
+
+如果你需要創建 CJK（中文、日文、韓文）履歷，我們建議你安裝 [Noto 字體](https://fonts.google.com/noto)：
+
+```sh
+brew install font-noto-sans-cjk font-noto-serif-cjk
+```
+</Step>
+
+<Step>
+#### 創建你的第一個 YAML 履歷
+
+好的，我們已經準備好了一切，現在可以使用 `yamlresume new` 創建一個 yaml 履歷：
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+相應地編輯 `resume.yml`，然後你可以使用 `yamlresume build` 生成 PDF：
+
+```console
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resumep PDF file successfully.
+```
+
+你還可以使用 `yamlresume dev` 在檔案更改時建構履歷：
+
+```console
+$ yamlresume dev my-resume.yml
+◐ Generating resume PDF file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resumep PDF file successfully.
+◐ Watching file changes: my-resume.yml...
+```
+</Step>
+</Steps>
+
+## 示例履歷
+
+這是一個為[軟體工程師](https://github.com/yamlresume/yamlresume/blob/main/packages/cli/resources/resume.yml)量身定制的兩頁示例履歷的完整 YAML 代碼：
+
+```yml lineNumbers
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@ppresume.com
+    url: https://ppresume.com/gallery
+    # All summary fields supports a limited rich text capabilities in markdown
+    # syntax:
+    #
+    # - bold, (e.g, `**bold**`)
+    # - italic, (e.g, `*italic*`)
+    # - ordered list, unordored list and nested sub list
+    # - links (e.g. `[link](https://ppresume.com)`)
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    city: Sacramento
+    region: California
+    country: United States
+    postalCode: "95814"
+  profiles:
+    - network: Line
+      url: https://line.com/PPResumeX
+      username: PPResumeX
+    - network: Twitter
+      url: https://twitter.com/PPResumeX
+      username: PPResumeX
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      # Valid degree options:
+      #
+      # - 'Middle School'
+      # - 'High School'
+      # - 'Diploma'
+      # - 'Associate'
+      # - 'Bachelor'
+      # - 'Master'
+      # - 'Doctor'
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      # Should be a valid date string that can be parsed by `new Date(dateStr)`
+      # in JavaScript, eg. '2020-01', '2020-02-03', 'Jul 1, 2023' etc.
+      #
+      # The date part would be removed in the final output as most of the time
+      # people won't really care about the exact date for your working
+      # experience or education background, etc.
+      # ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
+      startDate: Sep 1, 2016
+      # Leave endDate blank to indicate "Present"
+      endDate: Jul 1, 2020
+      courses:
+        - Discrete Methods in Computer Science
+        - Programming Language Concepts
+        - Data Structures and Object-Oriented Design
+        - Operating Systems
+        - Computer Architecture
+        - Database Systems
+        - Computer Networking
+        - Introduction to the Theory of Computing
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+  work:
+    - name: PPResume
+      url: https://ppresume.com
+      startDate: Dec 1, 2022
+      endDate: ""
+      position: Senior Software Engineer
+      summary: |
+        - Developed and implemented efficient and scalable code, ensuring high-quality and maintainable web applications
+        - Collaborated with cross-functional teams to gather project requirements and translate them into technical solutions
+        - Conducted thorough testing and debugging to identify and resolve any issues or bugs in the software
+        - Actively participated in code reviews, providing valuable feedback to improve code quality and adherence to best practices
+        - Mentored and guided junior developers, fostering a collaborative and growth-oriented team environment
+      keywords:
+        - Scalibility
+        - Growth
+        - Quality
+        - Mentorship
+    - name: PPResume
+      url: https://ppresume.com
+      startDate: Sep 1, 2020
+      endDate: Dec 1, 2022
+      position: Software Engineer
+      summary: |
+        - Created reusable React components to ensure code efficiency and maintainability
+        - Integrated with RESTful APIs to fetch and display dynamic data on the frontend
+        - Implemented client-side routing using React Router for smooth navigation between pages
+        - Actively participated in Agile development methodologies, attending daily stand-up meetings and sprint planning sessions
+      keywords:
+        - RESTful
+        - React
+        - Agile
+  languages:
+    # Valid language fluency options:
+    #
+    # - 'Elementary Proficiency'
+    # - 'Limited Working Proficiency'
+    # - 'Minimum Professional Proficiency'
+    # - 'Full Professional Proficiency'
+    # - 'Native or Bilingual Proficiency'
+    - language: English
+      fluency: Native or Bilingual Proficiency
+      keywords:
+        - TOEFL 110
+        - IELTS 7.5
+    - language: Chinese
+      fluency: Elementary Proficiency
+      keywords: []
+  skills:
+    # Valid skill level options:
+    #
+    # - 'Novice'
+    # - 'Beginner'
+    # - 'Intermediate'
+    # - 'Advanced'
+    # - 'Expert'
+    # - 'Master'
+    - name: Web Development
+      level: Expert
+      keywords:
+        - Python
+        - Ruby
+        - CSS
+        - React
+        - JavaScript
+    - name: DevOps
+      level: Intermediate
+      keywords:
+        - Python
+        - Kubernetes
+        - Docker
+        - Shell
+        - Ansible
+    - name: Design
+      level: Intermediate
+      keywords:
+        - Sketch
+        - Figma
+        - Photoshop
+  awards:
+    - title: Dean's List
+      awarder: University of Southern California
+      date: Oct 2016
+      summary: |
+        Awarded to students who achieve a high academic standing by maintaining a specified grade point average (GPA) during a semester.
+  certificates:
+    - name: AWS Certified Developer - Associate
+      url: https://aws.amazon.com/certification/
+      issuer: AWS
+      date: Mar 2021
+  publications:
+    - publisher: ACM Transactions on Interactive Intelligent Systems
+      url: https://dl.acm.org/journal/tiis
+      name: Enhancing Human-Computer Interaction through Augmented Reality
+      releaseDate: Dec 2017
+      summary: |
+        - Explores the potential of augmented reality (AR) in improving interaction between humans and computers
+        - Highlights benefits of AR in various areas such as gaming, education, healthcare, and design
+        - Discusses challenges and future directions of AR technology in enhancing user experience
+  references:
+    - name: Dr. Amanda Reynolds
+      phone: "(555) 123-4567"
+      relationship: Computer Science Professor
+      email: amanda.reynolds@usc.edu
+      summary: |
+        Andy Dufresne shows exceptional problem-solving skills and a solid understanding of programming concepts, he would bring immense value to any team or organization he becomes a part of.
+  projects:
+    - name: EduWeb
+      url: https://www.eduweb.xyz/
+      description: A web-based educational platform for interactive learning
+      startDate: Sep 2016
+      endDate: Dec 2016
+      summary: |
+        - Designed to enhance online learning experiences
+        - Facilitates students' engagement and collaboration through interactive features and user-friendly interface
+        - Offers a wide range of courses across various subjects
+        - Aims to improve the way students learn through the power of the web
+      keywords:
+        - Education
+        - Online Learning
+        - HCI
+  interests:
+    - name: Sports
+      keywords:
+        - Soccer
+        - Swimming
+        - Bicycling
+        - Hiking
+    - name: Music
+      keywords:
+        - Piano
+        - Guitar
+  volunteer:
+    - organization: USC Computer Science and Engineering Society
+      url: https://www.usccsesociety.org/
+      position: Tech Mentor
+      startDate: Sep 2015
+      endDate: Jul 2023
+      summary: |
+        - Volunteered as a Tech Mentor at USC Computer Science and Engineering Society
+        - Provided guidance and assistance to fellow students in their technical projects and coursework
+        - Assisted in organizing workshops, coding competitions, and networking events for the society members
+        - Contributed to fostering a collaborative and supportive environment within the student community
+
+layout:
+  locale:
+    # Use `yamlresume languages list` to get the list of supported languages
+    language: en
+  margins:
+    top: 2.5cm
+    left: 1.5cm
+    right: 1.5cm
+    bottom: 2.5cm
+  page:
+    showPageNumbers: true
+  # Use `yamlresume templates list` to get the list of available templates
+  template: moderncv-banking
+  typography:
+    # LaTeX engine only supports 10pt, 11pt, and 12pt
+    fontSize: 11pt
+```
+
+這是[生成的 PDF](https://github.com/yamlresume/yamlresume/blob/main/packages/cli/resources/resume.pdf) 的截圖：
+
+![示例履歷第 1 頁](/static/images/docs/resume-1.webp)
+![示例履歷第 2 頁](/static/images/docs/resume-2.webp)
+
+你可以查看 [PPResume 畫廊](https://ppresume.com/gallery)獲取更多示例，支援不同的[模板](https://ppresume.com/gallery/templates)和[多語言](https://ppresume.com/gallery/languages)。
+
+## 了解更多
+
+<Cards>
+  <Card
+    href="/zh-tw/docs/installation"
+    title="安裝指南"
+    description="在不同作業系統上安裝 YAMLResume 的詳細說明"
+  />
+  <Card
+    href="/zh-tw/docs/cli"
+    title="CLI"
+    description="YAMLResume CLI 手冊"
+  />
+  <Card
+    href="https://github.com/yamlresume/yamlresume/discussions"
+    title="討論"
+    description="提問題、分享想法並從社群獲得幫助"
+  />
+</Cards>
