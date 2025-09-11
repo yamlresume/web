@@ -13,7 +13,7 @@ export default function HomePage() {
     <main>
       <NewsChannel />
       <TypographyBackground />
-      <div className="space-y-20 items-center mt-24 sm:mt-32 mx-4">
+      <div className="space-y-20 items-center mt-20  mx-4">
         <HeroSection />
         <FeaturesSection />
         <DockerDemoSection />

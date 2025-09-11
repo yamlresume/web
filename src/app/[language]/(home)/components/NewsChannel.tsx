@@ -18,8 +18,6 @@ export function NewsChannel() {
         'border-b',
         'border-fd-accent',
         'py-1',
-        'relative',
-        'top-14',
         'px-4',
         'flex',
         'items-center',
