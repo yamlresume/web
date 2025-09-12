@@ -21,8 +21,8 @@ export function BlogList({ posts }: BlogListProps) {
   const t = useTranslations('blog')
 
   return (
-    <main className="container mx-auto py-8 mt-24 min-h-[900px]">
-      <h1 className="text-4xl font-bold mb-8">{t('title')}</h1>
+    <main className="container mx-auto mt-16 min-h-[900px]">
+      <h1 className="text-4xl font-bold mb-12">{t('title')}</h1>
       <div
         className={clsx([
           'grid',
