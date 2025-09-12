@@ -3,10 +3,9 @@
 import { IconChevronDown } from '@tabler/icons-react'
 import clsx from 'clsx'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
-import { type Language, defaultLanguage, useTranslations } from '@/i18n'
+import { useTranslations } from '@/i18n'
 
 import { SectionTitle } from './SectionTitle'
 
@@ -18,9 +17,7 @@ type FaqItem = {
 
 export function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
-  const params = useParams()
-  const language = (params?.language as Language) || defaultLanguage
-  const t = useTranslations('faq', language)
+  const t = useTranslations('faq')
 
   const faqs: FaqItem[] = [
     {

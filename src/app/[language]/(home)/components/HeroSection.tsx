@@ -8,12 +8,7 @@ import { useParams } from 'next/navigation'
 import Zoom from 'react-medium-image-zoom'
 
 import resumeImage from '@/components/static/images/yamlresume-yaml-and-pdf.webp'
-import {
-  type Language,
-  defaultLanguage,
-  getLocalizedUrl,
-  useTranslations,
-} from '@/i18n'
+import { defaultLanguage, getLocalizedUrl, useTranslations } from '@/i18n'
 
 function YAMLResumePDFSection() {
   return (
@@ -43,8 +38,8 @@ function YAMLResumePDFSection() {
 
 export function HeroSection() {
   const params = useParams()
-  const language = (params?.language as Language) || defaultLanguage
-  const t = useTranslations('hero', language)
+  const language = (params?.language as string) || defaultLanguage
+  const t = useTranslations('hero')
 
   const linkClasses = clsx([
     'border',

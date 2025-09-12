@@ -8,18 +8,14 @@ import { useParams } from 'next/navigation'
 import Zoom from 'react-medium-image-zoom'
 
 import dockerDemoImage from '@/components/static/images/yamlresume-docker-demo.svg'
-import {
-  type Language,
-  defaultLanguage,
-  getLocalizedUrl,
-  useTranslations,
-} from '@/i18n'
+import { defaultLanguage, getLocalizedUrl, useTranslations } from '@/i18n'
 import { SectionTitle } from './SectionTitle'
 
 export function DockerDemoSection() {
   const t = useTranslations('quickStart')
+
   const params = useParams()
-  const language = (params?.language as Language) || defaultLanguage
+  const language = (params?.language as string) || defaultLanguage
 
   const line1 = [
     'docker run --rm -v $(pwd):/home/yamlresume',

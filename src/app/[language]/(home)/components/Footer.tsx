@@ -1,7 +1,8 @@
 'use client'
 
-import { useTranslations } from '@/i18n'
 import Link from 'next/link'
+
+import { useTranslations } from '@/i18n'
 
 export function Footer() {
   const t = useTranslations('footer')

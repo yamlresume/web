@@ -4,10 +4,9 @@ import { useParams } from 'next/navigation'
 import { defaultLanguage } from './config'
 import { getTranslations } from './translations'
 
-export function useTranslations(namespace: string, locale?: string) {
+export function useTranslations(namespace: string) {
   const params = useParams()
-  const effectiveLocale =
-    locale || (params?.locale as string) || defaultLanguage
+  const language = (params?.language as string) || defaultLanguage
 
-  return getTranslations(effectiveLocale, namespace)
+  return getTranslations(language, namespace)
 }

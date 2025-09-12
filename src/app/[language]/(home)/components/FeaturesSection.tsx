@@ -9,9 +9,8 @@ import {
   IconTex,
 } from '@tabler/icons-react'
 import clsx from 'clsx'
-import { useParams } from 'next/navigation'
 
-import { type Language, defaultLanguage, useTranslations } from '@/i18n'
+import { useTranslations } from '@/i18n'
 interface FeatureCardProps {
   title: string
   description: string
@@ -52,9 +51,7 @@ function FeatureCard({ title, description, icon }: FeatureCardProps) {
 }
 
 export function FeaturesSection() {
-  const params = useParams()
-  const language = (params?.language as Language) || defaultLanguage
-  const t = useTranslations('features', language)
+  const t = useTranslations('features')
 
   return (
     <section className="container py-4">

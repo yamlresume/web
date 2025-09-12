@@ -4,12 +4,12 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
-import { type Language, defaultLanguage, getLocalizedUrl } from '@/i18n'
+import { getLocalizedUrl } from '@/i18n'
 import { IconSpeakerphone } from '@tabler/icons-react'
 
 export function NewsChannel() {
   const params = useParams()
-  const language = (params?.language as Language) || defaultLanguage
+  const language = (params?.language as string) || 'en'
 
   return (
     <div
