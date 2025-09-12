@@ -103,7 +103,7 @@ const translations = {
       checkGithub: '查看 Github',
     },
     quickStart: {
-      title: 'Quick Start in One Second',
+      title: '一秒钟快速开始',
     },
     features: {
       plainText: {
@@ -187,7 +187,7 @@ const translations = {
       checkGithub: '查看 Github',
     },
     quickStart: {
-      title: '一秒快速開始',
+      title: '一秒鐘快速開始',
     },
     features: {
       plainText: {
