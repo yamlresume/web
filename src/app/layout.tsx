@@ -1,11 +1,11 @@
 import './global.css'
-import { Analytics } from '@/components'
-import { siteConfig } from '@/config/site'
-import { i18nConfig, languages } from '@/i18n/config'
 import { defineI18nUI } from 'fumadocs-ui/i18n'
 import { RootProvider } from 'fumadocs-ui/provider'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
+import { Analytics } from '@/components'
+import { siteConfig } from '@/config/site'
+import { i18nConfig, languages } from '@/i18n/config'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -86,11 +86,7 @@ export function generateStaticParams() {
   return languages.map((language) => ({ language }))
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: ReactNode
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />

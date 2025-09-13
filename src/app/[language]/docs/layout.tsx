@@ -1,6 +1,6 @@
-import { getLocalizedSources, getNavigationOptions } from '@/lib'
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import type { ReactNode } from 'react'
+import { getLocalizedSources, getNavigationOptions } from '@/lib'
 
 export default async function Layout({
   children,
@@ -23,7 +23,7 @@ export default async function Layout({
       : docs.pageTree[currentLanguage] || docs.pageTree
 
   return (
-    // @ts-ignore
+    // @ts-expect-error
     <DocsLayout tree={pageTree} {...options}>
       {children}
     </DocsLayout>

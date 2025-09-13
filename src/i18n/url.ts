@@ -1,4 +1,4 @@
-import { type Language, defaultLanguage } from './config'
+import { defaultLanguage, type Language } from './config'
 
 /**
  * Generate language-aware URLs

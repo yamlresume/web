@@ -1,5 +1,5 @@
-import { getLocalizedSources } from '@/lib'
 import type { Metadata } from 'next'
+import { getLocalizedSources } from '@/lib'
 import { BlogList } from './components'
 
 export default async function Home({

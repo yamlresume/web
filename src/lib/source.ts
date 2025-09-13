@@ -1,7 +1,7 @@
-import { blog, blogZhCN, blogZhTW, docs, docsZhCN, docsZhTW } from '@/.source'
 import { defineI18n } from 'fumadocs-core/i18n'
 import { loader } from 'fumadocs-core/source'
 import { createMDXSource } from 'fumadocs-mdx'
+import { blog, blogZhCN, blogZhTW, docs, docsZhCN, docsZhTW } from '@/.source'
 
 // Create i18n configurations for each locale
 const i18nEn = defineI18n({

@@ -1,11 +1,10 @@
 'use client'
 
+import { IconSpeakerphone } from '@tabler/icons-react'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-
 import { getLocalizedUrl } from '@/i18n'
-import { IconSpeakerphone } from '@tabler/icons-react'
 
 export function NewsChannel() {
   const params = useParams()

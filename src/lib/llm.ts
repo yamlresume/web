@@ -1,9 +1,9 @@
-import type { docsSource } from '@/lib'
 import type { InferPageType } from 'fumadocs-core/source'
 import { remarkInclude } from 'fumadocs-mdx/config'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import remarkMdx from 'remark-mdx'
+import type { docsSource } from '@/lib'
 
 const processor = remark()
   .use(remarkMdx)

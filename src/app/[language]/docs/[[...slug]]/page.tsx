@@ -1,6 +1,3 @@
-import { LLMCopyButton, ViewOptions, getMDXComponents } from '@/components'
-import { defaultLanguage } from '@/i18n'
-import { getLocalizedSources } from '@/lib'
 import clsx from 'clsx'
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import {
@@ -11,6 +8,9 @@ import {
 } from 'fumadocs-ui/page'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { getMDXComponents, LLMCopyButton, ViewOptions } from '@/components'
+import { defaultLanguage } from '@/i18n'
+import { getLocalizedSources } from '@/lib'
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[]; language: string }>

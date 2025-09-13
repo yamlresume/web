@@ -1,3 +1,4 @@
+import type { MetadataRoute } from 'next'
 import {
   blogSource,
   blogSourceZhCN,
@@ -6,7 +7,6 @@ import {
   docsSourceZhCN,
   docsSourceZhTW,
 } from '@/lib'
-import type { MetadataRoute } from 'next'
 
 export const revalidate = false
 

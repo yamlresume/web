@@ -1,9 +1,179 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 export function TypographyBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  const drawTypographyComparisons = useCallback(
+    (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+      // Draw font comparison examples (serif vs sans-serif vs monospace)
+      const comparisonCount = 4
+      const comparisonTerms = ['Typography', 'Resume', 'YAML', 'Layout']
+
+      for (let i = 0; i < comparisonCount; i++) {
+        // Position each comparison in a different corner
+        let x: number
+        let y: number
+
+        if (i === 0) {
+          // top-left
+          x = 50 + Math.random() * 150
+          y = 50 + Math.random() * 150
+        } else if (i === 1) {
+          // top-right
+          x = canvas.width - 450 + Math.random() * 150
+          y = 50 + Math.random() * 150
+        } else if (i === 2) {
+          // bottom-left
+          x = 50 + Math.random() * 150
+          y = canvas.height - 300 + Math.random() * 150
+        } else {
+          // bottom-right
+          x = canvas.width - 450 + Math.random() * 150
+          y = canvas.height - 300 + Math.random() * 150
+        }
+        const fontSize = 18 + Math.floor(Math.random() * 10) // 18-28px
+        const term = comparisonTerms[i % comparisonTerms.length]
+
+        // Draw serif version
+        ctx.font = `${fontSize}px serif`
+        ctx.fillText(term, x, y)
+        ctx.font = '10px sans-serif'
+        ctx.fillText('serif', x, y + 15)
+
+        // Draw sans-serif version
+        ctx.font = `${fontSize}px sans-serif`
+        ctx.fillText(term, x, y + 40)
+        ctx.font = '10px sans-serif'
+        ctx.fillText('sans-serif', x, y + 55)
+
+        // Draw monospace version
+        ctx.font = `${fontSize}px monospace`
+        ctx.fillText(term, x, y + 80)
+        ctx.font = '10px sans-serif'
+        ctx.fillText('monospace', x, y + 95)
+      }
+    },
+    []
+  )
+
+  const drawCJKSamples = useCallback(
+    (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+      // Draw CJK typography samples
+      const cjkSamples = [
+        { text: '中文排版', lang: 'Chinese' },
+        { text: '日本語組版', lang: 'Japanese' },
+        { text: '한글 타이포그래피', lang: 'Korean' },
+      ]
+
+      for (let i = 0; i < cjkSamples.length; i++) {
+        // Position each CJK sample in a different area
+        let x: number
+        let y: number
+
+        if (i === 0) {
+          // left side
+          x = 50 + Math.random() * 200
+          y = canvas.height / 2 - 100 + Math.random() * 200
+        } else if (i === 1) {
+          // right side
+          x = canvas.width - 250 - Math.random() * 200
+          y = canvas.height / 2 - 100 + Math.random() * 200
+        } else {
+          // center top
+          x = canvas.width / 2 - 100 + Math.random() * 200
+          y = 50 + Math.random() * 150
+        }
+        const fontSize = 20 + Math.floor(Math.random() * 12) // 20-32px
+
+        ctx.font = `${fontSize}px sans-serif`
+        ctx.fillText(cjkSamples[i].text, x, y)
+
+        ctx.font = '10px sans-serif'
+        ctx.fillText(cjkSamples[i].lang, x, y + 15)
+      }
+    },
+    []
+  )
+
+  const drawLigatures = useCallback(
+    (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+      // Draw ligature examples (like in image 5)
+      const ligaturePairs = [
+        { before: 'fi', after: 'fi' },
+        { before: 'fl', after: 'fl' },
+        { before: 'ff', after: 'ff' },
+        { before: 'ffi', after: 'ffi' },
+        { before: 'ffl', after: 'ffl' },
+        { before: 'st', after: 'st' },
+        { before: 'ct', after: 'ct' },
+      ]
+
+      // Position for the ligature examples - place in bottom center
+      const x = canvas.width / 2 - 150 + Math.random() * 100
+      const y = canvas.height - 250 + Math.random() * 100
+      const fontSize = 24
+
+      ctx.font = '10px sans-serif'
+      ctx.fillText('Ligature Examples:', x, y - 20)
+
+      for (let i = 0; i < Math.min(4, ligaturePairs.length); i++) {
+        const pair = ligaturePairs[i]
+        const yPos = y + i * 30
+
+        ctx.font = `${fontSize}px serif`
+        ctx.fillText(pair.before, x, yPos)
+
+        // Arrow
+        ctx.beginPath()
+        ctx.moveTo(x + 50, yPos - fontSize / 2)
+        ctx.lineTo(x + 80, yPos - fontSize / 2)
+        ctx.stroke()
+        ctx.beginPath()
+        ctx.moveTo(x + 80, yPos - fontSize / 2 - 5)
+        ctx.lineTo(x + 80, yPos - fontSize / 2 + 5)
+        ctx.lineTo(x + 85, yPos - fontSize / 2)
+        ctx.closePath()
+        ctx.fill()
+
+        ctx.font = `${fontSize}px serif`
+        ctx.fillText(pair.after, x + 100, yPos)
+      }
+    },
+    []
+  )
+
+  const drawDashExamples = useCallback(
+    (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+      // Draw dash examples
+      const dashExamples = [
+        { type: 'hyphen', symbol: '-', example: 'well-known' },
+        { type: 'en-dash', symbol: '–', example: '1990–2000' },
+        { type: 'em-dash', symbol: '—', example: 'typography—the art' },
+      ]
+
+      // Position dash examples in top center
+      const x = canvas.width / 2 - 150 + Math.random() * 100
+      const y = 100 + Math.random() * 100
+      const fontSize = 18
+
+      ctx.font = '10px sans-serif'
+      ctx.fillText('Dash Examples:', x, y - 20)
+
+      for (let i = 0; i < dashExamples.length; i++) {
+        const dash = dashExamples[i]
+        const yPos = y + i * 25
+
+        ctx.font = `${fontSize}px serif`
+        ctx.fillText(`${dash.symbol} ${dash.example}`, x, yPos)
+
+        ctx.font = '10px sans-serif'
+        ctx.fillText(dash.type, x + 200, yPos)
+      }
+    },
+    []
+  )
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -107,7 +277,12 @@ export function TypographyBackground() {
           // Check for collisions with existing elements
           const elementWidth = 300
           const elementHeight = 150
-          const newRegion = { x, y, width: elementWidth, height: elementHeight }
+          const _newRegion = {
+            x,
+            y,
+            width: elementWidth,
+            height: elementHeight,
+          }
 
           // Check if this region overlaps with any existing ones
           for (const region of occupiedRegions) {
@@ -137,7 +312,7 @@ export function TypographyBackground() {
         const wordWidth = ctx.measureText('Typography').width
         const capHeight = fontSize * 0.7
         const xHeight = fontSize * 0.5
-        const baseline = 0
+        const _baseline = 0
         const descenderHeight = fontSize * 0.2
         const ascenderHeight = fontSize * 0.8
 
@@ -404,177 +579,13 @@ export function TypographyBackground() {
     return () => {
       window.removeEventListener('resize', resizeCanvas)
     }
-  }, [])
-
-  function drawTypographyComparisons(
-    ctx: CanvasRenderingContext2D,
-    canvas: HTMLCanvasElement
-  ) {
-    // Draw font comparison examples (serif vs sans-serif vs monospace)
-    const comparisonCount = 4
-    const comparisonTerms = ['Typography', 'Resume', 'YAML', 'Layout']
-
-    for (let i = 0; i < comparisonCount; i++) {
-      // Position each comparison in a different corner
-      let x: number
-      let y: number
-
-      if (i === 0) {
-        // top-left
-        x = 50 + Math.random() * 150
-        y = 50 + Math.random() * 150
-      } else if (i === 1) {
-        // top-right
-        x = canvas.width - 450 + Math.random() * 150
-        y = 50 + Math.random() * 150
-      } else if (i === 2) {
-        // bottom-left
-        x = 50 + Math.random() * 150
-        y = canvas.height - 300 + Math.random() * 150
-      } else {
-        // bottom-right
-        x = canvas.width - 450 + Math.random() * 150
-        y = canvas.height - 300 + Math.random() * 150
-      }
-      const fontSize = 18 + Math.floor(Math.random() * 10) // 18-28px
-      const term = comparisonTerms[i % comparisonTerms.length]
-
-      // Draw serif version
-      ctx.font = `${fontSize}px serif`
-      ctx.fillText(term, x, y)
-      ctx.font = '10px sans-serif'
-      ctx.fillText('serif', x, y + 15)
-
-      // Draw sans-serif version
-      ctx.font = `${fontSize}px sans-serif`
-      ctx.fillText(term, x, y + 40)
-      ctx.font = '10px sans-serif'
-      ctx.fillText('sans-serif', x, y + 55)
-
-      // Draw monospace version
-      ctx.font = `${fontSize}px monospace`
-      ctx.fillText(term, x, y + 80)
-      ctx.font = '10px sans-serif'
-      ctx.fillText('monospace', x, y + 95)
-    }
-  }
-
-  function drawCJKSamples(
-    ctx: CanvasRenderingContext2D,
-    canvas: HTMLCanvasElement
-  ) {
+  }, [
     // Draw CJK typography samples
-    const cjkSamples = [
-      { text: '中文排版', lang: 'Chinese' },
-      { text: '日本語組版', lang: 'Japanese' },
-      { text: '한글 타이포그래피', lang: 'Korean' },
-    ]
-
-    for (let i = 0; i < cjkSamples.length; i++) {
-      // Position each CJK sample in a different area
-      let x: number
-      let y: number
-
-      if (i === 0) {
-        // left side
-        x = 50 + Math.random() * 200
-        y = canvas.height / 2 - 100 + Math.random() * 200
-      } else if (i === 1) {
-        // right side
-        x = canvas.width - 250 - Math.random() * 200
-        y = canvas.height / 2 - 100 + Math.random() * 200
-      } else {
-        // center top
-        x = canvas.width / 2 - 100 + Math.random() * 200
-        y = 50 + Math.random() * 150
-      }
-      const fontSize = 20 + Math.floor(Math.random() * 12) // 20-32px
-
-      ctx.font = `${fontSize}px sans-serif`
-      ctx.fillText(cjkSamples[i].text, x, y)
-
-      ctx.font = '10px sans-serif'
-      ctx.fillText(cjkSamples[i].lang, x, y + 15)
-    }
-  }
-
-  function drawLigatures(
-    ctx: CanvasRenderingContext2D,
-    canvas: HTMLCanvasElement
-  ) {
-    // Draw ligature examples (like in image 5)
-    const ligaturePairs = [
-      { before: 'fi', after: 'fi' },
-      { before: 'fl', after: 'fl' },
-      { before: 'ff', after: 'ff' },
-      { before: 'ffi', after: 'ffi' },
-      { before: 'ffl', after: 'ffl' },
-      { before: 'st', after: 'st' },
-      { before: 'ct', after: 'ct' },
-    ]
-
-    // Position for the ligature examples - place in bottom center
-    const x = canvas.width / 2 - 150 + Math.random() * 100
-    const y = canvas.height - 250 + Math.random() * 100
-    const fontSize = 24
-
-    ctx.font = '10px sans-serif'
-    ctx.fillText('Ligature Examples:', x, y - 20)
-
-    for (let i = 0; i < Math.min(4, ligaturePairs.length); i++) {
-      const pair = ligaturePairs[i]
-      const yPos = y + i * 30
-
-      ctx.font = `${fontSize}px serif`
-      ctx.fillText(pair.before, x, yPos)
-
-      // Arrow
-      ctx.beginPath()
-      ctx.moveTo(x + 50, yPos - fontSize / 2)
-      ctx.lineTo(x + 80, yPos - fontSize / 2)
-      ctx.stroke()
-      ctx.beginPath()
-      ctx.moveTo(x + 80, yPos - fontSize / 2 - 5)
-      ctx.lineTo(x + 80, yPos - fontSize / 2 + 5)
-      ctx.lineTo(x + 85, yPos - fontSize / 2)
-      ctx.closePath()
-      ctx.fill()
-
-      ctx.font = `${fontSize}px serif`
-      ctx.fillText(pair.after, x + 100, yPos)
-    }
-  }
-
-  function drawDashExamples(
-    ctx: CanvasRenderingContext2D,
-    canvas: HTMLCanvasElement
-  ) {
-    // Draw dash examples
-    const dashExamples = [
-      { type: 'hyphen', symbol: '-', example: 'well-known' },
-      { type: 'en-dash', symbol: '–', example: '1990–2000' },
-      { type: 'em-dash', symbol: '—', example: 'typography—the art' },
-    ]
-
-    // Position dash examples in top center
-    const x = canvas.width / 2 - 150 + Math.random() * 100
-    const y = 100 + Math.random() * 100
-    const fontSize = 18
-
-    ctx.font = '10px sans-serif'
-    ctx.fillText('Dash Examples:', x, y - 20)
-
-    for (let i = 0; i < dashExamples.length; i++) {
-      const dash = dashExamples[i]
-      const yPos = y + i * 25
-
-      ctx.font = `${fontSize}px serif`
-      ctx.fillText(`${dash.symbol} ${dash.example}`, x, yPos)
-
-      ctx.font = '10px sans-serif'
-      ctx.fillText(dash.type, x + 200, yPos)
-    }
-  }
+    drawCJKSamples, // Draw dash examples
+    drawDashExamples, // Draw ligature examples
+    drawLigatures, // Draw typography comparisons
+    drawTypographyComparisons,
+  ])
 
   return (
     <canvas

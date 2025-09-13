@@ -11,6 +11,7 @@ import {
 import clsx from 'clsx'
 
 import { useTranslations } from '@/i18n'
+
 interface FeatureCardProps {
   title: string
   description: string

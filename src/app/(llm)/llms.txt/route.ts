@@ -1,5 +1,4 @@
 import { siteConfig } from '@/config/site'
-import { getLLMLink } from '@/lib'
 import {
   blogSource,
   blogSourceZhCN,
@@ -7,6 +6,7 @@ import {
   docsSource,
   docsSourceZhCN,
   docsSourceZhTW,
+  getLLMLink,
 } from '@/lib'
 
 // cached forever

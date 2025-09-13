@@ -1,8 +1,8 @@
 'use client'
 
-import { useTranslations } from '@/i18n'
 import clsx from 'clsx'
 import Link from 'next/link'
+import { useTranslations } from '@/i18n'
 
 import { BlogPostCard } from './blog-post-card'
 

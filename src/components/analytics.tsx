@@ -1,6 +1,8 @@
 import Script from 'next/script'
 
 export function Analytics() {
+  const id = 'plausible-inline-init'
+
   return (
     <>
       <Script
@@ -8,7 +10,7 @@ export function Analytics() {
         data-domain="yamlresume.dev"
         src="https://plausible.ppresume.com/js/script.hash.outbound-links.js"
       />
-      <Script id="plausible-inline-init" strategy="afterInteractive">
+      <Script id={id} strategy="afterInteractive">
         {
           'window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments); };'
         }
