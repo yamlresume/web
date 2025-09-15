@@ -2,50 +2,50 @@
 title: Architecture
 ---
 
-Like any compiler, YAMLResume also contains a pipeline that transforms resume
-data from input to output with multiple phases.
+Comme tout compilateur, YAMLResume contient également un pipeline qui transforme les
+données de CV d'entrée vers la sortie avec plusieurs phases.
 
-- **Input Phase**: accepts YAML and JSON resume files as input.
-- **Parsing Phase**: parses and validates the resume content and layout from the
-  input files.
-- **Transformation Phase**: transforms the resume content and layout
-  data with a pipeline.
-- **Codegen Phase**: renders the resume content and layout data using LaTeX
-  templates.
-- **Output Phase**: generates the final PDF document.
+- **Phase d'Entrée** : accepte les fichiers de CV YAML et JSON comme entrée.
+- **Phase d'Analyse** : analyse et valide le contenu et la mise en page du CV à partir des
+  fichiers d'entrée.
+- **Phase de Transformation** : transforme le contenu et les données de mise en page
+  du CV avec un pipeline.
+- **Phase de Génération de Code** : rend le contenu et les données de mise en page du CV en utilisant des
+  modèles LaTeX.
+- **Phase de Sortie** : génère le document PDF final.
 
-Here is a high-level architecture diagram of YAMLResume from 30000 feet:
+Voici un diagramme d'architecture de haut niveau de YAMLResume depuis 30 000 pieds :
 
 <Mermaid chart="
   flowchart TD
-    subgraph A[Input Phase]
-      A1[YAML Resume File]
-      A2[JSON Resume File]
+    subgraph A[Phase d'Entrée]
+      A1[Fichier CV YAML]
+      A2[Fichier CV JSON]
     end
 
-    subgraph B[Parsing Phase]
+    subgraph B[Phase d'Analyse]
       B1[yaml.parse]
-      B2[schema validation]
+      B2[validation de schéma]
       B3[MarkdownParser]
     end
 
-    subgraph C[Transformation Phase]
-      C1[escape-latex processing]
-      C2[date localization]
-      C3[URL transformation]
-      C4[location transformation]
+    subgraph C[Phase de Transformation]
+      C1[traitement escape-latex]
+      C2[localisation des dates]
+      C3[transformation d'URL]
+      C4[transformation de localisation]
       C5[...]
     end
 
-    subgraph D[Codegen Phase]
-      D1[Template renderer]
+    subgraph D[Phase de Génération de Code]
+      D1[Rendu de modèle]
       D2[moderncv-banking]
       D3[moderncv-classic]
       D4[moderncv-casual]
-      E1[LaTeX document]
+      E1[Document LaTeX]
     end
 
-    subgraph E[Output Phase]
+    subgraph E[Phase de Sortie]
       F1[xetex]
       F2[tectonic]
       G[resume.pdf]
@@ -74,22 +74,22 @@ Here is a high-level architecture diagram of YAMLResume from 30000 feet:
 
 "/>
 
-## Data Processing Pipeline
+## Pipeline de Traitement des Données
 
-The transformation pipeline is responsible for processing raw resume data from
-YAML files and preparing it for LaTeX rendering. It operates in two main phases:
-content transformation and layout transformation:
+Le pipeline de transformation est responsable du traitement des données brutes de CV à partir
+des fichiers YAML et de leur préparation pour le rendu LaTeX. Il fonctionne en deux phases principales :
+transformation du contenu et transformation de la mise en page :
 
-- The content transformation phase processes all textual data, applies
-  localization rules, escapes LaTeX special characters, and computes derived
-  values.
-- The layout transformation phase merges user-provided layout settings with
-  defaults and applies locale-specific typography rules.
+- La phase de transformation du contenu traite toutes les données textuelles, applique
+  les règles de localisation, échappe les caractères spéciaux LaTeX, et calcule les
+  valeurs dérivées.
+- La phase de transformation de la mise en page fusionne les paramètres de mise en page fournis par l'utilisateur avec
+  les valeurs par défaut et applique les règles typographiques spécifiques aux locales.
 
 <Mermaid
   chart="
 flowchart TD
-  A[Raw Resume Data] --> B[transformResume]
+  A[Données CV Brutes] --> B[transformResume]
   B --> B1[transformResumeContent]
   B1 --> B2[transformEducationCourse]
   B2 --> B3[transformEducationDegree]
@@ -98,15 +98,15 @@ flowchart TD
   B5 --> B6[transformKeywords]
   B6 --> B7[...]
   B --> C1[transformResumeLayout]
-  C1 --> C2[set default values]
-  C2 --> C3[set locale adjustments]
-  B7 --> D[Transformed Resume]
+  C1 --> C2[définir valeurs par défaut]
+  C2 --> C3[définir ajustements de locale]
+  B7 --> D[CV Transformé]
   C3 --> D
-  D --> D1[Ready for Codegen]
+  D --> D1[Prêt pour la Génération de Code]
 "
 />
 
-For a long data processing pipeline like this, code speaks more than words, you
-can check
+Pour un long pipeline de traitement de données comme celui-ci, le code parle plus que les mots, vous
+pouvez consulter
 [transform.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/preprocess/transform.ts)
-for details if you are interested in the implementation.
+pour plus de détails si vous êtes intéressé par l'implémentation.
