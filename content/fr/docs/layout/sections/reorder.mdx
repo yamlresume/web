@@ -1,0 +1,117 @@
+---
+title: Réorganiser
+---
+
+Par défaut, YAMLResume organise les sections dans un ordre standard. Cependant, vous pouvez
+facilement changer cela en fournissant une liste `order` personnalisée. Cela vous permet de
+mettre en avant vos informations les plus importantes en premier.
+
+## Comment Utiliser
+
+Par exemple, si vous voulez placer vos sections "Compétences" et "Projets" avant
+votre expérience "Travail", vous pouvez définir l'ordre comme ceci :
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:
+  sections:
+    order:
+      - skills
+      - projects
+      - work
+```
+
+Toutes les sections incluses dans la liste `order` apparaîtront en premier, dans la séquence
+que vous avez spécifiée. Les sections non incluses dans la liste seront ajoutées après,
+suivant leur ordre par défaut.
+
+## Exemples
+
+### Prioriser l'Expérience Professionnelle
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - work
+      - education
+```
+
+Résultat : l'expérience professionnelle apparaît en premier, suivie de l'éducation, puis toutes les autres
+sections dans l'ordre par défaut.
+
+### Mettre en Avant les Compétences et Langues
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - skills
+      - languages
+      - work
+```
+
+Résultat : les compétences et langues apparaissent de manière proéminente en haut, suivies de l'expérience
+professionnelle, puis les sections restantes.
+
+### Focus Académique
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - education
+      - publications
+      - awards
+      - certificates
+```
+
+Résultat : les sections académiques apparaissent en premier, suivies des autres sections dans l'ordre
+par défaut.
+
+## Ordre des Sections par Défaut
+
+Quand aucun ordre personnalisé n'est spécifié, les sections sont rendues dans cet ordre par défaut :
+
+1. `basics` (par défaut rendu en haut du CV comme section de résumé)
+2. `education`
+3. `work`
+4. `languages`
+5. `skills`
+6. `awards`
+7. `certificates`
+8. `publications`
+9. `references`
+10. `projects`
+11. `interests`
+12. `volunteer`
+
+## Détails d'Implémentation
+
+- **Priorité** : Les sections spécifiées dans `order` apparaissent en premier dans la séquence
+  spécifiée
+- **Retour** : Les sections restantes suivent dans l'ordre par défaut
+- **Déduplication** : Les sections dupliquées dans le tableau order sont dédupliquées
+  (première occurrence conservée)
+- **Sections Vides** : Les sections sans contenu sont automatiquement filtrées
+- **Flexibilité** : Les utilisateurs peuvent spécifier n'importe quel sous-ensemble de sections ordonnables
+
+## Sections Ordonnables
+
+Les sections suivantes peuvent être réorganisées :
+
+- `basics`
+- `education`
+- `work`
+- `volunteer`
+- `awards`
+- `certificates`
+- `publications`
+- `skills`
+- `languages`
+- `interests`
+- `references`
+- `projects`

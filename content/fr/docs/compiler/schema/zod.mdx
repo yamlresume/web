@@ -1,0 +1,433 @@
+---
+title: Schéma Zod
+---
+
+YAMLResume adopte [zod](https://zod.dev) pour valider les données de CV en cours d'exécution.
+
+Ce document présente tous les schémas zod utilisés dans YAMLResume. Si vous êtes intéressé
+par les détails d'implémentation, vous pouvez trouver le code source
+[ici](https://github.com/yamlresume/yamlresume/tree/main/packages/core/src/schema).
+
+## Schéma Resume
+
+Définit la validation de la structure globale du CV, incluant la validation du contenu et de la mise en page.
+
+| Prop      | Type                                          | Requis |
+| --------- | --------------------------------------------- | ------ |
+| `content` | [`ResumeContentSchema`](#resumecontentschema) | ✅     |
+| `layout?` | [`ResumeLayoutSchema`](#resumelayoutschema)   | ⬜     |
+
+### ResumeContentSchema
+
+Définit la structure de validation pour l'ensemble du contenu du CV.
+
+| Prop            | Type                                                | Requis |
+| --------------- | --------------------------------------------------- | ------ |
+| `basics`        | [`BasicsItemSchema`](#basicsitemschema)             | ✅     |
+| `education`     | [`EducationItemSchema[]`](#educationitemschema)     | ✅     |
+| `awards?`       | [`AwardItemSchema[]`](#awarditemschema)             | ⬜     |
+| `certificates?` | [`CertificateItemSchema[]`](#certificateitemschema) | ⬜     |
+| `interests?`    | [`InterestItemSchema[]`](#interestitemschema)       | ⬜     |
+| `languages?`    | [`LanguageItemSchema[]`](#languageitemschema)       | ⬜     |
+| `location?`     | [`LocationItemSchema`](#locationitemschema)         | ⬜     |
+| `projects?`     | [`ProjectItemSchema[]`](#projectitemschema)         | ⬜     |
+| `profiles?`     | [`ProfileItemSchema[]`](#profileitemschema)         | ⬜     |
+| `publications?` | [`PublicationItemSchema[]`](#publicationitemschema) | ⬜     |
+| `references?`   | [`ReferenceItemSchema[]`](#referenceitemschema)     | ⬜     |
+| `skills?`       | [`SkillItemSchema[]`](#skillitemschema)             | ⬜     |
+| `volunteer?`    | [`VolunteerItemSchema[]`](#volunteeritemschema)     | ⬜     |
+| `work?`         | [`WorkItemSchema[]`](#workitemschema)               | ⬜     |
+
+#### AwardItemSchema
+
+Valide un prix, honneur ou reconnaissance reçu.
+
+| Prop       | Type     | Requis | Règles de Validation                            |
+| ---------- | -------- | ------ | ----------------------------------------------- |
+| `awarder`  | `string` | ✅     | 2-128 caractères                                |
+| `title`    | `string` | ✅     | 2-128 caractères                                |
+| `date?`    | `string` | ⬜     | voir [schéma de date](#date-schema)             |
+| `summary?` | `string` | ⬜     | voir [schéma de résumé](#summary-schema)        |
+
+#### BasicsItemSchema
+
+Valide les informations personnelles et de contact principales.
+
+| Prop        | Type     | Requis | Règles de Validation                            |
+| ----------- | -------- | ------ | ----------------------------------------------- |
+| `name`      | `string` | ✅     | 2-128 caractères                                |
+| `email?`    | `string` | ⬜     | voir [schéma d'email](#email-schema)            |
+| `headline?` | `string` | ⬜     | 2-128 caractères                                |
+| `phone?`    | `string` | ⬜     | voir [schéma de téléphone](#phone-schema)       |
+| `summary?`  | `string` | ⬜     | voir [schéma de résumé](#summary-schema)        |
+| `url?`      | `string` | ⬜     | voir [schéma d'URL](#url-schema)                |
+
+#### CertificateItemSchema
+
+Valide une certification, référence ou qualification professionnelle.
+
+| Prop     | Type     | Requis | Règles de Validation                            |
+| -------- | -------- | ------ | ----------------------------------------------- |
+| `issuer` | `string` | ✅     | 2-128 caractères                                |
+| `name`   | `string` | ✅     | 2-128 caractères                                |
+| `date?`  | `string` | ⬜     | voir [schéma de date](#date-schema)             |
+| `url?`   | `string` | ⬜     | voir [schéma d'URL](#url-schema)                |
+
+#### EducationItemSchema
+
+Valide une seule expérience éducative ou programme de diplôme.
+
+| Prop          | Type                | Requis | Règles de Validation                                  |
+| ------------- | ------------------- | ------ | ----------------------------------------------------- |
+| `area`        | `string`            | ✅     | 2-64 caractères                                       |
+| `degree`      | [`Degree`](#degree) | ✅     | Doit être parmi les [options de diplôme](#degree) prédéfinies |
+| `institution` | `string`            | ✅     | 2-128 caractères                                      |
+| `startDate`   | `string`            | ✅     | voir [schéma de date](#date-schema)                   |
+| `courses?`    | `string[]`          | ⬜     | Chaque élément 2-128 caractères                       |
+| `endDate?`    | `string`            | ⬜     | voir [schéma de date](#date-schema)                   |
+| `summary?`    | `string`            | ⬜     | voir [schéma de résumé](#summary-schema)              |
+| `score?`      | `string`            | ⬜     | 2-32 caractères                                       |
+| `url?`        | `string`            | ⬜     | voir [schéma d'URL](#url-schema)                      |
+
+#### InterestItemSchema
+
+Valide un seul intérêt, hobby ou activité personnelle.
+
+| Prop        | Type       | Requis | Règles de Validation                                |
+| ----------- | ---------- | ------ | --------------------------------------------------- |
+| `name`      | `string`   | ✅     | 2-128 caractères                                    |
+| `keywords?` | `string[]` | ⬜     | voir [schéma de mots-clés](#keywords-schema)        |
+
+#### LanguageItemSchema
+
+Valide un élément de compétence linguistique.
+
+| Prop        | Type                    | Requis | Règles de Validation                                      |
+| ----------- | ----------------------- | ------ | --------------------------------------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅     | Doit être parmi les [options de maîtrise](#fluency) prédéfinies |
+| `language`  | [`Language`](#language) | ✅     | Doit être parmi les [options de langue](#language) prédéfinies |
+| `keywords?` | `string[]`              | ⬜     | Chaque élément 1-32 caractères                           |
+
+#### LocationItemSchema
+
+Valide les informations de localisation et d'adresse.
+
+| Prop          | Type                  | Requis | Règles de Validation                                    |
+| ------------- | --------------------- | ------ | ------------------------------------------------------- |
+| `city`        | `string`              | ✅     | 2-128 caractères                                        |
+| `address?`    | `string`              | ⬜     | 2-128 caractères                                        |
+| `country?`    | [`Country`](#country) | ⬜     | Doit être parmi les [options de pays](#country) prédéfinies |
+| `postalCode?` | `string`              | ⬜     | 2-128 caractères                                        |
+| `region?`     | `string`              | ⬜     | 2-128 caractères                                        |
+
+#### ProfileItemSchema
+
+Valide un seul profil en ligne ou présence sur les réseaux sociaux.
+
+| Prop       | Type                  | Requis | Règles de Validation                                    |
+| ---------- | --------------------- | ------ | ------------------------------------------------------- |
+| `network`  | [`Network`](#network) | ✅     | Doit être parmi les [options de réseau](#network) prédéfinies |
+| `username` | `string`              | ✅     | 2-128 caractères                                        |
+| `url?`     | `string`              | ⬜     | URL valide, max 256 caractères                          |
+
+#### ProjectItemSchema
+
+Valide un seul projet, élément de portfolio ou travail technique.
+
+| Prop           | Type       | Requis | Règles de Validation                                |
+| -------------- | ---------- | ------ | --------------------------------------------------- |
+| `name`         | `string`   | ✅     | 2-128 caractères                                    |
+| `startDate`    | `string`   | ✅     | voir [schéma de date](#date-schema)                 |
+| `summary`      | `string`   | ✅     | voir [schéma de résumé](#summary-schema)            |
+| `description?` | `string`   | ⬜     | 4-128 caractères                                    |
+| `endDate?`     | `string`   | ⬜     | voir [schéma de date](#date-schema)                 |
+| `keywords?`    | `string[]` | ⬜     | Chaque élément 1-32 caractères                     |
+| `url?`         | `string`   | ⬜     | URL valide, max 256 caractères                      |
+
+#### PublicationItemSchema
+
+Valide une seule publication, travail de recherche ou article académique.
+
+| Prop           | Type     | Requis | Règles de Validation                                |
+| -------------- | -------- | ------ | --------------------------------------------------- |
+| `name`         | `string` | ✅     | 2-128 caractères                                    |
+| `publisher`    | `string` | ✅     | 2-128 caractères                                    |
+| `releaseDate?` | `string` | ⬜     | voir [schéma de date](#date-schema)                 |
+| `summary?`     | `string` | ⬜     | voir [schéma de résumé](#summary-schema)            |
+| `url?`         | `string` | ⬜     | URL valide, max 256 caractères                      |
+
+#### ReferenceItemSchema
+
+Valide une seule référence professionnelle ou recommandation.
+
+| Prop            | Type     | Requis | Règles de Validation                                |
+| --------------- | -------- | ------ | --------------------------------------------------- |
+| `name`          | `string` | ✅     | 2-128 caractères                                    |
+| `summary`       | `string` | ✅     | voir [schéma de résumé](#summary-schema)            |
+| `email?`        | `string` | ⬜     | voir [schéma d'email](#email-schema)                |
+| `phone?`        | `string` | ⬜     | Format de téléphone valide                          |
+| `relationship?` | `string` | ⬜     | 2-128 caractères                                    |
+
+#### SkillItemSchema
+
+Valide une seule compétence, expertise ou capacité technique.
+
+| Prop        | Type              | Requis | Règles de Validation                                        |
+| ----------- | ----------------- | ------ | ----------------------------------------------------------- |
+| `level`     | [`Level`](#level) | ✅     | Doit être parmi les [options de niveau](#level) prédéfinies |
+| `name`      | `string`          | ✅     | 2-128 caractères                                            |
+| `keywords?` | `string[]`        | ⬜     | Chaque élément 1-32 caractères                             |
+
+#### VolunteerItemSchema
+
+Valide une seule expérience de bénévolat ou service communautaire.
+
+| Prop           | Type     | Requis | Règles de Validation                                |
+| -------------- | -------- | ------ | --------------------------------------------------- |
+| `organization` | `string` | ✅     | 2-128 caractères                                    |
+| `position`     | `string` | ✅     | 2-128 caractères                                    |
+| `startDate`    | `string` | ✅     | voir [schéma de date](#date-schema)                 |
+| `summary`      | `string` | ✅     | voir [schéma de résumé](#summary-schema)            |
+| `endDate?`     | `string` | ⬜     | voir [schéma de date](#date-schema)                 |
+| `url?`         | `string` | ⬜     | URL valide, max 256 caractères                      |
+
+#### WorkItemSchema
+
+Valide une seule expérience professionnelle ou poste d'emploi.
+
+| Prop        | Type       | Requis | Règles de Validation                                |
+| ----------- | ---------- | ------ | --------------------------------------------------- |
+| `name`      | `string`   | ✅     | 2-128 caractères                                    |
+| `position`  | `string`   | ✅     | 2-128 caractères                                    |
+| `startDate` | `string`   | ✅     | voir [schéma de date](#date-schema)                 |
+| `summary`   | `string`   | ✅     | voir [schéma de résumé](#summary-schema)            |
+| `endDate?`  | `string`   | ⬜     | voir [schéma de date](#date-schema)                 |
+| `keywords?` | `string[]` | ⬜     | Chaque élément 1-32 caractères                     |
+| `url?`      | `string`   | ⬜     | URL valide, max 256 caractères                      |
+
+### ResumeLayoutSchema
+
+Définit la configuration de validation de la mise en page globale.
+
+| Prop          | Type                                                            | Requis |
+| ------------- | --------------------------------------------------------------- | ------ |
+| `locale?`     | [`ResumeLayoutLocaleSchema`](#resumelayoutlocaleschema)         | ⬜     |
+| `margins?`    | [`ResumeLayoutMarginsSchema`](#resumelayoutmarginsschema)       | ⬜     |
+| `page?`       | [`ResumeLayoutPageSchema`](#resumelayoutpageschema)             | ⬜     |
+| `template?`   | [`Template`](#template)                                         | ⬜     |
+| `typography?` | [`ResumeLayoutTypographySchema`](#resumelayouttypographyschema) | ⬜     |
+| `latex?`      | [`ResumeLayoutLaTeXSchema`](#resumelayoutlatexschema)           | ⬜     |
+
+#### ResumeLayoutLocaleSchema
+
+Valide les paramètres de locale pour l'internationalisation et la localisation.
+
+| Prop        | Type                                | Requis | Règles de Validation                                                    |
+| ----------- | ----------------------------------- | ------ | ----------------------------------------------------------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜     | Doit être parmi les [options de langue locale](#locale-language) prédéfinies |
+
+#### ResumeLayoutMarginsSchema
+
+Valide les paramètres de marges de page pour la mise en page du document.
+
+| Prop      | Type     | Requis | Règles de Validation                                      |
+| --------- | -------- | ------ | --------------------------------------------------------- |
+| `top?`    | `string` | ⬜     | voir [schéma de taille de marge](#margin-size-schema)     |
+| `bottom?` | `string` | ⬜     | voir [schéma de taille de marge](#margin-size-schema)     |
+| `left?`   | `string` | ⬜     | voir [schéma de taille de marge](#margin-size-schema)     |
+| `right?`  | `string` | ⬜     | voir [schéma de taille de marge](#margin-size-schema)     |
+
+#### ResumeLayoutPageSchema
+
+Valide les paramètres de niveau page pour la présentation du document.
+
+| Prop               | Type      | Requis | Règles de Validation |
+| ------------------ | --------- | ------ | -------------------- |
+| `showPageNumbers?` | `boolean` | ⬜     | true/false           |
+
+#### ResumeLayoutTypographySchema
+
+Valide les paramètres de typographie pour le formatage du document.
+
+| Prop        | Type     | Requis | Règles de Validation                                               |
+| ----------- | -------- | ------ | ------------------------------------------------------------------ |
+| `fontSize?` | `string` | ⬜     | Doit être parmi les [options de taille de police](#fontsize) prédéfinies |
+
+#### ResumeLayoutLaTeXSchema
+
+Valide les options de configuration spécifiques à LaTeX.
+
+| Prop        | Type                            | Requis | Règles de Validation                                                             |
+| ----------- | ------------------------------- | ------ | -------------------------------------------------------------------------------- |
+| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜     | Doit être parmi les [options de nombres fontspec](#fontspecnumbers) prédéfinies |
+
+## Schémas de Validation Primitifs
+
+### Schéma Email
+
+Valide les adresses email avec des exigences de format strictes.
+
+**Règles de Validation :**
+
+- Doit être un format d'email valide
+- Pattern : `^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$`
+- Exemples : `hi@ppresume.com`, `first.last@company.org`, `test+tag@domain.co.uk`
+
+### Schéma Téléphone
+
+Valide les numéros de téléphone avec un support de format flexible.
+
+**Règles de Validation :**
+
+- Pattern : `^[+]?[(]?[0-9\\s-]{1,15}[)]?[0-9\\s-]{1,15}$`
+- Peut inclure un code pays, des parenthèses, des espaces et des tirets
+- Exemples : `555-123-4567`, `+44 20 7946 0958`, `(555) 123-4567`
+
+### Schéma Résumé
+
+Valide le texte de résumé avec des contraintes de longueur.
+
+**Règles de Validation :**
+
+- Doit être entre 16 et 1024 caractères
+- Exemples :
+  - "Ingénieur logiciel expérimenté avec 5+ ans de développement full-stack."
+  - "Designer créatif passionné par l'expérience utilisateur et les principes de design moderne."
+  - "Chef de projet dévoué avec un historique prouvé de livraison de projets complexes dans les temps et le budget."
+
+### Schéma URL
+
+Valide les URLs avec des contraintes de longueur.
+
+**Règles de Validation :**
+
+- Doit être un format d'URL valide
+- Longueur maximale de 256 caractères
+- Exemples : `https://yamlresume.dev`, `https://ppresume.com`, `https://github.com/yamlresume/yamlresume`
+
+### Schéma Mots-clés
+
+Valide les tableaux de mots-clés avec des contraintes d'éléments individuels.
+
+**Règles de Validation :**
+
+- Tableau de chaînes
+- Chaque mot-clé doit être entre 1 et 32 caractères
+- Exemples : `["Javascript", "React", "Typescript"]`, `["Design", "UI", "UX"]`
+
+### Schéma Date
+
+Valide les chaînes de date avec des exigences de format.
+
+**Règles de Validation :**
+
+- Doit être entre 4 et 32 caractères
+- Doit être analysable par `Date.parse()`
+- Exemples : `2025-01-01`, `Jul 2025`, `July 3, 2025`, `2025-02-02T00:00:03.123Z`
+
+### Schéma Taille de Marge
+
+Valide les chaînes de taille de marge avec des exigences d'unité.
+
+**Règles de Validation :**
+
+- Doit être entre 2 et 32 caractères
+- Pattern : `^\\d+(\\.\\d+)?(cm|pt|in)$`
+- Doit être un nombre positif suivi d'unités valides : cm, pt, ou in
+- Exemples : `2.5cm`, `1in`, `72pt`, `0.5cm`, `12pt`
+
+## Schémas de Validation Enum
+
+### Country
+
+Un type union pour tous les pays et régions possibles dans le monde.
+
+**Règles de Validation :**
+
+- Doit être l'une des options de pays prédéfinies
+- Exemples : `United States`, `China`, `United Kingdom`, `Germany`
+
+### Degree
+
+Un type union pour tous les diplômes possibles.
+
+**Règles de Validation :**
+
+- Doit être l'un de : `Associate`, `Bachelor`, `Diploma`, `Doctor`, `High School`, `Master`, `Middle School`
+
+### Fluency
+
+Un type union pour tous les niveaux de maîtrise linguistique possibles.
+
+**Règles de Validation :**
+
+- Doit être l'un de :
+  - `Elementary Proficiency`
+  - `Full Professional Proficiency`
+  - `Limited Working Proficiency`
+  - `Minimum Professional Proficiency`
+  - `Native or Bilingual Proficiency`
+
+### Language
+
+Un type union pour toutes les langues supportées.
+
+**Règles de Validation :**
+
+- Doit être l'une des options de langue prédéfinies
+- Exemples : `English`, `Chinese`, `Spanish`, `French`, `German`
+
+### Level
+
+Un type union pour tous les niveaux de compétence possibles.
+
+**Règles de Validation :**
+
+- Doit être l'un de : `Advanced`, `Beginner`, `Expert`, `Intermediate`, `Master`, `Novice`
+
+### Network
+
+Un type union pour toutes les options de réseau social possibles.
+
+**Règles de Validation :**
+
+- Doit être l'une des options de réseau prédéfinies
+- Exemples : `GitHub`, `LinkedIn`, `Twitter`, `Facebook`, `Instagram`
+
+### Template
+
+Un type union pour toutes les options de modèle possibles.
+
+**Règles de Validation :**
+
+- Doit être l'un de : `moderncv-banking`, `moderncv-casual`, `moderncv-classic`
+- Voir aussi : [templates](https://yamlresume.dev/docs/layout/templates)
+
+### LocaleLanguage
+
+Un type union pour toutes les langues de locale possibles.
+
+**Règles de Validation :**
+
+- Doit être l'une de : `en`, `es`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`
+- Voir aussi : [multi-languages](https://yamlresume.dev/docs/content/multi-languages)
+
+### FontspecNumbers
+
+Un type union pour toutes les options de nombres fontspec latex possibles.
+
+**Règles de Validation :**
+
+- Doit être l'une de :
+  - `Auto` - permettant au style d'être automatiquement déterminé basé sur la `LocaleLanguage` sélectionnée (par défaut)
+  - `Lining` - chiffres standards de ligne (par défaut pour les langues CJK)
+  - `OldStyle` - anciens chiffres de style avec des hauteurs variables (par défaut pour les langues latines)
+
+### FontSize
+
+Un type union pour toutes les options de taille de police possibles.
+
+**Règles de Validation :**
+
+- Doit être l'une de : `10pt`, `11pt`, `12pt`
+- `10pt` est la taille de police par défaut

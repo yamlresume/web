@@ -1,7 +1,16 @@
 import { defineI18n } from 'fumadocs-core/i18n'
 import { loader } from 'fumadocs-core/source'
 import { createMDXSource } from 'fumadocs-mdx'
-import { blog, blogZhCN, blogZhTW, docs, docsZhCN, docsZhTW } from '@/.source'
+import {
+  blog,
+  blogFr,
+  blogZhCN,
+  blogZhTW,
+  docs,
+  docsFr,
+  docsZhCN,
+  docsZhTW,
+} from '@/.source'
 
 // Create i18n configurations for each locale
 const i18nEn = defineI18n({
@@ -20,6 +29,12 @@ const i18nZhTW = defineI18n({
   defaultLanguage: 'zh-tw',
   languages: ['zh-tw'],
   fallbackLanguage: 'zh-tw',
+})
+
+const i18nFr = defineI18n({
+  defaultLanguage: 'fr',
+  languages: ['fr'],
+  fallbackLanguage: 'fr',
 })
 
 // Create sources for each locale
@@ -41,6 +56,12 @@ export const docsSourceZhTW = loader({
   i18n: i18nZhTW,
 })
 
+export const docsSourceFr = loader({
+  baseUrl: '/docs',
+  source: docsFr.toFumadocsSource(),
+  i18n: i18nFr,
+})
+
 export const blogSource = loader({
   baseUrl: '/blog',
   source: createMDXSource(blog),
@@ -59,6 +80,12 @@ export const blogSourceZhTW = loader({
   i18n: i18nZhTW,
 })
 
+export const blogSourceFr = loader({
+  baseUrl: '/blog',
+  source: createMDXSource(blogFr),
+  i18n: i18nFr,
+})
+
 // Helper function to get localized sources
 export function getLocalizedSources(locale: string) {
   switch (locale) {
@@ -71,6 +98,11 @@ export function getLocalizedSources(locale: string) {
       return {
         docs: docsSourceZhTW,
         blog: blogSourceZhTW,
+      }
+    case 'fr':
+      return {
+        docs: docsSourceFr,
+        blog: blogSourceFr,
       }
     default:
       return {

@@ -86,6 +86,91 @@ const translations = {
       copyright: '© 2023–Present, ',
     },
   },
+  fr: {
+    navbar: {
+      documentation: 'Documentation',
+      blog: 'Blog',
+      chat: 'Chat',
+      discussions: 'Discussions',
+      search: 'Rechercher',
+    },
+    hero: {
+      tagline: 'Créé avec ❤️ par <ppresume>PPResume</ppresume>',
+      title: 'CV en Code YAML',
+      description:
+        "YAMLResume permet aux gens de créer et de versionner leurs CV en utilisant YAML et de générer des PDF parfaits au pixel près avec une mise en page et une typographie professionnelles en un clin d'œil.",
+      quickStart: 'Démarrage Rapide',
+      checkGithub: 'Voir Github',
+    },
+    quickStart: {
+      title: 'Démarrage Rapide en Une Seconde',
+    },
+    features: {
+      plainText: {
+        title: 'Texte Brut en YAML',
+        description:
+          "Créez des CV en YAML, qui est plus lisible et rédigeable par l'homme que JSON, permettant le contrôle de version et éliminant le verrouillage fournisseur.",
+      },
+      richText: {
+        title: 'Texte Enrichi dans les Résumés',
+        description:
+          'Exprimez-vous librement avec le formatage de texte enrichi dans les champs de résumé de toutes les sections, permettant des déclarations personnelles plus détaillées et convaincantes.',
+      },
+      flexibleSection: {
+        title: 'Structure de Section Flexible',
+        description:
+          'Rédigez et peaufinez votre CV avec divers types de sections pour mettre en valeur vos compétences, expériences et réalisations uniques de la manière la plus efficace.',
+      },
+      latexTypesetting: {
+        title: 'Moteur de Composition LaTeX',
+        description:
+          'Tirez parti de la puissance de LaTeX pour une qualité de composition de niveau professionnel qui garantit que votre CV se démarque avec un espacement et une typographie parfaits.',
+      },
+      customizable: {
+        title: 'Options de Mise en Page Personnalisables',
+        description:
+          'Affinez votre CV avec des marges de page personnalisables, des sélections de polices et des options de taille pour créer la présentation visuelle parfaite.',
+      },
+      multilingual: {
+        title: 'Support Multilingue',
+        description:
+          "Créez et traduisez votre CV en plusieurs langues avec des capacités d'internationalisation et de localisation intégrées.",
+      },
+    },
+    faq: {
+      title: 'Questions Fréquemment Posées',
+      questions: {
+        whatIs: {
+          question: "Qu'est-ce que YAMLResume ?",
+          answer1:
+            "YAMLResume est un outil qui vous permet de gérer votre CV comme du code en utilisant YAML. Il fournit une façon structurée de définir votre expérience professionnelle, vos compétences, votre éducation et d'autres sections de CV dans un document de texte brut simple et contrôlable par version. YAMLResume convertit ensuite ces données YAML en documents PDF magnifiquement composés qui sont prêts pour les candidatures d'emploi et de bourses.",
+          answer2:
+            "YAMLResume a commencé comme le moteur de composition central pour PPResume, un constructeur de CV parfait au pixel près basé sur LaTeX. Après mûre réflexion, nous avons décidé de l'open source afin que les gens puissent toujours avoir le droit de dire non au verrouillage fournisseur.",
+        },
+        whyYaml: {
+          question: 'Pourquoi YAML plutôt que JSON ?',
+          answer:
+            "En bref, YAML a été choisi parce qu'il est plus lisible et rédigeable par l'homme que JSON. Malgré sa syntaxe plus propre, moins verbeuse et plus flexible, YAML prend également en charge les commentaires, vous permettant d'annoter votre CV avec des notes qui n'apparaîtront pas dans la sortie finale. La structure hiérarchique de YAML correspond naturellement aux sections et sous-sections, ce qui le rend parfait pour les données structurées comme les CV.",
+        },
+        howGeneratePdf: {
+          question: 'Comment YAMLResume génère-t-il des PDF ?',
+          answer:
+            "YAMLResume est en fait un DSL pour écrire des CV, donc sous le capot, c'est un compilateur pour les CV. Il transforme les données YAML en PDF dans un processus en plusieurs étapes. D'abord, il analyse le fichier YAML et valide sa structure contre un schéma. Ensuite, il traite les données avec un processus de génération de code qui génère du code LaTeX. Enfin, ce code LaTeX est compilé en un PDF de qualité professionnelle en utilisant un moteur LaTeX. Cette approche garantit une typographie et une mise en page parfaites au pixel près qui sont cohérentes sur tous les appareils et plateformes.",
+        },
+        whyLatex: {
+          question: 'Pourquoi utiliser LaTeX ?',
+          answer:
+            "LaTeX est l'étalon-or pour la composition de documents professionnels, en particulier dans les domaines académiques et techniques. Il fournit une typographie supérieure avec un crénage, des ligatures et une césure appropriés qui sont difficiles à réaliser avec HTML/CSS ou des traitements de texte. LaTeX excelle dans l'espacement cohérent, le positionnement précis et la mise en page flexible. En utilisant LaTeX comme moteur de composition sous-jacent, YAMLResume garantit que votre CV a un aspect poli et professionnel qui se démarque auprès des recruteurs et des responsables de l'embauche.",
+        },
+      },
+    },
+    blog: {
+      title: 'Blog YAMLResume',
+    },
+    footer: {
+      copyright: '© 2023–Présent, ',
+    },
+  },
   'zh-cn': {
     navbar: {
       documentation: '文档',

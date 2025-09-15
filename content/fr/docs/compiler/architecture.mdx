@@ -1,0 +1,112 @@
+---
+title: Architecture
+---
+
+Comme tout compilateur, YAMLResume contient également un pipeline qui transforme les
+données de CV d'entrée vers la sortie avec plusieurs phases.
+
+- **Phase d'Entrée** : accepte les fichiers de CV YAML et JSON comme entrée.
+- **Phase d'Analyse** : analyse et valide le contenu et la mise en page du CV à partir des
+  fichiers d'entrée.
+- **Phase de Transformation** : transforme le contenu et les données de mise en page
+  du CV avec un pipeline.
+- **Phase de Génération de Code** : rend le contenu et les données de mise en page du CV en utilisant des
+  modèles LaTeX.
+- **Phase de Sortie** : génère le document PDF final.
+
+Voici un diagramme d'architecture de haut niveau de YAMLResume depuis 30 000 pieds :
+
+<Mermaid chart="
+  flowchart TD
+    subgraph A[Phase d'Entrée]
+      A1[Fichier CV YAML]
+      A2[Fichier CV JSON]
+    end
+
+    subgraph B[Phase d'Analyse]
+      B1[yaml.parse]
+      B2[validation de schéma]
+      B3[MarkdownParser]
+    end
+
+    subgraph C[Phase de Transformation]
+      C1[traitement escape-latex]
+      C2[localisation des dates]
+      C3[transformation d'URL]
+      C4[transformation de localisation]
+      C5[...]
+    end
+
+    subgraph D[Phase de Génération de Code]
+      D1[Rendu de modèle]
+      D2[moderncv-banking]
+      D3[moderncv-classic]
+      D4[moderncv-casual]
+      E1[Document LaTeX]
+    end
+
+    subgraph E[Phase de Sortie]
+      F1[xetex]
+      F2[tectonic]
+      G[resume.pdf]
+    end
+
+    A1 --> B1
+    A2 --> B1
+    B1 --> B2
+    B2 --> B3
+    B3 --> C1
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4
+    C4 --> C5
+    C5 --> D1
+    D1 --> D2
+    D1 --> D3
+    D1 --> D4
+    D2 --> E1
+    D3 --> E1
+    D4 --> E1
+    E1 --> F1
+    E1 --> F2
+    F1 --> G
+    F2 --> G
+
+"/>
+
+## Pipeline de Traitement des Données
+
+Le pipeline de transformation est responsable du traitement des données brutes de CV à partir
+des fichiers YAML et de leur préparation pour le rendu LaTeX. Il fonctionne en deux phases principales :
+transformation du contenu et transformation de la mise en page :
+
+- La phase de transformation du contenu traite toutes les données textuelles, applique
+  les règles de localisation, échappe les caractères spéciaux LaTeX, et calcule les
+  valeurs dérivées.
+- La phase de transformation de la mise en page fusionne les paramètres de mise en page fournis par l'utilisateur avec
+  les valeurs par défaut et applique les règles typographiques spécifiques aux locales.
+
+<Mermaid
+  chart="
+flowchart TD
+  A[Données CV Brutes] --> B[transformResume]
+  B --> B1[transformResumeContent]
+  B1 --> B2[transformEducationCourse]
+  B2 --> B3[transformEducationDegree]
+  B3 --> B4[transformDate]
+  B4 --> B5[transformEndDate]
+  B5 --> B6[transformKeywords]
+  B6 --> B7[...]
+  B --> C1[transformResumeLayout]
+  C1 --> C2[définir valeurs par défaut]
+  C2 --> C3[définir ajustements de locale]
+  B7 --> D[CV Transformé]
+  C3 --> D
+  D --> D1[Prêt pour la Génération de Code]
+"
+/>
+
+Pour un long pipeline de traitement de données comme celui-ci, le code parle plus que les mots, vous
+pouvez consulter
+[transform.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/preprocess/transform.ts)
+pour plus de détails si vous êtes intéressé par l'implémentation.

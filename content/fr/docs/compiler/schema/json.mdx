@@ -1,0 +1,149 @@
+---
+title: Schéma JSON
+---
+
+## Vue d'ensemble
+
+YAMLResume fournit un [Schéma JSON](https://json-schema.org) officiel pour
+valider les données de CV.
+
+Le dernier Schéma JSON officiel est hébergé à :
+[https://yamlresume.com/schema.json](https://yamlresume.com/schema.json).
+Cependant, si vous voulez une version réduite pour votre IDE/éditeur, vous pouvez aussi utiliser
+la version canary
+[schema.json](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/schema.json)
+de notre dépôt GitHub.
+
+Pendant ce temps, comme YAMLResume évolue, le Schéma JSON officiel sera mis à jour
+constamment, donc nous fournissons aussi toutes les versions archivées du Schéma JSON à :
+`https://yamlresume.com/schemas/<version>/schema.json`.
+
+Pour l'instant nous avons des versions archivées pour :
+
+- [v0.5.0](/schemas/v0.5.0/schema.json)
+- [v0.5.1](/schemas/v0.5.1/schema.json)
+- [v0.6.0](/schemas/v0.6.0/schema.json)
+- [v0.7.0](/schemas/v0.7.0/schema.json)
+
+## Qu'est-ce que le Schéma JSON ?
+
+[Schéma JSON](https://json-schema.org) est un format basé sur JSON pour définir la
+structure des données JSON. C'est un outil puissant pour valider et documenter
+les données JSON.
+
+Le Schéma JSON vous permet de spécifier la structure attendue, les types, et les contraintes
+de vos données JSON. Avec le Schéma JSON, vous pouvez définir quelles propriétés sont
+requises, quels types de valeurs sont autorisés (comme les chaînes, nombres, tableaux, ou
+objets), et même définir des règles pour les formats de valeurs (comme les adresses email ou URLs).
+
+En utilisant le Schéma JSON, les développeurs et outils peuvent automatiquement valider les données JSON
+pour s'assurer qu'elles correspondent au format attendu avant traitement. Cela aide à détecter
+les erreurs tôt, améliore la qualité des données, et active des fonctionnalités comme l'auto-complétion
+et la documentation en ligne dans les éditeurs de code modernes.
+
+Le Schéma JSON est largement supporté et peut être utilisé pour les fichiers de configuration, les
+payloads d'API, et, dans le cas de YAMLResume, pour valider les données de CV afin d'assurer
+la cohérence et la correction.
+
+## Avantages
+
+Intégrer le Schéma JSON de YAMLResume dans votre IDE/éditeur lors de la rédaction de CV
+apporte plusieurs avantages :
+
+- **Auto-Complétion :** Quand vous commencez à taper, votre IDE/éditeur suggérera
+  les propriétés et leurs types attendus, vous aidant à rédiger votre CV plus rapidement et
+  avec moins d'erreurs.
+
+- **Validation de Format :** Votre IDE/éditeur mettra en évidence toute erreur de formatage
+  (comme des dates ou URLs invalides) pendant que vous tapez, vous empêchant de soumettre
+  des informations incorrectes.
+
+- **Documentation des Propriétés :** Obtenez la documentation en ligne pour chaque propriété,
+  expliquant son but, les valeurs autorisées, et tous les exigences de formatage
+  spéciales.
+
+### Auto-Complétion
+
+Tous les [types d'énumération](/fr/docs/compiler/types#enum-types) seront
+auto-complétés lors de la saisie. Vous pouvez juste taper les premières lettres de l'option
+et l'IDE/éditeur suggérera une liste d'options valides, puis vous pouvez juste utiliser
+les touches fléchées haut/bas pour sélectionner la bonne.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-auto-completion.mp4"
+/>
+
+### Validation de Format
+
+Chaque paire clé-valeur sera validée en temps réel contre le schéma prédéfini.
+Votre IDE/éditeur vous avertira avec un message d'erreur précis pour aider à éviter
+les erreurs de bas niveau comme un mauvais format d'email, des options de diplôme invalides, des fautes de frappe dans
+les niveaux de maîtrise linguistique, etc.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-field-error.mp4"
+/>
+
+Et si une clé requise est manquante, le message d'avertissement sera escaladé à son objet parent
+par défaut, donc vous pouvez facilement trouver la clé manquante.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-object-error.mp4"
+/>
+
+### Documentation des Propriétés
+
+Enfin, vous pouvez obtenir la documentation en ligne pour chaque propriété,
+expliquant son but, les valeurs autorisées, et toutes les exigences de formatage spéciales.
+Vous pouvez survoler soit la clé de propriété soit la valeur pour voir la documentation.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-property-docs.mp4"
+/>
+
+## Comment utiliser le Schéma JSON ?
+
+Vous devez installer
+[yaml-language-server](https://github.com/redhat-developer/yaml-language-server)
+pour utiliser le schéma JSON de YAMLResume pour vos CV. Selon votre
+IDE/éditeur, vous devrez peut-être installer différentes
+[extensions](https://github.com/redhat-developer/yaml-language-server?tab=readme-ov-file#clients).
+
+Une fois installé, vous devez ajouter la ligne suivante en haut de votre fichier de
+CV :
+
+```
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+```
+
+Alors vous pouvez profiter des fonctionnalités [d'auto-complétion](#auto-completion), [de validation de
+format](#format-validation), et [de documentation des propriétés](#property-docs) toutes
+à portée de main.
+
+## Ingénierie
+
+Sous le capot, le schéma JSON de YAMLResume est généré avec l'aide de [Zod
+v4](https://zod.dev/json-schema), qui est une bibliothèque de validation de schéma
+TypeScript-first géniale.
+
+Nous définissons le schéma dans
+[schema/resume.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/resume.ts),
+puis générons le schéma JSON dans un [cas de test](https://github.com/yamlresume/yamlresume/blob/99de/packages/core/src/schema/resume.test.ts#L272-L277).
+
+C'est pas cool ça ?
