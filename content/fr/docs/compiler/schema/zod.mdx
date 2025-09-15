@@ -1,77 +1,77 @@
 ---
-title: Zod Schema
+title: Schéma Zod
 ---
 
-YAMLResume adopts [zod](https://zod.dev) to validate resume data in runtime.
+YAMLResume adopte [zod](https://zod.dev) pour valider les données de CV en cours d'exécution.
 
-This document outlines all zod schema used in YAMLResume. If you are interested
-in the implementation details, you can find the source code
-[here](https://github.com/yamlresume/yamlresume/tree/main/packages/core/src/schema).
+Ce document présente tous les schémas zod utilisés dans YAMLResume. Si vous êtes intéressé
+par les détails d'implémentation, vous pouvez trouver le code source
+[ici](https://github.com/yamlresume/yamlresume/tree/main/packages/core/src/schema).
 
-## Resume Schema
+## Schéma Resume
 
-Defines the overall resume structure validation, including content and layout validation.
+Définit la validation de la structure globale du CV, incluant la validation du contenu et de la mise en page.
 
-| Prop      | Type                                          | Required |
-| --------- | --------------------------------------------- | -------- |
-| `content` | [`ResumeContentSchema`](#resumecontentschema) | ✅       |
-| `layout?` | [`ResumeLayoutSchema`](#resumelayoutschema)   | ⬜       |
+| Prop      | Type                                          | Requis |
+| --------- | --------------------------------------------- | ------ |
+| `content` | [`ResumeContentSchema`](#resumecontentschema) | ✅     |
+| `layout?` | [`ResumeLayoutSchema`](#resumelayoutschema)   | ⬜     |
 
 ### ResumeContentSchema
 
-Defines the validation structure for the entire resume content.
+Définit la structure de validation pour l'ensemble du contenu du CV.
 
-| Prop            | Type                                                | Required |
-| --------------- | --------------------------------------------------- | -------- |
-| `basics`        | [`BasicsItemSchema`](#basicsitemschema)             | ✅       |
-| `education`     | [`EducationItemSchema[]`](#educationitemschema)     | ✅       |
-| `awards?`       | [`AwardItemSchema[]`](#awarditemschema)             | ⬜       |
-| `certificates?` | [`CertificateItemSchema[]`](#certificateitemschema) | ⬜       |
-| `interests?`    | [`InterestItemSchema[]`](#interestitemschema)       | ⬜       |
-| `languages?`    | [`LanguageItemSchema[]`](#languageitemschema)       | ⬜       |
-| `location?`     | [`LocationItemSchema`](#locationitemschema)         | ⬜       |
-| `projects?`     | [`ProjectItemSchema[]`](#projectitemschema)         | ⬜       |
-| `profiles?`     | [`ProfileItemSchema[]`](#profileitemschema)         | ⬜       |
-| `publications?` | [`PublicationItemSchema[]`](#publicationitemschema) | ⬜       |
-| `references?`   | [`ReferenceItemSchema[]`](#referenceitemschema)     | ⬜       |
-| `skills?`       | [`SkillItemSchema[]`](#skillitemschema)             | ⬜       |
-| `volunteer?`    | [`VolunteerItemSchema[]`](#volunteeritemschema)     | ⬜       |
-| `work?`         | [`WorkItemSchema[]`](#workitemschema)               | ⬜       |
+| Prop            | Type                                                | Requis |
+| --------------- | --------------------------------------------------- | ------ |
+| `basics`        | [`BasicsItemSchema`](#basicsitemschema)             | ✅     |
+| `education`     | [`EducationItemSchema[]`](#educationitemschema)     | ✅     |
+| `awards?`       | [`AwardItemSchema[]`](#awarditemschema)             | ⬜     |
+| `certificates?` | [`CertificateItemSchema[]`](#certificateitemschema) | ⬜     |
+| `interests?`    | [`InterestItemSchema[]`](#interestitemschema)       | ⬜     |
+| `languages?`    | [`LanguageItemSchema[]`](#languageitemschema)       | ⬜     |
+| `location?`     | [`LocationItemSchema`](#locationitemschema)         | ⬜     |
+| `projects?`     | [`ProjectItemSchema[]`](#projectitemschema)         | ⬜     |
+| `profiles?`     | [`ProfileItemSchema[]`](#profileitemschema)         | ⬜     |
+| `publications?` | [`PublicationItemSchema[]`](#publicationitemschema) | ⬜     |
+| `references?`   | [`ReferenceItemSchema[]`](#referenceitemschema)     | ⬜     |
+| `skills?`       | [`SkillItemSchema[]`](#skillitemschema)             | ⬜     |
+| `volunteer?`    | [`VolunteerItemSchema[]`](#volunteeritemschema)     | ⬜     |
+| `work?`         | [`WorkItemSchema[]`](#workitemschema)               | ⬜     |
 
 #### AwardItemSchema
 
-Validates a single award, honor, or recognition received.
+Valide un prix, honneur ou reconnaissance reçu.
 
-| Prop       | Type     | Required | Validation Rules                      |
-| ---------- | -------- | -------- | ------------------------------------- |
-| `awarder`  | `string` | ✅       | 2-128 characters                      |
-| `title`    | `string` | ✅       | 2-128 characters                      |
-| `date?`    | `string` | ⬜       | see [date schema](#date-schema)       |
-| `summary?` | `string` | ⬜       | see [summary schema](#summary-schema) |
+| Prop       | Type     | Requis | Règles de Validation                            |
+| ---------- | -------- | ------ | ----------------------------------------------- |
+| `awarder`  | `string` | ✅     | 2-128 caractères                                |
+| `title`    | `string` | ✅     | 2-128 caractères                                |
+| `date?`    | `string` | ⬜     | voir [schéma de date](#date-schema)             |
+| `summary?` | `string` | ⬜     | voir [schéma de résumé](#summary-schema)        |
 
 #### BasicsItemSchema
 
-Validates the core personal and contact information.
+Valide les informations personnelles et de contact principales.
 
-| Prop        | Type     | Required | Validation Rules                      |
-| ----------- | -------- | -------- | ------------------------------------- |
-| `name`      | `string` | ✅       | 2-128 characters                      |
-| `email?`    | `string` | ⬜       | see [email schema](#email-schema)     |
-| `headline?` | `string` | ⬜       | 2-128 characters                      |
-| `phone?`    | `string` | ⬜       | see [phone schema](#phone-schema)     |
-| `summary?`  | `string` | ⬜       | see [summary schema](#summary-schema) |
-| `url?`      | `string` | ⬜       | see [url schema](#url-schema)         |
+| Prop        | Type     | Requis | Règles de Validation                            |
+| ----------- | -------- | ------ | ----------------------------------------------- |
+| `name`      | `string` | ✅     | 2-128 caractères                                |
+| `email?`    | `string` | ⬜     | voir [schéma d'email](#email-schema)            |
+| `headline?` | `string` | ⬜     | 2-128 caractères                                |
+| `phone?`    | `string` | ⬜     | voir [schéma de téléphone](#phone-schema)       |
+| `summary?`  | `string` | ⬜     | voir [schéma de résumé](#summary-schema)        |
+| `url?`      | `string` | ⬜     | voir [schéma d'URL](#url-schema)                |
 
 #### CertificateItemSchema
 
-Validates a single certification, credential, or professional qualification.
+Valide une certification, référence ou qualification professionnelle.
 
-| Prop     | Type     | Required | Validation Rules                |
-| -------- | -------- | -------- | ------------------------------- |
-| `issuer` | `string` | ✅       | 2-128 characters                |
-| `name`   | `string` | ✅       | 2-128 characters                |
-| `date?`  | `string` | ⬜       | see [date schema](#date-schema) |
-| `url?`   | `string` | ⬜       | see [url schema](#url-schema)   |
+| Prop     | Type     | Requis | Règles de Validation                            |
+| -------- | -------- | ------ | ----------------------------------------------- |
+| `issuer` | `string` | ✅     | 2-128 caractères                                |
+| `name`   | `string` | ✅     | 2-128 caractères                                |
+| `date?`  | `string` | ⬜     | voir [schéma de date](#date-schema)             |
+| `url?`   | `string` | ⬜     | voir [schéma d'URL](#url-schema)                |
 
 #### EducationItemSchema
 
