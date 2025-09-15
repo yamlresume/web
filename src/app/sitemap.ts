@@ -1,9 +1,11 @@
 import type { MetadataRoute } from 'next'
 import {
   blogSource,
+  blogSourceFr,
   blogSourceZhCN,
   blogSourceZhTW,
   docsSource,
+  docsSourceFr,
   docsSourceZhCN,
   docsSourceZhTW,
 } from '@/lib'
@@ -19,12 +21,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...docsSource.getPages(),
     ...docsSourceZhCN.getPages(),
     ...docsSourceZhTW.getPages(),
+    ...docsSourceFr.getPages(),
   ]
 
   const allBlogPages = [
     ...blogSource.getPages(),
     ...blogSourceZhCN.getPages(),
     ...blogSourceZhTW.getPages(),
+    ...blogSourceFr.getPages(),
   ]
 
   return [

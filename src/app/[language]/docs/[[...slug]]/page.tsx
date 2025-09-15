@@ -80,14 +80,20 @@ export async function generateStaticParams() {
   const enParams = getLocalizedSources('en')
     .docs.generateParams()
     .map((p) => ({ ...p, language: 'en' }))
+
+  const frParams = getLocalizedSources('fr')
+    .docs.generateParams()
+    .map((p) => ({ ...p, language: 'fr' }))
+
   const zhCNParams = getLocalizedSources('zh-cn')
     .docs.generateParams()
     .map((p) => ({ ...p, language: 'zh-cn' }))
+
   const zhTWParams = getLocalizedSources('zh-tw')
     .docs.generateParams()
     .map((p) => ({ ...p, language: 'zh-tw' }))
 
-  return [...enParams, ...zhCNParams, ...zhTWParams]
+  return [...enParams, ...frParams, ...zhCNParams, ...zhTWParams]
 }
 
 export async function generateMetadata({

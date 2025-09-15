@@ -1,0 +1,192 @@
+---
+title: "YAMLResume v0.7 : Mode Dev"
+description: |
+  YAMLResume v0.7 introduit un nouveau mode `dev` qui fournit une expérience
+  en temps réel et en mode surveillance pour la création de CV, améliorant
+  drastiquement l'expérience développeur.
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-08-30
+---
+
+Je suis super excité d'introduire [YAMLResume v0.7](https://github.com/yamlresume/yamlresume/releases/tag/v0.7.0), une version axée sur l'amélioration de votre expérience développeur (DX). Le point central de cette mise à jour est le nouveau [mode `dev`](/docs/cli#dev)—une fonctionnalité qui apporte un flux de travail de développement fluide et en temps réel à votre processus de création de CV.
+
+![Flux de travail du Mode Dev](/static/images/blog/dev-mode/dev-mode-vs-code.webp)
+
+Fini les jours du cycle fastidieux édition-sauvegarde-construction. Avec le mode `dev`, YAMLResume surveille maintenant votre fichier de CV pour les changements et reconstruit automatiquement le PDF en temps quasi réel. Cette addition apparemment simple transforme l'expérience de création d'un CV en un processus fluide, interactif et beaucoup plus agréable.
+
+## La friction de l'ancien flux de travail
+
+Avant la v0.7, créer un CV avec YAMLResume, bien que puissant, impliquait un processus manuel et répétitif. Vous deviez :
+
+1. Ouvrir votre fichier `my-resume.yml` dans votre éditeur de texte préféré.
+2. Faire un changement—peut-être mettre à jour une description de poste ou ajouter une nouvelle compétence.
+3. Sauvegarder le fichier.
+4. Passer à votre terminal.
+5. Exécuter la commande `yamlresume build my-resume.yml`.
+6. Attendre que la commande se termine.
+7. Passer à votre visualiseur PDF et l'actualiser pour voir le résultat.
+8. Noter une petite faute de frappe ou un problème de formatage.
+9. Répéter tout le cycle.
+
+Cette boucle, illustrée ci-dessous, introduisait une friction significative dans le processus de création de CV. Chaque changement, aussi petit soit-il, nécessitait un changement de contexte et une exécution manuelle de commande. Cette interruption constante brise le flux créatif et ralentit le processus de perfectionnement de votre CV.
+
+<Mermaid
+  chart={`
+graph TD
+  A[Éditer my-resume.yml] --> B{Sauvegarder le fichier};
+  B --> C[Passer au Terminal];
+  C --> D[Exécuter 'yamlresume build'];
+  D --> E{Attendre la construction};
+  E --> F[Passer au visualiseur PDF];
+  F --> G{Actualiser le PDF};
+  G --> H{Examiner les changements};
+  H -- Correction nécessaire --> A;
+  H -- Ça a l'air bien --> I[Terminé];
+  subgraph Cycle de construction manuel
+    A
+    B
+    C
+    D
+    E
+    F
+    G
+    H
+  end
+`}
+/>
+
+Dans le monde du développement logiciel moderne, nous nous sommes habitués aux outils qui fournissent un retour instantané. Les développeurs web ont le [rechargement à chaud](https://webpack.js.org/concepts/hot-module-replacement/), qui met à jour le navigateur automatiquement pendant qu'ils changent le code. Cette boucle de retour serrée est cruciale pour la productivité et est un principe fondamental d'une excellente expérience développeur. Nous croyions que créer votre CV comme du code ne devrait pas être différent.
+
+## La solution : Un mode Dev fluide
+
+La commande `yamlresume dev` élimine entièrement le cycle de construction manuel. Vous la démarrez une fois, et elle fonctionne tranquillement en arrière-plan, surveillant vos changements et reconstruisant le CV automatiquement.
+
+Pour démarrer le mode développement, exécutez simplement :
+
+```bash
+yamlresume dev my-resume.yml
+```
+
+Maintenant, vous pouvez ouvrir votre fichier `my-resume.yml` et votre PDF côte à côte. Chaque fois que vous sauvegardez un changement à votre fichier YAML, YAMLResume le détectera automatiquement et déclenchera une reconstruction. Votre visualiseur PDF se mettra à jour quelques instants plus tard, vous montrant la dernière version de votre CV.
+
+Le nouveau flux de travail est significativement plus simple et plus efficace :
+
+<Mermaid chart={`
+graph TD
+  A[Démarrer 'yamlresume dev'] --> B[Éditer my-resume.yml];
+  B --> C{Sauvegarder le fichier};
+  C --> D{PDF automatiquement reconstruit};
+  D --> E{Examiner les changements dans le PDF};
+  E -- Correction nécessaire --> B;
+  E -- Ça a l'air bien --> F[Arrêter le mode Dev];
+
+  subgraph Flux de travail en temps réel
+    B
+    C
+    D
+    E
+  end
+`}/>
+
+Cette boucle de retour instantané vous permet d'itérer rapidement, d'expérimenter avec différentes formulations, et de perfectionner la mise en page de votre CV sans le changement de contexte constant. Cela rend le processus moins fastidieux et plus comme une entreprise créative.
+
+Voici une démonstration en direct du mode `dev` en action :
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/blog/dev-mode/dev-mode-vs-code-demo.mp4"
+/>
+
+Vous pouvez regarder la [démo YouTube](https://youtu.be/xytlzedEQ_w) pour plus de détails.
+
+## Comment ça fonctionne : Un regard sous le capot
+
+Bien que le mode `dev` soit simple à utiliser, il y a une technologie intéressante qui fonctionne en arrière-plan pour s'assurer qu'il est à la fois robuste et efficace.
+
+### Le surveilleur de fichiers : `chokidar`
+
+Au cœur du mode `dev` se trouve un surveilleur de fichiers. Une approche naïve serait d'utiliser l'API [`fs.watch`](https://nodejs.org/docs/latest/api/fs.html#fswatchfilename-options-listener) intégrée de Node.js. Cependant, `fs.watch` a des limitations connues et des incohérences à travers différents systèmes d'exploitation. Plus important encore, il a du mal avec certains comportements d'éditeurs de texte.
+
+Par exemple, les éditeurs comme Vim utilisent une stratégie de "sauvegarde atomique". Quand vous sauvegardez un fichier, Vim n'écrit pas directement dans le fichier original. Au lieu de cela, il écrit les changements dans un fichier temporaire (le fameux fichier `.swp`), puis renomme ce fichier temporaire pour remplacer l'original. Ce processus peut confondre les surveilleurs de fichiers basiques, qui pourraient manquer le changement entièrement ou déclencher plusieurs événements.
+
+Pour fournir une expérience fiable, nous avons adopté **[chokidar](https://github.com/paulmillr/chokidar)**, une bibliothèque de surveillance de fichiers populaire et éprouvée. Chokidar abstrait les incohérences multiplateformes et est spécifiquement conçu pour gérer ces comportements d'éditeurs délicats avec grâce. Nous l'avons configuré pour attendre qu'un fichier ait fini d'être écrit avant de déclencher une reconstruction, s'assurant que nous n'essayons pas de construire un fichier partiellement sauvegardé.
+
+### Prévenir les tempêtes de construction : `coalescifn`
+
+Que se passe-t-il si vous sauvegardez le fichier plusieurs fois en succession rapide ? Une implémentation simple pourrait essayer de démarrer une nouvelle construction pour chaque événement de sauvegarde. Cela pourrait mener à une "tempête de construction", où plusieurs processus de construction s'exécutent simultanément, consommant des ressources système inutiles et menant potentiellement à des conditions de course.
+
+Pour résoudre cela, nous avons écrit et open sourcé une petite utilitaire intelligente appelée [coalescifn](https://github.com/yamlresume/coalescifn). Cette utilitaire nous aide à **fusionner** plusieurs appels en un seul. Voici comment cela fonctionne dans le contexte du mode `dev` :
+
+1. Quand le premier changement de fichier est détecté, nous démarrons immédiatement une construction.
+2. Si plus de changements sont détectés _pendant que cette construction s'exécute_, nous ne démarrons pas de nouvelles constructions. Nous notons simplement que le fichier a changé à nouveau.
+3. Une fois la construction initiale terminée, nous vérifions si d'autres changements se sont produits pendant ce temps.
+4. S'il y avait des changements subséquents, nous exécutons exactement _une_ construction de plus pour s'assurer que le PDF final reflète la version la plus récente du fichier. S'il n'y avait pas de nouveaux changements, nous ne faisons rien et attendons le prochain événement de sauvegarde.
+
+Cette stratégie s'assure qu'il n'y a qu'une seule construction en cours à la fois, et elle garantit que la construction finale utilise toujours la version la plus récente de votre fichier de CV. C'est une approche efficace qui garde le mode `dev` réactif et léger sur les ressources système.
+
+Voici un diagramme illustrant la logique de fusion :
+
+<Mermaid chart={`
+sequenceDiagram
+  participant Utilisateur
+  participant Surveilleur
+  participant Fusion
+  participant Constructeur
+
+  Utilisateur->>Surveilleur: Sauvegarder le fichier (t=0s)
+  Surveilleur->>Fusion: Déclencher la construction
+  Fusion->>Constructeur: Démarrer Construction #1
+  Utilisateur->>Surveilleur: Sauvegarder le fichier (t=1s)
+  Surveilleur->>Fusion: Déclencher la construction (ignoré, construction en cours)
+  Utilisateur->>Surveilleur: Sauvegarder le fichier (t=2s)
+  Surveilleur->>Fusion: Déclencher la construction (ignoré, construction en cours)
+  Constructeur-->>Fusion: Terminer Construction #1 (t=3s)
+  Fusion->>Constructeur: Démarrer Construction #2 (avec le contenu de fichier le plus récent)
+  Constructeur-->>Fusion: Terminer Construction #2 (t=6s)
+`}/>
+
+## Contrôle avancé
+
+La commande `dev` vient aussi avec des options pour vous donner plus de contrôle sur le processus de construction, reflétant les drapeaux disponibles sur la commande `build`.
+
+### Ignorer la génération PDF
+
+Parfois, vous pourriez seulement vouloir inspecter le fichier LaTeX intermédiaire (`.tex`) que YAMLResume génère. Cela peut être utile pour le débogage ou pour ceux qui veulent ajuster manuellement le code LaTeX. Générer le PDF est la partie la plus chronophage du processus de construction. Si vous n'en avez pas besoin, vous pouvez dire au mode `dev` de l'ignorer :
+
+```bash
+yamlresume dev my-resume.yml --no-pdf
+```
+
+Avec ce drapeau, le mode `dev` surveillera toujours les changements et régénérera le fichier `.tex` instantanément, mais il n'exécutera pas la commande `xelatex`. Cela rend le processus de reconstruction presque instantané.
+
+### Désactiver la validation
+
+Depuis la [v0.5](/blog/yamlresume-compiler), YAMLResume inclut une étape de validation de schéma puissante qui attrape les erreurs potentielles dans votre CV pendant la construction. Bien que ce soit incroyablement utile pour s'assurer de la justesse, il pourrait y avoir des moments où vous voulez la désactiver temporairement. Par exemple, vous pourriez être au milieu d'un grand refactoring de la structure de votre CV et ne pas vouloir être interrompu par des erreurs de validation.
+
+Vous pouvez désactiver la validation avec le drapeau `--no-validate` :
+
+```bash
+yamlresume dev my-resume.yml --no-validate
+```
+
+Cela vous permet de travailler plus librement, avec la compréhension que vous devriez réactiver la validation plus tard pour vous assurer que votre CV est bien formé.
+
+## Une nouvelle DX pour "CV comme Code"
+
+L'introduction du mode `dev` est plus qu'une simple nouvelle fonctionnalité ; c'est un pas vers l'accomplissement de la vraie promesse de "CV comme Code". Il élève l'expérience d'un processus statique, piloté par ligne de commande à un processus dynamique et interactif qui ressemble beaucoup plus au développement logiciel moderne.
+
+Vous pourriez être habitué à `npm run build` et `npm run dev` dans le passé ? YAMLResume a maintenant le même flux de travail intégré.
+
+En fermant la boucle de retour, nous rendons plus facile et plus rapide pour vous de créer de beaux CV professionnels. Nous croyons que cela encouragera plus d'expérimentation et vous permettra de vous concentrer sur ce qui compte vraiment : le contenu de votre CV et comment il raconte votre histoire professionnelle.
+
+Nous vous invitons à mettre à jour vers YAMLResume v0.7 et à expérimenter le nouveau mode `dev` par vous-même.
+
+- **Installer ou mettre à jour** vers la dernière version : `npm install -g yamlresume@latest`
+- **L'essayer** avec votre CV existant : `yamlresume dev my-resume.yml`
+- **Rejoindre notre communauté** sur [GitHub](https://github.com/yamlresume/yamlresume/discussions) pour partager vos retours, poser des questions, ou contribuer à l'avenir d'YAMLResume.
+
+Nous nous engageons à construire la meilleure expérience développeur possible pour la création de CV, et nous avons hâte d'entendre ce que vous pensez de cette nouvelle version !

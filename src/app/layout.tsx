@@ -73,6 +73,9 @@ const { provider } = defineI18nUI(i18nConfig, {
     en: {
       displayName: 'English',
     },
+    fr: {
+      displayName: 'Français',
+    },
     'zh-cn': {
       displayName: '简体中文',
     },

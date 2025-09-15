@@ -1,0 +1,100 @@
+---
+title: Schéma
+---
+
+## Vue d'ensemble
+
+La rédaction de CV est un processus long, ennuyeux et fastidieux. Les gens doivent souvent
+passer des heures à peaufiner les détails, mais des erreurs surviennent encore. Par exemple, il peut
+y avoir une faute de frappe dans les diplômes d'éducation, un format d'email peut être incorrect, un nom de cours peut
+être trop court, etc.
+
+Accompagné des [définitions de types statiques](/fr/docs/compiler/types), YAMLResume
+fournit un schéma intégré qui peut être utilisé pour les validations d'exécution. C'est
+le cœur qui fait de YAMLResume un **compilateur de CV**—YAMLResume fournit
+des **messages d'avertissement/erreur de style clang** qui aident à détecter les erreurs potentielles au
+stade précoce de la rédaction de CV.
+
+Par exemple, pour le CV suivant :
+
+```yml lineNumbers title="invalid-resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp # [!code highlight]
+    url: https//ppresume.com/gallery # [!code highlight]
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S # [!code highlight]
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D # [!code highlight]
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layout:
+  typography:
+    fontSize: 13pt # [!code highlight]
+```
+
+`yamlresume validate` vous donnera une liste d'erreurs potentielles, avec des
+informations de position claires qui aident à localiser l'emplacement exact de l'erreur,
+pendant ce temps, avec l'aide du
+[yaml-language-server](https://github.com/redhat-developer/yaml-language-server),
+vous pouvez obtenir une meilleure expérience d'édition avec
+[l'auto-complétion](/fr/docs/compiler/schema/json#auto-completion), [la documentation des propriétés au survol](/fr/docs/compiler/schema/json#property-docs), [la validation de format](/fr/docs/compiler/schema/json#format-validation), et plus.
+
+![YAMLResume validate](/static/images/docs/compiler/schema/yamlresume-validate.webp)
+
+Sous le capot, YAMLResume adopte [Zod](https://zod.dev) pour valider les données de CV
+en cours d'exécution. Zod est une bibliothèque de validation de schéma TypeScript-first qui vous permet
+de définir des schémas pour vos données de CV, qui agit comme un filet de sécurité robuste,
+s'assurant que les données de CV sont fiables, cohérentes, et prêtes à être rendues
+en un PDF professionnel.
+
+La validation de schéma est un outil très puissant pour assurer la correction des données
+de CV. Elle peut détecter les erreurs tout au long du cycle de vie entier de la rédaction de CV,
+ce qui est très utile pour éviter les erreurs de bas niveau dès le départ.
+
+## En Savoir Plus
+
+<Cards>
+  <Card
+    description="Validation de schéma JSON"
+    href="/fr/docs/compiler/schema/json"
+    title="Schéma JSON"
+  />
+  <Card
+    description="Validation de schéma Zod"
+    href="/fr/docs/compiler/schema/zod"
+    title="Schéma Zod"
+  />
+  <Card
+    description="Commande de validation CLI YAMLResume"
+    href="/fr/docs/cli#validate"
+    title="Valider"
+  />
+</Cards>

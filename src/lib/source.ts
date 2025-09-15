@@ -1,13 +1,28 @@
 import { defineI18n } from 'fumadocs-core/i18n'
 import { loader } from 'fumadocs-core/source'
 import { createMDXSource } from 'fumadocs-mdx'
-import { blog, blogZhCN, blogZhTW, docs, docsZhCN, docsZhTW } from '@/.source'
+import {
+  blog,
+  blogFr,
+  blogZhCN,
+  blogZhTW,
+  docs,
+  docsFr,
+  docsZhCN,
+  docsZhTW,
+} from '@/.source'
 
 // Create i18n configurations for each locale
 const i18nEn = defineI18n({
   defaultLanguage: 'en',
   languages: ['en'],
   fallbackLanguage: 'en',
+})
+
+const i18nFr = defineI18n({
+  defaultLanguage: 'fr',
+  languages: ['fr'],
+  fallbackLanguage: 'fr',
 })
 
 const i18nZhCN = defineI18n({
@@ -22,29 +37,17 @@ const i18nZhTW = defineI18n({
   fallbackLanguage: 'zh-tw',
 })
 
-// Create sources for each locale
-export const docsSource = loader({
-  baseUrl: '/docs',
-  source: docs.toFumadocsSource(),
-  i18n: i18nEn,
-})
-
-export const docsSourceZhCN = loader({
-  baseUrl: '/docs',
-  source: docsZhCN.toFumadocsSource(),
-  i18n: i18nZhCN,
-})
-
-export const docsSourceZhTW = loader({
-  baseUrl: '/docs',
-  source: docsZhTW.toFumadocsSource(),
-  i18n: i18nZhTW,
-})
-
+// Create sources for each language
 export const blogSource = loader({
   baseUrl: '/blog',
   source: createMDXSource(blog),
   i18n: i18nEn,
+})
+
+export const blogSourceFr = loader({
+  baseUrl: '/blog',
+  source: createMDXSource(blogFr),
+  i18n: i18nFr,
 })
 
 export const blogSourceZhCN = loader({
@@ -59,9 +62,38 @@ export const blogSourceZhTW = loader({
   i18n: i18nZhTW,
 })
 
+export const docsSource = loader({
+  baseUrl: '/docs',
+  source: docs.toFumadocsSource(),
+  i18n: i18nEn,
+})
+
+export const docsSourceFr = loader({
+  baseUrl: '/docs',
+  source: docsFr.toFumadocsSource(),
+  i18n: i18nFr,
+})
+
+export const docsSourceZhCN = loader({
+  baseUrl: '/docs',
+  source: docsZhCN.toFumadocsSource(),
+  i18n: i18nZhCN,
+})
+
+export const docsSourceZhTW = loader({
+  baseUrl: '/docs',
+  source: docsZhTW.toFumadocsSource(),
+  i18n: i18nZhTW,
+})
+
 // Helper function to get localized sources
 export function getLocalizedSources(locale: string) {
   switch (locale) {
+    case 'fr':
+      return {
+        docs: docsSourceFr,
+        blog: blogSourceFr,
+      }
     case 'zh-cn':
       return {
         docs: docsSourceZhCN,

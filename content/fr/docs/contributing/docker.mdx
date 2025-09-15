@@ -1,0 +1,61 @@
+---
+title: Docker
+---
+
+En plus du [package CLI](https://www.npmjs.com/package/yamlresume), YAMLResume
+fournit aussi une [image docker](https://hub.docker.com/r/yamlresume/yamlresume)
+pour un onboarding facile.
+
+Comme nous l'avons [documenté](/docs/installation#docker-users), vous pouvez exécuter le conteneur
+docker yamlresume avec la commande suivante :
+
+```bash
+docker run --rm -v $(pwd):/app -w /app yamlresume/yamlresume <command>
+```
+
+Cependant, si vous êtes intéressé, vous pouvez personnaliser l'image Docker selon vos
+besoins.
+
+## Construire l'Image Docker
+
+L'image Docker de YAMLResume est définie et générée en deux phases :
+
+### Dockerfile.base
+
+[Dockerfile.base](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base)
+contient l'environnement de base pour exécuter YAMLResume, incluant toutes
+les dépendances nécessaires comme [XeTeX](/docs/installation#xetex) de [TeX
+Live](https://www.tug.org/texlive/) et [Google Noto
+Font](/docs/installation#google-noto).
+
+C'est une image de base principalement utilisée pour accélérer le processus de construction sur Github
+Actions—installer texlive par `apt install texlive-xetex` prend environ [30
+minutes](https://github.com/yamlresume/yamlresume/actions/runs/15438395862),
+ce qui est trop long à exécuter pour chaque construction docker, donc nous avons décidé de construire et
+[publier cette image de base
+une fois](https://hub.docker.com/r/yamlresume/yamlresume-base) et la réutiliser pour
+chaque construction ultérieure.
+
+Généralement, vous n'avez pas besoin de construire cette image vous-même, vous pouvez simplement réutiliser
+l'image publiée sur dockerhub.
+
+### Dockerfile
+
+[Dockerfile](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile)
+définit comment l'image `yamlresume/yamlresume` est construite, c'est très simple et
+direct, il installe juste `yamlresume` depuis npmjs par `npm install -g
+yamlresume@latest` et crée les utilisateurs et groupes nécessaires selon les
+[meilleures pratiques de sécurité de Docker](https://www.docker.com/blog/understanding-the-docker-user-instruction/).
+
+Construire l'image yamlresume localement est une tâche triviale. Vous devez juste exécuter
+
+```bash
+docker build -t yamlresume/yamlresume .
+```
+
+Vous pourriez avoir besoin de regarder [la construction docker multi-plateforme](https://docs.docker.com/build/building/multi-platform/) si vous, par exemple, rencontrez
+des problèmes de construction d'images docker pour différentes architectures.
+
+J'ai écrit [quelques conseils sur
+X](https://x.com/xiaohanyu1988/status/1931178628785778722), vous pouvez y jeter un coup d'œil
+si vous êtes intéressé.

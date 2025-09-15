@@ -1,0 +1,216 @@
+---
+title: "YAMLResume v0.6 : Personnalisation des sections"
+description: |
+  YAMLResume v0.6 introduit les fonctionnalités d'alias de sections et de réordonnancement qui
+  améliorent encore ses capacités i18n pour supporter les langues non supportées.
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-07-22
+---
+
+YAMLResume [v0.6](https://github.com/yamlresume/yamlresume/releases/tag/v0.6.0)
+est là, et il apporte deux fonctionnalités puissantes pour personnaliser la
+structure de votre CV : [alias de sections](/docs/layout/sections/aliases) et [réordonnancement de
+sections](/docs/layout/sections/reorder). Ces fonctionnalités vous permettent de renommer
+les titres de sections et de contrôler leur séquence dans le PDF final, vous donnant une plus grande
+flexibilité pour adapter votre CV.
+
+Plongeons dans leur fonctionnement.
+
+## Alias de sections
+
+Les titres de sections par défaut dans YAMLResume (par ex., `education`, `work`) sont
+automatiquement [traduits](/docs/layout/sections/docs/content/multi-languages)
+basés sur votre [langue de locale](/docs/layout#locale) choisie. Cependant, vous pourriez
+préférer un titre différent. Par exemple, vous pourriez vouloir changer "Work" en
+"Expérience professionnelle" pour la section `work`.
+
+Pour définir des alias, utilisez la carte `layout.sections.aliases` dans votre `resume.yml`.
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:                               # [!code focus]
+  sections:                           # [!code focus]
+    aliases:                          # [!code focus]
+      work: Professional Experience   # [!code focus]
+      education: Academic Background  # [!code focus]
+      skills: Technical Skills        # [!code focus]
+```
+
+
+## Réordonnancement de sections
+
+Par défaut, les sections sont rendues dans un [ordre
+standard](/docs/layout/sections/reorder#default-section-order). La
+fonctionnalité `layout.sections.order` vous permet de changer cette séquence pour mettre en évidence votre
+information la plus importante en premier.
+
+Par exemple, pour placer vos sections "Compétences" et "Projets" avant votre expérience "Travail",
+vous pouvez définir l'ordre comme ceci :
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:           #[!code focus]
+  sections:       #[!code focus]
+    order:        #[!code focus]
+      - skills    #[!code focus]
+      - projects  #[!code focus]
+      - work      #[!code focus]
+```
+
+Les sections dans la liste `order` apparaîtront en premier, suivies des sections restantes
+dans leur ordre par défaut.
+
+## Tout mettre ensemble : Un exemple complet
+
+Créons un CV d'une page qui utilise les deux fonctionnalités. Nous allons aliaser et
+réordonner certaines sections en même temps.
+
+```yml lineNumbers title="resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+
+layout:
+  sections:                          # [!code highlight]
+    aliases:                         # [!code highlight]
+      work: Professional Experience  # [!code highlight]
+      education: Academic Background # [!code highlight]
+      skills: Technical Skills       # [!code highlight]
+    order:                           # [!code highlight]
+      - basics                       # [!code highlight]
+      - work                         # [!code highlight]
+      - education                    # [!code highlight]
+      - skills                       # [!code highlight]
+  template: moderncv-banking
+  typography:
+    fontSize: 11pt
+
+content:
+  basics:
+    name: Jane Doe
+    headline: Senior Software Engineer
+    email: jane.doe@example.com
+    phone: "555-123-4567"
+    summary: |
+      A passionate and experienced software engineer with a proven track record
+      of designing, developing, and deploying robust web applications. Skilled
+      in both front-end and back-end development, with an eye for detail and
+      a devotion to writing clean and efficient code.
+  education:
+    - institution: Tech University
+      area: Software Engineering
+      degree: Master
+      startDate: 2018-09-01
+      endDate: 2020-06-01
+      summary: Specialized in distributed systems and cloud computing.
+    - institution: State University
+      area: Computer Science
+      degree: Bachelor
+      startDate: 2014-09-01
+      endDate: 2018-06-01
+      summary: |
+        - Graduated with honors.
+        - Focused on algorithms, data structures, and distributed systems.
+      courses:
+        - Data Structures and Algorithms
+        - Operating Systems
+        - Computer Networks
+        - Database Systems
+  work:
+    - name: Tech Solutions Inc.
+      position: Senior Software Engineer
+      startDate: 2020-07-01
+      summary: |
+        - Led development of a new microservices-based architecture, improving system scalability and reliability.
+        - Mentored junior engineers, providing guidance on best practices and code quality.
+        - Optimized application performance, reducing API response times by 30%.
+    - name: Innovate Corp.
+      position: Software Engineer
+      startDate: 2018-07-01
+      endDate: 2020-06-30
+      summary: |
+        - Developed and maintained features for a large-scale e-commerce platform using React and Node.js.
+        - Collaborated with product managers and designers to deliver high-quality user experiences.
+        - Participated in on-call rotation to ensure application stability.
+    - name: Data Systems LLC
+      position: Software Engineering Intern
+      startDate: 2017-06-01
+      endDate: 2017-08-31
+      summary: |
+        - Assisted in developing a data processing pipeline.
+        - Wrote unit tests to ensure code quality.
+        - Gained experience with Agile development methodologies.
+  skills:
+    - name: Programming Languages
+      level: Expert
+      keywords:
+        - JavaScript (ES6+)
+        - TypeScript
+        - Python
+        - Go
+    - name: Technologies and Frameworks
+      level: Advanced
+      keywords:
+        - React
+        - Node.js
+        - Express
+        - Docker
+        - Kubernetes
+        - PostgreSQL
+    - name: Development Tools
+      level: Advanced
+      keywords:
+        - Git & GitHub
+        - Webpack
+        - Jest
+        - CircleCI
+  languages:
+    - language: English
+      fluency: Native or Bilingual Proficiency
+    - language: Spanish
+      fluency: Limited Working Proficiency
+```
+
+Ici nous aliasons les sections `work`, `education`, et `skills`, et réordonnons les
+sections en assignant une priorité plus élevée à `work` qu'à `education`, suivi par
+la section `skills` :
+
+Maintenant, construisons le CV :
+
+```bash
+yamlresume build resume.yml
+```
+
+Vous obtiendrez un fichier PDF avec le contenu suivant—j'ai mis en évidence les sections
+avec des personnalisations :
+
+![Personnalisation des sections](/static/images/blog/section-customization/resume-highlight.webp)
+
+Génial, ça fonctionne comme attendu ! N'est-ce pas cool ?
+
+## En résumé
+
+Avec les alias de sections et le réordonnancement, vous avez maintenant un contrôle fin sur la
+structure de votre CV. Nous espérons que ces fonctionnalités vous aident à créer des CV encore plus
+personnalisés et efficaces.
+
+La meilleure partie de la personnalisation des sections est que vous pouvez toujours étendre [les capacités i18n d'YAMLResume pour supporter plus
+de langues](/docs/layout/sections/reorder#default-section-order) par vous-même. Par
+défaut, les titres de sections par défaut seront traduits vers la langue de locale cible
+(définie via `layout.locale.language`) automatiquement. Cependant, il y a
+toujours des cas où YAMLResume [n'a pas encore supporté votre langue cible](https://github.com/yamlresume/yamlresume/discussions/36), donc vous pouvez
+remplacer les titres de sections par défaut par les vôtres.
+
+En attendant, les gens avec des arrière-plans différents ont des préférences différentes pour l'ordre des
+sections. Par exemple, les candidats cherchant un emploi dans l'industrie pourraient ordonner
+`work` avant `education`, tandis que les chercheurs postdoc cherchant un
+poste académique ordonneraient `education` avant `work`.
+
+J'espère que vous apprécierez ces nouvelles fonctionnalités !

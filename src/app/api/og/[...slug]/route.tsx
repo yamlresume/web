@@ -5,9 +5,11 @@ import { OpenGraph } from '@/app/api/og/components'
 import { defaultLanguage } from '@/i18n'
 import {
   blogSource,
+  blogSourceFr,
   blogSourceZhCN,
   blogSourceZhTW,
   docsSource,
+  docsSourceFr,
   docsSourceZhCN,
   docsSourceZhTW,
 } from '@/lib'
@@ -33,12 +35,17 @@ export async function GET(
     | typeof blogSource
     | typeof blogSourceZhCN
     | typeof blogSourceZhTW
+    | typeof blogSourceFr
     | typeof docsSource
     | typeof docsSourceZhCN
     | typeof docsSourceZhTW
+    | typeof docsSourceFr
 
   if (isBlog) {
     switch (language) {
+      case 'fr':
+        source = blogSourceFr
+        break
       case 'zh-cn':
         source = blogSourceZhCN
         break
@@ -50,6 +57,9 @@ export async function GET(
     }
   } else {
     switch (language) {
+      case 'fr':
+        source = docsSourceFr
+        break
       case 'zh-cn':
         source = docsSourceZhCN
         break
@@ -82,11 +92,31 @@ export function generateStaticParams() {
   }))
   params.push(...blogParams)
 
+  const blogFrParams = blogSourceFr.generateParams().map((page) => ({
+    slug: ['blog', ...page.slug, 'open-graph.png'],
+  }))
+  params.push(...blogFrParams)
+
+  const blogZhCNParams = blogSourceZhCN.generateParams().map((page) => ({
+    slug: ['blog', ...page.slug, 'open-graph.png'],
+  }))
+  params.push(...blogZhCNParams)
+
+  const blogZhTWParams = blogSourceZhTW.generateParams().map((page) => ({
+    slug: ['blog', ...page.slug, 'open-graph.png'],
+  }))
+  params.push(...blogZhTWParams)
+
   // Generate params for docs in all languages
   const docsParams = docsSource.generateParams().map((page) => ({
     slug: ['docs', ...page.slug, 'open-graph.png'],
   }))
   params.push(...docsParams)
+
+  const docsFrParams = docsSourceFr.generateParams().map((page) => ({
+    slug: ['docs', ...page.slug, 'open-graph.png'],
+  }))
+  params.push(...docsFrParams)
 
   const docsZhCNParams = docsSourceZhCN.generateParams().map((page) => ({
     slug: ['docs', ...page.slug, 'open-graph.png'],

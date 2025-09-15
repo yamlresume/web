@@ -9,6 +9,7 @@ export const { GET } = createI18nSearchAPI('advanced', {
   i18n: i18nConfig,
   localeMap: {
     en: { language: 'english' },
+    fr: { language: 'french' },
     'zh-cn': {
       components: {
         tokenizer: createTokenizer(),

@@ -1,0 +1,348 @@
+---
+title: Présentation d'YAMLResume
+description: 'YAMLResume : CV comme Code en YAML'
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-05-21
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+Chaque développeur a besoin d'un CV à moins d'être un professionnel mondialement célèbre.
+Écrire un CV n'est peut-être pas difficile, mais ce n'est définitivement pas amusant et c'est fastidieux. Beaucoup
+passent des jours à créer leurs CV, cherchant des CV sans faute de frappe à 100%, vérifiés grammaticalement
+avec une mise en page et une composition professionnelles.
+
+[YAMLResume](https://yamlresume.dev) vous permet de créer et de contrôler la version
+de vos CV en utilisant [YAML](https://yaml.org/) et de générer des PDF
+professionnels avec une belle composition en un clin d'œil.
+
+Il a commencé comme le moteur de composition principal pour [PPResume](https://ppresume.com)—un
+constructeur de CV commercial basé sur [LaTeX](https://www.latex-project.org/), parfait au pixel près—qui aide déjà des milliers de personnes à créer des CV magnifiquement composés. Sans trop d'hésitation, nous avons décidé de l'open sourcer pour que
+les gens puissent toujours avoir le droit de dire [non au verrouillage fournisseur](https://blog.ppresume.com/posts/no-vendor-lock-in).
+
+![YAMLResume Nouveau et Construire CV](/static/images/blog/introducing-yamlresume/yamlresume-new-and-build.webp)
+
+## Démarrage rapide
+
+YAMLResume fournit un [outil CLI](https://www.npmjs.com/package/yamlresume),
+en plus, il a une dépendance obligatoire sur un moteur de composition pour
+générer un PDF. En d'autres termes, vous devriez [installer un moteur de composition](/docs/installation#typesetting-engine) d'abord si vous voulez générer
+un PDF.
+
+Installer le CLI `yamlresume` est un jeu d'enfant. Vous pouvez l'installer en utilisant votre
+gestionnaire de packages Node.js préféré :
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```console tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+</Tabs>
+
+Vérifiez que `yamlresume` est installé avec succès :
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version   output the version number
+  -v, --verbose   verbose output
+  -h, --help      display help for command
+
+Commands:
+  new [filename]  create a new resume
+  build <source>  build a resume to LaTeX and PDF
+  languages       i18n and l10n support
+  templates       manage resume templates
+  help [command]  display help for command
+```
+
+Nous recommandons aussi que vous installiez la police [Linux
+Libertine](http://yamlresume.dev/docs/getting-started#linux-libertine) pour
+obtenir les PDF les plus beaux.
+
+Enfin, si vous voulez créer un CV CJK, nous recommandons aussi que
+vous installiez les [polices Google Noto](https://fonts.google.com/noto/) pour [la meilleure
+couverture unicode](https://github.com/ppresume/community/issues/63).
+
+### Créer un nouveau CV
+
+Vous pouvez créer un nouveau CV avec une seule ligne :
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+Sous le capot `yamlresume new` clonerait un CV d'exemple d'[ici](https://github.com/yamlresume/yamlresume/blob/main/packages/cli/resources/resume.yml).
+Ensuite vous pouvez obtenir un PDF avec une seule ligne encore :
+
+```console
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF with command: xelatex -halt-on-error my-resume.tex...
+✔ Resume PDF generated successfully.
+```
+
+Vous avez terminé ! Regardez le PDF de CV généré :
+
+![Page 1 du CV](/static/images/blog/introducing-yamlresume/resume-1.webp)
+![Page 2 du CV](/static/images/blog/introducing-yamlresume/resume-2.webp)
+
+Vous pouvez vérifier la [Galerie PPResume](https://ppresume.com/gallery) pour plus d'exemples
+alimentés par YAMLResume comme moteur de composition.
+
+### Dépannage
+
+Le CLI YAMLResume fournit un drapeau verbeux `-v`/`--verbose` pour montrer plus d'informations de journalisation détaillées. Si vous avez des problèmes à construire un CV, vous pouvez essayer d'exécuter
+les commandes à nouveau avec ce drapeau verbeux et coller la sortie dans les [problèmes github](https://github.com/yamlresume/yamlresume/issues), je regarderai et
+vous répondrai.
+
+## Comment ça fonctionne ?
+
+Sous le capot, YAMLResume fonctionne comme un mini compilateur, c'est-à-dire, il prend une entrée,
+l'analyse en [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) et
+puis génère une sortie.
+
+<Mermaid
+  chart="
+  flowchart TD
+    A[CV en YAML]
+    A --> B[Analyse YAML vers AST]
+    A --> C[Analyse du champ summary]
+    C --> D[Transformation AST vers LaTeX]
+    B --> D
+    D --> E[Compilation LaTeX vers PDF]
+"
+/>
+
+Le principe de conception principal d'YAMLResume est la [séparation des
+préoccupations](https://en.wikipedia.org/wiki/Separation_of_concerns). Un des exemples
+les plus célèbres qui suit ce principe est HTML & CSS, qui sont les
+fondations du web moderne—HTML est utilisé pour organiser le contenu dans une page web,
+CSS est utilisé pour définir le style de présentation du contenu.
+
+Suivant le principe principal, YAMLResume est conçu basé sur les
+exigences suivantes :
+
+- le contenu du CV devrait être écrit en texte brut, qui est amical au contrôle de version
+- le texte brut devrait utiliser un format entièrement structuré, ce qui nous donne plus
+  de contrôle et de flexibilité
+- YAML est meilleur que JSON car il est plus lisible et écrivable par l'homme
+- le texte brut YAML est ensuite rendu en PDF avec un moteur de composition
+  branchable
+- une mise en page opinionnée devrait être fournie prête à l'emploi, tout en permettant encore
+  aux gens d'ajuster les options en conséquence comme les tailles de police, les marges de page, etc.
+
+## Pourquoi YAML ?
+
+[JSON Resume](https://jsonresume.org/) est un autre projet qui permet aux gens de
+créer des CV dans un format structuré. Cependant, la plupart des développeurs seraient d'accord que
+YAML est meilleur que JSON en ce qui concerne la lisibilité et l'écritabilité humaines. Par
+exemple, il est assez gênant de représenter des chaînes multi-lignes en JSON, tandis que
+YAML a un support natif pour cela.
+
+Comparez un extrait de CV en JSON et YAML :
+
+```json
+{
+  "content": {
+    "basics": {
+      "name": "Andy Dufresne",
+      "headline": "Headed for the Pacific",
+      "phone": "(213) 555-9876",
+      "email": "hi@ppresume.com",
+      "url": "https://ppresume.com/gallery",
+      "summary": "- Computer Science major with strong foundation in data structures, algorithms, and software development\n- Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites\n- Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)\n- Team player, with detail-oriented mindset and a keen eye for design and user experiences"
+    }
+  }
+}
+```
+
+```yml lineNumbers
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@ppresume.com
+    url: https://ppresume.com/gallery
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+Lequel est plus lisible et écrivable ? La réponse est évidente.
+
+JSON Resume n'a aucune préoccupation concernant la mise en page du CV. Dans le monde réel,
+vous ne pouvez pas juste envoyer un fichier JSON aux recruteurs, n'est-ce pas ? Le format de CV
+structuré doit être converti en format de document lisible par l'homme comme docx, PDF,
+etc. YAMLResume offre une configuration de mise en page opinionnée, et garantit
+une sortie PDF parfaite au pixel près.
+
+Au moment de l'écriture, la mise en page opinionnée d'YAMLResume supporte :
+
+- langues de locale
+  - Anglais
+  - Chinois simplifié
+  - Chinois traditionnel
+  - Espagnol
+- marges
+  - haut
+  - gauche
+  - droite
+  - bas
+- numéros de page
+- template
+- typographie
+  - taille de police
+
+Voici un extrait de code d'exemple pour la configuration de mise en page dans YAMLResume :
+
+```yml lineNumbers
+layout:
+  locale:
+    language: en
+  margins:
+    top: 2.5cm
+    left: 1.5cm
+    right: 1.5cm
+    bottom: 2.5cm
+  page:
+    showPageNumbers: true
+  template: moderncv-banking
+  typography:
+    fontSize: 11pt
+```
+
+## Pourquoi pas Markdown ?
+
+[Markdown](https://en.wikipedia.org/wiki/Markdown) est un autre choix populaire
+pour écrire des CV, il y a aussi quelques constructeurs de CV qui adoptent markdown comme
+le format d'entrée principal. Cependant, markdown est un langage de balisage à usage général
+pour créer du texte formaté, tandis que les CV n'utilisent qu'un ensemble très limité de
+fonctionnalités markdown.
+
+Par exemple, les syntaxes markdown suivantes sont très peu susceptibles d'être utilisées dans un
+CV :
+
+- blockquote
+- bloc de code
+- règles horizontales
+- images
+- tableaux
+- balisage html
+- etc.
+
+Deuxièmement, markdown est beaucoup trop flexible, donnant souvent aux utilisateurs plus de liberté qu'ils
+n'ont besoin pour créer un CV. Il serait assez difficile d'analyser de manière fiable un document
+markdown générique comme un CV.
+
+Troisièmement, des fonctionnalités comme le changement de template, le contrôle de mise en page précis (comme `\hfill`
+et `\hspace` en LaTeX) sont très difficiles à implémenter en markdown.
+
+En conclusion, utiliser un format entièrement structuré comme YAML/JSON nous donne plus
+de contrôle et de fiabilité sur le formatage et la mise en page pour les CV.
+
+## Pourquoi encore LaTeX ?
+
+[LaTeX](https://www.latex-project.org/) est un moteur de composition très mature et stable
+qui peut produire des PDF de qualité extrêmement élevée. Cependant, de nombreux utilisateurs LaTeX,
+même les enthousiastes LaTeX, seraient d'accord que le langage LaTeX est quelque peu
+dépassé—ses messages d'erreur sont souvent assez confus, et la dépendance sur
+les variables globales mène souvent à des conflits entre packages, la vitesse de
+compilation est lente pour les gros documents et souvent assez compliquée, et il produit
+des fichiers intermédiaires moches (`.aux`, `.log`, etc.).
+
+Certains suggèrent de remplacer LaTeX par [typst](https://github.com/typst/typst),
+qui est un moteur de composition moderne, avec un DX beaucoup meilleur et une compilation
+beaucoup plus rapide. Cependant, après une évaluation soigneuse, j'ai décidé de rester avec LaTeX.
+Le facteur décisif ici est que, YAMLResume est conçu pour supporter plusieurs langues
+avec la meilleure qualité de composition possible, cependant, le support [CJK
+de typst](https://blog.ppresume.com/posts/on-typesetting-engines#cjk-3) est encore
+instable et manquant.
+
+Plus tard, je pourrais ajouter un nouveau
+[renderer](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/base.ts)
+backend pour supporter typst.
+
+## Support de texte riche
+
+Bien que nous ayons décidé de ne pas utiliser markdown comme format d'entrée de CV, nous
+supportons un ensemble limité de syntaxe markdown de texte riche pour le champ `summary` dans
+diverses sections.
+
+Pour l'instant, nous supportons les syntaxes markdown suivantes :
+
+- `**gras**`
+- `*italique*`
+- `[lien](https://www.google.com)`
+- liste ordonnée
+- liste non ordonnée
+- liste imbriquée
+- paragraphes
+
+Par exemple, voici un extrait d'exemple pour le champ `content.basics.summary` :
+
+```yml lineNumbers
+---
+content:
+  basics:
+    # ...
+    summary: |
+      This is a sample YAML resume that supports a limited set of rich text markdown syntax (bold, italic, links, lists):
+
+      - Computer Science major with **strong foundation** in data structures, *algorithms*, and software development
+        1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+        2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+Et voici le PDF généré :
+
+![Support de texte riche dans le champ Summary](/static/images/blog/introducing-yamlresume/rich-text-support-in-summary-field.webp)
+
+Vous pouvez voir que la syntaxe de texte riche est rendue correctement avec du gras, des italiques,
+des liens, des listes, assez solide, n'est-ce pas ?
+
+## Feuille de route
+
+Dans l'ensemble, le projet est encore dans un stade très précoce, nous avons un long chemin à parcourir.
+J'ai déjà planifié une liste de fonctionnalités à faire dans un avenir proche :
+
+1. plus de langues, japonais, allemand, français, etc
+2. plus de templates
+3. [alias de section](https://github.com/yamlresume/yamlresume/issues/11)
+4. [réordonnancement de section](https://github.com/yamlresume/yamlresume/issues/12)
+5. [validation de schéma](https://github.com/yamlresume/yamlresume/issues/10)
+
+Pour tout problème, vous pouvez :
+
+- soulever un [problème](https://github.com/yamlresume/yamlresume/issues/)
+- ouvrir une [discussion](https://github.com/yamlresume/yamlresume/discussions)
+- laisser un [message](https://discord.gg/9SyT7mVV4K)
+
+Restez à l'écoute !
