@@ -1,0 +1,102 @@
+---
+title: Schema
+---
+
+## Overview
+
+Drafting resumes is a long, boring, and tedious process. People often need to
+spend hours nitpicking details, but errors still occur. For example, there may
+be a typo in education degrees, an email format may be wrong, a course name may
+be too short, etc.
+
+Along with the [static types definitions](/docs/compiler/types), YAMLResume
+provides a built-in schema which can be used for runtime validations. This is
+the core that makes YAMLResume a **resume compiler**—YAMLResume provides
+**clang-style warning/error messages** that help catch potential errors at the
+early stage of resume drafting.
+
+For example, for the following resume:
+
+```yml lineNumbers title="invalid-resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp # [!code highlight]
+    url: https//ppresume.com/gallery # [!code highlight]
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S # [!code highlight]
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D # [!code highlight]
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layout:
+  typography:
+    fontSize: 13pt # [!code highlight]
+```
+
+`yamlresume validate` will give you a list of potential errors, with clear
+positional information that helps pinpoint the exact location of the error,
+meanwhile, with the help of
+[yaml-language-server](https://github.com/redhat-developer/yaml-language-server),
+you can get a better editing experience with
+[auto-completion](/docs/compiler/schema/json#auto-completion), [on-hover property
+docs](/docs/compiler/schema/json#property-docs), [format
+validation](/docs/compiler/schema/json#format-validation), and more.
+
+![YAMLResume validate](/static/images/docs/compiler/schema/yamlresume-validate.webp)
+
+Under the hood, YAMLResume adopts [Zod](https://zod.dev) to validate resume data
+in runtime. Zod is a TypeScript-first schema validation library that allows you
+to define schemas for your resume data, which acts as a robust safety net,
+ensuring that the resume data is reliable, consistent, and ready to be rendered
+into a professional PDF.
+
+Schema validation is a very powerful tool to ensure the correctness of resume
+data. It can catch errors throughout the entire life cycle of resume drafting,
+which is very helpful to avoid low-level mistakes from the start.
+
+## Learn More
+
+<Cards>
+  <Card
+    description="JSON Schema validation"
+    href="/docs/compiler/schema/json"
+    title="JSON Schema"
+  />
+  <Card
+    description="Zod schema validation"
+    href="/docs/compiler/schema/zod"
+    title="Zod Schema"
+  />
+  <Card
+    description="YAMLResume CLI validate command"
+    href="/docs/cli#validate"
+    title="Validate"
+  />
+</Cards>

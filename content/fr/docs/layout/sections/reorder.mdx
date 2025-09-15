@@ -1,0 +1,117 @@
+---
+title: Reorder
+---
+
+By default, YAMLResume arranges sections in a standard order. However, you can
+easily change this by providing a custom `order` list. This allows you to
+highlight your most important information first.
+
+## How to Use
+
+For example, if you want to place your "Skills" and "Projects" sections before
+your "Work" experience, you can define the order like this:
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:
+  sections:
+    order:
+      - skills
+      - projects
+      - work
+```
+
+Any sections included in the `order` list will appear first, in the sequence
+you've specified. Sections not included in the list will be appended after,
+following their default order.
+
+## Examples
+
+### Prioritize Work Experience
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - work
+      - education
+```
+
+Result: work experience appears first, followed by education, then all other
+sections in default order.
+
+### Highlight Skills and Languages
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - skills
+      - languages
+      - work
+```
+
+Result: skills and languages appear prominently at the top, followed by work
+experience, then remaining sections.
+
+### Academic Focus
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - education
+      - publications
+      - awards
+      - certificates
+```
+
+Result: academic sections appear first, followed by other sections in default
+order.
+
+## Default Section Order
+
+When no custom order is specified, sections are rendered in this default order:
+
+1. `basics` (by default rendered to the top of the resume as a summary section)
+2. `education`
+3. `work`
+4. `languages`
+5. `skills`
+6. `awards`
+7. `certificates`
+8. `publications`
+9. `references`
+10. `projects`
+11. `interests`
+12. `volunteer`
+
+## Implementation Details
+
+- **Priority**: Sections specified in `order` appear first in the specified
+  sequence
+- **Fallback**: Remaining sections follow in the default order
+- **Deduplication**: Duplicate sections in the order array are deduplicated
+  (first occurrence kept)
+- **Empty Sections**: Sections with no content are automatically filtered out
+- **Flexibility**: Users can specify any subset of orderable sections
+
+## Orderable Sections
+
+The following sections can be reordered:
+
+- `basics`
+- `education`
+- `work`
+- `volunteer`
+- `awards`
+- `certificates`
+- `publications`
+- `skills`
+- `languages`
+- `interests`
+- `references`
+- `projects`

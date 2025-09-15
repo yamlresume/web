@@ -1,0 +1,63 @@
+---
+title: Docker
+---
+
+Besides the [CLI package](https://www.npmjs.com/package/yamlresume), YAMLResume
+also provides a [docker image](https://hub.docker.com/r/yamlresume/yamlresume)
+for easy onboarding.
+
+As we've [documented](/docs/installation#docker-users), you can run yamlresume
+docker container with the following command:
+
+```bash
+docker run --rm -v $(pwd):/app -w /app yamlresume/yamlresume <command>
+```
+
+However if you are interested, you can customize the Docker image to suit your
+needs.
+
+## Build Docker Image
+
+YAMLResume's Docker image is defined and generated in two phases:
+
+### Dockerfile.base
+
+[Dockerfile.base](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base)
+contains the base environment for running YAMLResume, including all
+necessary dependencies like [XeTeX](/docs/installation#xetex) from [TeX
+Live](https://www.tug.org/texlive/) and [Google Noto
+Font](/docs/installation#google-noto).
+
+This is a base image mostly used for accelerating the build process on Github
+Actions—installing texlive by `apt install texlive-xetex` thing takes about [30
+minutes](https://github.com/yamlresume/yamlresume/actions/runs/15438395862),
+which is too long to run for every docker build, so that we decided to build and
+[publish this base image
+once](https://hub.docker.com/r/yamlresume/yamlresume-base) and re-use this for
+every further build.
+
+Generally you don't need to build this image yourself, you can just reuse
+the published image on dockerhub.
+
+### Dockerfile
+
+[Dockerfile](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile)
+defined how `yamlresume/yamlresume` image is built, it is very simple and
+straightforward, just installed `yamlresume` from npmjs by `npm install -g
+yamlresume@latest` and create necessary users and groups as per Docker's
+[security best
+practices](https://www.docker.com/blog/understanding-the-docker-user-instruction/).
+
+Building the yamlresume image locally is a trivial task. You just need to run
+
+```bash
+docker build -t yamlresume/yamlresume .
+```
+
+You may need to take a look at [docker multi-platform
+build](https://docs.docker.com/build/building/multi-platform/) if you, for example, run
+into issues building docker images for different architectures.
+
+I wrote [some tips on
+X](https://x.com/xiaohanyu1988/status/1931178628785778722), you can take a look
+if you are interested.
