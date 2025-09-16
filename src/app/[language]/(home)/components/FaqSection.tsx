@@ -2,7 +2,6 @@
 
 import { IconChevronDown } from '@tabler/icons-react'
 import clsx from 'clsx'
-import Link from 'next/link'
 import { useState } from 'react'
 
 import { useTranslations } from '@/i18n'
@@ -26,25 +25,7 @@ export function FaqSection() {
       answer: (
         <div className="space-y-4">
           <p>{t('questions.whatIs.answer1')}</p>
-          <p>
-            {t('questions.whatIs.answer2')}{' '}
-            <Link
-              href="https://ppresume.com"
-              className="underline"
-              target="_blank"
-            >
-              PPResume
-            </Link>
-            {', '}
-            <Link
-              href="https://blog.ppresume.com/posts/no-vendor-lock-in"
-              className="underline"
-              target="_blank"
-            >
-              no to vendor lock-in
-            </Link>
-            .
-          </p>
+          <p>{t('questions.whatIs.answer2')}</p>
         </div>
       ),
     },
@@ -56,40 +37,12 @@ export function FaqSection() {
     {
       id: 'how-generate-pdfs',
       question: t('questions.howGeneratePdf.question'),
-      answer: (
-        <p>
-          {t('questions.howGeneratePdf.answer')}{' '}
-          <Link
-            href="https://en.wikipedia.org/wiki/Domain-specific_language"
-            className="underline"
-          >
-            DSL
-          </Link>{' '}
-          <Link
-            href="https://www.latex-project.org/"
-            className="underline"
-            target="_blank"
-          >
-            LaTeX
-          </Link>
-        </p>
-      ),
+      answer: <p>{t('questions.howGeneratePdf.answer')} </p>,
     },
     {
       id: 'why-latex',
       question: t('questions.whyLatex.question'),
-      answer: (
-        <p>
-          <Link
-            href="https://www.latex-project.org/"
-            className="underline"
-            target="_blank"
-          >
-            LaTeX
-          </Link>{' '}
-          {t('questions.whyLatex.answer')}
-        </p>
-      ),
+      answer: <p>{t('questions.whyLatex.answer')}</p>,
     },
   ]
 
