@@ -1,0 +1,125 @@
+---
+title: create-yamlresume
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+[create-yamlresume](https://yamlresume.dev/docs/ecosystem/create-yamlresume) は、一行のコマンドで新しい [YAMLResume](https://yamlresume.dev) プロジェクトを作成するのに役立ちます。
+
+## 使用方法
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npx create-yamlresume my-resume
+
+# or
+
+npm init yamlresume my-resume
+
+````
+
+```console tab="pnpm"
+pnpm create yamlresume my-resume
+````
+
+```console tab="yarn"
+yarn create yamlresume my-resume
+```
+
+```console tab="bun"
+bun create yamlresume my-resume
+```
+
+</Tabs>
+
+## 機能
+
+このツールは以下を行います：
+
+1. プロジェクト名を使用して新しいディレクトリを作成
+2. 基本的な Node.js プロジェクト構造を作成、以下を含む：
+   - YAMLResume 依存関係と有用なスクリプトを含む `package.json`
+   - 適切な除外ルールを含む `.gitignore` ファイル
+   - 基本的な使用説明を含む `README.md`
+3. すべての必要な依存関係をインストール
+4. `yamlresume new` を使用して新しいサンプル履歴書ファイルを作成
+5. 利用可能なコマンドと次のステップを表示
+
+## サンプルセッション
+
+```
+$ pnpm create yamlresume
+✔ What is your project name? … yamlresume
+ℹ Using pnpm.
+
+✔ What should your resume file be called? (without .yml extension) … resume
+◐ Creating YAMLResume project in /private/tmp/yamlresume...
+◐ Installing dependencies with pnpm...
+Packages: +59
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 59, reused 59, downloaded 0, added 59, done
+
+dependencies:
++ yamlresume 0.7.5
+
+Done in 4s using pnpm v10.6.3
+✔ Dependencies installed successfully!
+◐ Creating resume file resume.yml...
+✔ Created resume.yml successfully.
+◐ Initializing git repository...
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint:   git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint:   git branch -m <name>
+Initialized empty Git repository in /tmp/yamlresume/.git/
+✔ Git repository initialized!
+[master (root-commit) 53c6210] init a new YAMLResume project
+ 4 files changed, 421 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 README.md
+ create mode 100644 package.json
+ create mode 100644 resume.yml
+✔ Initial commit created!
+ℹ
+✨ Project created successfully!
+ℹ
+Next steps:
+ℹ   1. cd yamlresume
+ℹ   2. Edit your resume: resume.yml
+ℹ   3. Build your resume: pnpm run build
+ℹ   4. Watch for changes: pnpm run dev
+ℹ   5. Show all commands: pnpm run yamlresume help
+ℹ
+Learn more:
+ℹ   🏠 Homepage: https://yamlresume.dev
+ℹ   📖 Documentation: https://yamlresume.dev/docs/
+ℹ   🎨 Templates: https://yamlresume.dev/docs/layout/templates
+ℹ   📝 Schema: https://yamlresume.dev/docs/compiler/schema
+```
+
+## プロジェクト構造
+
+生成されるプロジェクトは以下のようになります：
+
+```
+my-resume/
+├── package.json          # yamlresume 依存関係を含むプロジェクト設定
+├── .gitignore            # Git 除外ルール
+├── README.md             # プロジェクトドキュメント
+└── resume.yml            # あなたの YAML 履歴書（選択したファイル名）
+```
+
+## 利用可能なコマンド
+
+生成されたプロジェクトで、以下を実行できます：
+
+- `npm run build` - 履歴書を PDF にビルド
+- `npm run dev` - 変更を監視して自動的に再ビルド
+- `npm run validate` - スキーマに従って履歴書を検証
+- `npm run yamlresume` - YAMLResume CLI を実行

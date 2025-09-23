@@ -1,0 +1,92 @@
+---
+title: リッチテキスト
+---
+
+YAMLResume では、プレーンテキストに制限されません。`work`、`education`、`projects` などの異なるセクションの `summary` フィールドは、限定的な [Markdown](https://en.wikipedia.org/wiki/Markdown) 構文をサポートしてリッチテキストフォーマットを可能にします。これにより、より表現力豊かで読みやすい履歴書コンテンツを作成できます。
+
+## サポートされている構文
+
+以下は使用できる Markdown 機能のクイック概要です：
+
+### 太字と斜体
+
+テキストを強調するために太字または斜体スタイルを使用できます。
+
+-   **太字：** `**your bold text**`
+-   **斜体：** `*your italic text*`
+-   **両方：** `***your bold and italic text***`
+
+### リンク
+
+テキストにハイパーリンクを埋め込むことができます。
+
+-   **構文：** `[link text](https://example.com)`
+
+### リスト
+
+ネストを含む順序付きリストと順序なしリストをサポートしています。
+
+<Callout title="YAML でマルチライン文字列に使用される `|` 文字の理解">
+  YAML の `|`（パイプ）文字は「リテラルブロックスカラー」を作成するために使用され、改行文字を保持しながら[マルチライン文字列](https://stackoverflow.com/a/21699210/2310396) を記述する方法です。これは `summary` のようなフィールドに特に有用で、リストや段落を含めたい場合があります。`|` の下でインデントされたすべてのコンテンツは単一の文字列として扱われ、改行文字が保持されます。
+</Callout>
+
+#### 順序なしリスト
+
+各リスト項目にハイフン（`-`）またはアスタリスク（`*`）を使用します。
+
+```yml lineNumbers
+summary: |
+  - First item
+  - Second item
+  - Third item
+```
+
+#### 順序付きリスト
+
+数字の後にピリオドを付けて順序付きリストを作成します。
+
+```yml lineNumbers
+summary: |
+  1. First item
+  2. Second item
+  3. Third item
+```
+
+#### ネストされたリスト
+
+リストをインデントしてネスト構造を作成できます。
+
+```yml lineNumbers
+summary: |
+  - Team player with a detail-oriented mindset.
+  - Experienced in databases (SQL, NoSQL).
+    - Proficient in PostgreSQL and MongoDB.
+    - Familiar with Redis for caching.
+  - Strong foundation in data structures and algorithms.
+```
+
+## 完全な例
+
+以下は、複数のサポートされている構文機能を組み合わせた `work` エントリの `summary` フィールドの例です：
+
+```yml lineNumbers
+---
+content:
+  basics:
+    # ...
+    summary: |
+      This is a sample YAML resume that support limited set of markdown rich text syntax (bold, italics, links, lists):
+
+      - Computer Science major with **strong foundation** in data structures, *algorithms*, and software development
+        1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+        2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+以下は生成された PDF です：
+
+![要約フィールドでのリッチテキストサポート](/static/images/docs/content/rich-text/rich-text-support-in-summary-field.webp)
+
+## サポートされていないものは？
+
+YAMLResume は上記にリストされた構文のみをサポートしています。見出し、ブロック引用、画像、水平線、テーブルなどの他の一般的な Markdown 機能は**サポートされておらず、処理中に無視されます**。

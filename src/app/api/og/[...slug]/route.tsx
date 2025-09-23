@@ -6,10 +6,12 @@ import { defaultLanguage } from '@/i18n'
 import {
   blogSource,
   blogSourceFr,
+  blogSourceJa,
   blogSourceZhCN,
   blogSourceZhTW,
   docsSource,
   docsSourceFr,
+  docsSourceJa,
   docsSourceZhCN,
   docsSourceZhTW,
 } from '@/lib'
@@ -36,15 +38,20 @@ export async function GET(
     | typeof blogSourceZhCN
     | typeof blogSourceZhTW
     | typeof blogSourceFr
+    | typeof blogSourceJa
     | typeof docsSource
     | typeof docsSourceZhCN
     | typeof docsSourceZhTW
     | typeof docsSourceFr
+    | typeof docsSourceJa
 
   if (isBlog) {
     switch (language) {
       case 'fr':
         source = blogSourceFr
+        break
+      case 'ja':
+        source = blogSourceJa
         break
       case 'zh-cn':
         source = blogSourceZhCN
@@ -59,6 +66,9 @@ export async function GET(
     switch (language) {
       case 'fr':
         source = docsSourceFr
+        break
+      case 'ja':
+        source = docsSourceJa
         break
       case 'zh-cn':
         source = docsSourceZhCN
@@ -97,6 +107,11 @@ export function generateStaticParams() {
   }))
   params.push(...blogFrParams)
 
+  const blogJaParams = blogSourceJa.generateParams().map((page) => ({
+    slug: ['blog', ...page.slug, 'open-graph.png'],
+  }))
+  params.push(...blogJaParams)
+
   const blogZhCNParams = blogSourceZhCN.generateParams().map((page) => ({
     slug: ['blog', ...page.slug, 'open-graph.png'],
   }))
@@ -117,6 +132,11 @@ export function generateStaticParams() {
     slug: ['docs', ...page.slug, 'open-graph.png'],
   }))
   params.push(...docsFrParams)
+
+  const docsJaParams = docsSourceJa.generateParams().map((page) => ({
+    slug: ['docs', ...page.slug, 'open-graph.png'],
+  }))
+  params.push(...docsJaParams)
 
   const docsZhCNParams = docsSourceZhCN.generateParams().map((page) => ({
     slug: ['docs', ...page.slug, 'open-graph.png'],

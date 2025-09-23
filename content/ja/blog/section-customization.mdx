@@ -1,0 +1,187 @@
+---
+title: "YAMLResume v0.6: セクションカスタマイズ"
+description: |
+  YAMLResume v0.6 はセクションエイリアスと並び替え機能を導入し、サポートされていない言語をサポートするために i18n 機能をさらに強化します。
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-07-22
+---
+
+YAMLResume [v0.6](https://github.com/yamlresume/yamlresume/releases/tag/v0.6.0) がリリースされ、履歴書の構造をカスタマイズするための 2 つの強力な機能が追加されました：[セクションエイリアス](/ja/docs/layout/sections/aliases) と [セクション並び替え](/ja/docs/layout/sections/reorder)。これらの機能により、セクションタイトルを変更し、最終 PDF での順序を制御でき、履歴書をカスタマイズするためのより大きな柔軟性を提供します。
+
+仕組みを詳しく見てみましょう。
+
+## セクションエイリアス
+
+YAMLResume のデフォルトセクションタイトル（例：`education`、`work`）は、選択した [ロケール言語](/ja/docs/layout#locale) に基づいて自動的に[翻訳](/ja/docs/layout/sections/docs/content/multi-languages) されます。しかし、異なるタイトルを好む場合があります。例えば、「仕事」を「プロフェッショナル経験」に変更したい場合があります。
+
+エイリアスを定義するには、`resume.yml` で `layout.sections.aliases` マップを使用してください。
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:                               # [!code focus]
+  sections:                           # [!code focus]
+    aliases:                          # [!code focus]
+      work: プロフェッショナル経験     # [!code focus]
+      education: 学術背景              # [!code focus]
+      skills: 技術スキル               # [!code focus]
+```
+
+
+## セクション並び替え
+
+デフォルトでは、セクションは [標準順序](/ja/docs/layout/sections/reorder#default-section-order) でレンダリングされます。`layout.sections.order` 機能により、この順序を変更して、最も重要な情報を最初に強調表示できます。
+
+例えば、「スキル」と「プロジェクト」セクションを「仕事」経験の前に配置するには、以下のように順序を定義できます：
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:           #[!code focus]
+  sections:       #[!code focus]
+    order:        #[!code focus]
+      - skills    #[!code focus]
+      - projects  #[!code focus]
+      - work      #[!code focus]
+```
+
+`order` リスト内のセクションが最初に表示され、その後残りのセクションがデフォルト順序で表示されます。
+
+## すべてを組み合わせる：完全な例
+
+両方の機能を使用する 1 ページの履歴書を作成しましょう。いくつかのセクションに対してエイリアスと並び替えを同時に設定します。
+
+```yml lineNumbers title="resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+
+layout:
+  sections:                          # [!code highlight]
+    aliases:                         # [!code highlight]
+      work: Professional Experience  # [!code highlight]
+      education: Academic Background # [!code highlight]
+      skills: Technical Skills       # [!code highlight]
+    order:                           # [!code highlight]
+      - basics                       # [!code highlight]
+      - work                         # [!code highlight]
+      - education                    # [!code highlight]
+      - skills                       # [!code highlight]
+  template: moderncv-banking
+  typography:
+    fontSize: 11pt
+
+content:
+  basics:
+    name: Jane Doe
+    headline: Senior Software Engineer
+    email: jane.doe@example.com
+    phone: "555-123-4567"
+    summary: |
+      A passionate and experienced software engineer with a proven track record
+      of designing, developing, and deploying robust web applications. Skilled
+      in both front-end and back-end development, with a keen eye for detail and
+      a dedication to writing clean, efficient code.
+  education:
+    - institution: Tech University
+      area: Software Engineering
+      degree: Master
+      startDate: 2018-09-01
+      endDate: 2020-06-01
+      summary: Specialized in distributed systems and cloud computing.
+    - institution: State University
+      area: Computer Science
+      degree: Bachelor
+      startDate: 2014-09-01
+      endDate: 2018-06-01
+      summary: |
+        - Graduated with honors.
+        - Focused on algorithms, data structures, and distributed systems.
+      courses:
+        - Data Structures & Algorithms
+        - Operating Systems
+        - Computer Networks
+        - Database Systems
+  work:
+    - name: Tech Solutions Inc.
+      position: Senior Software Engineer
+      startDate: 2020-07-01
+      summary: |
+        - Led the development of a new microservices-based architecture, improving system scalability and reliability.
+        - Mentored junior engineers, providing guidance on best practices and code quality.
+        - Optimized application performance, reducing API response times by 30%.
+    - name: Innovate Corp.
+      position: Software Engineer
+      startDate: 2018-07-01
+      endDate: 2020-06-30
+      summary: |
+        - Developed and maintained features for a large-scale e-commerce platform using React and Node.js.
+        - Collaborated with product managers and designers to deliver high-quality user experiences.
+        - Participated in on-call rotation to ensure application stability.
+    - name: Data Systems LLC
+      position: Software Engineer Intern
+      startDate: 2017-06-01
+      endDate: 2017-08-31
+      summary: |
+        - Assisted in the development of a data processing pipeline.
+        - Wrote unit tests to ensure code quality.
+        - Gained experience with Agile development methodologies.
+  skills:
+    - name: Programming Languages
+      level: Expert
+      keywords:
+        - JavaScript (ES6+)
+        - TypeScript
+        - Python
+        - Go
+    - name: Technologies & Frameworks
+      level: Advanced
+      keywords:
+        - React
+        - Node.js
+        - Express
+        - Docker
+        - Kubernetes
+        - PostgreSQL
+    - name: Developer Tools
+      level: Advanced
+      keywords:
+        - Git & GitHub
+        - Webpack
+        - Jest
+        - CircleCI
+  languages:
+    - language: English
+      fluency: Native or Bilingual Proficiency
+    - language: Spanish
+      fluency: Limited Working Proficiency
+```
+
+ここで、`work`、`education`、`skills` セクションのエイリアスを設定し、`work` の優先度を `education` より高くし、その後に `skills` セクションを配置してセクションを並び替えました：
+
+それでは、履歴書をビルドしましょう：
+
+```bash
+yamlresume build resume.yml
+```
+
+カスタマイズされたセクションをハイライトした以下の内容の PDF ファイルが得られます：
+
+![セクションカスタマイズ](/static/images/blog/section-customization/resume-highlight.webp)
+
+素晴らしい、期待通りに動作しています！これはクールではありませんか？
+
+## まとめ
+
+セクションエイリアスと並び替えにより、履歴書の構造を細かく制御できるようになりました。これらの機能が、より個性的で効果的な履歴書の作成に役立つことを願っています。
+
+セクションカスタマイズの最良の側面は、[YAMLResume の i18n 機能を拡張してより多くの言語をサポート](/ja/docs/layout/sections/reorder#default-section-order) できることです。デフォルトでは、デフォルトセクションタイトルは対象ロケール言語（`layout.locale.language` で設定）に基づいて自動的に翻訳されます。しかし、YAMLResume が [まだ対象言語をサポートしていない](https://github.com/yamlresume/yamlresume/discussions/36) 場合があるため、デフォルトセクションタイトルを独自のものにオーバーライドできます。
+
+同時に、異なる背景を持つ人々はセクション順序に異なる好みを持っています。例えば、業界の仕事を探している候補者は `work` を `education` の前に配置するかもしれませんが、学術ポジションを探しているポスドク研究者は `education` を `work` の前に配置するでしょう。
+
+これらの新機能をお楽しみください！

@@ -1,0 +1,284 @@
+---
+title: YAMLResume のご紹介
+description: 'YAMLResume: YAML でコード化された履歴書'
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-05-21
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+世界で有名なプロフェッショナルでない限り、すべての開発者は履歴書が必要です。履歴書を書くことは難しいことではありませんが、確実に楽しくなく、面倒です。多くの人が数日を費やして履歴書を作成し、100% の誤字脱字なし、文法チェック済み、プロフェッショナルなレイアウトとタイポグラフィの履歴書を追い求めています。
+
+[YAMLResume](https://yamlresume.dev) を使用すると、[YAML](https://yaml.org/) を使用して履歴書を作成・バージョン管理し、美しいタイポグラフィでプロフェッショナルな見た目の PDF を簡単に生成できます。
+
+これは [PPResume](https://ppresume.com) のコアタイプセッティングエンジンとして始まりました。PPResume は [LaTeX](https://www.latex-project.org/) ベースの商用ピクセルパーフェクト履歴書ビルダーで、すでに何千人もの人々が美しくタイプセットされた履歴書を作成するのに役立っています。あまり躊躇することなく、人々が常に[ベンダーロックインにノーを言う](https://blog.ppresume.com/posts/no-vendor-lock-in) 権利を持てるように、オープンソース化することを決定しました。
+
+![YAMLResume 新規作成とビルド履歴書](/static/images/blog/introducing-yamlresume/yamlresume-new-and-build.webp)
+
+## クイックスタート
+
+YAMLResume は [CLI ツール](https://www.npmjs.com/package/yamlresume) を提供し、さらに PDF を生成するためにタイプセッティングエンジンへの強制依存があります。言い換えれば、PDF を生成したい場合は、まず [タイプセッティングエンジンをインストール](/ja/docs/installation#typesetting-engine) する必要があります。
+
+`yamlresume` CLI のインストールは非常に簡単です。お好みの Node.js パッケージマネージャーを使用してインストールできます：
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```console tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+</Tabs>
+
+`yamlresume` のインストールを確認：
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version   output the version number
+  -v, --verbose   verbose output
+  -h, --help      display help for command
+
+Commands:
+  new [filename]  create a new resume
+  build <source>  build a resume to LaTeX and PDF
+  languages       i18n and l10n support
+  templates       manage resume templates
+  help [command]  display help for command
+```
+
+最適な PDF 外観のために [Linux Libertine](http://yamlresume.dev/ja/docs/getting-started#linux-libertine) フォントのインストールも推奨します。
+
+最後に、CJK 履歴書を作成したい場合は、[Google Noto フォント](https://fonts.google.com/noto/) のインストールも推奨して、[最適な Unicode カバレッジ](https://github.com/ppresume/community/issues/63) を得ることができます。
+
+### 新しい履歴書の作成
+
+一行のコマンドで新しい履歴書を作成できます：
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+内部的には、`yamlresume new` は[ここ](https://github.com/yamlresume/yamlresume/blob/main/packages/cli/resources/resume.yml) からサンプル履歴書をクローンします。その後、もう一行のコマンドで PDF を生成できます：
+
+```console
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF successfully.
+```
+
+完了です！生成された履歴書 PDF を確認してください：
+
+![履歴書 1 ページ目](/static/images/blog/introducing-yamlresume/resume-1.webp)
+![履歴書 2 ページ目](/static/images/blog/introducing-yamlresume/resume-2.webp)
+
+YAMLResume をタイプセッティングエンジンとして使用したより多くの例については、[PPResume ギャラリー](https://ppresume.com/gallery) をご覧ください。
+
+### トラブルシューティング
+
+YAMLResume CLI は詳細フラグ `-v`/`--verbose` を提供して、より詳細なログ情報を表示します。履歴書のビルドで問題が発生した場合は、この詳細フラグを使用してコマンドを再実行し、出力を [github issues](https://github.com/yamlresume/yamlresume/issues) に貼り付けてください。確認して返信いたします。
+
+## 仕組みは？
+
+内部的には、YAMLResume はミニコンパイラのように動作します。つまり、入力を受け取り、それを [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) に解析し、その後出力を生成します。
+
+<Mermaid
+  chart="
+  flowchart TD
+    A[YAML 形式の履歴書]
+    A --> B[YAML を AST に解析]
+    A --> C[要約フィールドを解析]
+    C --> D[AST を LaTeX に変換]
+    B --> D
+    D --> E[LaTeX を PDF にコンパイル]
+"
+/>
+
+YAMLResume のコア設計原則は [関心の分離](https://en.wikipedia.org/wiki/Separation_of_concerns) です。この原則に従う最も有名な例の一つは HTML と CSS で、これらは現代のウェブの基盤です—HTML はウェブページのコンテンツを整理し、CSS はコンテンツの表示スタイルを定義します。
+
+コア原則に従い、YAMLResume は以下の要件に基づいて設計されています：
+
+- 履歴書のコンテンツはバージョン管理に適したプレーンテキストで書かれるべき
+- プレーンテキストは完全に構造化された形式を使用すべきで、これによりより多くの制御と柔軟性が得られる
+- YAML は人間が読みやすく書きやすいため、JSON よりも優れている
+- YAML プレーンテキストはその後、プラグ可能なタイプセッティングエンジンを通じて PDF にレンダリングされる
+- フォントサイズ、マージンなどのオプションを適切に調整できるようにしながら、すぐに使える主観的レイアウトを提供すべき
+
+## なぜ YAML なのか？
+
+[JSON Resume](https://jsonresume.org/) は、人々が構造化された形式で履歴書を作成できるようにする別のプロジェクトです。しかし、ほとんどの開発者は、人間の可読性と可読性の点で、YAML が JSON よりも優れていることに同意するでしょう。例えば、JSON で複数行文字列を表現するのは非常に不便ですが、YAML にはこれに対するネイティブサポートがあります。
+
+JSON と YAML での履歴書スニペットを比較してください：
+
+```json
+{
+  "content": {
+    "basics": {
+      "name": "Andy Dufresne",
+      "headline": "Headed for the Pacific",
+      "phone": "(213) 555-9876",
+      "email": "hi@ppresume.com",
+      "url": "https://ppresume.com/gallery",
+      "summary": "- Computer Science major with strong foundation in data structures, algorithms, and software development\n- Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites\n- Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)\n- Team player, with detail-oriented mindset and a keen eye for design and user experiences"
+    }
+  }
+}
+```
+
+```yml lineNumbers
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@ppresume.com
+    url: https://ppresume.com/gallery
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+どちらが読みやすく書きやすいでしょうか？答えは明らかです。
+
+JSON Resume は履歴書のレイアウトを気にしません。現実の世界では、JSON ファイルを直接採用担当者に送ることはできませんよね？構造化された履歴書形式は、docx、PDF などの人間が読める文書形式に変換される必要があります。YAMLResume は主観的なレイアウト設定を提供し、ピクセルパーフェクトな PDF 出力を保証します。
+
+この記事を書いている時点で、YAMLResume の主観的レイアウトサポート：
+
+- 地域言語
+  - 英語
+  - 簡体字中国語
+  - 繁体字中国語
+  - スペイン語
+- マージン
+  - 上部
+  - 左側
+  - 右側
+  - 下部
+- ページ番号
+- テンプレート
+- タイポグラフィ
+  - フォントサイズ
+
+これは YAMLResume でのレイアウト設定のサンプルコードスニペットです：
+
+```yml lineNumbers
+layout:
+  locale:
+    language: ja
+  margins:
+    top: 2.5cm
+    left: 1.5cm
+    right: 1.5cm
+    bottom: 2.5cm
+  page:
+    showPageNumbers: true
+  template: moderncv-banking
+  typography:
+    fontSize: 11pt
+```
+
+## なぜ Markdown ではないのか？
+
+[Markdown](https://en.wikipedia.org/wiki/Markdown) は履歴書を書くための別の人気のある選択肢で、markdown を主要な入力形式として採用する履歴書ビルダーもあります。しかし、markdown はフォーマットされたテキストを作成するための汎用マークアップ言語で、履歴書は非常に限られた markdown 機能セットのみを使用します。
+
+例えば、以下の markdown 構文は履歴書では使用される可能性が非常に低いです：
+
+- 引用ブロック
+- コードブロック
+- 水平線
+- 画像
+- テーブル
+- html タグ
+- など
+
+第二に、markdown は過度に柔軟で、履歴書作成に必要な自由度を超えてユーザーに提供することがよくあります。汎用 markdown 文書を履歴書に信頼性高く解析することは非常に困難でしょう。
+
+第三に、テンプレート切り替え、LaTeX の `\hfill` や `\hspace` のような正確なレイアウト制御などの機能は、markdown では実装が困難です。
+
+要するに、YAML/JSON のような完全に構造化された形式を使用することで、履歴書の形式とレイアウトに対してより多くの制御と信頼性を得ることができます。
+
+## なぜまだ LaTeX なのか？
+
+[LaTeX](https://www.latex-project.org/) は非常に成熟した安定したタイプセッティングエンジンで、極めて高品質な PDF を生成できます。しかし、多くの LaTeX ユーザー、さらには LaTeX 愛好家でさえ、LaTeX 言語がある程度時代遅れであることに同意するでしょう—そのエラーメッセージは通常非常に混乱しやすく、グローバル変数への依存はしばしばパッケージ間の競合を引き起こし、大きな文書のコンパイル速度は遅く通常非常に複雑で、醜い中間ファイル（`.aux`、`.log` など）を生成します。
+
+[typst](https://github.com/typst/typst) で LaTeX を置き換えることを提案する人もいます。これはより良い開発者体験とより速いコンパイル速度を持つ現代的なタイプセッティングエンジンです。しかし、慎重に評価した結果、LaTeX に固執することを決定しました。ここでの決定要因は、YAMLResume が多言語をサポートし、最高のタイプセッティング品質を持つように設計されていることですが、typst の [CJK サポート](https://blog.ppresume.com/posts/on-typesetting-engines#cjk-3) はまだ不安定で不足しています。
+
+後で typst をサポートする新しい [レンダラー](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/base.ts) バックエンドを追加するかもしれません。
+
+## リッチテキストサポート
+
+履歴書の入力形式として markdown を使用しないことを決定しましたが、各セクションの `summary` フィールドで限定的な markdown リッチテキスト構文セットをサポートしています。
+
+現在、以下の markdown 構文をサポートしています：
+
+- `**太字**`
+- `*斜体*`
+- `[リンク](https://www.google.com)`
+- 順序付きリスト
+- 順序なしリスト
+- ネストされたリスト
+- 段落
+
+例えば、これは `content.basics.summary` フィールドのサンプルスニペットです：
+
+```yml lineNumbers
+---
+content:
+  basics:
+    # ...
+    summary: |
+      This is a sample YAML resume that support limited set of markdown rich text syntax (bold, italics, links, lists):
+
+      - Computer Science major with **strong foundation** in data structures, *algorithms*, and software development
+        1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+        2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+これが生成された PDF です：
+
+![要約フィールドでのリッチテキストサポート](/static/images/blog/introducing-yamlresume/rich-text-support-in-summary-field.webp)
+
+リッチテキスト構文が太字、斜体、リンク、リストを含めて正しくレンダリングされているのがわかります。かなり良いですよね？
+
+## ロードマップ
+
+全体的に、このプロジェクトはまだ非常に初期段階にあり、まだ長い道のりがあります。近い将来に実装予定の機能リストを計画しています：
+
+1. より多くの言語、日本語、ドイツ語、フランス語など
+2. より多くのテンプレート
+3. [セクションエイリアス](https://github.com/yamlresume/yamlresume/issues/11)
+4. [セクション並び替え](https://github.com/yamlresume/yamlresume/issues/12)
+5. [スキーマ検証](https://github.com/yamlresume/yamlresume/issues/10)
+
+ご質問がございましたら：
+
+- [issue](https://github.com/yamlresume/yamlresume/issues/) を提出
+- [ディスカッション](https://github.com/yamlresume/yamlresume/discussions) を開始
+- [メッセージ](https://discord.gg/9SyT7mVV4K) を送信
+
+お楽しみに！

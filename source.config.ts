@@ -23,6 +23,10 @@ export const docsFr = defineDocs({
   dir: 'content/fr/docs',
 })
 
+export const docsJa = defineDocs({
+  dir: 'content/ja/docs',
+})
+
 export default defineConfig({
   mdxOptions: {
     // MDX options
@@ -64,6 +68,16 @@ export const blogZhTW = defineCollections({
 export const blogFr = defineCollections({
   type: 'doc',
   dir: 'content/fr/blog',
+  schema: frontmatterSchema.extend({
+    author: z.string(),
+    date: z.string().date().or(z.date()),
+    profile: z.string(),
+  }),
+})
+
+export const blogJa = defineCollections({
+  type: 'doc',
+  dir: 'content/ja/blog',
   schema: frontmatterSchema.extend({
     author: z.string(),
     date: z.string().date().or(z.date()),

@@ -1,0 +1,82 @@
+---
+title: スキーマ
+---
+
+## 概要
+
+履歴書の起草は長く、退屈で面倒なプロセスです。人々はしばしば細部に何時間も費やしますが、エラーは依然として発生します。例えば、教育学位にスペルミスがある、メール形式が間違っている、コース名が短すぎるなどです。
+
+[静的タイプ定義](/ja/docs/compiler/types) に加えて、YAMLResume は実行時検証に使用できる組み込みスキーマを提供します。これが YAMLResume を**履歴書コンパイラ**にする核心です—YAMLResume は**clang スタイルの警告/エラーメッセージ**を提供し、履歴書起草の初期段階で潜在的なエラーをキャッチするのに役立ちます。
+
+例えば、以下の履歴書について：
+
+```yml lineNumbers title="invalid-resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp # [!code highlight]
+    url: https//ppresume.com/gallery # [!code highlight]
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S # [!code highlight]
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D # [!code highlight]
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layout:
+  typography:
+    fontSize: 13pt # [!code highlight]
+```
+
+`yamlresume validate` は潜在的なエラーのリストを提供し、明確な位置情報を提供してエラー位置を正確に特定するのに役立ちます。同時に、[yaml-language-server](https://github.com/redhat-developer/yaml-language-server) の助けを借りて、[自動補完](/ja/docs/compiler/schema/json#auto-completion)、[ホバープロパティドキュメント](/ja/docs/compiler/schema/json#property-docs)、[フォーマット検証](/ja/docs/compiler/schema/json#format-validation) などの機能を通じてより良い編集体験を得ることができます。
+
+![YAMLResume 検証](/static/images/docs/compiler/schema/yamlresume-validate.webp)
+
+内部的には、YAMLResume は [Zod](https://zod.dev) を採用して実行時に履歴書データを検証します。Zod は TypeScript ファーストのスキーマ検証ライブラリで、履歴書データのスキーマを定義し、強力な安全網として機能し、履歴書データが信頼性があり、一貫性があり、プロフェッショナルな PDF にレンダリングする準備ができていることを保証します。
+
+スキーマ検証は履歴書データの正確性を確保する非常に強力なツールです。履歴書起草のライフサイクル全体を通じてエラーをキャッチでき、最初から低レベルのエラーを避けるのに非常に役立ちます。
+
+## 詳細情報
+
+<Cards>
+  <Card
+    description="JSON スキーマ検証"
+    href="/ja/docs/compiler/schema/json"
+    title="JSON スキーマ"
+  />
+  <Card
+    description="Zod スキーマ検証"
+    href="/ja/docs/compiler/schema/zod"
+    title="Zod スキーマ"
+  />
+  <Card
+    description="YAMLResume CLI 検証コマンド"
+    href="/ja/docs/cli#validate"
+    title="検証"
+  />
+</Cards>

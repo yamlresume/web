@@ -17,6 +17,9 @@ const { provider } = defineI18nUI(i18nConfig, {
     'zh-tw': {
       displayName: '繁體中文',
     },
+    ja: {
+      displayName: '日本語',
+    },
   },
 })
 

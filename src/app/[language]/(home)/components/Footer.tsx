@@ -26,6 +26,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/ja" className="hover:underline">
+                  日本語
+                </Link>
+              </li>
+              <li>
                 <Link href="/zh-cn" className="hover:underline">
                   简体中文
                 </Link>

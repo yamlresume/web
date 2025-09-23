@@ -1,0 +1,200 @@
+---
+title: 貢献ガイド
+---
+
+まず、YAMLResume への貢献を検討していただき、ありがとうございます！あなたのような方々がオープンソースを素晴らしいものにしています。コードだけでなく、あらゆる種類の貢献を歓迎します。以下のようなお手伝いができます：
+
+- バグの報告
+- コードの現在の状態についての議論
+- 修正の提出
+- 新機能の提案
+- ドキュメントの改善
+
+以下は、特定の作業へのショートカットです：
+
+<Cards>
+  <Card
+    title="CLI"
+    href="./contributing/cli"
+    description="CLI のビルドとテスト"
+  />
+  <Card
+    title="Docker"
+    href="./contributing/docker"
+    description="Docker カスタマイズ"
+  />
+  <Card
+    title="テスト"
+    href="./contributing/test"
+    description="テストと品質保証"
+  />
+  <Card
+    title="新言語"
+    href="./contributing/new-language"
+    description="YAMLResume に新言語サポートを追加。"
+  />
+</Cards>
+
+## 始める
+
+### 前提条件
+
+- [Node.js](https://nodejs.org/)（バージョン >= 20、`.nvmrc` または `package.json` engines フィールドを確認）
+- [pnpm](https://pnpm.io/)（バージョン >= 10、`package.json` packageManager フィールドを確認）
+- Git
+
+### セットアップ
+
+1. **リポジトリをフォーク：** [YAMLResume GitHub ページ](https://github.com/yamlresume/yamlresume) で「Fork」ボタンをクリックします。これにより、プロジェクトの独自のコピーが作成されます。
+
+2. **フォークをクローン：**
+
+   ```bash
+   git clone https://github.com/<your-username>/yamlresume.git
+   cd yamlresume
+   ```
+
+3. **依存関係をインストール：**
+
+   ```bash
+   pnpm install
+   ```
+
+   このコマンドは、ワークスペース全体のすべての必要な依存関係をインストールします。
+
+## 開発ワークフロー
+
+### パッケージのビルド
+
+- すべてのパッケージを一度にビルド：
+
+  ```bash
+  pnpm build
+  ```
+
+- すべてのパッケージをビルドして変更を監視：
+
+  ```bash
+  pnpm build:watch
+  ```
+
+- 本番ビルド（型定義、圧縮を含む）：
+
+  ```bash
+  pnpm build:prod
+  ```
+
+### テストの実行
+
+- すべてのパッケージのテストを実行：
+
+  ```bash
+  pnpm test
+  ```
+
+- 監視モードでテストを実行：
+
+  ```bash
+  pnpm test:watch
+  ```
+
+- テストを実行してカバレッジレポートを生成：
+
+  ```bash
+  pnpm test:cov
+  ```
+
+詳細とユースケースについては[テスト](./contributing/test)をご覧ください。
+
+### コードフォーマットとリンティング
+
+[Biome](https://biomejs.dev/) を使用してコードフォーマットとリンティングを行います。コミットする前に、コードがプロジェクトのスタイルガイドに準拠していることを確認してください。
+
+- 問題をチェックして自動修正：
+
+  ```bash
+  pnpm check
+  ```
+
+- 修正を適用せずにチェックを実行（CI に有用）：
+
+  ```bash
+  pnpm check:ci
+  ```
+
+また、[addlicense](https://github.com/google/addlicense) を使用して、ソースファイルに正しいライセンスヘッダーがあることを確認しています。以下のコマンドを実行するには、これをインストールする必要があります。
+
+- 欠落しているライセンスヘッダーを追加：
+
+  ```bash
+  pnpm license:add
+  ```
+
+- 欠落しているライセンスヘッダーをチェック：
+
+  ```bash
+  pnpm license:check
+  ```
+
+## 貢献の提出
+
+### 問題の報告
+
+バグを発見したり、機能リクエストがある場合は、GitHub で[問題を開いてください](https://github.com/yamlresume/yamlresume/issues)。以下の詳細をできるだけ多く提供してください：
+
+- 明確で説明的なタイトル。
+- バグを再現する手順（該当する場合）。
+- 期待される動作と実際の動作。
+- スクリーンショットやコードスニペット（役立つ場合）。
+- 環境の詳細（オペレーティングシステム、Node バージョン、pnpm バージョン）。
+
+### Pull Request（PR）
+
+Pull Request を歓迎します！以下はクイックガイドです：
+
+1. **ブランチを作成：** `main` ブランチから開始し、説明的なブランチ名を作成します（例：`fix/login-bug`、`feat/new-template-option`）。
+
+   ```bash
+   git checkout main
+   git pull origin main
+   git checkout -b your-branch-name
+   ```
+
+2. **変更を行う：** コードやドキュメントの改善を書きます。
+
+3. **変更をテスト：** すべてのテストが通ることを確認：
+
+   ```bash
+   pnpm test
+   ```
+
+4. **コード品質をチェック：** フォーマットとリンティングが通ることを確認：
+
+   ```bash
+   pnpm check
+   ```
+
+5. **変更をコミット：** コミットメッセージに[Conventional Commits](https://www.conventionalcommits.org/)を使用し、`commitlint` によって強制されます。これにより、変更ログとバージョン管理の自動化に役立ちます。典型的なコミットメッセージは `feat: add new command` や `fix: resolve issue with parsing` のようになります。必要に応じて、`pnpm commitlint` を使用してメッセージのフォーマットを支援したり、[git cz](https://github.com/commitizen/cz-cli) などのツールを使用できます（インストール済みの場合）。
+
+   ```bash
+   git add .
+   git commit -m "feat: your descriptive commit message"
+   ```
+
+6. **ブランチをプッシュ：**
+
+   ```bash
+   git push origin your-branch-name
+   ```
+
+7. **Pull Request を開く：** GitHub の YAMLResume リポジトリに移動し、「New pull request」ボタンをクリックします。ブランチを `main` ブランチと比較します。
+
+8. **PR を説明：** 行った変更の明確な説明を提供します。関連する問題にリンクします（例：「Closes #123」）。
+
+9. **レビュー：** メンテナーが PR をレビューします。フィードバックや要求された変更を解決します。
+
+10. **マージ：** 承認されると、PR がマージされます。貢献ありがとうございます！
+
+## ライセンス
+
+YAMLResume に貢献することで、あなたの貢献がその[MIT ライセンス](LICENSE)に従ってライセンスされることに同意します。

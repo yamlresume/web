@@ -1,0 +1,431 @@
+---
+title: Zod Schema
+---
+
+YAMLResume は [zod](https://zod.dev) を採用して実行時に履歴書データを検証します。
+
+この文書は、YAMLResume で使用されるすべての zod スキーマの概要を提供します。実装の詳細に興味がある場合は、[ここ](https://github.com/yamlresume/yamlresume/tree/main/packages/core/src/schema) でソースコードを見つけることができます。
+
+## 履歴書スキーマ
+
+全体的な履歴書構造検証を定義し、コンテンツとレイアウト検証を含みます。
+
+| 属性      | タイプ                                          | 必須 |
+| --------- | --------------------------------------------- | -------- |
+| `content` | [`ResumeContentSchema`](#resumecontentschema) | ✅       |
+| `layout?` | [`ResumeLayoutSchema`](#resumelayoutschema)   | ⬜       |
+
+### ResumeContentSchema
+
+履歴書全体のコンテンツ検証構造を定義します。
+
+| 属性            | タイプ                                                | 必須 |
+| --------------- | --------------------------------------------------- | -------- |
+| `basics`        | [`BasicsItemSchema`](#basicsitemschema)             | ✅       |
+| `education`     | [`EducationItemSchema[]`](#educationitemschema)     | ✅       |
+| `awards?`       | [`AwardItemSchema[]`](#awarditemschema)             | ⬜       |
+| `certificates?` | [`CertificateItemSchema[]`](#certificateitemschema) | ⬜       |
+| `interests?`    | [`InterestItemSchema[]`](#interestitemschema)       | ⬜       |
+| `languages?`    | [`LanguageItemSchema[]`](#languageitemschema)       | ⬜       |
+| `location?`     | [`LocationItemSchema`](#locationitemschema)         | ⬜       |
+| `projects?`     | [`ProjectItemSchema[]`](#projectitemschema)         | ⬜       |
+| `profiles?`     | [`ProfileItemSchema[]`](#profileitemschema)         | ⬜       |
+| `publications?` | [`PublicationItemSchema[]`](#publicationitemschema) | ⬜       |
+| `references?`   | [`ReferenceItemSchema[]`](#referenceitemschema)     | ⬜       |
+| `skills?`       | [`SkillItemSchema[]`](#skillitemschema)             | ⬜       |
+| `volunteer?`    | [`VolunteerItemSchema[]`](#volunteeritemschema)     | ⬜       |
+| `work?`         | [`WorkItemSchema[]`](#workitemschema)               | ⬜       |
+
+#### AwardItemSchema
+
+獲得した単一の賞、名誉、または認識を検証します。
+
+| 属性       | タイプ     | 必須 | 検証ルール                      |
+| ---------- | -------- | -------- | ------------------------------------- |
+| `awarder`  | `string` | ✅       | 2-128 文字                      |
+| `title`    | `string` | ✅       | 2-128 文字                      |
+| `date?`    | `string` | ⬜       | [日付スキーマ](#date-schema) を参照       |
+| `summary?` | `string` | ⬜       | [要約スキーマ](#summary-schema) を参照 |
+
+#### BasicsItemSchema
+
+コア個人情報と連絡先情報を検証します。
+
+| 属性        | タイプ     | 必須 | 検証ルール                      |
+| ----------- | -------- | -------- | ------------------------------------- |
+| `name`      | `string` | ✅       | 2-128 文字                      |
+| `email?`    | `string` | ⬜       | [メールスキーマ](#email-schema) を参照     |
+| `headline?` | `string` | ⬜       | 2-128 文字                      |
+| `phone?`    | `string` | ⬜       | [電話スキーマ](#phone-schema) を参照     |
+| `summary?`  | `string` | ⬜       | [要約スキーマ](#summary-schema) を参照 |
+| `url?`      | `string` | ⬜       | [URL スキーマ](#url-schema) を参照         |
+
+#### CertificateItemSchema
+
+単一の認証、証明書、または専門資格を検証します。
+
+| 属性     | タイプ     | 必須 | 検証ルール                |
+| -------- | -------- | -------- | ------------------------------- |
+| `issuer` | `string` | ✅       | 2-128 文字                |
+| `name`   | `string` | ✅       | 2-128 文字                |
+| `date?`  | `string` | ⬜       | [日付スキーマ](#date-schema) を参照 |
+| `url?`   | `string` | ⬜       | [URL スキーマ](#url-schema) を参照   |
+
+#### EducationItemSchema
+
+単一の教育経験または学位プログラムを検証します。
+
+| 属性          | タイプ                | 必須 | 検証ルール                                  |
+| ------------- | ------------------- | -------- | ------------------------------------------------- |
+| `area`        | `string`            | ✅       | 2-64 文字                                   |
+| `degree`      | [`Degree`](#degree) | ✅       | 事前定義された[学位オプション](#degree) からである必要があります |
+| `institution` | `string`            | ✅       | 2-128 文字                                  |
+| `startDate`   | `string`            | ✅       | [日付スキーマ](#date-schema) を参照                   |
+| `courses?`    | `string[]`          | ⬜       | 各項目 2-128 文字                        |
+| `endDate?`    | `string`            | ⬜       | [日付スキーマ](#date-schema) を参照                   |
+| `summary?`    | `string`            | ⬜       | [要約スキーマ](#summary-schema) を参照             |
+| `score?`      | `string`            | ⬜       | 2-32 文字                                   |
+| `url?`        | `string`            | ⬜       | [URL スキーマ](#url-schema) を参照                     |
+
+#### InterestItemSchema
+
+単一の興味、趣味、または個人的な活動を検証します。
+
+| 属性        | タイプ       | 必須 | 検証ルール                        |
+| ----------- | ---------- | -------- | --------------------------------------- |
+| `name`      | `string`   | ✅       | 2-128 文字                        |
+| `keywords?` | `string[]` | ⬜       | [キーワードスキーマ](#keywords-schema) を参照 |
+
+#### LanguageItemSchema
+
+単一の言語能力項目を検証します。
+
+| 属性        | タイプ                    | 必須 | 検証ルール                                      |
+| ----------- | ----------------------- | -------- | ----------------------------------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅       | 事前定義された[流暢度オプション](#fluency) からである必要があります   |
+| `language`  | [`Language`](#language) | ✅       | 事前定義された[言語オプション](#language) からである必要があります |
+| `keywords?` | `string[]`              | ⬜       | 各項目 1-32 文字                             |
+
+#### LocationItemSchema
+
+位置と住所情報を検証します。
+
+| 属性          | タイプ                  | 必須 | 検証ルール                                    |
+| ------------- | --------------------- | -------- | --------------------------------------------------- |
+| `city`        | `string`              | ✅       | 2-128 文字                                    |
+| `address?`    | `string`              | ⬜       | 2-128 文字                                    |
+| `country?`    | [`Country`](#country) | ⬜       | 事前定義された[国オプション](#country) からである必要があります |
+| `postalCode?` | `string`              | ⬜       | 2-128 文字                                    |
+| `region?`     | `string`              | ⬜       | 2-128 文字                                    |
+
+#### ProfileItemSchema
+
+単一のオンラインプロフィールまたはソーシャルメディアの存在を検証します。
+
+| 属性       | タイプ                  | 必須 | 検証ルール                                    |
+| ---------- | --------------------- | -------- | --------------------------------------------------- |
+| `network`  | [`Network`](#network) | ✅       | 事前定義された[ネットワークオプション](#network) からである必要があります |
+| `username` | `string`              | ✅       | 2-128 文字                                    |
+| `url?`     | `string`              | ⬜       | 有効な URL、最大 256 文字                            |
+
+#### ProjectItemSchema
+
+単一のプロジェクト、ポートフォリオ作品、または技術的な作業を検証します。
+
+| 属性           | タイプ       | 必須 | 検証ルール                      |
+| -------------- | ---------- | -------- | ------------------------------------- |
+| `name`         | `string`   | ✅       | 2-128 文字                      |
+| `startDate`    | `string`   | ✅       | [日付スキーマ](#date-schema) を参照       |
+| `summary`      | `string`   | ✅       | [要約スキーマ](#summary-schema) を参照 |
+| `description?` | `string`   | ⬜       | 4-128 文字                      |
+| `endDate?`     | `string`   | ⬜       | [日付スキーマ](#date-schema) を参照       |
+| `keywords?`    | `string[]` | ⬜       | 各項目 1-32 文字             |
+| `url?`         | `string`   | ⬜       | 有効な URL、最大 256 文字              |
+
+#### PublicationItemSchema
+
+単一の出版物、研究作業、または学術論文を検証します。
+
+| 属性           | タイプ     | 必須 | 検証ルール                      |
+| -------------- | -------- | -------- | ------------------------------------- |
+| `name`         | `string` | ✅       | 2-128 文字                      |
+| `publisher`    | `string` | ✅       | 2-128 文字                      |
+| `releaseDate?` | `string` | ⬜       | [日付スキーマ](#date-schema) を参照       |
+| `summary?`     | `string` | ⬜       | [要約スキーマ](#summary-schema) を参照 |
+| `url?`         | `string` | ⬜       | 有効な URL、最大 256 文字              |
+
+#### ReferenceItemSchema
+
+単一の専門推薦人または推薦を検証します。
+
+| 属性            | タイプ     | 必須 | 検証ルール                      |
+| --------------- | -------- | -------- | ------------------------------------- |
+| `name`          | `string` | ✅       | 2-128 文字                      |
+| `summary`       | `string` | ✅       | [要約スキーマ](#summary-schema) を参照 |
+| `email?`        | `string` | ⬜       | [メールスキーマ](#email-schema) を参照     |
+| `phone?`        | `string` | ⬜       | 有効な電話フォーマット                    |
+| `relationship?` | `string` | ⬜       | 2-128 文字                      |
+
+#### SkillItemSchema
+
+単一のスキル、能力、または技術的能力を検証します。
+
+| 属性        | タイプ              | 必須 | 検証ルール                                |
+| ----------- | ----------------- | -------- | ----------------------------------------------- |
+| `level`     | [`Level`](#level) | ✅       | 事前定義された[レベルオプション](#level) からである必要があります |
+| `name`      | `string`          | ✅       | 2-128 文字                                |
+| `keywords?` | `string[]`        | ⬜       | 各項目 1-32 文字                       |
+
+#### VolunteerItemSchema
+
+単一のボランティア経験またはコミュニティサービスを検証します。
+
+| 属性           | タイプ     | 必須 | 検証ルール                      |
+| -------------- | -------- | -------- | ------------------------------------- |
+| `organization` | `string` | ✅       | 2-128 文字                      |
+| `position`     | `string` | ✅       | 2-128 文字                      |
+| `startDate`    | `string` | ✅       | [日付スキーマ](#date-schema) を参照       |
+| `summary`      | `string` | ✅       | [要約スキーマ](#summary-schema) を参照 |
+| `endDate?`     | `string` | ⬜       | [日付スキーマ](#date-schema) を参照       |
+| `url?`         | `string` | ⬜       | 有効な URL、最大 256 文字              |
+
+#### WorkItemSchema
+
+単一の職歴または雇用職位を検証します。
+
+| 属性        | タイプ       | 必須 | 検証ルール                      |
+| ----------- | ---------- | -------- | ------------------------------------- |
+| `name`      | `string`   | ✅       | 2-128 文字                      |
+| `position`  | `string`   | ✅       | 2-128 文字                      |
+| `startDate` | `string`   | ✅       | [日付スキーマ](#date-schema) を参照       |
+| `summary`   | `string`   | ✅       | [要約スキーマ](#summary-schema) を参照 |
+| `endDate?`  | `string`   | ⬜       | [日付スキーマ](#date-schema) を参照       |
+| `keywords?` | `string[]` | ⬜       | 各項目 1-32 文字             |
+| `url?`      | `string`   | ⬜       | 有効な URL、最大 256 文字              |
+
+### ResumeLayoutSchema
+
+全体的なレイアウト検証設定を定義します。
+
+| 属性          | タイプ                                                            | 必須 |
+| ------------- | --------------------------------------------------------------- | -------- |
+| `locale?`     | [`ResumeLayoutLocaleSchema`](#resumelayoutlocaleschema)         | ⬜       |
+| `margins?`    | [`ResumeLayoutMarginsSchema`](#resumelayoutmarginsschema)       | ⬜       |
+| `page?`       | [`ResumeLayoutPageSchema`](#resumelayoutpageschema)             | ⬜       |
+| `template?`   | [`Template`](#template)                                         | ⬜       |
+| `typography?` | [`ResumeLayoutTypographySchema`](#resumelayouttypographyschema) | ⬜       |
+| `latex?`      | [`ResumeLayoutLaTeXSchema`](#resumelayoutlatexschema)           | ⬜       |
+
+#### ResumeLayoutLocaleSchema
+
+国際化とローカライゼーションのロケール設定を検証します。
+
+| 属性        | タイプ                                | 必須 | 検証ルール                                                    |
+| ----------- | ----------------------------------- | -------- | ------------------------------------------------------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | 事前定義された[ロケール言語オプション](#locale-language) からである必要があります |
+
+#### ResumeLayoutMarginsSchema
+
+文書レイアウトのマージン設定を検証します。
+
+| 属性      | タイプ     | 必須 | 検証ルール                              |
+| --------- | -------- | -------- | --------------------------------------------- |
+| `top?`    | `string` | ⬜       | [マージンサイズスキーマ](#margin-size-schema) を参照 |
+| `bottom?` | `string` | ⬜       | [マージンサイズスキーマ](#margin-size-schema) を参照 |
+| `left?`   | `string` | ⬜       | [マージンサイズスキーマ](#margin-size-schema) を参照 |
+| `right?`  | `string` | ⬜       | [マージンサイズスキーマ](#margin-size-schema) を参照 |
+
+#### ResumeLayoutPageSchema
+
+文書プレゼンテーションのページレベル設定を検証します。
+
+| 属性               | タイプ      | 必須 | 検証ルール |
+| ------------------ | --------- | -------- | ---------------- |
+| `showPageNumbers?` | `boolean` | ⬜       | true/false       |
+
+#### ResumeLayoutTypographySchema
+
+文書フォーマットのタイポグラフィ設定を検証します。
+
+| 属性        | タイプ     | 必須 | 検証ルール                                       |
+| ----------- | -------- | -------- | ------------------------------------------------------ |
+| `fontSize?` | `string` | ⬜       | 事前定義された[フォントサイズオプション](#fontsize) からである必要があります |
+
+#### ResumeLayoutLaTeXSchema
+
+LaTeX 固有の設定オプションを検証します。
+
+| 属性        | タイプ                            | 必須 | 検証ルール                                                     |
+| ----------- | ------------------------------- | -------- | -------------------------------------------------------------------- |
+| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | 事前定義された[fontspec 数字オプション](#fontspecnumbers) からである必要があります |
+
+## プリミティブ検証スキーマ
+
+### メールスキーマ
+
+厳格なフォーマット要件を使用してメールアドレスを検証します。
+
+**検証ルール：**
+
+- 有効なメール形式である必要があります
+- パターン：`^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$`
+- 例：`hi@ppresume.com`、`first.last@company.org`、`test+tag@domain.co.uk`
+
+### 電話スキーマ
+
+柔軟なフォーマットサポートを使用して電話番号を検証します。
+
+**検証ルール：**
+
+- パターン：`^[+]?[(]?[0-9\\s-]{1,15}[)]?[0-9\\s-]{1,15}$`
+- 国コード、括弧、スペース、ハイフンを含む場合があります
+- 例：`555-123-4567`、`+44 20 7946 0958`、`(555) 123-4567`
+
+### 要約スキーマ
+
+長さ制約を使用して要約テキストを検証します。
+
+**検証ルール：**
+
+- 16 から 1024 文字の間である必要があります
+- 例：
+  - "5 年以上のフルスタック開発経験を持つソフトウェアエンジニア。"
+  - "ユーザーエクスペリエンスとモダンデザイン原則に情熱を持つクリエイティブデザイナー。"
+  - "時間と予算内で複雑なプロジェクトを配信する良好な記録を持つプロジェクトマネージャー。"
+
+### URL スキーマ
+
+長さ制約を使用して URL を検証します。
+
+**検証ルール：**
+
+- 有効な URL 形式である必要があります
+- 最大長 256 文字
+- 例：`https://yamlresume.dev`、`https://ppresume.com`、`https://github.com/yamlresume/yamlresume`
+
+### キーワードスキーマ
+
+単一項目制約を使用してキーワード配列を検証します。
+
+**検証ルール：**
+
+- 文字列配列
+- 各キーワードは 1 から 32 文字の間である必要があります
+- 例：`["Javascript", "React", "Typescript"]`、`["Design", "UI", "UX"]`
+
+### 日付スキーマ
+
+フォーマット要件を使用して日付文字列を検証します。
+
+**検証ルール：**
+
+- 4 から 32 文字の間である必要があります
+- `Date.parse()` で解析可能である必要があります
+- 例：`2025-01-01`、`Jul 2025`、`July 3, 2025`、`2025-02-02T00:00:03.123Z`
+
+### マージンサイズスキーマ
+
+単位要件を使用してマージンサイズ文字列を検証します。
+
+**検証ルール：**
+
+- 2 から 32 文字の間である必要があります
+- パターン：`^\\d+(\\.\\d+)?(cm|pt|in)$`
+- 有効な単位（cm、pt、in）が続く正数である必要があります
+- 例：`2.5cm`、`1in`、`72pt`、`0.5cm`、`12pt`
+
+## 列挙検証スキーマ
+
+### 国
+
+世界のすべての可能な国と地域のユニオンタイプ。
+
+**検証ルール：**
+
+- 事前定義された国オプションの 1 つである必要があります
+- 例：`United States`、`China`、`United Kingdom`、`Germany`
+
+### 学位
+
+すべての可能な学位のユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：`Associate`、`Bachelor`、`Diploma`、`Doctor`、`High School`、`Master`、`Middle School`
+
+### 流暢度
+
+すべての可能な言語流暢度のユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：
+  - `Elementary Proficiency`
+  - `Full Professional Proficiency`
+  - `Limited Working Proficiency`
+  - `Minimum Professional Proficiency`
+  - `Native or Bilingual Proficiency`
+
+### 言語
+
+すべてのサポートされている言語のユニオンタイプ。
+
+**検証ルール：**
+
+- 事前定義された言語オプションの 1 つである必要があります
+- 例：`English`、`Chinese`、`Spanish`、`French`、`German`
+
+### レベル
+
+すべての可能なスキル習熟度のユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：`Advanced`、`Beginner`、`Expert`、`Intermediate`、`Master`、`Novice`
+
+### ネットワーク
+
+すべての可能なソーシャルネットワークオプションのユニオンタイプ。
+
+**検証ルール：**
+
+- 事前定義されたネットワークオプションの 1 つである必要があります
+- 例：`GitHub`、`LinkedIn`、`Twitter`、`Facebook`、`Instagram`
+
+### テンプレート
+
+すべての可能なテンプレートオプションのユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
+- 参照：[テンプレート](https://yamlresume.dev/docs/layout/templates)
+
+### ロケール言語
+
+すべての可能なロケール言語のユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：`en`、`es`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`
+- 参照：[多言語](https://yamlresume.dev/docs/content/multi-languages)
+
+### FontspecNumbers
+
+すべての可能な latex fontspec 数字オプションのユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：
+  - `Auto` - 選択された `LocaleLanguage` に基づいてスタイルを自動決定することを許可（デフォルト）
+  - `Lining` - 標準のライニング数字（CJK 言語のデフォルト）
+  - `OldStyle` - 異なる高さのオールドスタイル数字（ラテン言語のデフォルト）
+
+### フォントサイズ
+
+すべての可能なフォントサイズオプションのユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：`10pt`、`11pt`、`12pt`
+- `10pt` がデフォルトフォントサイズです

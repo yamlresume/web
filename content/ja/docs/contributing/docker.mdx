@@ -1,0 +1,39 @@
+---
+title: Docker
+---
+
+[CLI パッケージ](https://www.npmjs.com/package/yamlresume)に加えて、YAMLResume はクイックスタートを容易にするための[docker イメージ](https://hub.docker.com/r/yamlresume/yamlresume)も提供しています。
+
+[ドキュメント](/zh-cn/docs/installation#docker-users)で説明されているように、以下のコマンドを使用して yamlresume docker コンテナを実行できます：
+
+```bash
+docker run --rm -v $(pwd):/app -w /app yamlresume/yamlresume <command>
+```
+
+しかし、興味があれば、ニーズに合わせて Docker イメージをカスタマイズできます。
+
+## Docker イメージのビルド
+
+YAMLResume の Docker イメージは2つの段階で定義・生成されます：
+
+### Dockerfile.base
+
+[Dockerfile.base](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base) には、YAMLResume を実行するための基本環境が含まれており、[TeX Live](https://www.tug.org/texlive/) からの [XeTeX](/zh-cn/docs/installation#xetex) や [Google Noto フォント](/zh-cn/docs/installation#google-noto) など、すべての必要な依存関係が含まれています。
+
+これは基本イメージで、主に GitHub Actions でのビルドプロセスを加速するために使用されます——`apt install texlive-xetex` で texlive をインストールするには約[30分](https://github.com/yamlresume/yamlresume/actions/runs/15438395862)かかり、これは各 docker ビルドには長すぎるため、この基本イメージを一度ビルドして[公開し](https://hub.docker.com/r/yamlresume/yamlresume-base)、後続の各ビルドで再利用することにしました。
+
+通常、このイメージを自分でビルドする必要はありません。dockerhub で公開されているイメージを直接再利用できます。
+
+### Dockerfile
+
+[Dockerfile](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile) は `yamlresume/yamlresume` イメージのビルド方法を定義しており、非常にシンプルで直接的です。`npm install -g yamlresume@latest` で npmjs から `yamlresume` をインストールし、Docker の[セキュリティベストプラクティス](https://www.docker.com/blog/understanding-the-docker-user-instruction/)に従って必要なユーザーとグループを作成するだけです。
+
+yamlresume イメージをローカルでビルドするのは簡単な作業です。以下を実行するだけです：
+
+```bash
+docker build -t yamlresume/yamlresume .
+```
+
+異なるアーキテクチャ用の docker イメージのビルドで問題が発生した場合は、[docker マルチプラットフォームビルド](https://docs.docker.com/build/building/multi-platform/)を確認する必要があるかもしれません。
+
+[Twitter でいくつかのコツを書きました](https://x.com/xiaohanyu1988/status/1931178628785778722)。興味があればご覧ください。

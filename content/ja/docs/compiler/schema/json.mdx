@@ -1,0 +1,106 @@
+---
+title: JSON Schema
+---
+
+## 概要
+
+YAMLResume は履歴書データの検証用に公式の [JSON Schema](https://json-schema.org) を提供します。
+
+最新の公式 JSON Schema は以下でホストされています：
+[https://yamlresume.com/schema.json](https://yamlresume.com/schema.json)。ただし、IDE/エディター用の軽量版が必要な場合は、GitHub リポジトリの canary バージョン [schema.json](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/schema.json) も使用できます。
+
+同時に、YAMLResume の開発に伴い、公式 JSON Schema は継続的に更新されるため、以下の場所でアーカイブされたバージョンの JSON Schema も提供しています：
+`https://yamlresume.com/schemas/<version>/schema.json`。
+
+現在、以下のアーカイブバージョンがあります：
+
+- [v0.5.0](/schemas/v0.5.0/schema.json)
+- [v0.5.1](/schemas/v0.5.1/schema.json)
+- [v0.6.0](/schemas/v0.6.0/schema.json)
+- [v0.7.0](/schemas/v0.7.0/schema.json)
+
+## JSON Schema とは？
+
+[JSON Schema](https://json-schema.org) は、JSON データの構造を定義するための JSON ベースの形式です。JSON データを検証し、文書化するための強力なツールです。
+
+JSON Schema を使用すると、JSON データの期待される構造、タイプ、制約を指定できます。JSON Schema を使用して、どのプロパティが必須か、どのような値のタイプが許可されるか（文字列、数値、配列、オブジェクトなど）、値のフォーマットのルール（メールアドレスや URL など）を定義できます。
+
+JSON Schema を使用することで、開発者やツールは JSON データを自動的に検証し、処理前に期待される形式に準拠していることを確認できます。これにより、エラーを早期にキャッチし、データ品質を向上させ、現代のコードエディターで自動補完やインラインドキュメントなどの機能を有効にできます。
+
+JSON Schema は広くサポートされており、設定ファイル、API ペイロード、YAMLResume の場合は履歴書データの一貫性と正確性を確保するための検証に使用できます。
+
+## 利点
+
+履歴書を作成する際に YAMLResume の JSON Schema を IDE/エディターに統合することで、いくつかの利点があります：
+
+- **自動補完**：入力開始時に、IDE/エディターがプロパティとその期待されるタイプを提案し、履歴書の起草をより速く、エラーを減らすのに役立ちます。
+
+- **フォーマット検証**：IDE/エディターが入力時にフォーマットエラー（無効な日付や URL など）をハイライトし、間違った情報を送信することを防ぎます。
+
+- **プロパティドキュメント**：各プロパティのインラインドキュメントを取得し、その用途、許可される値、特別なフォーマット要件を説明します。
+
+### 自動補完
+
+すべての[列挙タイプ](http://localhost:3000/docs/compiler/types#enum-types) は入力時に自動補完されます。オプションの最初の数文字を入力するだけで、IDE/エディターが有効なオプションのリストを提案し、上下矢印キーを使用して正しいオプションを選択できます。
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-auto-completion.mp4"
+/>
+
+### フォーマット検証
+
+各キー値ペアは事前定義されたスキーマに基づいてリアルタイムで検証されます。IDE/エディターは正確なエラーメッセージで警告し、間違ったメール形式、無効な学位オプション、言語流暢度レベルのスペルミスなどの低レベルエラーを避けるのに役立ちます。
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-field-error.mp4"
+/>
+
+必須キーが欠落している場合、警告メッセージはデフォルトでその親オブジェクトにエスカレートするため、欠落しているキーを簡単に見つけることができます。
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-object-error.mp4"
+/>
+
+### プロパティドキュメント
+
+最後に、各プロパティのインラインドキュメントを取得し、その用途、許可される値、特別なフォーマット要件を説明できます。プロパティキーまたは値にマウスをホバーしてドキュメントを表示できます。
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-property-docs.mp4"
+/>
+
+## JSON Schema の使用方法
+
+履歴書で YAMLResume の JSON スキーマを使用するには、[yaml-language-server](https://github.com/redhat-developer/yaml-language-server) をインストールする必要があります。IDE/エディターによっては、異なる[拡張機能](https://github.com/redhat-developer/yaml-language-server?tab=readme-ov-file#clients) をインストールする必要がある場合があります。
+
+インストール後、履歴書ファイルの上部に以下の行を追加する必要があります：
+
+```
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+```
+
+その後、[自動補完](#auto-completion)、[フォーマット検証](#format-validation)、[プロパティドキュメント](#property-docs) 機能を楽しむことができ、すべてが指先で利用できます。
+
+## エンジニアリング実装
+
+内部的には、YAMLResume の JSON スキーマは [Zod v4](https://zod.dev/json-schema) の助けを借りて生成されており、これは優れた TypeScript ファーストのスキーマ検証ライブラリです。
+
+[schema/resume.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/resume.ts) でスキーマを定義し、その後[テストケース](https://github.com/yamlresume/yamlresume/blob/99de/packages/core/src/schema/resume.test.ts#L272-L277) で JSON スキーマを生成します。
+
+これはとてもクールではありませんか？

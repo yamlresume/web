@@ -1,0 +1,214 @@
+---
+title: json2yamlresume
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+[json2yamlresume](https://yamlresume.dev/docs/ecosystem/json2yamlresume) は、[JSON Resume](https://jsonresume.org/) を [YAMLResume](https://yamlresume.dev/) 形式に変換するための[コマンドラインツール](https://npmjs.com/package/json2yamlresume)です。
+
+## 機能
+
+- **形式変換**：JSON Resume を YAMLResume 形式にシームレスに変換
+- **[構造変換](#conversion-rules)**
+- **CLI インターフェース**：変換を簡単にするシンプルなコマンドラインインターフェース
+- **検証**：YAMLResume の強力な[スキーマ検証](/zh-cn/docs/compiler/schema)に基づいて構築
+
+## インストール
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g json2yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g json2yamlresume
+```
+
+```console tab="yarn"
+yarn global add json2yamlresume
+```
+
+```console tab="bun"
+bun add -g json2yamlresume
+```
+
+</Tabs>
+
+## 使用方法
+
+### JSON Resume を YAMLResume に変換
+
+```bash
+$ json2yamlresume input.json output.yaml
+
+# または、オプションの出力パスを指定せずにコマンドを呼び出す場合、
+# 出力は入力ファイルと同じディレクトリに、同じ名前で .yml 拡張子を使用して書き込まれます
+$ json2yamlresume input.json
+```
+
+### ヘルプを表示
+
+```bash
+$ json2yamlresume --help
+Usage: json2yamlresume [options] <input-file> [output-file]
+
+Convert JSON Resume to YAMLResume format
+
+Arguments:
+  input-file     Input JSON Resume file path
+  output-file    Output YAMLResume file path
+
+Options:
+  -V, --version  output the version number
+  -h, --help     display help for command
+```
+
+### バージョンを表示
+
+```bash
+$ json2yamlresume --version
+0.7.4
+```
+
+## 例
+
+以下は JSON Resume 形式のサンプル履歴書です：
+
+```json lineNumbers title="json-resume.json"
+{
+  "basics": {
+    "name": "John Doe",
+    "label": "Software Engineer",
+    "email": "john@example.com",
+    "location": {
+      "city": "San Francisco",
+      "countryCode": "US"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "johndoe",
+        "url": "https://github.com/johndoe"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Tech Corp",
+      "position": "Senior Developer",
+      "startDate": "2020-01",
+      "summary": "Led development of web applications.",
+      "highlights": [
+        "Increased performance by 40%",
+        "Mentored 5 junior developers"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of California",
+      "area": "Computer Science",
+      "studyType": "Bachelor of Science",
+      "startDate": "2018"
+    }
+  ]
+}
+```
+
+以下のコマンドを呼び出して JSON Resume を YAMLResume に変換できます：
+
+```bash
+$ json2yamlresume json-resume.json yamlresume.yml
+```
+
+以下は YAMLResume 形式の出力です：
+
+```yaml lineNumbers title="yamlresume.yml"
+---
+content:
+  basics:
+    name: John Doe
+    headline: Software Engineer
+    email: john@example.com
+  education:
+    - institution: University of California
+      area: Computer Science
+      degree: Bachelor of Science
+      startDate: "2018"
+  location:
+    city: San Francisco
+    country: US
+  profiles:
+    - network: GitHub
+      username: johndoe
+      url: https://github.com/johndoe
+  work:
+    - name: Tech Corp
+      position: Senior Developer
+      startDate: 2020-01
+      summary: |-
+        - Increased performance by 40%
+        - Mentored 5 junior developers
+```
+
+## 変換ルール
+
+### 1. location/profiles をトップレベルに移動
+
+- `basics.location` → トップレベル `location`
+- `basics.profiles` → トップレベル `profiles`
+- `basics.label` → `basics.headline`
+
+### 2. education フィールドマッピング
+
+- `education[].studyType` → `education[].degree`
+
+### 3. highlights を summary フィールドにマージ
+
+コンバーターは `highlights` 配列を以下のセクションの `summary` フィールドに markdown の順序なしリストとしてマージします：
+
+- `work[]`
+- `volunteer[]`
+- `projects[]`
+
+例：
+
+```json
+{
+  "summary": "Led development team.",
+  "highlights": ["Increased performance", "Mentored developers"]
+}
+```
+
+以下になります：
+
+```yaml
+summary: |-
+  Led development team.
+
+  - Increased performance
+  - Mentored developers
+```
+
+YAMLResume の summary フィールドは[リッチテキスト](/zh-cn/docs/content/rich-text)をサポートしていることを覚えておいてください！
+
+### 4. references フィールドマッピング
+
+- `references[].reference` → `references[].summary`
+
+## サポートされている JSON Resume セクション
+
+コンバーターはすべての標準 JSON Resume セクションをサポートしています：
+
+- ✅ `basics`
+- ✅ `work`
+- ✅ `volunteer`
+- ✅ `education`
+- ✅ `awards`
+- ✅ `certificates`
+- ✅ `publications`
+- ✅ `skills`
+- ✅ `languages`
+- ✅ `interests`
+- ✅ `references`
+- ✅ `projects`

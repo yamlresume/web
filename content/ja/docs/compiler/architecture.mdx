@@ -1,0 +1,100 @@
+---
+title: アーキテクチャ
+---
+
+他のコンパイラと同様に、YAMLResume も複数の段階を通じて履歴書データを入力から出力に変換するパイプラインを含んでいます。
+
+- **入力段階**：YAML と JSON 履歴書ファイルを入力として受け入れます。
+- **解析段階**：入力ファイルの履歴書コンテンツとレイアウトを解析・検証します。
+- **変換段階**：パイプラインを使用して履歴書コンテンツとレイアウトデータを変換します。
+- **コード生成段階**：LaTeX テンプレートを使用して履歴書コンテンツとレイアウトデータをレンダリングします。
+- **出力段階**：最終的な PDF 文書を生成します。
+
+以下は YAMLResume のアーキテクチャ図です：
+
+<Mermaid chart="
+  flowchart TD
+    subgraph A[入力段階]
+      A1[YAML 履歴書ファイル]
+      A2[JSON 履歴書ファイル]
+    end
+
+    subgraph B[解析段階]
+      B1[yaml.parse]
+      B2[スキーマ検証]
+      B3[MarkdownParser]
+    end
+
+    subgraph C[変換段階]
+      C1[escape-latex 処理]
+      C2[日付ローカライゼーション]
+      C3[URL 変換]
+      C4[位置変換]
+      C5[...]
+    end
+
+    subgraph D[コード生成段階]
+      D1[テンプレートレンダラー]
+      D2[moderncv-banking]
+      D3[moderncv-classic]
+      D4[moderncv-casual]
+      E1[LaTeX 文書]
+    end
+
+    subgraph E[出力段階]
+      F1[xetex]
+      F2[tectonic]
+      G[resume.pdf]
+    end
+
+    A1 --> B1
+    A2 --> B1
+    B1 --> B2
+    B2 --> B3
+    B3 --> C1
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4
+    C4 --> C5
+    C5 --> D1
+    D1 --> D2
+    D1 --> D3
+    D1 --> D4
+    D2 --> E1
+    D3 --> E1
+    D4 --> E1
+    E1 --> F1
+    E1 --> F2
+    F1 --> G
+    F2 --> G
+
+"/>
+
+## データ処理パイプライン
+
+変換パイプラインは、YAML ファイルからの生の履歴書データを処理し、LaTeX レンダリングの準備をします。2 つの主要段階で動作します：コンテンツ変換とレイアウト変換：
+
+- コンテンツ変換段階では、すべてのテキストデータを処理し、ローカライゼーションルールを適用し、LaTeX 特殊文字をエスケープし、派生値を計算します。
+- レイアウト変換段階では、ユーザーが提供したレイアウト設定をデフォルト値とマージし、地域固有のタイポグラフィルールを適用します。
+
+<Mermaid
+  chart="
+flowchart TD
+  A[生の履歴書データ] --> B[transformResume]
+  B --> B1[transformResumeContent]
+  B1 --> B2[transformEducationCourse]
+  B2 --> B3[transformEducationDegree]
+  B3 --> B4[transformDate]
+  B4 --> B5[transformEndDate]
+  B5 --> B6[transformKeywords]
+  B6 --> B7[...]
+  B --> C1[transformResumeLayout]
+  C1 --> C2[デフォルト値の設定]
+  C2 --> C3[地域調整の設定]
+  B7 --> D[変換された履歴書]
+  C3 --> D
+  D --> D1[コード生成の準備]
+"
+/>
+
+このような長いデータ処理パイプラインでは、コードが言葉よりも説得力があります。実装に興味がある場合は、詳細について [transform.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/preprocess/transform.ts) をご確認ください。

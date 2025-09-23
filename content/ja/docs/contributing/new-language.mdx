@@ -1,0 +1,78 @@
+---
+title: 新言語
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+YAMLResume は[多言語](/zh-cn/docs/content/multi-languages)を基盤からサポートするように設計されており、ユーザーが好みの言語で履歴書を作成できるようになっています。
+
+この記事の執筆時点で、YAMLResume は以下の言語をサポートしています：
+
+- [英語](/zh-cn/docs/content/multi-languages/english)
+- [中国語](/zh-cn/docs/content/multi-languages/chinese)
+- [ノルウェー語](/zh-cn/docs/content/multi-languages/norwegian)
+- [スペイン語](/zh-cn/docs/content/multi-languages/spanish)
+
+お好みの言語がリストにない場合は、以下の手順に従って貢献し、新しい言語のサポートを追加できます。
+
+<Steps>
+
+<Step>
+## 言語を登録
+
+YAMLResume に新しい `layout.locale.language` オプションを追加するには、まず [models/resume.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/resume.ts) で言語を登録し、`LOCALE_LANGUAGE_OPTIONS` に新しいエントリを追加します。
+
+**チェックリスト：**
+
+- [ ] 言語を `LOCALE_LANGUAGE_OPTIONS` に追加。
+- [ ] [新しい CLI をビルドしてテスト](/zh-cn/docs/contributing/cli#yamlresumecli-build)し、`pnpm cli dev languages list` を使用して、言語がリストに表示されることを確認。
+
+</Step>
+
+<Step>
+## 翻訳を追加
+
+YAMLResume で使用されるすべての関連[オプション](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/translations/options.ts)、[句読点と用語](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/translations/template.ts)の翻訳を提供します。これにより、ユーザーは正確なラベル、オプション、用語翻訳、セクション名を使用して新しい言語の履歴書を生成できます。以下は、ノルウェー語翻訳を追加する参考 [PR](https://github.com/yamlresume/yamlresume/pull/44) です。
+
+**チェックリスト：**
+
+- [ ] [国名](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/country.ts)の翻訳を追加
+- [ ] `degrees`、`fluency`、`languages`、`sections`、`skills` のオプション翻訳を追加
+- [ ] `comma`、`colon`、`separator` の句読点翻訳を追加
+- [ ] `courses`、`keywords`、`score` の用語翻訳を追加
+
+</Step>
+
+<Step>
+## Babel 設定を更新
+
+YAMLResume は PDF 生成に LaTeX を使用しており、最適なタイポグラフィ効果を得るために、適切な [babel パッケージ設定](https://latex3.github.io/babel/) を設定する必要があります。以下は、ノルウェー語の参考[コミット](https://github.com/yamlresume/yamlresume/commit/b72a4441ad2542873f449bc35a265e7208eafbe7)です。
+
+**チェックリスト：**
+
+- [ ] [preamble.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/preamble.ts) の `renderBabelConfig()` 関数を更新し、言語の babel パッケージを含める。
+
+</Step>
+
+<Step>
+## 新言語でテスト
+
+`yamlresume/core` と `yamlresume/cli` パッケージを[ビルド](/zh-cn/docs/contributing/cli#yamlresumecore-build)し、その後：
+
+- [ ] 新しい履歴書を作成 `pnpm cli dev new my-resume.yml`
+- [ ] `layout.locale.language` を追加した新しい言語に設定
+- [ ] `pnpm cli dev build my-resume.yml` で新しい言語の履歴書を生成して変更をテスト
+- [ ] 両方の PDF 出力が期待通りに動作することを確認。
+
+</Step>
+
+<Step>
+## PR を提出
+
+上記の手順が完了したら、Pull Request を提出し、変更と追加した言語を明確に説明してください。メンテナーが PR をレビューし、変更や説明を求める場合があります。
+
+</Step>
+
+</Steps>
+
+YAMLResume を世界中のより多くの人々にとって便利にするお手伝いをしていただき、ありがとうございます！

@@ -2,10 +2,12 @@ import { siteConfig } from '@/config/site'
 import {
   blogSource,
   blogSourceFr,
+  blogSourceJa,
   blogSourceZhCN,
   blogSourceZhTW,
   docsSource,
   docsSourceFr,
+  docsSourceJa,
   docsSourceZhCN,
   docsSourceZhTW,
   getLLMText,
@@ -21,10 +23,12 @@ export async function GET() {
     ...docsSourceZhCN.getPages(),
     ...docsSourceZhTW.getPages(),
     ...docsSourceFr.getPages(),
+    ...docsSourceJa.getPages(),
     ...blogSource.getPages(),
     ...blogSourceZhCN.getPages(),
     ...blogSourceZhTW.getPages(),
     ...blogSourceFr.getPages(),
+    ...blogSourceJa.getPages(),
   ]
 
   const scan = allPages.map(getLLMText)

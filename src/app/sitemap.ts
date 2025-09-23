@@ -2,10 +2,12 @@ import type { MetadataRoute } from 'next'
 import {
   blogSource,
   blogSourceFr,
+  blogSourceJa,
   blogSourceZhCN,
   blogSourceZhTW,
   docsSource,
   docsSourceFr,
+  docsSourceJa,
   docsSourceZhCN,
   docsSourceZhTW,
 } from '@/lib'
@@ -22,6 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...docsSourceZhCN.getPages(),
     ...docsSourceZhTW.getPages(),
     ...docsSourceFr.getPages(),
+    ...docsSourceJa.getPages(),
   ]
 
   const allBlogPages = [
@@ -29,6 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogSourceZhCN.getPages(),
     ...blogSourceZhTW.getPages(),
     ...blogSourceFr.getPages(),
+    ...blogSourceJa.getPages(),
   ]
 
   return [
@@ -55,6 +59,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: url('/zh-tw'),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: url('/ja'),
       changeFrequency: 'monthly',
       priority: 0.9,
     },

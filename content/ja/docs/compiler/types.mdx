@@ -1,0 +1,416 @@
+---
+title: タイプ
+---
+
+この文書は、YAMLResume 履歴書構造を定義する TypeScript タイプの概要を提供します。TypeScript プロジェクトとして、YAMLResume はデータの一貫性を確保するために静的タイプを採用しています。このファイルは、個人詳細、教育、経験、スキルなどを含む、履歴書情報を表現するために使用されるコアデータ構造の概要を提供します。
+
+詳細については、実際のソース [types.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types.ts) をご確認ください。
+
+これらのタイプを理解することは、YAMLResume の機能をカスタマイズまたは拡張したい貢献者や開発者にとって重要です。
+
+この文書は、有効な YAMLResume を作成しようとするユーザーに権威ある参照を提供し、オプションと必須フィールドの違いを明確にします。YAMLResume で正常にコンパイルするために、最小履歴書には以下の基本フィールドが含まれている必要があります：
+
+- `content.basics.name`
+- `education[number].area`
+- `education[number].degree`
+- `education[number].institution`
+- `education[number].startDate`
+
+したがって、理論的には最小実行可能履歴書は以下のようになります：
+
+```yml lineNumbers
+content:
+  basics:
+    name: Xiao Hanyu
+  education:
+    - area: Computer Science and Technology
+      degree: Bachelor
+      institution: Zhejiang University
+      startDate: Sep, 2007
+```
+
+## Resume
+
+全体的な履歴書構造を定義し、コンテンツとレイアウトを含みます。
+
+| 属性      | タイプ                              | 必須 | 説明                                          |
+| --------- | --------------------------------- | -------- | ---------------------------------------------------- |
+| `content` | [`ResumeContent`](#resumecontent) | ✅       | 履歴書全体のコンテンツ構造を定義します。 |
+| `layout?` | [`ResumeLayout`](#resumelayout)   | ⬜       | 全体的なレイアウト設定を定義します。            |
+
+以下は履歴書構造の高レベル図です：
+
+<Mermaid chart='
+flowchart LR
+  A[Resume]
+  B[ResumeLayout]
+  C[ResumeContent]
+
+subgraph Layout
+direction TB
+B1[locale]
+B2[margins]
+B3[page]
+B4[template]
+B5[typography]
+end
+
+subgraph Content
+direction TB
+C1[basics]
+C2["education[]"]
+C3[location]
+C4[profiles]
+C5["work[]"]
+C6["skills[]"]
+C7["languages[]"]
+C8["..."]
+end
+
+A --> B
+A --> C
+B --> B1
+B --> B2
+B --> B3
+B --> B4
+B --> B5
+C --> C1
+C --> C2
+C --> C3
+C --> C4
+C --> C5
+C --> C6
+C --> C7
+C --> C8
+'/>
+
+### ResumeContent
+
+履歴書全体のコンテンツ構造を定義します。
+
+| 属性            | タイプ                                    | 必須 | 説明                                                          |
+| --------------- | --------------------------------------- | -------- | -------------------------------------------------------------------- |
+| `basics`        | [`BasicsItem`](#basicsitem)             | ✅       | コア個人情報と連絡先情報を表します。                |
+| `education`     | [`EducationItem[]`](#educationitem)     | ✅       | 教育経験のコレクションを含みます。                    |
+| `awards?`       | [`AwardItem[]`](#awarditem)             | ⬜       | 賞と認識のコレクションを含みます。                    |
+| `certificates?` | [`CertificateItem[]`](#certificateitem) | ⬜       | 認証と証明書のコレクションを含みます。             |
+| `interests?`    | [`InterestItem[]`](#interestitem)       | ⬜       | 興味、趣味、または個人的な活動のコレクションを含みます。 |
+| `languages?`    | [`LanguageItem[]`](#languageitem)       | ⬜       | 言語能力のコレクションを含みます。                     |
+| `location?`     | [`LocationItem`](#locationitem)         | ⬜       | 位置情報を含みます。                                       |
+| `projects?`     | [`ProjectItem[]`](#projectitem)         | ⬜       | プロジェクトのコレクションを含みます。                                   |
+| `profiles?`     | [`ProfileItem[]`](#profileitem)         | ⬜       | オンラインプロフィールのコレクションを含みます。                            |
+| `publications?` | [`PublicationItem[]`](#publicationitem) | ⬜       | 出版物のコレクションを含みます。                               |
+| `references?`   | [`ReferenceItem[]`](#referenceitem)     | ⬜       | 推薦人のコレクションを含みます。                                 |
+| `skills?`       | [`SkillItem[]`](#skillitem)             | ⬜       | スキルのコレクションを含みます。                                     |
+| `volunteer?`    | [`VolunteerItem[]`](#volunteeritem)     | ⬜       | ボランティア経験のコレクションを含みます。                      |
+| `work?`         | [`WorkItem[]`](#workitem)               | ⬜       | 職歴と雇用履歴のコレクションを含みます。    |
+
+#### AwardItem
+
+獲得した単一の賞、名誉、または認識を表します。
+
+| 属性       | タイプ     | 必須 | 説明                                                 |
+| ---------- | -------- | -------- | ----------------------------------------------------------- |
+| `awarder`  | `string` | ✅       | 賞を授与した組織または団体。             |
+| `title`    | `string` | ✅       | 賞の名前またはタイトル。                             |
+| `date?`    | `string` | ⬜       | 受賞日（例：「2020」、「Oct 2020」）。 |
+| `summary?` | `string` | ⬜       | 賞に関する短い説明または詳細情報。             |
+
+#### BasicsItem
+
+コア個人情報と連絡先情報を表します。
+
+| 属性        | タイプ     | 必須 | 説明                                                         |
+| ----------- | -------- | -------- | ------------------------------------------------------------------- |
+| `name`      | `string` | ✅       | フルネーム。                                                          |
+| `email?`    | `string` | ⬜       | メールアドレス。                                                      |
+| `headline?` | `string` | ⬜       | 短い専門タイトルまたは役職（例：「ソフトウェアエンジニア」）。 |
+| `phone?`    | `string` | ⬜       | 電話番号。                                                       |
+| `summary?`  | `string` | ⬜       | 専門的な要約または目標声明。                      |
+| `url?`      | `string` | ⬜       | 個人ウェブサイトまたはポートフォリオ URL。                                  |
+
+#### CertificateItem
+
+単一の認証、証明書、または専門資格を表します。
+
+| 属性     | タイプ     | 必須 | 説明                                                       |
+| -------- | -------- | -------- | ----------------------------------------------------------------- |
+| `issuer` | `string` | ✅       | 証明書を発行した組織。                     |
+| `name`   | `string` | ✅       | 証明書名。                                      |
+| `date?`  | `string` | ⬜       | 証明書取得日（例：「2021」、「Nov 2021」）。 |
+| `url?`   | `string` | ⬜       | 証明書に関連する URL（例：検証リンク）。         |
+
+#### EducationItem
+
+単一の教育経験または学位プログラムを表します。
+
+| 属性          | タイプ                | 必須 | 説明                                                            |
+| ------------- | ------------------- | -------- | ---------------------------------------------------------------------- |
+| `area`        | `string`            | ✅       | 研究分野（例：「コンピュータサイエンス」）。                              |
+| `degree`      | [`Degree`](#degree) | ✅       | 取得した学位タイプ。                                           |
+| `institution` | `string`            | ✅       | 機関名。                                               |
+| `startDate`   | `string`            | ✅       | 学習開始日（例：「2016」、「Sep 2016」）。                        |
+| `courses?`    | `string[]`          | ⬜       | 受講したコースのリスト。                                                 |
+| `endDate?`    | `string`            | ⬜       | 学習終了日（例：「2020」、「May 2020」）、空値は「現在」を表します。 |
+| `summary?`    | `string`            | ⬜       | 成果または詳細情報の説明。                             |
+| `score?`      | `string`            | ⬜       | GPA または学業成績。                                                 |
+| `url?`        | `string`            | ⬜       | 機関または学位に関連する URL。                              |
+
+#### InterestItem
+
+単一の興味、趣味、または個人的な活動を表します。
+
+| 属性        | タイプ       | 必須 | 説明                                                     |
+| ----------- | ---------- | -------- | --------------------------------------------------------------- |
+| `name`      | `string`   | ✅       | 興味カテゴリ名（例：「読書」、「写真」）。 |
+| `keywords?` | `string[]` | ⬜       | 興味に関連するキーワード。                               |
+
+#### LanguageItem
+
+単一の言語能力項目を表します。
+
+| 属性        | タイプ                    | 必須 | 説明                                                         |
+| ----------- | ----------------------- | -------- | ------------------------------------------------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅       | 言語の流暢度。                           |
+| `language`  | [`Language`](#language) | ✅       | 言語。                                                       |
+| `keywords?` | `string[]`              | ⬜       | 言語スキルに関連する特定のキーワード（例：「翻訳」）。 |
+
+#### LocationItem
+
+位置と住所情報を表します。
+
+| 属性          | タイプ                  | 必須 | 説明                 |
+| ------------- | --------------------- | -------- | --------------------------- |
+| `city`        | `string`              | ✅       | 都市名。                  |
+| `address?`    | `string`              | ⬜       | 住所。             |
+| `country?`    | [`Country`](#country) | ⬜       | 国コードまたは国名。       |
+| `postalCode?` | `string`              | ⬜       | 郵便番号。         |
+| `region?`     | `string`              | ⬜       | 州、省、または地域。 |
+
+#### ProfileItem
+
+単一のオンラインプロフィールまたはソーシャルメディアの存在を表します。
+
+| 属性       | タイプ                  | 必須 | 説明                          |
+| ---------- | --------------------- | -------- | ------------------------------------ |
+| `network`  | [`Network`](#network) | ✅       | ネットワークまたはプラットフォーム名。 |
+| `username` | `string`              | ✅       | プラットフォーム上のユーザー名。        |
+| `url?`     | `string`              | ⬜       | プロフィールの URL。              |
+
+#### ProjectItem
+
+単一のプロジェクト、ポートフォリオ作品、または技術的な作業を表します。
+
+| 属性           | タイプ       | 必須 | 説明                                               |
+| -------------- | ---------- | -------- | --------------------------------------------------------- |
+| `name`         | `string`   | ✅       | プロジェクト名。                                      |
+| `startDate`    | `string`   | ✅       | プロジェクト開始日（例：「2021」、「Jan 2021」）。     |
+| `summary`      | `string`   | ✅       | プロジェクトの詳細な成果。                 |
+| `description?` | `string`   | ⬜       | プロジェクトの説明。                               |
+| `endDate?`     | `string`   | ⬜       | プロジェクト終了日（例：「2022」、「Jul 2022」）。       |
+| `keywords?`    | `string[]` | ⬜       | プロジェクトで使用されたキーワードまたは技術。             |
+| `url?`         | `string`   | ⬜       | プロジェクトに関連する URL（例：リポジトリ、ライブデモ）。 |
+
+#### PublicationItem
+
+単一の出版物、研究作業、または学術論文を表します。
+
+| 属性           | タイプ     | 必須 | 説明                                       |
+| -------------- | -------- | -------- | ------------------------------------------------- |
+| `name`         | `string` | ✅       | 出版物の名前またはタイトル。                 |
+| `publisher`    | `string` | ✅       | 作品の出版社。                            |
+| `releaseDate?` | `string` | ⬜       | 発行日（例：「2023」、「Mar 2023」）。   |
+| `summary?`     | `string` | ⬜       | 出版物の要約または概要。           |
+| `url?`         | `string` | ⬜       | 出版物に関連する URL（例：DOI、リンク）。 |
+
+#### ReferenceItem
+
+単一の専門推薦人または推薦を表します。
+
+| 属性            | タイプ     | 必須 | 説明                                             |
+| --------------- | -------- | -------- | ------------------------------------------------------- |
+| `name`          | `string` | ✅       | 推薦人の名前。                                  |
+| `summary`       | `string` | ✅       | 推薦人に関する短い説明。                       |
+| `email?`        | `string` | ⬜       | 推薦人のメールアドレス。                         |
+| `phone?`        | `string` | ⬜       | 推薦人の電話番号。                          |
+| `relationship?` | `string` | ⬜       | 推薦人との関係（例：「元マネージャー」）。 |
+
+#### SkillItem
+
+単一のスキル、能力、または技術的能力を表します。
+
+| 属性        | タイプ              | 必須 | 説明                                             |
+| ----------- | ----------------- | -------- | ------------------------------------------------------- |
+| `level`     | [`Level`](#level) | ✅       | スキルの習熟度。                         |
+| `name`      | `string`          | ✅       | スキル名。                                      |
+| `keywords?` | `string[]`        | ⬜       | スキルに関連する特定のキーワードまたは技術。 |
+
+#### VolunteerItem
+
+単一のボランティア経験またはコミュニティサービスを表します。
+
+| 属性           | タイプ     | 必須 | 説明                                                  |
+| -------------- | -------- | -------- | ------------------------------------------------------------ |
+| `organization` | `string` | ✅       | 組織名。                                    |
+| `position`     | `string` | ✅       | 担当した役割または職位。                                       |
+| `startDate`    | `string` | ✅       | ボランティア活動開始日（例：「2019」、「Jun 2019」）。 |
+| `summary`      | `string` | ✅       | 責任または成果の要約。                 |
+| `endDate?`     | `string` | ⬜       | ボランティア活動終了日（例：「2020」、「Dec 2020」）。   |
+| `url?`         | `string` | ⬜       | 組織または活動に関連する URL。                     |
+
+#### WorkItem
+
+単一の職歴または雇用職位を表します。
+
+| 属性        | タイプ       | 必須 | 説明                                          |
+| ----------- | ---------- | -------- | ---------------------------------------------------- |
+| `name`      | `string`   | ✅       | 会社または雇用主名。                     |
+| `position`  | `string`   | ✅       | 職位または担当した役職。                          |
+| `startDate` | `string`   | ✅       | 雇用開始日（例：「2021」、「Apr 2021」）。 |
+| `summary`   | `string`   | ✅       | 責任と成果の要約。     |
+| `endDate?`  | `string`   | ⬜       | 雇用終了日（例：「2023」、「Aug 2023」）。   |
+| `keywords?` | `string[]` | ⬜       | 役職または使用技術に関連するキーワード。   |
+| `url?`      | `string`   | ⬜       | 会社または職務に関連する URL。                  |
+
+### ResumeLayout
+
+全体的なレイアウト設定を定義します。
+
+| 属性          | タイプ                                                | 必須 | 説明                                                        |
+| ------------- | --------------------------------------------------- | -------- | ------------------------------------------------------------------ |
+| `locale?`     | [`ResumeLayoutLocale`](#resumelayoutlocale)         | ⬜       | 国際化とローカライゼーションのロケール設定を定義します。 |
+| `margins?`    | [`ResumeLayoutMargins`](#resumelayoutmargins)       | ⬜       | 文書レイアウトのマージン設定を定義します。                  |
+| `page?`       | [`ResumeLayoutPage`](#resumelayoutpage)             | ⬜       | 文書プレゼンテーションのページレベル設定を定義します。             |
+| `template?`   | [`Template`](#template)                             | ⬜       | 選択されたテンプレートを定義します。                                     |
+| `typography?` | [`ResumeLayoutTypography`](#resumelayouttypography) | ⬜       | 文書フォーマットのタイポグラフィ設定を定義します。               |
+| `latex?`      | [`ResumeLayoutLaTeX`](#resumelayoutlatex)           | ⬜       | LaTeX 固有の設定オプションを定義します。                      |
+
+#### ResumeLayoutLocale
+
+国際化とローカライゼーションのロケール設定を定義します。
+
+| 属性        | タイプ                                | 必須 | 説明                                                      |
+| ----------- | ----------------------------------- | -------- | ---------------------------------------------------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | 履歴書コンテンツとテンプレート用語の選択された言語。 |
+
+#### ResumeLayoutMargins
+
+文書レイアウトのマージン設定を定義します。
+
+| 属性      | タイプ     | 必須 | 説明                          |
+| --------- | -------- | -------- | ------------------------------------ |
+| `top?`    | `string` | ⬜       | 上マージン値（例：「2.5cm」）。    |
+| `bottom?` | `string` | ⬜       | 下マージン値（例：「2.5cm」）。 |
+| `left?`   | `string` | ⬜       | 左マージン値（例：「1.5cm」）。   |
+| `right?`  | `string` | ⬜       | 右マージン値（例：「1.5cm」）。  |
+
+#### ResumeLayoutPage
+
+文書プレゼンテーションのページレベル設定を定義します。
+
+| 属性               | タイプ      | 必須 | 説明                      |
+| ------------------ | --------- | -------- | -------------------------------- |
+| `showPageNumbers?` | `boolean` | ⬜       | ページ番号を表示するかどうか。 |
+
+#### ResumeLayoutTypography
+
+文書フォーマットのタイポグラフィ設定を定義します。
+
+| 属性        | タイプ     | 必須 | 説明                                             |
+| ----------- | -------- | -------- | ------------------------------------------------------- |
+| `fontSize?` | `string` | ⬜       | 文書の基本フォントサイズ（例：「10pt」、「11pt」）。 |
+
+#### ResumeLayoutLaTeX
+
+LaTeX 固有の設定オプションを定義します。
+
+| 属性        | タイプ                            | 必須 | 説明                            |
+| ----------- | ------------------------------- | -------- | -------------------------------------- |
+| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | LaTeX fontspec パッケージ設定。 |
+
+## 列挙タイプ
+
+### Country
+
+世界のすべての可能な国と地域のユニオンタイプ。
+
+### Degree
+
+すべての可能な学位のユニオンタイプ。
+
+- `Associate`
+- `Bachelor`
+- `Diploma`
+- `Doctor`
+- `High School`
+- `Master`
+- `Middle School`
+
+### Fluency
+
+すべての可能な言語流暢度のユニオンタイプ。
+
+- `Elementary Proficiency`
+- `Full Professional Proficiency`
+- `Limited Working Proficiency`
+- `Minimum Professional Proficiency`
+- `Native or Bilingual Proficiency`
+
+### Language
+
+すべてのサポートされている言語のユニオンタイプ。
+
+### Level
+
+すべての可能なスキル習熟度のユニオンタイプ。
+
+- `Advanced`
+- `Beginner`
+- `Expert`
+- `Intermediate`
+- `Master`
+- `Novice`
+
+### Network
+
+すべての可能なソーシャルネットワークオプションのユニオンタイプ。
+
+### Template
+
+すべての可能なテンプレートオプションのユニオンタイプ。
+
+参照：[テンプレート](https://yamlresume.dev/docs/layout/templates)
+
+- `moderncv-banking`
+- `moderncv-casual`
+- `moderncv-classic`
+
+### LocaleLanguage
+
+すべての可能なロケール言語のユニオンタイプ。
+
+参照：[多言語](https://yamlresume.dev/docs/content/multi-languages)
+
+- `en`
+- `es`
+- `zh-hans`
+- `zh-hant-hk`
+- `zh-hant-tw`
+
+### FontspecNumbers
+
+すべての可能な latex fontspec 数字オプションのユニオンタイプ。
+
+- `Auto` - 選択された `LocaleLanguage` に基づいてスタイルを自動決定することを許可（デフォルト）
+- `Lining` - 標準のライニング数字（CJK 言語のデフォルト）
+- `OldStyle` - 異なる高さのオールドスタイル数字（ラテン言語のデフォルト）
+
+### FontSize
+
+すべての可能なフォントサイズオプションのユニオンタイプ。
+
+現在 3 つのオプションのみサポート：
+
+- `10pt` - 10pt フォントサイズ（デフォルト）
+- `11pt` - 11pt フォントサイズ
+- `12pt` - 12pt フォントサイズ

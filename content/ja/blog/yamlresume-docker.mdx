@@ -1,0 +1,102 @@
+---
+title: Docker での YAMLResume
+description: 'Docker で YAMLResume を即座に実行'
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-06-06
+---
+
+YAMLResume に [docker イメージ](https://hub.docker.com/r/yamlresume/yamlresume) ができたことを発表できて非常に興奮しています。これで [docker で YAMLResume を即座に実行](https://asciinema.org/a/722057) できます。
+
+![YAMLResume Docker asciinema](/static/images/blog/yamlresume-docker/yamlresume-docker-asciinema.gif)
+
+## なぜ Docker なのか？
+
+YAMLResume は Node.js CLI ツールと[ライブラリ](https://www.npmjs.com/package/@yamlresume/core) です。YAMLResume 自体のインストールは Node.js のみが必要なので困難ではありません。実際、Node.js をインストールせずに直接実行できるバイナリにコンパイルすることもできます。
+
+しかし、YAMLResume には LaTeX への強制依存があり、いくつかの新しい問題をもたらします：
+
+- LaTeX のインストールには時間がかかる；適切な LaTeX ディストリビューションをダウンロードして設定するのに通常約 5-10 分かかる
+- LaTeX は単一のバイナリプログラムではない；プログラムの集合である。一部のユーザーは[マシンに多くのプログラムをインストールすることを嫌う](https://github.com/yamlresume/yamlresume/issues/6#issuecomment-2916479009)
+
+macOS、Windows、Ubuntu、RHEL をカバーし、YAMLResume と LaTeX をインストールして連携させる手順を含む非常に包括的な[インストールガイド](/ja/docs/installation) を既に提供していますが、一部のユーザーにとってこのプロセスは依然として苦痛である可能性があります。
+
+Docker はこれらの問題に対する素晴らしい解決策です：すべてを単一のイメージにパッケージ化し、インストールと設定を簡単にします。
+
+## 使用方法
+
+百聞は一見に如かず。使用方法を示すスクリーンショットです：
+
+![YAMLResume Docker デモ](/static/images/blog/yamlresume-docker/yamlresume-docker-demo.svg)
+
+私たちの [docker イメージ](https://hub.docker.com/r/yamlresume/yamlresume) には、以下を含むすべてが事前パッケージ化されています：
+
+- [Node.js](/ja/docs/installation#nodejs)
+- [yamlresume CLI](/ja/docs/installation#yamlresume)
+- [XeTeX](/ja/docs/installation#xetex)
+- [推奨フォント](/ja/docs/installation#font)
+
+以下のコマンドで即座に新しい履歴書を作成できます：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+`my-resume.yml` を適切に編集し、YAML から PDF に履歴書をビルドします：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+#### 内部の仕組み
+
+docker に慣れている場合、これがどのように動作するかは既にご存知かもしれません。そうでない場合、簡単な説明です：
+
+1. `docker run ... yamlresume/yamlresume` - `yamlresume/yamlresume` イメージから新しいコンテナを実行。このイメージがローカルマシンに存在しない場合、[docker Hub](https://hub.docker.com/r/yamlresume/yamlresume) からプルします
+2. `--rm` - 終了時にコンテナを自動削除
+3. `-v $(pwd):/home/yamlresume` - 現在のディレクトリ (`$(pwd)`) をコンテナ内の `/home/yamlresume` にマウントし、コンテナがローカルファイルにアクセスできるようにします
+4. `new my-resume.yml` または `build my-resume.yml` - yamlresume CLI [new](/ja/docs/cli#new) または [build](/ja/docs/cli#build) サブコマンドを実行して、ファイル名 `my-resume.yml` で履歴書を作成またはビルド
+
+基本的に、この方法で `yamlresume` [CLI サブコマンド](/cli) をすべて呼び出すことができます—`yamlresume/yamlresume` の後にサブコマンドを追加し、対応する使用ガイドに従うだけです。
+
+`-v` フラグは非常に重要です。現在のディレクトリ (`$(pwd)`) をコンテナ内の `/home/yamlresume` にマウントし、ローカルディレクトリとコンテナ間の双方向ファイル同期を可能にします。このフラグがないと、ビルド出力アーティファクトはコンテナ終了後に失われます。
+
+## エンジニアリング
+
+docker を少し知っていれば、docker イメージの構築は困難ではありません。しかし、YAMLResume を docker でラップすることは聞こえるほど簡単ではありません。以下がいくつかの課題です。
+
+### LaTeX 設定は面倒
+
+動作する LaTeX ディストリビューションのインストールには時間がかかります；適切な LaTeX ディストリビューションをダウンロードして設定するのに通常約 5-10 分かかります。GitHub Action ランナーでは、このプロセスは[さらに長く—20 分以上](https://github.com/yamlresume/yamlresume/actions/runs/15438395862/job/43450134447) かかります。
+
+```docker
+RUN apt update && \
+    apt install -y \
+    texlive-xetex \
+    texlive-fonts-extra \
+    texlive-lang-all \
+    fonts-noto-cjk \
+    fonts-noto-cjk-extra \
+```
+
+[yamlresume の docker イメージ](https://hub.docker.com/r/yamlresume/yamlresume) の構築を 3 ステップのプロセスにしました：
+
+1. Node.js イメージをベースとして開始
+2. LaTeX ディストリビューションをインストール・設定
+3. yamlresume CLI をインストール
+
+前述のように、ステップ 2 が最も時間のかかる部分です。docker イメージを更新する必要があるたびに最初から始めなければならない場合、github action ランナーで docker イメージを構築するのに 30 分かかります。
+
+これを避けるため、LaTeX ディストリビューションをキャッシュするマルチステージビルドを使用し、docker イメージを更新するたびに最初からインストールする必要がないようにしました。
+
+したがって、Node.js と LaTeX ディストリビューションがインストールされたベースイメージである新しい [yamlresume/yamlresume-base](https://hub.docker.com/r/yamlresume/yamlresume-base) を作成しました。このベースイメージは安定しており、頻繁に更新されることはなく、私たちの `yamlresume/yamlresume` イメージはこのベースイメージの上に構築されます。`yamlresume/yamlresume-base` イメージをプルダウンして yamlresume CLI をインストールするのに 3 分しかかからず、反復時間を大幅に短縮します。
+
+### マルチプラットフォームサポート
+
+もう一つの課題は[マルチプラットフォームビルド](https://docs.docker.com/build/building/multi-platform/) のサポートです。ご存知の通り、macOS M1 以降は ARM ベースのマシンです。エミュレーションによって AMD64 アーキテクチャの docker イメージを実行できますが、パフォーマンスは 10 倍悪くなります。
+
+したがって、`yamlresume/yamlresume` のマルチプラットフォームイメージをサポートする必要があります。幸い、docker は [github actions でマルチプラットフォームイメージを構築する方法](https://docs.docker.com/build/ci/github-actions/multi-platform/) についての詳細ガイドを公式に提供しています。
+
+YAMLResume の docker イメージは[2 つのプラットフォーム](https://hub.docker.com/r/yamlresume/yamlresume/tags) をサポートします：`linux/amd64` と `linux/arm64` で、これはほとんどのデスクトップとサーバーマシンをカバーするのに十分です。
+
+docker で YAMLResume をお楽しみください！

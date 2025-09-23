@@ -1,0 +1,107 @@
+---
+title: 再配置
+---
+
+デフォルトでは、YAMLResume は標準的な順序でセクションを配置します。しかし、カスタム `order` リストを提供することで、この設定を簡単に変更できます。これにより、最も重要な情報を最初に強調できます。
+
+## 使用方法
+
+例えば、「Skills」と「Projects」セクションを「Work」経験の前に配置したい場合、以下のように順序を定義できます：
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:
+  sections:
+    order:
+      - skills
+      - projects
+      - work
+```
+
+`order` リストに含まれるセクションは、指定した順序で最初に表示されます。リストに含まれていないセクションは、後でデフォルトの順序に従って追加されます。
+
+## 例
+
+### 仕事経験を優先
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - work
+      - education
+```
+
+結果：仕事経験が最初に表示され、次に教育、その後すべての他のセクションがデフォルトの順序で続きます。
+
+### スキルと言語を強調
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - skills
+      - languages
+      - work
+```
+
+結果：スキルと言語が上部で強調表示され、次に仕事経験、その後残りのセクションが続きます。
+
+### 学術重視
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - education
+      - publications
+      - awards
+      - certificates
+```
+
+結果：学術セクションが最初に表示され、その後他のセクションがデフォルトの順序で続きます。
+
+## デフォルトセクション順序
+
+カスタム順序が指定されていない場合、セクションは以下のデフォルト順序でレンダリングされます：
+
+1. `basics`（デフォルトで履歴書の上部に要約セクションとしてレンダリング）
+2. `education`
+3. `work`
+4. `languages`
+5. `skills`
+6. `awards`
+7. `certificates`
+8. `publications`
+9. `references`
+10. `projects`
+11. `interests`
+12. `volunteer`
+
+## 実装詳細
+
+- **優先順位**：`order` で指定されたセクションは指定されたシーケンスで最初に表示
+- **フォールバック**：残りのセクションはデフォルトの順序で続く
+- **重複除去**：順序配列内の重複セクションは除去される（最初の出現を保持）
+- **空セクション**：コンテンツのないセクションは自動的にフィルタリングされる
+- **柔軟性**：ユーザーは任意のソート可能セクションのサブセットを指定可能
+
+## ソート可能なセクション
+
+以下のセクションを再配置できます：
+
+- `basics`
+- `education`
+- `work`
+- `volunteer`
+- `awards`
+- `certificates`
+- `publications`
+- `skills`
+- `languages`
+- `interests`
+- `references`
+- `projects`
