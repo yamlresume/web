@@ -21,6 +21,11 @@ export function Footer() {
           <nav aria-label="Languages" className="ml-auto">
             <ul className="flex flex-col items-end gap-1 text-sm text-fd-muted-foreground2">
               <li>
+                <Link href="/" className="hover:underline">
+                  English
+                </Link>
+              </li>
+              <li>
                 <Link href="/fr" className="hover:underline">
                   Français
                 </Link>
