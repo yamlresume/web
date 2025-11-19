@@ -1,0 +1,119 @@
+---
+title: Reordenar
+---
+
+Por defecto, YAMLResume organiza las secciones en un orden estándar. Sin
+embargo, puedes cambiar esto fácilmente proporcionando una lista `order`
+personalizada. Esto te permite destacar tu información más importante primero.
+
+## Cómo Usar
+
+Por ejemplo, si quieres colocar tus secciones de "Skills" y "Projects" antes de
+tu experiencia "Work", puedes definir el orden así:
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:
+  sections:
+    order:
+      - skills
+      - projects
+      - work
+```
+
+Cualquier sección incluida en la lista `order` aparecerá primero, en la
+secuencia que hayas especificado. Las secciones no incluidas en la lista se
+agregarán después, siguiendo su orden predeterminado.
+
+## Ejemplos
+
+### Priorizar Experiencia Laboral
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - work
+      - education
+```
+
+Resultado: la experiencia laboral aparece primero, seguida de educación, luego
+todas las demás secciones en orden predeterminado.
+
+### Destacar Habilidades e Idiomas
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - skills
+      - languages
+      - work
+```
+
+Resultado: habilidades e idiomas aparecen prominentemente en la parte superior,
+seguidos de experiencia laboral, luego las secciones restantes.
+
+### Enfoque Académico
+
+```yml lineNumbers
+layout:
+  sections:
+    order:
+      - education
+      - publications
+      - awards
+      - certificates
+```
+
+Resultado: las secciones académicas aparecen primero, seguidas de otras
+secciones en orden predeterminado.
+
+## Orden de Sección Predeterminado
+
+Cuando no se especifica un orden personalizado, las secciones se renderizan en
+este orden predeterminado:
+
+1. `basics` (por defecto renderizado en la parte superior del currículum como una sección de resumen)
+2. `education`
+3. `work`
+4. `languages`
+5. `skills`
+6. `awards`
+7. `certificates`
+8. `publications`
+9. `references`
+10. `projects`
+11. `interests`
+12. `volunteer`
+
+## Detalles de Implementación
+
+- **Prioridad**: Las secciones especificadas en `order` aparecen primero en la
+  secuencia especificada
+- **Respaldo**: Las secciones restantes siguen en el orden predeterminado
+- **Deduplicación**: Las secciones duplicadas en el arreglo order se deduplican
+  (se mantiene la primera ocurrencia)
+- **Secciones Vacías**: Las secciones sin contenido se filtran automáticamente
+- **Flexibilidad**: Los usuarios pueden especificar cualquier subconjunto de
+  secciones ordenables
+
+## Secciones Ordenables
+
+Las siguientes secciones pueden ser reordenadas:
+
+- `basics`
+- `education`
+- `work`
+- `volunteer`
+- `awards`
+- `certificates`
+- `publications`
+- `skills`
+- `languages`
+- `interests`
+- `references`
+- `projects`

@@ -1,0 +1,161 @@
+---
+title: YAMLResume en Docker
+description: "Ejecuta YAMLResume instantáneamente con Docker"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-06-06
+---
+
+Estoy súper emocionado de anunciar que YAMLResume ahora tiene una [imagen de
+docker](https://hub.docker.com/r/yamlresume/yamlresume), y puedes [ejecutar
+YAMLResume instantáneamente con docker](https://asciinema.org/a/722057).
+
+![YAMLResume Docker
+asciinema](/static/images/blog/yamlresume-docker/yamlresume-docker-asciinema.gif)
+
+## ¿Por Qué Docker?
+
+YAMLResume es una herramienta CLI de Node.js y una
+[biblioteca](https://www.npmjs.com/package/@yamlresume/core). Instalar
+YAMLResume en sí no es difícil ya que solo requiere Node.js. De hecho, podemos
+incluso compilarlo a un binario y ejecutarlo directamente sin instalar Node.js.
+
+Sin embargo, YAMLResume tiene una dependencia obligatoria de LaTeX, lo que trae
+algunos nuevos problemas:
+
+- Instalar LaTeX toma tiempo; usualmente toma alrededor de 5–10 minutos descargar una
+  distribución LaTeX adecuada y configurarla.
+- LaTeX no es un programa binario único; es una colección de programas. Algunos
+  usuarios [no les gusta instalar muchos programas en sus
+  máquinas](https://github.com/yamlresume/yamlresume/issues/6#issuecomment-2916479009).
+
+Aunque ya proporcionamos una [guía de instalación](/docs/installation) muy
+completa que cubre macOS, Windows, Ubuntu y RHEL, incluso con instrucciones
+sobre cómo instalar YAMLResume y LaTeX y hacerlos funcionar juntos, el proceso
+todavía puede ser doloroso para algunos usuarios.
+
+Docker es una gran solución a estos problemas: puede empaquetar todo en una sola
+imagen, facilitando la instalación y configuración.
+
+## Cómo Usarlo
+
+Una imagen vale más que mil palabras. Aquí hay una captura de pantalla que
+muestra cómo usarlo:
+
+![Demo de YAMLResume Docker](/static/images/blog/yamlresume-docker/yamlresume-docker-demo.svg)
+
+Nuestra [imagen de docker](https://hub.docker.com/r/yamlresume/yamlresume) tiene
+todo preempaquetado, incluyendo:
+
+- [Node.js](/docs/installation#nodejs)
+- [yamlresume CLI](/docs/installation#yamlresume)
+- [XeTeX](/docs/installation#xetex)
+- [algunas fuentes recomendadas](/docs/installation#font)
+
+Puedes crear un nuevo currículum instantáneamente con el siguiente comando:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+Edita `my-resume.yml` en consecuencia y luego construye el currículum de YAML a
+PDF:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+#### Bajo el Capó
+
+Si estás familiarizado con docker, probablemente ya sepas cómo funciona esto. Si
+no, aquí hay una explicación rápida:
+
+1. `docker run ... yamlresume/yamlresume` - ejecuta un nuevo contenedor desde la
+   imagen `yamlresume/yamlresume`. Si esta imagen no existe en tu máquina local,
+   la descargará desde el [docker
+   Hub](https://hub.docker.com/r/yamlresume/yamlresume).
+2. `--rm` - elimina automáticamente el contenedor cuando sale.
+3. `-v $(pwd):/home/yamlresume` - monta el directorio actual (`$(pwd)`) en el
+   contenedor en `/home/yamlresume`, permitiendo que el contenedor acceda a
+   archivos locales.
+4. `new my-resume.yml` o `build my-resume.yml` - ejecuta el subcomando de CLI de
+   yamlresume [new](/docs/cli#new) o [build](/docs/cli#build) para crear o
+   construir un currículum con el nombre de archivo `my-resume.yml`.
+
+Básicamente, puedes llamar a todos los [subcomandos CLI](/cli) de `yamlresume`
+de esta manera—solo agrega el subcomando después de `yamlresume/yamlresume` y
+luego sigue la guía de uso correspondiente.
+
+La bandera `-v` es bastante importante porque monta el directorio actual
+(`$(pwd)`) en el contenedor en `/home/yamlresume`, permitiendo la sincronización
+bidireccional de archivos entre el directorio local y el contenedor. Sin esta
+bandera, el artefacto de salida de construcción se perderá después de que el
+contenedor salga.
+
+## Ingeniería
+
+Construir una imagen de docker no es difícil si conoces un poco de docker. Sin
+embargo, envolver YAMLResume en docker no es tan fácil como suena. Aquí hay
+algunos de los desafíos.
+
+### La Configuración de LaTeX es Tediosa
+
+Instalar una distribución LaTeX funcional toma tiempo; usualmente toma alrededor
+de 5–10 minutos descargar y configurar una distribución LaTeX adecuada. En los
+ejecutores de GitHub Action, este proceso es [aún más largo—hasta más de 20
+minutos](https://github.com/yamlresume/yamlresume/actions/runs/15438395862/job/43450134447).
+
+```docker
+RUN apt update && \
+    apt install -y \
+    texlive-xetex \
+    texlive-fonts-extra \
+    texlive-lang-all \
+    fonts-noto-cjk \
+    fonts-noto-cjk-extra \
+```
+
+Lo convertimos en un proceso de 3 pasos para construir [la imagen de docker de
+yamlresume](https://hub.docker.com/r/yamlresume/yamlresume):
+
+1. Comenzar desde una imagen de Node.js como base.
+2. Instalar y configurar una distribución LaTeX.
+3. Instalar el CLI de yamlresume.
+
+Como se mencionó, el paso 2 es la parte que consume más tiempo. Si tuviéramos
+que empezar desde cero cada vez que necesitáramos actualizar la imagen de
+docker, tomaría 30 minutos construir la imagen de docker en un ejecutor de
+acción de github.
+
+Para evitar esto, usamos una construcción multi-etapa para cachear la
+distribución LaTeX, por lo que no necesitamos instalarla desde cero cada vez que
+actualizamos la imagen de docker.
+
+Por lo tanto, creamos una nueva
+[yamlresume/yamlresume-base](https://hub.docker.com/r/yamlresume/yamlresume-base),
+que es una imagen base que tiene Node.js y una distribución LaTeX instaladas.
+Esta imagen base es estable y no se actualizará con demasiada frecuencia, y
+nuestra imagen `yamlresume/yamlresume` está construida sobre esta imagen base.
+Solo toma 3 minutos descargar la imagen `yamlresume/yamlresume-base` e instalar
+el CLI de yamlresume en ella, lo que reduce drásticamente el tiempo de
+iteración.
+
+### Soporte Multi-Plataforma
+
+Otro desafío es soportar [construcciones
+multi-plataforma](https://docs.docker.com/build/building/multi-platform/). Como
+sabemos, macOS M1 y posteriores son máquinas basadas en ARM. Aunque pueden
+ejecutar imágenes de docker con arquitectura AMD64 mediante emulación, el
+rendimiento es 10 veces peor.
+
+Por lo tanto, tenemos que soportar imágenes multi-plataforma para
+`yamlresume/yamlresume`. Afortunadamente, docker proporciona oficialmente una
+guía detallada sobre cómo [construir imágenes multi-plataforma en acciones de
+github](https://docs.docker.com/build/ci/github-actions/multi-platform/).
+
+La imagen de docker de YAMLResume soporta [dos
+plataformas](https://hub.docker.com/r/yamlresume/yamlresume/tags): `linux/amd64`
+y `linux/arm64`, que deberían ser suficientes para cubrir la mayoría de las
+máquinas de escritorio y servidor.
+
+¡Disfruta YAMLResume con docker!

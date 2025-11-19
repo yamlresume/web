@@ -82,7 +82,21 @@ export function generateStaticParams(): { slug: string; language: string }[] {
       language: 'zh-tw',
     }))
 
-  return [...enParams, ...frParams, ...jaParams, ...zhCNParams, ...zhTWParams]
+  const esParams = getLocalizedSources('es')
+    .blog.getPages()
+    .map((page) => ({
+      slug: page.slugs[0],
+      language: 'es',
+    }))
+
+  return [
+    ...enParams,
+    ...frParams,
+    ...jaParams,
+    ...zhCNParams,
+    ...zhTWParams,
+    ...esParams,
+  ]
 }
 
 export async function generateMetadata(props: {

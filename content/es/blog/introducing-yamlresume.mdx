@@ -1,0 +1,354 @@
+---
+title: Presentando YAMLResume
+description: "YAMLResume: Currículums como Código en YAML"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-05-21
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+Todo desarrollador necesita un currículum a menos que seas un profesional
+mundialmente famoso. Escribir un currículum puede no ser difícil, pero
+definitivamente no es divertido y es tedioso. Muchos pasan días elaborando sus
+currículums, persiguiendo currículums 100% libres de errores tipográficos, con
+gramática revisada y con diseño y tipografía profesional.
+
+[YAMLResume](https://yamlresume.dev) te permite crear y versionar tus
+currículums usando [YAML](https://yaml.org/) y generar PDFs de aspecto
+profesional con hermosa tipografía en un instante.
+
+Comenzó como el motor de composición central para
+[PPResume](https://ppresume.com)—un generador de currículums comercial, perfecto
+a nivel de píxel, basado en [LaTeX](https://www.latex-project.org/)—que ya ayuda
+a miles de personas a crear currículums bellamente compuestos. Sin mucha
+vacilación, decidimos hacerlo de código abierto para que las personas siempre
+tengan el derecho de decir [no al bloqueo de
+proveedores](https://blog.ppresume.com/posts/no-vendor-lock-in).
+
+![YAMLResume Nuevo y Construir Currículum](/static/images/blog/introducing-yamlresume/yamlresume-new-and-build.webp)
+
+## Inicio Rápido
+
+YAMLResume proporciona una [herramienta CLI](https://www.npmjs.com/package/yamlresume),
+además, tiene una dependencia obligatoria en un motor de composición para
+generar PDF. En otras palabras, debes [instalar un motor de composición](/docs/installation#typesetting-engine) primero si quieres generar
+PDF.
+
+Instalar `yamlresume` CLI es pan comido. Puedes instalarlo usando tu
+administrador de paquetes de Node.js favorito:
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```console tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+
+</Tabs>
+
+Verifica que `yamlresume` esté instalado correctamente:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version   output the version number
+  -v, --verbose   verbose output
+  -h, --help      display help for command
+
+Commands:
+  new [filename]  create a new resume
+  build <source>  build a resume to LaTeX and PDF
+  languages       i18n and l10n support
+  templates       manage resume templates
+  help [command]  display help for command
+```
+
+También recomendamos que instales la fuente [Linux
+Libertine](http://yamlresume.dev/docs/installation#linux-libertine) para
+obtener los PDFs de mejor aspecto.
+
+Por último pero no menos importante, si quieres crear un currículum CJK, también recomendamos que
+instales [fuentes Google Noto](https://fonts.google.com/noto/) para la [mejor
+cobertura unicode](https://github.com/ppresume/community/issues/63).
+
+### Crear un Nuevo Currículum
+
+Puedes crear un nuevo currículum con una sola línea:
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+Bajo el capó `yamlresume new` clonará un currículum de muestra desde
+[aquí](https://github.com/yamlresume/yamlresume/blob/main/packages/cli/resources/resume.yml).
+Luego puedes obtener un PDF con una sola línea nuevamente:
+
+```console
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF successfully.
+```
+
+¡Listo! Revisa el PDF de currículum generado:
+
+![Página 1 del Currículum](/static/images/blog/introducing-yamlresume/resume-1.webp)
+![Página 2 del Currículum](/static/images/blog/introducing-yamlresume/resume-2.webp)
+
+Puedes revisar la [Galería de PPResume](https://ppresume.com/gallery) para más ejemplos
+impulsados por YAMLResume como motor de composición.
+
+### Solución de Problemas
+
+YAMLResume CLI proporciona una bandera verbose `-v`/`--verbose` para mostrar información de registro más detallada. Si tienes problemas para construir un currículum, puedes intentar ejecutar
+los comandos nuevamente con esta bandera verbose y pegar la salida en [problemas de github](https://github.com/yamlresume/yamlresume/issues), lo revisaré y
+te responderé.
+
+## ¿Cómo Funciona?
+
+Bajo el capó, YAMLResume funciona como un mini compilador, es decir, toma una entrada,
+la analiza en un [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) y
+luego genera una salida.
+
+<Mermaid
+  chart="
+  flowchart TD
+    A[Currículums en YAML]
+    A --> B[Analizar YAML a AST]
+    A --> C[Analizar campo resumen]
+    C --> D[Transformar AST a LaTeX]
+    B --> D
+    D --> E[Compilar LaTeX a PDF]
+"
+/>
+
+El principio de diseño central de YAMLResume es la [separación de
+preocupaciones](https://en.wikipedia.org/wiki/Separation_of_concerns). Uno de los
+ejemplos más famosos que sigue este principio es HTML & CSS, que son la
+base de la web moderna—HTML se usa para organizar el contenido en una página web,
+CSS se usa para definir el estilo de presentación del contenido.
+
+Siguiendo el principio central, YAMLResume está diseñado basándose en los siguientes
+requisitos:
+
+- el contenido del currículum debe escribirse en texto plano, lo cual es amigable con el control de versiones
+- el texto plano debe usar un formato totalmente estructurado, lo que nos da más
+  control y flexibilidad
+- YAML es mejor que JSON porque es más legible y escribible para humanos
+- el texto plano YAML se renderiza luego en un PDF con un motor de composición
+  conectable
+- se debe proporcionar un diseño opinado de fábrica, mientras se permite
+  a las personas ajustar opciones en consecuencia como tamaños de fuente, márgenes de página, etc.
+
+## ¿Por Qué YAML?
+
+[JSON Resume](https://jsonresume.org/) es otro proyecto que permite a las personas
+crear currículums en un formato estructurado. Sin embargo, la mayoría de los desarrolladores estarían de acuerdo en que
+YAML es mejor que JSON con respecto a la legibilidad y escritura humana. Por
+ejemplo, es bastante inconveniente representar cadenas de múltiples líneas en JSON, mientras que
+YAML tiene soporte nativo para ello.
+
+Compara un fragmento de currículum en JSON y YAML:
+
+```json
+{
+  "content": {
+    "basics": {
+      "name": "Andy Dufresne",
+      "headline": "Headed for the Pacific",
+      "phone": "(213) 555-9876",
+      "email": "hi@ppresume.com",
+      "url": "https://ppresume.com/gallery",
+      "summary": "- Computer Science major with strong foundation in data structures, algorithms, and software development\n- Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites\n- Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)\n- Team player, with detail-oriented mindset and a keen eye for design and user experiences"
+    }
+  }
+}
+```
+
+```yml lineNumbers
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@ppresume.com
+    url: https://ppresume.com/gallery
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+¿Cuál es más legible y escribible? La respuesta es obvia.
+
+JSON Resume no tiene preocupación sobre el diseño del currículum. En el mundo real,
+¿no puedes simplemente enviar un archivo JSON a los reclutadores, verdad? El formato de currículum estructurado
+necesita ser convertido a un formato de documento legible por humanos como docx, PDF,
+etc. YAMLResume ofrece una configuración de diseño opinada, y garantiza
+salida PDF perfecta a nivel de píxel.
+
+Al momento de escribir, el diseño opinado de YAMLResume soporta:
+
+- idiomas locales
+  - Inglés
+  - Chino Simplificado
+  - Chino Tradicional
+  - Español
+- márgenes
+  - superior
+  - izquierdo
+  - derecho
+  - inferior
+- números de página
+- plantilla
+- tipografía
+  - tamaño de fuente
+
+Aquí hay un fragmento de código de muestra para la configuración de diseño en YAMLResume:
+
+```yml lineNumbers
+layout:
+  locale:
+    language: en
+  margins:
+    top: 2.5cm
+    left: 1.5cm
+    right: 1.5cm
+    bottom: 2.5cm
+  page:
+    showPageNumbers: true
+  template: moderncv-banking
+  typography:
+    fontSize: 11pt
+```
+
+## ¿Por Qué No Markdown?
+
+[Markdown](https://en.wikipedia.org/wiki/Markdown) es otra opción popular
+para escribir currículums, también hay algunos generadores de currículums que adoptan markdown como
+el formato de entrada principal. Sin embargo, markdown es un lenguaje de marcado de propósito general
+para crear texto formateado, mientras que los currículums solo usan un conjunto muy limitado de
+características de markdown.
+
+Por ejemplo, la siguiente sintaxis de markdown es muy poco probable que se use en un
+currículum:
+
+- blockquote
+- bloques de código
+- reglas horizontales
+- imágenes
+- tablas
+- marcado html
+- etc.
+
+Segundo, markdown es demasiado flexible, a menudo dando a los usuarios más libertad de la que
+necesitan para crear un currículum. Sería bastante difícil analizar de manera confiable un
+documento markdown genérico como un currículum.
+
+Tercero, características como cambio de plantillas, control preciso de diseño (como `\hfill`
+y `\hspace` en LaTeX) es muy difícil de implementar en markdown.
+
+En conclusión, usar un formato totalmente estructurado como YAML/JSON nos da más
+control y confiabilidad sobre el formato y diseño de los currículums.
+
+## ¿Por Qué Todavía LaTeX?
+
+[LaTeX](https://www.latex-project.org/) es un motor de composición muy maduro y estable
+que puede producir PDFs de extremadamente alta calidad. Sin embargo, muchos usuarios de LaTeX,
+incluso entusiastas de LaTeX, estarían de acuerdo en que el lenguaje LaTeX está algo
+desactualizado—sus mensajes de error son a menudo bastante confusos, y la dependencia de
+variables globales a menudo lleva a conflictos entre paquetes, la velocidad de compilación
+es lenta para documentos grandes y a menudo bastante complicada, y produce
+archivos intermedios feos (`.aux`, `.log`, etc.).
+
+Algunos sugieren reemplazar LaTeX con [typst](https://github.com/typst/typst),
+que es un motor de composición moderno, con mucho mejor DX y compilación mucho más rápida.
+Sin embargo, después de una cuidadosa evaluación, decidí quedarme con LaTeX.
+El factor decisivo aquí es que, YAMLResume está diseñado para soportar múltiples idiomas
+con la mejor calidad de composición posible, sin embargo, el [soporte CJK](https://blog.ppresume.com/posts/on-typesetting-engines#cjk-3) de typst todavía es
+inestable y carente.
+
+Más adelante podría agregar un nuevo
+backend de [renderizador](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/base.ts)
+para soportar typst.
+
+## Soporte de Texto Enriquecido
+
+Aunque hemos decidido no usar markdown como el formato de entrada del currículum, sí
+soportamos un conjunto limitado de sintaxis de texto enriquecido markdown para el campo `summary` en
+varias secciones.
+
+Por ahora, soportamos la siguiente sintaxis de markdown:
+
+- `**negrita**`
+- `*cursiva*`
+- `[enlace](https://www.google.com)`
+- lista ordenada
+- lista desordenada
+- lista anidada
+- párrafos
+
+Por ejemplo, este es un fragmento de muestra para el campo `content.basics.summary`:
+
+```yml lineNumbers
+---
+content:
+  basics:
+    # ...
+    summary: |
+      This is a sample YAML resume that support limited set of markdown rich text syntax (bold, italics, links, lists):
+
+      - Computer Science major with **strong foundation** in data structures, *algorithms*, and software development
+        1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+        2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+Y este es el PDF generado:
+
+![Soporte de Texto Enriquecido en Campo Resumen](/static/images/blog/introducing-yamlresume/rich-text-support-in-summary-field.webp)
+
+Puedes ver que la sintaxis de texto enriquecido se renderiza correctamente con negrita, cursiva,
+enlaces, listas, bastante sólido, ¿verdad?
+
+## Hoja de Ruta
+
+En general, el proyecto todavía está en una etapa muy temprana, tenemos un largo camino por recorrer.
+Ya he planeado una lista de características por hacer en el futuro cercano:
+
+1. más idiomas, Japonés, Alemán, Francés, etc
+2. más plantillas
+3. [alias de sección](https://github.com/yamlresume/yamlresume/issues/11)
+4. [reordenamiento de sección](https://github.com/yamlresume/yamlresume/issues/12)
+5. [validación de esquema](https://github.com/yamlresume/yamlresume/issues/10)
+
+Para cualquier problema, puedes:
+
+- abrir un [issue](https://github.com/yamlresume/yamlresume/issues/)
+- abrir una [discusión](https://github.com/yamlresume/yamlresume/discussions)
+- dejar un [mensaje](https://discord.gg/9SyT7mVV4K)
+
+¡Manténganse atentos!

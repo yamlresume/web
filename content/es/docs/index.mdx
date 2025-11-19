@@ -1,0 +1,235 @@
+---
+title: Inicio Rápido
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+## Introducción
+
+Crear un currículum puede no ser difícil, pero definitivamente es un proceso
+aburrido, largo y tedioso.
+
+Con YAMLResume, puedes crear y controlar versiones de tus currículums con YAML y
+crear PDFs perfectos a nivel de píxel con diseño y composición profesional en un
+instante.
+
+YAMLResume es el motor central de [PPResume](https://ppresume.com), un
+constructor basado en LaTeX. Ha ayudado a [miles de
+personas](https://blog.ppresume.com/posts/2024-recap) alrededor del mundo a
+crear currículums perfectos a nivel de píxel y de aspecto profesional y
+conseguir sus trabajos soñados. Aquí decidimos hacer de código abierto el motor,
+para dar a las personas el derecho y la libertad de decir [no al bloqueo de
+proveedor](https://blog.ppresume.com/posts/no-vendor-lock-in)
+
+![YAMLResume Nuevo y Construir
+Currículum](/static/images/docs/yamlresume-new-and-build.webp)
+
+## Empezando
+
+### Usuarios de Docker
+
+Si eres un usuario de docker, estás de suerte, tenemos una [imagen de
+docker](https://hub.docker.com/r/yamlresume/yamlresume) para ti, que tiene
+[yamlresume cli](https://www.npmjs.com/package/yamlresume) instalado con todas
+sus dependencias, como [XeTeX](https://www.tug.org/xetex/) y algunas [fuentes
+recomendadas](/docs/installation#font).
+
+Puedes simplemente crear un nuevo currículum con el siguiente comando:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+Edita \`my-resume.yml\` en consecuencia y luego construye el currículum de yaml
+a pdf:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+### Usuarios de macOS
+
+Asumamos que estás usando macOS con [Homebrew](https://brew.sh/) como gestor de
+paquetes. Si no es así, por favor consulta la guía de
+[Instalación](/docs/installation) para instrucciones detalladas para tu sistema
+operativo.
+
+<Steps>
+
+<Step>
+#### Instalar Node.js
+
+Necesitas [instalar
+Node.js](https://nodejs.org/en/download/package-manager/all#macos) 20.x o
+más reciente.
+
+```sh
+brew install node
+```
+
+</Step>
+
+<Step>
+#### Instalar Motor de Composición
+
+YAMLResume necesita un [motor de
+composición](/docs/installation#typesetting-engine) para generar PDF.
+Actualmente soporta dos motores de composición:
+
+- [XeTeX](/docs/installation#xetex)
+- [Tectonic](/docs/installation#tectonic)
+
+<Tabs groupId="typesetting-engine" persist items={["XeTeX", "Tectonic"]}>
+```sh tab="XeTeX"
+brew install mactex
+```
+
+```sh tab="Tectonic"
+brew install tectonic
+```
+
+</Tabs>
+</Step>
+
+<Step>
+#### Instalar YAMLResume
+
+Instalar \`yamlresume\` es muy fácil. Puedes instalarlo usando tu gestor de
+paquetes Node.js favorito:
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```sh tab="npm"
+npm install -g yamlresume
+```
+
+```sh tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```sh tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+
+</Tabs>
+
+Verifica que \`yamlresume\` se instaló exitosamente:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+</Step>
+
+<Step>
+#### [Opcional] Instalar Fuentes
+
+##### Fuente Linux Libertine
+
+También recomendamos instalar la [fuente Linux
+Libertine](/docs/installation#linux-libertine) para la mejor salida PDF de
+aspecto, pero esto es opcional.
+
+```sh
+brew install font-linux-libertine
+```
+
+##### Fuentes Noto
+
+Si necesitas crear un currículum CJK (Chino, Japonés, Coreano), recomendamos que
+instales la [fuente Noto](https://fonts.google.com/noto):
+
+```sh
+brew install font-noto-sans-cjk font-noto-serif-cjk
+```
+
+</Step>
+
+<Step>
+#### Crea Tu Primer Currículum YAML
+
+Crea un nuevo currículum usando el comando \`yamlresume new\`:
+
+```sh
+yamlresume new my-resume.yml
+```
+
+Esto genera un archivo \`my-resume.yml\` con una plantilla básica de currículum.
+El archivo está lleno de ejemplos y comentarios para guiarte a través del
+proceso.
+
+</Step>
+
+<Step>
+#### Construir Tu Currículum a PDF
+
+Una vez que hayas editado tu currículum YAML, construye tu currículum a PDF:
+
+```sh
+yamlresume build my-resume.yml
+```
+
+Esto generará un archivo PDF llamado \`my-resume.pdf\` en el mismo directorio.
+
+</Step>
+
+</Steps>
+
+Aquí están las capturas de pantalla del [PDF
+generado](https://github.com/yamlresume/yamlresume/blob/main/packages/cli/resources/resume.pdf):
+
+![Currículum de Muestra Página 1](/static/images/docs/resume-1.webp)
+![Currículum de Muestra Página 2](/static/images/docs/resume-2.webp)
+
+Puedes consultar [Galería de PPResume](https://ppresume.com/gallery) para más
+ejemplos, con soporte para diferentes
+[plantillas](https://ppresume.com/gallery/templates) y [múltiples
+idiomas](https://ppresume.com/gallery/languages).
+
+## Aprende Más
+
+<Cards>
+  <Card
+    href="./docs/installation"
+    title="Guía de Instalación"
+    description="Instrucciones detalladas para instalar YAMLResume en diferentes SO"
+  />
+  <Card
+    href="./docs/cli"
+    title="CLI"
+    description="Manual para CLI de YAMLResume"
+  />
+  <Card
+    href="https://github.com/yamlresume/yamlresume/discussions"
+    title="Discusiones"
+    description="Haz preguntas, comparte ideas y obtén ayuda de la comunidad"
+  />
+</Cards>

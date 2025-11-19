@@ -1,0 +1,148 @@
+---
+title: CLI
+---
+
+YAMLResume adopta una estructura de mono-repo, lo que significa que todos los
+paquetes están contenidos dentro de un solo repositorio. Gracias al [workspace
+de pnpm](https://pnpm.io/workspaces), este enfoque simplifica la gestión de
+dependencias y el versionado entre paquetes.
+
+Al momento de escribir, el repositorio de YAMLResume tiene dos paquetes:
+
+- [yamlresume/cli](https://github.com/yamlresume/yamlresume/tree/main/packages/cli):
+  la interfaz CLI para YAMLResume.
+- [yamlresume/core](https://github.com/yamlresume/yamlresume/tree/main/packages/core):
+  contiene el motor central para YAMLResume. Maneja el análisis, validación y
+  renderizado de currículums basado en el [esquema](/docs/compiler/schema)
+  oficial.
+
+## yamlresume/core build
+
+`yamlresume/cli` depende de `yamlresume/core` para funcionar correctamente. Así
+que cuando quieras probar `yamlresume/cli`, necesitas asegurarte de que
+`yamlresume/core` también esté construido y disponible.
+
+Puedes hacer esto con los siguientes comandos:
+
+```bash
+# construir para propósito de desarrollo
+pnpm core build
+
+# construir para producción, lo cual minificará la salida y generará archivos
+# DTS de TypeScript `.d.ts`
+pnpm core build:prod
+
+# vigilar cambios de archivo y construir automáticamente
+pnpm core build:watch
+```
+
+## yamlresume/cli build
+
+Una vez que `yamlresume/core` está construido, puedes ejecutar los comandos CLI
+de dos formas:
+
+1. construir `yamlresume/cli` localmente y ejecutar node.js con `dist/cli.js`:
+
+```bash
+pnpm cli build
+node packages/cli/dist/cli.js <comando> [opciones]
+```
+
+2. ejecutar `yamlresume/cli` directamente con la ayuda de [tsx](https://tsx.is/):
+
+```bash
+pnpm cli dev <comando> [opciones]
+
+# este comando se traducirá a
+# tsx src/cli.ts
+```
+
+## Demo
+
+`yamlresume/core` build:
+
+```console
+$ pnpm core build
+
+> @yamlresume/yamlresume@0.7.1 core /Users/hanyu/work/yamlresume/yamlresume
+> pnpm --filter @yamlresume/core build
+
+> @yamlresume/core@0.7.1 build /Users/hanyu/work/yamlresume/yamlresume/packages/core
+> tsup
+
+CLI Building entry: src/index.ts
+CLI Using tsconfig: tsconfig.json
+CLI tsup v8.4.0
+CLI Using tsup config: /Users/hanyu/work/yamlresume/yamlresume/packages/core/tsup.config.ts
+CLI Target: esnext
+CLI Cleaning output folder
+ESM Build start
+ESM dist/index.js 160.91 KB
+ESM ⚡️ Build success in 111ms
+```
+
+`yamlresume/cli` build:
+
+```console
+$ pnpm cli build
+
+> @yamlresume/yamlresume@0.7.1 cli /Users/hanyu/work/yamlresume/yamlresume
+> pnpm --filter yamlresume build
+
+> yamlresume@0.7.1 build /Users/hanyu/work/yamlresume/yamlresume/packages/cli
+> tsup
+
+CLI Building entry: src/cli.ts
+CLI Using tsconfig: tsconfig.json
+CLI tsup v8.4.0
+CLI Using tsup config: /Users/hanyu/work/yamlresume/yamlresume/packages/cli/tsup.config.ts
+CLI Target: esnext
+CLI Cleaning output folder
+ESM Build start
+ESM dist/cli.js 11.36 KB
+ESM ⚡️ Build success in 42ms
+```
+
+Probar `yamlresume/cli` con tsx mediante `pnpm cli dev`:
+
+```console
+$ pnpm cli dev help
+
+> @yamlresume/yamlresume@0.7.1 cli /Users/hanyu/work/yamlresume/yamlresume
+> pnpm --filter yamlresume dev help
+
+> yamlresume@0.7.1 dev /Users/hanyu/work/yamlresume/yamlresume/packages/cli
+> tsx src/cli.ts help
+
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+Probar `yamlresume/cli` con Node.js:
+
+```console
+$ node packages/cli/dist/cli.js -V
+0.7.1
+```

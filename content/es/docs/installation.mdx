@@ -1,0 +1,243 @@
+---
+title: Instalación
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+YAMLResume es una herramienta de Node.js que, bajo el capó, transforma tu
+currículum del formato YAML a código LaTeX y luego invoca un motor de
+composición LaTeX para compilar ese código a PDF. Además, para obtener una
+salida PDF óptima, recomendamos instalar algunas fuentes. En resumen, para
+empezar con YAMLResume necesitas:
+
+- Node.js
+- el paquete [yamlresume](https://www.npmjs.com/package/yamlresume)
+- un motor de composición (typesetting engine)
+- [opcional] algunas fuentes
+
+Puede sonar un poco complejo, pero no te preocupes: te guiamos paso a paso.
+
+## Usuarios de Docker
+
+Si usas Docker, estás de suerte: tenemos una [imagen de
+Docker](https://hub.docker.com/r/yamlresume/yamlresume) con todo pre-empacado,
+incluyendo:
+
+- [Node.js](/docs/installation#nodejs)
+- [yamlresume CLI](/docs/installation#yamlresume)
+- [XeTeX](/docs/installation#xetex)
+- [algunas fuentes recomendadas](/docs/installation#font)
+
+Crea un currículum al instante con:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+<Callout title="¿Cómo funciona esta magia de Docker?">
+Este comando creará un archivo `my-resume.yml` en tu directorio actual.
+Pasos:
+
+1. `docker run ... yamlresume/yamlresume` — ejecuta un contenedor a partir de la
+   imagen `yamlresume/yamlresume` (si no existe localmente, se descargará
+   desde [Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume)).
+2. `--rm` — elimina automáticamente el contenedor al salir.
+3. `-v $(pwd):/home/yamlresume` — monta el directorio actual dentro del contenedor
+   en `/home/yamlresume`, permitiendo acceso bidireccional a los archivos.
+4. `new my-resume.yml` — ejecuta el subcomando
+   [new](/docs/cli#new) del CLI para crear un currículum con ese nombre.
+</Callout>
+
+Edita `my-resume.yml` y luego genera el PDF:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+Básicamente, puedes invocar cualquier [subcomando del
+CLI](/docs/cli) de esta forma: añade el subcomando tras `yamlresume/yamlresume`
+y sigue su ayuda de uso.
+
+La opción `-v` es importante: monta tu directorio actual (`$(pwd)`) en
+`/home/yamlresume` para sincronizar archivos entre tu máquina y el contenedor.
+
+<Callout title="Espejo en GitHub">
+Si tienes problemas al descargar la imagen desde Docker Hub, también está
+publicada en el registro de GitHub Packages:
+
+```sh
+docker pull ghcr.io/yamlresume/yamlresume
+```
+</Callout>
+
+### Problemas de permisos
+
+A veces puedes encontrarte con [problemas de permisos](https://github.com/yamlresume/yamlresume/issues/24)
+al ejecutar el contenedor, ya que la imagen se construye con `USER yamlresume`
+y corre con menos privilegios por defecto. Dos soluciones:
+
+1) Ejecutar el contenedor con tu UID/GID del host:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume -u $(id -u):$(id -g) yamlresume/yamlresume new my-resume.yml
+```
+
+2) Ejecutarlo como root (menos recomendado):
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume -u root yamlresume/yamlresume new my-resume.yml
+```
+
+## Node.js
+
+Necesitas Node.js 20.x o superior. Instálalo con tu gestor preferido o consulta
+la guía oficial para tu sistema.
+
+<Tabs groupId='node-install' persist items={['macOS (brew)', 'Ubuntu/Debian', 'Arch', 'Windows']}>
+```sh tab="macOS (brew)"
+brew install node
+```
+
+```sh tab="Ubuntu/Debian"
+# usando NodeSource u otros métodos equivalentes
+# (consulta https://nodejs.org/en/download/package-manager)
+```
+
+```sh tab="Arch"
+sudo pacman -S nodejs npm
+```
+
+```sh tab="Windows"
+# Recomendado: usar winget o nvm-windows
+winget install OpenJS.NodeJS.LTS
+```
+</Tabs>
+
+## yamlresume
+
+Instala el CLI globalmente con tu gestor favorito:
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```sh tab="npm"
+npm install -g yamlresume
+```
+
+```sh tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```sh tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+</Tabs>
+
+Comprueba la instalación:
+
+```console
+$ yamlresume -V
+```
+
+## Typesetting Engine
+
+Para generar el PDF, YAMLResume necesita un motor de composición. Actualmente
+se soportan dos:
+
+- [XeTeX](#xetex)
+- [Tectonic](#tectonic)
+
+### XeTeX
+
+XeTeX viene con TeX Live/MacTeX y ofrece gran calidad tipográfica.
+
+<Tabs groupId='xetex' persist items={['macOS', 'Ubuntu/Debian', 'Arch', 'Windows (WSL)']}>
+```sh tab="macOS"
+# Paquete completo (recomendado en macOS)
+brew install mactex
+```
+
+```sh tab="Ubuntu/Debian"
+sudo apt-get update && sudo apt-get install -y texlive-xetex
+```
+
+```sh tab="Arch"
+sudo pacman -S texlive-binextra texlive-latexextra
+```
+
+```sh tab="Windows (WSL)"
+# Instala WSL y usa el método de Ubuntu/Debian dentro de WSL
+```
+</Tabs>
+
+### Tectonic
+
+[Tectonic](https://tectonic-typesetting.github.io/) es un motor moderno, rápido y
+sin dependencias gigantes.
+
+<Tabs groupId='tectonic' persist items={['macOS', 'Linux', 'Windows']}>
+```sh tab="macOS"
+brew install tectonic
+```
+
+```sh tab="Linux"
+curl --proto '=https' --tlsv1.2 -sSf https://install.tectonic.dev | sh
+```
+
+```sh tab="Windows"
+winget install tectonic
+```
+</Tabs>
+
+## Font
+
+Aunque no es obligatorio, instalar buenas fuentes mejora notablemente el
+resultado del PDF.
+
+### Linux Libertine
+
+La familia [Linux Libertine](/docs/installation#linux-libertine) es una excelente
+opción serif para texto de cuerpo.
+
+<Tabs groupId='libertine' persist items={['macOS (brew)', 'Ubuntu/Debian', 'Arch']}>
+```sh tab="macOS (brew)"
+brew install --cask font-linux-libertine
+```
+
+```sh tab="Ubuntu/Debian"
+sudo apt-get update && sudo apt-get install -y fonts-linuxlibertine
+```
+
+```sh tab="Arch"
+sudo pacman -S ttf-linux-libertine
+```
+</Tabs>
+
+### Google Noto
+
+Para currículums en CJK (Chino/Japonés/Coreano) recomendamos la familia
+[Noto](https://fonts.google.com/noto):
+
+<Tabs groupId='noto' persist items={['macOS (brew)', 'Ubuntu/Debian', 'Arch']}>
+```sh tab="macOS (brew)"
+brew install --cask font-noto-sans-cjk font-noto-serif-cjk
+```
+
+```sh tab="Ubuntu/Debian"
+sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
+```
+
+```sh tab="Arch"
+sudo pacman -S noto-fonts-cjk
+```
+</Tabs>
+
+## Consejos
+
+- Si usas Docker, no necesitas instalar Node, XeTeX o Tectonic en tu host.
+- XeTeX ofrece la mejor compatibilidad tipográfica; Tectonic es más ligero y
+  rápido de instalar.
+- Instalar Linux Libertine y Noto mejora la calidad visual, sobre todo en
+  idiomas no latinos.

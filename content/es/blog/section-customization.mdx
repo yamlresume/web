@@ -1,0 +1,218 @@
+---
+title: "YAMLResume v0.6: Personalización de Secciones"
+description: |
+  YAMLResume v0.6 introduce alias de secciones y funciones de reordenamiento que
+  mejoran aún más sus capacidades i18n para soportar idiomas no soportados.
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-07-22
+---
+
+YAMLResume [v0.6](https://github.com/yamlresume/yamlresume/releases/tag/v0.6.0)
+está aquí, y trae dos potentes características para personalizar la estructura
+de tu currículum: [alias de secciones](/docs/layout/sections/aliases) y
+[reordenamiento de secciones](/docs/layout/sections/reorder). Estas
+características te permiten renombrar títulos de secciones y controlar su
+secuencia en el PDF final, dándote mayor flexibilidad para adaptar tu
+currículum.
+
+Profundicemos en cómo funcionan.
+
+## Alias de Secciones
+
+Los títulos de sección predeterminados en YAMLResume (por ejemplo, `education`,
+`work`) se [traducen](/docs/layout/sections/docs/content/multi-languages)
+automáticamente según tu [idioma local](/docs/layout#locale) elegido. Sin
+embargo, podrías preferir un título diferente. Por ejemplo, podrías querer
+cambiar "Work" a "Professional Experience" para la sección `work`.
+
+Para definir alias, usa el mapa `layout.sections.aliases` en tu `resume.yml`.
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout: # [!code focus]
+  sections: # [!code focus]
+    aliases: # [!code focus]
+      work: Professional Experience # [!code focus]
+      education: Academic Background # [!code focus]
+      skills: Technical Skills # [!code focus]
+```
+
+## Reordenamiento de Secciones
+
+Por defecto, las secciones se renderizan en un [orden
+estándar](/docs/layout/sections/reorder#default-section-order). La
+característica `layout.sections.order` te permite cambiar esta secuencia para
+destacar tu información más importante primero.
+
+Por ejemplo, para colocar tus secciones de "Skills" y "Projects" antes de tu
+experiencia "Work", puedes definir el orden así:
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout: #[!code focus]
+  sections: #[!code focus]
+    order: #[!code focus]
+      - skills #[!code focus]
+      - projects #[!code focus]
+      - work #[!code focus]
+```
+
+Las secciones en la lista `order` aparecerán primero, seguidas de las secciones
+restantes en su orden predeterminado.
+
+## Juntándolo Todo: Un Ejemplo Completo
+
+Creemos un currículum de una página que use ambas características. Usaremos
+alias y reordenaremos algunas secciones al mismo tiempo.
+
+```yml lineNumbers title="resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+---
+layout:
+  sections: # [!code highlight]
+    aliases: # [!code highlight]
+      work: Professional Experience # [!code highlight]
+      education: Academic Background # [!code highlight]
+      skills: Technical Skills # [!code highlight]
+    order: # [!code highlight]
+      - basics # [!code highlight]
+      - work # [!code highlight]
+      - education # [!code highlight]
+      - skills # [!code highlight]
+  template: moderncv-banking
+  typography:
+    fontSize: 11pt
+
+content:
+  basics:
+    name: Jane Doe
+    headline: Senior Software Engineer
+    email: jane.doe@example.com
+    phone: "555-123-4567"
+    summary: |
+      A passionate and experienced software engineer with a proven track record
+      of designing, developing, and deploying robust web applications. Skilled
+      in both front-end and back-end development, with a keen eye for detail and
+      a dedication to writing clean, efficient code.
+  education:
+    - institution: Tech University
+      area: Software Engineering
+      degree: Master
+      startDate: 2018-09-01
+      endDate: 2020-06-01
+      summary: Specialized in distributed systems and cloud computing.
+    - institution: State University
+      area: Computer Science
+      degree: Bachelor
+      startDate: 2014-09-01
+      endDate: 2018-06-01
+      summary: |
+        - Graduated with honors.
+        - Focused on algorithms, data structures, and distributed systems.
+      courses:
+        - Data Structures & Algorithms
+        - Operating Systems
+        - Computer Networks
+        - Database Systems
+  work:
+    - name: Tech Solutions Inc.
+      position: Senior Software Engineer
+      startDate: 2020-07-01
+      summary: |
+        - Led the development of a new microservices-based architecture, improving system scalability and reliability.
+        - Mentored junior engineers, providing guidance on best practices and code quality.
+        - Optimized application performance, reducing API response times by 30%.
+    - name: Innovate Corp.
+      position: Software Engineer
+      startDate: 2018-07-01
+      endDate: 2020-06-30
+      summary: |
+        - Developed and maintained features for a large-scale e-commerce platform using React and Node.js.
+        - Collaborated with product managers and designers to deliver high-quality user experiences.
+        - Participated in on-call rotation to ensure application stability.
+    - name: Data Systems LLC
+      position: Software Engineer Intern
+      startDate: 2017-06-01
+      endDate: 2017-08-31
+      summary: |
+        - Assisted in the development of a data processing pipeline.
+        - Wrote unit tests to ensure code quality.
+        - Gained experience with Agile development methodologies.
+  skills:
+    - name: Programming Languages
+      level: Expert
+      keywords:
+        - JavaScript (ES6+)
+        - TypeScript
+        - Python
+        - Go
+    - name: Technologies & Frameworks
+      level: Advanced
+      keywords:
+        - React
+        - Node.js
+        - Express
+        - Docker
+        - Kubernetes
+        - PostgreSQL
+    - name: Developer Tools
+      level: Advanced
+      keywords:
+        - Git & GitHub
+        - Webpack
+        - Jest
+        - CircleCI
+  languages:
+    - language: English
+      fluency: Native or Bilingual Proficiency
+    - language: Spanish
+      fluency: Limited Working Proficiency
+```
+
+Aquí usamos alias para las secciones `work`, `education` y `skills`, y
+reordenamos las secciones asignando mayor prioridad a `work` que a `education`,
+seguida de la sección `skills`:
+
+Ahora, construyamos el currículum:
+
+```bash
+yamlresume build resume.yml
+```
+
+Obtendrás un archivo PDF con el siguiente contenido—resalté las secciones con
+personalizaciones:
+
+![Personalización de Secciones](/static/images/blog/section-customization/resume-highlight.webp)
+
+¡Genial, funciona como se esperaba! ¿No es esto genial?
+
+## En Resumen
+
+Con alias de secciones y reordenamiento, ahora tienes control detallado sobre la
+estructura de tu currículum. Esperamos que estas características te ayuden a
+crear currículums aún más personalizados y efectivos.
+
+La mejor parte de la personalización de secciones es que siempre puedes extender
+[las capacidades i18n de YAMLResume para soportar más
+idiomas](/docs/layout/sections/reorder#default-section-order) por tu cuenta. Por
+defecto, los títulos de sección predeterminados se traducirán al idioma local
+objetivo (establecido vía `layout.locale.language`) automáticamente. Sin
+embargo, siempre hay casos donde YAMLResume [aún no ha soportado tu idioma
+objetivo](https://github.com/yamlresume/yamlresume/discussions/36), por lo que
+puedes sobrescribir los títulos de sección predeterminados con los tuyos
+propios.
+
+Mientras tanto, las personas con diferentes antecedentes tienen diferentes
+preferencias para el orden de secciones. Por ejemplo, los candidatos que buscan
+un trabajo en la industria pueden ordenar `work` antes de `education`, mientras
+que los investigadores postdoctorales que buscan una posición académica
+ordenarían `education` antes de `work`.
+
+¡Esperamos que disfrutes estas nuevas características!

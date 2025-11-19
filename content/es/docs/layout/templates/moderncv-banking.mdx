@@ -1,0 +1,55 @@
+---
+title: Moderncv Banking
+---
+
+## Implementación
+
+Moderncv banking es una plantilla de currículum moderna y limpia basada en
+[xdanaux/moderncv](https://github.com/xdanaux/moderncv).
+
+Bajo el capó, usamos el siguiente código para el preámbulo de LaTeX:
+
+```latex lineNumbers
+\documentclass[a4paper, serif, 11pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% needed by moderncv for showing icons
+\usepackage{fontawesome5}
+```
+
+Para el estilo moderncv banking, también adoptamos algunos procesamientos
+especiales para puntuación con el fin de hacerlo funcionar con CJK.
+
+Técnicamente hablando, el inglés y el chino tienen diferentes dos puntos. Los
+dos puntos en inglés son `:`, con Unicode `U+003A`, mientras que los dos puntos
+en chino son `：`, con Unicode `U+FF1A`. Entonces, cuando el idioma del
+currículum es chino, adoptaríamos los dos puntos chinos para moderncv
+sobrescribiendo algunas macros mágicas de LaTeX:
+
+```latex lineNumbers
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}<= &templateTranslations.punctuations.Colon =>}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}<= &templateTranslations.punctuations.Colon =>}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+```
+
+Consulta nuestro
+[post](https://blog.ppresume.com/posts/multi-languagues-support#colon) del blog
+para más detalles.
+
+## Vista Previa
+
+![Plantilla Moderncv Banking](/static/images/docs/layout/templates/moderncv-banking-template.png)

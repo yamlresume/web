@@ -1,11 +1,13 @@
 import { siteConfig } from '@/config/site'
 import {
   blogSource,
+  blogSourceEs,
   blogSourceFr,
   blogSourceJa,
   blogSourceZhCN,
   blogSourceZhTW,
   docsSource,
+  docsSourceEs,
   docsSourceFr,
   docsSourceJa,
   docsSourceZhCN,
@@ -24,6 +26,7 @@ export async function GET() {
     ...docsSourceZhTW.getPages(),
     ...docsSourceFr.getPages(),
     ...docsSourceJa.getPages(),
+    ...docsSourceEs.getPages(),
   ]
 
   const allBlogPages = [
@@ -32,6 +35,7 @@ export async function GET() {
     ...blogSourceZhTW.getPages(),
     ...blogSourceFr.getPages(),
     ...blogSourceJa.getPages(),
+    ...blogSourceEs.getPages(),
   ]
 
   const docsLink = allDocsPages

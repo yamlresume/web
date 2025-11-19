@@ -1,0 +1,392 @@
+---
+title: Tipos
+---
+
+Este documento describe los tipos de TypeScript que definen la estructura de un
+currículum en YAMLResume. Como proyecto TypeScript, YAMLResume emplea tipado
+estático para garantizar consistencia de datos. Aquí se presenta una visión
+general de las estructuras núcleo para representar la información del
+currículum, incluyendo datos personales, educación, experiencia, habilidades y
+más.
+
+Puedes consultar
+[types.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types.ts)
+para la fuente de verdad.
+
+Entender estos tipos es esencial para contribuir o extender la funcionalidad de
+YAMLResume.
+
+Este documento sirve como referencia definitiva para crear un YAMLResume válido,
+aclarando la diferencia entre campos opcionales y obligatorios. Para compilar
+con éxito, un currículum mínimo debe incluir:
+
+- `content.basics.name`
+- `education[number].area`
+- `education[number].degree`
+- `education[number].institution`
+- `education[number].startDate`
+
+Ejemplo mínimo viable:
+
+```yml lineNumbers
+content:
+  basics:
+    name: Xiao Hanyu
+  education:
+    - area: Computer Science and Technology
+      degree: Bachelor
+      institution: Zhejiang University
+      startDate: Sep, 2007
+```
+
+## Resume
+
+Define la estructura global del currículum (contenido y layout).
+
+| Prop      | Tipo                              | Requerido | Descripción                                       |
+| --------- | --------------------------------- | --------- | ------------------------------------------------- |
+| `content` | [`ResumeContent`](#resumecontent) | ✅        | Estructura del contenido completo del currículum. |
+| `layout?` | [`ResumeLayout`](#resumelayout)   | ⬜️       | Configuración general del layout.                 |
+
+Diagrama de alto nivel:
+
+<Mermaid chart='
+flowchart LR
+  A[Resume]
+  B[ResumeLayout]
+  C[ResumeContent]
+
+subgraph Layout
+direction TB
+B1[locale]
+B2[margins]
+B3[page]
+B4[template]
+B5[typography]
+end
+
+subgraph Content
+direction TB
+C1[basics]
+C2["education[]"]
+C3[location]
+C4[profiles]
+C5["work[]"]
+C6["skills[]"]
+C7["languages[]"]
+C8["..."]
+end
+
+A --> B
+A --> C
+B --> B1
+B --> B2
+B --> B3
+B --> B4
+B --> B5
+C --> C1
+C --> C2
+C --> C3
+C --> C4
+C --> C5
+C --> C6
+C --> C7
+C --> C8
+'/>
+
+### ResumeContent
+
+Estructura del contenido completo del currículum.
+
+| Prop            | Tipo                                    | Requerido | Descripción                                   |
+| --------------- | --------------------------------------- | --------- | --------------------------------------------- |
+| `basics`        | [`BasicsItem`](#basicsitem)             | ✅        | Información personal y de contacto principal. |
+| `education`     | [`EducationItem[]`](#educationitem)     | ✅        | Conjunto de experiencias educativas.          |
+| `awards?`       | [`AwardItem[]`](#awarditem)             | ⬜️       | Conjunto de premios y reconocimientos.        |
+| `certificates?` | [`CertificateItem[]`](#certificateitem) | ⬜️       | Conjunto de certificaciones y credenciales.   |
+| `interests?`    | [`InterestItem[]`](#interestitem)       | ⬜️       | Intereses, hobbies o actividades personales.  |
+| `languages?`    | [`LanguageItem[]`](#languageitem)       | ⬜️       | Competencias lingüísticas.                    |
+| `location?`     | [`LocationItem`](#locationitem)         | ⬜️       | Información de localización.                  |
+| `projects?`     | [`ProjectItem[]`](#projectitem)         | ⬜️       | Proyectos.                                    |
+| `profiles?`     | [`ProfileItem[]`](#profileitem)         | ⬜️       | Perfiles online.                              |
+| `publications?` | [`PublicationItem[]`](#publicationitem) | ⬜️       | Publicaciones.                                |
+| `references?`   | [`ReferenceItem[]`](#referenceitem)     | ⬜️       | Referencias.                                  |
+| `skills?`       | [`SkillItem[]`](#skillitem)             | ⬜️       | Habilidades.                                  |
+| `volunteer?`    | [`VolunteerItem[]`](#volunteeritem)     | ⬜️       | Experiencias de voluntariado.                 |
+| `work?`         | [`WorkItem[]`](#workitem)               | ⬜️       | Experiencias laborales e historial de empleo. |
+
+#### AwardItem
+
+Representa un premio u honor recibido.
+
+| Prop       | Tipo     | Req. | Descripción                         |
+| ---------- | -------- | ---- | ----------------------------------- |
+| `awarder`  | `string` | ✅   | Organización que otorga el premio.  |
+| `title`    | `string` | ✅   | Nombre del premio.                  |
+| `date?`    | `string` | ⬜️  | Fecha (p. ej., "2020", "Oct 2020"). |
+| `summary?` | `string` | ⬜️  | Breve descripción.                  |
+
+#### BasicsItem
+
+Información personal principal.
+
+| Prop        | Tipo     | Req. | Descripción                                        |
+| ----------- | -------- | ---- | -------------------------------------------------- |
+| `name`      | `string` | ✅   | Nombre completo.                                   |
+| `email?`    | `string` | ⬜️  | Email.                                             |
+| `headline?` | `string` | ⬜️  | Titular profesional (p. ej., "Software Engineer"). |
+| `phone?`    | `string` | ⬜️  | Teléfono.                                          |
+| `summary?`  | `string` | ⬜️  | Resumen profesional.                               |
+| `url?`      | `string` | ⬜️  | Sitio o portafolio.                                |
+
+#### CertificateItem
+
+| Prop     | Tipo     | Req. | Descripción                    |
+| -------- | -------- | ---- | ------------------------------ |
+| `issuer` | `string` | ✅   | Entidad emisora.               |
+| `name`   | `string` | ✅   | Nombre del certificado.        |
+| `date?`  | `string` | ⬜️  | Fecha obtenida.                |
+| `url?`   | `string` | ⬜️  | Enlace de verificación u otro. |
+
+#### EducationItem
+
+| Prop          | Tipo                | Req. | Descripción                            |
+| ------------- | ------------------- | ---- | -------------------------------------- |
+| `area`        | `string`            | ✅   | Área de estudio.                       |
+| `degree`      | [`Degree`](#degree) | ✅   | Tipo de grado.                         |
+| `institution` | `string`            | ✅   | Institución.                           |
+| `startDate`   | `string`            | ✅   | Fecha de inicio.                       |
+| `courses?`    | `string[]`          | ⬜️  | Cursos.                                |
+| `endDate?`    | `string`            | ⬜️  | Fecha de fin (vacío implica "Actual"). |
+| `summary?`    | `string`            | ⬜️  | Descripción/logros.                    |
+| `score?`      | `string`            | ⬜️  | Calificación/GPA.                      |
+| `url?`        | `string`            | ⬜️  | Enlace relacionado.                    |
+
+#### InterestItem
+
+| Prop        | Tipo       | Req. | Descripción                  |
+| ----------- | ---------- | ---- | ---------------------------- |
+| `name`      | `string`   | ✅   | Nombre del interés.          |
+| `keywords?` | `string[]` | ⬜️  | Palabras clave relacionadas. |
+
+#### LanguageItem
+
+| Prop        | Tipo                    | Req. | Descripción                  |
+| ----------- | ----------------------- | ---- | ---------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅   | Nivel de competencia.        |
+| `language`  | [`Language`](#language) | ✅   | Idioma.                      |
+| `keywords?` | `string[]`              | ⬜️  | Palabras clave relacionadas. |
+
+#### LocationItem
+
+| Prop          | Tipo                  | Req. | Descripción              |
+| ------------- | --------------------- | ---- | ------------------------ |
+| `city`        | `string`              | ✅   | Ciudad.                  |
+| `address?`    | `string`              | ⬜️  | Dirección.               |
+| `country?`    | [`Country`](#country) | ⬜️  | País.                    |
+| `postalCode?` | `string`              | ⬜️  | Código postal.           |
+| `region?`     | `string`              | ⬜️  | Región/provincia/estado. |
+
+#### ProfileItem
+
+| Prop       | Tipo                  | Req. | Descripción       |
+| ---------- | --------------------- | ---- | ----------------- |
+| `network`  | [`Network`](#network) | ✅   | Red o plataforma. |
+| `username` | `string`              | ✅   | Usuario.          |
+| `url?`     | `string`              | ⬜️  | URL del perfil.   |
+
+#### ProjectItem
+
+| Prop           | Tipo       | Req. | Descripción           |
+| -------------- | ---------- | ---- | --------------------- |
+| `name`         | `string`   | ✅   | Nombre.               |
+| `startDate`    | `string`   | ✅   | Inicio.               |
+| `summary`      | `string`   | ✅   | Logros/detalles.      |
+| `description?` | `string`   | ⬜️  | Descripción.          |
+| `endDate?`     | `string`   | ⬜️  | Fin.                  |
+| `keywords?`    | `string[]` | ⬜️  | Tecnologías/keywords. |
+| `url?`         | `string`   | ⬜️  | Enlace (repo/demo).   |
+
+#### PublicationItem
+
+| Prop           | Tipo     | Req. | Descripción               |
+| -------------- | -------- | ---- | ------------------------- |
+| `name`         | `string` | ✅   | Título de la publicación. |
+| `publisher`    | `string` | ✅   | Editorial.                |
+| `releaseDate?` | `string` | ⬜️  | Fecha de publicación.     |
+| `summary?`     | `string` | ⬜️  | Resumen/abstract.         |
+| `url?`         | `string` | ⬜️  | Enlace (DOI/u otro).      |
+
+#### ReferenceItem
+
+| Prop            | Tipo     | Req. | Descripción                   |
+| --------------- | -------- | ---- | ----------------------------- |
+| `name`          | `string` | ✅   | Nombre de la referencia.      |
+| `summary`       | `string` | ✅   | Nota breve.                   |
+| `email?`        | `string` | ⬜️  | Email.                        |
+| `phone?`        | `string` | ⬜️  | Teléfono.                     |
+| `relationship?` | `string` | ⬜️  | Relación (p. ej., "Manager"). |
+
+#### SkillItem
+
+| Prop        | Tipo              | Req. | Descripción                  |
+| ----------- | ----------------- | ---- | ---------------------------- |
+| `level`     | [`Level`](#level) | ✅   | Nivel de la habilidad.       |
+| `name`      | `string`          | ✅   | Nombre de la habilidad.      |
+| `keywords?` | `string[]`        | ⬜️  | Palabras clave relacionadas. |
+
+#### VolunteerItem
+
+| Prop           | Tipo     | Req. | Descripción               |
+| -------------- | -------- | ---- | ------------------------- |
+| `organization` | `string` | ✅   | Organización.             |
+| `position`     | `string` | ✅   | Rol/posición.             |
+| `startDate`    | `string` | ✅   | Inicio.                   |
+| `summary`      | `string` | ✅   | Responsabilidades/logros. |
+| `endDate?`     | `string` | ⬜️  | Fin.                      |
+| `url?`         | `string` | ⬜️  | Enlace relacionado.       |
+
+#### WorkItem
+
+| Prop        | Tipo       | Req. | Descripción                          |
+| ----------- | ---------- | ---- | ------------------------------------ |
+| `name`      | `string`   | ✅   | Empresa.                             |
+| `position`  | `string`   | ✅   | Puesto.                              |
+| `startDate` | `string`   | ✅   | Inicio.                              |
+| `summary`   | `string`   | ✅   | Resumen de responsabilidades/logros. |
+| `endDate?`  | `string`   | ⬜️  | Fin.                                 |
+| `keywords?` | `string[]` | ⬜️  | Palabras clave/tecnologías.          |
+| `url?`      | `string`   | ⬜️  | Enlace relacionado.                  |
+
+### ResumeLayout
+
+| Prop          | Tipo                                                | Req. | Descripción                        |
+| ------------- | --------------------------------------------------- | ---- | ---------------------------------- |
+| `locale?`     | [`ResumeLayoutLocale`](#resumelayoutlocale)         | ⬜️  | Idioma/localización.               |
+| `margins?`    | [`ResumeLayoutMargins`](#resumelayoutmargins)       | ⬜️  | Márgenes.                          |
+| `page?`       | [`ResumeLayoutPage`](#resumelayoutpage)             | ⬜️  | Opciones de página.                |
+| `template?`   | [`Template`](#template)                             | ⬜️  | Plantilla seleccionada.            |
+| `typography?` | [`ResumeLayoutTypography`](#resumelayouttypography) | ⬜️  | Tipografía.                        |
+| `latex?`      | [`ResumeLayoutLaTeX`](#resumelayoutlatex)           | ⬜️  | Configuración específica de LaTeX. |
+
+#### ResumeLayoutLocale
+
+| Prop        | Tipo                                | Req. | Descripción            |
+| ----------- | ----------------------------------- | ---- | ---------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜️  | Idioma del currículum. |
+
+#### ResumeLayoutMargins
+
+| Prop      | Tipo     | Req. | Descripción       |
+| --------- | -------- | ---- | ----------------- |
+| `top?`    | `string` | ⬜️  | Margen superior.  |
+| `bottom?` | `string` | ⬜️  | Margen inferior.  |
+| `left?`   | `string` | ⬜️  | Margen izquierdo. |
+| `right?`  | `string` | ⬜️  | Margen derecho.   |
+
+#### ResumeLayoutPage
+
+| Prop               | Tipo      | Req. | Descripción                |
+| ------------------ | --------- | ---- | -------------------------- |
+| `showPageNumbers?` | `boolean` | ⬜️  | Mostrar números de página. |
+
+#### ResumeLayoutTypography
+
+| Prop        | Tipo     | Req. | Descripción            |
+| ----------- | -------- | ---- | ---------------------- |
+| `fontSize?` | `string` | ⬜️  | Tamaño base de fuente. |
+
+#### ResumeLayoutLaTeX
+
+| Prop        | Tipo                            | Req. | Descripción                        |
+| ----------- | ------------------------------- | ---- | ---------------------------------- |
+| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜️  | Configuración de paquete fontspec. |
+
+## Tipos de enumeración
+
+### Country
+
+Tipo unión que incluye todos los posibles países y regiones del mundo.
+
+### Degree
+
+Tipo unión que incluye todos los posibles grados académicos.
+
+- `Associate`
+- `Bachelor`
+- `Diploma`
+- `Doctor`
+- `High School`
+- `Master`
+- `Middle School`
+
+### Fluency
+
+Tipo unión que incluye todos los posibles niveles de competencia lingüística.
+
+- `Elementary Proficiency`
+- `Full Professional Proficiency`
+- `Limited Working Proficiency`
+- `Minimum Professional Proficiency`
+- `Native or Bilingual Proficiency`
+
+### Language
+
+Tipo unión que incluye todos los idiomas soportados.
+
+### Level
+
+Tipo unión que incluye todos los posibles niveles de dominio de habilidades.
+
+- `Advanced`
+- `Beginner`
+- `Expert`
+- `Intermediate`
+- `Master`
+- `Novice`
+
+### Network
+
+Tipo unión que incluye todas las posibles opciones de redes sociales.
+
+### Template
+
+Tipo unión que incluye todas las posibles opciones de plantilla.
+
+Ver también: [templates](/docs/layout/templates)
+
+- `moderncv-banking`
+- `moderncv-casual`
+- `moderncv-classic`
+
+### LocaleLanguage
+
+Tipo unión que incluye todos los posibles códigos de lenguaje local.
+
+Ver también: [multi-languages](/docs/content/multi-languages)
+
+- `en`
+- `es`
+- `zh-hans`
+- `zh-hant-hk`
+- `zh-hant-tw`
+
+### FontspecNumbers
+
+Tipo unión que incluye todas las posibles opciones de números de fontspec de LaTeX.
+
+- `Auto` - permite que el estilo se determine automáticamente según el
+  `LocaleLanguage` seleccionado (por defecto)
+- `Lining` - cifras lining estándar (por defecto para idiomas CJK)
+- `OldStyle` - cifras old style con alturas variables (por defecto para idiomas
+  latinos)
+
+### FontSize
+
+Tipo unión que incluye todas las posibles opciones de tamaño de fuente.
+
+Por ahora solo se admiten 3 opciones:
+
+- `10pt` - tamaño de fuente de 10pt (por defecto)
+- `11pt` - tamaño de fuente de 11pt
+- `12pt` - tamaño de fuente de 12pt

@@ -1,0 +1,274 @@
+---
+title: CLI
+---
+
+YAMLResume proporciona una herramienta CLI para ayudarte a gestionar tu
+currículum. Puedes seguir la [guía de instalación](/docs/installation) para
+instalarla.
+
+<Callout title="CLI de YAMLResume en docker">
+Ten en cuenta que tenemos una [imagen de docker](/docs/installation#docker-users)
+para ti, que tiene el CLI de `yamlresume` instalado con todas las
+dependencias necesarias.
+
+Para cada subcomando en esta guía, puedes ejecutarlo en docker agregando el
+subcomando después de `yamlresume/yamlresume`.
+
+Por ejemplo, para crear un nuevo currículum en el CLI de yamlresume:
+
+```sh
+yamlresume new my-resume.yml
+```
+
+También puedes ejecutarlo en docker mediante:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+</Callout>
+
+## Help
+
+Mostrar ayuda del CLI y todos los comandos disponibles:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+Mostrar versión del CLI de YAMLResume:
+
+```console
+$ yamlresume -V
+0.5.0
+```
+
+## New
+
+Crear un nuevo currículum. El nombre de archivo predeterminado del currículum es
+`resume.yml`, pero puedes especificar un nombre de archivo personalizado:
+
+```console
+$ yamlresume new --help
+Usage: yamlresume new [options] [filename]
+
+create a new resume
+
+Arguments:
+  filename    output filename (default: "resume.yml")
+
+Options:
+  -h, --help  display help for command
+
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+## Build
+
+Construir un currículum de YAML a PDF. Generará el código latex y el PDF al
+mismo tiempo, con algunos archivos intermedios `.aux`, `.log`, etc., si usas
+[XeTeX](/docs/installation#xetex) como motor de composición.
+
+```console
+$ yamlresume build --help
+Usage: yamlresume build [options] <resume-path>
+
+build a resume to LaTeX and PDF
+
+Arguments:
+  resume-path    the resume file path
+
+Options:
+  --no-pdf       only generate TeX file without PDF
+  --no-validate  skip resume schema validation
+  -h, --help     display help for command
+
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF file successfully.
+```
+
+### `--no-pdf`
+
+Si solo quieres generar el archivo LaTeX sin PDF, puedes usar la opción
+`--no-pdf`.
+
+```console
+$ yamlresume build --no-pdf my-resume.yml
+```
+
+### `--no-validate`
+
+Si quieres omitir la validación del esquema del currículum, puedes usar la
+opción `--no-validate`.
+
+```console
+$ yamlresume build --no-validate my-resume.yml
+```
+
+## Dev
+
+Construir un currículum de YAML a PDF en cambios de archivo. Acepta las mismas
+opciones que [`build`](#build) sin embargo reconstruirá automáticamente el
+currículum cuando el archivo YAML cambie (es decir, modo vigilancia). Esto sería
+muy conveniente para que puedas previsualizar los cambios de tu currículum en
+tiempo real.
+
+```console
+$ yamlresume dev --help
+Usage: yamlresume dev [options] <resume-path>
+
+build a resume on file changes (watch mode)
+
+Arguments:
+  resume-path    the resume file path
+
+Options:
+  --no-pdf       only generate TeX file without PDF
+  --no-validate  skip resume schema validation
+  -h, --help     display help for command
+```
+
+## Validate
+
+Validar un currículum contra el [esquema](/docs/compiler/schema) de YAMLResume.
+
+```console
+$ yamlresume validate --help
+Usage: yamlresume validate [options] <resume-path>
+
+validate a resume against the YAMLResume schema
+
+Arguments:
+  resume-path  the resume file path
+
+Options:
+  -h, --help   display help for command
+```
+
+Por ejemplo, para el siguiente currículum:
+
+```yml lineNumbers
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp
+    url: https//ppresume.com/gallery
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layout:
+  typography:
+    fontSize: 13pt
+```
+
+`yamlresume validate` te dará una lista de errores potenciales, con información
+posicional clara
+
+```console
+$ yamlresume validate my-resume.yml
+invalid-resume.yml:9:12: warning: email is invalid.
+    email: hi@pp
+           ^
+invalid-resume.yml:19:11: warning: city should be 2 characters or more.
+    city: S
+          ^
+invalid-resume.yml:31:11: warning: courses should be 2 characters or more.
+        - D
+          ^
+invalid-resume.yml:40:15: warning: font size option is invalid, it must be one of the following: ["10pt", "11pt", "12pt"]
+    fontSize: 13pt
+              ^
+✖ Resume validation failed.
+```
+
+## Languages
+
+Listar todos los idiomas disponibles. El código de idioma sigue la
+especificación en [ISO 639
+specification](https://www.iso.org/iso-639-language-code). Puedes especificar el
+código de idioma en `layout.locale.language` para cambiar el idioma de tu
+currículum. Cambiar el idioma de tu currículum traducirá automáticamente todos
+los términos fijos. Puedes verificar más detalles en nuestra sección [content ->
+multi languages](/docs/content/multi-languages).
+
+```console
+$ yamlresume languages list
+
+| `layout.locale.language` | Language Name                   |
+| ------------------------ | ------------------------------- |
+| en                       | English                         |
+| zh-hans                  | Simplified Chinese              |
+| zh-hant-hk               | Traditional Chinese (Hong Kong) |
+| zh-hant-tw               | Traditional Chinese (Taiwan)    |
+| es                       | Spanish                         |
+```
+
+## Templates
+
+Listar todas las plantillas disponibles. Puedes cambiar la plantilla del
+currículum configurando `layout.template` en tu currículum YAML. [PPResume
+Templates](https://docs.ppresume.com/typesetting/templates) para más detalles.
+
+```console
+$ yamlresume templates list
+
+| `layout.template` | Template Name    | Description                          |
+| ----------------- | ---------------- | ------------------------------------ |
+| moderncv-banking  | ModernCV Banking | ModernCV template with banking style |
+| moderncv-casual   | ModernCV Casual  | ModernCV template with casual style  |
+| moderncv-classic  | ModernCV Classic | ModernCV template with classic style |
+```

@@ -97,7 +97,18 @@ export async function generateStaticParams() {
     .docs.generateParams()
     .map((p) => ({ ...p, language: 'zh-tw' }))
 
-  return [...enParams, ...frParams, ...jaParams, ...zhCNParams, ...zhTWParams]
+  const esParams = getLocalizedSources('es')
+    .docs.generateParams()
+    .map((p) => ({ ...p, language: 'es' }))
+
+  return [
+    ...enParams,
+    ...frParams,
+    ...jaParams,
+    ...zhCNParams,
+    ...zhTWParams,
+    ...esParams,
+  ]
 }
 
 export async function generateMetadata({

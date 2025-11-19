@@ -1,0 +1,272 @@
+---
+title: "YAMLResume v0.5: El Compilador de Currículums"
+description: >-
+  Presentando YAMLResume v0.5, un compilador de currículums que trae el poder del
+  análisis estático a tu currículum.
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-07-16
+---
+
+Estamos emocionados de anunciar el lanzamiento de [YAMLResume
+v0.5](https://github.com/yamlresume/yamlresume/releases/tag/v0.5.0), un hito
+significativo que transforma YAMLResume de una herramienta simple en un
+**compilador de currículums** completo. Esta versión introduce una arquitectura
+\*robusta, poderosa validación de esquema y un CLI mejorado para hacer tu
+proceso de creación de currículums más confiable, eficiente y libre de errores.
+
+## El Problema con la Escritura Manual de Currículums
+
+Redactar un currículum es a menudo un proceso tedioso y propenso a errores. Ya
+sea que estés usando un procesador de texto o un lenguaje de marcado simple, es
+fácil cometer errores:
+
+- Un error tipográfico en un campo clave como `degree` o `fluency`.
+- Una dirección de correo electrónico o URL formateada incorrectamente.
+- Formatos de fecha inconsistentes.
+- Olvidar un campo requerido para una solicitud de empleo.
+
+Estos pequeños errores pueden llevar a un ciclo frustrante de edición,
+generación y corrección. El problema central es la falta de un sistema para
+imponer estructura y validar datos _antes_ de que se genere el documento final.
+
+## La Solución: Un Compilador de Currículums
+
+Inspirado por los compiladores de lenguajes de programación, [YAMLResume
+v0.5](https://github.com/yamlresume/yamlresume/releases/tag/v0.5.0) introduce
+una nueva arquitectura de compilador que trata el archivo fuente de tu
+currículum (en YAML) como código. Este "código" luego se procesa a través de una
+tubería para producir un PDF profesional y pulido.
+
+<Mermaid chart="
+  flowchart TD
+    subgraph Input [Entrada]
+      A[resume.yaml]
+    end
+    subgraph Compiler [Compilador]
+      B[Análisis y Validación]
+      C[Transformación]
+      D[Generación de Código]
+    end
+    subgraph Output [Salida]
+      E[resume.pdf]
+    end
+
+    A --> B --> C --> D --> E
+
+"/>
+
+Esta nueva arquitectura define dos componentes centrales:
+
+1. Un [formato de datos estándar](/docs/compiler/types) para un currículum,
+   junto con un [esquema](/docs/compiler/schema) para validar los datos.
+2. Un [compilador](/docs/compiler) de referencia que implementa el formato de
+   datos y la validación de esquema.
+
+Este enfoque trae varias ventajas clave:
+
+- **Separación de Preocupaciones**: Te enfocas únicamente en el **contenido** de
+  tu currículum. El compilador maneja la **presentación**—diseño, tipografía y
+  formato.
+- **Detección Temprana de Errores**: El compilador valida tu currículum contra
+  un esquema predefinido, detectando errores instantáneamente con
+  retroalimentación clara y accionable.
+- **Consistencia y Confiabilidad**: Al imponer una estructura estándar, el
+  compilador asegura que los datos de tu currículum sean siempre consistentes y
+  listos para cualquier plantilla.
+
+### Véalo en Acción
+
+Por ejemplo, considera el siguiente currículum con varios errores comunes:
+
+```yml lineNumbers title="invalid-resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp # [!code highlight]
+    url: https//ppresume.com/gallery # [!code highlight]
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S # [!code highlight]
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D # [!code highlight]
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layout:
+  typography:
+    fontSize: 13pt # [!code highlight]
+```
+
+Tenemos varios problemas:
+
+1. `email: hi@pp` - el formato es inválido
+2. `url: https//ppresume.com/gallery` - falta `:` en la parte del protocolo
+3. `city: S` - demasiado corto, debe tener 2 caracteres o más, ¿hay alguna
+   ciudad en el mundo cuyo nombre tenga solo 1 carácter?
+4. `- D` - el primer curso es simplemente demasiado corto, debe tener 2
+   caracteres o más
+5. `fontSize: 13pt` - debe ser 10pt, 11pt o 12pt, 13pt es demasiado grande y
+   tiene poco sentido en el escenario de redacción de currículums
+
+Estos errores, que podrían haber pasado desapercibidos anteriormente, ahora se
+detectan instantáneamente. Puedes ejecutar `yamlresume validate my-resume.yml` o
+simplemente `yamlresume build my-resume.yml`. YAMLResume reportará todos los
+problemas en el ampliamente adoptado [formato de error estilo
+clang](https://clang.llvm.org/diagnostics.html), permitiéndote corregirlos antes
+de que se genere el PDF final.
+
+![Salida del Comando Validate de YAMLResume](/static/images/blog/yamlresume-validate.webp)
+
+## En el Corazón del Compilador: El Esquema
+
+La piedra angular de esta nueva versión es el **[Esquema de
+YAMLResume](/docs/compiler/schema)**. Proporcionamos un esquema completo que
+define la estructura y reglas para cada pieza de datos en tu currículum.
+
+Usamos dos poderosas tecnologías para esto:
+
+- **[Zod](https://zod.dev)**: Para validación en tiempo de ejecución dentro del
+  compilador, proporcionando una red de seguridad robusta y mensajes de error
+  detallados.
+- **[JSON Schema](https://json-schema.org)**: Para integración con editores e
+  IDEs. Al agregar una sola línea a tu archivo YAML, desbloqueas autocompletado,
+  documentación de propiedades en línea al pasar el cursor, y validación de
+  formato en tiempo real directamente en tu editor.
+
+Si tienes un currículum creado antes de v0.5, aún puedes aprovechar la
+validación de esquema. Solo agrega la siguiente línea a tu archivo de currículum
+e instala el [Servidor de Lenguaje
+YAML](https://github.com/redhat-developer/yaml-language-server) para tu editor.
+
+```yml lineNumbers
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+```
+
+Esta integración proporciona un conjunto de beneficios que mejoran
+dramáticamente la experiencia de escritura de currículums:
+
+### Autocompletado
+
+Pasa menos tiempo buscando nombres de campos. Tu editor sugerirá propiedades
+válidas mientras escribes, asegurando que uses los campos correctos cada vez.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-auto-completion.mp4"
+/>
+
+### Validación de Formato en Tiempo Real
+
+Detecta errores a medida que ocurren. La validación de esquema proporciona
+retroalimentación instantánea sobre todo, desde errores tipográficos simples
+hasta formatos de correo electrónico incorrectos o campos requeridos faltantes.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-field-error.mp4"
+/>
+
+Si falta una clave requerida, la advertencia se escala a su objeto padre,
+facilitando su detección y corrección.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-object-error.mp4"
+/>
+
+### Documentación de Propiedades en Línea
+
+No más adivinanzas sobre lo que hace un campo. Pasa el cursor sobre cualquier
+propiedad para obtener documentación instantánea que explica su propósito,
+formato esperado y valores permitidos.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-property-docs.mp4"
+/>
+
+## El CLI Mejorado
+
+El [CLI](/docs/cli) de `yamlresume` ahora es más poderoso que nunca. El comando
+[build](/docs/cli#build) ejecuta toda la tubería del compilador, desde
+validación hasta generación de PDF, mientras que el nuevo comando
+[validate](/docs/cli#validate) te permite verificar tu currículum sin
+construirlo.
+
+[![Demo del Compilador de YAMLResume](https://asciinema.org/a/728098.svg)](https://asciinema.org/a/728098)
+
+Este flujo de trabajo sin interrupciones transforma tu proceso de creación de
+currículums, haciéndolo más eficiente y confiable mientras minimiza errores.
+
+## Qué Significa Esto Para Ti
+
+Con [YAMLResume
+v0.5](https://github.com/yamlresume/yamlresume/releases/tag/v0.5.0), puedes:
+
+- **Escribir con Confianza**: Saber que la estructura de tu currículum es sólida
+  y tus datos son válidos.
+- **Ahorrar Tiempo**: Detectar errores temprano y eliminar el tedioso ciclo de
+  corrección.
+- **Mantener la Flexibilidad**: Intercambiar entre diferentes plantillas de
+  currículum sin esfuerzo.
+- **Disfrutar de una Mejor Experiencia de Edición**: Obtener retroalimentación
+  en tiempo real y autocompletado en tu editor favorito.
+
+Te invitamos a experimentar el poder y la simplicidad del nuevo compilador
+YAMLResume:
+
+- **Instala o actualiza** a la última versión: `npm install -g
+yamlresume@latest`
+- **Lee la nueva [Documentación del Compilador](/docs/compiler)** para aprender
+  más sobre la arquitectura y el esquema.
+- **Únete a nuestra comunidad** en
+  [GitHub](https://github.com/yamlresume/yamlresume/discussions) para hacer
+  preguntas, reportar problemas o contribuir.
+
+Creemos que esta versión marca una nueva era para la creación de currículums,
+trayendo el poder y la confiabilidad de los compiladores a todos. ¡No podemos
+esperar a ver los increíbles currículums que construirás!
+
+Y no olvides, puedes probar el nuevo compilador con nuestra [imagen
+Docker](/blog/yamlresume-docker):
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```

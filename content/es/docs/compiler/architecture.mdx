@@ -1,0 +1,115 @@
+---
+title: Arquitectura
+---
+
+Como cualquier compilador, YAMLResume también contiene una tubería que
+transforma los datos del currículum desde la entrada hasta la salida con
+múltiples fases.
+
+- **Fase de Entrada**: acepta archivos de currículum YAML y JSON como entrada.
+- **Fase de Análisis**: analiza y valida el contenido y diseño del currículum
+  desde los archivos de entrada.
+- **Fase de Transformación**: transforma los datos de contenido y diseño del
+  currículum con una tubería.
+- **Fase de Generación de Código**: renderiza los datos de contenido y diseño
+  del currículum usando plantillas LaTeX.
+- **Fase de Salida**: genera el documento PDF final.
+
+Aquí hay un diagrama de arquitectura de alto nivel de YAMLResume desde 30000
+pies:
+
+<Mermaid chart="
+  flowchart TD
+    subgraph A[Fase de Entrada]
+      A1[Archivo de Currículum YAML]
+      A2[Archivo de Currículum JSON]
+    end
+
+    subgraph B[Fase de Análisis]
+      B1[yaml.parse]
+      B2[validación de esquema]
+      B3[MarkdownParser]
+    end
+
+    subgraph C[Fase de Transformación]
+      C1[procesamiento escape-latex]
+      C2[localización de fecha]
+      C3[transformación de URL]
+      C4[transformación de ubicación]
+      C5[...]
+    end
+
+    subgraph D[Fase de Generación de Código]
+      D1[Renderizador de plantillas]
+      D2[moderncv-banking]
+      D3[moderncv-classic]
+      D4[moderncv-casual]
+      E1[Documento LaTeX]
+    end
+
+    subgraph E[Fase de Salida]
+      F1[xetex]
+      F2[tectonic]
+      G[resume.pdf]
+    end
+
+    A1 --> B1
+    A2 --> B1
+    B1 --> B2
+    B2 --> B3
+    B3 --> C1
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4
+    C4 --> C5
+    C5 --> D1
+    D1 --> D2
+    D1 --> D3
+    D1 --> D4
+    D2 --> E1
+    D3 --> E1
+    D4 --> E1
+    E1 --> F1
+    E1 --> F2
+    F1 --> G
+    F2 --> G
+
+"/>
+
+## Tubería de Procesamiento de Datos
+
+La tubería de transformación es responsable de procesar los datos crudos del
+currículum desde archivos YAML y prepararlos para el renderizado LaTeX. Opera en
+dos fases principales: transformación de contenido y transformación de diseño:
+
+- La fase de transformación de contenido procesa todos los datos textuales,
+  aplica reglas de localización, escapa caracteres especiales de LaTeX, y computa
+  valores derivados.
+- La fase de transformación de diseño fusiona la configuración de diseño
+  proporcionada por el usuario con valores predeterminados y aplica reglas de
+  tipografía específicas del idioma local.
+
+<Mermaid
+  chart="
+flowchart TD
+  A[Datos Crudos del Currículum] --> B[transformResume]
+  B --> B1[transformResumeContent]
+  B1 --> B2[transformEducationCourse]
+  B2 --> B3[transformEducationDegree]
+  B3 --> B4[transformDate]
+  B4 --> B5[transformEndDate]
+  B5 --> B6[transformKeywords]
+  B6 --> B7[...]
+  B --> C1[transformResumeLayout]
+  C1 --> C2[establecer valores predeterminados]
+  C2 --> C3[establecer ajustes locales]
+  B7 --> D[Currículum Transformado]
+  C3 --> D
+  D --> D1[Listo para Generación de Código]
+"
+/>
+
+Para una tubería de procesamiento de datos larga como esta, el código habla más
+que las palabras, puedes consultar
+[transform.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/preprocess/transform.ts)
+para detalles si estás interesado en la implementación.

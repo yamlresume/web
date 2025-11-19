@@ -86,6 +86,91 @@ const translations = {
       copyright: '© 2023–Present, ',
     },
   },
+  es: {
+    navbar: {
+      documentation: 'Documentación',
+      blog: 'Blog',
+      chat: 'Chat',
+      discussions: 'Discusiones',
+      search: 'Buscar',
+    },
+    hero: {
+      tagline: 'Traído con ❤️ por <ppresume>PPResume</ppresume>',
+      title: 'Currículums como Código en YAML',
+      description:
+        'YAMLResume permite a las personas crear y versionar currículums usando YAML y generar PDFs perfectos a nivel de píxel con diseño y tipografía profesional en un instante.',
+      quickStart: 'Inicio Rápido',
+      checkGithub: 'Ver Github',
+    },
+    quickStart: {
+      title: 'Inicio Rápido en Un Segundo',
+    },
+    features: {
+      plainText: {
+        title: 'Texto Plano en YAML',
+        description:
+          'Crea currículums en YAML, que es más legible y escribible para humanos que JSON, permitiendo control de versiones y eliminando el bloqueo de proveedores.',
+      },
+      richText: {
+        title: 'Texto Enriquecido en Resúmenes',
+        description:
+          'Exprésate libremente con formato de texto enriquecido en los campos de resumen de todas las secciones, permitiendo declaraciones personales más detalladas y convincentes.',
+      },
+      flexibleSection: {
+        title: 'Estructura de Sección Flexible',
+        description:
+          'Redacta y perfecciona tu currículum con varios tipos de secciones para destacar tus habilidades, experiencias y logros únicos de la manera más efectiva.',
+      },
+      latexTypesetting: {
+        title: 'Motor de Composición LaTeX',
+        description:
+          'Aprovecha el poder de LaTeX para obtener una calidad de composición de nivel profesional que asegura que tu currículum se destaque con espaciado y tipografía perfectos.',
+      },
+      customizable: {
+        title: 'Opciones de Diseño Personalizables',
+        description:
+          'Ajusta tu currículum con márgenes de página personalizables, selecciones de fuentes y opciones de tamaño para crear la presentación visual perfecta.',
+      },
+      multilingual: {
+        title: 'Soporte Multilingüe',
+        description:
+          'Crea y traduce tu currículum en múltiples idiomas con capacidades integradas de internacionalización y localización.',
+      },
+    },
+    faq: {
+      title: 'Preguntas Frecuentes',
+      questions: {
+        whatIs: {
+          question: '¿Qué es YAMLResume?',
+          answer1:
+            'YAMLResume es una herramienta que te permite gestionar tu currículum como código usando YAML. Proporciona una forma estructurada de definir tu experiencia laboral, habilidades, educación y otras secciones del currículum en un documento de texto plano simple y controlable por versiones. YAMLResume luego convierte estos datos YAML en documentos PDF bellamente compuestos que están listos para solicitudes de trabajo y becas.',
+          answer2:
+            'YAMLResume comenzó como el motor de composición central de PPResume, un generador de currículums perfecto a nivel de píxel basado en LaTeX. Después de una cuidadosa consideración, decidimos hacerlo de código abierto para que las personas siempre tengan el derecho de decir no al bloqueo de proveedores.',
+        },
+        whyYaml: {
+          question: '¿Por qué YAML sobre JSON?',
+          answer:
+            'En pocas palabras, YAML fue elegido porque es más legible y escribible para humanos que JSON. A pesar de su sintaxis más limpia, menos verbosa y más flexible, YAML también admite comentarios, lo que te permite anotar tu currículum con notas que no aparecerán en la salida final. La estructura jerárquica de YAML se mapea naturalmente a las secciones y subsecciones, haciéndolo perfecto para datos estructurados como currículums.',
+        },
+        howGeneratePdf: {
+          question: '¿Cómo genera YAMLResume los PDFs?',
+          answer:
+            'YAMLResume es en realidad un DSL para escribir currículums, por lo que internamente es un compilador para currículums. Transforma los datos YAML en PDFs en un proceso de varios pasos. Primero, analiza el archivo YAML y valida su estructura contra un esquema. Luego, procesa los datos con un proceso de generación de código que genera código LaTeX. Finalmente, este código LaTeX se compila en un PDF de calidad profesional usando un motor LaTeX. Este enfoque asegura una tipografía y diseño perfectos a nivel de píxel que son consistentes en todos los dispositivos y plataformas.',
+        },
+        whyLatex: {
+          question: '¿Por qué usar LaTeX?',
+          answer:
+            'LaTeX es el estándar de oro para la composición de documentos profesionales, especialmente en campos académicos y técnicos. Proporciona tipografía superior con kerning, ligaduras e hiphenación adecuados que son difíciles de lograr con HTML/CSS o procesadores de texto. LaTeX sobresale en espaciado consistente, posicionamiento preciso y diseño flexible. Al usar LaTeX como motor de composición subyacente, YAMLResume asegura que tu currículum tenga una apariencia pulida y profesional que se destaque ante reclutadores y gerentes de contratación.',
+        },
+      },
+    },
+    blog: {
+      title: 'Blog de YAMLResume',
+    },
+    footer: {
+      copyright: '© 2023–Presente, ',
+    },
+  },
   fr: {
     navbar: {
       documentation: 'Documentation',

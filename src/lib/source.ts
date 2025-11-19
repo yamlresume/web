@@ -3,11 +3,13 @@ import { loader } from 'fumadocs-core/source'
 import { createMDXSource } from 'fumadocs-mdx'
 import {
   blog,
+  blogEs,
   blogFr,
   blogJa,
   blogZhCN,
   blogZhTW,
   docs,
+  docsEs,
   docsFr,
   docsJa,
   docsZhCN,
@@ -25,6 +27,12 @@ const i18nFr = defineI18n({
   defaultLanguage: 'fr',
   languages: ['fr'],
   fallbackLanguage: 'fr',
+})
+
+const i18nEs = defineI18n({
+  defaultLanguage: 'es',
+  languages: ['es'],
+  fallbackLanguage: 'es',
 })
 
 const i18nJa = defineI18n({
@@ -58,6 +66,12 @@ export const blogSourceFr = loader({
   i18n: i18nFr,
 })
 
+export const blogSourceEs = loader({
+  baseUrl: '/blog',
+  source: createMDXSource(blogEs),
+  i18n: i18nEs,
+})
+
 export const blogSourceJa = loader({
   baseUrl: '/blog',
   source: createMDXSource(blogJa),
@@ -88,6 +102,12 @@ export const docsSourceFr = loader({
   i18n: i18nFr,
 })
 
+export const docsSourceEs = loader({
+  baseUrl: '/docs',
+  source: docsEs.toFumadocsSource(),
+  i18n: i18nEs,
+})
+
 export const docsSourceJa = loader({
   baseUrl: '/docs',
   source: docsJa.toFumadocsSource(),
@@ -113,6 +133,11 @@ export function getLocalizedSources(locale: string) {
       return {
         docs: docsSourceFr,
         blog: blogSourceFr,
+      }
+    case 'es':
+      return {
+        docs: docsSourceEs,
+        blog: blogSourceEs,
       }
     case 'zh-cn':
       return {

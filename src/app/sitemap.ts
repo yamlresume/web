@@ -1,11 +1,13 @@
 import type { MetadataRoute } from 'next'
 import {
   blogSource,
+  blogSourceEs,
   blogSourceFr,
   blogSourceJa,
   blogSourceZhCN,
   blogSourceZhTW,
   docsSource,
+  docsSourceEs,
   docsSourceFr,
   docsSourceJa,
   docsSourceZhCN,
@@ -25,6 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...docsSourceZhTW.getPages(),
     ...docsSourceFr.getPages(),
     ...docsSourceJa.getPages(),
+    ...docsSourceEs.getPages(),
   ]
 
   const allBlogPages = [
@@ -33,6 +36,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogSourceZhTW.getPages(),
     ...blogSourceFr.getPages(),
     ...blogSourceJa.getPages(),
+    ...blogSourceEs.getPages(),
   ]
 
   return [
@@ -64,6 +68,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: url('/ja'),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: url('/es'),
       changeFrequency: 'monthly',
       priority: 0.9,
     },

@@ -1,7 +1,13 @@
 import { createTokenizer } from '@orama/tokenizers/mandarin'
 import { createI18nSearchAPI } from 'fumadocs-core/search/server'
 import { i18nConfig } from '@/i18n'
-import { docsSource, docsSourceJa, docsSourceZhCN, docsSourceZhTW } from '@/lib'
+import {
+  docsSource,
+  docsSourceEs,
+  docsSourceJa,
+  docsSourceZhCN,
+  docsSourceZhTW,
+} from '@/lib'
 
 // https://github.com/fuma-nama/fumadocs/blob/ea9fbcb2cfb4cc667c75f4595e955c3fa2b523a8/apps/docs/content/docs/headless/search/orama.mdx#L258
 // ref: https://fumadocs.dev/docs/headless/search/orama
@@ -29,12 +35,14 @@ export const { GET } = createI18nSearchAPI('advanced', {
         tolerance: 0,
       },
     },
+    es: { language: 'spanish' },
   },
   indexes: [
     ...docsSource.getLanguages(),
     ...docsSourceJa.getLanguages(),
     ...docsSourceZhCN.getLanguages(),
     ...docsSourceZhTW.getLanguages(),
+    ...docsSourceEs.getLanguages(),
   ].flatMap(({ language, pages }) =>
     pages.map((page) => ({
       title: page.data.title,
