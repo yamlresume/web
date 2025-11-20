@@ -2,7 +2,7 @@
 title: インストール
 ---
 
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
 YAMLResume は Node.js ツールで、内部では YAML 形式の履歴書を LaTeX コードに変換し、LaTeX タイプセッティングエンジンを呼び出して生成された LaTeX コードを PDF にコンパイルします。また、最適な PDF 出力を得るために、いくつかのフォントのインストールも推奨しています。要するに、YAMLResume を始めるには以下をインストールする必要があります：
 
@@ -35,6 +35,7 @@ docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.y
 2. `--rm` - コンテナが終了時に自動的に削除されます
 3. `-v $(pwd):/home/yamlresume` - 現在のディレクトリ（`$(pwd)`）をコンテナの `/home/yamlresume` にマウントし、コンテナがローカルファイルにアクセスできるようにします
 4. `new my-resume.yml` - yamlresume CLI の [new](/ja/docs/cli#new) サブコマンドを実行して、ファイル名 `my-resume.yml` で新しい履歴書を作成します
+
 </Callout>
 
 編集後、yaml から pdf に履歴書をビルドします：
@@ -50,11 +51,12 @@ docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume
 <Callout title="Github ミラー">
 [Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume) から `yamlresume/yamlresume` イメージをプルする際に問題が発生した場合、心配ありません。[github ミラー](https://github.com/yamlresume/yamlresume/pkgs/container/yamlresume) をご用意しています。
 
-ghcr イメージは以下の方法で取得できます：
+[ghcr イメージ](https://github.com/yamlresume/yamlresume/pkgs/container/yamlresume) は以下の方法で取得できます：
 
 ```sh
 docker pull ghcr.io/yamlresume/yamlresume
 ```
+
 </Callout>
 
 ### 権限の問題
@@ -94,7 +96,10 @@ Docker ユーザーでない場合は、以下の適切な説明に従って、�
 Node.js 20.x または更新バージョンが必要です。
 
 <Callout title="なぜ Node.js 20.x または更新バージョンが必要なのですか？">
-理論的には `yamlresume` は Node.js 18 で動作するはずですが、Node.js 18 LTS が [2025 年 4 月 30 日](https://nodejs.org/en/blog/release/v18.20.8) にライフサイクル終了を迎える予定のため、Node.js 20 または更新バージョンの使用を強く推奨します。
+  理論的には `yamlresume` は Node.js 18 で動作するはずですが、Node.js 18 LTS が
+  [2025 年 4 月 30 日](https://nodejs.org/en/blog/release/v18.20.8)
+  にライフサイクル終了を迎える予定のため、Node.js 20
+  または更新バージョンの使用を強く推奨します。
 </Callout>
 
 異なるオペレーティングシステムで Node.js をインストールする方法は 100 以上あります。開始するには、公式の [Node.js ダウンロード](https://nodejs.org/en/download) をご確認ください。
@@ -108,6 +113,7 @@ Node.js のインストールには[パッケージマネージャー](https://n
 ```sh
 brew install node
 ```
+
 </Tab>
 
 <Tab value="Windows">
@@ -116,6 +122,7 @@ brew install node
 ```sh
 choco install nodejs.install
 ```
+
 </Tab>
 
 <Tab value="Linux">
@@ -128,6 +135,7 @@ sudo apt install nodejs
 ```
 
 Ubuntu 24.04 またはそれより古いバージョンの場合は、[NodeSource](https://downloads.nodesource.com/#debian) を確認して Node.js 20 または更新バージョンを取得してください。
+
 </Tab>
 
 <Tab value="RHEL">
@@ -136,6 +144,7 @@ Fedora、AlmaLinux、Rocky Linux などの RHEL ベースの Linux 向け：
 ```sh
 sudo dnf install nodejs
 ```
+
 </Tab>
 </Tabs>
 </Tab>
@@ -161,7 +170,15 @@ yarn global add yamlresume
 ```console tab="bun"
 bun add -g yamlresume
 ```
+
 </Tabs>
+
+macOS をお使いで [Homebrew](https://brew.sh) を使用している場合は、[Homebrew から
+yamlresume](http://formulae.brew.sh/formula/yamlresume) をインストールすることもできます:
+
+```sh
+brew install yamlresume
+```
 
 `yamlresume` が正常にインストールされたことを確認：
 
@@ -211,6 +228,7 @@ pnpx yamlresume help
 ```console tab="bun"
 bun exec yamlresume help
 ```
+
 </Tabs>
 
 ### タイプセッティングエンジン
@@ -223,11 +241,15 @@ YAMLResume は現在 2 つのタイプセッティングエンジンをサポー
 [Tectonic](#tectonic)。
 
 <Callout title="なぜ LaTeX を選ぶのか？">
-この記事を書いている時点で、[LaTeX](https://www.latex-project.org/) は
-プロフェッショナルな外観の PDF を生成するための最良のタイプセッティングエンジン選択肢です。
-[Typst](https://typst.app/) は優れた代替品ですが、まだ
-初期段階にあり、CJK サポートが未成熟で、本番使用には適していません。
-以前、[タイプセッティングエンジンについて](https://blog.ppresume.com/posts/on-typesetting-engines) の記事を書き、[PPResume](https://ppresume.com) を設立する際に他のタイプセッティングエンジンではなく LaTeX を選んだ理由を説明しました。
+  この記事を書いている時点で、[LaTeX](https://www.latex-project.org/) は
+  プロフェッショナルな外観の PDF
+  を生成するための最良のタイプセッティングエンジン選択肢です。
+  [Typst](https://typst.app/) は優れた代替品ですが、まだ 初期段階にあり、CJK
+  サポートが未成熟で、本番使用には適していません。
+  以前、[タイプセッティングエンジンについて](https://blog.ppresume.com/posts/on-typesetting-engines)
+  の記事を書き、[PPResume](https://ppresume.com)
+  を設立する際に他のタイプセッティングエンジンではなく LaTeX
+  を選んだ理由を説明しました。
 </Callout>
 
 #### XeTeX
@@ -245,12 +267,14 @@ XeTeX および多くの他の TeX 関連プログラムとパッケージが含
 ```sh
 brew install mactex
 ```
+
 </Tab>
 
 <Tab value='Windows'>
 [MiKTeX ディストリビューション](https://miktex.org) は Windows の人気選択肢で、XeTeX が含まれています。[MiKTeX ウェブサイト](https://miktex.org/download) からダウンロードできます。
 
 または、XeTeX も含む **TeX Live** を Windows にインストールできます。[TeX Live ウェブサイト](https://www.tug.org/texlive/acquire-netinstall.html) からダウンロードしてください。
+
 </Tab>
 
 <Tab value="Linux">
@@ -269,6 +293,7 @@ sudo apt install texlive-full
 ```sh
 sudo apt install texlive-xetex texlive-fonts-extra texlive-lang-all
 ```
+
 </Tab>
 
 <Tab value="RHEL">
@@ -287,10 +312,12 @@ sudo dnf install \
   texlive-ctex \
   texlive-academicons
 ```
+
 </Tab>
 </Tabs>
 
 または、[TeX Live ウェブサイト](https://www.tug.org/texlive/acquire-netinstall.html) から直接インストーラーを使用して TeX Live をインストールすることもできます。これは異なる Linux ディストリビューションで動作します。
+
 </Tab>
 </Tabs>
 
@@ -348,10 +375,12 @@ brew install font-linux-libertine
 ```
 
 そうでなければ、[Linux Libertine](https://www.dafont.com/linux-libertine.font) の最新バージョンをウェブサイトからダウンロードし、macOS の [Font Book](https://support.apple.com/en-gb/guide/font-book/fntbk1000/mac) を使用してフォントをインストールできます。
+
 </Tab>
 
 <Tab value="Windows">
-[Linux Libertine](https://www.dafont.com/linux-libertine.font) の最新バージョンをウェブサイトからダウンロードし、アーカイブを解凍してフォントをインストールしてください。
+  [Linux Libertine](https://www.dafont.com/linux-libertine.font)
+  の最新バージョンをウェブサイトからダウンロードし、アーカイブを解凍してフォントをインストールしてください。
 </Tab>
 
 <Tab value="Linux">
@@ -362,6 +391,7 @@ Ubuntu ユーザーの場合、Linux Libertine フォントは `texlive-fonts-ex
 ```sh
 sudo apt install fonts-linuxlibertine
 ```
+
 </Tab>
 
 <Tab value="RHEL">
@@ -370,6 +400,7 @@ Fedora、AlmaLinux、Rocky Linux などの RHEL ベースの Linux の場合、L
 ```sh
 sudo dnf install linux-libertine-fonts
 ```
+
 </Tab>
 </Tabs>
 </Tab>
@@ -387,10 +418,13 @@ Homebrew ユーザー向け：
 ```sh
 brew install font-noto-sans-cjk font-noto-serif-cjk
 ```
+
 </Tab>
 
 <Tab value="Windows">
-Noto フォントをダウンロードし、[公式ガイド](https://fonts.google.com/noto/use#use-noto-fonts) に従って Windows にインストールしてください。
+  Noto
+  フォントをダウンロードし、[公式ガイド](https://fonts.google.com/noto/use#use-noto-fonts)
+  に従って Windows にインストールしてください。
 </Tab>
 
 <Tab value="Linux">
@@ -401,6 +435,7 @@ Ubuntu ユーザー向け：
 ```sh
 sudo apt install fonts-noto-cjk fonts-noto-cjk-extra
 ```
+
 </Tab>
 <Tab value="RHEL">
 Fedora、AlmaLinux、Rocky Linux などの RHEL ベースの Linux の場合、Noto フォントを以下の方法でインストールできます：
@@ -408,6 +443,7 @@ Fedora、AlmaLinux、Rocky Linux などの RHEL ベースの Linux の場合、N
 ```sh
 sudo dnf install google-noto-sans-cjk-fonts google-noto-serif-cjk-fonts
 ```
+
 </Tab>
 </Tabs>
 </Tab>

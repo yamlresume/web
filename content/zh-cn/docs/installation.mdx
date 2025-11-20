@@ -2,7 +2,7 @@
 title: 安装
 ---
 
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
 YAMLResume 是一个 Node.js 工具，在底层，它将您的简历从 YAML 格式转换为 LaTeX 代码，然后调用 LaTeX 排版引擎来编译生成的 LaTeX 代码为 PDF。此外，为了获得最佳的 PDF 输出，我们还建议安装一些字体。简而言之，您需要安装以下内容才能开始使用 YAMLResume：
 
@@ -35,6 +35,7 @@ docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.y
 2. `--rm` - 在退出时自动删除容器
 3. `-v $(pwd):/home/yamlresume` - 将当前目录 (`$(pwd)`) 挂载到容器中的 `/home/yamlresume`，允许容器访问本地文件
 4. `new my-resume.yml` - 运行 yamlresume CLI [new](/zh-cn/docs/cli#new) 子命令来创建文件名为 `my-resume.yml` 的新简历
+
 </Callout>
 
 相应地编辑 `my-resume.yml`，然后从 yaml 构建简历到 pdf：
@@ -50,11 +51,12 @@ docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume
 <Callout title="Github 镜像">
 如果您在从 [Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume) 拉取 `yamlresume/yamlresume` 镜像时遇到问题，不用担心，我们为您提供了 [github 镜像](https://github.com/yamlresume/yamlresume/pkgs/container/yamlresume)。
 
-您可以通过以下方式获取 ghcr 镜像：
+您可以通过以下方式获取 [ghcr 镜像](https://github.com/yamlresume/yamlresume/pkgs/container/yamlresume)：
 
 ```sh
 docker pull ghcr.io/yamlresume/yamlresume
 ```
+
 </Callout>
 
 ### 权限问题
@@ -94,7 +96,9 @@ docker run --rm -v $(pwd):/home/yamlresume -u root yamlresume/yamlresume new my-
 需要 Node.js 20.x 或更新版本。
 
 <Callout title="为什么需要 Node.js 20.x 或更新版本？">
-理论上 `yamlresume` 应该可以与 Node.js 18 一起工作，但是强烈建议使用 Node.js 20 或更新版本，因为 Node.js 18 LTS 计划在 [2025 年 4 月 30 日](https://nodejs.org/en/blog/release/v18.20.8) 到达生命周期结束。
+  理论上 `yamlresume` 应该可以与 Node.js 18 一起工作，但是强烈建议使用 Node.js
+  20 或更新版本，因为 Node.js 18 LTS 计划在 [2025 年 4 月 30
+  日](https://nodejs.org/en/blog/release/v18.20.8) 到达生命周期结束。
 </Callout>
 
 在不同的操作系统上可能有 100 多种安装 Node.js 的方法，您可以查看官方的 [Node.js 下载](https://nodejs.org/en/download) 来开始。
@@ -108,6 +112,7 @@ docker run --rm -v $(pwd):/home/yamlresume -u root yamlresume/yamlresume new my-
 ```sh
 brew install node
 ```
+
 </Tab>
 
 <Tab value="Windows">
@@ -116,6 +121,7 @@ brew install node
 ```sh
 choco install nodejs.install
 ```
+
 </Tab>
 
 <Tab value="Linux">
@@ -128,6 +134,7 @@ sudo apt install nodejs
 ```
 
 对于 Ubuntu 24.04 或更旧版本，请查看 [NodeSource](https://downloads.nodesource.com/#debian) 来获取 Node.js 20 或更新版本。
+
 </Tab>
 
 <Tab value="RHEL">
@@ -136,6 +143,7 @@ sudo apt install nodejs
 ```sh
 sudo dnf install nodejs
 ```
+
 </Tab>
 </Tabs>
 </Tab>
@@ -161,7 +169,15 @@ yarn global add yamlresume
 ```console tab="bun"
 bun add -g yamlresume
 ```
+
 </Tabs>
+
+如果您使用的是 macOS 并且安装了 [Homebrew](https://brew.sh)，也可以通过 [Homebrew 安装
+yamlresume](http://formulae.brew.sh/formula/yamlresume)：
+
+```sh
+brew install yamlresume
+```
 
 验证 `yamlresume` 是否安装成功：
 
@@ -211,6 +227,7 @@ pnpx yamlresume help
 ```console tab="bun"
 bun exec yamlresume help
 ```
+
 </Tabs>
 
 ### 排版引擎
@@ -223,11 +240,12 @@ YAMLResume 目前支持两个排版引擎：[XeTeX](#xetex) 和
 [Tectonic](#tectonic)。
 
 <Callout title="为什么选择 LaTeX？">
-  在撰写本文时，[LaTeX](https://www.latex-project.org/) 仍然是
-  生成专业外观 PDF 的最佳排版引擎选择。
-  [Typst](https://typst.app/) 是一个很好的替代品，但它仍然处于
-  早期阶段，其 CJK 支持还不成熟，不适合生产使用。
-  之前我写了一篇文章[关于排版引擎](https://blog.ppresume.com/posts/on-typesetting-engines)，解释了我创立 [PPResume](https://ppresume.com) 时为什么选择 LaTeX 而不是其他排版引擎的原因。
+  在撰写本文时，[LaTeX](https://www.latex-project.org/) 仍然是 生成专业外观 PDF
+  的最佳排版引擎选择。 [Typst](https://typst.app/)
+  是一个很好的替代品，但它仍然处于早期阶段，其 CJK
+  支持还不成熟，不适合生产使用。
+  之前我写了一篇文章[关于排版引擎](https://blog.ppresume.com/posts/on-typesetting-engines)，解释了我创立
+  [PPResume](https://ppresume.com) 时为什么选择 LaTeX 而不是其他排版引擎的原因。
 </Callout>
 
 #### XeTeX
@@ -245,12 +263,14 @@ YAMLResume 目前支持两个排版引擎：[XeTeX](#xetex) 和
 ```sh
 brew install mactex
 ```
+
 </Tab>
 
 <Tab value='Windows'>
 [MiKTeX 发行版](https://miktex.org) 是 Windows 的热门选择，包括 XeTeX。您可以从 [MiKTeX 网站](https://miktex.org/download) 下载它。
 
 或者，您可以为 Windows 安装 **TeX Live**，它也包括 XeTeX。从 [TeX Live 网站](https://www.tug.org/texlive/acquire-netinstall.html) 下载。
+
 </Tab>
 
 <Tab value="Linux">
@@ -269,6 +289,7 @@ sudo apt install texlive-full
 ```sh
 sudo apt install texlive-xetex texlive-fonts-extra texlive-lang-all
 ```
+
 </Tab>
 
 <Tab value="RHEL">
@@ -287,10 +308,12 @@ sudo dnf install \
   texlive-ctex \
   texlive-academicons
 ```
+
 </Tab>
 </Tabs>
 
 或者，您始终可以直接从 [TeX Live 网站](https://www.tug.org/texlive/acquire-netinstall.html) 使用他们的安装程序安装 TeX Live，这适用于不同的 Linux 发行版。
+
 </Tab>
 </Tabs>
 
@@ -348,10 +371,13 @@ brew install font-linux-libertine
 ```
 
 否则您可以从网站下载最新版本的 [Linux Libertine](https://www.dafont.com/linux-libertine.font) 并使用 macOS 的 [Font Book](https://support.apple.com/en-gb/guide/font-book/fntbk1000/mac) 安装字体。
+
 </Tab>
 
 <Tab value="Windows">
-从网站下载最新版本的 [Linux Libertine](https://www.dafont.com/linux-libertine.font) 并解压缩档案并安装字体。
+  从网站下载最新版本的 [Linux
+  Libertine](https://www.dafont.com/linux-libertine.font)
+  并解压缩档案并安装字体。
 </Tab>
 
 <Tab value="Linux">
@@ -362,6 +388,7 @@ brew install font-linux-libertine
 ```sh
 sudo apt install fonts-linuxlibertine
 ```
+
 </Tab>
 
 <Tab value="RHEL">
@@ -370,6 +397,7 @@ sudo apt install fonts-linuxlibertine
 ```sh
 sudo dnf install linux-libertine-fonts
 ```
+
 </Tab>
 </Tabs>
 </Tab>
@@ -387,10 +415,13 @@ sudo dnf install linux-libertine-fonts
 ```sh
 brew install font-noto-sans-cjk font-noto-serif-cjk
 ```
+
 </Tab>
 
 <Tab value="Windows">
-下载 Noto 字体并按照[官方指南](https://fonts.google.com/noto/use#use-noto-fonts)在 Windows 上安装。
+  下载 Noto
+  字体并按照[官方指南](https://fonts.google.com/noto/use#use-noto-fonts)在
+  Windows 上安装。
 </Tab>
 
 <Tab value="Linux">
@@ -401,6 +432,7 @@ brew install font-noto-sans-cjk font-noto-serif-cjk
 ```sh
 sudo apt install fonts-noto-cjk fonts-noto-cjk-extra
 ```
+
 </Tab>
 <Tab value="RHEL">
 对于基于 RHEL 的 linux，如 Fedora、AlmaLinux、Rocky Linux，您可以通过以下方式安装 Noto 字体：
@@ -408,6 +440,7 @@ sudo apt install fonts-noto-cjk fonts-noto-cjk-extra
 ```sh
 sudo dnf install google-noto-sans-cjk-fonts google-noto-serif-cjk-fonts
 ```
+
 </Tab>
 </Tabs>
 </Tab>

@@ -2,7 +2,7 @@
 title: Instalación
 ---
 
-import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
 YAMLResume es una herramienta de Node.js que, bajo el capó, transforma tu
 currículum del formato YAML a código LaTeX y luego invoca un motor de
@@ -46,6 +46,7 @@ Pasos:
    en `/home/yamlresume`, permitiendo acceso bidireccional a los archivos.
 4. `new my-resume.yml` — ejecuta el subcomando
    [new](/docs/cli#new) del CLI para crear un currículum con ese nombre.
+
 </Callout>
 
 Edita `my-resume.yml` y luego genera el PDF:
@@ -62,12 +63,19 @@ La opción `-v` es importante: monta tu directorio actual (`$(pwd)`) en
 `/home/yamlresume` para sincronizar archivos entre tu máquina y el contenedor.
 
 <Callout title="Espejo en GitHub">
-Si tienes problemas al descargar la imagen desde Docker Hub, también está
-publicada en el registro de GitHub Packages:
+Si tienes problemas para descargar la imagen `yamlresume/yamlresume` desde
+[Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume), no te preocupes:
+tenemos un [espejo en
+GitHub](https://github.com/yamlresume/yamlresume/pkgs/container/yamlresume) para
+ti.
+
+Puedes obtener la imagen de [ghcr
+](https://github.com/yamlresume/yamlresume/pkgs/container/yamlresume) con:
 
 ```sh
 docker pull ghcr.io/yamlresume/yamlresume
 ```
+
 </Callout>
 
 ### Problemas de permisos
@@ -76,13 +84,13 @@ A veces puedes encontrarte con [problemas de permisos](https://github.com/yamlre
 al ejecutar el contenedor, ya que la imagen se construye con `USER yamlresume`
 y corre con menos privilegios por defecto. Dos soluciones:
 
-1) Ejecutar el contenedor con tu UID/GID del host:
+1. Ejecutar el contenedor con tu UID/GID del host:
 
 ```sh
 docker run --rm -v $(pwd):/home/yamlresume -u $(id -u):$(id -g) yamlresume/yamlresume new my-resume.yml
 ```
 
-2) Ejecutarlo como root (menos recomendado):
+2. Ejecutarlo como root (menos recomendado):
 
 ```sh
 docker run --rm -v $(pwd):/home/yamlresume -u root yamlresume/yamlresume new my-resume.yml
@@ -111,6 +119,7 @@ sudo pacman -S nodejs npm
 # Recomendado: usar winget o nvm-windows
 winget install OpenJS.NodeJS.LTS
 ```
+
 </Tabs>
 
 ## yamlresume
@@ -133,7 +142,15 @@ yarn global add yamlresume
 ```console tab="bun"
 bun add -g yamlresume
 ```
+
 </Tabs>
+
+En macOS, si usas [Homebrew](https://brew.sh), también puedes instalar
+[yamlresume con Homebrew](http://formulae.brew.sh/formula/yamlresume):
+
+```sh
+brew install yamlresume
+```
 
 Comprueba la instalación:
 
@@ -170,6 +187,7 @@ sudo pacman -S texlive-binextra texlive-latexextra
 ```sh tab="Windows (WSL)"
 # Instala WSL y usa el método de Ubuntu/Debian dentro de WSL
 ```
+
 </Tabs>
 
 ### Tectonic
@@ -189,6 +207,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://install.tectonic.dev | sh
 ```sh tab="Windows"
 winget install tectonic
 ```
+
 </Tabs>
 
 ## Font
@@ -213,6 +232,7 @@ sudo apt-get update && sudo apt-get install -y fonts-linuxlibertine
 ```sh tab="Arch"
 sudo pacman -S ttf-linux-libertine
 ```
+
 </Tabs>
 
 ### Google Noto
@@ -232,6 +252,7 @@ sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
 ```sh tab="Arch"
 sudo pacman -S noto-fonts-cjk
 ```
+
 </Tabs>
 
 ## Consejos
