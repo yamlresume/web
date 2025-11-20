@@ -67,7 +67,7 @@ export default async function Page(props: {
       <DocsBody>
         <MDXContent
           components={getMDXComponents({
-            a: createRelativeLink(docs, page),
+            a: createRelativeLink(docs as any, page),
           })}
         />
       </DocsBody>
@@ -121,7 +121,9 @@ export async function generateMetadata({
   const page = docs.getPage(slug)
   if (!page) notFound()
 
-  const image = `/api/og/docs/${slug.join('/')}/open-graph.png?language=${language}`
+  const image = `/api/og/docs/${slug.join(
+    '/'
+  )}/open-graph.png?language=${language}`
   return {
     title: page.data.title,
     description: page.data.description,
