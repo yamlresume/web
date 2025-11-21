@@ -1,0 +1,194 @@
+---
+title: YAMLResume llega a Homebrew
+description: YAMLResume ha sido incluido en Homebrew, lo que simplifica la instalación y las actualizaciones en macOS
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-11-21
+---
+
+YAMLResume acaba de ser [aceptado](https://github.com/Homebrew/homebrew-core/pull/246949) por
+[Homebrew](https://brew.sh) (el gestor de paquetes más popular en macOS). Esto
+significa que ahora los usuarios de macOS pueden instalar y mantener YAMLResume
+actualizado con un único comando confiable—sin instalaciones globales manuales
+de [Node.js](https://nodejs.org), sin malabares de rutas. Esta entrada muestra
+una configuración paso a paso más detallada de YAMLResume con Homebrew y un
+motor de composición para obtener la mejor salida PDF.
+
+![YAMLResume en Homebrew](/static/images/blog/yamlresume-homebrew/yamlresume-homebrew.webp)
+
+## Por qué Importa
+
+Anteriormente, el camino típico para obtener el CLI de YAMLResume en macOS era:
+
+1. [instalar Node.js](/es/docs/installation#nodejs),
+2. [instalar el CLI `yamlresume`](/es/docs/installation#yamlresume) con gestores
+   de paquetes de Node.js (npm/pnpm/yarn/bun)
+3. [instalar un motor de composición](/es/docs/installation#typesetting-engine)
+   para generar PDF
+
+Una [formula de Homebrew](https://formulae.brew.sh/formula/yamlresume) puede
+unir los pasos 1 y 2 en uno solo, ya que Homebrew puede gestionar la
+dependencia de Node.js por ti. Esto reduce problemas de configuración de
+entornos y simplifica las actualizaciones (`brew upgrade yamlresume`).
+
+## Instalación Rápida
+
+```sh
+brew install yamlresume
+```
+
+Homebrew instalará Node.js como dependencia si todavía no lo tienes.
+
+Luego verifica:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+Si ves la salida de ayuda, el binario del CLI está disponible en tu `PATH`.
+
+YAMLResume depende de un motor de composición para generar PDF; puedes instalar
+[MacTeX](/es/docs/installation#xetex) o [Tectonic](/es/docs/installation#tectonic) con Homebrew.
+
+### Opción A: TeX Live Completo (XeTeX)
+
+Instala mediante el cask de MacTeX (incluye XeTeX):
+
+```sh
+# install the full mactex
+brew install mactex
+# or if you want to save some disk space
+brew install mactex-no-gui
+```
+
+Tras la instalación, asegúrate de que los binarios de TeX estén en el `PATH`
+(Homebrew normalmente crea enlaces simbólicos bajo `/Library/TeX/texbin`).
+Prueba:
+
+```console
+$ xelatex --version
+XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+kpathsea version 6.3.4
+Copyright 2022 SIL International, Jonathan Kew and Khaled Hosny.
+There is NO warranty.  Redistribution of this software is
+covered by the terms of both the XeTeX copyright and
+the Lesser GNU General Public License.
+For more information about these matters, see the file
+named COPYING and the XeTeX source.
+Primary author of XeTeX: Jonathan Kew.
+Compiled with ICU version 70.1; using 70.1
+Compiled with zlib version 1.2.11; using 1.2.11
+Compiled with FreeType2 version 2.11.1; using 2.11.1
+Compiled with Graphite2 version 1.3.14; using 1.3.14
+Compiled with HarfBuzz version 3.4.0; using 3.4.0
+Compiled with libpng version 1.6.37; using 1.6.37
+Compiled with pplib version v2.05 less toxic i hope
+Using Mac OS X Core Text and Cocoa frameworks
+```
+
+### Opción B: Tectonic (Ligero)
+
+```console
+$ brew install tectonic
+$ tectonic --version
+```
+
+¿Qué elegir?
+
+| Motor    | Ventajas                                                | Desventajas                                     |
+| -------- | ------------------------------------------------------- | ----------------------------------------------- |
+| XeTeX    | compatibilidad máxima; ecosistema maduro                | descarga grande (4–6 GB)                        |
+| Tectonic | huella inicial mínima; obtiene automáticamente paquetes | brechas ocasionales de compatibilidad con XeTeX |
+
+Si encuentras problemas inexplicables de paquetes LaTeX o casos avanzados de
+manejo de fuentes, vuelve a XeTeX.
+
+## Crear y Construir un Currículum
+
+Crea un currículum YAML inicial:
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+Edita `my-resume.yml` en tu editor y luego compila a PDF:
+
+```console
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF successfully.
+```
+
+Internamente YAMLResume:
+
+1. transforma `my-resume.yml` a LaTeX (`my-resume.tex`).
+2. invoca tu motor de composición (`xelatex` o `tectonic`).
+3. produce `my-resume.pdf`.
+
+## Actualizar
+
+Mantente al día (nuevas plantillas, correcciones, mejoras i18n):
+
+```console
+$ brew update
+$ brew upgrade yamlresume
+```
+
+## Desinstalar
+
+```console
+$ brew uninstall yamlresume
+```
+
+Elimina dependencias opcionales solo si ya no las necesitas (fuentes, motor TeX, etc.).
+
+## Solución de Problemas
+
+El modo detallado ayuda a diagnosticar problemas de compilación:
+
+```console
+$ yamlresume build --verbose my-resume.yml
+```
+
+Soluciones comunes:
+
+- falta el motor de composición: instala MacTeX o usa Tectonic.
+- permiso denegado al escribir archivos: asegúrate de estar en un directorio con permisos de escritura (evita rutas del sistema).
+- errores extraños de LaTeX con Tectonic: vuelve a XeTeX (`brew install mactex`).
+
+## Notas Finales
+
+Estar incluido en Homebrew reduce la barrera de entrada y señala madurez del
+proyecto. Si encuentras algún caso límite, abre un
+[issue](https://github.com/yamlresume/yamlresume/issues/) o
+[discussion](https://github.com/yamlresume/yamlresume/discussions)—iteramos
+rápido. ¡Feliz hacking y que tus currículums sean siempre pixel perfect!
+
+Por último, crédito nuevamente a [@chenrui333](https://github.com/chenrui333) por su
+[PR inicial](https://github.com/Homebrew/homebrew-core/pull/246949) para incluir
+YAMLResume en Homebrew.

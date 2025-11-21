@@ -1,0 +1,173 @@
+---
+title: YAMLResume 登陆 Homebrew
+description: YAMLResume 已收录进 Homebrew，简化在 macOS 上的安装与升级
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-11-21
+---
+
+YAMLResume 刚刚被 [Homebrew 接受](https://github.com/Homebrew/homebrew-core/pull/246949)。[Homebrew](https://brew.sh) 是 macOS 上最流行的包管理器。这意味着 macOS 用户现在可以用一个可信的命令安装并保持 YAMLResume 最新——无需手动全局安装 [Node.js](https://nodejs.org)，无需路径折腾。本文展示使用 Homebrew 获取 YAMLResume 的详细分步流程以及用于生成最佳 PDF 输出的排版引擎。
+
+![YAMLResume on Homebrew](/static/images/blog/yamlresume-homebrew/yamlresume-homebrew.webp)
+
+## 为什么重要
+
+过去在 macOS 上获取 YAMLResume CLI 的典型步骤是：
+
+1. [安装 Node.js](/zh-cn/docs/installation#nodejs)
+2. 使用 Node.js 包管理器 (npm/pnpm/yarn/bun) [安装 `yamlresume` CLI](/zh-cn/docs/installation#yamlresume)
+3. [安装排版引擎](/zh-cn/docs/installation#typesetting-engine) 以生成 PDF
+
+一个 [Homebrew formula](https://formulae.brew.sh/formula/yamlresume) 可以把第 1 步和第 2 步合并，因为 Homebrew 能帮你管理 Node.js 依赖。这减少环境配置问题并简化升级（`brew upgrade yamlresume`）。
+
+## 快速安装
+
+```sh
+brew install yamlresume
+```
+
+如果你还没有安装 Node.js，Homebrew 会作为依赖自动安装。
+
+然后验证：
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+如果能看到帮助输出，说明 YAMLResume CLI 已经在你的 `PATH` 中。
+
+YAMLResume 依赖一个排版引擎来生成 PDF，你可以通过 Homebrew 安装 [MacTeX](/zh-cn/docs/installation#xetex) 或 [Tectonic](/zh-cn/docs/installation#tectonic)。
+
+### 选项 A：完整 TeX Live (XeTeX)
+
+通过 MacTeX cask 安装（包含 XeTeX）：
+
+```sh
+# install the full mactex
+brew install mactex
+# or if you want to save some disk space
+brew install mactex-no-gui
+```
+
+安装后确保 TeX 可执行文件在 `PATH` 下（Homebrew 通常在 `/Library/TeX/texbin` 下创建符号链接）。测试：
+
+```console
+$ xelatex --version
+XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+kpathsea version 6.3.4
+Copyright 2022 SIL International, Jonathan Kew and Khaled Hosny.
+There is NO warranty.  Redistribution of this software is
+covered by the terms of both the XeTeX copyright and
+the Lesser GNU General Public License.
+For more information about these matters, see the file
+named COPYING and the XeTeX source.
+Primary author of XeTeX: Jonathan Kew.
+Compiled with ICU version 70.1; using 70.1
+Compiled with zlib version 1.2.11; using 1.2.11
+Compiled with FreeType2 version 2.11.1; using 2.11.1
+Compiled with Graphite2 version 1.3.14; using 1.3.14
+Compiled with HarfBuzz version 3.4.0; using 3.4.0
+Compiled with libpng version 1.6.37; using 1.6.37
+Compiled with pplib version v2.05 less toxic i hope
+Using Mac OS X Core Text and Cocoa frameworks
+```
+
+### 选项 B：Tectonic（轻量）
+
+```console
+$ brew install tectonic
+$ tectonic --version
+```
+
+该选哪个？
+
+| 引擎     | 优点                                | 缺点                          |
+| -------- | ----------------------------------- | ----------------------------- |
+| XeTeX    | 兼容性最高；成熟生态                | 下载体积大（4–6 GB）          |
+| Tectonic | 初始体积极小；自动获取所需 LaTeX 包 | 与 XeTeX 相比偶尔有兼容性差异 |
+
+如果遇到无法解释的 LaTeX 包问题或高级字体处理问题，切回 XeTeX。
+
+## 创建并构建简历
+
+创建一个初始 YAML 简历：
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+用编辑器查看并修改 `my-resume.yml`，然后构建 PDF：
+
+```console
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF successfully.
+```
+
+内部流程：
+
+1. 将 `my-resume.yml` 转换为 LaTeX (`my-resume.tex`)
+2. 调用排版引擎 (`xelatex` 或 `tectonic`)
+3. 生成 `my-resume.pdf`
+
+## 升级
+
+保持最新（新模板、修复、i18n 改进）：
+
+```console
+$ brew update
+$ brew upgrade yamlresume
+```
+
+## 卸载
+
+```console
+$ brew uninstall yamlresume
+```
+
+只在不再需要时移除可选依赖（字体、TeX 引擎等）。
+
+## 排错
+
+使用详细模式辅助诊断构建问题：
+
+```console
+$ yamlresume build --verbose my-resume.yml
+```
+
+常见解决方案：
+
+- 缺少排版引擎：安装 MacTeX 或使用 Tectonic。
+- 写文件权限被拒：确认当前目录可写（避免系统目录）。
+- Tectonic 上出现奇怪 LaTeX 错误：切回 XeTeX (`brew install mactex`)。
+
+## 结束语
+
+被 Homebrew 收录降低了新用户的门槛并体现项目的成熟度。如遇边缘情况，欢迎提交 [issue](https://github.com/yamlresume/yamlresume/issues/) 或 [discussion](https://github.com/yamlresume/yamlresume/discussions) —— 我们迭代很快。祝编码愉快，愿你的简历始终像素级完美！
+
+最后，感谢 [@chenrui333](https://github.com/chenrui333) 的最初 [PR](https://github.com/Homebrew/homebrew-core/pull/246949)，让 YAMLResume 收录进 Homebrew。

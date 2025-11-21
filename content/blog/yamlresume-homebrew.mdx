@@ -1,0 +1,197 @@
+---
+title: YAMLResume Lands in Homebrew
+description: YAMLResume has been included in Homebrew, which simplifies installation and updates on macOS
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-11-21
+---
+
+YAMLResume has just been
+[accepted](https://github.com/Homebrew/homebrew-core/pull/246949) by
+[Homebrew](https://brew.sh) (the most popular package manager on macOS). That
+means macOS users can now install and keep YAMLResume up to date with a single,
+trustworthy command—no manual [Node.js](https://nodejs.org) global installs, no
+path juggling. This post shows a more detailed step-by-step yamlresume setup with
+Homebrew and a typesetting engine for best PDF output.
+
+![YAMLResume on Homebrew](/static/images/blog/yamlresume-homebrew/yamlresume-homebrew.webp)
+
+## Why This Matters
+
+Previously, the typical path of getting YAMLResume CLI for macOS users was:
+
+1. [install Node.js](/docs/installation#nodejs),
+2. [install `yamlresume` CLI](/docs/installation#yamlresume-cli) by Node.js
+   package managers (npm/pnpm/yarn/bun)
+3. [install a typesetting engine](/docs/installation#typesetting-engine) in
+   order to generate PDF
+
+A [Homebrew formula](https://formulae.brew.sh/formula/yamlresume) can merge step
+1 and 2 into one, since Homebrew can manage the Node.js dependency for you.
+This reduces environment configuration issues and simplifies upgrades (`brew
+upgrade yamlresume`).
+
+## Quick Install
+
+```sh
+brew install yamlresume
+```
+
+Homebrew will install Node.js as a dependency if you don't have it yet.
+
+Then verify:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+If you see the help output, the CLI binary is available in your `PATH`.
+
+YAMLResume depends on a typesetting engine to generate PDF, you can either
+install [MacTeX](/docs/installation#xetex) or
+[Tectonic](/docs/installation#tectonic) via Homebrew.
+
+### Option A: Full TeX Live (XeTeX)
+
+Install via MacTeX cask (includes XeTeX):
+
+```sh
+# install the full mactex
+brew install mactex
+# or if you want to save some disk space
+brew install mactex-no-gui
+```
+
+After installation, ensure the TeX binaries are on `PATH` (Homebrew usually
+symlinks them under `/Library/TeX/texbin`). Test:
+
+```console
+$ xelatex --version
+XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+kpathsea version 6.3.4
+Copyright 2022 SIL International, Jonathan Kew and Khaled Hosny.
+There is NO warranty.  Redistribution of this software is
+covered by the terms of both the XeTeX copyright and
+the Lesser GNU General Public License.
+For more information about these matters, see the file
+named COPYING and the XeTeX source.
+Primary author of XeTeX: Jonathan Kew.
+Compiled with ICU version 70.1; using 70.1
+Compiled with zlib version 1.2.11; using 1.2.11
+Compiled with FreeType2 version 2.11.1; using 2.11.1
+Compiled with Graphite2 version 1.3.14; using 1.3.14
+Compiled with HarfBuzz version 3.4.0; using 3.4.0
+Compiled with libpng version 1.6.37; using 1.6.37
+Compiled with pplib version v2.05 less toxic i hope
+Using Mac OS X Core Text and Cocoa frameworks
+```
+
+### Option B: Tectonic (Lightweight)
+
+```console
+$ brew install tectonic
+$ tectonic --version
+```
+
+Which one should you pick?
+
+| Engine   | Pros                                                 | Cons                                   |
+| -------- | ---------------------------------------------------- | -------------------------------------- |
+| XeTeX    | maximal compatibility; mature ecosystem              | large download (4-6 GBs)               |
+| Tectonic | tiny initial footprint; auto-fetches needed packages | occasional compatibility gaps vs XeTeX |
+
+If you run into unexplained LaTeX package issues or advanced font handling edge
+cases, fall back to XeTeX.
+
+## Create and Build a Resume
+
+As usual, you can create a starter YAML resume by:
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+Inspect and edit `my-resume.yml` in your editor, then build to PDF:
+
+```console
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF successfully.
+```
+
+Under the hood YAMLResume will:
+
+1. transforms `my-resume.yml` into LaTeX (`my-resume.tex`).
+2. invokes your typesetting engine (`xelatex` or `tectonic`).
+3. produces `my-resume.pdf`.
+
+## Upgrading
+
+Stay current (new templates, fixes, i18n improvements):
+
+```console
+$ brew update
+$ brew upgrade yamlresume
+```
+
+## Uninstalling
+
+```console
+$ brew uninstall yamlresume
+```
+
+Remove optional dependencies only if you no longer need them (fonts, TeX engine,
+etc.).
+
+## Troubleshooting
+
+Verbose mode helps diagnose resume build issues:
+
+```console
+$ yamlresume build --verbose my-resume.yml
+```
+
+Common fixes:
+
+- missing typesetting engine: install MacTeX or use Tectonic.
+- permission denied writing files: ensure you are in a writable directory (avoid
+  system paths).
+- engine mismatch/weird LaTeX errors on Tectonic: fall back to XeTeX (`brew
+install mactex`).
+
+## Final Notes
+
+Being included in Homebrew lowers the barrier for new users and signals project
+maturity. If you run into any edge cases, open an
+[issue](https://github.com/yamlresume/yamlresume/issues/) or
+[discussion](https://github.com/yamlresume/yamlresume/discussions)—we iterate
+quickly. Happy hacking and may your resumes be always pixel perfect!
+
+Last but not least, credit to [@chenrui333](https://github.com/chenrui333) again
+for his initial [PR](https://github.com/Homebrew/homebrew-core/pull/246949) to
+include YAMLResume in Homebrew.

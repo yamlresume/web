@@ -1,0 +1,173 @@
+---
+title: YAMLResume が Homebrew に登場
+description: YAMLResume が Homebrew に収録され、macOS 上でのインストールとアップデートが容易になりました
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-11-21
+---
+
+YAMLResume は [Homebrew に採用されました](https://github.com/Homebrew/homebrew-core/pull/246949)。[Homebrew](https://brew.sh) は macOS で最も人気のあるパッケージマネージャーです。これにより、macOS ユーザーは信頼できる 1 つのコマンドで YAMLResume をインストール・最新版維持できるようになり、手動のグローバルな [Node.js](https://nodejs.org) インストールやパス調整から解放されます。本記事では Homebrew とタイブセッティングエンジンを使った、より詳細なステップバイステップのセットアップ方法を紹介します。
+
+![YAMLResume on Homebrew](/static/images/blog/yamlresume-homebrew/yamlresume-homebrew.webp)
+
+## なぜ重要か
+
+以前、macOS で YAMLResume CLI を導入する典型的な手順は次のとおりでした:
+
+1. [Node.js をインストール](/ja/docs/installation#nodejs)
+2. Node.js のパッケージマネージャー (npm / pnpm / yarn / bun) で [`yamlresume` CLI をインストール](/ja/docs/installation#yamlresume)
+3. PDF を生成するために [タイプセッティングエンジンをインストール](/ja/docs/installation#typesetting-engine)
+
+[Homebrew formula](https://formulae.brew.sh/formula/yamlresume) によって 1 と 2 を 1 回に統合でき、Homebrew が Node.js 依存を管理してくれます。これで環境のズレが減り、アップグレード (`brew upgrade yamlresume`) がシンプルになります。
+
+## クイックインストール
+
+```sh
+brew install yamlresume
+```
+
+Node.js がまだ無ければ依存として自動的にインストールされます。
+
+確認:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+ヘルプが表示されれば CLI バイナリは `PATH` に入っています。
+
+YAMLResume は PDF 生成のためにタイプセッティングエンジンへ依存します。Homebrew 経由で [MacTeX](/ja/docs/installation#xetex) もしくは [Tectonic](/ja/docs/installation#tectonic) をインストールできます。
+
+### オプション A: フル TeX Live (XeTeX)
+
+MacTeX cask でインストール (XeTeX を含む):
+
+```sh
+# install the full mactex
+brew install mactex
+# or if you want to save some disk space
+brew install mactex-no-gui
+```
+
+インストール後、TeX のバイナリが `PATH` にあることを確認してください (通常 `/Library/TeX/texbin` 下にシンボリックリンクが置かれます)。テスト:
+
+```console
+$ xelatex --version
+XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+kpathsea version 6.3.4
+Copyright 2022 SIL International, Jonathan Kew and Khaled Hosny.
+There is NO warranty.  Redistribution of this software is
+covered by the terms of both the XeTeX copyright and
+the Lesser GNU General Public License.
+For more information about these matters, see the file
+named COPYING and the XeTeX source.
+Primary author of XeTeX: Jonathan Kew.
+Compiled with ICU version 70.1; using 70.1
+Compiled with zlib version 1.2.11; using 1.2.11
+Compiled with FreeType2 version 2.11.1; using 2.11.1
+Compiled with Graphite2 version 1.3.14; using 1.3.14
+Compiled with HarfBuzz version 3.4.0; using 3.4.0
+Compiled with libpng version 1.6.37; using 1.6.37
+Compiled with pplib version v2.05 less toxic i hope
+Using Mac OS X Core Text and Cocoa frameworks
+```
+
+### オプション B: Tectonic (軽量)
+
+```console
+$ brew install tectonic
+$ tectonic --version
+```
+
+どちらを選ぶべきか?
+
+| エンジン | 長所                                             | 短所                                 |
+| -------- | ------------------------------------------------ | ------------------------------------ |
+| XeTeX    | 互換性最大・成熟したエコシステム                 | ダウンロードが大きい (4–6 GB)        |
+| Tectonic | 初期フットプリント極小・必要パッケージを自動取得 | XeTeX に比べ互換性ギャップが時折発生 |
+
+原因不明の LaTeX パッケージ問題や高度なフォント処理で行き詰まった場合は XeTeX に戻してください。
+
+## 履歴書の作成とビルド
+
+スターター YAML 履歴書を作成:
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+`my-resume.yml` を編集し、PDF をビルド:
+
+```console
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF successfully.
+```
+
+内部的な処理:
+
+1. `my-resume.yml` を LaTeX (`my-resume.tex`) に変換
+2. タイプセッティングエンジン (`xelatex` または `tectonic`) を呼び出し
+3. `my-resume.pdf` を生成
+
+## アップグレード
+
+最新状態 (新テンプレート、修正、i18n 改善) を維持:
+
+```console
+$ brew update
+$ brew upgrade yamlresume
+```
+
+## アンインストール
+
+```console
+$ brew uninstall yamlresume
+```
+
+不要になったオプション依存 (フォント、TeX エンジン等) は必要に応じて削除してください。
+
+## トラブルシューティング
+
+詳細モードでビルド問題を診断:
+
+```console
+$ yamlresume build --verbose my-resume.yml
+```
+
+よくある対処法:
+
+- タイプセッティングエンジンが無い: MacTeX をインストールするか Tectonic を使用
+- ファイル書き込み権限エラー: 書き込み可能なディレクトリで作業しているか確認 (システムパスを避ける)
+- Tectonic で不可解な LaTeX エラー: XeTeX に戻る (`brew install mactex`)
+
+## まとめ
+
+Homebrew 収録は新規ユーザーの参入障壁を下げ、プロジェクト成熟度の証です。エッジケースに遭遇したら [issue](https://github.com/yamlresume/yamlresume/issues/) や [discussion](https://github.com/yamlresume/yamlresume/discussions) を気軽に作成してください—迅速に改善します。ハッキングを楽しみ、あなたの履歴書が常にピクセルパーフェクトでありますように！
+
+最後に、YAMLResume を Homebrew に含める最初の [PR](https://github.com/Homebrew/homebrew-core/pull/246949) を送ってくれた [@chenrui333](https://github.com/chenrui333) に感謝します。
