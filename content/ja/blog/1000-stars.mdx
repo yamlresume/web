@@ -1,0 +1,117 @@
+---
+title: 1000 スター
+description: YAMLResume が約 6 ヶ月で GitHub で 1,000 スターを達成；v0.5–v0.7 のハイライトと今後の展望
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-11-26
+---
+
+YAMLResume が大きなマイルストーンを達成しました：[GitHub で 1000 スター](https://github.com/yamlresume/yamlresume/stargazers)——[プロジェクトをオープンソース化](/ja/blog/introducing-yamlresume)してから約半年後です。すべてのスター、issue、ディスカッション、貢献、口コミでのシェアに感謝します。小さなバッジですが、「resume as code」、優れたタイポグラフィ、開発者ファーストのワークフローに対する真の勢いを反映しています。
+
+![YAMLResume 1000 スターの歴史](/static/images/blog/1000-stars/star-history-20251126.webp)
+
+6 月に[500 スター](/ja/blog/500-stars)を祝い、今日は 1000 スターで戻ってきました。その間、YAMLResume は大幅に成熟しました——特に、多くの人が迅速にフォローし採用した 3 つのリリースを通じて：[v0.5](/ja/blog/yamlresume-compiler)、[v0.6](/ja/blog/section-customization)、[v0.7](/ja/blog/dev-mode)。この投稿では、私たちがリリースした最も重要なことを振り返り、次の旅の段階のための実践的なロードマップを提示します。
+
+## 振り返り
+
+### v0.5：信頼できる履歴書コンパイラ
+
+[v0.5](/ja/blog/yamlresume-compiler) は、YAMLResume を単なるフォーマッタではなく、コンパイラとして再定義しました。この単一の概念的なシフト——履歴書 YAML をソースコードとして扱う——は、正確性、一貫性、そして非常にシンプルな CLI ワークフローを解き放ちました。
+
+v0.5 でリリースした主要なアイデア：
+
+- [コンパイラアーキテクチャ](/ja/docs/compiler/architecture)と標準[データモデル](/ja/docs/compiler/schema)：履歴書の構造を正式化し、下流のレンダラーやテンプレートがクリーンで予測可能なデータを受け取れるようにしました。これにより、エラーが減り、テンプレートの移植性が向上しました。
+- 2 つのレベルでの強力な検証：[エディタ統合用の JSON Schema](/ja/docs/compiler/schema/json)（自動補完、ホバードキュメント、早期フォーマットチェック）と[ランタイム安全性と詳細な診断のための Zod](/ja/docs/compiler/schema/zod)。エディタは賢く感じられ、ビルドは安全に感じられます。
+- ループを短縮する新しいコマンド：迅速なチェック用の [`yamlresume validate`](/ja/docs/cli#validate) と、常に最初に検証する改良された `build`。`--no-validate` オプションにより、大きな編集中でも動き続けることができます。
+- [Clang スタイルのエラー出力](https://asciinema.org/a/728098)：ファイル名と行に関連付けられた明確なエラーは、各反復で数分を節約します。
+
+v0.5 は、YAMLResume を信頼できるツールにしました——締め切りに追われている場合でも。まだの場合は、v0.5 のブログの例とビデオをざっと見てください；それらは、バリデーター、スキーマのヒント、診断の動作を示しています。
+
+### v0.6：あなたの物語の語り方に合わせたセクションカスタマイズ
+
+[v0.6](/ja/blog/section-customization) は、見た目は単純だが非常に強力なものに焦点を当てました：テンプレートをフォークしたり LaTeX をハックしたりせずに、自分の声と順序で物語を表現すること。
+
+リリースした内容：
+
+- [セクションエイリアス](/ja/docs/layout/sections/aliases)：`layout.sections.aliases` を使用して、標準セクション（例：`work` を「専門経験」に、`education` を「学歴」に）を名前変更します。これは、トーン、地域/文化、または役割のターゲティングに特に役立ちます。
+- [セクションの並び替え](/ja/docs/layout/sections/reorder)：`layout.sections.order` を使用して、最も関連性の高いセクションをトップに持ってきます。`skills` を `work` の前に置くか、ポートフォリオ重視の役割では `projects` を最初に表示します。
+- 実用的な回復力：無効な日付を許容するなどの改善（文字列にフォールバック）
+
+なぜ重要か：
+
+- 採用の文脈は異なります。ポストドクターに応募する博士は `education` を最初にしたい；シニアエンジニアは `work` を最初にしたい。v0.6 は、その選択を 1 回の YAML 編集で可能にします。
+- 言語とトーンは認識を形作ります。エイリアスにより、テンプレートの手術なしで業界の規範（「経験」、「選定出版物」、「オープンソース」）に合わせることができます。
+
+要するに：v0.6 は、YAMLResume をあなたの物語に適応させました。その逆ではありません。
+
+### v0.7：開発モード、履歴書も現代的な開発体験に値する
+
+[v0.7](/ja/blog/dev-mode) は、履歴書のホットリロードのような感覚のウォッチモード開発フローをリリースしました。YAML を保存すると、PDF が自動的に再構築されます。小さな変更が大きなコンテキストスイッチを必要としなくなります。
+
+リリースした内容：
+
+- [`yamlresume dev`](/ja/docs/cli#dev)：履歴書ファイルを監視し、保存時に再構築する永続的なプロセス。サイドバイサイドの PDF ビューアーと組み合わせて、即座のフィードバックを得られます。
+- 堅牢なウォッチ内部：[chokidar](https://github.com/paulmillr/chokidar) を採用し、連続する迅速な保存でビルドを過負荷にしないように[結合ロジック](https://github.com/yamlresume/coalescifn)を追加しました。一度に 1 つのビルドのみ；最新の状態が常に勝ちます。
+- dev での実用的なフラグ：デバッグに `.tex` のみが必要な場合は `--no-pdf`、速度が最も重要となる大規模なリファクタリング中は `--no-validate`。
+
+なぜ重要か：
+
+- より速く反復し、より良く書けます。
+- ツールが退屈な作業を引き受け、あなたはフローを保ちます。それが開発体験のすべてです。
+
+`npm run dev` に慣れているなら、すぐに慣れるでしょう。
+
+### Homebrew での YAMLResume
+
+最後に、YAMLResume が [Homebrew](https://brew.sh) で利用可能になりました：
+
+```sh
+brew install yamlresume
+```
+
+使用方法を詳しく説明する新しいブログ投稿を公開しました：[YAMLResume が Homebrew に登場](/ja/blog/yamlresume-homebrew)。
+
+![brew install yamlresume](/static/images/blog/yamlresume-homebrew/brew-install-yamlresume.webp)
+
+## 今後の展望
+
+YAMLResume は、[PPResume](https://ppresume.com) の小さなコアエンジンから、今日の強力な履歴書コンパイラまで、長い道のりを歩んできました。しかし、YAMLResume の機能をさらに強化し、履歴書作成の理想的なツールにするには、まだ多くの作業があります。
+
+### 複数のレイアウト
+
+現在、YAMLResume は LaTeX 出力のみをサポートしています。コンパイラからレンダラーへのパイプラインを拡張し、複数のレイアウトエンジンと出力形式をサポートする予定です。まず Markdown、次に HTML から始めます。
+
+リリース予定の機能：
+
+- [Markdown 出力](https://github.com/yamlresume/yamlresume/issues/110)：履歴書のセクションとコンテンツを反映する、クリーンで構造化された Markdown アーティファクト。README、Markdown を受け入れる求人ポータル、または markdown を受け入れる他の履歴書ビルダーへの引き継ぎに役立ちます。
+- [HTML 出力](https://github.com/yamlresume/yamlresume/issues/45)：HTML は Web 履歴書の最も人気のある出力形式です。YAMLResume が HTML 出力をサポートする日には、どこでも履歴書をホストし、誰とでも共有し、任意のデバイスで開くことができます。
+
+1 つのデータモデル、複数の出力。コンパイラの検証が中核であり続けます；レンダラーはプラグインになります。オーディエンスごとに出力を選択します：正式な提出には PDF、Web プレゼンスには HTML、開発者向けチャネルには Markdown。
+
+### GitHub Actions
+
+一部の人は、[GitHub で履歴書を構築してホストする](https://github.com/yamlresume/yamlresume/discussions/50)ために YAMLResume を採用していますが、それぞれが PDF を生成する独自のワークフローを持っています。
+
+公式の GitHub YAMLResume アクションをリリースし、人々が独自のワークフローを書くことなく、履歴書を検証、構築、ホスト、公開できるようにします。
+
+専用の GitHub Action により、更新はプッシュして完了になります。
+
+### より多くの言語
+
+YAMLResume v0.7 はすでに[英語](/ja/docs/content/multi-languages/english)、[中国語](/ja/docs/content/multi-languages/chinese)、[ノルウェー語](/ja/docs/content/multi-languages/norwegian)、[スペイン語](/ja/docs/content/multi-languages/spanish)をサポートしています。リストを拡張してより多くの言語をサポートし、YAMLResume を世界中のより多くの人々にとってさらにアクセスしやすくします。
+
+フランス語、ドイツ語、日本語が、今後数ヶ月でサポートする最初の言語バッチになります。
+
+## 謝辞
+
+1000 スターは終わりではなく、別の始まりです。それは、あなたの早期採用、バグレポート、言語への貢献、ロードマップを形作った思慮深いリクエストから生まれました。サポートと貢献に感謝します。
+
+勢いを維持する方法：
+
+- 最新の CLI を試す：`npm install -g yamlresume@latest` または macOS で `brew install yamlresume`。
+- 次の編集ループで開発モードを使用：`yamlresume dev my-resume.yml`。
+- 問題とアイデアを提出：https://github.com/yamlresume/yamlresume/issues
+- ディスカッションに参加：https://github.com/yamlresume/yamlresume/discussions
+
+私たちは、履歴書の作成をより落ち着いた、より速い、より美しいものにする実践的な機能をリリースし続けます——単一の検証された真実の源に忠実でありながら。次のマイルストーンへ進みましょう。
+

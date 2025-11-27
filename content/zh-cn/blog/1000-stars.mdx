@@ -1,0 +1,116 @@
+---
+title: 1000 颗星
+description: YAMLResume 在约 6 个月内达到 GitHub 上的 1,000 颗星；v0.5–v0.7 的亮点和未来展望
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-11-26
+---
+
+YAMLResume 刚刚跨越了一个重要的里程碑：[GitHub 上的 1000 颗星](https://github.com/yamlresume/yamlresume/stargazers)——这大约是在[开源项目](/zh-cn/blog/introducing-yamlresume)半年后。感谢每一颗星、每一个 issue、每一次讨论、每一份贡献和每一次口碑分享。这是一个小小的徽章，但它反映了"简历即代码"、出色的排版和以开发者为先的工作流程的真正动力。
+
+![YAMLResume 1000 颗星历史](/static/images/blog/1000-stars/star-history-20251126.webp)
+
+六月我们庆祝了[500 颗星](/zh-cn/blog/500-stars)，今天我们带着 1000 颗星回来了。在这期间，YAMLResume 显著成熟——特别是在三个版本中，许多人都快速跟进和采用：[v0.5](/zh-cn/blog/yamlresume-compiler)、[v0.6](/zh-cn/blog/section-customization) 和 [v0.7](/zh-cn/blog/dev-mode)。这篇文章回顾了我们发布的最重要的内容，然后为下一段旅程制定了务实的路线图。
+
+## 回顾
+
+### v0.5：你可以信赖的简历编译器
+
+[v0.5](/zh-cn/blog/yamlresume-compiler) 将 YAMLResume 重新定位为不仅是一个格式化工具，而是一个编译器。这个单一的概念转变——将简历 YAML 视为源代码——解锁了正确性、一致性和极其简单的 CLI 工作流程。
+
+我们在 v0.5 中发布的关键想法：
+
+- [编译器架构](/zh-cn/docs/compiler/architecture)和标准[数据模型](/zh-cn/docs/compiler/schema)：我们正式化了简历结构，以便任何下游渲染器或模板都能获得干净、可预测的数据。这减少了错误并提高了模板的可移植性。
+- 两个层面的强验证：[用于编辑器集成的 JSON Schema](/zh-cn/docs/compiler/schema/json)（自动完成、悬停文档、早期格式检查）和[用于运行时安全和详细诊断的 Zod](/zh-cn/docs/compiler/schema/zod)。编辑器感觉智能；构建感觉安全。
+- 缩短迭代的新命令：[`yamlresume validate`](/zh-cn/docs/cli#validate) 用于快速检查，以及改进的 `build`，它总是先验证。使用 `--no-validate` 选项，你可以在大编辑期间保持进度。
+- [Clang 风格的错误输出](https://asciinema.org/a/728098)：与文件名和行号关联的清晰错误每次迭代都能节省数分钟。
+
+v0.5 使 YAMLResume 成为一个你可以信赖的工具——即使在截止日期压力下也是如此。如果你还没有，请浏览 v0.5 博客中的示例和视频；它们展示了验证器、架构提示和诊断的实际应用。
+
+### v0.6：与你讲述故事方式相匹配的章节自定义
+
+[v0.6](/zh-cn/blog/section-customization) 专注于看似简单但极其强大的功能：用你自己的声音和顺序表达你的叙事，而无需 fork 模板或 hack LaTeX。
+
+发布的内容：
+
+- [章节别名](/zh-cn/docs/layout/sections/aliases)：重命名预定义章节（例如，将 `work` 改为"专业经验"，将 `education` 改为"学术背景"）使用 `layout.sections.aliases`。这对于语调、地区/文化或角色定位特别有用。
+- [章节重排序](/zh-cn/docs/layout/sections/reorder)：使用 `layout.sections.order` 将最相关的章节带到顶部。将 `skills` 放在 `work` 之前，或者为作品集重的角色首先展示 `projects`。
+- 容错更佳实用：改进如容忍无效日期（回退到字符串）
+
+为什么重要：
+
+- 招聘环境不同。申请博士后的博士希望 `education` 在前；高级工程师希望 `work` 在前。v0.6 将这个选择放在一次 YAML 编辑的距离。
+- 语言和语调塑造感知。别名让你可以匹配行业规范（"经验"、"精选出版物"、"开源"），而无需微调模板。
+
+简而言之：v0.6 使 YAMLResume 适应你的叙述，而不是相反。
+
+### v0.7：开发模式，因为简历也值得现代化的开发体验
+
+[v0.7](/zh-cn/blog/dev-mode) 发布了一个监视模式的开发流程，感觉就像简历的热重载。保存你的 YAML，PDF 会自动重建。小改动不再需要大的上下文切换。
+
+发布的内容：
+
+- [`yamlresume dev`](/zh-cn/docs/cli#dev)：一个持久进程，监视你的简历文件并在保存时重建。将其与并排的 PDF 查看器配对以获得即时反馈。
+- 强大的监视器实现：我们采用了 [chokidar](https://github.com/paulmillr/chokidar) 并添加了[合并逻辑](https://github.com/yamlresume/coalescifn)，这样我们永远不会在快速连续保存时过载构建。一次只进行一次构建；最新状态总是获胜。
+- dev 中的实用标志：当你只需要 `.tex` 进行调试时使用 `--no-pdf`，在大型重构期间速度最重要时使用 `--no-validate`。
+
+为什么重要：
+
+- 迭代更快，写得更好。
+- 工具承担了繁琐的工作，而你保持了流畅的流程。这就是开发体验的全部意义。
+
+如果你习惯使用 `npm run dev`，你会感到宾至如归。
+
+### 使用 Homebrew 的 YAMLResume
+
+最后但同样重要的是，YAMLResume 现在已经被 [Homebrew](https://brew.sh) 收录：
+
+```sh
+brew install yamlresume
+```
+
+我们发布了一篇新的博客文章来详细解释如何使用它：[YAMLResume 登陆 Homebrew](/zh-cn/blog/yamlresume-homebrew)。
+
+![brew install yamlresume](/static/images/blog/yamlresume-homebrew/brew-install-yamlresume.webp)
+
+## 展望未来
+
+YAMLResume 已经从 [PPResume](https://ppresume.com) 的小型核心引擎发展到今天强大的简历编译器，尽管走过了很长的路。但我们仍然有很多工作要做，以进一步增强 YAMLResume 的能力，使其成为简历制作的理想工具。
+
+### 多种布局
+
+目前 YAMLResume 仅支持 LaTeX 输出。我们将扩展编译器到渲染器的管道，以支持多种布局引擎和输出格式，从 Markdown 开始，然后是 HTML。
+
+以下是我们将要发布的功能：
+
+- [Markdown 输出](https://github.com/yamlresume/yamlresume/issues/110)：一个干净、结构化的 Markdown 文档，反映你简历的章节和内容。适用于 README、接受 Markdown 的工作门户，或传递给接受 markdown 的其他简历构建器。
+- [HTML 输出](https://github.com/yamlresume/yamlresume/issues/45)：HTML 是网络简历最流行的输出格式。当 YAMLResume 支持 HTML 输出的那一天，你可以在任何地方托管你的简历，与任何人分享，并在任何设备上打开它。
+
+一个数据模型，多种输出。编译器的验证仍然是核心；渲染器成为插件。你根据受众选择输出：PDF 用于正式提交，HTML 用于网络存在，Markdown 用于面向开发者的渠道。
+
+### GitHub Actions
+
+一些人采用 YAMLResume 来[在 GitHub 上构建和托管他们的简历](https://github.com/yamlresume/yamlresume/discussions/50)，他们每个人都有自己生成 PDF 的工作流程。
+
+我们将发布一个官方的 GitHub YAMLResume action，以便人们可以验证、构建、托管和发布他们的简历，而无需编写自己的工作流。
+
+有了专用的 GitHub Action，简历更新变成了推送即完成。
+
+### 更多语言
+
+YAMLResume v0.7 已经支持[英语](/zh-cn/docs/content/multi-languages/english)、[中文](/zh-cn/docs/content/multi-languages/chinese)、[挪威语](/zh-cn/docs/content/multi-languages/norwegian)和[西班牙语](/zh-cn/docs/content/multi-languages/spanish)，我们将扩展列表以支持更多语言，使 YAMLResume 对世界各地更多人更加易用。
+
+法语、德语和日语将是我们接下来几个月要支持的第一批语言。
+
+## 致谢
+
+1000 颗星不是终点，而是另一个开始。它来自你的早期采用、错误报告、语言贡献和塑造路线图的深思熟虑的请求。感谢你的支持和贡献。
+
+以下是如何保持势头：
+
+- 尝试最新的 CLI：`npm install -g yamlresume@latest` 或在 macOS 上使用 `brew install yamlresume`。
+- 在下一个编辑循环中使用开发模式：`yamlresume dev my-resume.yml`。
+- 提交问题和想法：https://github.com/yamlresume/yamlresume/issues
+- 加入讨论：https://github.com/yamlresume/yamlresume/discussions
+
+我们将继续发布务实的功能，使简历写作更平静、更快、更美观——同时坚持单一、经过验证的真实来源。继续前进，迈向下一个里程碑。

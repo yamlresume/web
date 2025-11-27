@@ -1,0 +1,188 @@
+---
+title: 1000 Stars
+description: YAMLResume hits 1,000 GitHub stars in ~6 months; highlights from v0.5–v0.7 and what's next
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-11-26
+---
+
+YAMLResume just crossed a huge milestone: [1000 GitHub
+stars](https://github.com/yamlresume/yamlresume/stargazers)—roughly half a year
+after [open sourcing the project](/blog/introducing-yamlresume). Thank you for
+every star, issue, discussion, contribution, and word-of-mouth share. It's a
+small badge, but one that reflects real momentum for "resume as code", great
+typesetting, and a developer-first workflow.
+
+![YAMLResume 1000 Stars History](/static/images/blog/1000-stars/star-history-20251126.webp)
+
+In June we celebrated [500 stars](/blog/500-stars), today we're back with 1000.
+In between, YAMLResume matured significantly—especially across three releases
+that many of you followed and adopted quickly:
+[v0.5](/blog/yamlresume-compiler), [v0.6](/blog/section-customization), and
+[v0.7](/blog/dev-mode). This post recaps the most important things we shipped,
+then lays out a pragmatic roadmap for the next leg of the journey.
+
+## Recap
+
+### v0.5: The Resume Compiler you can trust
+
+[v0.5](/blog/yamlresume-compiler) reframed YAMLResume not just as a formatter,
+but as a compiler. That single conceptual shift—treating a resume YAML like
+source code—unlocked correctness, consistency, and a brutally simple CLI
+workflow.
+
+Key ideas we shipped in v0.5:
+
+- [Compiler architecture](/docs/compiler/architecture) and standard [data
+model](/docs/compiler/schema): We formalized the resume structure so any
+downstream renderer or template gets clean, predictable data. This reduced
+footguns and improved template portability.
+- Strong validation at two levels: [JSON Schema for editor
+integration](/docs/compiler/schema/json) (auto-completion, hover docs, early
+format checks) and [Zod for runtime safety and detailed
+diagnostics](/docs/compiler/schema/zod). Editors feel smart; builds feel safe.
+- New commands that shorten loops: [`yamlresume validate`](/docs/cli#validate)
+for quick checks, and improved `build` that always validates first. With the
+`--no-validate` opt-out, you stay in motion during big edits.
+- [Clang-style error output](https://asciinema.org/a/728098): Clear errors tied
+to filenames and lines save minutes for every iteration.
+
+v0.5 made YAMLResume a tool you can trust—even under deadlines. If
+you haven't yet, skim the examples and videos in the v0.5 blog; they show the
+validator, schema hints, and diagnostics in action.
+
+### v0.6: Section customization that matches how you tell your story
+
+[v0.6](/blog/section-customization) focused on something deceptively simple but
+incredibly powerful: expressing your narrative in your own voice and order,
+without forking templates or hacking LaTeX.
+
+What shipped:
+
+- [Section aliases](/docs/layout/sections/aliases): Rename canonical sections
+(e.g., turn `work` into "Professional Experience," `education` into "Academic
+Background") using `layout.sections.aliases`. This is especially useful for
+tone, region/culture, or role targeting.
+- [Section reordering](/docs/layout/sections/reorder): Bring the most relevant
+sections to the top with `layout.sections.order`. Put `skills` ahead of `work`,
+or surface `projects` first for portfolio-heavy roles.
+- Practical resilience: Improvements like tolerating invalid dates (falling back
+to strings)
+
+Why it matters:
+
+- Hiring contexts differ. A PhD applying to a postdoc wants `education` first; a
+staff engineer wants `work` first. v0.6 puts that choice one YAML edit away.
+- Language and tone shape perception. Aliasing lets you match industry norms
+("Experience," "Selected Publications," "Open Source") without template surgery.
+
+In short: v0.6 made YAMLResume adaptable to your narrative, not the other way around.
+
+### v0.7: Dev mode, because resumes deserve modern DX too
+
+[v0.7](/blog/dev-mode) shipped a watch-mode development flow that feels like hot
+reloading for resumes. Save your YAML, and the PDF rebuilds automatically. Small
+changes stop costing big context switches.
+
+What shipped:
+
+- [`yamlresume dev`](/docs/cli#dev): A persistent process that watches your
+resume file and rebuilds on save. Pair it with a side-by-side PDF viewer for
+instant feedback.
+- Robust watch internals: We adopted
+[chokidar](https://github.com/paulmillr/chokidar) and added [coalescing
+logic](https://github.com/yamlresume/coalescifn) so we never storm builds on
+quick successive saves. Only one build at a time; the latest state always wins.
+- Practical flags in dev: `--no-pdf` when you only need `.tex` for debugging,
+`--no-validate` during large refactors when speed matters most.
+
+Why it matters:
+
+- You iterate faster and write better.
+- The tool takes the tedium, you keep the flow. That's the whole point of DX.
+
+If you're used to `npm run dev`, you'll feel right at home.
+
+### YAMLResume with Homebrew
+
+Last but not least, YAMLResume is now available on [Homebrew](https://brew.sh):
+
+```sh
+brew install yamlresume
+```
+
+We've published a new blog post to explain how to use it in detail: [YAMLResume
+Lands in Homebrew](/blog/yamlresume-homebrew).
+
+![brew install yamlresume](/static/images/blog/yamlresume-homebrew/brew-install-yamlresume.webp)
+
+## Looking ahead
+
+YAMLResume has come a long way from the tiny core engine of
+[PPResume](https://ppresume.com) to a powerful resume compiler today. But we
+still have lots of work to do to further enhance YAMLResume's capabilities and
+make it the ideal tool for resume crafting.
+
+### Multiple layouts
+
+Right now YAMLResume only supports LaTeX output. We're going to extend the
+compiler-to-renderer pipeline to support multiple layout engines and output
+formats, starting with Markdown, then HTML.
+
+Here are the features we're going to ship:
+
+- [Markdown output](https://github.com/yamlresume/yamlresume/issues/110): A
+clean, structured Markdown artifact that mirrors your resume's sections and
+content. Useful for READMEs, job portals that accept Markdown, or handoffs to
+other resume builders that accept markdown.
+- [HTML output](https://github.com/yamlresume/yamlresume/issues/45): HTML is the
+most popular output format for web resumes. The day YAMLResume supports HTML
+output, you can host your resume anywhere, share it with anyone and open it on
+any device.
+
+One data model, many outputs. The compiler's validation remains the spine;
+renderers become plugins. You pick the output(s) per audience: PDF for formal
+submissions, HTML for web presence, Markdown for dev-facing channels.
+
+### GitHub Actions
+
+Some people adopted YAMLResume to [build and host their resumes on
+GitHub](https://github.com/yamlresume/yamlresume/discussions/50), each of them
+has their own workflow to generate PDF though.
+
+We're going to ship an official GitHub YAMLResume action so that people can
+validate, build, host and publish their resume, without having to write their
+own workflow.
+
+With a dedicated GitHub Action, updates become push-and-done.
+
+### More languages
+
+YAMLResume v0.7 already supports
+[English](/docs/content/multi-languages/english),
+[Chinese](/docs/content/multi-languages/chinese),
+[Norwegian](/docs/content/multi-languages/norwegian) and
+[Spanish](/docs/content/multi-languages/spanish), we are going to expand the
+list to support more languages, making YAMLResume even more accessible to more
+people around the world.
+
+French, German, Japanese will be the first batch of languages we're going to
+support in the next few months.
+
+## Regards
+
+1000 stars is not an end but another start. It came from your early adoption,
+bug reports, language contributions, and thoughtful requests that shaped the
+roadmap. Thank you for your support and contributions.
+
+Here's how to keep momentum going:
+
+- Try the latest CLI: `npm install -g yamlresume@latest` or `brew install
+yamlresume` on macOS.
+- Use dev mode for your next edit loop: `yamlresume dev my-resume.yml`.
+- File issues and ideas: https://github.com/yamlresume/yamlresume/issues
+- Join discussions: https://github.com/yamlresume/yamlresume/discussions
+
+We'll keep shipping pragmatic features that make resume writing calmer, faster,
+and better-looking—while staying true to a single, validated source of truth.
+Onward to the next milestone.

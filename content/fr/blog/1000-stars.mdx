@@ -1,0 +1,218 @@
+---
+title: 1000 Étoiles
+description: YAMLResume atteint 1,000 étoiles sur GitHub en ~6 mois; points
+  saillants de v0.5–v0.7 et prochaines étapes
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-11-26
+---
+
+YAMLResume vient de franchir un jalon majeur : [1000 étoiles sur
+GitHub](https://github.com/yamlresume/yamlresume/stargazers)—environ six mois
+après [l'ouverture du projet en open
+source](/fr/blog/introducing-yamlresume). Merci pour chaque étoile, issue,
+discussion, contribution et partage de bouche à oreille. C'est un petit badge,
+mais un qui reflète un véritable élan pour "resume as code", une excellente
+typographie et un flux de travail axé sur les développeurs.
+
+![YAMLResume 1000 Étoiles
+Histoire](/static/images/blog/1000-stars/star-history-20251126.webp)
+
+En juin, nous avons célébré [500 étoiles](/fr/blog/500-stars), aujourd'hui nous
+revenons avec 1000. Entre-temps, YAMLResume a considérablement mûri—en
+particulier à travers trois versions que beaucoup d'entre vous ont suivies et
+adoptées rapidement : [v0.5](/fr/blog/yamlresume-compiler),
+[v0.6](/fr/blog/section-customization) et
+[v0.7](/fr/blog/dev-mode). Cet article récapitule les choses les plus
+importantes que nous avons livrées, puis présente une feuille de route
+pragmatique pour la prochaine étape du voyage.
+
+## Récapitulatif
+
+### v0.5 : Le Compilateur de CV en qui vous pouvez faire confiance
+
+[v0.5](/fr/blog/yamlresume-compiler) a reformulé YAMLResume non seulement
+comme un formateur, mais comme un compilateur. Ce seul changement
+conceptuel—traiter un YAML de CV comme du code source—a débloqué la
+correction, la cohérence et un flux de travail CLI brutalement simple.
+
+Idées clés que nous avons livrées dans v0.5 :
+
+- [Architecture du compilateur](/fr/docs/compiler/architecture) et [modèle de
+  données standard](/fr/docs/compiler/schema) : Nous avons formalisé la
+  structure du CV pour que tout moteur de rendu ou modèle en aval reçoive des
+  données propres et prévisibles. Cela a réduit les erreurs et amélioré la
+  portabilité des modèles.
+- Validation forte à deux niveaux : [JSON Schema pour l'intégration
+  d'éditeurs](/fr/docs/compiler/schema/json) (auto-complétion, documentation
+  au survol, vérifications de format précoces) et [Zod pour la sécurité d'exécution
+  et les diagnostics
+  détaillés](/fr/docs/compiler/schema/zod). Les éditeurs se sentent
+  intelligents ; les builds se sentent sûrs.
+- Nouveaux commandes qui raccourcissent les boucles : [`yamlresume
+  validate`](/fr/docs/cli#validate) pour des vérifications rapides, et `build`
+  amélioré qui valide toujours en premier. Avec l'option `--no-validate`, vous
+  restez en mouvement pendant les grandes modifications.
+- [Sortie d'erreurs style
+  Clang](https://asciinema.org/a/728098) : Des erreurs claires liées aux
+  noms de fichiers et aux lignes économisent des minutes à chaque itération.
+
+v0.5 a fait de YAMLResume un outil en qui vous pouvez faire confiance—même
+sous pression. Si vous ne l'avez pas encore fait, parcourez les exemples et
+vidéos du blog v0.5 ; ils montrent le validateur, les conseils de schéma et
+les diagnostics en action.
+
+### v0.6 : Personnalisation de sections qui correspond à la façon dont vous
+racontez votre histoire
+
+[v0.6](/fr/blog/section-customization) s'est concentré sur quelque chose de
+trompeusement simple mais incroyablement puissant : exprimer votre récit dans
+votre propre voix et ordre, sans forker des modèles ou hacker LaTeX.
+
+Ce qui a été livré :
+
+- [Alias de sections](/fr/docs/layout/sections/aliases) : Renommez les
+  sections canoniques (par exemple, transformez `work` en "Expérience
+  Professionnelle", `education` en "Formation Académique") en utilisant
+  `layout.sections.aliases`. C'est particulièrement utile pour le ton,
+  la région/culture ou le ciblage de rôle.
+- [Réordonnancement de sections](/fr/docs/layout/sections/reorder) : Amenez
+  les sections les plus pertinentes en haut avec `layout.sections.order`.
+  Mettez `skills` avant `work`, ou affichez `projects` en premier pour les
+  rôles axés sur le portfolio.
+- Résilience pratique : Améliorations comme tolérer les dates invalides (en
+  revenant aux chaînes)
+
+Pourquoi c'est important :
+
+- Les contextes d'embauche diffèrent. Un doctorat postulant à un postdoc veut
+  `education` en premier ; un ingénieur senior veut `work` en premier. v0.6
+  met ce choix à une modification YAML.
+- La langue et le ton façonnent la perception. Les alias vous permettent de
+  correspondre aux normes de l'industrie ("Expérience", "Publications
+  Sélectionnées", "Open Source") sans chirurgie de modèle.
+
+En bref : v0.6 a rendu YAMLResume adaptable à votre récit, et non l'inverse.
+
+### v0.7 : Mode dev, car les CV méritent aussi un DX moderne
+
+[v0.7](/fr/blog/dev-mode) a livré un flux de développement en mode watch qui
+ressemble à un rechargement à chaud pour les CV. Enregistrez votre YAML, et
+le PDF se reconstruit automatiquement. Les petits changements ne coûtent plus
+de gros changements de contexte.
+
+Ce qui a été livré :
+
+- [`yamlresume dev`](/fr/docs/cli#dev) : Un processus persistant qui surveille
+  votre fichier de CV et reconstruit à l'enregistrement. Utilisez-le avec un
+  visualiseur PDF côte à côte pour un retour instantané.
+- Internes de watch robustes : Nous avons adopté
+  [chokidar](https://github.com/paulmillr/chokidar) et ajouté une [logique de
+  coalescence](https://github.com/yamlresume/coalescifn) pour ne jamais
+  surcharger les builds sur des enregistrements successifs rapides. Une seule
+  build à la fois ; l'état le plus récent gagne toujours.
+- Drapeaux pratiques en dev : `--no-pdf` lorsque vous n'avez besoin que de
+  `.tex` pour le débogage, `--no-validate` pendant les grandes refactorisations
+  lorsque la vitesse compte le plus.
+
+Pourquoi c'est important :
+
+- Vous itérez plus vite et écrivez mieux.
+- L'outil prend la monotonie, vous gardez le flux. C'est tout l'intérêt de
+  DX.
+
+Si vous êtes habitué à `npm run dev`, vous vous sentirez comme chez vous.
+
+### YAMLResume avec Homebrew
+
+Enfin et surtout, YAMLResume est maintenant disponible sur
+[Homebrew](https://brew.sh) :
+
+```sh
+brew install yamlresume
+```
+
+Nous avons publié un nouvel article de blog pour expliquer comment l'utiliser
+en détail : [YAMLResume arrive sur Homebrew](/fr/blog/yamlresume-homebrew).
+
+![brew install
+yamlresume](/static/images/blog/yamlresume-homebrew/brew-install-yamlresume.webp)
+
+## Regard vers l'avenir
+
+YAMLResume a parcouru un long chemin depuis le petit moteur central de
+[PPResume](https://ppresume.com) jusqu'à un puissant compilateur de CV
+aujourd'hui. Mais nous avons encore beaucoup de travail à faire pour améliorer
+davantage les capacités de YAMLResume et en faire l'outil idéal pour la
+création de CV.
+
+### Mises en page multiples
+
+Actuellement, YAMLResume ne prend en charge que la sortie LaTeX. Nous allons
+étendre le pipeline compilateur-vers-renderer pour prendre en charge
+plusieurs moteurs de mise en page et formats de sortie, en commençant par
+Markdown, puis HTML.
+
+Voici les fonctionnalités que nous allons livrer :
+
+- [Sortie Markdown](https://github.com/yamlresume/yamlresume/issues/110) : Un
+  artefact Markdown propre et structuré qui reflète les sections et le contenu
+  de votre CV. Utile pour les README, les portails d'emploi qui acceptent
+  Markdown, ou les transferts vers d'autres constructeurs de CV qui acceptent
+  markdown.
+- [Sortie HTML](https://github.com/yamlresume/yamlresume/issues/45) : HTML est
+  le format de sortie le plus populaire pour les CV web. Le jour où YAMLResume
+  prendra en charge la sortie HTML, vous pourrez héberger votre CV n'importe où,
+  le partager avec n'importe qui et l'ouvrir sur n'importe quel appareil.
+
+Un modèle de données, plusieurs sorties. La validation du compilateur reste la
+colonne vertébrale ; les renderers deviennent des plugins. Vous choisissez
+la(les) sortie(s) par audience : PDF pour les soumissions formelles, HTML pour
+la présence web, Markdown pour les canaux orientés développeurs.
+
+### GitHub Actions
+
+Certaines personnes ont adopté YAMLResume pour [construire et héberger leurs
+CV sur GitHub](https://github.com/yamlresume/yamlresume/discussions/50), chacun
+d'entre eux ayant son propre workflow pour générer le PDF.
+
+Nous allons livrer une action GitHub YAMLResume officielle pour que les gens
+puissent valider, construire, héberger et publier leur CV, sans avoir à écrire
+leur propre workflow.
+
+Avec une GitHub Action dédiée, les mises à jour deviennent push-and-done.
+
+### Plus de langues
+
+YAMLResume v0.7 prend déjà en charge
+[l'Anglais](/fr/docs/content/multi-languages/english),
+[le Chinois](/fr/docs/content/multi-languages/chinese),
+[le Norvégien](/fr/docs/content/multi-languages/norwegian) et
+[l'Espagnol](/fr/docs/content/multi-languages/spanish), nous allons étendre
+la liste pour prendre en charge plus de langues, rendant YAMLResume encore plus
+accessible à plus de personnes dans le monde.
+
+Le Français, l'Allemand et le Japonais seront le premier lot de langues que
+nous allons prendre en charge dans les prochains mois.
+
+## Remerciements
+
+1000 étoiles n'est pas une fin mais un nouveau départ. Cela est venu de votre
+adoption précoce, rapports de bugs, contributions linguistiques et demandes
+réfléchies qui ont façonné la feuille de route. Merci pour votre soutien et vos
+contributions.
+
+Voici comment maintenir l'élan :
+
+- Essayez la dernière CLI : `npm install -g yamlresume@latest` ou `brew install
+  yamlresume` sur macOS.
+- Utilisez le mode dev pour votre prochaine boucle d'édition : `yamlresume dev
+  my-resume.yml`.
+- Déposez des issues et des idées : https://github.com/yamlresume/yamlresume/issues
+- Rejoignez les discussions :
+  https://github.com/yamlresume/yamlresume/discussions
+
+Nous continuerons à livrer des fonctionnalités pragmatiques qui rendent la
+rédaction de CV plus calme, plus rapide et plus belle—tout en restant fidèles à
+une source unique de vérité validée. En avant vers le prochain jalon.
+
