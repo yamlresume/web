@@ -1,0 +1,79 @@
+---
+title: Layouts
+---
+
+The core of a resume is the content, but the layout is also important. Lots of
+JSON/YAML based resume generators only focus on the content, leaving the
+layout untouched, which leaves a big problem for the user.
+
+Unlike other resume generators, YAMLResume provides an opinionated layout
+solution out of the box , which allows users to focus on the content of the
+resume while generate professional looking resumes with pixel perfect layout and
+typesetting.
+
+Starting from v0.8.0, YAMLResume supports multiple layouts and multiple output engines (LaTeX and Markdown) via the `layouts` array.
+
+Here is an example of layout configuration in a `resume.yml` file:
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+locale:
+  language: en
+
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    page:
+      showPageNumbers: true
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+    typography:
+      fontSize: 11pt
+  - engine: markdown
+```
+
+## Engines
+
+YAMLResume currently supports two engines:
+
+- [LaTeX](./layouts/latex): Generates high-quality PDF resumes.
+- [Markdown](./layouts/markdown): Generates plain Markdown resumes.
+
+## Locale
+
+The `locale` option allows you to specify the language for your resume. This
+will affect the date format, and other locale-specific settings.
+
+```yml lineNumbers
+locale:
+  language: en
+```
+
+Take a look at the [multi languages](/docs/content/multi-languages) for more
+details.
+
+## Learn More
+
+<Cards>
+  <Card
+    href="./layouts/sections"
+    title="Sections"
+    description="Customize the sections of the resume"
+  />
+  <Card
+    href="./layouts/latex"
+    title="LaTeX Engine"
+    description="Generate PDF resumes with LaTeX"
+  />
+  <Card
+    href="./layouts/markdown"
+    title="Markdown Engine"
+    description="Generate Markdown resumes"
+  />
+</Cards>

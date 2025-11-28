@@ -1,0 +1,75 @@
+---
+title: LaTeX エンジン
+---
+
+LaTeX エンジンは YAMLResume のコアエンジンであり、LaTeX テンプレートを使用して高品質でプロフェッショナルな外観の PDF 履歴書を作成するように設計されています。
+
+## 設定
+
+LaTeX エンジンを使用するには、レイアウト設定で `engine: latex` を指定してください。
+
+```yaml
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    # ... その他のオプション
+```
+
+## ページ
+
+`page` オプションにより、用紙サイズ、マージン、およびページ番号の表示など、ページ設定をカスタマイズできます。
+
+`margins` オプションにより、ページマージンをカスタマイズできます。これは現在 `layouts` 下の `page` オブジェクトの一部です。
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    page:
+      showPageNumbers: true
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+```
+
+## セクション
+
+`sections` オプションにより、セクションタイトルとその順序をカスタマイズできます。詳細については [セクション文書](./sections) をご覧ください。
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    sections:
+      aliases:
+        work: "Professional Experience"
+        education: "Education"
+        skills: "Skills"
+      order:
+        - basics
+        - work
+        - education
+```
+
+## テンプレート
+
+`template` オプションにより、様々なテンプレートから選択できます。各テンプレートには独特なデザインとレイアウトがあります。利用可能なテンプレートのリストは [テンプレート文書](./latex/templates) で確認できます。
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    template: moderncv-banking
+```
+
+## タイポグラフィ
+
+`typography` オプションを使用すると、履歴書で使用されるフォントスタイルをカスタマイズできます。
+
+現在、`fontSize` のみがサポートされており、LaTeX エンジンは `10pt`、`11pt`、および `12pt` のみをサポートしています。
+
+```yaml
+layouts:
+  - engine: latex
+    typography:
+      fontSize: 11pt
+```

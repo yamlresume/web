@@ -1,0 +1,72 @@
+---
+title: 佈局
+---
+
+履歷的核心是內容，但佈局也很重要。許多基於 JSON/YAML 的履歷生成器只關注內容，而將佈局保持不變，這給用戶留下了很大的問題。
+
+與其他履歷生成器不同，YAMLResume 提供了開箱即用的佈局解決方案，允許用戶專注於履歷的內容，同時生成具有像素完美佈局和排版的專業履歷。
+
+從 v0.8.0 開始，YAMLResume 通過 `layouts` 陣列支援多種佈局和多種輸出引擎（LaTeX 和 Markdown）。
+
+以下是 `resume.yml` 文件中佈局配置的示例：
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+locale:
+  language: en
+
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    page:
+      showPageNumbers: true
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+    typography:
+      fontSize: 11pt
+  - engine: markdown
+```
+
+## 引擎
+
+YAMLResume 目前支援兩種引擎：
+
+- [LaTeX](./layouts/latex)：生成高品質 PDF 履歷。
+- [Markdown](./layouts/markdown)：生成純 Markdown 履歷。
+
+## 語言環境
+
+`locale` 選項允許您為履歷指定語言。這將影響日期格式和其他特定於語言環境的設置。
+
+```yml lineNumbers
+locale:
+  language: en
+```
+
+查看[多語言](/zh-tw/docs/content/multi-languages)了解更多詳情。
+
+## 了解更多
+
+<Cards>
+  <Card
+    href="./layouts/sections"
+    title="章節"
+    description="自定義履歷的章節"
+  />
+  <Card
+    href="./layouts/latex"
+    title="LaTeX 引擎"
+    description="使用 LaTeX 生成 PDF 履歷"
+  />
+  <Card
+    href="./layouts/markdown"
+    title="Markdown 引擎"
+    description="生成 Markdown 履歷"
+  />
+</Cards>

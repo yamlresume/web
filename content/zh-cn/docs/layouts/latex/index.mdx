@@ -1,0 +1,75 @@
+---
+title: LaTeX 引擎
+---
+
+LaTeX 引擎是 YAMLResume 的核心引擎，旨在通过 LaTeX 模板生成高质量、外观专业的 PDF 简历。
+
+## 配置
+
+要使用 LaTeX 引擎，请在布局配置中指定 `engine: latex`。
+
+```yaml
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    # ... 其他选项
+```
+
+## 页面
+
+`page` 选项允许您自定义页面设置，如纸张大小、边距和是否显示页码。
+
+`margins` 选项允许您自定义页面边距。它现在是 `layouts` 下 `page` 对象的一部分。
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    page:
+      showPageNumbers: true
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+```
+
+## 章节
+
+`sections` 选项允许您自定义章节标题及其顺序。更多信息，请参见[章节文档](./sections)。
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    sections:
+      aliases:
+        work: "Professional Experience"
+        education: "Education"
+        skills: "Skills"
+      order:
+        - basics
+        - work
+        - education
+```
+
+## 模板
+
+`template` 选项允许您从各种模板中选择。每个模板都有独特的设计和布局。您可以在[模板文档](./latex/templates)中找到可用模板的列表。
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    template: moderncv-banking
+```
+
+## 排版
+
+`typography` 选项允许您自定义简历中使用的字体样式。
+
+目前，只支持 `fontSize`，LaTeX 引擎只支持 `10pt`、`11pt` 和 `12pt`。
+
+```yaml
+layouts:
+  - engine: latex
+    typography:
+      fontSize: 11pt
+```

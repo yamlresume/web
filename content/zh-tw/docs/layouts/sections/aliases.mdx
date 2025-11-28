@@ -1,0 +1,57 @@
+---
+title: 別名
+---
+
+YAMLResume 為[除 `location` 和 `profiles`](#aliasable-sections) 之外的所有履歷章節提供默認標題，這些標題會根據選擇的[語言環境語言](/zh-tw/docs/layouts#locale)自動[翻譯](docs/content/multi-languages)。但是，您可能希望自定義這些標題以更好地適合您的檔案或行業。`section aliases` 功能允許您用自己的自定義名稱覆蓋默認章節標題。
+
+例如，您可能更喜歡 `work` 章節使用「Professional Experience」而不是「Work」，或者 `skills` 章節使用「Technical Proficiencies」而不是「Skills」。
+
+## 如何使用
+
+您可以在 `resume.yml` 文件的 `layouts.[].sections` 配置中定義章節別名。在您的佈局中添加一個 `sections` 對象，在其中添加一個 `aliases` 映射。
+
+`aliases` 映射中的鍵是標準章節 ID，值是您要使用的自定義標題。
+
+## 示例
+
+以下是如何更改 `work`、`education` 和 `skills` 章節的標題：
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layouts:
+  - engine: latex
+    sections:
+      aliases:
+        work: Professional Experience
+        education: Academic Background
+        skills: Technical Skills
+```
+
+當您使用此配置構建履歷時，生成的 PDF 將使用「Professional Experience」、「Academic Background」和「Technical Skills」作為這些章節的標題，覆蓋默認或特定於語言環境的名稱。
+
+如果未為某個章節提供別名，YAMLResume 將回退到配置語言環境的默認標題。
+
+## 可別名的章節
+
+您可以為以下章節提供別名：
+
+- `basics`
+- `education`
+- `work`
+- `volunteer`
+- `awards`
+- `certificates`
+- `publications`
+- `skills`
+- `languages`
+- `interests`
+- `references`
+- `projects`
+
+## 規則和約束
+
+- 別名長度必須在 2 到 128 個字符之間。
+

@@ -1,0 +1,56 @@
+---
+title: エイリアス
+---
+
+YAMLResume は[`location` と `profiles` を除く](#aliasable-sections)すべての履歴書セクションにデフォルトタイトルを提供し、これらのタイトルは選択された[ロケール言語](/zh-cn/docs/layouts#locale)に基づいて自動的に[翻訳](docs/content/multi-languages)されます。しかし、プロフィールや業界により適したタイトルにカスタマイズしたい場合があります。`section aliases` 機能により、デフォルトのセクションタイトルを独自のカスタム名で上書きできます。
+
+例えば、`work` セクションで「Work」ではなく「Professional Experience」を使用したり、`skills` セクションで「Skills」ではなく「Technical Proficiencies」を使用することを好むかもしれません。
+
+## 使用方法
+
+`resume.yml` ファイルの `layouts.[].sections` 設定でセクションエイリアスを定義できます。レイアウトに `sections` オブジェクトを追加し、その中に `aliases` マッピングを追加します。
+
+`aliases` マッピングのキーは標準セクション ID で、値は使用したいカスタムタイトルです。
+
+## 例
+
+`work`、`education`、`skills` セクションのタイトルを変更する方法：
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layouts:
+  - engine: latex
+    sections:
+      aliases:
+        work: Professional Experience
+        education: Academic Background
+        skills: Technical Skills
+```
+
+この設定を使用して履歴書をビルドすると、生成される PDF は「Professional Experience」、「Academic Background」、「Technical Skills」をこれらのセクションのタイトルとして使用し、デフォルトまたはロケール固有の名前を上書きします。
+
+セクションにエイリアスが提供されていない場合、YAMLResume は設定されたロケールのデフォルトタイトルにフォールバックします。
+
+## エイリアス可能なセクション
+
+以下のセクションにエイリアスを提供できます：
+
+- `basics`
+- `education`
+- `work`
+- `volunteer`
+- `awards`
+- `certificates`
+- `publications`
+- `skills`
+- `languages`
+- `interests`
+- `references`
+- `projects`
+
+## 規則と制約
+
+- エイリアスの長さは2文字から128文字の間でなければなりません。

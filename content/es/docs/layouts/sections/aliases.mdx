@@ -1,0 +1,72 @@
+---
+title: Alias
+---
+
+YAMLResume proporciona títulos predeterminados para [todas las secciones del
+currículum excepto](#secciones-aliasables) `location` y `profiles`, que se
+[traducen](docs/content/multi-languages) automáticamente según el [idioma
+local](/docs/layouts#locale) seleccionado. Sin embargo, es posible que desees
+personalizar estos títulos para que se adapten mejor a tu perfil o industria. La
+característica de `alias de sección` te permite sobrescribir los títulos de
+sección predeterminados con tus propios nombres personalizados.
+
+Por ejemplo, podrías preferir "Professional Experience" en lugar de "Work" para
+la sección `work`, o "Technical Proficiencies" en lugar de "Skills" para la
+sección `skills`.
+
+## Cómo Usar
+
+Puedes definir alias de sección dentro de la configuración `layouts.[].sections` de tu
+archivo `resume.yml`. Agrega un objeto `sections` a tu layout, y dentro de él,
+un mapa `aliases`.
+
+Las claves en el mapa `aliases` son los IDs de sección estándar, y los valores
+son los títulos personalizados que quieres usar.
+
+## Ejemplo
+
+Así es como puedes cambiar los títulos para las secciones `work`, `education` y
+`skills`:
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layouts:
+  - engine: latex
+    sections:
+      aliases:
+        work: Professional Experience
+        education: Academic Background
+        skills: Technical Skills
+```
+
+Cuando construyas tu currículum con esta configuración, el PDF generado usará
+"Professional Experience", "Academic Background" y "Technical Skills" como los
+títulos para estas secciones, sobrescribiendo los nombres predeterminados o
+específicos del idioma local.
+
+Si no se proporciona un alias para una sección, YAMLResume recurrirá al título
+predeterminado para el idioma local configurado.
+
+## Secciones Aliasables
+
+Puedes proporcionar alias para las siguientes secciones:
+
+- `basics`
+- `education`
+- `work`
+- `volunteer`
+- `awards`
+- `certificates`
+- `publications`
+- `skills`
+- `languages`
+- `interests`
+- `references`
+- `projects`
+
+## Reglas y Restricciones
+
+- Un alias debe tener entre 2 y 128 caracteres de longitud.

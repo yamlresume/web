@@ -1,0 +1,78 @@
+---
+title: Moteur LaTeX
+---
+
+Le moteur LaTeX est le moteur principal de YAMLResume, conçu pour produire des CV PDF de haute qualité et d'apparence professionnelle en utilisant des modèles LaTeX.
+
+## Configuration
+
+Pour utiliser le moteur LaTeX, spécifiez `engine: latex` dans votre configuration de mise en page.
+
+```yaml
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    # ... autres options
+```
+
+## Page
+
+L'option `page` vous permet de personnaliser les paramètres de page, comme la taille du papier, les marges et s'il faut afficher les numéros de page.
+
+L'option `margins` vous permet de personnaliser les marges de page. Elle fait maintenant partie de l'objet `page` sous `layouts`.
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    page:
+      showPageNumbers: true
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+```
+
+## Sections
+
+L'option `sections` vous permet de personnaliser les titres de section et leur
+ordre. Pour plus d'informations, voir la [documentation des sections](./sections).
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    sections:
+      aliases:
+        work: "Expérience Professionnelle"
+        education: "Éducation"
+        skills: "Compétences"
+      order:
+        - basics
+        - work
+        - education
+```
+
+## Modèles
+
+L'option `template` vous permet de choisir parmi une variété de modèles. Chaque
+modèle a un design et une mise en page uniques. Vous pouvez trouver une liste des
+modèles disponibles dans la [documentation des modèles](./latex/templates).
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    template: moderncv-banking
+```
+
+## Typographie
+
+L'option `typography` vous permet de personnaliser les styles de police utilisés dans votre CV.
+
+Actuellement, seul `fontSize` est supporté, et le moteur LaTeX supporte seulement `10pt`, `11pt`, et `12pt`.
+
+```yaml
+layouts:
+  - engine: latex
+    typography:
+      fontSize: 11pt
+```

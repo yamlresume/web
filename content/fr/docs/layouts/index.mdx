@@ -1,0 +1,79 @@
+---
+title: Mise en Page
+---
+
+Le cœur d'un CV est le contenu, mais la mise en page est aussi importante. Beaucoup de
+générateurs de CV basés sur JSON/YAML se concentrent seulement sur le contenu, laissant la
+mise en page intacte, ce qui laisse un gros problème pour l'utilisateur.
+
+Contrairement aux autres générateurs de CV, YAMLResume fournit une solution de mise en page
+opiniâtre prête à l'emploi, qui permet aux utilisateurs de se concentrer sur le contenu du
+CV tout en générant des CV d'apparence professionnelle avec une mise en page et une
+composition parfaites au pixel près.
+
+À partir de la version v0.8.0, YAMLResume prend en charge plusieurs mises en page et plusieurs moteurs de sortie (LaTeX et Markdown) via le tableau `layouts`.
+
+Voici un exemple de configuration de mise en page dans un fichier `resume.yml` :
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+locale:
+  language: en
+
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    page:
+      showPageNumbers: true
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+    typography:
+      fontSize: 11pt
+  - engine: markdown
+```
+
+## Moteurs
+
+YAMLResume prend actuellement en charge deux moteurs :
+
+- [LaTeX](./layouts/latex) : Génère des CV PDF de haute qualité.
+- [Markdown](./layouts/markdown) : Génère des CV Markdown simples.
+
+## Locale
+
+L'option `locale` vous permet de spécifier la langue pour votre CV. Cela
+affectera le format de date, et d'autres paramètres spécifiques à la locale.
+
+```yml lineNumbers
+locale:
+  language: en
+```
+
+Consultez [multi-langues](/fr/docs/content/multi-languages) pour plus
+de détails.
+
+## En Savoir Plus
+
+<Cards>
+  <Card
+    href="./layouts/sections"
+    title="Sections"
+    description="Personnaliser les sections du CV"
+  />
+  <Card
+    href="./layouts/latex"
+    title="Moteur LaTeX"
+    description="Générer des CV PDF avec LaTeX"
+  />
+  <Card
+    href="./layouts/markdown"
+    title="Moteur Markdown"
+    description="Générer des CV Markdown"
+  />
+</Cards>

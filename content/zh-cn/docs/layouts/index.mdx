@@ -1,0 +1,72 @@
+---
+title: 布局
+---
+
+简历的核心是内容，但布局也很重要。许多基于 JSON/YAML 的简历生成器只关注内容，而将布局保持不变，这给用户留下了很大的问题。
+
+与其他简历生成器不同，YAMLResume 提供了开箱即用的布局解决方案，允许用户专注于简历的内容，同时生成具有像素完美布局和排版的专业简历。
+
+从 v0.8.0 开始，YAMLResume 通过 `layouts` 数组支持多种布局和多种输出引擎（LaTeX 和 Markdown）。
+
+以下是 `resume.yml` 文件中布局配置的示例：
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+locale:
+  language: en
+
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    page:
+      showPageNumbers: true
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+    typography:
+      fontSize: 11pt
+  - engine: markdown
+```
+
+## 引擎
+
+YAMLResume 目前支持两种引擎：
+
+- [LaTeX](./layouts/latex)：生成高质量 PDF 简历。
+- [Markdown](./layouts/markdown)：生成纯 Markdown 简历。
+
+## 语言环境
+
+`locale` 选项允许您为简历指定语言。这将影响日期格式和其他特定于语言环境的设置。
+
+```yml lineNumbers
+locale:
+  language: en
+```
+
+查看[多语言](/zh-cn/docs/content/multi-languages)了解更多详情。
+
+## 了解更多
+
+<Cards>
+  <Card
+    href="./layouts/sections"
+    title="章节"
+    description="自定义简历的章节"
+  />
+  <Card
+    href="./layouts/latex"
+    title="LaTeX 引擎"
+    description="使用 LaTeX 生成 PDF 简历"
+  />
+  <Card
+    href="./layouts/markdown"
+    title="Markdown 引擎"
+    description="生成 Markdown 简历"
+  />
+</Cards>
