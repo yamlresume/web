@@ -13,19 +13,22 @@ title: レイアウト
 content:
   # ...
 
-layout:
-  locale:
-    language: en
-  margins:
-    top: 2.5cm
-    left: 1.5cm
-    right: 1.5cm
-    bottom: 2.5cm
-  page:
-    showPageNumbers: true
-  template: moderncv-banking
-  typography:
-    fontSize: 11pt
+locale:
+  language: en
+
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    page:
+      showPageNumbers: true
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+    typography:
+      fontSize: 11pt
+  - engine: markdown
 ```
 
 ## ロケール
@@ -33,24 +36,25 @@ layout:
 `locale` オプションにより、履歴書の言語を指定できます。これは日付形式やその他の言語固有の設定に影響します。
 
 ```yml lineNumbers
-layout:
-  locale:
-    language: en
+locale:
+  language: en
 ```
 
 詳細については [多言語](/ja/docs/content/multi-languages) をご覧ください。
 
 ## マージン
 
-`margins` オプションにより、ページマージンをカスタマイズできます。
+`margins` オプションにより、ページマージンをカスタマイズできます。これは現在 `layouts` 下の `page` オブジェクトの一部です。
 
 ```yml lineNumbers
-layout:
-  margins:
-    top: 2.5cm
-    left: 1.5cm
-    right: 1.5cm
-    bottom: 2.5cm
+layouts:
+  - engine: latex
+    page:
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
 ```
 
 ## ページ
@@ -58,9 +62,10 @@ layout:
 `page` オプションにより、用紙サイズやページ番号の表示など、ページ設定をカスタマイズできます。
 
 ```yml lineNumbers
-layout:
-  page:
-    showPageNumbers: true
+layouts:
+  - engine: latex
+    page:
+      showPageNumbers: true
 ```
 
 ## セクション
@@ -68,16 +73,17 @@ layout:
 `sections` オプションにより、セクションタイトルとその順序をカスタマイズできます。詳細については [セクション文書](./layout/sections) をご覧ください。
 
 ```yml lineNumbers
-layout:
-  sections:
-    aliases:
-      work: "Professional Experience"
-      education: "Education"
-      skills: "Skills"
-    order:
-      - basics
-      - work
-      - education
+layouts:
+  - engine: latex
+    sections:
+      aliases:
+        work: "Professional Experience"
+        education: "Education"
+        skills: "Skills"
+      order:
+        - basics
+        - work
+        - education
 ```
 
 
@@ -86,8 +92,9 @@ layout:
 `template` オプションにより、様々なテンプレートから選択できます。各テンプレートには独特なデザインとレイアウトがあります。利用可能なテンプレートのリストは [テンプレート文書](./layout/templates) で確認できます。
 
 ```yml lineNumbers
-layout:
-  template: moderncv-banking
+layouts:
+  - engine: latex
+    template: moderncv-banking
 ```
 
 ## タイポグラフィ
@@ -97,9 +104,10 @@ layout:
 現在、`fontSize` のみサポートされており、LaTeX エンジンは `10pt`、`11pt`、`12pt` のみサポートしています。
 
 ```yml lineNumbers
-layout:
-  typography:
-    fontSize: 11pt
+layouts:
+  - engine: latex
+    typography:
+      fontSize: 11pt
 ```
 
 ## 詳細情報

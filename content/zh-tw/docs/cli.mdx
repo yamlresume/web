@@ -168,7 +168,7 @@ content:
     headline: Headed for the Pacific
     phone: "(213) 555-9876"
     email: hi@pp
-    url: https//ppresume.com/gallery
+    url: https://ppresume.com/gallery
     summary: |
       - 電腦科學專業，在資料結構、演算法和軟體開發方面有紮實的基礎
       - 像素級完美的全端網路開發者，專門建立高品質、視覺吸引力的網站
@@ -196,9 +196,10 @@ content:
         - 通過各種專案和作業獲得了軟體開發的實務經驗
         - 通過小組專案和演示獲得了強大的溝通和團隊合作技能
 
-layout:
-  typography:
-    fontSize: 13pt
+layouts:
+  - engine: latex
+    typography:
+      fontSize: 13pt
 ```
 
 `yamlresume validate` 將為您提供潛在錯誤清單，並提供清晰的位置資訊
@@ -214,7 +215,7 @@ invalid-resume.yml:19:11: warning: city should be 2 characters or more.
 invalid-resume.yml:31:11: warning: courses should be 2 characters or more.
         - D
           ^
-invalid-resume.yml:40:15: warning: font size option is invalid, it must be one of the following: ["10pt", "11pt", "12pt"]
+invalid-resume.yml:41:17: warning: font size option is invalid, it must be one of the following: ["10pt", "11pt", "12pt"]
     fontSize: 13pt
               ^
 ✖ Resume validation failed.
@@ -222,12 +223,12 @@ invalid-resume.yml:40:15: warning: font size option is invalid, it must be one o
 
 ## Languages
 
-列出所有可用語言。語言代碼遵循 [ISO 639 規範](https://www.iso.org/iso-639-language-code) 中的規範。您可以在 `layout.locale.language` 中指定語言代碼以更改履歷的語言。更改履歷的語言將自動翻譯所有固定術語。您可以在我們的 [內容 -> 多語言](/zh-tw/docs/content/multi-languages) 章节查看更多詳細資訊。
+列出所有可用語言。語言代碼遵循 [ISO 639 規範](https://www.iso.org/iso-639-language-code) 中的規範。您可以在 `locale.language` 中指定語言代碼以更改履歷的語言。更改履歷的語言將自動翻譯所有固定術語。您可以在我們的 [內容 -> 多語言](/zh-tw/docs/content/multi-languages) 章节查看更多詳細資訊。
 
 ```console
 $ yamlresume languages list
 
-| `layout.locale.language` | Language Name                   |
+| `locale.language`        | Language Name                   |
 | ------------------------ | ------------------------------- |
 | en                       | English                         |
 | zh-hans                  | Simplified Chinese              |
@@ -238,14 +239,14 @@ $ yamlresume languages list
 
 ## Templates
 
-列出所有可用模板。您可以通過在 YAML 履歷中設定 `layout.template` 來更改履歷模板。更多詳細資訊請參見 [PPResume 模板](https://docs.ppresume.com/typesetting/templates)。
+列出所有可用模板。您可以通過在 YAML 履歷中設定 `layouts.[].template` 來更改履歷模板。更多詳細資訊請參見 [PPResume 模板](https://docs.ppresume.com/typesetting/templates)。
 
 ```console
 $ yamlresume templates list
 
-| `layout.template` | Template Name    | Description                          |
-| ----------------- | ---------------- | ------------------------------------ |
-| moderncv-banking  | ModernCV Banking | ModernCV template with banking style |
-| moderncv-casual   | ModernCV Casual  | ModernCV template with casual style  |
-| moderncv-classic  | ModernCV Classic | ModernCV template with classic style |
+| `layouts.[].template` | `Engine` | `Template Name`    | `Description`                          |
+| --------------------- | -------- | ------------------ | -------------------------------------- |
+| `moderncv-banking`    | `latex`  | `ModernCV Banking` | `ModernCV template with banking style` |
+| `moderncv-casual`     | `latex`  | `ModernCV Casual`  | `ModernCV template with casual style`  |
+| `moderncv-classic`    | `latex`  | `ModernCV Classic` | `ModernCV template with classic style` |
 ```

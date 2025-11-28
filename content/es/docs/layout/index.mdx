@@ -19,19 +19,22 @@ Aquí hay un ejemplo de configuración de diseño en un archivo `resume.yml`:
 content:
   # ...
 
-layout:
-  locale:
-    language: en
-  margins:
-    top: 2.5cm
-    left: 1.5cm
-    right: 1.5cm
-    bottom: 2.5cm
-  page:
-    showPageNumbers: true
-  template: moderncv-banking
-  typography:
-    fontSize: 11pt
+locale:
+  language: en
+
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    page:
+      showPageNumbers: true
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+    typography:
+      fontSize: 11pt
+  - engine: markdown
 ```
 
 ## Locale
@@ -40,9 +43,8 @@ La opción `locale` te permite especificar el idioma para tu currículum. Esto
 afectará el formato de fecha y otras configuraciones específicas del idioma.
 
 ```yml lineNumbers
-layout:
-  locale:
-    language: en
+locale:
+  language: en
 ```
 
 Echa un vistazo a [múltiples idiomas](/docs/content/multi-languages) para más
@@ -50,15 +52,17 @@ detalles.
 
 ## Márgenes
 
-La opción `margins` te permite personalizar los márgenes de página.
+La opción `margins` te permite personalizar los márgenes de página. Ahora es parte del objeto `page` dentro de `layouts`.
 
 ```yml lineNumbers
-layout:
-  margins:
-    top: 2.5cm
-    left: 1.5cm
-    right: 1.5cm
-    bottom: 2.5cm
+layouts:
+  - engine: latex
+    page:
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
 ```
 
 ## Página
@@ -67,9 +71,10 @@ La opción `page` te permite personalizar la configuración de página, como el
 tamaño de papel y si mostrar números de página.
 
 ```yml lineNumbers
-layout:
-  page:
-    showPageNumbers: true
+layouts:
+  - engine: latex
+    page:
+      showPageNumbers: true
 ```
 
 ## Secciones
@@ -79,16 +84,17 @@ Para más información, consulta la [documentación de
 secciones](./layout/sections).
 
 ```yml lineNumbers
-layout:
-  sections:
-    aliases:
-      work: "Professional Experience"
-      education: "Education"
-      skills: "Skills"
-    order:
-      - basics
-      - work
-      - education
+layouts:
+  - engine: latex
+    sections:
+      aliases:
+        work: "Professional Experience"
+        education: "Education"
+        skills: "Skills"
+      order:
+        - basics
+        - work
+        - education
 ```
 
 ## Plantilla
@@ -98,8 +104,9 @@ plantilla tiene un diseño y diseño únicos. Puedes encontrar una lista de
 plantillas disponibles en la [documentación de plantillas](./layout/templates).
 
 ```yml lineNumbers
-layout:
-  template: moderncv-banking
+layouts:
+  - engine: latex
+    template: moderncv-banking
 ```
 
 ## Tipografía
@@ -111,9 +118,10 @@ Actualmente, solo se soporta `fontSize`, y el motor LaTeX solo soporta
 `10pt`, `11pt`, y `12pt`.
 
 ```yml lineNumbers
-layout:
-  typography:
-    fontSize: 11pt
+layouts:
+  - engine: latex
+    typography:
+      fontSize: 11pt
 ```
 
 ## Aprende Más

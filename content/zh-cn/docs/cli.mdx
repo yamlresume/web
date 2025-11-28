@@ -168,7 +168,7 @@ content:
     headline: Headed for the Pacific
     phone: "(213) 555-9876"
     email: hi@pp
-    url: https//ppresume.com/gallery
+    url: https://ppresume.com/gallery
     summary: |
       - Computer Science major with strong foundation in data structures, algorithms, and software development
       - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
@@ -196,9 +196,10 @@ content:
         - Gained hands-on experience in software development through various projects and assignments
         - Strong communication and teamwork skills acquired through group projects and presentations
 
-layout:
-  typography:
-    fontSize: 13pt
+layouts:
+  - engine: latex
+    typography:
+      fontSize: 13pt
 ```
 
 `yamlresume validate` 将为您提供潜在错误列表，并提供清晰的位置信息
@@ -214,7 +215,7 @@ invalid-resume.yml:19:11: warning: city should be 2 characters or more.
 invalid-resume.yml:31:11: warning: courses should be 2 characters or more.
         - D
           ^
-invalid-resume.yml:40:15: warning: font size option is invalid, it must be one of the following: ["10pt", "11pt", "12pt"]
+invalid-resume.yml:41:17: warning: font size option is invalid, it must be one of the following: ["10pt", "11pt", "12pt"]
     fontSize: 13pt
               ^
 ✖ Resume validation failed.
@@ -222,12 +223,12 @@ invalid-resume.yml:40:15: warning: font size option is invalid, it must be one o
 
 ## Languages
 
-列出所有可用语言。语言代码遵循 [ISO 639 规范](https://www.iso.org/iso-639-language-code) 中的规范。您可以在 `layout.locale.language` 中指定语言代码以更改简历的语言。更改简历的语言将自动翻译所有固定术语。您可以在我们的 [内容 -> 多语言](/zh-cn/docs/content/multi-languages) 章节查看更多详细信息。
+列出所有可用语言。语言代码遵循 [ISO 639 规范](https://www.iso.org/iso-639-language-code) 中的规范。您可以在 `locale.language` 中指定语言代码以更改简历的语言。更改简历的语言将自动翻译所有固定术语。您可以在我们的 [内容 -> 多语言](/zh-cn/docs/content/multi-languages) 章节查看更多详细信息。
 
 ```console
 $ yamlresume languages list
 
-| `layout.locale.language` | Language Name                   |
+| `locale.language`        | Language Name                   |
 | ------------------------ | ------------------------------- |
 | en                       | English                         |
 | zh-hans                  | Simplified Chinese              |
@@ -238,14 +239,14 @@ $ yamlresume languages list
 
 ## Templates
 
-列出所有可用模板。您可以通过在 YAML 简历中设置 `layout.template` 来更改简历模板。更多详细信息请参见 [PPResume 模板](https://docs.ppresume.com/typesetting/templates)。
+列出所有可用模板。您可以通过在 YAML 简历中设置 `layouts.[].template` 来更改简历模板。更多详细信息请参见 [PPResume 模板](https://docs.ppresume.com/typesetting/templates)。
 
 ```console
 $ yamlresume templates list
 
-| `layout.template` | Template Name    | Description                          |
-| ----------------- | ---------------- | ------------------------------------ |
-| moderncv-banking  | ModernCV Banking | ModernCV template with banking style |
-| moderncv-casual   | ModernCV Casual  | ModernCV template with casual style  |
-| moderncv-classic  | ModernCV Classic | ModernCV template with classic style |
+| `layouts.[].template` | `Engine` | `Template Name`    | `Description`                          |
+| --------------------- | -------- | ------------------ | -------------------------------------- |
+| `moderncv-banking`    | `latex`  | `ModernCV Banking` | `ModernCV template with banking style` |
+| `moderncv-casual`     | `latex`  | `ModernCV Casual`  | `ModernCV template with casual style`  |
+| `moderncv-classic`    | `latex`  | `ModernCV Classic` | `ModernCV template with classic style` |
 ```

@@ -13,19 +13,22 @@ title: 佈局
 content:
   # ...
 
-layout:
-  locale:
-    language: en
-  margins:
-    top: 2.5cm
-    left: 1.5cm
-    right: 1.5cm
-    bottom: 2.5cm
-  page:
-    showPageNumbers: true
-  template: moderncv-banking
-  typography:
-    fontSize: 11pt
+locale:
+  language: en
+
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    page:
+      showPageNumbers: true
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+    typography:
+      fontSize: 11pt
+  - engine: markdown
 ```
 
 ## 語言環境
@@ -33,24 +36,25 @@ layout:
 `locale` 選項允許您為履歷指定語言。這將影響日期格式和其他特定於語言環境的設置。
 
 ```yml lineNumbers
-layout:
-  locale:
-    language: en
+locale:
+  language: en
 ```
 
 查看[多語言](/zh-tw/docs/content/multi-languages)了解更多詳情。
 
 ## 邊距
 
-`margins` 選項允許您自定義頁面邊距。
+`margins` 選項允許您自定義頁面邊距。它現在是 `layouts` 下 `page` 對象的一部分。
 
 ```yml lineNumbers
-layout:
-  margins:
-    top: 2.5cm
-    left: 1.5cm
-    right: 1.5cm
-    bottom: 2.5cm
+layouts:
+  - engine: latex
+    page:
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
 ```
 
 ## 頁面
@@ -58,9 +62,10 @@ layout:
 `page` 選項允許您自定義頁面設置，如紙張大小和是否顯示頁碼。
 
 ```yml lineNumbers
-layout:
-  page:
-    showPageNumbers: true
+layouts:
+  - engine: latex
+    page:
+      showPageNumbers: true
 ```
 
 ## 章節
@@ -68,16 +73,17 @@ layout:
 `sections` 選項允許您自定義章節標題及其順序。更多資訊，請參見[章節文件](./layout/sections)。
 
 ```yml lineNumbers
-layout:
-  sections:
-    aliases:
-      work: "Professional Experience"
-      education: "Education"
-      skills: "Skills"
-    order:
-      - basics
-      - work
-      - education
+layouts:
+  - engine: latex
+    sections:
+      aliases:
+        work: "Professional Experience"
+        education: "Education"
+        skills: "Skills"
+      order:
+        - basics
+        - work
+        - education
 ```
 
 
@@ -86,8 +92,9 @@ layout:
 `template` 選項允許您從各種模板中選擇。每個模板都有獨特的設計和佈局。您可以在[模板文件](./layout/templates)中找到可用模板的列表。
 
 ```yml lineNumbers
-layout:
-  template: moderncv-banking
+layouts:
+  - engine: latex
+    template: moderncv-banking
 ```
 
 ## 排版
@@ -97,9 +104,10 @@ layout:
 目前，只支援 `fontSize`，LaTeX 引擎只支援 `10pt`、`11pt` 和 `12pt`。
 
 ```yml lineNumbers
-layout:
-  typography:
-    fontSize: 11pt
+layouts:
+  - engine: latex
+    typography:
+      fontSize: 11pt
 ```
 
 ## 了解更多

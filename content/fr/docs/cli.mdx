@@ -180,7 +180,7 @@ content:
     headline: Headed for the Pacific
     phone: "(213) 555-9876"
     email: hi@pp
-    url: https//ppresume.com/gallery
+    url: https://ppresume.com/gallery
     summary: |
       - Computer Science major with strong foundation in data structures, algorithms, and software development
       - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
@@ -208,9 +208,10 @@ content:
         - Gained hands-on experience in software development through various projects and assignments
         - Strong communication and teamwork skills acquired through group projects and presentations
 
-layout:
-  typography:
-    fontSize: 13pt
+layouts:
+  - engine: latex
+    typography:
+      fontSize: 13pt
 ```
 
 `yamlresume validate` vous donnera une liste d'erreurs potentielles, avec des
@@ -227,7 +228,7 @@ invalid-resume.yml:19:11: warning: city should be 2 characters or more.
 invalid-resume.yml:31:11: warning: courses should be 2 characters or more.
         - D
           ^
-invalid-resume.yml:40:15: warning: font size option is invalid, it must be one of the following: ["10pt", "11pt", "12pt"]
+invalid-resume.yml:41:17: warning: font size option is invalid, it must be one of the following: ["10pt", "11pt", "12pt"]
     fontSize: 13pt
               ^
 ✖ Resume validation failed.
@@ -237,7 +238,7 @@ invalid-resume.yml:40:15: warning: font size option is invalid, it must be one o
 
 Lister toutes les langues disponibles. Le code de langue suit la spécification
 [ISO 639](https://www.iso.org/iso-639-language-code). Vous pouvez spécifier
-le code de langue dans `layout.locale.language` afin de changer la langue de
+le code de langue dans `locale.language` afin de changer la langue de
 votre CV. Changer la langue de votre CV traduira automatiquement tous les termes
 fixes. Vous pouvez vérifier plus de détails dans notre section [contenu ->
 multi langues](/docs/content/multi-languages).
@@ -245,7 +246,7 @@ multi langues](/docs/content/multi-languages).
 ```console
 $ yamlresume languages list
 
-| `layout.locale.language` | Language Name                   |
+| `locale.language`        | Language Name                   |
 | ------------------------ | ------------------------------- |
 | en                       | English                         |
 | zh-hans                  | Simplified Chinese              |
@@ -257,14 +258,14 @@ $ yamlresume languages list
 ## Templates
 
 Lister tous les modèles disponibles. Vous pouvez changer le modèle de CV en
-définissant `layout.template` dans votre CV YAML. [Modèles PPResume](https://docs.ppresume.com/typesetting/templates) pour plus de détails.
+définissant `layouts.[].template` dans votre CV YAML. [Modèles PPResume](https://docs.ppresume.com/typesetting/templates) pour plus de détails.
 
 ```console
 $ yamlresume templates list
 
-| `layout.template` | Template Name    | Description                          |
-| ----------------- | ---------------- | ------------------------------------ |
-| moderncv-banking  | ModernCV Banking | ModernCV template with banking style |
-| moderncv-casual   | ModernCV Casual  | ModernCV template with casual style  |
-| moderncv-classic  | ModernCV Classic | ModernCV template with classic style |
+| `layouts.[].template` | `Engine` | `Template Name`    | `Description`                          |
+| --------------------- | -------- | ------------------ | -------------------------------------- |
+| `moderncv-banking`    | `latex`  | `ModernCV Banking` | `ModernCV template with banking style` |
+| `moderncv-casual`     | `latex`  | `ModernCV Casual`  | `ModernCV template with casual style`  |
+| `moderncv-classic`    | `latex`  | `ModernCV Classic` | `ModernCV template with classic style` |
 ```
