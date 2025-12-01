@@ -12,10 +12,11 @@ YAMLResume は [zod](https://zod.dev) を採用して実行時に履歴書デー
 
 | 属性      | タイプ                                          | 必須 |
 | --------- | --------------------------------------------- | -------- |
-| `content` | [`ResumeContentSchema`](#resumecontentschema) | ✅       |
-| `layout?` | [`ResumeLayoutSchema`](#resumelayoutschema)   | ⬜       |
+| `content` | [`ContentSchema`](#contentschema)             | ✅       |
+| `layouts?` | [`LayoutsSchema`](#layoutsschema)            | ⬜       |
+| `locale?` | [`LocaleSchema`](#localeschema)               | ⬜       |
 
-### ResumeContentSchema
+### ContentSchema
 
 履歴書全体のコンテンツ検証構造を定義します。
 
@@ -203,20 +204,7 @@ YAMLResume は [zod](https://zod.dev) を採用して実行時に履歴書デー
 | `keywords?` | `string[]` | ⬜       | 各項目 1-32 文字             |
 | `url?`      | `string`   | ⬜       | 有効な URL、最大 256 文字              |
 
-### ResumeLayoutSchema
-
-全体的なレイアウト検証設定を定義します。
-
-| 属性          | タイプ                                                            | 必須 |
-| ------------- | --------------------------------------------------------------- | -------- |
-| `locale?`     | [`ResumeLayoutLocaleSchema`](#resumelayoutlocaleschema)         | ⬜       |
-| `margins?`    | [`ResumeLayoutMarginsSchema`](#resumelayoutmarginsschema)       | ⬜       |
-| `page?`       | [`ResumeLayoutPageSchema`](#resumelayoutpageschema)             | ⬜       |
-| `template?`   | [`Template`](#template)                                         | ⬜       |
-| `typography?` | [`ResumeLayoutTypographySchema`](#resumelayouttypographyschema) | ⬜       |
-| `latex?`      | [`ResumeLayoutLaTeXSchema`](#resumelayoutlatexschema)           | ⬜       |
-
-#### ResumeLayoutLocaleSchema
+### LocaleSchema
 
 国際化とローカライゼーションのロケール設定を検証します。
 
@@ -224,7 +212,17 @@ YAMLResume は [zod](https://zod.dev) を採用して実行時に履歴書デー
 | ----------- | ----------------------------------- | -------- | ------------------------------------------------------------------- |
 | `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | 事前定義された[ロケール言語オプション](#locale-language) からである必要があります |
 
-#### ResumeLayoutMarginsSchema
+### LayoutsSchema
+
+全体的なレイアウト検証設定を定義します。
+
+| 属性        | タイプ                                                                                         | 必須 | 検証ルール            |
+| ----------- | -------------------------------------------------------------------------------------------- | -------- | ------------------------------- |
+| `layouts[]` | [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | レイアウト設定の配列。 |
+
+#### 一般的なレイアウトスキーマ
+
+##### MarginsSchema
 
 文書レイアウトのマージン設定を検証します。
 
@@ -235,29 +233,62 @@ YAMLResume は [zod](https://zod.dev) を採用して実行時に履歴書デー
 | `left?`   | `string` | ⬜       | [マージンサイズスキーマ](#margin-size-schema) を参照 |
 | `right?`  | `string` | ⬜       | [マージンサイズスキーマ](#margin-size-schema) を参照 |
 
-#### ResumeLayoutPageSchema
+##### SectionsSchema
 
-文書プレゼンテーションのページレベル設定を検証します。
+セクションのカスタマイズ設定を検証します。
 
-| 属性               | タイプ      | 必須 | 検証ルール |
-| ------------------ | --------- | -------- | ---------------- |
-| `showPageNumbers?` | `boolean` | ⬜       | true/false       |
+| 属性       | タイプ                        | 必須 | 検証ルール                                                 |
+| ---------- | --------------------------- | -------- | -------------------------------------------------------------------- |
+| `aliases?` | `Record<SectionID, string>` | ⬜       | キーは有効なセクションID、値は文字列（2-128文字）でなければなりません |
+| `order?`   | `OrderableSectionID[]`      | ⬜       | 有効な順序付け可能なセクションIDの配列                           |
 
-#### ResumeLayoutTypographySchema
-
-文書フォーマットのタイポグラフィ設定を検証します。
-
-| 属性        | タイプ     | 必須 | 検証ルール                                       |
-| ----------- | -------- | -------- | ------------------------------------------------------ |
-| `fontSize?` | `string` | ⬜       | 事前定義された[フォントサイズオプション](#fontsize) からである必要があります |
-
-#### ResumeLayoutLaTeXSchema
+#### LatexLayoutSchema
 
 LaTeX 固有の設定オプションを検証します。
 
-| 属性        | タイプ                            | 必須 | 検証ルール                                                     |
-| ----------- | ------------------------------- | -------- | -------------------------------------------------------------------- |
-| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | 事前定義された[fontspec 数字オプション](#fontspecnumbers) からである必要があります |
+| 属性          | タイプ                                                | 必須 | 検証ルール                                      |
+| ------------- | --------------------------------------------------- | -------- | --------------------------------------------------------- |
+| `advanced?`   | [`LatexAdvancedSchema`](#latexadvancedschema)       | ⬜       | [高度なスキーマ](#latexadvancedschema) を参照                |
+| `engine`      | `'latex'`                                           | ✅       | "latex" でなければなりません                                         |
+| `page?`       | [`LatexPageSchema`](#latexpageschema)               | ⬜       | [ページスキーマ](#latexpageschema) を参照                   |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | [セクションスキーマ](#sectionsschema) を参照                |
+| `template?`   | [`LatexTemplate`](#latextemplate)                   | ⬜       | 事前定義された[テンプレートオプション](#template) からである必要があります |
+| `typography?` | [`LatexTypographySchema`](#latextypographyschema)   | ⬜       | [タイポグラフィスキーマ](#latextypographyschema) を参照      |
+
+##### LatexAdvancedSchema
+
+LaTeX の高度な設定オプションを検証します。
+
+| 属性        | タイプ                                 | 必須 | 検証ルール                                                             |
+| ----------- | ------------------------------------ | -------- | -------------------------------------------------------------------------------- |
+| `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜       | 事前定義された[fontspec 数字オプション](#fontspecnumbers) からである必要があります |
+
+##### LatexPageSchema
+
+文書プレゼンテーションのページレベル設定を検証します。
+
+| 属性               | タイプ                  | 必須 | 検証ルール                 |
+| ------------------ | --------------------- | -------- | ------------------------------------ |
+| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜       | [マージンスキーマ](#marginsschema) を参照 |
+| `showPageNumbers?` | `boolean`             | ⬜       | true/false                           |
+
+##### LatexTypographySchema
+
+文書フォーマットのタイポグラフィ設定を検証します。
+
+| 属性        | タイプ                      | 必須 | 検証ルール                                               |
+| ----------- | ------------------------- | -------- | ------------------------------------------------------------------ |
+| `fontSize?` | `string`                  | ⬜       | 事前定義された[フォントサイズオプション](#fontsize) からである必要があります |
+| `links?`    | `{ underline?: boolean }` | ⬜       | true/false                                                         |
+
+#### MarkdownLayoutSchema
+
+Markdown レイアウト設定を検証します。
+
+| 属性        | タイプ                                | 必須 | 検証ルール                       |
+| ----------- | ----------------------------------- | -------- | ------------------------------------------ |
+| `engine`    | `'markdown'`                        | ✅       | "markdown" でなければなりません                       |
+| `sections?` | [`SectionsSchema`](#sectionsschema) | ⬜       | [セクションスキーマ](#sectionsschema) を参照 |
 
 ## プリミティブ検証スキーマ
 
@@ -392,25 +423,25 @@ LaTeX 固有の設定オプションを検証します。
 - 事前定義されたネットワークオプションの 1 つである必要があります
 - 例：`GitHub`、`LinkedIn`、`Twitter`、`Facebook`、`Instagram`
 
-### テンプレート
+### LatexTemplate
 
 すべての可能なテンプレートオプションのユニオンタイプ。
 
 **検証ルール：**
 
 - 以下のいずれかである必要があります：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
-- 参照：[テンプレート](https://yamlresume.dev/docs/layouts/latex/templates)
+- 参照：[テンプレート](/ja/docs/layouts/latex/templates)
 
-### ロケール言語
+### LocaleLanguage
 
 すべての可能なロケール言語のユニオンタイプ。
 
 **検証ルール：**
 
 - 以下のいずれかである必要があります：`en`、`es`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`
-- 参照：[多言語](https://yamlresume.dev/docs/content/multi-languages)
+- 参照：[多言語](/ja/docs/content/multi-languages)
 
-### FontspecNumbers
+### LatexFontspecNumbers
 
 すべての可能な latex fontspec 数字オプションのユニオンタイプ。
 
@@ -421,7 +452,7 @@ LaTeX 固有の設定オプションを検証します。
   - `Lining` - 標準のライニング数字（CJK 言語のデフォルト）
   - `OldStyle` - 異なる高さのオールドスタイル数字（ラテン言語のデフォルト）
 
-### フォントサイズ
+### LatexFontSize
 
 すべての可能なフォントサイズオプションのユニオンタイプ。
 

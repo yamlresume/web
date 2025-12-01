@@ -14,12 +14,13 @@ interesan los detalles de implementación, puedes encontrar el código fuente
 Define la validación de la estructura global del currículum, incluyendo
 validación de contenido y de layout.
 
-| Prop      | Tipo                                          | Requerido |
-| --------- | --------------------------------------------- | --------- |
-| `content` | [`ResumeContentSchema`](#resumecontentschema) | ✅        |
-| `layout?` | [`ResumeLayoutSchema`](#resumelayoutschema)   | ⬜️       |
+| Prop        | Tipo                                            | Requerido |
+| ----------- | ----------------------------------------------- | --------- |
+| `content`   | [`ContentSchema`](#contentschema)               | ✅        |
+| `layouts?`  | [`LayoutsSchema`](#layoutsschema)               | ⬜️       |
+| `locale?`   | [`LocaleSchema`](#localeschema)                 | ⬜️       |
 
-### ResumeContentSchema
+### ContentSchema
 
 Define la estructura de validación para todo el contenido del currículum.
 
@@ -207,30 +208,27 @@ Valida una experiencia laboral o puesto.
 | `keywords?` | `string[]` | ⬜️       | Cada ítem 1-32 caracteres             |
 | `url?`      | `string`   | ⬜️       | URL válida, máximo 256 caracteres     |
 
-### ResumeLayoutSchema
+### LocaleSchema
 
-Define la configuración de validación del layout.
+Valida la configuración regional para internacionalización y localización.
 
-| Prop          | Tipo                                                            | Requerido |
-| ------------- | --------------------------------------------------------------- | --------- |
-| `locale?`     | [`ResumeLayoutLocaleSchema`](#resumelayoutlocaleschema)         | ⬜️       |
-| `margins?`    | [`ResumeLayoutMarginsSchema`](#resumelayoutmarginsschema)       | ⬜️       |
-| `page?`       | [`ResumeLayoutPageSchema`](#resumelayoutpageschema)             | ⬜️       |
-| `template?`   | [`Template`](#template)                                         | ⬜️       |
-| `typography?` | [`ResumeLayoutTypographySchema`](#resumelayouttypographyschema) | ⬜️       |
-| `latex?`      | [`ResumeLayoutLaTeXSchema`](#resumelayoutlatexschema)           | ⬜️       |
+| Prop        | Tipo                                | Requerido | Reglas de validación                                        |
+| ----------- | ----------------------------------- | --------- | ----------------------------------------------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜️       | Debe estar en [opciones de idioma local](#locale-language) |
 
-#### ResumeLayoutLocaleSchema
+### LayoutsSchema
 
-Valida la configuración regional para i18n y l10n.
+Define la configuración general de validación del layout.
 
-| Prop        | Tipo                                | Requerido | Reglas de validación                                      |
-| ----------- | ----------------------------------- | --------- | --------------------------------------------------------- |
-| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜️       | Debe estar en [locale language options](#locale-language) |
+| Prop        | Tipo                                                                                         | Requerido | Reglas de validación            |
+| ----------- | -------------------------------------------------------------------------------------------- | --------- | ------------------------------- |
+| `layouts[]` | [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜️       | Array de configuraciones layout |
 
-#### ResumeLayoutMarginsSchema
+#### Esquemas de Layout Comunes
 
-Valida márgenes de página.
+##### MarginsSchema
+
+Valida los márgenes de página.
 
 | Prop      | Tipo     | Requerido | Reglas de validación                          |
 | --------- | -------- | --------- | --------------------------------------------- |
@@ -239,29 +237,62 @@ Valida márgenes de página.
 | `left?`   | `string` | ⬜️       | ver [margin size schema](#margin-size-schema) |
 | `right?`  | `string` | ⬜️       | ver [margin size schema](#margin-size-schema) |
 
-#### ResumeLayoutPageSchema
+##### SectionsSchema
 
-Valida opciones a nivel de página.
+Valida la configuración de personalización de secciones.
 
-| Prop               | Tipo      | Requerido | Reglas     |
-| ------------------ | --------- | --------- | ---------- |
-| `showPageNumbers?` | `boolean` | ⬜️       | true/false |
+| Prop       | Tipo                        | Requerido | Reglas de validación                                                 |
+| ---------- | --------------------------- | --------- | -------------------------------------------------------------------- |
+| `aliases?` | `Record<SectionID, string>` | ⬜️       | Claves deben ser IDs de sección válidos, valores strings (2-128 ch) |
+| `order?`   | `OrderableSectionID[]`      | ⬜️       | Array de IDs de sección ordenables válidos                           |
 
-#### ResumeLayoutTypographySchema
+#### LatexLayoutSchema
 
-Valida opciones tipográficas.
+Valida la configuración del layout LaTeX.
 
-| Prop        | Tipo     | Requerido | Reglas de validación               |
-| ----------- | -------- | --------- | ---------------------------------- |
-| `fontSize?` | `string` | ⬜️       | ver [font size options](#fontsize) |
+| Prop          | Tipo                                                | Requerido | Reglas de validación                                |
+| ------------- | --------------------------------------------------- | --------- | --------------------------------------------------- |
+| `advanced?`   | [`LatexAdvancedSchema`](#latexadvancedschema)       | ⬜️       | Ver [esquema avanzado](#latexadvancedschema)        |
+| `engine`      | `'latex'`                                           | ✅        | Debe ser "latex"                                    |
+| `page?`       | [`LatexPageSchema`](#latexpageschema)               | ⬜️       | Ver [esquema de página](#latexpageschema)           |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜️       | Ver [esquema de secciones](#sectionsschema)         |
+| `template?`   | [`LatexTemplate`](#latextemplate)                   | ⬜️       | Debe estar en [opciones de plantilla](#template)    |
+| `typography?` | [`LatexTypographySchema`](#latextypographyschema)   | ⬜️       | Ver [esquema de tipografía](#latextypographyschema) |
 
-#### ResumeLayoutLaTeXSchema
+##### LatexAdvancedSchema
 
-Valida opciones específicas de LaTeX.
+Valida opciones de configuración avanzada de LaTeX.
 
-| Prop        | Tipo                            | Requerido | Reglas de validación                             |
-| ----------- | ------------------------------- | --------- | ------------------------------------------------ |
-| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜️       | ver [fontspec numbers options](#fontspecnumbers) |
+| Prop        | Tipo                                 | Requerido | Reglas de validación                                             |
+| ----------- | ------------------------------------ | --------- | ---------------------------------------------------------------- |
+| `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜️       | Debe estar en [opciones de números fontspec](#fontspecnumbers) |
+
+##### LatexPageSchema
+
+Valida opciones a nivel de página para la presentación.
+
+| Prop               | Tipo                  | Requerido | Reglas de validación                 |
+| ------------------ | --------------------- | --------- | ------------------------------------ |
+| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜️       | Ver [esquema de márgenes](#marginsschema) |
+| `showPageNumbers?` | `boolean`             | ⬜️       | true/false                           |
+
+##### LatexTypographySchema
+
+Valida opciones tipográficas para el formato del documento.
+
+| Prop        | Tipo                      | Requerido | Reglas de validación                                   |
+| ----------- | ------------------------- | --------- | ------------------------------------------------------ |
+| `fontSize?` | `string`                  | ⬜️       | Debe estar en [opciones de tamaño de fuente](#fontsize) |
+| `links?`    | `{ underline?: boolean }` | ⬜️       | true/false                                             |
+
+#### MarkdownLayoutSchema
+
+Valida la configuración del layout Markdown.
+
+| Prop        | Tipo                                | Requerido | Reglas de validación                        |
+| ----------- | ----------------------------------- | --------- | ------------------------------------------- |
+| `engine`    | `'markdown'`                        | ✅        | Debe ser "markdown"                         |
+| `sections?` | [`SectionsSchema`](#sectionsschema) | ⬜️       | Ver [esquema de secciones](#sectionsschema) |
 
 ## Enum Validation Schemas
 
@@ -321,7 +352,7 @@ Tipo unión que incluye todas las posibles opciones de redes sociales.
 - Debe ser una de las opciones de red predefinidas
 - Ejemplos: `GitHub`, `LinkedIn`, `Twitter`, `Facebook`, `Instagram`
 
-### Template
+### LatexTemplate
 
 Tipo unión que incluye todas las posibles opciones de plantilla.
 
@@ -339,7 +370,7 @@ Tipo unión que incluye todos los posibles códigos de lenguaje local.
 - Debe ser uno de: `en`, `es`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`
 - Ver también: [multi-languages](/es/docs/content/multi-languages)
 
-### FontspecNumbers
+### LatexFontspecNumbers
 
 Tipo unión que incluye todas las posibles opciones de números de fontspec de LaTeX.
 
@@ -352,7 +383,7 @@ Tipo unión que incluye todas las posibles opciones de números de fontspec de L
   - `OldStyle` - cifras old style con alturas variables (por defecto para
     idiomas latinos)
 
-### FontSize
+### LatexFontSize
 
 Tipo unión que incluye todas las posibles opciones de tamaño de fuente.
 

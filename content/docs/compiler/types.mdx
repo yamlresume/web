@@ -9,7 +9,7 @@ data structures used to represent resume information, including personal
 details, education, experience, skills and more.
 
 You can check
-[types.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types.ts)
+[types/index.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types/index.ts)
 for the source of truth details.
 
 Understanding these types is essential for contributors and developers who want
@@ -43,26 +43,25 @@ content:
 
 Defines the overall resume structure, including content and layout.
 
-| Prop      | Type                              | Required | Description                                          |
-| --------- | --------------------------------- | -------- | ---------------------------------------------------- |
-| `content` | [`ResumeContent`](#resumecontent) | ✅       | Defines the structure for the entire resume content. |
-| `layout?` | [`ResumeLayout`](#resumelayout)   | ⬜       | Defines the overall layout configuration.            |
+| Prop      | Type                          | Required | Description                                          |
+| --------- | ----------------------------- | -------- | ---------------------------------------------------- |
+| `content` | [`Content`](#content)         | ✅       | Defines the structure for the entire resume content. |
+| `layouts?` | [`Layouts`](#layouts)        | ⬜       | Defines the overall layout configuration.            |
+| `locale?` | [`Locale`](#locale)           | ⬜       | Defines the overall locale configuration.            |
 
 Here is a high-level diagram of the resume structure:
 
 <Mermaid chart='
 flowchart LR
   A[Resume]
-  B[ResumeLayout]
-  C[ResumeContent]
+  B[Layouts]
+  C[Content]
+  D[Locale]
 
-subgraph Layout
+subgraph Layouts
 direction TB
-B1[locale]
-B2[margins]
-B3[page]
-B4[template]
-B5[typography]
+B1[LatexLayout]
+B2[MarkdownLayout]
 end
 
 subgraph Content
@@ -79,11 +78,9 @@ end
 
 A --> B
 A --> C
+A --> D
 B --> B1
 B --> B2
-B --> B3
-B --> B4
-B --> B5
 C --> C1
 C --> C2
 C --> C3
@@ -94,7 +91,7 @@ C --> C7
 C --> C8
 '/>
 
-### ResumeContent
+### Content
 
 Defines the structure for the entire resume content.
 
@@ -282,20 +279,7 @@ Represents a single work experience or employment position.
 | `keywords?` | `string[]` | ⬜       | Keywords related to the role or technologies used.   |
 | `url?`      | `string`   | ⬜       | URL related to the company or work.                  |
 
-### ResumeLayout
-
-Defines the overall layout configuration.
-
-| Prop          | Type                                                | Required | Description                                                        |
-| ------------- | --------------------------------------------------- | -------- | ------------------------------------------------------------------ |
-| `locale?`     | [`ResumeLayoutLocale`](#resumelayoutlocale)         | ⬜       | Defines locale settings for internationalization and localization. |
-| `margins?`    | [`ResumeLayoutMargins`](#resumelayoutmargins)       | ⬜       | Defines page margin settings for document layout.                  |
-| `page?`       | [`ResumeLayoutPage`](#resumelayoutpage)             | ⬜       | Defines page-level settings for document presentation.             |
-| `template?`   | [`Template`](#template)                             | ⬜       | Defines the selected template.                                     |
-| `typography?` | [`ResumeLayoutTypography`](#resumelayouttypography) | ⬜       | Defines typography settings for document formatting.               |
-| `latex?`      | [`ResumeLayoutLaTeX`](#resumelayoutlatex)           | ⬜       | Defines LaTeX-specific configuration options.                      |
-
-#### ResumeLayoutLocale
+### Locale
 
 Defines locale settings for internationalization and localization.
 
@@ -303,7 +287,17 @@ Defines locale settings for internationalization and localization.
 | ----------- | ----------------------------------- | -------- | ---------------------------------------------------------------- |
 | `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | The selected language for the resume content and template terms. |
 
-#### ResumeLayoutMargins
+### Layouts
+
+Array of layout items supporting multiple output formats.
+
+| Prop        | Type                                                                 | Required | Description                            |
+| ----------- | -------------------------------------------------------------------- | -------- | -------------------------------------- |
+| `layouts[]` | [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜       | Multiple output layout configurations. |
+
+#### Common Layout Types
+
+##### Margins
 
 Defines page margin settings for document layout.
 
@@ -314,29 +308,63 @@ Defines page margin settings for document layout.
 | `left?`   | `string` | ⬜       | Left margin value (e.g., "1.5cm").   |
 | `right?`  | `string` | ⬜       | Right margin value (e.g., "1.5cm").  |
 
-#### ResumeLayoutPage
+##### Sections
 
-Defines page-level settings for document presentation.
+Defines section alias settings for customizing section names.
 
-| Prop               | Type      | Required | Description                      |
-| ------------------ | --------- | -------- | -------------------------------- |
-| `showPageNumbers?` | `boolean` | ⬜       | Whether to display page numbers. |
+| Prop       | Type                        | Required | Description                                                        |
+| ---------- | --------------------------- | -------- | ------------------------------------------------------------------ |
+| `aliases?` | `Record<SectionID, string>` | ⬜       | Custom aliases for section names, overriding default translations. |
+| `order?`   | `OrderableSectionID[]`      | ⬜       | Custom order for sections in the final output.                     |
 
-#### ResumeLayoutTypography
 
-Defines typography settings for document formatting.
+#### LatexLayout
 
-| Prop        | Type     | Required | Description                                             |
-| ----------- | -------- | -------- | ------------------------------------------------------- |
-| `fontSize?` | `string` | ⬜       | Base font size for the document (e.g., "10pt", "11pt"). |
+LaTeX layout configuration.
 
-#### ResumeLayoutLaTeX
+| Prop          | Type                                    | Required | Description                                           |
+| ------------- | --------------------------------------- | -------- | ----------------------------------------------------- |
+| `engine`      | `'latex'`                               | ✅       | The engine to generate the resume.                    |
+| `advanced?`   | [`LatexAdvanced`](#latexadvanced)       | ⬜       | Defines advanced configuration options.               |
+| `page?`       | [`LatexPage`](#latexpage)               | ⬜       | Defines page-level settings for document presentation.|
+| `sections?`   | [`Sections`](#sections)                 | ⬜       | Defines section customization settings.               |
+| `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜       | Defines the selected template.                        |
+| `typography?` | [`LatexTypography`](#latextypography)   | ⬜       | Defines typography settings for document formatting.  |
 
-Defines LaTeX-specific configuration options.
+##### LatexAdvanced
 
-| Prop        | Type                            | Required | Description                            |
-| ----------- | ------------------------------- | -------- | -------------------------------------- |
-| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | LaTeX fontspec package configurations. |
+Defines advanced latex configuration options.
+
+| Prop        | Type                                                     | Required | Description                            |
+| ----------- | -------------------------------------------------------- | -------- | -------------------------------------- |
+| `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜       | LaTeX fontspec package configurations. |
+
+##### LatexPage
+
+Defines latex page-level settings for document presentation.
+
+| Prop               | Type                  | Required | Description                      |
+| ------------------ | --------------------- | -------- | -------------------------------- |
+| `margins?`         | [`Margins`](#margins) | ⬜       | Defines page margin settings.    |
+| `showPageNumbers?` | `boolean`             | ⬜       | Whether to display page numbers. |
+
+##### LatexTypography
+
+Defines latex typography settings for document formatting.
+
+| Prop        | Type                                | Required | Description                      |
+| ----------- | ----------------------------------- | -------- | -------------------------------- |
+| `fontSize?` | [`LatexFontSize`](#latexfontsize)   | ⬜       | Base font size for the document. |
+| `links?`    | `{ underline?: boolean }`           | ⬜       | Link styling settings.           |
+
+#### MarkdownLayout
+
+Markdown layout configuration.
+
+| Prop        | Type                    | Required | Description                             |
+| ----------- | ----------------------- | -------- | --------------------------------------- |
+| `engine`    | `'markdown'`            | ✅       | The engine to generate the resume.      |
+| `sections?` | [`Sections`](#sections) | ⬜       | Defines section customization settings. |
 
 ## Enum Types
 
@@ -385,7 +413,7 @@ A union type for all possible skill proficiency levels.
 
 A union type for all possible social network options.
 
-### Template
+### LatexTemplate
 
 A union type for all possible template options.
 
@@ -407,7 +435,7 @@ See also: [multi-languages](/docs/content/multi-languages)
 - `zh-hant-hk`
 - `zh-hant-tw`
 
-### FontspecNumbers
+### LatexFontspecNumbers
 
 A union type for all possible latex fontspec numbers options.
 
@@ -417,9 +445,9 @@ A union type for all possible latex fontspec numbers options.
 - `OldStyle` - old style figures with varying heights (default for Latin
   languages)
 
-### FontSize
+### LatexFontSize
 
-A union type for all possible font size options.
+A union type for all possible latex font size options.
 
 For now only 3 options are supported:
 

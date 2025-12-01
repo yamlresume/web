@@ -10,7 +10,7 @@ currículum, incluyendo datos personales, educación, experiencia, habilidades y
 más.
 
 Puedes consultar
-[types.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types.ts)
+[types/index.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types/index.ts)
 para la fuente de verdad.
 
 Entender estos tipos es esencial para contribuir o extender la funcionalidad de
@@ -43,26 +43,25 @@ content:
 
 Define la estructura global del currículum (contenido y layout).
 
-| Prop      | Tipo                              | Requerido | Descripción                                       |
-| --------- | --------------------------------- | --------- | ------------------------------------------------- |
-| `content` | [`ResumeContent`](#resumecontent) | ✅        | Estructura del contenido completo del currículum. |
-| `layout?` | [`ResumeLayout`](#resumelayout)   | ⬜️       | Configuración general del layout.                 |
+| Prop      | Tipo                          | Requerido | Descripción                                       |
+| --------- | ----------------------------- | --------- | ------------------------------------------------- |
+| `content` | [`Content`](#content)         | ✅        | Estructura del contenido completo del currículum. |
+| `layouts?` | [`Layouts`](#layouts)        | ⬜️       | Configuración general del layout.                 |
+| `locale?` | [`Locale`](#locale)           | ⬜️       | Configuración general de localización.            |
 
 Diagrama de alto nivel:
 
 <Mermaid chart='
 flowchart LR
   A[Resume]
-  B[ResumeLayout]
-  C[ResumeContent]
+  B[Layouts]
+  C[Content]
+  D[Locale]
 
-subgraph Layout
+subgraph Layouts
 direction TB
-B1[locale]
-B2[margins]
-B3[page]
-B4[template]
-B5[typography]
+B1[LatexLayout]
+B2[MarkdownLayout]
 end
 
 subgraph Content
@@ -79,11 +78,9 @@ end
 
 A --> B
 A --> C
+A --> D
 B --> B1
 B --> B2
-B --> B3
-B --> B4
-B --> B5
 C --> C1
 C --> C2
 C --> C3
@@ -94,7 +91,7 @@ C --> C7
 C --> C8
 '/>
 
-### ResumeContent
+### Content
 
 Estructura del contenido completo del currículum.
 
@@ -258,49 +255,91 @@ Información personal principal.
 | `keywords?` | `string[]` | ⬜️  | Palabras clave/tecnologías.          |
 | `url?`      | `string`   | ⬜️  | Enlace relacionado.                  |
 
-### ResumeLayout
+### Locale
 
-| Prop          | Tipo                                                | Req. | Descripción                        |
-| ------------- | --------------------------------------------------- | ---- | ---------------------------------- |
-| `locale?`     | [`ResumeLayoutLocale`](#resumelayoutlocale)         | ⬜️  | Idioma/localización.               |
-| `margins?`    | [`ResumeLayoutMargins`](#resumelayoutmargins)       | ⬜️  | Márgenes.                          |
-| `page?`       | [`ResumeLayoutPage`](#resumelayoutpage)             | ⬜️  | Opciones de página.                |
-| `template?`   | [`Template`](#template)                             | ⬜️  | Plantilla seleccionada.            |
-| `typography?` | [`ResumeLayoutTypography`](#resumelayouttypography) | ⬜️  | Tipografía.                        |
-| `latex?`      | [`ResumeLayoutLaTeX`](#resumelayoutlatex)           | ⬜️  | Configuración específica de LaTeX. |
+Define la configuración de localización para internacionalización.
 
-#### ResumeLayoutLocale
+| Prop        | Tipo                                | Requerido | Descripción            |
+| ----------- | ----------------------------------- | --------- | ---------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜️       | Idioma del currículum. |
 
-| Prop        | Tipo                                | Req. | Descripción            |
-| ----------- | ----------------------------------- | ---- | ---------------------- |
-| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜️  | Idioma del currículum. |
+### Layouts
 
-#### ResumeLayoutMargins
+Array de configuraciones de layout soportando múltiples formatos de salida.
 
-| Prop      | Tipo     | Req. | Descripción       |
-| --------- | -------- | ---- | ----------------- |
-| `top?`    | `string` | ⬜️  | Margen superior.  |
-| `bottom?` | `string` | ⬜️  | Margen inferior.  |
-| `left?`   | `string` | ⬜️  | Margen izquierdo. |
-| `right?`  | `string` | ⬜️  | Margen derecho.   |
+| Prop        | Tipo                                                                 | Requerido | Descripción                       |
+| ----------- | -------------------------------------------------------------------- | --------- | --------------------------------- |
+| `layouts[]` | [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜️       | Configuraciones de layout.        |
 
-#### ResumeLayoutPage
+#### Tipos de Layout Comunes
 
-| Prop               | Tipo      | Req. | Descripción                |
-| ------------------ | --------- | ---- | -------------------------- |
-| `showPageNumbers?` | `boolean` | ⬜️  | Mostrar números de página. |
+##### Margins
 
-#### ResumeLayoutTypography
+Define los márgenes de página para el documento.
 
-| Prop        | Tipo     | Req. | Descripción            |
-| ----------- | -------- | ---- | ---------------------- |
-| `fontSize?` | `string` | ⬜️  | Tamaño base de fuente. |
+| Prop      | Tipo     | Requerido | Descripción       |
+| --------- | -------- | --------- | ----------------- |
+| `top?`    | `string` | ⬜️       | Margen superior.  |
+| `bottom?` | `string` | ⬜️       | Margen inferior.  |
+| `left?`   | `string` | ⬜️       | Margen izquierdo. |
+| `right?`  | `string` | ⬜️       | Margen derecho.   |
 
-#### ResumeLayoutLaTeX
+##### Sections
 
-| Prop        | Tipo                            | Req. | Descripción                        |
-| ----------- | ------------------------------- | ---- | ---------------------------------- |
-| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜️  | Configuración de paquete fontspec. |
+Define alias de secciones para personalizar nombres.
+
+| Prop       | Tipo                        | Requerido | Descripción                                                        |
+| ---------- | --------------------------- | --------- | ------------------------------------------------------------------ |
+| `aliases?` | `Record<SectionID, string>` | ⬜️       | Alias personalizados para nombres de secciones.                    |
+| `order?`   | `OrderableSectionID[]`      | ⬜️       | Orden personalizado para secciones en la salida final.             |
+
+#### LatexLayout
+
+Configuración de layout LaTeX.
+
+| Prop          | Tipo                                    | Requerido | Descripción                        |
+| ------------- | --------------------------------------- | --------- | ---------------------------------- |
+| `advanced?`   | [`LatexAdvanced`](#latexadvanced)       | ⬜️       | Configuración avanzada.            |
+| `engine`      | `'latex'`                               | ✅        | Motor para generar el currículum.  |
+| `page?`       | [`LatexPage`](#latexpage)               | ⬜️       | Configuración a nivel de página.   |
+| `sections?`   | [`Sections`](#sections)                 | ⬜️       | Configuración de secciones.        |
+| `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜️       | Plantilla seleccionada.            |
+| `typography?` | [`LatexTypography`](#latextypography)   | ⬜️       | Configuración tipográfica.         |
+
+##### LatexAdvanced
+
+Define opciones de configuración avanzada para LaTeX.
+
+| Prop        | Tipo                            | Requerido | Descripción                        |
+| ----------- | ------------------------------- | --------- | ---------------------------------- |
+| `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜️       | Configuración de paquete fontspec. |
+
+##### LatexPage
+
+Define opciones a nivel de página para LaTeX.
+
+| Prop               | Tipo                  | Requerido | Descripción                |
+| ------------------ | --------------------- | --------- | -------------------------- |
+| `margins?`         | [`Margins`](#margins) | ⬜️       | Márgenes de página.        |
+| `showPageNumbers?` | `boolean`             | ⬜️       | Mostrar números de página. |
+
+##### LatexTypography
+
+Define opciones tipográficas para LaTeX.
+
+| Prop        | Tipo                                | Requerido | Descripción            |
+| ----------- | ----------------------------------- | --------- | ---------------------- |
+| `fontSize?` | [`LatexFontSize`](#latexfontsize)   | ⬜️       | Tamaño base de fuente. |
+| `links?`    | `{ underline?: boolean }`           | ⬜️       | Estilo de enlaces.     |
+
+#### MarkdownLayout
+
+Configuración de layout Markdown.
+
+| Prop        | Tipo                    | Requerido | Descripción                        |
+| ----------- | ----------------------- | --------- | ---------------------------------- |
+| `engine`    | `'markdown'`            | ✅        | Motor para generar el currículum.  |
+| `sections?` | [`Sections`](#sections) | ⬜️       | Configuración de secciones.        |
 
 ## Tipos de enumeración
 
@@ -349,11 +388,11 @@ Tipo unión que incluye todos los posibles niveles de dominio de habilidades.
 
 Tipo unión que incluye todas las posibles opciones de redes sociales.
 
-### Template
+### LatexTemplate
 
 Tipo unión que incluye todas las posibles opciones de plantilla.
 
-Ver también: [templates](/docs/layouts/latex/templates)
+Ver también: [templates](/es/docs/layouts/latex/templates)
 
 - `moderncv-banking`
 - `moderncv-casual`
@@ -363,7 +402,7 @@ Ver también: [templates](/docs/layouts/latex/templates)
 
 Tipo unión que incluye todos los posibles códigos de lenguaje local.
 
-Ver también: [multi-languages](/docs/content/multi-languages)
+Ver también: [multi-languages](/es/docs/content/multi-languages)
 
 - `en`
 - `es`
@@ -371,7 +410,7 @@ Ver también: [multi-languages](/docs/content/multi-languages)
 - `zh-hant-hk`
 - `zh-hant-tw`
 
-### FontspecNumbers
+### LatexFontspecNumbers
 
 Tipo unión que incluye todas las posibles opciones de números de fontspec de LaTeX.
 
@@ -381,7 +420,7 @@ Tipo unión que incluye todas las posibles opciones de números de fontspec de L
 - `OldStyle` - cifras old style con alturas variables (por defecto para idiomas
   latinos)
 
-### FontSize
+### LatexFontSize
 
 Tipo unión que incluye todas las posibles opciones de tamaño de fuente.
 

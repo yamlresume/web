@@ -4,7 +4,7 @@ title: タイプ
 
 この文書は、YAMLResume 履歴書構造を定義する TypeScript タイプの概要を提供します。TypeScript プロジェクトとして、YAMLResume はデータの一貫性を確保するために静的タイプを採用しています。このファイルは、個人詳細、教育、経験、スキルなどを含む、履歴書情報を表現するために使用されるコアデータ構造の概要を提供します。
 
-詳細については、実際のソース [types.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types.ts) をご確認ください。
+詳細については、実際のソース [types/index.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types/index.ts) をご確認ください。
 
 これらのタイプを理解することは、YAMLResume の機能をカスタマイズまたは拡張したい貢献者や開発者にとって重要です。
 
@@ -35,24 +35,23 @@ content:
 
 | 属性      | タイプ                              | 必須 | 説明                                          |
 | --------- | --------------------------------- | -------- | ---------------------------------------------------- |
-| `content` | [`ResumeContent`](#resumecontent) | ✅       | 履歴書全体のコンテンツ構造を定義します。 |
-| `layout?` | [`ResumeLayout`](#resumelayout)   | ⬜       | 全体的なレイアウト設定を定義します。            |
+| `content` | [`Content`](#content)             | ✅       | 履歴書全体のコンテンツ構造を定義します。 |
+| `layouts?` | [`Layouts`](#layouts)            | ⬜       | 全体的なレイアウト設定を定義します。            |
+| `locale?` | [`Locale`](#locale)               | ⬜       | 全体的なロケール設定を定義します。              |
 
 以下は履歴書構造の高レベル図です：
 
 <Mermaid chart='
 flowchart LR
   A[Resume]
-  B[ResumeLayout]
-  C[ResumeContent]
+  B[Layouts]
+  C[Content]
+  D[Locale]
 
-subgraph Layout
+subgraph Layouts
 direction TB
-B1[locale]
-B2[margins]
-B3[page]
-B4[template]
-B5[typography]
+B1[LatexLayout]
+B2[MarkdownLayout]
 end
 
 subgraph Content
@@ -69,11 +68,9 @@ end
 
 A --> B
 A --> C
+A --> D
 B --> B1
 B --> B2
-B --> B3
-B --> B4
-B --> B5
 C --> C1
 C --> C2
 C --> C3
@@ -84,7 +81,7 @@ C --> C7
 C --> C8
 '/>
 
-### ResumeContent
+### Content
 
 履歴書全体のコンテンツ構造を定義します。
 
@@ -272,20 +269,7 @@ C --> C8
 | `keywords?` | `string[]` | ⬜       | 役職または使用技術に関連するキーワード。   |
 | `url?`      | `string`   | ⬜       | 会社または職務に関連する URL。                  |
 
-### ResumeLayout
-
-全体的なレイアウト設定を定義します。
-
-| 属性          | タイプ                                                | 必須 | 説明                                                        |
-| ------------- | --------------------------------------------------- | -------- | ------------------------------------------------------------------ |
-| `locale?`     | [`ResumeLayoutLocale`](#resumelayoutlocale)         | ⬜       | 国際化とローカライゼーションのロケール設定を定義します。 |
-| `margins?`    | [`ResumeLayoutMargins`](#resumelayoutmargins)       | ⬜       | 文書レイアウトのマージン設定を定義します。                  |
-| `page?`       | [`ResumeLayoutPage`](#resumelayoutpage)             | ⬜       | 文書プレゼンテーションのページレベル設定を定義します。             |
-| `template?`   | [`Template`](#template)                             | ⬜       | 選択されたテンプレートを定義します。                                     |
-| `typography?` | [`ResumeLayoutTypography`](#resumelayouttypography) | ⬜       | 文書フォーマットのタイポグラフィ設定を定義します。               |
-| `latex?`      | [`ResumeLayoutLaTeX`](#resumelayoutlatex)           | ⬜       | LaTeX 固有の設定オプションを定義します。                      |
-
-#### ResumeLayoutLocale
+### Locale
 
 国際化とローカライゼーションのロケール設定を定義します。
 
@@ -293,7 +277,17 @@ C --> C8
 | ----------- | ----------------------------------- | -------- | ---------------------------------------------------------------- |
 | `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | 履歴書コンテンツとテンプレート用語の選択された言語。 |
 
-#### ResumeLayoutMargins
+### Layouts
+
+複数の出力形式をサポートするレイアウト項目の配列。
+
+| 属性        | タイプ                                                                 | 必須 | 説明                            |
+| ----------- | -------------------------------------------------------------------- | -------- | -------------------------------------- |
+| `layouts[]` | [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜       | 複数の出力レイアウト設定。 |
+
+#### 一般的なレイアウトタイプ
+
+##### Margins
 
 文書レイアウトのマージン設定を定義します。
 
@@ -304,29 +298,62 @@ C --> C8
 | `left?`   | `string` | ⬜       | 左マージン値（例：「1.5cm」）。   |
 | `right?`  | `string` | ⬜       | 右マージン値（例：「1.5cm」）。  |
 
-#### ResumeLayoutPage
+##### Sections
 
-文書プレゼンテーションのページレベル設定を定義します。
+セクション名をカスタマイズするためのセクションエイリアス設定を定義します。
 
-| 属性               | タイプ      | 必須 | 説明                      |
-| ------------------ | --------- | -------- | -------------------------------- |
-| `showPageNumbers?` | `boolean` | ⬜       | ページ番号を表示するかどうか。 |
+| 属性       | タイプ                        | 必須 | 説明                                                        |
+| ---------- | --------------------------- | -------- | ------------------------------------------------------------------ |
+| `aliases?` | `Record<SectionID, string>` | ⬜       | デフォルトの翻訳を上書きする、セクション名のカスタムエイリアス。 |
+| `order?`   | `OrderableSectionID[]`      | ⬜       | 最終出力におけるセクションのカスタム順序。                     |
 
-#### ResumeLayoutTypography
+#### LatexLayout
 
-文書フォーマットのタイポグラフィ設定を定義します。
+LaTeX レイアウト設定。
 
-| 属性        | タイプ     | 必須 | 説明                                             |
-| ----------- | -------- | -------- | ------------------------------------------------------- |
-| `fontSize?` | `string` | ⬜       | 文書の基本フォントサイズ（例：「10pt」、「11pt」）。 |
+| 属性          | タイプ                                    | 必須 | 説明                                           |
+| ------------- | --------------------------------------- | -------- | ----------------------------------------------------- |
+| `advanced?`   | [`LatexAdvanced`](#latexadvanced)       | ⬜       | 高度な設定オプションを定義します。               |
+| `engine`      | `'latex'`                               | ✅       | 履歴書を生成するエンジン。                    |
+| `page?`       | [`LatexPage`](#latexpage)               | ⬜       | 文書プレゼンテーションのページレベル設定を定義します。|
+| `sections?`   | [`Sections`](#sections)                 | ⬜       | セクションのカスタマイズ設定を定義します。               |
+| `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜       | 選択されたテンプレートを定義します。                        |
+| `typography?` | [`LatexTypography`](#latextypography)   | ⬜       | 文書フォーマットのタイポグラフィ設定を定義します。  |
 
-#### ResumeLayoutLaTeX
+##### LatexAdvanced
 
-LaTeX 固有の設定オプションを定義します。
+LaTeX の高度な設定オプションを定義します。
 
 | 属性        | タイプ                            | 必須 | 説明                            |
 | ----------- | ------------------------------- | -------- | -------------------------------------- |
-| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | LaTeX fontspec パッケージ設定。 |
+| `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜       | LaTeX fontspec パッケージ設定。 |
+
+##### LatexPage
+
+LaTeX の文書プレゼンテーションのページレベル設定を定義します。
+
+| 属性               | タイプ                  | 必須 | 説明                      |
+| ------------------ | --------------------- | -------- | -------------------------------- |
+| `margins?`         | [`Margins`](#margins) | ⬜       | ページマージン設定を定義します。    |
+| `showPageNumbers?` | `boolean`             | ⬜       | ページ番号を表示するかどうか。 |
+
+##### LatexTypography
+
+LaTeX の文書フォーマットのタイポグラフィ設定を定義します。
+
+| 属性        | タイプ                                | 必須 | 説明                      |
+| ----------- | ----------------------------------- | -------- | -------------------------------- |
+| `fontSize?` | [`LatexFontSize`](#latexfontsize)   | ⬜       | 文書の基本フォントサイズ。 |
+| `links?`    | `{ underline?: boolean }`           | ⬜       | リンクのスタイル設定。           |
+
+#### MarkdownLayout
+
+Markdown レイアウト設定。
+
+| 属性        | タイプ                    | 必須 | 説明                             |
+| ----------- | ----------------------- | -------- | --------------------------------------- |
+| `engine`    | `'markdown'`            | ✅       | 履歴書を生成するエンジン。      |
+| `sections?` | [`Sections`](#sections) | ⬜       | セクションのカスタマイズ設定を定義します。 |
 
 ## 列挙タイプ
 
@@ -375,11 +402,11 @@ LaTeX 固有の設定オプションを定義します。
 
 すべての可能なソーシャルネットワークオプションのユニオンタイプ。
 
-### Template
+### LatexTemplate
 
 すべての可能なテンプレートオプションのユニオンタイプ。
 
-参照：[テンプレート](https://yamlresume.dev/docs/layouts/latex/templates)
+参照：[テンプレート](/ja/docs/layouts/latex/templates)
 
 - `moderncv-banking`
 - `moderncv-casual`
@@ -389,7 +416,7 @@ LaTeX 固有の設定オプションを定義します。
 
 すべての可能なロケール言語のユニオンタイプ。
 
-参照：[多言語](https://yamlresume.dev/docs/content/multi-languages)
+参照：[多言語](/ja/docs/content/multi-languages)
 
 - `en`
 - `es`
@@ -397,7 +424,7 @@ LaTeX 固有の設定オプションを定義します。
 - `zh-hant-hk`
 - `zh-hant-tw`
 
-### FontspecNumbers
+### LatexFontspecNumbers
 
 すべての可能な latex fontspec 数字オプションのユニオンタイプ。
 
@@ -405,7 +432,7 @@ LaTeX 固有の設定オプションを定義します。
 - `Lining` - 標準のライニング数字（CJK 言語のデフォルト）
 - `OldStyle` - 異なる高さのオールドスタイル数字（ラテン言語のデフォルト）
 
-### FontSize
+### LatexFontSize
 
 すべての可能なフォントサイズオプションのユニオンタイプ。
 

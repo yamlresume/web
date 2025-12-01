@@ -12,10 +12,11 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 
 | 屬性      | 類型                                          | 必需 |
 | --------- | --------------------------------------------- | -------- |
-| `content` | [`ResumeContentSchema`](#resumecontentschema) | ✅       |
-| `layout?` | [`ResumeLayoutSchema`](#resumelayoutschema)   | ⬜       |
+| `content` | [`ContentSchema`](#contentschema)             | ✅       |
+| `layouts?` | [`LayoutsSchema`](#layoutsschema)            | ⬜       |
+| `locale?` | [`LocaleSchema`](#localeschema)               | ⬜       |
 
-### ResumeContentSchema
+### ContentSchema
 
 定義整個履歷內容的驗證結構。
 
@@ -203,20 +204,7 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 | `keywords?` | `string[]` | ⬜       | 每個專案 1-32 個字元             |
 | `url?`      | `string`   | ⬜       | 有效 URL，最多 256 個字元              |
 
-### ResumeLayoutSchema
-
-定義整體佈局驗證配置。
-
-| 屬性          | 類型                                                            | 必需 |
-| ------------- | --------------------------------------------------------------- | -------- |
-| `locale?`     | [`ResumeLayoutLocaleSchema`](#resumelayoutlocaleschema)         | ⬜       |
-| `margins?`    | [`ResumeLayoutMarginsSchema`](#resumelayoutmarginsschema)       | ⬜       |
-| `page?`       | [`ResumeLayoutPageSchema`](#resumelayoutpageschema)             | ⬜       |
-| `template?`   | [`Template`](#template)                                         | ⬜       |
-| `typography?` | [`ResumeLayoutTypographySchema`](#resumelayouttypographyschema) | ⬜       |
-| `latex?`      | [`ResumeLayoutLaTeXSchema`](#resumelayoutlatexschema)           | ⬜       |
-
-#### ResumeLayoutLocaleSchema
+### LocaleSchema
 
 驗證國際化和本地化的區域設置。
 
@@ -224,7 +212,17 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 | ----------- | ----------------------------------- | -------- | ------------------------------------------------------------------- |
 | `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | 必須來自預定義的[區域語言選項](#locale-language) |
 
-#### ResumeLayoutMarginsSchema
+### LayoutsSchema
+
+定義整體佈局驗證配置。
+
+| 屬性        | 類型                                                                                         | 必需 | 驗證規則            |
+| ----------- | -------------------------------------------------------------------------------------------- | -------- | ------------------------------- |
+| `layouts[]` | [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | 佈局配置陣列。 |
+
+#### 通用佈局模式
+
+##### MarginsSchema
 
 驗證文件佈局的頁邊距設置。
 
@@ -235,29 +233,62 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 | `left?`   | `string` | ⬜       | 參見[頁邊距大小模式](#margin-size-schema) |
 | `right?`  | `string` | ⬜       | 參見[頁邊距大小模式](#margin-size-schema) |
 
-#### ResumeLayoutPageSchema
+##### SectionsSchema
+
+驗證分節自定義設置。
+
+| 屬性       | 類型                        | 必需 | 驗證規則                                                 |
+| ---------- | --------------------------- | -------- | -------------------------------------------------------------------- |
+| `aliases?` | `Record<SectionID, string>` | ⬜       | 鍵必須是有效的分節 ID，值必須是字串（2-128 個字元） |
+| `order?`   | `OrderableSectionID[]`      | ⬜       | 有效可排序分節 ID 的陣列                           |
+
+#### LatexLayoutSchema
+
+驗證 LaTeX 佈局配置。
+
+| 屬性          | 類型                                                | 必需 | 驗證規則                                      |
+| ------------- | --------------------------------------------------- | -------- | --------------------------------------------------------- |
+| `advanced?`   | [`LatexAdvancedSchema`](#latexadvancedschema)       | ⬜       | 參見[高級模式](#latexadvancedschema)                |
+| `engine`      | `'latex'`                                           | ✅       | 必須是 "latex"                                         |
+| `page?`       | [`LatexPageSchema`](#latexpageschema)               | ⬜       | 參見[頁面模式](#latexpageschema)                   |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | 參見[分節模式](#sectionsschema)                |
+| `template?`   | [`LatexTemplate`](#latextemplate)                   | ⬜       | 必須來自預定義的[模板選項](#template) |
+| `typography?` | [`LatexTypographySchema`](#latextypographyschema)   | ⬜       | 參見[排版模式](#latextypographyschema)      |
+
+##### LatexAdvancedSchema
+
+驗證 LaTeX 的高級配置選項。
+
+| 屬性        | 類型                                 | 必需 | 驗證規則                                                             |
+| ----------- | ------------------------------------ | -------- | -------------------------------------------------------------------------------- |
+| `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜       | 必須來自預定義的[fontspec 數字選項](#fontspecnumbers) |
+
+##### LatexPageSchema
 
 驗證文件演示的頁面級設置。
 
-| 屬性               | 類型      | 必需 | 驗證規則 |
-| ------------------ | --------- | -------- | ---------------- |
-| `showPageNumbers?` | `boolean` | ⬜       | true/false       |
+| 屬性               | 類型                  | 必需 | 驗證規則                 |
+| ------------------ | --------------------- | -------- | ------------------------------------ |
+| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜       | 參見[頁邊距模式](#marginsschema) |
+| `showPageNumbers?` | `boolean`             | ⬜       | true/false                           |
 
-#### ResumeLayoutTypographySchema
+##### LatexTypographySchema
 
 驗證文件格式的排版設置。
 
-| 屬性        | 類型     | 必需 | 驗證規則                                       |
-| ----------- | -------- | -------- | ------------------------------------------------------ |
-| `fontSize?` | `string` | ⬜       | 必須來自預定義的[字體大小選項](#fontsize) |
+| 屬性        | 類型                      | 必需 | 驗證規則                                               |
+| ----------- | ------------------------- | -------- | ------------------------------------------------------------------ |
+| `fontSize?` | `string`                  | ⬜       | 必須來自預定義的[字體大小選項](#fontsize) |
+| `links?`    | `{ underline?: boolean }` | ⬜       | true/false                                                         |
 
-#### ResumeLayoutLaTeXSchema
+#### MarkdownLayoutSchema
 
-驗證 LaTeX 特定配置選項。
+驗證 Markdown 佈局配置。
 
-| 屬性        | 類型                            | 必需 | 驗證規則                                                     |
-| ----------- | ------------------------------- | -------- | -------------------------------------------------------------------- |
-| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | 必須來自預定義的[fontspec 數字選項](#fontspecnumbers) |
+| 屬性        | 類型                                | 必需 | 驗證規則                       |
+| ----------- | ----------------------------------- | -------- | ------------------------------------------ |
+| `engine`    | `'markdown'`                        | ✅       | 必須是 "markdown"                       |
+| `sections?` | [`SectionsSchema`](#sectionsschema) | ⬜       | 參見[分節模式](#sectionsschema) |
 
 ## 原始驗證模式
 
@@ -345,7 +376,7 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 - 必須是預定義的國家選項之一
 - 示例：`United States`、`China`、`United Kingdom`、`Germany`
 
-### 學位
+###學位
 
 所有可能學位的聯合類型。
 
@@ -392,25 +423,25 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 - 必須是預定義的網路選項之一
 - 示例：`GitHub`、`LinkedIn`、`Twitter`、`Facebook`、`Instagram`
 
-### 模板
+### LatexTemplate
 
 所有可能模板選項的聯合類型。
 
 **驗證規則：**
 
 - 必須是以下之一：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
-- 另請參閱：[模板](https://yamlresume.dev/docs/layouts/latex/templates)
+- 另請參閱：[模板](/zh-tw/docs/layouts/latex/templates)
 
-### 區域語言
+### LocaleLanguage
 
 所有可能區域語言的聯合類型。
 
 **驗證規則：**
 
 - 必須是以下之一：`en`、`es`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`
-- 另請參閱：[多語言](https://yamlresume.dev/docs/content/multi-languages)
+- 另請參閱：[多語言](/zh-tw/docs/content/multi-languages)
 
-### FontspecNumbers
+### LatexFontspecNumbers
 
 所有可能 latex fontspec 數字選項的聯合類型。
 
@@ -421,7 +452,7 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
   - `Lining` - 標準襯線數字（CJK 語言的預設值）
   - `OldStyle` - 不同高度的舊式數字（拉丁語言的預設值）
 
-### 字體大小
+### LatexFontSize
 
 所有可能字體大小選項的聯合類型。
 

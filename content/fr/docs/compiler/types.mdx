@@ -9,7 +9,7 @@ structures de données principales utilisées pour représenter les informations
 détails personnels, l'éducation, l'expérience, les compétences et plus.
 
 Vous pouvez consulter
-[types.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types.ts)
+[types/index.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types/index.ts)
 pour les détails de la source de vérité.
 
 Comprendre ces types est essentiel pour les contributeurs et développeurs qui veulent
@@ -43,26 +43,25 @@ content:
 
 Définit la structure globale du CV, incluant le contenu et la mise en page.
 
-| Prop      | Type                              | Requis | Description                                           |
-| --------- | --------------------------------- | ------ | ----------------------------------------------------- |
-| `content` | [`ResumeContent`](#resumecontent) | ✅     | Définit la structure pour l'ensemble du contenu du CV. |
-| `layout?` | [`ResumeLayout`](#resumelayout)   | ⬜     | Définit la configuration globale de mise en page.     |
+| Prop      | Type                          | Requis | Description                                           |
+| --------- | ----------------------------- | ------ | ----------------------------------------------------- |
+| `content` | [`Content`](#content)         | ✅     | Définit la structure pour l'ensemble du contenu du CV. |
+| `layouts?` | [`Layouts`](#layouts)        | ⬜     | Définit la configuration globale de mise en page.     |
+| `locale?` | [`Locale`](#locale)           | ⬜     | Définit la configuration globale de locale.           |
 
 Voici un diagramme de haut niveau de la structure du CV :
 
 <Mermaid chart='
 flowchart LR
   A[Resume]
-  B[ResumeLayout]
-  C[ResumeContent]
+  B[Layouts]
+  C[Content]
+  D[Locale]
 
-subgraph Layout
+subgraph Layouts
 direction TB
-B1[locale]
-B2[margins]
-B3[page]
-B4[template]
-B5[typography]
+B1[LatexLayout]
+B2[MarkdownLayout]
 end
 
 subgraph Content
@@ -79,11 +78,9 @@ end
 
 A --> B
 A --> C
+A --> D
 B --> B1
 B --> B2
-B --> B3
-B --> B4
-B --> B5
 C --> C1
 C --> C2
 C --> C3
@@ -94,7 +91,7 @@ C --> C7
 C --> C8
 '/>
 
-### ResumeContent
+### Content
 
 Définit la structure pour l'ensemble du contenu du CV.
 
@@ -282,20 +279,7 @@ Représente une expérience de travail ou un poste d'emploi.
 | `keywords?` | `string[]` | ⬜     | Mots-clés liés au rôle ou technologies utilisées.            |
 | `url?`      | `string`   | ⬜     | URL liée à l'entreprise ou au travail.                       |
 
-### ResumeLayout
-
-Définit la configuration globale de mise en page.
-
-| Prop          | Type                                                | Requis | Description                                                                      |
-| ------------- | --------------------------------------------------- | ------ | -------------------------------------------------------------------------------- |
-| `locale?`     | [`ResumeLayoutLocale`](#resumelayoutlocale)         | ⬜     | Définit les paramètres de locale pour l'internationalisation et la localisation. |
-| `margins?`    | [`ResumeLayoutMargins`](#resumelayoutmargins)       | ⬜     | Définit les paramètres de marges de page pour la mise en page du document.      |
-| `page?`       | [`ResumeLayoutPage`](#resumelayoutpage)             | ⬜     | Définit les paramètres au niveau de la page pour la présentation du document.   |
-| `template?`   | [`Template`](#template)                             | ⬜     | Définit le modèle sélectionné.                                                  |
-| `typography?` | [`ResumeLayoutTypography`](#resumelayouttypography) | ⬜     | Définit les paramètres typographiques pour le formatage du document.            |
-| `latex?`      | [`ResumeLayoutLaTeX`](#resumelayoutlatex)           | ⬜     | Définit les options de configuration spécifiques à LaTeX.                       |
-
-#### ResumeLayoutLocale
+### Locale
 
 Définit les paramètres de locale pour l'internationalisation et la localisation.
 
@@ -303,7 +287,17 @@ Définit les paramètres de locale pour l'internationalisation et la localisatio
 | ----------- | ----------------------------------- | ------ | ---------------------------------------------------------------------- |
 | `language?` | [`LocaleLanguage`](#localelanguage) | ⬜     | La langue sélectionnée pour le contenu du CV et les termes du modèle. |
 
-#### ResumeLayoutMargins
+### Layouts
+
+Tableau d'éléments de mise en page prenant en charge plusieurs formats de sortie.
+
+| Prop        | Type                                                                 | Requis | Description                            |
+| ----------- | -------------------------------------------------------------------- | ------ | -------------------------------------- |
+| `layouts[]` | [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜     | Configurations de mise en page multiples. |
+
+#### Types de Mise en Page Courants
+
+##### Margins
 
 Définit les paramètres de marges de page pour la mise en page du document.
 
@@ -314,29 +308,62 @@ Définit les paramètres de marges de page pour la mise en page du document.
 | `left?`   | `string` | ⬜     | Valeur de marge gauche (ex: "1.5cm").      |
 | `right?`  | `string` | ⬜     | Valeur de marge droite (ex: "1.5cm").      |
 
-#### ResumeLayoutPage
+##### Sections
 
-Définit les paramètres au niveau de la page pour la présentation du document.
+Définit les paramètres d'alias de section pour personnaliser les noms de section.
 
-| Prop               | Type      | Requis | Description                                |
-| ------------------ | --------- | ------ | ------------------------------------------ |
-| `showPageNumbers?` | `boolean` | ⬜     | Indique s'il faut afficher les numéros de page. |
+| Prop       | Type                        | Requis | Description                                                        |
+| ---------- | --------------------------- | ------ | ------------------------------------------------------------------ |
+| `aliases?` | `Record<SectionID, string>` | ⬜     | Alias personnalisés pour les noms de section.                      |
+| `order?`   | `OrderableSectionID[]`      | ⬜     | Ordre personnalisé pour les sections dans la sortie finale.        |
 
-#### ResumeLayoutTypography
+#### LatexLayout
 
-Définit les paramètres typographiques pour le formatage du document.
+Configuration de mise en page LaTeX.
 
-| Prop        | Type     | Requis | Description                                                    |
-| ----------- | -------- | ------ | -------------------------------------------------------------- |
-| `fontSize?` | `string` | ⬜     | Taille de police de base pour le document (ex: "10pt", "11pt"). |
+| Prop          | Type                                    | Requis | Description                                           |
+| ------------- | --------------------------------------- | ------ | ----------------------------------------------------- |
+| `advanced?`   | [`LatexAdvanced`](#latexadvanced)       | ⬜     | Définit les options de configuration avancées.        |
+| `engine`      | `'latex'`                               | ✅     | Le moteur pour générer le CV.                         |
+| `page?`       | [`LatexPage`](#latexpage)               | ⬜     | Définit les paramètres au niveau de la page.          |
+| `sections?`   | [`Sections`](#sections)                 | ⬜     | Définit les paramètres de personnalisation de section.|
+| `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜     | Définit le modèle sélectionné.                        |
+| `typography?` | [`LatexTypography`](#latextypography)   | ⬜     | Définit les paramètres typographiques.                |
 
-#### ResumeLayoutLaTeX
+##### LatexAdvanced
 
-Définit les options de configuration spécifiques à LaTeX.
+Définit les options de configuration avancées pour LaTeX.
 
 | Prop        | Type                            | Requis | Description                                    |
 | ----------- | ------------------------------- | ------ | ---------------------------------------------- |
-| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜     | Configurations du package LaTeX fontspec.     |
+| `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜     | Configurations du package LaTeX fontspec.     |
+
+##### LatexPage
+
+Définit les paramètres au niveau de la page pour la présentation du document.
+
+| Prop               | Type                  | Requis | Description                                |
+| ------------------ | --------------------- | ------ | ------------------------------------------ |
+| `margins?`         | [`Margins`](#margins) | ⬜     | Définit les paramètres de marges de page.  |
+| `showPageNumbers?` | `boolean`             | ⬜     | Indique s'il faut afficher les numéros de page. |
+
+##### LatexTypography
+
+Définit les paramètres typographiques pour le formatage du document.
+
+| Prop        | Type                                | Requis | Description                                                    |
+| ----------- | ----------------------------------- | ------ | -------------------------------------------------------------- |
+| `fontSize?` | [`LatexFontSize`](#latexfontsize)   | ⬜     | Taille de police de base pour le document.                     |
+| `links?`    | `{ underline?: boolean }`           | ⬜     | Paramètres de style de lien.                                   |
+
+#### MarkdownLayout
+
+Configuration de mise en page Markdown.
+
+| Prop        | Type                    | Requis | Description                             |
+| ----------- | ----------------------- | ------ | --------------------------------------- |
+| `engine`    | `'markdown'`            | ✅     | Le moteur pour générer le CV.           |
+| `sections?` | [`Sections`](#sections) | ⬜     | Définit les paramètres de personnalisation de section. |
 
 ## Types d'Énumération
 
@@ -385,7 +412,7 @@ Un type union pour tous les niveaux de maîtrise de compétences possibles.
 
 Un type union pour toutes les options de réseaux sociaux possibles.
 
-### Template
+### LatexTemplate
 
 Un type union pour toutes les options de modèles possibles.
 
@@ -407,7 +434,7 @@ Voir aussi : [multi-langues](/fr/docs/content/multi-languages)
 - `zh-hant-hk`
 - `zh-hant-tw`
 
-### FontspecNumbers
+### LatexFontspecNumbers
 
 Un type union pour toutes les options de nombres fontspec LaTeX possibles.
 
@@ -417,7 +444,7 @@ Un type union pour toutes les options de nombres fontspec LaTeX possibles.
 - `OldStyle` - chiffres à l'ancienne avec des hauteurs variées (par défaut pour les
   langues latines)
 
-### FontSize
+### LatexFontSize
 
 Un type union pour toutes les options de taille de police possibles.
 

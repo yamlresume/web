@@ -4,7 +4,9 @@ title: 類型
 
 本文檔概述了定義 YAMLResume 履歷結構的 TypeScript 類型。作為 TypeScript 專案，YAMLResume 採用靜態類型來確保資料一致性。此文件提供了用於表示履歷資訊的核心資料結構概述，包括個人詳細資訊、教育、經驗、技能等。
 
-您可以查看 [types.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types.ts) 了解真實來源的詳細資訊。
+您可以查看
+[types/index.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types/index.ts)
+了解真實來源的詳細資訊。
 
 理解這些類型對於想要自定義或擴展 YAMLResume 功能的貢獻者和開發者至關重要。
 
@@ -35,24 +37,23 @@ content:
 
 | 屬性      | 類型                              | 必需 | 描述                                          |
 | --------- | --------------------------------- | -------- | ---------------------------------------------------- |
-| `content` | [`ResumeContent`](#resumecontent) | ✅       | 定義整個履歷內容的結構。 |
-| `layout?` | [`ResumeLayout`](#resumelayout)   | ⬜       | 定義整體佈局配置。            |
+| `content` | [`Content`](#content)             | ✅       | 定義整個履歷內容的結構。 |
+| `layouts?` | [`Layouts`](#layouts)            | ⬜       | 定義整體佈局配置。            |
+| `locale?` | [`Locale`](#locale)               | ⬜       | 定義整體區域配置。            |
 
 以下是履歷結構的高級圖表：
 
 <Mermaid chart='
 flowchart LR
   A[Resume]
-  B[ResumeLayout]
-  C[ResumeContent]
+  B[Layouts]
+  C[Content]
+  D[Locale]
 
-subgraph Layout
+subgraph Layouts
 direction TB
-B1[locale]
-B2[margins]
-B3[page]
-B4[template]
-B5[typography]
+B1[LatexLayout]
+B2[MarkdownLayout]
 end
 
 subgraph Content
@@ -69,11 +70,9 @@ end
 
 A --> B
 A --> C
+A --> D
 B --> B1
 B --> B2
-B --> B3
-B --> B4
-B --> B5
 C --> C1
 C --> C2
 C --> C3
@@ -84,7 +83,7 @@ C --> C7
 C --> C8
 '/>
 
-### ResumeContent
+### Content
 
 定義整個履歷內容的結構。
 
@@ -272,20 +271,7 @@ C --> C8
 | `keywords?` | `string[]` | ⬜       | 與角色或使用的技術相關的關鍵詞。   |
 | `url?`      | `string`   | ⬜       | 與公司或工作相關的 URL。                  |
 
-### ResumeLayout
-
-定義整體佈局配置。
-
-| 屬性          | 類型                                                | 必需 | 描述                                                        |
-| ------------- | --------------------------------------------------- | -------- | ------------------------------------------------------------------ |
-| `locale?`     | [`ResumeLayoutLocale`](#resumelayoutlocale)         | ⬜       | 定義國際化和本地化的區域設置。 |
-| `margins?`    | [`ResumeLayoutMargins`](#resumelayoutmargins)       | ⬜       | 定義文件佈局的頁邊距設置。                  |
-| `page?`       | [`ResumeLayoutPage`](#resumelayoutpage)             | ⬜       | 定義文件演示的頁面級設置。             |
-| `template?`   | [`Template`](#template)                             | ⬜       | 定義選定的模板。                                     |
-| `typography?` | [`ResumeLayoutTypography`](#resumelayouttypography) | ⬜       | 定義文件格式的排版設置。               |
-| `latex?`      | [`ResumeLayoutLaTeX`](#resumelayoutlatex)           | ⬜       | 定義 LaTeX 特定配置選項。                      |
-
-#### ResumeLayoutLocale
+### Locale
 
 定義國際化和本地化的區域設置。
 
@@ -293,7 +279,17 @@ C --> C8
 | ----------- | ----------------------------------- | -------- | ---------------------------------------------------------------- |
 | `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | 履歷內容和模板術語的選定語言。 |
 
-#### ResumeLayoutMargins
+### Layouts
+
+支援多種輸出格式的佈局項陣列。
+
+| 屬性        | 類型                                                                 | 必需 | 描述                            |
+| ----------- | -------------------------------------------------------------------- | -------- | -------------------------------------- |
+| `layouts[]` | [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜       | 多個輸出佈局配置。 |
+
+#### 通用佈局類型
+
+##### Margins
 
 定義文件佈局的頁邊距設置。
 
@@ -304,29 +300,62 @@ C --> C8
 | `left?`   | `string` | ⬜       | 左邊距值（例如："1.5cm"）。   |
 | `right?`  | `string` | ⬜       | 右邊距值（例如："1.5cm"）。  |
 
-#### ResumeLayoutPage
+##### Sections
 
-定義文件演示的頁面級設置。
+定義分節別名設置以自定義分節名稱。
 
-| 屬性               | 類型      | 必需 | 描述                      |
-| ------------------ | --------- | -------- | -------------------------------- |
-| `showPageNumbers?` | `boolean` | ⬜       | 是否顯示頁碼。 |
+| 屬性       | 類型                        | 必需 | 描述                                                        |
+| ---------- | --------------------------- | -------- | ------------------------------------------------------------------ |
+| `aliases?` | `Record<SectionID, string>` | ⬜       | 用於分節名稱的自定義別名，覆蓋預設翻譯。 |
+| `order?`   | `OrderableSectionID[]`      | ⬜       | 最終輸出中分節的自定義順序。                     |
 
-#### ResumeLayoutTypography
+#### LatexLayout
 
-定義文件格式的排版設置。
+LaTeX 佈局配置。
 
-| 屬性        | 類型     | 必需 | 描述                                             |
-| ----------- | -------- | -------- | ------------------------------------------------------- |
-| `fontSize?` | `string` | ⬜       | 文件的基礎字體大小（例如："10pt"、"11pt"）。 |
+| 屬性          | 類型                                    | 必需 | 描述                                           |
+| ------------- | --------------------------------------- | -------- | ----------------------------------------------------- |
+| `advanced?`   | [`LatexAdvanced`](#latexadvanced)       | ⬜       | 定義高級配置選項。               |
+| `engine`      | `'latex'`                               | ✅       | 生成履歷的引擎。                    |
+| `page?`       | [`LatexPage`](#latexpage)               | ⬜       | 定義文件演示的頁面級設置。|
+| `sections?`   | [`Sections`](#sections)                 | ⬜       | 定義分節自定義設置。               |
+| `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜       | 定義選定的模板。                        |
+| `typography?` | [`LatexTypography`](#latextypography)   | ⬜       | 定義文件格式的排版設置。  |
 
-#### ResumeLayoutLaTeX
+##### LatexAdvanced
 
-定義 LaTeX 特定配置選項。
+定義 LaTeX 的高級配置選項。
 
 | 屬性        | 類型                            | 必需 | 描述                            |
 | ----------- | ------------------------------- | -------- | -------------------------------------- |
-| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | LaTeX fontspec 包配置。 |
+| `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜       | LaTeX fontspec 包配置。 |
+
+##### LatexPage
+
+定義 LaTeX 的文件演示頁面級設置。
+
+| 屬性               | 類型                  | 必需 | 描述                      |
+| ------------------ | --------------------- | -------- | -------------------------------- |
+| `margins?`         | [`Margins`](#margins) | ⬜       | 定義頁邊距設置。    |
+| `showPageNumbers?` | `boolean`             | ⬜       | 是否顯示頁碼。 |
+
+##### LatexTypography
+
+定義 LaTeX 的文件格式排版設置。
+
+| 屬性        | 類型                                | 必需 | 描述                      |
+| ----------- | ----------------------------------- | -------- | -------------------------------- |
+| `fontSize?` | [`LatexFontSize`](#latexfontsize)   | ⬜       | 文件的基礎字體大小。 |
+| `links?`    | `{ underline?: boolean }`           | ⬜       | 連結樣式設置。           |
+
+#### MarkdownLayout
+
+Markdown 佈局配置。
+
+| 屬性        | 類型                    | 必需 | 描述                             |
+| ----------- | ----------------------- | -------- | --------------------------------------- |
+| `engine`    | `'markdown'`            | ✅       | 生成履歷的引擎。      |
+| `sections?` | [`Sections`](#sections) | ⬜       | 定義分節自定義設置。 |
 
 ## 枚舉類型
 
@@ -375,11 +404,11 @@ C --> C8
 
 所有可能社交網路選項的聯合類型。
 
-### Template
+### LatexTemplate
 
 所有可能模板選項的聯合類型。
 
-另請參閱：[模板](https://yamlresume.dev/docs/layouts/latex/templates)
+另請參閱：[模板](/zh-tw/docs/layouts/latex/templates)
 
 - `moderncv-banking`
 - `moderncv-casual`
@@ -389,7 +418,7 @@ C --> C8
 
 所有可能區域語言的聯合類型。
 
-另請參閱：[多語言](https://yamlresume.dev/docs/content/multi-languages)
+另請參閱：[多語言](/zh-tw/docs/content/multi-languages)
 
 - `en`
 - `es`
@@ -397,7 +426,7 @@ C --> C8
 - `zh-hant-hk`
 - `zh-hant-tw`
 
-### FontspecNumbers
+### LatexFontspecNumbers
 
 所有可能 latex fontspec 數字選項的聯合類型。
 
@@ -405,7 +434,7 @@ C --> C8
 - `Lining` - 標準襯線數字（CJK 語言的預設值）
 - `OldStyle` - 不同高度的舊式數字（拉丁語言的預設值）
 
-### FontSize
+### LatexFontSize
 
 所有可能字體大小選項的聯合類型。
 

@@ -12,10 +12,11 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 
 | 属性      | 类型                                          | 必需 |
 | --------- | --------------------------------------------- | -------- |
-| `content` | [`ResumeContentSchema`](#resumecontentschema) | ✅       |
-| `layout?` | [`ResumeLayoutSchema`](#resumelayoutschema)   | ⬜       |
+| `content` | [`ContentSchema`](#contentschema)             | ✅       |
+| `layouts?` | [`LayoutsSchema`](#layoutsschema)            | ⬜       |
+| `locale?` | [`LocaleSchema`](#localeschema)               | ⬜       |
 
-### ResumeContentSchema
+### ContentSchema
 
 定义整个简历内容的验证结构。
 
@@ -203,20 +204,7 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 | `keywords?` | `string[]` | ⬜       | 每个项目 1-32 个字符             |
 | `url?`      | `string`   | ⬜       | 有效 URL，最多 256 个字符              |
 
-### ResumeLayoutSchema
-
-定义整体布局验证配置。
-
-| 属性          | 类型                                                            | 必需 |
-| ------------- | --------------------------------------------------------------- | -------- |
-| `locale?`     | [`ResumeLayoutLocaleSchema`](#resumelayoutlocaleschema)         | ⬜       |
-| `margins?`    | [`ResumeLayoutMarginsSchema`](#resumelayoutmarginsschema)       | ⬜       |
-| `page?`       | [`ResumeLayoutPageSchema`](#resumelayoutpageschema)             | ⬜       |
-| `template?`   | [`Template`](#template)                                         | ⬜       |
-| `typography?` | [`ResumeLayoutTypographySchema`](#resumelayouttypographyschema) | ⬜       |
-| `latex?`      | [`ResumeLayoutLaTeXSchema`](#resumelayoutlatexschema)           | ⬜       |
-
-#### ResumeLayoutLocaleSchema
+### LocaleSchema
 
 验证国际化和本地化的区域设置。
 
@@ -224,7 +212,17 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 | ----------- | ----------------------------------- | -------- | ------------------------------------------------------------------- |
 | `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | 必须来自预定义的[区域语言选项](#locale-language) |
 
-#### ResumeLayoutMarginsSchema
+### LayoutsSchema
+
+定义整体布局验证配置。
+
+| 属性        | 类型                                                                                         | 必需 | 验证规则            |
+| ----------- | -------------------------------------------------------------------------------------------- | -------- | ------------------------------- |
+| `layouts[]` | [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | 布局配置数组。 |
+
+#### 通用布局模式
+
+##### MarginsSchema
 
 验证文档布局的页边距设置。
 
@@ -235,29 +233,62 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 | `left?`   | `string` | ⬜       | 参见[页边距大小模式](#margin-size-schema) |
 | `right?`  | `string` | ⬜       | 参见[页边距大小模式](#margin-size-schema) |
 
-#### ResumeLayoutPageSchema
+##### SectionsSchema
+
+验证分节自定义设置。
+
+| 属性       | 类型                        | 必需 | 验证规则                                                 |
+| ---------- | --------------------------- | -------- | -------------------------------------------------------------------- |
+| `aliases?` | `Record<SectionID, string>` | ⬜       | 键必须是有效的分节 ID，值必须是字符串（2-128 个字符） |
+| `order?`   | `OrderableSectionID[]`      | ⬜       | 有效可排序分节 ID 的数组                           |
+
+#### LatexLayoutSchema
+
+验证 LaTeX 布局配置。
+
+| 属性          | 类型                                                | 必需 | 验证规则                                      |
+| ------------- | --------------------------------------------------- | -------- | --------------------------------------------------------- |
+| `advanced?`   | [`LatexAdvancedSchema`](#latexadvancedschema)       | ⬜       | 参见[高级模式](#latexadvancedschema)                |
+| `engine`      | `'latex'`                                           | ✅       | 必须是 "latex"                                         |
+| `page?`       | [`LatexPageSchema`](#latexpageschema)               | ⬜       | 参见[页面模式](#latexpageschema)                   |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | 参见[分节模式](#sectionsschema)                |
+| `template?`   | [`LatexTemplate`](#latextemplate)                   | ⬜       | 必须来自预定义的[模板选项](#template) |
+| `typography?` | [`LatexTypographySchema`](#latextypographyschema)   | ⬜       | 参见[排版模式](#latextypographyschema)      |
+
+##### LatexAdvancedSchema
+
+验证 LaTeX 的高级配置选项。
+
+| 属性        | 类型                                 | 必需 | 验证规则                                                             |
+| ----------- | ------------------------------------ | -------- | -------------------------------------------------------------------------------- |
+| `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜       | 必须来自预定义的[fontspec 数字选项](#fontspecnumbers) |
+
+##### LatexPageSchema
 
 验证文档演示的页面级设置。
 
-| 属性               | 类型      | 必需 | 验证规则 |
-| ------------------ | --------- | -------- | ---------------- |
-| `showPageNumbers?` | `boolean` | ⬜       | true/false       |
+| 属性               | 类型                  | 必需 | 验证规则                 |
+| ------------------ | --------------------- | -------- | ------------------------------------ |
+| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜       | 参见[页边距模式](#marginsschema) |
+| `showPageNumbers?` | `boolean`             | ⬜       | true/false                           |
 
-#### ResumeLayoutTypographySchema
+##### LatexTypographySchema
 
 验证文档格式的排版设置。
 
-| 属性        | 类型     | 必需 | 验证规则                                       |
-| ----------- | -------- | -------- | ------------------------------------------------------ |
-| `fontSize?` | `string` | ⬜       | 必须来自预定义的[字体大小选项](#fontsize) |
+| 属性        | 类型                      | 必需 | 验证规则                                               |
+| ----------- | ------------------------- | -------- | ------------------------------------------------------------------ |
+| `fontSize?` | `string`                  | ⬜       | 必须来自预定义的[字体大小选项](#fontsize) |
+| `links?`    | `{ underline?: boolean }` | ⬜       | true/false                                                         |
 
-#### ResumeLayoutLaTeXSchema
+#### MarkdownLayoutSchema
 
-验证 LaTeX 特定配置选项。
+验证 Markdown 布局配置。
 
-| 属性        | 类型                            | 必需 | 验证规则                                                     |
-| ----------- | ------------------------------- | -------- | -------------------------------------------------------------------- |
-| `fontspec?` | `{ numbers?: FontspecNumbers }` | ⬜       | 必须来自预定义的[fontspec 数字选项](#fontspecnumbers) |
+| 属性        | 类型                                | 必需 | 验证规则                       |
+| ----------- | ----------------------------------- | -------- | ------------------------------------------ |
+| `engine`    | `'markdown'`                        | ✅       | 必须是 "markdown"                       |
+| `sections?` | [`SectionsSchema`](#sectionsschema) | ⬜       | 参见[分节模式](#sectionsschema) |
 
 ## 原始验证模式
 
@@ -392,25 +423,25 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 - 必须是预定义的网络选项之一
 - 示例：`GitHub`、`LinkedIn`、`Twitter`、`Facebook`、`Instagram`
 
-### 模板
+### LatexTemplate
 
 所有可能模板选项的联合类型。
 
 **验证规则：**
 
 - 必须是以下之一：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
-- 另请参阅：[模板](https://yamlresume.dev/docs/layouts/latex/templates)
+- 另请参阅：[模板](/zh-cn/docs/layouts/latex/templates)
 
-### 区域语言
+### LocaleLanguage
 
 所有可能区域语言的联合类型。
 
 **验证规则：**
 
 - 必须是以下之一：`en`、`es`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`
-- 另请参阅：[多语言](https://yamlresume.dev/docs/content/multi-languages)
+- 另请参阅：[多语言](/zh-cn/docs/content/multi-languages)
 
-### FontspecNumbers
+### LatexFontspecNumbers
 
 所有可能 latex fontspec 数字选项的联合类型。
 
@@ -421,7 +452,7 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
   - `Lining` - 标准衬线数字（CJK 语言的默认值）
   - `OldStyle` - 不同高度的旧式数字（拉丁语言的默认值）
 
-### 字体大小
+### LatexFontSize
 
 所有可能字体大小选项的联合类型。
 
