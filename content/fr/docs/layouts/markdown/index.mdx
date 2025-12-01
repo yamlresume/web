@@ -2,15 +2,50 @@
 title: Moteur Markdown
 ---
 
-Le moteur Markdown génère une version Markdown simple de votre CV. C'est particulièrement utile lorsque vous devez copier-coller le contenu de votre CV dans des systèmes de suivi des candidats (ATS) ou d'autres formulaires qui ne prennent pas en charge le téléchargement PDF.
+Le moteur markdown génère une version Markdown simple de votre CV. C'est
+particulièrement utile lorsque vous devez copier-coller le contenu de votre CV
+dans des systèmes de suivi des candidats (ATS) ou d'autres formulaires qui ne
+prennent pas en charge le téléchargement PDF.
 
 ## Configuration
 
-Pour utiliser le moteur Markdown, spécifiez `engine: markdown` dans votre configuration de mise en page.
+Pour utiliser le moteur markdown, spécifiez `engine: markdown` dans votre
+configuration de mise en page.
 
-```yaml
+```yml
 layouts:
   - engine: markdown
 ```
 
-La sortie Markdown sera générée avec votre PDF (si vous avez également une mise en page LaTeX configurée) ou en tant que fichier autonome.
+La sortie markdown sera générée avec votre PDF (si vous avez également une mise
+en page LaTeX configurée) ou en tant que fichier autonome.
+
+Contrairement à la [mise en page LaTeX](./latex), la mise en page Markdown est
+une mise en page simple qui n'a pas de configurations supplémentaires à
+l'exception des [alias de sections](/docs/layouts/sections/aliases) et de la
+[réorganisation des sections](/docs/layouts/sections/reorder).
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+locale:
+  language: en
+
+layouts:
+  - engine: markdown
+    sections:
+      aliases:
+        work: Professional Experience
+        education: Academic Background
+        skills: Technical Skills
+      order:
+        - basics
+        - work
+        - education
+        - skills
+```
+
+Les `aliases` et `order` des sections seront respectés dans la sortie markdown
+finale.

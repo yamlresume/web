@@ -2,15 +2,50 @@
 title: Motor Markdown
 ---
 
-El motor Markdown genera una versión en Markdown plano de su currículum. Esto es particularmente útil cuando necesita copiar y pegar el contenido de su currículum en sistemas de seguimiento de candidatos (ATS) u otros formularios que no admiten la carga de PDF.
+El motor markdown genera una versión en Markdown plano de su currículum. Esto es
+particularmente útil cuando necesita copiar y pegar el contenido de su currículum
+en sistemas de seguimiento de candidatos (ATS) u otros formularios que no
+admiten la carga de PDF.
 
 ## Configuración
 
-Para usar el motor Markdown, especifique `engine: markdown` en su configuración de diseño.
+Para usar el motor markdown, especifique `engine: markdown` en su configuración
+de diseño.
 
-```yaml
+```yml
 layouts:
   - engine: markdown
 ```
 
-La salida de Markdown se generará junto con su PDF (si también tiene un diseño LaTeX configurado) o como un archivo independiente.
+La salida de markdown se generará junto con su PDF (si también tiene un diseño
+LaTeX configurado) o como un archivo independiente.
+
+A diferencia del [diseño LaTeX](./latex), el diseño Markdown es un diseño simple
+que no tiene configuraciones adicionales excepto por los [alias de
+secciones](/docs/layouts/sections/aliases) y la [reordenación de
+secciones](/docs/layouts/sections/reorder).
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+locale:
+  language: en
+
+layouts:
+  - engine: markdown
+    sections:
+      aliases:
+        work: Professional Experience
+        education: Academic Background
+        skills: Technical Skills
+      order:
+        - basics
+        - work
+        - education
+        - skills
+```
+
+Los `aliases` y `order` de las secciones se respetarán en la salida markdown
+final.

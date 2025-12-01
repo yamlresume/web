@@ -2,16 +2,42 @@
 title: Markdown 引擎
 ---
 
-Markdown 引擎生成履歷的純 Markdown 版本。當您需要將履歷內容複製粘貼到申請人跟踪系統 (ATS) 或其他不支援 PDF 上傳的表單時，這特別有用。
+markdown 引擎生成簡歷的純 Markdown 版本。當您需要將簡歷內容複製粘貼到申請人跟蹤系統 (ATS) 或其他不支持 PDF 上傳的表單時，這特別有用。
 
 ## 配置
 
-要使用 Markdown 引擎，請在佈局配置中指定 `engine: markdown`。
+要使用 markdown 引擎，請在佈局配置中指定 `engine: markdown`。
 
-```yaml
+```yml
 layouts:
   - engine: markdown
 ```
 
-Markdown 輸出將與您的 PDF 一起生成（如果您也配置了 LaTeX 佈局）或作為獨立文件生成。
+markdown 輸出將與您的 PDF 一起生成（如果您也配置了 LaTeX 佈局）或作爲獨立文件生成。
+
+與 [LaTeX 佈局](./latex) 不同，Markdown 佈局是一個簡單的佈局，除了[章節別名](/docs/layouts/sections/aliases)和[章節重新排序](/docs/layouts/sections/reorder)外，沒有額外的配置。
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+locale:
+  language: en
+
+layouts:
+  - engine: markdown
+    sections:
+      aliases:
+        work: Professional Experience
+        education: Academic Background
+        skills: Technical Skills
+      order:
+        - basics
+        - work
+        - education
+        - skills
+```
+
+章節的 `aliases` 和 `order` 將在最終的 markdown 輸出中得到遵守。
 

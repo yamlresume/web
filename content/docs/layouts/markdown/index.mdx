@@ -2,16 +2,49 @@
 title: Markdown Engine
 ---
 
-The Markdown engine generates a plain Markdown version of your resume. This is particularly useful when you need to copy-paste your resume content into applicant tracking systems (ATS) or other forms that don't support PDF upload.
+The markdown engine generates a plain Markdown version of your resume. This is
+particularly useful when you need to copy-paste your resume content into
+applicant tracking systems (ATS) or other forms that don't support PDF upload.
 
 ## Configuration
 
-To use the Markdown engine, specify `engine: markdown` in your layout configuration.
+To use the markdown engine, specify `engine: markdown` in your layout
+configuration.
 
-```yaml
+```yml
 layouts:
   - engine: markdown
 ```
 
-The Markdown output will be generated alongside your PDF (if you have a LaTeX layout also configured) or as a standalone file.
+The markdown output will be generated alongside your PDF (if you have a LaTeX
+layout also configured) or as a standalone file.
 
+Unlike the [LaTeX layout](./latex), the Markdown layout is a simple layout which
+has no extra configurations except for the [section
+aliases](/docs/layouts/sections/aliases) and [section
+reorder](/docs/layouts/sections/reorder).
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+locale:
+  language: en
+
+layouts:
+  - engine: markdown
+    sections:
+      aliases:
+        work: Professional Experience
+        education: Academic Background
+        skills: Technical Skills
+      order:
+        - basics
+        - work
+        - education
+        - skills
+```
+
+The section `aliases` and `order` will be respected in the final markdown
+output.

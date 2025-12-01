@@ -8,9 +8,35 @@ Markdown エンジンは、履歴書のプレーンな Markdown バージョン�
 
 Markdown エンジンを使用するには、レイアウト設定で `engine: markdown` を指定してください。
 
-```yaml
+```yml
 layouts:
   - engine: markdown
 ```
 
 Markdown 出力は、（LaTeX レイアウトも設定されている場合）PDF と一緒に生成されるか、またはスタンドアロンファイルとして生成されます。
+
+[LaTeX レイアウト](./latex)とは異なり、Markdown レイアウトは[セクションエイリアス](/docs/layouts/sections/aliases)と[セクション並び替え](/docs/layouts/sections/reorder)以外の追加設定がないシンプルなレイアウトです。
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+locale:
+  language: en
+
+layouts:
+  - engine: markdown
+    sections:
+      aliases:
+        work: Professional Experience
+        education: Academic Background
+        skills: Technical Skills
+      order:
+        - basics
+        - work
+        - education
+        - skills
+```
+
+セクションの `aliases` と `order` は最終的な Markdown 出力に反映されます。
