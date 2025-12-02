@@ -1,0 +1,517 @@
+---
+title: "YAMLResume v0.8: Markdown出力"
+description:
+  "YAMLResume v0.8は複数のレイアウトをサポートし、PDFと並んでMarkdown出力が可能になりました。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-12-02
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+私たちは[YAMLResume v0.8](https://github.com/yamlresume/yamlresume/releases/tag/v0.8.0)のリリースを発表できることを大変嬉しく思います。これは、世界中の開発者や専門家にとって「Resume as Code」を標準にするための私たちの旅における重要なマイルストーンです。
+
+当初から、YAMLResumeは1つの主要な使命に焦点を当ててきました。それは、クリーンでバージョン管理されたYAML形式で履歴書を作成し、美しく組版されたピクセルパーフェクトなPDFにコンパイルできるようにすることです。PDFは依然として求職活動のゴールドスタンダードですが、ユーザーは履歴書のデータを他の形式で必要とすることがよくあることに気付きました。例えば、個人のウェブサイト用、応募者追跡システム（ATS）への貼り付け用、さらには最適化のために大規模言語モデル（LLM）にフィードするためなどです。
+
+v0.8では、強力な新しいアーキテクチャである[複数のレイアウト](/ja/docs/layouts)を導入し、それに伴い[Markdown出力](/ja/docs/layouts/markdown)のファーストクラスサポートを追加しました。
+
+TL;DR、簡単なデモ：
+
+[![YAMLResume v0.8: Markdown Output](https://asciinema.org/a/759578.svg)](https://asciinema.org/a/759578)
+
+## レイアウト付きYAMLResume
+
+YAMLResumeの以前のバージョンでは、コンパイルパイプラインは線形で単一でした。YAMLファイルを提供すると、エンジンがPDFを出力していました。別の[テンプレート](/ja/docs/layouts/latex#templates)が必要な場合は、`layout.template`フィールドを変更していました。フォントサイズを変えたい場合は、[タイポグラフィ](/ja/docs/layouts/latex#typography)設定を微調整していました。しかし、最終的な出力先は常に[LaTeX](/ja/docs/layouts/latex)エンジンを介して生成されたPDFファイルでした。
+
+これはうまく機能しましたが、制限がありました。採用担当者にメールで送るためのPDFを生成したいが、レガシーフォーム用のプレーンテキストバージョンも必要な場合はどうでしょうか？ [Hugo](https://gohugo.io/)や[Next.js](https://nextjs.org/)のブログで公開するために[Markdown](/ja/docs/layouts/markdown)バージョンが必要な場合はどうでしょうか？
+
+v0.8では、[レイアウトスキーマ](/ja/docs/compiler/schema/zod#layoutsschema)を完全に再設計し、[複数のレイアウト](/ja/docs/layouts)をサポートするようにしました。単一の出力設定セットの代わりに、履歴書のYAMLファイルでレイアウトのリストを定義できるようになりました。各レイアウトは、`engine`（`latex`や`markdown`など）と独自の構成オプションを指定します。
+
+これは、単一の[`yamlresume build`](/ja/docs/cli#build)コマンドで、PDF、Markdownファイル、将来的にはHTMLやdocxファイルなど、複数のアーティファクトを同時に生成できることを意味します。これは「信頼できる唯一の情報源（Source of Truth）」の原則に準拠しています。`resume.yml`は信頼できる唯一の情報源であり続け、出力はさまざまな配信チャネルに合わせて調整された派生表現にすぎません。
+
+新しい構成はYAMLファイルで次のようになります。
+
+```yml lineNumbers
+# Multiple output layouts configuration
+layouts:
+  - engine: latex
+    page:
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+      showPageNumbers: true
+    template: moderncv-banking
+    typography:
+      fontSize: 11pt
+  - engine: markdown
+```
+
+ご覧のとおり、ここでは2つのレイアウトを定義しています。1つ目は、特定のテンプレート、ページ余白、タイポグラフィ設定などを持つ[`latex`](/ja/docs/layouts/latex)エンジン（従来のPDFジェネレーター）を使用します。2つ目は、新しい[`markdown`](/ja/docs/layouts/markdown)エンジンを使用します。このアプローチの利点は、履歴書の実際の内容に触れることなく、必要に応じてレイアウトを追加または削除できることです。
+
+## 新しい出力としてのMarkdown
+
+なぜMarkdownなのでしょうか？ Markdownは開発者の世界共通語になっています。軽量で読みやすく、広くサポートされています。Markdownを出力ターゲットとして追加することで、YAMLResumeは正式な履歴書ドキュメントと柔軟なウェブファーストの世界との間のギャップを埋めます。
+
+実際に見てみましょう。`yamlresume`がインストールされている（バージョン0.8.0以上）場合、2つのコマンドだけで新しい履歴書を生成してビルドできます。
+
+### ステップ1：新しい履歴書の作成
+
+まず、[CLI](/ja/docs/cli)を使用してボイラープレートの履歴書を生成しましょう。
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+これにより、デフォルトの構成を持つ`my-resume.yml`ファイルが作成されます。これには、デフォルトで[LaTeX](/ja/docs/layouts/latex)と[Markdown](/ja/docs/layouts/markdown)の両方のレイアウトが含まれるようになりました。
+
+生成された`my-resume.yml`ファイルの内容は次のとおりです（`content`は無視して、最後の行の`markdown`レイアウト構成を見てください）。
+
+```yml lineNumbers
+---
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@ppresume.com
+    url: https://ppresume.com/gallery
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    city: Sacramento
+    region: California
+    country: United States
+    postalCode: "95814"
+  profiles:
+    - network: Line
+      url: https://line.com/PPResumeX
+      username: PPResumeX
+    - network: Twitter
+      url: https://twitter.com/PPResumeX
+      username: PPResumeX
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate: Jul 1, 2020
+      courses:
+        - Discrete Methods in Computer Science
+        - Programming Language Concepts
+        - Data Structures and Object-Oriented Design
+        - Operating Systems
+        - Computer Architecture
+        - Database Systems
+        - Computer Networking
+        - Introduction to the Theory of Computing
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+  work:
+    - name: PPResume
+      url: https://ppresume.com
+      startDate: Dec 1, 2022
+      endDate:
+      position: Senior Software Engineer
+      summary: |
+        - Developed and implemented efficient and scalable code, ensuring high-quality and maintainable web applications
+        - Collaborated with cross-functional teams to gather project requirements and translate them into technical solutions
+        - Conducted thorough testing and debugging to identify and resolve any issues or bugs in the software
+        - Actively participated in code reviews, providing valuable feedback to improve code quality and adherence to best practices
+        - Mentored and guided junior developers, fostering a collaborative and growth-oriented team environment
+      keywords:
+        - Scalability
+        - Growth
+        - Quality
+        - Mentorship
+    - name: PPResume
+      url: https://ppresume.com
+      startDate: Sep 1, 2020
+      endDate: Dec 1, 2022
+      position: Software Engineer
+      summary: |
+        - Created reusable React components to ensure code efficiency and maintainability
+        - Integrated with RESTful APIs to fetch and display dynamic data on the frontend
+        - Implemented client-side routing using React Router for smooth navigation between pages
+        - Actively participated in Agile development methodologies, attending daily stand-up meetings and sprint planning sessions
+      keywords:
+        - RESTful
+        - React
+        - Agile
+  languages:
+    - language: English
+      fluency: Native or Bilingual Proficiency
+      keywords:
+        - TOEFL 110
+        - IELTS 7.5
+    - language: Chinese
+      fluency: Elementary Proficiency
+      keywords: []
+  skills:
+    - name: Web Development
+      level: Expert
+      keywords:
+        - Python
+        - Ruby
+        - CSS
+        - React
+        - JavaScript
+    - name: DevOps
+      level: Intermediate
+      keywords:
+        - Python
+        - Kubernetes
+        - Docker
+        - Shell
+        - Ansible
+    - name: Design
+      level: Intermediate
+      keywords:
+        - Sketch
+        - Figma
+        - Photoshop
+  awards:
+    - title: Dean's List
+      awarder: University of Southern California
+      date: Oct 2016
+      summary: |
+        Awarded to students who achieve a high academic standing by maintaining a specified grade point average (GPA) during a semester.
+  certificates:
+    - name: AWS Certified Developer - Associate
+      url: https://aws.amazon.com/certification/
+      issuer: AWS
+      date: Mar 2021
+  publications:
+    - publisher: ACM Transactions on Interactive Intelligent Systems
+      url: https://dl.acm.org/journal/tiis
+      name: Enhancing Human-Computer Interaction through Augmented Reality
+      releaseDate: Dec 2017
+      summary: |
+        - Explores the potential of augmented reality (AR) in improving interaction between humans and computers
+        - Highlights benefits of AR in various areas such as gaming, education, healthcare, and design
+        - Discusses challenges and future directions of AR technology in enhancing user experience
+  references:
+    - name: Dr. Amanda Reynolds
+      phone: "(555) 123-4567"
+      relationship: Computer Science Professor
+      email: amanda.reynolds@usc.edu
+      summary: |
+        Andy Dufresne shows exceptional problem-solving skills and a solid understanding of programming concepts, he would bring immense value to any team or organization he becomes a part of.
+  projects:
+    - name: EduWeb
+      url: https://www.eduweb.xyz/
+      description: A web-based educational platform for interactive learning
+      startDate: Sep 2016
+      endDate: Dec 2016
+      summary: |
+        - Designed to enhance online learning experiences
+        - Facilitates students' engagement and collaboration through interactive features and user-friendly interface
+        - Offers a wide range of courses across various subjects
+        - Aims to improve the way students learn through the power of the web
+      keywords:
+        - Education
+        - Online Learning
+        - HCI
+  interests:
+    - name: Sports
+      keywords:
+        - Soccer
+        - Swimming
+        - Bicycling
+        - Hiking
+    - name: Music
+      keywords:
+        - Piano
+        - Guitar
+  volunteer:
+    - organization: USC Computer Science and Engineering Society
+      url: https://www.usccsesociety.org/
+      position: Tech Mentor
+      startDate: Sep 2015
+      endDate: Jul 2023
+      summary: |
+        - Volunteered as a Tech Mentor at USC Computer Science and Engineering Society
+        - Provided guidance and assistance to fellow students in their technical projects and coursework
+        - Assisted in organizing workshops, coding competitions, and networking events for the society members
+        - Contributed to fostering a collaborative and supportive environment within the student community
+
+locale:
+  language: en
+
+layouts:
+  - engine: latex
+    page:
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+      showPageNumbers: true
+    template: moderncv-banking
+    typography:
+      fontSize: 11pt
+  - engine: markdown #[!code highlight]
+```
+
+### ステップ2：履歴書のビルド
+
+次に、ビルドコマンドを実行します。
+
+```console lineNumbers
+$ yamlresume build my-resume.yml
+✔ Generated resume tex file successfully: my-resume.tex
+◐ Generating resume pdf file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume pdf file successfully: my-resume.pdf
+✔ Generated resume markdown file successfully: my-resume.md
+```
+
+最後の行に注目してください：
+`✔ Generated resume markdown file successfully: my-resume.md`。CLIはYAML構成内の[`markdown`](/ja/docs/layouts/markdown)レイアウトを自動的に検出し、PDFと一緒に対応する`.md`ファイルを生成しました。
+
+### 結果のMarkdown
+
+生成された`my-resume.md`を見てみましょう。エンジンは、標準的な構文のヘッダー、リスト、リンクを使用して、構造化されたYAMLデータをクリーンで整形されたMarkdownドキュメントにインテリジェントに変換します。
+
+```markdown lineNumbers
+# Andy Dufresne
+
+Headline: Headed for the Pacific
+
+- Email: hi@ppresume.com
+- Phone: (213) 555-9876
+- URL: https://ppresume.com/gallery
+
+Location: 123 Main Street, Sacramento, California, United States, 95814
+
+Profiles:
+- Line: [@PPResumeX](https://line.com/PPResumeX)
+- Twitter: [@PPResumeX](https://twitter.com/PPResumeX)
+
+## Basics
+
+- Computer Science major with strong foundation in data structures, algorithms, and software development
+- Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+- Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+- Team player, with detail-oriented mindset and a keen eye for design and user experiences
+
+
+## Education
+
+### University of Southern California
+
+Bachelor, Computer Engineering and Computer Science, Score: 3.8, Sep 2016–Jul 2020
+
+URL: https://www.cs.usc.edu/
+
+Courses: Discrete Methods in Computer Science, Programming Language Concepts, Data Structures and Object-Oriented Design, Operating Systems, Computer Architecture, Database Systems, Computer Networking, Introduction to the Theory of Computing
+
+Summary:
+- Developed proficiency in programming languages such as Java, C++, and Python
+- Gained hands-on experience in software development through various projects and assignments
+- Strong communication and teamwork skills acquired through group projects and presentations
+
+
+## Work
+
+### Senior Software Engineer
+
+PPResume, Dec 2022–Present
+
+URL: https://ppresume.com
+
+Keywords: Scalability, Growth, Quality, Mentorship
+
+Summary:
+- Developed and implemented efficient and scalable code, ensuring high-quality and maintainable web applications
+- Collaborated with cross-functional teams to gather project requirements and translate them into technical solutions
+- Conducted thorough testing and debugging to identify and resolve any issues or bugs in the software
+- Actively participated in code reviews, providing valuable feedback to improve code quality and adherence to best practices
+- Mentored and guided junior developers, fostering a collaborative and growth-oriented team environment
+
+
+### Software Engineer
+
+PPResume, Sep 2020–Dec 2022
+
+URL: https://ppresume.com
+
+Keywords: RESTful, React, Agile
+
+Summary:
+- Created reusable React components to ensure code efficiency and maintainability
+- Integrated with RESTful APIs to fetch and display dynamic data on the frontend
+- Implemented client-side routing using React Router for smooth navigation between pages
+- Actively participated in Agile development methodologies, attending daily stand-up meetings and sprint planning sessions
+
+
+## Languages
+
+- English: Native or Bilingual Proficiency, Keywords: TOEFL 110, IELTS 7.5
+- Chinese: Elementary Proficiency
+
+## Skills
+
+- Web Development: Expert, Keywords: Python, Ruby, CSS, React, JavaScript
+- DevOps: Intermediate, Keywords: Python, Kubernetes, Docker, Shell, Ansible
+- Design: Intermediate, Keywords: Sketch, Figma, Photoshop
+
+## Awards
+
+### Dean's List
+
+University of Southern California, Oct 2016
+
+Summary:
+Awarded to students who achieve a high academic standing by maintaining a specified grade point average (GPA) during a semester.
+
+
+## Certificates
+
+### AWS Certified Developer - Associate
+
+AWS, Mar 2021
+
+URL: https://aws.amazon.com/certification/
+
+## Publications
+
+### Enhancing Human-Computer Interaction through Augmented Reality
+
+ACM Transactions on Interactive Intelligent Systems, Dec 2017
+
+URL: https://dl.acm.org/journal/tiis
+
+Summary:
+- Explores the potential of augmented reality (AR) in improving interaction between humans and computers
+- Highlights benefits of AR in various areas such as gaming, education, healthcare, and design
+- Discusses challenges and future directions of AR technology in enhancing user experience
+
+
+## References
+
+### Dr. Amanda Reynolds
+
+Computer Science Professor, amanda.reynolds@usc.edu, (555) 123-4567
+
+Summary:
+Andy Dufresne shows exceptional problem-solving skills and a solid understanding of programming concepts, he would bring immense value to any team or organization he becomes a part of.
+
+
+## Projects
+
+### EduWeb
+
+A web-based educational platform for interactive learning, Sep 2016–Dec 2016
+
+URL: https://www.eduweb.xyz/
+
+Keywords: Education, Online Learning, HCI
+
+Summary:
+- Designed to enhance online learning experiences
+- Facilitates students' engagement and collaboration through interactive features and user-friendly interface
+- Offers a wide range of courses across various subjects
+- Aims to improve the way students learn through the power of the web
+
+
+## Interests
+
+- Sports: Soccer, Swimming, Bicycling, Hiking
+- Music: Piano, Guitar
+
+## Volunteer
+
+### USC Computer Science and Engineering Society
+
+Tech Mentor, Sep 2015–Jul 2023
+
+URL: https://www.usccsesociety.org/
+
+Summary:
+- Volunteered as a Tech Mentor at USC Computer Science and Engineering Society
+- Provided guidance and assistance to fellow students in their technical projects and coursework
+- Assisted in organizing workshops, coding competitions, and networking events for the society members
+- Contributed to fostering a collaborative and supportive environment within the student community
+```
+
+## Markdownの利点
+
+「すでに素晴らしいPDFがあるのに、なぜMarkdownバージョンが必要なのか？」と疑問に思うかもしれません。履歴書の構造化されたプレーンテキスト表現を持つことの利点は計り知れず、特に現代のAI主導の世界では重要です。
+
+### 1. LLMフレンドリー
+
+これはおそらく今日最も重要な利点です。私たちは大規模言語モデル（LLM）の時代に生きています。ChatGPT、Claude、Geminiのようなツールはテキストの分析に非常に優れていますが、バイナリPDFファイルや複雑なLaTeXソースコードには苦労する可能性があります。
+
+履歴書のクリーンなMarkdownバージョンを生成することで、LLMへの完璧な入力を得ることができます。`resume.md`をChatGPTにコピー＆ペーストして、次のように依頼できます。
+
+- 「この職務記述書に合わせて私の履歴書を調整してください...」
+- 「要約セクションを批評し、改善を提案してください...」
+- 「私の主要なスキルを抽出し、カバーレター用にフォーマットしてください...」
+
+Markdownは意味的に構造化されている（見出し、リスト、太字）ため、LLMは生のテキストやPDF変換よりも、履歴書の階層と内容をはる実によく「理解」できます。
+
+### 2. 相互運用性とウェブ公開
+
+Markdownはウェブのネイティブコンテンツ形式です。Next.js、Hugo、Jekyll、またはGatsbyで構築された個人のポートフォリオやブログがある場合は、`resume.md`をコンテンツフォルダに直接ドロップできます。
+
+新しいMarkdown出力を使用すると、パーソナルブランディングのワークフローを自動化できます。
+
+1. 最新の仕事やプロジェクトで`resume.yml`を更新します。
+2. `yamlresume build`を実行します。
+3. 生成された`resume.pdf`はダウンロードリンクに送られます。
+4. 生成された`resume.md`はウェブサイトの「About Me」ページを更新します。
+
+手動でコピー＆ペーストしたり、履歴書の2つの別々のバージョンを維持したりする必要はもうありません。
+
+### 3. 人間が読める形式とGitの差分
+
+YAMLは読みやすいですが、Markdownは長いテキストにおいてはさらに読みやすいです。YAML構文やLaTeXコマンドの「ノイズ」なしにコンテンツを確認するための優れた中間フォーマットとして機能します。
+
+さらに、出力は決定論的なプレーンテキストであるため、Gitで変更を簡単に追跡できます。職務記述書を変更した場合、`resume.md`の差分はテキストの変更を明確に示します。これは、バイナリPDFの差分を取ろうとするよりも、ピアレビュー（GitHubのプルリクエストなど）にとって非常に友好的です。
+
+### 4. 普遍的な移植性
+
+Markdownは、[Pandoc](https://pandoc.org/)のようなツールを使用して、他のほぼすべてのドキュメント形式に簡単に変換できます。Wordにこだわる採用担当者のために`.docx`ファイルが必要ですか？ `pandoc resume.md -f gfm -o resume.docx`。HTMLスニペットが必要ですか？ `pandoc resume.md -f gfm -o resume.html`。Markdown出力は、ドキュメントエコシステム全体との互換性を解き放つ多目的な「ピボット」形式として機能します。
+
+## 次のステップ：HTMLレイアウト
+
+レイアウトシステムとMarkdownエンジンの導入は始まりに過ぎません。私たちは現在、[HTMLレイアウトエンジン](https://github.com/yamlresume/yamlresume/issues/45)に積極的に取り組んでいます。
+
+`yamlresume build`を実行して、PDFと同じくらい見栄えが良く、ブラウザネイティブで、完全にレスポンシブでSEO最適化されたスタンドアロンのHTMLファイルを取得することを想像してください。これにより、オーバーヘッドなしでGitHub Pages、Vercel、またはNetlifyで履歴書をシンプルな静的ページとしてホストできるようになります。
+
+HTMLレイアウトは以下をサポートします。
+
+- モバイル表示用のレスポンシブデザイン（電話でPDFをピンチやズームする必要はありません）。
+- 履歴書の内容から自動生成されるSEOメタデータ。
+- CSS変数を介したテーマのサポート。
+- インタラクティブな要素（クリック可能なプロジェクトリンク、折りたたみ可能なセクションなど）。
+
+私たちは、履歴書のデータはあなたのものであり、印刷用のピクセルパーフェクトなPDF、AI用のクリーンなMarkdownファイル、ウェブ用のレスポンシブなHTMLページなど、ニーズに最適な形式でレンダリングできるべきだと信じています。
+
+## 結論
+
+YAMLResume v0.8は、柔軟性における大きな前進です。コンテンツ（YAML）をプレゼンテーション（レイアウト）から分離することで、開発者が履歴書のデータを新しい創造的な方法で使用できるようにしています。
+
+ぜひv0.8にアップグレードし、レイアウトに`markdown`エンジンを追加して、必要な形式で必要なときに履歴書を利用できる自由を体験してください。
+
+試してみる：
+
+```console lineNumbers
+$ npm install -g yamlresume@latest
+$ pnpm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ bun add -g yamlresume@latest
+$ brew install yamlresume
+```

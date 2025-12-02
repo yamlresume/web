@@ -1,0 +1,519 @@
+---
+title: "YAMLResume v0.8: Markdown 輸出"
+description:
+  "YAMLResume v0.8 引入了對多種佈局的支持，支持 Markdown 與 PDF 的同步輸出。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-12-02
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+我們非常激動地宣佈
+[YAMLResume v0.8](https://github.com/yamlresume/yamlresume/releases/tag/v0.8.0)
+的發佈，這是我們讓“Resume as Code”成爲全球開發者和專業人士標準之旅中的一個重要里程碑。
+
+自成立以來，YAMLResume 一直專注於一個核心使命：允許您以乾淨、版本控制友好的 YAML 格式編寫簡歷，並將其編譯爲排版精美、像素完美的 PDF。雖然 PDF 仍然是求職的黃金標準，但我們意識到我們的用戶經常需要其他格式的簡歷數據——用於個人網站、粘貼到申請人跟蹤系統 (ATS)，甚至用於輸入大型語言模型 (LLM) 進行優化。
+
+在 v0.8 中，我們引入了一個強大的新架構：[多佈局](/zh-cn/docs/layouts)，隨之而來的是對 [Markdown 輸出](/zh-cn/docs/layouts/markdown)的一流支持。
+
+TL;DR，快速演示：
+
+[![YAMLResume v0.8: Markdown Output](https://asciinema.org/a/759578.svg)](https://asciinema.org/a/759578)
+
+## 帶佈局的 YAMLResume
+
+在 YAMLResume 的早期版本中，編譯流程是線性且單一的。您提供一個 YAML 文件，引擎吐出一個 PDF。如果您想要不同的[模板](/zh-cn/docs/layouts/latex#templates)，您需要更改 `layout.template` 字段。如果您想要不同的字體大小，您需要微調[排版](/zh-cn/docs/layouts/latex#typography)設置。但最終，目的地始終是通過 [LaTeX](/zh-cn/docs/layouts/latex) 引擎生成的 PDF 文件。
+
+這雖然有效，但也存在侷限性。如果您想生成一份 PDF 通過電子郵件發送給招聘人員，同時也需要一份純文本版本用於舊版表格怎麼辦？如果您想要一份 [Markdown](/zh-cn/docs/layouts/markdown) 版本發佈在您的 [Hugo](https://gohugo.io/) 或 [Next.js](https://nextjs.org/) 博客上怎麼辦？
+
+在 v0.8 中，我們完全重新設計了[佈局架構](/zh-cn/docs/compiler/schema/zod#layoutsschema)以支持[多佈局](/zh-cn/docs/layouts)。現在，您可以在簡歷的 YAML 文件中定義一個佈局列表，而不是單一的一組輸出設置。每個佈局指定一個 `engine`（如 `latex` 或 `markdown`）及其特定的配置選項。
+
+這意味着只需一個 [`yamlresume build`](/zh-cn/docs/cli#build) 命令現在可以同時生成多個工件——PDF、Markdown 文件，未來還會有 HTML 或 docx 文件。這遵循了“單一事實來源”原則：您的 `resume.yml` 仍然是單一的事實來源，而輸出只是爲不同交付渠道量身定製的衍生表示。
+
+這是新配置在您的 YAML 文件中的樣子：
+
+```yml lineNumbers
+# Multiple output layouts configuration
+layouts:
+  - engine: latex
+    page:
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+      showPageNumbers: true
+    template: moderncv-banking
+    typography:
+      fontSize: 11pt
+  - engine: markdown
+```
+
+如您所見，我們在這裏定義了兩個佈局。第一個使用 [`latex`](/zh-cn/docs/layouts/latex) 引擎（我們經典的 PDF 生成器），帶有特定的模板、頁邊距和排版設置等。第二個使用新的 [`markdown`](/zh-cn/docs/layouts/markdown) 引擎。這種方法的美妙之處在於，您可以根據需要添加或刪除佈局，而無需觸及簡歷的實際內容。
+
+## Markdown 作爲新的輸出
+
+爲什麼是 Markdown？Markdown 已成爲開發者世界的通用語言。它輕量、可讀且受到普遍支持。通過添加 Markdown 作爲輸出目標，YAMLResume 彌合了正式簡歷文檔與靈活、網絡優先的世界之間的鴻溝。
+
+讓我們看看實際操作。如果您安裝了 `yamlresume`（版本 0.8.0 或更高），您只需兩個命令即可生成新簡歷並進行構建。
+
+### 第一步：創建新簡歷
+
+首先，讓我們使用 [CLI](/zh-cn/docs/cli) 生成一個樣板簡歷：
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+這將創建一個帶有默認配置的 `my-resume.yml` 文件，該文件現在默認包含 [LaTeX](/zh-cn/docs/layouts/latex) 和 [Markdown](/zh-cn/docs/layouts/markdown) 佈局。
+
+這是生成的 `my-resume.yml` 文件的內容——您可以忽略 `content`，直接看最後一行以查看 `markdown` 佈局配置：
+
+```yml lineNumbers
+---
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@ppresume.com
+    url: https://ppresume.com/gallery
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    city: Sacramento
+    region: California
+    country: United States
+    postalCode: "95814"
+  profiles:
+    - network: Line
+      url: https://line.com/PPResumeX
+      username: PPResumeX
+    - network: Twitter
+      url: https://twitter.com/PPResumeX
+      username: PPResumeX
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate: Jul 1, 2020
+      courses:
+        - Discrete Methods in Computer Science
+        - Programming Language Concepts
+        - Data Structures and Object-Oriented Design
+        - Operating Systems
+        - Computer Architecture
+        - Database Systems
+        - Computer Networking
+        - Introduction to the Theory of Computing
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+  work:
+    - name: PPResume
+      url: https://ppresume.com
+      startDate: Dec 1, 2022
+      endDate:
+      position: Senior Software Engineer
+      summary: |
+        - Developed and implemented efficient and scalable code, ensuring high-quality and maintainable web applications
+        - Collaborated with cross-functional teams to gather project requirements and translate them into technical solutions
+        - Conducted thorough testing and debugging to identify and resolve any issues or bugs in the software
+        - Actively participated in code reviews, providing valuable feedback to improve code quality and adherence to best practices
+        - Mentored and guided junior developers, fostering a collaborative and growth-oriented team environment
+      keywords:
+        - Scalability
+        - Growth
+        - Quality
+        - Mentorship
+    - name: PPResume
+      url: https://ppresume.com
+      startDate: Sep 1, 2020
+      endDate: Dec 1, 2022
+      position: Software Engineer
+      summary: |
+        - Created reusable React components to ensure code efficiency and maintainability
+        - Integrated with RESTful APIs to fetch and display dynamic data on the frontend
+        - Implemented client-side routing using React Router for smooth navigation between pages
+        - Actively participated in Agile development methodologies, attending daily stand-up meetings and sprint planning sessions
+      keywords:
+        - RESTful
+        - React
+        - Agile
+  languages:
+    - language: English
+      fluency: Native or Bilingual Proficiency
+      keywords:
+        - TOEFL 110
+        - IELTS 7.5
+    - language: Chinese
+      fluency: Elementary Proficiency
+      keywords: []
+  skills:
+    - name: Web Development
+      level: Expert
+      keywords:
+        - Python
+        - Ruby
+        - CSS
+        - React
+        - JavaScript
+    - name: DevOps
+      level: Intermediate
+      keywords:
+        - Python
+        - Kubernetes
+        - Docker
+        - Shell
+        - Ansible
+    - name: Design
+      level: Intermediate
+      keywords:
+        - Sketch
+        - Figma
+        - Photoshop
+  awards:
+    - title: Dean's List
+      awarder: University of Southern California
+      date: Oct 2016
+      summary: |
+        Awarded to students who achieve a high academic standing by maintaining a specified grade point average (GPA) during a semester.
+  certificates:
+    - name: AWS Certified Developer - Associate
+      url: https://aws.amazon.com/certification/
+      issuer: AWS
+      date: Mar 2021
+  publications:
+    - publisher: ACM Transactions on Interactive Intelligent Systems
+      url: https://dl.acm.org/journal/tiis
+      name: Enhancing Human-Computer Interaction through Augmented Reality
+      releaseDate: Dec 2017
+      summary: |
+        - Explores the potential of augmented reality (AR) in improving interaction between humans and computers
+        - Highlights benefits of AR in various areas such as gaming, education, healthcare, and design
+        - Discusses challenges and future directions of AR technology in enhancing user experience
+  references:
+    - name: Dr. Amanda Reynolds
+      phone: "(555) 123-4567"
+      relationship: Computer Science Professor
+      email: amanda.reynolds@usc.edu
+      summary: |
+        Andy Dufresne shows exceptional problem-solving skills and a solid understanding of programming concepts, he would bring immense value to any team or organization he becomes a part of.
+  projects:
+    - name: EduWeb
+      url: https://www.eduweb.xyz/
+      description: A web-based educational platform for interactive learning
+      startDate: Sep 2016
+      endDate: Dec 2016
+      summary: |
+        - Designed to enhance online learning experiences
+        - Facilitates students' engagement and collaboration through interactive features and user-friendly interface
+        - Offers a wide range of courses across various subjects
+        - Aims to improve the way students learn through the power of the web
+      keywords:
+        - Education
+        - Online Learning
+        - HCI
+  interests:
+    - name: Sports
+      keywords:
+        - Soccer
+        - Swimming
+        - Bicycling
+        - Hiking
+    - name: Music
+      keywords:
+        - Piano
+        - Guitar
+  volunteer:
+    - organization: USC Computer Science and Engineering Society
+      url: https://www.usccsesociety.org/
+      position: Tech Mentor
+      startDate: Sep 2015
+      endDate: Jul 2023
+      summary: |
+        - Volunteered as a Tech Mentor at USC Computer Science and Engineering Society
+        - Provided guidance and assistance to fellow students in their technical projects and coursework
+        - Assisted in organizing workshops, coding competitions, and networking events for the society members
+        - Contributed to fostering a collaborative and supportive environment within the student community
+
+locale:
+  language: en
+
+layouts:
+  - engine: latex
+    page:
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+      showPageNumbers: true
+    template: moderncv-banking
+    typography:
+      fontSize: 11pt
+  - engine: markdown #[!code highlight]
+```
+
+### 第二步：構建簡歷
+
+現在，運行構建命令：
+
+```console lineNumbers
+$ yamlresume build my-resume.yml
+✔ Generated resume tex file successfully: my-resume.tex
+◐ Generating resume pdf file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume pdf file successfully: my-resume.pdf
+✔ Generated resume markdown file successfully: my-resume.md
+```
+
+注意最後一行：
+`✔ Generated resume markdown file successfully: my-resume.md`。CLI 已自動檢測到您 YAML 配置中的 [`markdown`](/zh-cn/docs/layouts/markdown) 佈局，並生成了相應的 `.md` 文件以及 PDF。
+
+### 結果 Markdown
+
+讓我們看看生成的 `my-resume.md`。引擎使用標準語法標題、列表和鏈接，智能地將您的結構化 YAML 數據轉換爲乾淨、格式良好的 Markdown 文檔。
+
+```markdown lineNumbers
+# Andy Dufresne
+
+Headline: Headed for the Pacific
+
+- Email: hi@ppresume.com
+- Phone: (213) 555-9876
+- URL: https://ppresume.com/gallery
+
+Location: 123 Main Street, Sacramento, California, United States, 95814
+
+Profiles:
+- Line: [@PPResumeX](https://line.com/PPResumeX)
+- Twitter: [@PPResumeX](https://twitter.com/PPResumeX)
+
+## Basics
+
+- Computer Science major with strong foundation in data structures, algorithms, and software development
+- Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+- Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+- Team player, with detail-oriented mindset and a keen eye for design and user experiences
+
+
+## Education
+
+### University of Southern California
+
+Bachelor, Computer Engineering and Computer Science, Score: 3.8, Sep 2016–Jul 2020
+
+URL: https://www.cs.usc.edu/
+
+Courses: Discrete Methods in Computer Science, Programming Language Concepts, Data Structures and Object-Oriented Design, Operating Systems, Computer Architecture, Database Systems, Computer Networking, Introduction to the Theory of Computing
+
+Summary:
+- Developed proficiency in programming languages such as Java, C++, and Python
+- Gained hands-on experience in software development through various projects and assignments
+- Strong communication and teamwork skills acquired through group projects and presentations
+
+
+## Work
+
+### Senior Software Engineer
+
+PPResume, Dec 2022–Present
+
+URL: https://ppresume.com
+
+Keywords: Scalability, Growth, Quality, Mentorship
+
+Summary:
+- Developed and implemented efficient and scalable code, ensuring high-quality and maintainable web applications
+- Collaborated with cross-functional teams to gather project requirements and translate them into technical solutions
+- Conducted thorough testing and debugging to identify and resolve any issues or bugs in the software
+- Actively participated in code reviews, providing valuable feedback to improve code quality and adherence to best practices
+- Mentored and guided junior developers, fostering a collaborative and growth-oriented team environment
+
+
+### Software Engineer
+
+PPResume, Sep 2020–Dec 2022
+
+URL: https://ppresume.com
+
+Keywords: RESTful, React, Agile
+
+Summary:
+- Created reusable React components to ensure code efficiency and maintainability
+- Integrated with RESTful APIs to fetch and display dynamic data on the frontend
+- Implemented client-side routing using React Router for smooth navigation between pages
+- Actively participated in Agile development methodologies, attending daily stand-up meetings and sprint planning sessions
+
+
+## Languages
+
+- English: Native or Bilingual Proficiency, Keywords: TOEFL 110, IELTS 7.5
+- Chinese: Elementary Proficiency
+
+## Skills
+
+- Web Development: Expert, Keywords: Python, Ruby, CSS, React, JavaScript
+- DevOps: Intermediate, Keywords: Python, Kubernetes, Docker, Shell, Ansible
+- Design: Intermediate, Keywords: Sketch, Figma, Photoshop
+
+## Awards
+
+### Dean's List
+
+University of Southern California, Oct 2016
+
+Summary:
+Awarded to students who achieve a high academic standing by maintaining a specified grade point average (GPA) during a semester.
+
+
+## Certificates
+
+### AWS Certified Developer - Associate
+
+AWS, Mar 2021
+
+URL: https://aws.amazon.com/certification/
+
+## Publications
+
+### Enhancing Human-Computer Interaction through Augmented Reality
+
+ACM Transactions on Interactive Intelligent Systems, Dec 2017
+
+URL: https://dl.acm.org/journal/tiis
+
+Summary:
+- Explores the potential of augmented reality (AR) in improving interaction between humans and computers
+- Highlights benefits of AR in various areas such as gaming, education, healthcare, and design
+- Discusses challenges and future directions of AR technology in enhancing user experience
+
+
+## References
+
+### Dr. Amanda Reynolds
+
+Computer Science Professor, amanda.reynolds@usc.edu, (555) 123-4567
+
+Summary:
+Andy Dufresne shows exceptional problem-solving skills and a solid understanding of programming concepts, he would bring immense value to any team or organization he becomes a part of.
+
+
+## Projects
+
+### EduWeb
+
+A web-based educational platform for interactive learning, Sep 2016–Dec 2016
+
+URL: https://www.eduweb.xyz/
+
+Keywords: Education, Online Learning, HCI
+
+Summary:
+- Designed to enhance online learning experiences
+- Facilitates students' engagement and collaboration through interactive features and user-friendly interface
+- Offers a wide range of courses across various subjects
+- Aims to improve the way students learn through the power of the web
+
+
+## Interests
+
+- Sports: Soccer, Swimming, Bicycling, Hiking
+- Music: Piano, Guitar
+
+## Volunteer
+
+### USC Computer Science and Engineering Society
+
+Tech Mentor, Sep 2015–Jul 2023
+
+URL: https://www.usccsesociety.org/
+
+Summary:
+- Volunteered as a Tech Mentor at USC Computer Science and Engineering Society
+- Provided guidance and assistance to fellow students in their technical projects and coursework
+- Assisted in organizing workshops, coding competitions, and networking events for the society members
+- Contributed to fostering a collaborative and supportive environment within the student community
+```
+
+## Markdown 的好處
+
+您可能會想，“我已經有了一個漂亮的 PDF，爲什麼還需要 Markdown 版本？”擁有結構化的純文本簡歷表示的好處是巨大的，尤其是在現代 AI 驅動的世界中。
+
+### 1. 對 LLM 友好
+
+這也許是當今最重要的優勢。我們生活在大型語言模型 (LLM) 的時代。像 ChatGPT、Claude 和 Gemini 這樣的工具在分析文本方面非常出色，但它們在處理二進制 PDF 文件或複雜的 LaTeX 源代碼時可能會遇到困難。
+
+通過生成乾淨的 Markdown 版本簡歷，您就擁有了 LLM 的完美輸入。您可以將 `resume.md` 複製粘貼到 ChatGPT 中並要求它：
+
+- “根據這份職位描述調整我的簡歷……”
+- “批評我的總結部分並提出改進建議……”
+- “提取我的關鍵技能並將其格式化爲求職信……”
+
+因爲 Markdown 是語義結構的（標題、列表、粗體文本），LLM 可以比原始文本或 PDF 轉換更好地“理解”您簡歷的層次結構和內容。
+
+### 2. 互操作性和網絡發佈
+
+Markdown 是網絡的原生內容格式。如果您有一個用 Next.js、Hugo、Jekyll 或 Gatsby 構建的個人作品集或博客，您可以直接將 `resume.md` 放入您的內容文件夾中。
+
+使用新的 Markdown 輸出，您可以自動化您的個人品牌工作流程：
+
+1. 使用您最新的工作或項目更新您的 `resume.yml`。
+2. 運行 `yamlresume build`。
+3. 生成的 `resume.pdf` 用於您的下載鏈接。
+4. 生成的 `resume.md` 更新您網站上的“關於我”頁面。
+
+不再需要手動複製粘貼或維護兩個單獨的簡歷版本。
+
+### 3. 人類可讀性和 Git 差異
+
+雖然 YAML 具有可讀性，但 Markdown 對於長文本來說更具可讀性。它是一個很好的中間格式，可以在沒有 YAML 語法或 LaTeX 命令“噪音”的情況下審查您的內容。
+
+此外，由於輸出是確定性的純文本，您可以輕鬆地在 Git 中跟蹤更改。如果您更改了職位描述，`resume.md` 中的差異將清楚地顯示文本更改，這對於同行評審（例如，在 GitHub Pull Request 中）比嘗試對二進制 PDF 進行差異比較要友好得多。
+
+### 4. 通用可移植性
+
+Markdown 可以使用 [Pandoc](https://pandoc.org/) 等工具輕鬆轉換爲幾乎任何其他文檔格式。需要一個 `.docx` 文件給堅持使用 Word 的招聘人員嗎？ `pandoc resume.md -f gfm -o resume.docx`。需要一個 HTML 片段嗎？ `pandoc resume.md -f gfm -o resume.html`。Markdown 輸出作爲一個多功能的“樞紐”格式，解鎖了與整個文檔生態系統的兼容性。
+
+## 下一步：HTML 佈局
+
+佈局系統和 Markdown 引擎的引入僅僅是開始。我們正在積極開發 [HTML 佈局引擎](https://github.com/yamlresume/yamlresume/issues/45)。
+
+想象一下運行 `yamlresume build` 並獲得一個完全響應式、SEO 優化、獨立的 HTML 文件，它看起來像您的 PDF 一樣好，但是是瀏覽器原生的。這將允許您將簡歷作爲簡單的靜態頁面託管在 GitHub Pages、Vercel 或 Netlify 上，且零開銷。
+
+HTML 佈局將支持：
+
+- 移動查看的響應式設計（無需在手機上捏合和縮放 PDF）。
+- 根據您的簡歷內容自動生成的 SEO 元數據。
+- 通過 CSS 變量支持主題。
+- 交互式元素（例如，可點擊的項目鏈接、可摺疊部分）。
+
+我們相信您的簡歷數據屬於您，您應該能夠以最適合您需求的格式呈現它——無論是用於打印的像素完美 PDF、用於 AI 的乾淨 Markdown 文件，還是用於網絡的響應式 HTML 頁面。
+
+## 結論
+
+YAMLResume v0.8 是靈活性邁出的一大步。通過將內容 (YAML) 從演示 (Layouts) 中分離出來，我們正在賦能開發者以新的和創造性的方式使用他們的簡歷數據。
+
+我們邀請您升級到 v0.8，將 `markdown` 引擎添加到您的佈局中，並體驗在您需要時以您需要的格式提供簡歷的自由。
+
+試一試：
+
+```console lineNumbers
+$ npm install -g yamlresume@latest
+$ pnpm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ bun add -g yamlresume@latest
+$ brew install yamlresume
+```
