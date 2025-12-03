@@ -27,22 +27,16 @@ export function NewsChannel() {
         <div className="flex items-center gap-2 py-3">
           <IconSpeakerphone size={20} stroke={1.5} />
           <div className="text-sm text-fd-foreground">
+            YAMLResume v0.8 is released with the new{' '}
             <Link
-              href={getLocalizedUrl('/blog/section-customization', language)}
+              href={getLocalizedUrl('/blog/markdown-output', language)}
               className="underline"
             >
-              YAMLResume v0.7
-            </Link>{' '}
-            is released with the new{' '}
-            <Link
-              href={getLocalizedUrl('/blog/dev-mode', language)}
-              className="underline"
-            >
-              dev mode
+              Markdown output
             </Link>
             . Check out the{' '}
-            <Link href="https://youtu.be/xytlzedEQ_w" className="underline">
-              youtube demo
+            <Link href="https://asciinema.org/a/759578" className="underline">
+              demo
             </Link>{' '}
             for more details.
           </div>
