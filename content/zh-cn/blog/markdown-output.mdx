@@ -1,7 +1,6 @@
 ---
-title: "YAMLResume v0.8: Markdown 輸出"
-description:
-  "YAMLResume v0.8 引入了對多種佈局的支持，支持 Markdown 與 PDF 的同步輸出。"
+title: "YAMLResume v0.8: Markdown 输出"
+description: "YAMLResume v0.8 引入了对多种布局的支持，支持 Markdown 与 PDF 的同步输出。"
 author: Xiao Hanyu
 profile: https://x.com/xiaohanyu1988
 date: 2025-12-02
@@ -9,29 +8,27 @@ date: 2025-12-02
 
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
-我們非常激動地宣佈
-[YAMLResume v0.8](https://github.com/yamlresume/yamlresume/releases/tag/v0.8.0)
-的發佈，這是我們讓“Resume as Code”成爲全球開發者和專業人士標準之旅中的一個重要里程碑。
+我们非常激动地宣布 [YAMLResume v0.8](https://github.com/yamlresume/yamlresume/releases/tag/v0.8.0) 的发布，这是我们让“Resume as Code”成为全球开发者和专业人士标准之旅中的一个重要里程碑。
 
-自成立以來，YAMLResume 一直專注於一個核心使命：允許您以乾淨、版本控制友好的 YAML 格式編寫簡歷，並將其編譯爲排版精美、像素完美的 PDF。雖然 PDF 仍然是求職的黃金標準，但我們意識到我們的用戶經常需要其他格式的簡歷數據——用於個人網站、粘貼到申請人跟蹤系統 (ATS)，甚至用於輸入大型語言模型 (LLM) 進行優化。
+自成立以来，YAMLResume 一直专注于一个内核使命：允许您以干净、版本控制友好的 YAML 格式编写简历，并将其编译为排版精美、像素完美的 PDF。虽然 PDF 仍然是求职的黄金标准，但我们意识到我们的用户经常需要其他格式的简历数据——用于个人网站、粘贴到申请人跟踪系统 (ATS)，甚至用于输入大型语言模型 (LLM) 进行优化。
 
-在 v0.8 中，我們引入了一個強大的新架構：[多佈局](/zh-cn/docs/layouts)，隨之而來的是對 [Markdown 輸出](/zh-cn/docs/layouts/markdown)的一流支持。
+在 v0.8 中，我们引入了一个强大的新架构：[多布局](/zh-cn/docs/layouts)，随之而来的是对 [Markdown 输出](/zh-cn/docs/layouts/markdown)的一流支持。
 
 TL;DR，快速演示：
 
 [![YAMLResume v0.8: Markdown Output](https://asciinema.org/a/759578.svg)](https://asciinema.org/a/759578)
 
-## 帶佈局的 YAMLResume
+## 带布局的 YAMLResume
 
-在 YAMLResume 的早期版本中，編譯流程是線性且單一的。您提供一個 YAML 文件，引擎吐出一個 PDF。如果您想要不同的[模板](/zh-cn/docs/layouts/latex#templates)，您需要更改 `layout.template` 字段。如果您想要不同的字體大小，您需要微調[排版](/zh-cn/docs/layouts/latex#typography)設置。但最終，目的地始終是通過 [LaTeX](/zh-cn/docs/layouts/latex) 引擎生成的 PDF 文件。
+在 YAMLResume 的早期版本中，编译流程是线性且单一的。您提供一个 YAML 文档，引擎吐出一个 PDF。如果您想要不同的[模板](/zh-cn/docs/layouts/latex#templates)，您需要更改 `layout.template` 字段。如果您想要不同的字体大小，您需要微调[排版](/zh-cn/docs/layouts/latex#typography)设置。但最终，目的地始终是通过 [LaTeX](/zh-cn/docs/layouts/latex) 引擎生成的 PDF 文档。
 
-這雖然有效，但也存在侷限性。如果您想生成一份 PDF 通過電子郵件發送給招聘人員，同時也需要一份純文本版本用於舊版表格怎麼辦？如果您想要一份 [Markdown](/zh-cn/docs/layouts/markdown) 版本發佈在您的 [Hugo](https://gohugo.io/) 或 [Next.js](https://nextjs.org/) 博客上怎麼辦？
+这虽然有效，但也存在局限性。如果您想生成一份 PDF 通过电子邮件发送给招聘人员，同时也需要一份纯文本版本用于旧版表格怎么办？如果您想要一份 [Markdown](/zh-cn/docs/layouts/markdown) 版本发布在您的 [Hugo](https://gohugo.io/) 或 [Next.js](https://nextjs.org/) 博客上怎么办？
 
-在 v0.8 中，我們完全重新設計了[佈局架構](/zh-cn/docs/compiler/schema/zod#layoutsschema)以支持[多佈局](/zh-cn/docs/layouts)。現在，您可以在簡歷的 YAML 文件中定義一個佈局列表，而不是單一的一組輸出設置。每個佈局指定一個 `engine`（如 `latex` 或 `markdown`）及其特定的配置選項。
+在 v0.8 中，我们完全重新设计了[布局架构](/zh-cn/docs/compiler/schema/zod#layoutsschema)以支持[多布局](/zh-cn/docs/layouts)。现在，您可以在简历的 YAML 文档中定义一个布局列表，而不是单一的一组输出设置。每个布局指定一个 `engine`（如 `latex` 或 `markdown`）及其特定的配置选项。
 
-這意味着只需一個 [`yamlresume build`](/zh-cn/docs/cli#build) 命令現在可以同時生成多個工件——PDF、Markdown 文件，未來還會有 HTML 或 docx 文件。這遵循了“單一事實來源”原則：您的 `resume.yml` 仍然是單一的事實來源，而輸出只是爲不同交付渠道量身定製的衍生表示。
+这意味着只需一个 [`yamlresume build`](/zh-cn/docs/cli#build) 命令现在可以同时生成多个工件——PDF、Markdown 文档，未来还会有 HTML 或 docx 文档。这遵循了“单一事实来源”原则：您的 `resume.yml` 仍然是单一的事实来源，而输出只是为不同交付渠道量身定制的衍生表示。
 
-這是新配置在您的 YAML 文件中的樣子：
+这是新配置在您的 YAML 文档中的样子：
 
 ```yml lineNumbers
 # Multiple output layouts configuration
@@ -50,26 +47,26 @@ layouts:
   - engine: markdown
 ```
 
-如您所見，我們在這裏定義了兩個佈局。第一個使用 [`latex`](/zh-cn/docs/layouts/latex) 引擎（我們經典的 PDF 生成器），帶有特定的模板、頁邊距和排版設置等。第二個使用新的 [`markdown`](/zh-cn/docs/layouts/markdown) 引擎。這種方法的美妙之處在於，您可以根據需要添加或刪除佈局，而無需觸及簡歷的實際內容。
+如您所见，我们在这里定义了两个布局。第一个使用 [`latex`](/zh-cn/docs/layouts/latex) 引擎（我们经典的 PDF 生成器），带有特定的模板、页边距和排版设置等。第二个使用新的 [`markdown`](/zh-cn/docs/layouts/markdown) 引擎。这种方法的美妙之处在于，您可以根据需要添加或删除布局，而无需触及简历的实际内容。
 
-## Markdown 作爲新的輸出
+## Markdown 作为新的输出
 
-爲什麼是 Markdown？Markdown 已成爲開發者世界的通用語言。它輕量、可讀且受到普遍支持。通過添加 Markdown 作爲輸出目標，YAMLResume 彌合了正式簡歷文檔與靈活、網絡優先的世界之間的鴻溝。
+为什么是 Markdown？Markdown 已成为开发者世界的通用语言。它轻量、可读且受到普遍支持。通过添加 Markdown 作为输出目标，YAMLResume 弥合了正式简历文档与灵活、网络优先的世界之间的鸿沟。
 
-讓我們看看實際操作。如果您安裝了 `yamlresume`（版本 0.8.0 或更高），您只需兩個命令即可生成新簡歷並進行構建。
+让我们看看实际操作。如果您安装了 `yamlresume`（版本 0.8.0 或更高），您只需两个命令即可生成新简历并进行构建。
 
-### 第一步：創建新簡歷
+### 第一步：创建新简历
 
-首先，讓我們使用 [CLI](/zh-cn/docs/cli) 生成一個樣板簡歷：
+首先，让我们使用 [CLI](/zh-cn/docs/cli) 生成一个样板简历：
 
 ```console
 $ yamlresume new my-resume.yml
 ✔ Created my-resume.yml successfully.
 ```
 
-這將創建一個帶有默認配置的 `my-resume.yml` 文件，該文件現在默認包含 [LaTeX](/zh-cn/docs/layouts/latex) 和 [Markdown](/zh-cn/docs/layouts/markdown) 佈局。
+这将创建一个带有默认配置的 `my-resume.yml` 文档，该文档现在默认包含 [LaTeX](/zh-cn/docs/layouts/latex) 和 [Markdown](/zh-cn/docs/layouts/markdown) 布局。
 
-這是生成的 `my-resume.yml` 文件的內容——您可以忽略 `content`，直接看最後一行以查看 `markdown` 佈局配置：
+这是生成的 `my-resume.yml` 文档的内容——您可以忽略 `content`，直接看最后一行以查看 `markdown` 布局配置：
 
 ```yml lineNumbers
 ---
@@ -267,9 +264,9 @@ layouts:
   - engine: markdown #[!code highlight]
 ```
 
-### 第二步：構建簡歷
+### 第二步：构建简历
 
-現在，運行構建命令：
+现在，运行构建命令：
 
 ```console lineNumbers
 $ yamlresume build my-resume.yml
@@ -279,12 +276,12 @@ $ yamlresume build my-resume.yml
 ✔ Generated resume markdown file successfully: my-resume.md
 ```
 
-注意最後一行：
-`✔ Generated resume markdown file successfully: my-resume.md`。CLI 已自動檢測到您 YAML 配置中的 [`markdown`](/zh-cn/docs/layouts/markdown) 佈局，並生成了相應的 `.md` 文件以及 PDF。
+注意最后一行：
+`✔ Generated resume markdown file successfully: my-resume.md`。CLI 已自动检测到您 YAML 配置中的 [`markdown`](/zh-cn/docs/layouts/markdown) 布局，并生成了相应的 `.md` 文档以及 PDF。
 
-### 結果 Markdown
+### 结果 Markdown
 
-讓我們看看生成的 `my-resume.md`。引擎使用標準語法標題、列表和鏈接，智能地將您的結構化 YAML 數據轉換爲乾淨、格式良好的 Markdown 文檔。
+让我们看看生成的 `my-resume.md`。引擎使用标准语法标题、列表和链接，智能地将您的结构化 YAML 数据转换为干净、格式良好的 Markdown 文档。
 
 ```markdown lineNumbers
 # Andy Dufresne
@@ -298,6 +295,7 @@ Headline: Headed for the Pacific
 Location: 123 Main Street, Sacramento, California, United States, 95814
 
 Profiles:
+
 - Line: [@PPResumeX](https://line.com/PPResumeX)
 - Twitter: [@PPResumeX](https://twitter.com/PPResumeX)
 
@@ -307,7 +305,6 @@ Profiles:
 - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
 - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
 - Team player, with detail-oriented mindset and a keen eye for design and user experiences
-
 
 ## Education
 
@@ -320,10 +317,10 @@ URL: https://www.cs.usc.edu/
 Courses: Discrete Methods in Computer Science, Programming Language Concepts, Data Structures and Object-Oriented Design, Operating Systems, Computer Architecture, Database Systems, Computer Networking, Introduction to the Theory of Computing
 
 Summary:
+
 - Developed proficiency in programming languages such as Java, C++, and Python
 - Gained hands-on experience in software development through various projects and assignments
 - Strong communication and teamwork skills acquired through group projects and presentations
-
 
 ## Work
 
@@ -336,12 +333,12 @@ URL: https://ppresume.com
 Keywords: Scalability, Growth, Quality, Mentorship
 
 Summary:
+
 - Developed and implemented efficient and scalable code, ensuring high-quality and maintainable web applications
 - Collaborated with cross-functional teams to gather project requirements and translate them into technical solutions
 - Conducted thorough testing and debugging to identify and resolve any issues or bugs in the software
 - Actively participated in code reviews, providing valuable feedback to improve code quality and adherence to best practices
 - Mentored and guided junior developers, fostering a collaborative and growth-oriented team environment
-
 
 ### Software Engineer
 
@@ -352,11 +349,11 @@ URL: https://ppresume.com
 Keywords: RESTful, React, Agile
 
 Summary:
+
 - Created reusable React components to ensure code efficiency and maintainability
 - Integrated with RESTful APIs to fetch and display dynamic data on the frontend
 - Implemented client-side routing using React Router for smooth navigation between pages
 - Actively participated in Agile development methodologies, attending daily stand-up meetings and sprint planning sessions
-
 
 ## Languages
 
@@ -378,7 +375,6 @@ University of Southern California, Oct 2016
 Summary:
 Awarded to students who achieve a high academic standing by maintaining a specified grade point average (GPA) during a semester.
 
-
 ## Certificates
 
 ### AWS Certified Developer - Associate
@@ -396,10 +392,10 @@ ACM Transactions on Interactive Intelligent Systems, Dec 2017
 URL: https://dl.acm.org/journal/tiis
 
 Summary:
+
 - Explores the potential of augmented reality (AR) in improving interaction between humans and computers
 - Highlights benefits of AR in various areas such as gaming, education, healthcare, and design
 - Discusses challenges and future directions of AR technology in enhancing user experience
-
 
 ## References
 
@@ -409,7 +405,6 @@ Computer Science Professor, amanda.reynolds@usc.edu, (555) 123-4567
 
 Summary:
 Andy Dufresne shows exceptional problem-solving skills and a solid understanding of programming concepts, he would bring immense value to any team or organization he becomes a part of.
-
 
 ## Projects
 
@@ -422,11 +417,11 @@ URL: https://www.eduweb.xyz/
 Keywords: Education, Online Learning, HCI
 
 Summary:
+
 - Designed to enhance online learning experiences
 - Facilitates students' engagement and collaboration through interactive features and user-friendly interface
 - Offers a wide range of courses across various subjects
 - Aims to improve the way students learn through the power of the web
-
 
 ## Interests
 
@@ -442,73 +437,74 @@ Tech Mentor, Sep 2015–Jul 2023
 URL: https://www.usccsesociety.org/
 
 Summary:
+
 - Volunteered as a Tech Mentor at USC Computer Science and Engineering Society
 - Provided guidance and assistance to fellow students in their technical projects and coursework
 - Assisted in organizing workshops, coding competitions, and networking events for the society members
 - Contributed to fostering a collaborative and supportive environment within the student community
 ```
 
-## Markdown 的好處
+## Markdown 的好处
 
-您可能會想，“我已經有了一個漂亮的 PDF，爲什麼還需要 Markdown 版本？”擁有結構化的純文本簡歷表示的好處是巨大的，尤其是在現代 AI 驅動的世界中。
+您可能会想，“我已经有了一个漂亮的 PDF，为什么还需要 Markdown 版本？”拥有结构化的纯文本简历表示的好处是巨大的，尤其是在现代 AI 驱动的世界中。
 
-### 1. 對 LLM 友好
+### 1. 对 LLM 友好
 
-這也許是當今最重要的優勢。我們生活在大型語言模型 (LLM) 的時代。像 ChatGPT、Claude 和 Gemini 這樣的工具在分析文本方面非常出色，但它們在處理二進制 PDF 文件或複雜的 LaTeX 源代碼時可能會遇到困難。
+这也许是当今最重要的优势。我们生活在大型语言模型 (LLM) 的时代。像 ChatGPT、Claude 和 Gemini 这样的工具在分析文本方面非常出色，但它们在处理二进制 PDF 文档或复杂的 LaTeX 源代码时可能会遇到困难。
 
-通過生成乾淨的 Markdown 版本簡歷，您就擁有了 LLM 的完美輸入。您可以將 `resume.md` 複製粘貼到 ChatGPT 中並要求它：
+通过生成干净的 Markdown 版本简历，您就拥有了 LLM 的完美输入。您可以将 `resume.md` 拷贝粘贴到 ChatGPT 中并要求它：
 
-- “根據這份職位描述調整我的簡歷……”
-- “批評我的總結部分並提出改進建議……”
-- “提取我的關鍵技能並將其格式化爲求職信……”
+- “根据这份职位描述调整我的简历……”
+- “批评我的总结部分并提出改进建议……”
+- “提取我的关键技能并将其格式化为求职信……”
 
-因爲 Markdown 是語義結構的（標題、列表、粗體文本），LLM 可以比原始文本或 PDF 轉換更好地“理解”您簡歷的層次結構和內容。
+因为 Markdown 是语义结构的（标题、列表、粗体文本），LLM 可以比原始文本或 PDF 转换更好地“理解”您简历的层次结构和内容。
 
-### 2. 互操作性和網絡發佈
+### 2. 互操作性和网络发布
 
-Markdown 是網絡的原生內容格式。如果您有一個用 Next.js、Hugo、Jekyll 或 Gatsby 構建的個人作品集或博客，您可以直接將 `resume.md` 放入您的內容文件夾中。
+Markdown 是网络的原生内容格式。如果您有一个用 Next.js、Hugo、Jekyll 或 Gatsby 构建的个人作品集或博客，您可以直接将 `resume.md` 放入您的内容文档夹中。
 
-使用新的 Markdown 輸出，您可以自動化您的個人品牌工作流程：
+使用新的 Markdown 输出，您可以自动化您的个人品牌工作流程：
 
-1. 使用您最新的工作或項目更新您的 `resume.yml`。
-2. 運行 `yamlresume build`。
-3. 生成的 `resume.pdf` 用於您的下載鏈接。
-4. 生成的 `resume.md` 更新您網站上的“關於我”頁面。
+1. 使用您最新的工作或项目更新您的 `resume.yml`。
+2. 运行 `yamlresume build`。
+3. 生成的 `resume.pdf` 用于您的下载链接。
+4. 生成的 `resume.md` 更新您网站上的“关于我”页面。
 
-不再需要手動複製粘貼或維護兩個單獨的簡歷版本。
+不再需要手动拷贝粘贴或维护两个单独的简历版本。
 
-### 3. 人類可讀性和 Git 差異
+### 3. 人类可读性和 Git 差异
 
-雖然 YAML 具有可讀性，但 Markdown 對於長文本來說更具可讀性。它是一個很好的中間格式，可以在沒有 YAML 語法或 LaTeX 命令“噪音”的情況下審查您的內容。
+虽然 YAML 具有可读性，但 Markdown 对于长文本来说更具可读性。它是一个很好的中间格式，可以在没有 YAML 语法或 LaTeX 命令“噪音”的情况下审查您的内容。
 
-此外，由於輸出是確定性的純文本，您可以輕鬆地在 Git 中跟蹤更改。如果您更改了職位描述，`resume.md` 中的差異將清楚地顯示文本更改，這對於同行評審（例如，在 GitHub Pull Request 中）比嘗試對二進制 PDF 進行差異比較要友好得多。
+此外，由于输出是确定性的纯文本，您可以轻松地在 Git 中跟踪更改。如果您更改了职位描述，`resume.md` 中的差异将清楚地显示文本更改，这对于同行评审（例如，在 GitHub Pull Request 中）比尝试对二进制 PDF 进行差异比较要友好得多。
 
 ### 4. 通用可移植性
 
-Markdown 可以使用 [Pandoc](https://pandoc.org/) 等工具輕鬆轉換爲幾乎任何其他文檔格式。需要一個 `.docx` 文件給堅持使用 Word 的招聘人員嗎？ `pandoc resume.md -f gfm -o resume.docx`。需要一個 HTML 片段嗎？ `pandoc resume.md -f gfm -o resume.html`。Markdown 輸出作爲一個多功能的“樞紐”格式，解鎖了與整個文檔生態系統的兼容性。
+Markdown 可以使用 [Pandoc](https://pandoc.org/) 等工具轻松转换为几乎任何其他文档格式。需要一个 `.docx` 文档给坚持使用 Word 的招聘人员吗？ `pandoc resume.md -f gfm -o resume.docx`。需要一个 HTML 片段吗？ `pandoc resume.md -f gfm -o resume.html`。Markdown 输出作为一个多功能的“枢纽”格式，解锁了与整个文档生态系统的兼容性。
 
-## 下一步：HTML 佈局
+## 下一步：HTML 布局
 
-佈局系統和 Markdown 引擎的引入僅僅是開始。我們正在積極開發 [HTML 佈局引擎](https://github.com/yamlresume/yamlresume/issues/45)。
+布局系统和 Markdown 引擎的引入仅仅是开始。我们正在积极开发 [HTML 布局引擎](https://github.com/yamlresume/yamlresume/issues/45)。
 
-想象一下運行 `yamlresume build` 並獲得一個完全響應式、SEO 優化、獨立的 HTML 文件，它看起來像您的 PDF 一樣好，但是是瀏覽器原生的。這將允許您將簡歷作爲簡單的靜態頁面託管在 GitHub Pages、Vercel 或 Netlify 上，且零開銷。
+想象一下运行 `yamlresume build` 并获得一个完全响应式、SEO 优化、独立的 HTML 文档，它看起来像您的 PDF 一样好，但是是浏览器原生的。这将允许您将简历作为简单的静态页面托管在 GitHub Pages、Vercel 或 Netlify 上，且零开销。
 
-HTML 佈局將支持：
+HTML 布局将支持：
 
-- 移動查看的響應式設計（無需在手機上捏合和縮放 PDF）。
-- 根據您的簡歷內容自動生成的 SEO 元數據。
-- 通過 CSS 變量支持主題。
-- 交互式元素（例如，可點擊的項目鏈接、可摺疊部分）。
+- 移动查看的响应式设计（无需在手机上捏合和缩放 PDF）。
+- 根据您的简历内容自动生成的 SEO 元数据。
+- 通过 CSS 变量支持主题。
+- 交互式元素（例如，可点击的项目链接、可折叠部分）。
 
-我們相信您的簡歷數據屬於您，您應該能夠以最適合您需求的格式呈現它——無論是用於打印的像素完美 PDF、用於 AI 的乾淨 Markdown 文件，還是用於網絡的響應式 HTML 頁面。
+我们相信您的简历数据属于您，您应该能够以最适合您需求的格式呈现它——无论是用于打印的像素完美 PDF、用于 AI 的干净 Markdown 文档，还是用于网络的响应式 HTML 页面。
 
-## 結論
+## 结论
 
-YAMLResume v0.8 是靈活性邁出的一大步。通過將內容 (YAML) 從演示 (Layouts) 中分離出來，我們正在賦能開發者以新的和創造性的方式使用他們的簡歷數據。
+YAMLResume v0.8 是灵活性迈出的一大步。通过将内容 (YAML) 从演示 (Layouts) 中分离出来，我们正在赋能开发者以新的和创造性的方式使用他们的简历数据。
 
-我們邀請您升級到 v0.8，將 `markdown` 引擎添加到您的佈局中，並體驗在您需要時以您需要的格式提供簡歷的自由。
+我们邀请您升级到 v0.8，将 `markdown` 引擎添加到您的布局中，并体验在您需要时以您需要的格式提供简历的自由。
 
-試一試：
+试一试：
 
 ```console lineNumbers
 $ npm install -g yamlresume@latest
