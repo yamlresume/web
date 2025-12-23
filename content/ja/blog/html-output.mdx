@@ -1,0 +1,245 @@
+---
+title: "YAMLResume v0.9: HTML出力"
+description:
+  "YAMLResume v0.9はHTMLレイアウトエンジンを導入し、YAMLから直接Webに対応したレスポンシブな履歴書を生成できるようになりました。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-12-22
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+[YAMLResume v0.9](https://github.com/yamlresume/yamlresume/releases/tag/v0.9.0)のリリースを発表できることを嬉しく思います。
+[HTML出力](/docs/layouts/html)の第一級サポートを導入しました。[Markdown
+出力](/docs/layouts/markdown)をもたらした[v0.8リリース](/blog/markdown-output)に続き、
+履歴書データを真に多用途でWebネイティブにするための、もう一つの大きな前進を遂げています。
+
+v0.9では、YAML履歴書を直接スタンドアロンでレスポンシブなHTMLファイルにコンパイルできるようになりました。
+個人のWebサイト、GitHub Pages、または任意の静的ホスティングプラットフォームでのホスティングに最適です。
+PDFを変換したり、履歴書のWeb版を手動で管理する必要はもうありません。
+
+現在、HTMLレイアウト用のテンプレートは1つのみ提供しています。
+[calm](/docs/layouts/html/templates/calm)テンプレートは、
+moderncv LaTeXテンプレートにインスパイアされています。明確なセクション分割と
+Web表示に最適化されたエレガントなレイアウトを特徴とするミニマリストデザインです。プレビューは以下の通りです：
+
+![YAMLResume HTML Calmテンプレート](/static/images/docs/layouts/html/templates/calm.webp)
+
+YAMLResume v0.9を使用してHTML履歴書を生成する方法のクイックデモ：
+
+[![YAMLResume v0.9: HTML出力](https://asciinema.org/a/763505.svg)](https://asciinema.org/a/763505)
+
+## なぜHTML？
+
+v0.8で[複数レイアウトアーキテクチャ](/docs/layouts)を導入したとき、
+単一の`resume.yml`を必要なあらゆる形式でレンダリングできる世界を想像しました。
+プロフェッショナルな応募のための[LaTeX/PDF](/docs/layouts/latex)と
+相互運用性とLLMワークフローのための[Markdown](/docs/layouts/markdown)から始めました。
+そして今、HTMLが履歴書の必須フォーマットの三位一体を完成させます。
+
+HTMLには独自の利点があります：
+
+**Webネイティブ**: HTMLはWebの言語です。あなたの履歴書は、埋め込んだり変換したりしなければならない
+文書ではなく、インターネット上の第一級市民になります。
+
+**レスポンシブデザイン**: モバイルデバイスでピンチやズームが必要なPDFとは異なり、
+HTML履歴書はデスクトップモニターからスマートフォンまで、あらゆる画面サイズにシームレスに適応します。
+
+**SEOフレンドリー**: 検索エンジンがHTML履歴書をインデックス化でき、スキルと
+経験を発見可能にします。これはPDFのみの履歴書では不可能です。
+
+**インタラクティブ**: HTMLはクリック可能なリンク、スムーズなスクロール、その他の
+インタラクティブ要素を可能にし、静的文書を超えたユーザー体験を向上させます。
+
+**依存関係ゼロ**: HTML出力はインラインCSSを含む自己完結型ファイルです。
+S3、Netlify、GitHub Pagesなど、どこにでも配置でき、そのまま動作します。
+
+## はじめに
+
+`yamlresume`がインストールされている場合（バージョン0.9.0以上）、履歴書にHTML出力を
+追加することは、レイアウト設定を更新するのと同じくらい簡単です。
+
+### ステップ1: 履歴書の設定を更新する
+
+`resume.yml`にHTMLレイアウトを追加します：
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    typography:
+      fontSize: 11pt
+  - engine: markdown
+  - engine: html
+    template: calm
+    typography:
+      fontSize: 16px
+```
+
+HTMLエンジンは、14pxから20pxまでのフォントサイズを持つカスタマイズ可能な
+[タイポグラフィ](/docs/layouts/html#typography)をサポートしています。デフォルトの`calm`テンプレートは
+人気のあるLaTeX `moderncv`パッケージにインスパイアされており、クリーンでプロフェッショナルな
+外観を提供します。
+
+### ステップ2: 履歴書をビルドする
+
+ビルドコマンドを実行します：
+
+```console
+$ yamlresume build my-resume.yml
+✔ Generated resume tex file successfully: my-resume.tex
+◐ Generating resume pdf file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume pdf file successfully: my-resume.pdf
+✔ Generated resume markdown file successfully: my-resume.md
+✔ Generated resume html file successfully: my-resume.html
+```
+
+以上です！単一の真実のソースから3つの出力ファイルが得られました。
+
+## Calmテンプレート
+
+初期リリースには`calm`テンプレートが含まれており、プロフェッショナリズムと
+可読性のバランスを取った慎重に設計されたレイアウトです。テンプレートの特徴：
+
+- **クリーンなタイポグラフィ**: 画面と印刷の両方に最適化されたフォントサイズと行の高さ。
+- **レスポンシブレイアウト**: 広いデスクトップ画面から狭い
+  モバイルディスプレイまで自動的に適応します。
+- **セマンティックHTML**: より良いアクセシビリティと
+  SEOのために適切なHTML5セマンティック要素を使用します。
+- **印刷フレンドリー**: Web用に設計されていますが、テンプレートには印刷スタイルが含まれているため、
+  ブラウザからPDFとして保存したときに見栄えが良くなります。
+
+## ユースケース
+
+### GitHub Pages
+
+最小限の設定でGitHub PagesにHTML履歴書をデプロイ：
+
+```yml
+# .github/workflows/deploy.yml
+name: Deploy Resume
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install -g yamlresume
+      - run: yamlresume build resume.yml
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+```
+
+### レスポンシブポートフォリオ
+
+履歴書をポートフォリオに直接埋め込みます。HTMLは
+自己完結型なので、iframeに埋め込んだり、より深い統合のためにスタイルを抽出したりすることもできます。
+
+### クイック共有
+
+HTMLファイルをメールで送信したり、Dropbox/Google Driveで共有したりします。受信者は
+PDFリーダーや特別なソフトウェアを必要とせず、任意のブラウザで開くことができます。
+
+## 技術アーキテクチャ
+
+[HTMLレンダラー](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/html/renderer.ts)は、
+LaTeX/Markdownエンジンと同じ厳格なエンジニアリング標準で構築されています。内部的には：
+
+1. **型安全なレンダリング**: レンダラーはTypeScriptで記述され、[Zodスキーマ](/docs/compiler/schema/zod)を通じて
+   完全な型安全性を備えています。
+
+2. **テンプレートシステム**: テンプレートはモジュール式で拡張可能です。最初は
+   `calm`で出荷していますが、アーキテクチャは複数のテンプレートをサポートします。将来の
+   テンプレートは簡単に追加できます。
+
+3. **CSS方法論**: CSS Reset（modern-normalizeベース）と
+   スコープ付きテンプレートスタイルの組み合わせを使用して、ブラウザ間で一貫したレンダリングを保証します。
+
+4. **エスケープ処理**: すべてのコンテンツは[適切に
+   HTMLエスケープ](https://github.com/yamlresume/yamlresume/blob/v0.9.1/packages/core/src/utils/string.ts#L34-L44)され、
+   インジェクション脆弱性を防ぎ、特殊文字が正しく
+   レンダリングされることを保証します。
+
+5. **包括的なテスト**: HTMLレンダラーには1,000行以上の
+   [テストケース](https://github.com/yamlresume/yamlresume/blob/v0.9.1/packages/core/src/renderer/html/renderer.test.ts)が含まれており、
+   100%のテストカバレッジを達成し、レンダラーが
+   期待通りに動作することを保証します。
+
+## 比較: LaTeX vs Markdown vs HTML
+
+3つのエンジンを比較してみましょう：
+
+| 機能           | LaTeX (PDF)      | Markdown           | HTML               |
+| -------------- | ---------------- | ------------------ | ------------------ |
+| **ユースケース**| 求人応募         | AI/LLMs、コンテンツ | Webホスティング     |
+| **フォーマット**| ピクセル完璧     | ミニマル           | レスポンシブ       |
+| **可搬性**     | ユニバーサル     | ユニバーサル       | Webネイティブ      |
+| **カスタマイズ**| 広範             | 限定的             | 成長中             |
+| **ファイルサイズ**| ~50-200 KB    | ~5-20 KB           | ~20-50 KB          |
+| **依存関係**   | LaTeXツールチェーン| なし              | なし               |
+| **インタラクティブ**| いいえ       | いいえ             | はい               |
+| **SEO**        | いいえ           | 公開時             | はい               |
+| **レスポンシブ**| いいえ          | レンダラー依存     | はい               |
+
+各エンジンはそのドメインで優れています。YAMLResumeのアーキテクチャの美しさは、
+選択する必要がないことです。同じソースファイルから3つすべてを生成し、
+最適な場所でそれぞれを使用します。
+
+## 次は何？
+
+v0.9 HTMLエンジンは堅固な基盤を築きましたが、
+将来の拡張のための野心的な計画があります：
+
+### より多くのテンプレート
+
+ミニマリスト、クリエイティブ、コーポレートなど、異なるデザイン美学を持つ追加のテンプレートを追加します。
+テンプレートを提供したいですか？[貢献ガイド](/docs/contributing)をチェックしてください。
+
+### 拡張カスタマイズ
+
+将来のリリースでは、フォントファミリー、カラースキーム、
+スペーシングコントロールを含むタイポグラフィオプションを拡張し、視覚的な
+プレゼンテーションをより細かく制御できるようにします。
+
+### ダークモード
+
+CSS変数と`prefers-color-scheme`メディアクエリを使用した組み込みのダークモードサポート。
+
+### アクセシビリティの強化
+
+現在の実装はセマンティックHTMLを使用していますが、包括的な
+ARIAラベルとキーボードナビゲーションサポートを追加して、すべての
+ユーザーが履歴書にアクセスできるようにする予定です。
+
+## 結論
+
+YAMLResume v0.9はHTMLレイアウトサポートをもたらし、コア出力フォーマットの三部作を完成させます。
+今、単一の`resume.yml`ファイルから、次のものを生成できます：
+
+- 求人応募用のLaTeX経由のプロフェッショナルなPDF
+- LLMとコンテンツワークフロー用のクリーンなMarkdownファイル
+- Webホスティングとオンラインポートフォリオ用のレスポンシブHTMLページ
+
+このリリースは、「Code as Resume」哲学への私たちのコミットメントを強化します：一度書けば、
+どこでもレンダリングできます。履歴書データは単一の真実のソースのままであり、
+出力は異なるコンテキストに最適化された異なるビューにすぎません。
+
+v0.9にアップグレードして、Webネイティブな
+履歴書の柔軟性を体験することをお勧めします：
+
+```console
+$ npm install -g yamlresume@latest
+$ pnpm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ bun add -g yamlresume@latest
+$ brew install yamlresume
+```
+
+フィードバックや新しいテンプレートのアイデアはありますか？
+[GitHub](https://github.com/yamlresume/yamlresume/discussions)でディスカッションに参加するか、
+[X/Twitter](https://x.com/xiaohanyu1988)でお問い合わせください。ワークフローでHTML
+レイアウトをどのように使用するか楽しみにしています！

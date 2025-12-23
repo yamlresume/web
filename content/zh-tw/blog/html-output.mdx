@@ -1,0 +1,192 @@
+---
+title: "YAMLResume v0.9: HTML 輸出"
+description:
+  "YAMLResume v0.9 引入了 HTML 佈局引擎，使您可以直接從 YAML 生成適用於 Web 的響應式簡歷。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-12-22
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+我們很高興地宣佈發佈 [YAMLResume v0.9](https://github.com/yamlresume/yamlresume/releases/tag/v0.9.0)，引入了對 [HTML 輸出](/docs/layouts/html)的一流支持。繼我們帶來 [Markdown 輸出](/docs/layouts/markdown)的 [v0.8 版本](/blog/markdown-output)之後，我們現在又向前邁出了一大步，使您的簡歷數據真正多用途且原生於 Web。
+
+使用 v0.9，您現在可以將 YAML 簡歷直接編譯爲獨立的、響應式的 HTML 文件——非常適合託管在您的個人網站、GitHub Pages 或任何靜態託管平臺上。不再需要轉換 PDF 或手動維護簡歷的單獨 Web 版本。
+
+目前，我們只爲 HTML 佈局提供一個模板——[calm](/docs/layouts/html/templates/calm) 模板，它受 moderncv LaTeX 模板的啓發。它採用極簡設計，具有清晰的章節分隔和針對 Web 查看優化的優雅佈局。預覽如下：
+
+![YAMLResume HTML Calm 模板](/static/images/docs/layouts/html/templates/calm.webp)
+
+以下是如何使用 YAMLResume v0.9 生成 HTML 簡歷的快速演示：
+
+[![YAMLResume v0.9: HTML 輸出](https://asciinema.org/a/763505.svg)](https://asciinema.org/a/763505)
+
+## 爲什麼選擇 HTML？
+
+當我們在 v0.8 中引入[多佈局架構](/docs/layouts)時，我們設想了這樣一個世界，您的單個 `resume.yml` 可以呈現爲您需要的任何格式。我們從用於專業申請的 [LaTeX/PDF](/docs/layouts/latex) 和用於互操作性和 LLM 工作流的 [Markdown](/docs/layouts/markdown) 開始。現在，HTML 完成了必不可少的簡歷格式三部曲。
+
+HTML 提供了獨特的優勢：
+
+**Web 原生**：HTML 是 Web 的語言。您的簡歷成爲互聯網上的一等公民，而不僅僅是您必須嵌入或轉換的文檔。
+
+**響應式設計**：與需要在移動設備上捏合和縮放的 PDF 不同，HTML 簡歷可以無縫適應任何屏幕尺寸——從桌面顯示器到智能手機。
+
+**SEO 友好**：搜索引擎可以索引您的 HTML 簡歷，使您的技能和經驗可被發現。這對於僅 PDF 的簡歷是不可能的。
+
+**交互式**：HTML 支持可點擊鏈接、平滑滾動和其他交互元素，可增強靜態文檔之外的用戶體驗。
+
+**零依賴**：HTML 輸出是帶有內聯 CSS 的自包含文件。將其放在任何地方——S3、Netlify、GitHub Pages——它就能正常工作。
+
+## 入門
+
+如果您已安裝 `yamlresume`（0.9.0 或更高版本），向簡歷添加 HTML 輸出就像更新佈局配置一樣簡單。
+
+### 步驟 1：更新簡歷配置
+
+將 HTML 佈局添加到您的 `resume.yml`：
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    typography:
+      fontSize: 11pt
+  - engine: markdown
+  - engine: html
+    template: calm
+    typography:
+      fontSize: 16px
+```
+
+HTML 引擎支持可自定義的[排版](/docs/layouts/html#typography)，字體大小範圍從 14px 到 20px。默認的 `calm` 模板受流行的 LaTeX `moderncv` 包的啓發，提供了乾淨、專業的外觀。
+
+### 步驟 2：構建簡歷
+
+運行構建命令：
+
+```console
+$ yamlresume build my-resume.yml
+✔ Generated resume tex file successfully: my-resume.tex
+◐ Generating resume pdf file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume pdf file successfully: my-resume.pdf
+✔ Generated resume markdown file successfully: my-resume.md
+✔ Generated resume html file successfully: my-resume.html
+```
+
+就這樣！您現在從單一的真實源文件獲得了三個輸出文件。
+
+## Calm 模板
+
+初始版本包括 `calm` 模板，這是一個精心設計的佈局，平衡了專業性和可讀性。該模板具有以下特點：
+
+- **簡潔排版**：針對屏幕和打印優化的字體大小和行高。
+- **響應式佈局**：自動從寬桌面屏幕適應到窄移動顯示器。
+- **語義 HTML**：使用正確的 HTML5 語義元素以獲得更好的可訪問性和 SEO。
+- **打印友好**：雖然是爲 Web 設計的，但模板包括打印樣式，因此從瀏覽器保存爲 PDF 時看起來很棒。
+
+## 用例
+
+### GitHub Pages
+
+使用最少的配置將您的 HTML 簡歷部署到 GitHub Pages：
+
+```yml
+# .github/workflows/deploy.yml
+name: Deploy Resume
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install -g yamlresume
+      - run: yamlresume build resume.yml
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+```
+
+### 響應式作品集
+
+將簡歷直接嵌入到作品集中。由於 HTML 是自包含的，您甚至可以將其嵌入 iframe 或提取樣式以進行更深入的集成。
+
+### 快速共享
+
+通過電子郵件發送 HTML 文件或通過 Dropbox/Google Drive 共享。接收者可以在任何瀏覽器中打開它，而無需 PDF 閱讀器或特殊軟件。
+
+## 技術架構
+
+[HTML 渲染器](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/html/renderer.ts)採用與我們的 LaTeX/Markdown 引擎相同的嚴格工程標準構建。在底層：
+
+1. **類型安全渲染**：渲染器用 TypeScript 編寫，通過 [Zod 架構](/docs/compiler/schema/zod)實現完全的類型安全。
+
+2. **模板系統**：模板是模塊化和可擴展的。雖然我們最初使用 `calm` 進行發佈，但架構支持多個模板。將來的模板可以輕鬆添加。
+
+3. **CSS style**：我們使用 CSS Reset（基於 modern-normalize）和作用域模板樣式的組合來確保跨瀏覽器的一致渲染。
+
+4. **轉義處理**：所有內容都經過[適當的 HTML 轉義](https://github.com/yamlresume/yamlresume/blob/v0.9.1/packages/core/src/utils/string.ts#L34-L44)，以防止注入漏洞並確保特殊字符正確呈現。
+
+5. **全面測試**：HTML 渲染器包括超過 1,000 行的[測試用例](https://github.com/yamlresume/yamlresume/blob/v0.9.1/packages/core/src/renderer/html/renderer.test.ts)，實現了 100% 的測試覆蓋率並保證渲染器按預期工作。
+
+## 比較：LaTeX vs Markdown vs HTML
+
+讓我們看看三個引擎的比較：
+
+| 特性           | LaTeX (PDF)      | Markdown           | HTML               |
+| -------------- | ---------------- | ------------------ | ------------------ |
+| **用例**       | 求職申請         | AI/LLMs、內容      | Web 託管           |
+| **格式**       | 像素完美         | 極簡               | 響應式             |
+| **可移植性**   | 通用             | 通用               | Web 原生           |
+| **自定義**     | 廣泛             | 有限               | 增長中             |
+| **文件大小**   | ~50-200 KB       | ~5-20 KB           | ~20-50 KB          |
+| **依賴項**     | LaTeX 工具鏈     | 無                 | 無                 |
+| **交互式**     | 否               | 否                 | 是                 |
+| **SEO**        | 否               | 發佈時             | 是                 |
+| **響應式**     | 否               | 取決於渲染器       | 是                 |
+
+每個引擎在其領域都表現出色。YAMLResume 架構的美妙之處在於您不必選擇——從同一個源文件生成所有三個，並在最合適的地方使用它們。
+
+## 接下來是什麼？
+
+v0.9 HTML 引擎奠定了堅實的基礎，但我們對未來的增強有着雄心勃勃的計劃：
+
+### 更多模板
+
+我們將添加具有不同設計美學的其他模板——極簡主義、創意、企業等。想貢獻模板嗎？查看我們的[貢獻指南](/docs/contributing)。
+
+### 擴展自定義
+
+未來版本將擴展排版選項以包括字體系列、配色方案和間距控制，讓您可以更好地控制視覺呈現。
+
+### 深色模式
+
+使用 CSS 變量和 `prefers-color-scheme` 媒體查詢的內置深色模式支持。
+
+### 可訪問性增強
+
+雖然當前實現使用語義 HTML，但我們計劃添加全面的ARIA 標籤和鍵盤導航支持，以使簡歷對所有用戶都可訪問。
+
+## 結論
+
+YAMLResume v0.9 帶來了 HTML 佈局支持，完成了核心輸出格式的三部曲。現在，從單個 `resume.yml` 文件，您可以生成：
+
+- 通過 LaTeX 爲求職申請生成專業 PDF
+- 爲 LLM 和內容工作流生成乾淨的 Markdown 文件
+- 爲 Web 託管和在線作品集生成響應式 HTML 頁面
+
+此版本強化了我們對"簡歷即代碼"理念的承諾：一次編寫，隨處渲染。您的簡歷數據仍然是單一的真實來源，而輸出只是爲不同上下文優化的不同視圖。
+
+我們邀請您升級到 v0.9 並體驗 Web 原生簡歷的靈活性：
+
+```console
+$ npm install -g yamlresume@latest
+$ pnpm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ bun add -g yamlresume@latest
+$ brew install yamlresume
+```
+
+有反饋或新模板的想法嗎？加入 [GitHub](https://github.com/yamlresume/yamlresume/discussions) 上的討論或在 [X/Twitter](https://x.com/xiaohanyu1988) 上聯繫我們。我們迫不及待地想看到您如何在工作流程中使用 HTML佈局！
