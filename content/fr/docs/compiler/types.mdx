@@ -62,6 +62,7 @@ subgraph Layouts
 direction TB
 B1[LatexLayout]
 B2[MarkdownLayout]
+B3[HtmlLayout]
 end
 
 subgraph Content
@@ -81,6 +82,7 @@ A --> C
 A --> D
 B --> B1
 B --> B2
+B --> B3
 C --> C1
 C --> C2
 C --> C3
@@ -317,6 +319,25 @@ Définit les paramètres d'alias de section pour personnaliser les noms de secti
 | `aliases?` | `Record<SectionID, string>` | ⬜     | Alias personnalisés pour les noms de section.                      |
 | `order?`   | `OrderableSectionID[]`      | ⬜     | Ordre personnalisé pour les sections dans la sortie finale.        |
 
+#### HtmlLayout
+
+Configuration de mise en page HTML.
+
+| Prop          | Type                                  | Requis | Description                              |
+| ------------- | ------------------------------------- | ------ | ---------------------------------------- |
+| `engine`      | `'html'`                              | ✅     | Le moteur pour générer le CV.            |
+| `sections?`   | [`Sections`](#sections)               | ⬜     | Configuration de sections.               |
+| `template?`   | [`HtmlTemplate`](#htmltemplate)       | ⬜     | Modèle sélectionné.                      |
+| `typography?` | [`HtmlTypography`](#htmltypographyschema) | ⬜     | Configuration typographique.             |
+
+##### HtmlTypography
+
+Définit les paramètres typographiques pour le formatage du document HTML.
+
+| Prop        | Type                              | Requis | Description                      |
+| ----------- | --------------------------------- | ------ | -------------------------------- |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize)   | ⬜     | Taille de police de base pour le document. |
+
 #### LatexLayout
 
 Configuration de mise en page LaTeX.
@@ -367,11 +388,13 @@ Configuration de mise en page Markdown.
 
 ## Types d'Énumération
 
-### Country
+### Enums de Contenu
+
+#### Country
 
 Un type union pour tous les pays et régions possibles dans le monde.
 
-### Degree
+#### Degree
 
 Un type union pour tous les diplômes possibles.
 
@@ -383,7 +406,7 @@ Un type union pour tous les diplômes possibles.
 - `Master`
 - `Middle School`
 
-### Fluency
+#### Fluency
 
 Un type union pour tous les niveaux de maîtrise linguistique possibles.
 
@@ -393,11 +416,11 @@ Un type union pour tous les niveaux de maîtrise linguistique possibles.
 - `Minimum Professional Proficiency`
 - `Native or Bilingual Proficiency`
 
-### Language
+#### Language
 
 Un type union pour toutes les langues supportées.
 
-### Level
+#### Level
 
 Un type union pour tous les niveaux de maîtrise de compétences possibles.
 
@@ -408,11 +431,49 @@ Un type union pour tous les niveaux de maîtrise de compétences possibles.
 - `Master`
 - `Novice`
 
-### Network
+#### Network
 
 Un type union pour toutes les options de réseaux sociaux possibles.
 
-### LatexTemplate
+### Enums de Mise en Page
+
+#### HtmlFontSize
+
+Un type union pour toutes les options de taille de police HTML possibles.
+
+Le moteur HTML supporte les tailles de 14px à 20px :
+
+- `14px`, `15px`, `16px` (par défaut), `17px`, `18px`, `19px`, `20px`
+
+#### HtmlTemplate
+
+Un type union pour toutes les options de modèles HTML possibles.
+
+Voir aussi : [modèles](/fr/docs/layouts/html/templates)
+
+- `calm`
+
+#### LatexFontSize
+
+Un type union pour toutes les options de taille de police LaTeX possibles.
+
+Pour l'instant, seulement 3 options sont supportées :
+
+- `10pt` - taille de police 10pt (par défaut)
+- `11pt` - taille de police 11pt
+- `12pt` - taille de police 12pt
+
+#### LatexFontspecNumbers
+
+Un type union pour toutes les options de nombres fontspec LaTeX possibles.
+
+- `Auto` - permettant au style d'être automatiquement déterminé basé sur la
+  `LocaleLanguage` sélectionnée (par défaut)
+- `Lining` - chiffres alignés standard (par défaut pour les langues CJK)
+- `OldStyle` - chiffres à l'ancienne avec des hauteurs variées (par défaut pour les
+  langues latines)
+
+#### LatexTemplate
 
 Un type union pour toutes les options de modèles possibles.
 
@@ -422,7 +483,9 @@ Voir aussi : [modèles](/fr/docs/layouts/latex/templates)
 - `moderncv-casual`
 - `moderncv-classic`
 
-### LocaleLanguage
+### Enums de Localisation
+
+#### LocaleLanguage
 
 Un type union pour toutes les langues de locale possibles.
 
@@ -433,23 +496,3 @@ Voir aussi : [multi-langues](/fr/docs/locale)
 - `zh-hans`
 - `zh-hant-hk`
 - `zh-hant-tw`
-
-### LatexFontspecNumbers
-
-Un type union pour toutes les options de nombres fontspec LaTeX possibles.
-
-- `Auto` - permettant au style d'être automatiquement déterminé basé sur la
-  `LocaleLanguage` sélectionnée (par défaut)
-- `Lining` - chiffres alignés standard (par défaut pour les langues CJK)
-- `OldStyle` - chiffres à l'ancienne avec des hauteurs variées (par défaut pour les
-  langues latines)
-
-### LatexFontSize
-
-Un type union pour toutes les options de taille de police possibles.
-
-Pour l'instant, seulement 3 options sont supportées :
-
-- `10pt` - taille de police 10pt (par défaut)
-- `11pt` - taille de police 11pt
-- `12pt` - taille de police 12pt

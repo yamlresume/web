@@ -218,7 +218,7 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 
 | 属性        | 类型                                                                                         | 必需 | 验证规则            |
 | ----------- | -------------------------------------------------------------------------------------------- | -------- | ------------------------------- |
-| `layouts[]` | [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | 布局配置数组。 |
+| `layouts[]` | [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | 布局配置数组。 |
 
 #### 通用布局模式
 
@@ -241,6 +241,33 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 | ---------- | --------------------------- | -------- | -------------------------------------------------------------------- |
 | `aliases?` | `Record<SectionID, string>` | ⬜       | 键必须是有效的分节 ID，值必须是字符串（2-128 个字符） |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | 有效可排序分节 ID 的数组                           |
+
+#### HtmlLayoutSchema
+
+验证 HTML 布局配置。
+
+| 属性          | 类型                                                  | 必需 |
+| ------------- | ----------------------------------------------------- | -------- |
+| `engine`      | `'html'`                                              | ✅       |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       |
+| `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜       |
+| `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜       |
+
+##### HtmlTemplateSchema
+
+验证 HTML 模板配置。
+
+| 属性       | 类型                            | 必需 | 验证规则                                          |
+| ---------- | ------------------------------- | -------- | --------------------------------------------------------- |
+| `template` | [`HtmlTemplate`](#htmltemplate) | ⬜       | 必须来自预定义的[模板选项](#htmltemplate) |
+
+##### HtmlTypographySchema
+
+验证 HTML 排版设置。
+
+| 属性        | 类型                            | 必需 | 验证规则                                           |
+| ----------- | ------------------------------- | -------- | ---------------------------------------------------------- |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize) | ⬜       | 必须来自预定义的[字体大小选项](#htmlfontsize) |
 
 #### LatexLayoutSchema
 
@@ -430,7 +457,27 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 **验证规则：**
 
 - 必须是以下之一：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
+- 必须是以下之一：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
 - 另请参阅：[模板](/zh-cn/docs/layouts/latex/templates)
+
+### HtmlFontSize
+
+所有可能 HTML 字体大小选项的联合类型。
+
+**验证规则：**
+
+- 必须是以下之一：`10px`、`11px`、`12px`、`13px`、`14px`、`15px`、`16px`、`17px`、`18px`、`19px`、`20px`、`21px`、`22px`、`23px`、`24px`
+- HTML 引擎支持 10px 到 24px 的字体大小
+- `16px` 是默认字体大小
+
+### HtmlTemplate
+
+所有可能 HTML 模板选项的联合类型。
+
+**验证规则：**
+
+- 必须是以下之一：`calm`
+- 另请参阅：[模板](/zh-cn/docs/layouts/html/templates)
 
 ### LocaleLanguage
 

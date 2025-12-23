@@ -54,6 +54,7 @@ subgraph Layouts
 direction TB
 B1[LatexLayout]
 B2[MarkdownLayout]
+B3[HtmlLayout]
 end
 
 subgraph Content
@@ -73,6 +74,7 @@ A --> C
 A --> D
 B --> B1
 B --> B2
+B --> B3
 C --> C1
 C --> C2
 C --> C3
@@ -309,6 +311,25 @@ C --> C8
 | `aliases?` | `Record<SectionID, string>` | ⬜       | 用于分节名称的自定义别名，覆盖默认翻译。 |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | 最终输出中分节的自定义顺序。                     |
 
+#### HtmlLayout
+
+HTML 布局配置。
+
+| 属性          | 类型                                    | 必需 | 描述                                     |
+| ------------- | --------------------------------------- | -------- | ----------------------------------------------- |
+| `engine`      | `'html'`                                | ✅       | 生成简历的引擎。              |
+| `sections?`   | [`Sections`](#sections)                 | ⬜       | 定义分节自定义设置。         |
+| `template?`   | [`HtmlTemplate`](#htmltemplate)         | ⬜       | 定义选定的模板。                  |
+| `typography?` | [`HtmlTypography`](#htmltypography)     | ⬜       | 定义文档格式的排版设置。 |
+
+##### HtmlTypography
+
+定义 HTML 文档格式的排版设置。
+
+| 属性        | 类型                                | 必需 | 描述                      |
+| ----------- | ----------------------------------- | -------- | -------------------------------- |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize)     | ⬜       | 文档的基础字体大小。 |
+
 #### LatexLayout
 
 LaTeX 布局配置。
@@ -359,11 +380,13 @@ Markdown 布局配置。
 
 ## 枚举类型
 
-### Country
+### 内容 Enum
+
+#### Country
 
 世界上所有可能国家和地区的联合类型。
 
-### Degree
+#### Degree
 
 所有可能学位的联合类型。
 
@@ -375,7 +398,7 @@ Markdown 布局配置。
 - `Master`
 - `Middle School`
 
-### Fluency
+#### Fluency
 
 所有可能语言熟练程度的联合类型。
 
@@ -385,11 +408,11 @@ Markdown 布局配置。
 - `Minimum Professional Proficiency`
 - `Native or Bilingual Proficiency`
 
-### Language
+#### Language
 
 所有支持语言的联合类型。
 
-### Level
+#### Level
 
 所有可能技能熟练程度的联合类型。
 
@@ -400,11 +423,47 @@ Markdown 布局配置。
 - `Master`
 - `Novice`
 
-### Network
+#### Network
 
 所有可能社交网络选项的联合类型。
 
-### LatexTemplate
+### 布局 Enum
+
+#### HtmlFontSize
+
+所有可能 HTML 字体大小选项的联合类型。
+
+HTML 引擎支持 14px 到 20px 的字体大小：
+
+- `14px`、`15px`、`16px` (默认)、`17px`、`18px`、`19px`、`20px`
+
+#### HtmlTemplate
+
+所有可能 HTML 模板选项的联合类型。
+
+另请参阅：[模板](/zh-cn/docs/layouts/html/templates)
+
+- `calm`
+
+#### LatexFontSize
+
+所有可能字体大小选项的联合类型。
+
+目前只支持 3 个选项：
+
+- `10pt` - 10pt 字体大小（默认）
+- `11pt` - 11pt 字体大小
+- `12pt` - 12pt 字体大小
+
+#### LatexFontspecNumbers
+
+所有可能 latex fontspec 数字选项的联合类型。
+
+- `Auto` - 允许根据选定的 `LocaleLanguage` 自动确定样式（默认）
+- `Lining` - 标准衬线数字（CJK 语言的默认值）
+- `OldStyle` - 不同高度的旧式数字（拉丁语言的默认值）
+
+#### LatexTemplate
 
 所有可能模板选项的联合类型。
 
@@ -414,7 +473,9 @@ Markdown 布局配置。
 - `moderncv-casual`
 - `moderncv-classic`
 
-### LocaleLanguage
+### 语言 Enum
+
+#### LocaleLanguage
 
 所有可能区域语言的联合类型。
 
@@ -425,21 +486,3 @@ Markdown 布局配置。
 - `zh-hans`
 - `zh-hant-hk`
 - `zh-hant-tw`
-
-### LatexFontspecNumbers
-
-所有可能 latex fontspec 数字选项的联合类型。
-
-- `Auto` - 允许根据选定的 `LocaleLanguage` 自动确定样式（默认）
-- `Lining` - 标准衬线数字（CJK 语言的默认值）
-- `OldStyle` - 不同高度的旧式数字（拉丁语言的默认值）
-
-### LatexFontSize
-
-所有可能字体大小选项的联合类型。
-
-目前只支持 3 个选项：
-
-- `10pt` - 10pt 字体大小（默认）
-- `11pt` - 11pt 字体大小
-- `12pt` - 12pt 字体大小

@@ -62,6 +62,7 @@ subgraph Layouts
 direction TB
 B1[LatexLayout]
 B2[MarkdownLayout]
+B3[HtmlLayout]
 end
 
 subgraph Content
@@ -81,6 +82,7 @@ A --> C
 A --> D
 B --> B1
 B --> B2
+B --> B3
 C --> C1
 C --> C2
 C --> C3
@@ -317,6 +319,24 @@ Defines section alias settings for customizing section names.
 | `aliases?` | `Record<SectionID, string>` | ⬜       | Custom aliases for section names, overriding default translations. |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | Custom order for sections in the final output.                     |
 
+#### HtmlLayout
+
+HTML layout configuration.
+
+| Prop          | Type                                  | Required | Description                              |
+| ------------- | ------------------------------------- | -------- | ---------------------------------------- |
+| `engine`      | `'html'`                              | ✅       | The engine to generate the resume.       |
+| `sections?`   | [`Sections`](#sections)               | ⬜       | Defines section customization settings.  |
+| `template?`   | [`HtmlTemplate`](#htmltemplate)       | ⬜       | Defines the selected template.           |
+| `typography?` | [`HtmlTypography`](#htmltypography)   | ⬜       | Defines typography settings for document formatting. |
+
+##### HtmlTypography
+
+Defines HTML typography settings for document formatting.
+
+| Prop        | Type                              | Required | Description                      |
+| ----------- | --------------------------------- | -------- | -------------------------------- |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize)   | ⬜       | Base font size for the document. |
 
 #### LatexLayout
 
@@ -368,11 +388,13 @@ Markdown layout configuration.
 
 ## Enum Types
 
-### Country
+### Content Enums
+
+#### Country
 
 A union type for all possible countries and regions in the world.
 
-### Degree
+#### Degree
 
 A union type for all possible degrees.
 
@@ -384,7 +406,7 @@ A union type for all possible degrees.
 - `Master`
 - `Middle School`
 
-### Fluency
+#### Fluency
 
 A union type for all possible language fluency levels.
 
@@ -394,11 +416,11 @@ A union type for all possible language fluency levels.
 - `Minimum Professional Proficiency`
 - `Native or Bilingual Proficiency`
 
-### Language
+#### Language
 
 A union type for all supported languages.
 
-### Level
+#### Level
 
 A union type for all possible skill proficiency levels.
 
@@ -409,13 +431,51 @@ A union type for all possible skill proficiency levels.
 - `Master`
 - `Novice`
 
-### Network
+#### Network
 
 A union type for all possible social network options.
 
-### LatexTemplate
+### Layout Enums
 
-A union type for all possible template options.
+#### HtmlFontSize
+
+A union type for all possible HTML font size options.
+
+HTML engine supports font sizes from 14px to 20px:
+
+- `14px`, `15px`, `16px` (default), `17px`, `18px`, `19px`, `20px`
+
+#### HtmlTemplate
+
+A union type for all possible HTML template options.
+
+See also: [templates](/docs/layouts/html/templates)
+
+- `calm`
+
+#### LatexFontSize
+
+A union type for all possible LaTeX font size options.
+
+For now only 3 options are supported:
+
+- `10pt` - 10pt font size (default)
+- `11pt` - 11pt font size
+- `12pt` - 12pt font size
+
+#### LatexFontspecNumbers
+
+A union type for all possible latex fontspec numbers options.
+
+- `Auto` - allowing the style to be automatically determined based on the
+  selected `LocaleLanguage` (default)
+- `Lining` - standard lining figures (default for CJK languages)
+- `OldStyle` - old style figures with varying heights (default for Latin
+  languages)
+
+#### LatexTemplate
+
+A union type for all possible LaTeX template options.
 
 See also: [templates](/docs/layouts/latex/templates)
 
@@ -423,7 +483,9 @@ See also: [templates](/docs/layouts/latex/templates)
 - `moderncv-casual`
 - `moderncv-classic`
 
-### LocaleLanguage
+### Locale Enums
+
+#### LocaleLanguage
 
 A union type for all possible locale languages.
 
@@ -434,23 +496,3 @@ See also: [multi-languages](/docs/locale)
 - `zh-hans`
 - `zh-hant-hk`
 - `zh-hant-tw`
-
-### LatexFontspecNumbers
-
-A union type for all possible latex fontspec numbers options.
-
-- `Auto` - allowing the style to be automatically determined based on the
-  selected `LocaleLanguage` (default)
-- `Lining` - standard lining figures (default for CJK languages)
-- `OldStyle` - old style figures with varying heights (default for Latin
-  languages)
-
-### LatexFontSize
-
-A union type for all possible latex font size options.
-
-For now only 3 options are supported:
-
-- `10pt` - 10pt font size (default)
-- `11pt` - 11pt font size
-- `12pt` - 12pt font size

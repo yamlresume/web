@@ -218,7 +218,7 @@ YAMLResume は [zod](https://zod.dev) を採用して実行時に履歴書デー
 
 | 属性        | タイプ                                                                                         | 必須 | 検証ルール            |
 | ----------- | -------------------------------------------------------------------------------------------- | -------- | ------------------------------- |
-| `layouts[]` | [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | レイアウト設定の配列。 |
+| `layouts[]` | [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | レイアウト設定の配列。 |
 
 #### 一般的なレイアウトスキーマ
 
@@ -241,6 +241,33 @@ YAMLResume は [zod](https://zod.dev) を採用して実行時に履歴書デー
 | ---------- | --------------------------- | -------- | -------------------------------------------------------------------- |
 | `aliases?` | `Record<SectionID, string>` | ⬜       | キーは有効なセクションID、値は文字列（2-128文字）でなければなりません |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | 有効な順序付け可能なセクションIDの配列                           |
+
+#### HtmlLayoutSchema
+
+HTML レイアウト設定を検証します。
+
+| 属性          | タイプ                                                  | 必須 |
+| ------------- | ----------------------------------------------------- | -------- |
+| `engine`      | `'html'`                                              | ✅       |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       |
+| `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜       |
+| `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜       |
+
+##### HtmlTemplateSchema
+
+HTML テンプレート設定を検証します。
+
+| 属性       | タイプ                            | 必須 | 検証ルール                                          |
+| ---------- | ------------------------------- | -------- | --------------------------------------------------------- |
+| `template` | [`HtmlTemplate`](#htmltemplate) | ⬜       | 事前定義された[テンプレートオプション](#htmltemplate) からである必要があります |
+
+##### HtmlTypographySchema
+
+HTML タイポグラフィ設定を検証します。
+
+| 属性        | タイプ                            | 必須 | 検証ルール                                           |
+| ----------- | ------------------------------- | -------- | ---------------------------------------------------------- |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize) | ⬜       | 事前定義された[フォントサイズオプション](#htmlfontsize) からである必要があります |
 
 #### LatexLayoutSchema
 
@@ -430,7 +457,27 @@ Markdown レイアウト設定を検証します。
 **検証ルール：**
 
 - 以下のいずれかである必要があります：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
+- 以下のいずれかである必要があります：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
 - 参照：[テンプレート](/ja/docs/layouts/latex/templates)
+
+### HtmlFontSize
+
+すべての可能な HTML フォントサイズオプションのユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：`10px`、`11px`、`12px`、`13px`、`14px`、`15px`、`16px`、`17px`、`18px`、`19px`、`20px`、`21px`、`22px`、`23px`、`24px`
+- HTML エンジンは 10px から 24px のフォントサイズをサポートします
+- `16px` がデフォルトフォントサイズです
+
+### HtmlTemplate
+
+すべての可能な HTML テンプレートオプションのユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：`calm`
+- 参照：[テンプレート](/ja/docs/layouts/html/templates)
 
 ### LocaleLanguage
 

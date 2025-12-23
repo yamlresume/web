@@ -54,6 +54,7 @@ subgraph Layouts
 direction TB
 B1[LatexLayout]
 B2[MarkdownLayout]
+B3[HtmlLayout]
 end
 
 subgraph Content
@@ -73,6 +74,7 @@ A --> C
 A --> D
 B --> B1
 B --> B2
+B --> B3
 C --> C1
 C --> C2
 C --> C3
@@ -309,6 +311,25 @@ C --> C8
 | `aliases?` | `Record<SectionID, string>` | ⬜       | 用於分節名稱的自定義別名，覆蓋預設翻譯。 |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | 最終輸出中分節的自定義順序。                     |
 
+#### HtmlLayout
+
+HTML 佈局配置。
+
+| 屬性          | 類型                                    | 必需 | 描述                                     |
+| ------------- | --------------------------------------- | -------- | ----------------------------------------------- |
+| `engine`      | `'html'`                                | ✅       | 生成履歷的引擎。              |
+| `sections?`   | [`Sections`](#sections)                 | ⬜       | 定義分節自定義設置。         |
+| `template?`   | [`HtmlTemplate`](#htmltemplate)         | ⬜       | 定義選定的模板。                  |
+| `typography?` | [`HtmlTypography`](#htmltypography)     | ⬜       | 定義文件格式的排版設置。 |
+
+##### HtmlTypography
+
+定義 HTML 文件格式的排版設置。
+
+| 屬性        | 類型                                | 必需 | 描述                      |
+| ----------- | ----------------------------------- | -------- | -------------------------------- |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize)     | ⬜       | 文件的基礎字體大小。 |
+
 #### LatexLayout
 
 LaTeX 佈局配置。
@@ -359,11 +380,13 @@ Markdown 佈局配置。
 
 ## 枚舉類型
 
-### Country
+### 內容 Enum
+
+#### Country
 
 世界上所有可能國家和地區的聯合類型。
 
-### Degree
+#### Degree
 
 所有可能學位的聯合類型。
 
@@ -375,7 +398,7 @@ Markdown 佈局配置。
 - `Master`
 - `Middle School`
 
-### Fluency
+#### Fluency
 
 所有可能語言熟練程度的聯合類型。
 
@@ -385,11 +408,11 @@ Markdown 佈局配置。
 - `Minimum Professional Proficiency`
 - `Native or Bilingual Proficiency`
 
-### Language
+#### Language
 
 所有支援語言的聯合類型。
 
-### Level
+#### Level
 
 所有可能技能熟練程度的聯合類型。
 
@@ -400,11 +423,47 @@ Markdown 佈局配置。
 - `Master`
 - `Novice`
 
-### Network
+#### Network
 
 所有可能社交網路選項的聯合類型。
 
-### LatexTemplate
+### 佈局 Enum
+
+#### HtmlFontSize
+
+所有可能 HTML 字體大小選項的聯合類型。
+
+HTML 引擎支援 14px 到 20px 的字體大小：
+
+- `14px`、`15px`、`16px` (預設)、`17px`、`18px`、`19px`、`20px`
+
+#### HtmlTemplate
+
+所有可能 HTML 模板選項的聯合類型。
+
+另請參閱：[模板](/zh-tw/docs/layouts/html/templates)
+
+- `calm`
+
+#### LatexFontSize
+
+所有可能字體大小選項的聯合類型。
+
+目前只支援 3 個選項：
+
+- `10pt` - 10pt 字體大小（預設）
+- `11pt` - 11pt 字體大小
+- `12pt` - 12pt 字體大小
+
+#### LatexFontspecNumbers
+
+所有可能 latex fontspec 數字選項的聯合類型。
+
+- `Auto` - 允許根據選定的 `LocaleLanguage` 自動確定樣式（預設）
+- `Lining` - 標準襯線數字（CJK 語言的預設值）
+- `OldStyle` - 不同高度的舊式數字（拉丁語言的預設值）
+
+#### LatexTemplate
 
 所有可能模板選項的聯合類型。
 
@@ -414,7 +473,9 @@ Markdown 佈局配置。
 - `moderncv-casual`
 - `moderncv-classic`
 
-### LocaleLanguage
+### 語言 Enum
+
+#### LocaleLanguage
 
 所有可能區域語言的聯合類型。
 
@@ -425,21 +486,3 @@ Markdown 佈局配置。
 - `zh-hans`
 - `zh-hant-hk`
 - `zh-hant-tw`
-
-### LatexFontspecNumbers
-
-所有可能 latex fontspec 數字選項的聯合類型。
-
-- `Auto` - 允許根據選定的 `LocaleLanguage` 自動確定樣式（預設）
-- `Lining` - 標準襯線數字（CJK 語言的預設值）
-- `OldStyle` - 不同高度的舊式數字（拉丁語言的預設值）
-
-### LatexFontSize
-
-所有可能字體大小選項的聯合類型。
-
-目前只支援 3 個選項：
-
-- `10pt` - 10pt 字體大小（預設）
-- `11pt` - 11pt 字體大小
-- `12pt` - 12pt 字體大小

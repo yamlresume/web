@@ -222,7 +222,7 @@ Define la configuración general de validación del layout.
 
 | Prop        | Tipo                                                                                         | Requerido | Reglas de validación            |
 | ----------- | -------------------------------------------------------------------------------------------- | --------- | ------------------------------- |
-| `layouts[]` | [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜️       | Array de configuraciones layout |
+| `layouts[]` | [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜️       | Array de configuraciones layout |
 
 #### Esquemas de Layout Comunes
 
@@ -245,6 +245,33 @@ Valida la configuración de personalización de secciones.
 | ---------- | --------------------------- | --------- | -------------------------------------------------------------------- |
 | `aliases?` | `Record<SectionID, string>` | ⬜️       | Claves deben ser IDs de sección válidos, valores strings (2-128 ch) |
 | `order?`   | `OrderableSectionID[]`      | ⬜️       | Array de IDs de sección ordenables válidos                           |
+
+#### HtmlLayoutSchema
+
+Valida la configuración del layout HTML.
+
+| Prop          | Tipo                                                  | Requerido |
+| ------------- | ----------------------------------------------------- | --------- |
+| `engine`      | `'html'`                                              | ✅        |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜️       |
+| `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜️       |
+| `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜️       |
+
+##### HtmlTemplateSchema
+
+Valida la configuración de plantilla HTML.
+
+| Prop       | Tipo                            | Requerido | Reglas de validación                                      |
+| ---------- | ------------------------------- | --------- | --------------------------------------------------------- |
+| `template` | [`HtmlTemplate`](#htmltemplate) | ⬜️       | Debe ser una de las [opciones de plantilla](#htmltemplate) |
+
+##### HtmlTypographySchema
+
+Valida la configuración de tipografía HTML.
+
+| Prop        | Tipo                            | Requerido | Reglas de validación                                       |
+| ----------- | ------------------------------- | --------- | ---------------------------------------------------------- |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize) | ⬜️       | Debe ser una de las [opciones de tamaño de fuente](#htmlfontsize) |
 
 #### LatexLayoutSchema
 
@@ -349,8 +376,27 @@ Tipo unión que incluye todas las posibles opciones de redes sociales.
 
 **Reglas de validación:**
 
-- Debe ser una de las opciones de red predefinidas
-- Ejemplos: `GitHub`, `LinkedIn`, `Twitter`, `Facebook`, `Instagram`
+- Must be one of the predefined network options
+- Examples: `GitHub`, `LinkedIn`, `Twitter`, `Facebook`, `Instagram`
+
+### HtmlFontSize
+
+Tipo unión que incluye todas las posibles opciones de tamaño de fuente HTML.
+
+**Reglas de validación:**
+
+- Debe ser uno de: `10px`, `11px`, `12px`, `13px`, `14px`, `15px`, `16px`, `17px`, `18px`, `19px`, `20px`, `21px`, `22px`, `23px`, `24px`
+- El motor HTML soporta tamaños de fuente de 10px a 24px
+- `16px` es el tamaño de fuente por defecto
+
+### HtmlTemplate
+
+Tipo unión que incluye todas las posibles opciones de plantilla HTML.
+
+**Reglas de validación:**
+
+- Debe ser uno de: `calm`
+- Ver también: [templates](/es/docs/layouts/html/templates)
 
 ### LatexTemplate
 

@@ -52,6 +52,7 @@ subgraph Layouts
 direction TB
 B1[LatexLayout]
 B2[MarkdownLayout]
+B3[HtmlLayout]
 end
 
 subgraph Content
@@ -71,6 +72,7 @@ A --> C
 A --> D
 B --> B1
 B --> B2
+B --> B3
 C --> C1
 C --> C2
 C --> C3
@@ -307,6 +309,25 @@ C --> C8
 | `aliases?` | `Record<SectionID, string>` | ⬜       | デフォルトの翻訳を上書きする、セクション名のカスタムエイリアス。 |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | 最終出力におけるセクションのカスタム順序。                     |
 
+#### HtmlLayout
+
+HTML レイアウト設定。
+
+| 属性          | タイプ                                    | 必須 | 説明                                     |
+| ------------- | --------------------------------------- | -------- | ----------------------------------------------- |
+| `engine`      | `'html'`                                | ✅       | 履歴書を生成するエンジン。              |
+| `sections?`   | [`Sections`](#sections)                 | ⬜       | セクションのカスタマイズ設定を定義します。         |
+| `template?`   | [`HtmlTemplate`](#htmltemplate)         | ⬜       | 選択されたテンプレートを定義します。                  |
+| `typography?` | [`HtmlTypography`](#htmltypography)     | ⬜       | 文書フォーマットのタイポグラフィ設定を定義します。 |
+
+##### HtmlTypography
+
+HTML 文書フォーマットのタイポグラフィ設定を定義します。
+
+| 属性        | タイプ                                | 必須 | 説明                      |
+| ----------- | ----------------------------------- | -------- | -------------------------------- |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize)     | ⬜       | 文書の基本フォントサイズ。 |
+
 #### LatexLayout
 
 LaTeX レイアウト設定。
@@ -357,11 +378,13 @@ Markdown レイアウト設定。
 
 ## 列挙タイプ
 
-### Country
+### コンテンツ Enum
+
+#### Country
 
 世界のすべての可能な国と地域のユニオンタイプ。
 
-### Degree
+#### Degree
 
 すべての可能な学位のユニオンタイプ。
 
@@ -373,7 +396,7 @@ Markdown レイアウト設定。
 - `Master`
 - `Middle School`
 
-### Fluency
+#### Fluency
 
 すべての可能な言語流暢度のユニオンタイプ。
 
@@ -383,11 +406,11 @@ Markdown レイアウト設定。
 - `Minimum Professional Proficiency`
 - `Native or Bilingual Proficiency`
 
-### Language
+#### Language
 
 すべてのサポートされている言語のユニオンタイプ。
 
-### Level
+#### Level
 
 すべての可能なスキル習熟度のユニオンタイプ。
 
@@ -398,11 +421,47 @@ Markdown レイアウト設定。
 - `Master`
 - `Novice`
 
-### Network
+#### Network
 
 すべての可能なソーシャルネットワークオプションのユニオンタイプ。
 
-### LatexTemplate
+### レイアウト Enum
+
+#### HtmlFontSize
+
+すべての可能な HTML フォントサイズオプションのユニオンタイプ。
+
+HTML エンジンは 14px から 20px のサイズをサポートします：
+
+- `14px`、`15px`、`16px` (デフォルト)、`17px`、`18px`、`19px`、`20px`
+
+#### HtmlTemplate
+
+すべての可能な HTML テンプレートオプションのユニオンタイプ。
+
+参照：[テンプレート](/ja/docs/layouts/html/templates)
+
+- `calm`
+
+#### LatexFontSize
+
+すべての可能な Latex フォントサイズオプションのユニオンタイプ。
+
+現在 3 つのオプションのみサポート：
+
+- `10pt` - 10pt フォントサイズ（デフォルト）
+- `11pt` - 11pt フォントサイズ
+- `12pt` - 12pt フォントサイズ
+
+#### LatexFontspecNumbers
+
+すべての可能な latex fontspec 数字オプションのユニオンタイプ。
+
+- `Auto` - 選択された `LocaleLanguage` に基づいてスタイルを自動決定することを許可（デフォルト）
+- `Lining` - 標準のライニング数字（CJK 言語のデフォルト）
+- `OldStyle` - 異なる高さのオールドスタイル数字（ラテン言語のデフォルト）
+
+#### LatexTemplate
 
 すべての可能なテンプレートオプションのユニオンタイプ。
 
@@ -412,7 +471,9 @@ Markdown レイアウト設定。
 - `moderncv-casual`
 - `moderncv-classic`
 
-### LocaleLanguage
+### ロケール Enum
+
+#### LocaleLanguage
 
 すべての可能なロケール言語のユニオンタイプ。
 
@@ -423,21 +484,3 @@ Markdown レイアウト設定。
 - `zh-hans`
 - `zh-hant-hk`
 - `zh-hant-tw`
-
-### LatexFontspecNumbers
-
-すべての可能な latex fontspec 数字オプションのユニオンタイプ。
-
-- `Auto` - 選択された `LocaleLanguage` に基づいてスタイルを自動決定することを許可（デフォルト）
-- `Lining` - 標準のライニング数字（CJK 言語のデフォルト）
-- `OldStyle` - 異なる高さのオールドスタイル数字（ラテン言語のデフォルト）
-
-### LatexFontSize
-
-すべての可能なフォントサイズオプションのユニオンタイプ。
-
-現在 3 つのオプションのみサポート：
-
-- `10pt` - 10pt フォントサイズ（デフォルト）
-- `11pt` - 11pt フォントサイズ
-- `12pt` - 12pt フォントサイズ

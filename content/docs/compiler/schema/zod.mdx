@@ -220,7 +220,7 @@ Defines the overall layout validation configuration.
 
 | Prop        | Type                                                                                         | Required | Validation Rules                |
 | ----------- | -------------------------------------------------------------------------------------------- | -------- | ------------------------------- |
-| `layouts[]` | [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | Array of layout configurations. |
+| `layouts[]` | [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | Array of layout configurations. |
 
 #### Common Layout Schemas
 
@@ -243,6 +243,33 @@ Validates section customization settings.
 | ---------- | --------------------------- | -------- | -------------------------------------------------------------------- |
 | `aliases?` | `Record<SectionID, string>` | ⬜       | Keys must be valid section IDs, values must be strings (2-128 chars) |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | Array of valid orderable section IDs                                 |
+
+#### HtmlLayoutSchema
+
+Validates HTML layout configuration.
+
+| Prop          | Type                                                  | Required |
+| ------------- | ----------------------------------------------------- | -------- |
+| `engine`      | `'html'`                                              | ✅       |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       |
+| `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜       |
+| `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜       |
+
+##### HtmlTemplateSchema
+
+Validates HTML template configuration.
+
+| Prop       | Type                            | Required | Validation Rules                                          |
+| ---------- | ------------------------------- | -------- | --------------------------------------------------------- |
+| `template` | [`HtmlTemplate`](#htmltemplate) | ⬜       | Must be from predefined [template options](#htmltemplate) |
+
+##### HtmlTypographySchema
+
+Validates HTML typography settings.
+
+| Prop        | Type                            | Required | Validation Rules                                           |
+| ----------- | ------------------------------- | -------- | ---------------------------------------------------------- |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize) | ⬜       | Must be from predefined [font size options](#htmlfontsize) |
 
 #### LatexLayoutSchema
 
@@ -425,23 +452,42 @@ A union type for all possible social network options.
 - Must be one of the predefined network options
 - Examples: `GitHub`, `LinkedIn`, `Twitter`, `Facebook`, `Instagram`
 
+### HtmlFontSize
+
+A union type for all possible HTML font size options.
+
+**Validation Rules:**
+
+- Must be one of: `10px`, `11px`, `12px`, `13px`, `14px`, `15px`, `16px`, `17px`, `18px`, `19px`, `20px`, `21px`, `22px`, `23px`, `24px`
+- HTML engine supports font sizes from 10px to 24px
+- `16px` is the default font size
+
+### HtmlTemplate
+
+A union type for all possible HTML template options.
+
+**Validation Rules:**
+
+- Must be one of: `calm`
+- See also: [templates](/docs/layouts/html/templates)
+
 ### LatexTemplate
 
-A union type for all possible template options.
+A union type for all possible LaTeX template options.
 
 **Validation Rules:**
 
 - Must be one of: `moderncv-banking`, `moderncv-casual`, `moderncv-classic`
 - See also: [templates](/docs/layouts/latex/templates)
 
-### LocaleLanguage
+### LatexFontSize
 
-A union type for all possible locale languages.
+A union type for all possible LaTeX font size options.
 
 **Validation Rules:**
 
-- Must be one of: `en`, `es`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`
-- See also: [multi-languages](/docs/locale)
+- Must be one of: `10pt`, `11pt`, `12pt`
+- `10pt` is the default font size
 
 ### LatexFontspecNumbers
 
@@ -456,11 +502,11 @@ A union type for all possible latex fontspec numbers options.
   - `OldStyle` - old style figures with varying heights (default for Latin
     languages)
 
-### LatexFontSize
+### LocaleLanguage
 
-A union type for all possible latex font size options.
+A union type for all possible locale languages.
 
 **Validation Rules:**
 
-- Must be one of: `10pt`, `11pt`, `12pt`
-- `10pt` is the default font size
+- Must be one of: `en`, `es`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`
+- See also: [multi-languages](/docs/locale)
