@@ -21,35 +21,66 @@ const translations = {
       title: 'Quick Start in One Second',
     },
     features: {
+      sectionTitle: 'Powerful, Professional & Perfect',
       plainText: {
         title: 'Plain Text in YAML',
         description:
-          'Create resumes in YAML, which is more human readable and writable than JSON, enabling version control and eliminating vendor lock-in.',
+          'Maintain your resume as code in YAML—clean, readable, and perfectly suited for version control.',
       },
       richText: {
-        title: 'Rich Text in Summaries',
+        title: 'Rich Text Formatting',
         description:
-          'Express yourself freely with rich text formatting in summaries fields for all sections, allowing for more detailed and compelling personal statements.',
+          'Use Markdown-style rich text in your summaries to make your key points pop with clarity.',
       },
       flexibleSection: {
-        title: 'Flexible Section Structure',
+        title: 'Infinite Flexibility',
         description:
-          'Draft and polish your resume with various section types to highlight your unique skills, experiences, and achievements in the most effective way.',
+          'Structure your resume exactly how you want with modular sections designed for maximum impact.',
       },
       latexTypesetting: {
-        title: 'LaTeX Typesetting Engine',
+        title: 'Pro-Grade Typesetting',
         description:
-          'Leverage the power of LaTeX for professional-grade typesetting quality that ensures your resume stands out with perfect spacing and typography.',
+          'Powered by LaTeX for pixel-perfect typography, consistent spacing, and a professional aesthetic.',
       },
       customizable: {
-        title: 'Customizable Layout Options',
+        title: 'Deep Customization',
         description:
-          'Fine-tune your resume with customizable page margins, font selections, and sizing options to create the perfect visual presentation.',
+          'Total control over margins, fonts, and sizes to craft a look that is uniquely yours.',
       },
       multilingual: {
-        title: 'Multilingual Support',
+        title: 'Go Global',
         description:
-          'Create and translate your resume into multiple languages with built-in internationalization and localization capabilities.',
+          'Built-in support for multiple languages, making international applications effortless.',
+      },
+      cli: {
+        title: 'Developer CLI',
+        description:
+          'A powerful command-line interface to automate your resume workflow and integration.',
+      },
+      privacy: {
+        title: 'Privacy First',
+        description:
+          'Process everything locally. Your personal data stays on your machine, always.',
+      },
+      themes: {
+        title: 'Universal Themes',
+        description:
+          'One source file, endless possibilities with professional themes for PDF, HTML, and more.',
+      },
+      schema: {
+        title: 'Schema Intelligence',
+        description:
+          'Get instant feedback and prevent errors with built-in schema validation as you type.',
+      },
+      outputs: {
+        title: 'Multi-Output Support',
+        description:
+          'Generate your resume in multiple professional formats including PDF, responsive HTML, and clean Markdown.',
+      },
+      templates: {
+        title: 'Professional Templates',
+        description:
+          'Choose from a variety of battle-tested LaTeX templates designed for clarity and professional impact.',
       },
     },
     faq: {
@@ -106,35 +137,66 @@ const translations = {
       title: 'Inicio Rápido en Un Segundo',
     },
     features: {
+      sectionTitle: 'Potente, Profesional y Perfecto',
       plainText: {
         title: 'Texto Plano en YAML',
         description:
-          'Crea currículums en YAML, que es más legible y escribible para humanos que JSON, permitiendo control de versiones y eliminando el bloqueo de proveedores.',
+          'Mantenga su currículum como código en YAML: limpio, legible y perfectamente adaptado para el control de versiones.',
       },
       richText: {
-        title: 'Texto Enriquecido en Resúmenes',
+        title: 'Formato de Texto Enriquecido',
         description:
-          'Exprésate libremente con formato de texto enriquecido en los campos de resumen de todas las secciones, permitiendo declaraciones personales más detalladas y convincentes.',
+          'Utilice texto enriquecido estilo Markdown en sus resúmenes para que sus puntos clave resalten con claridad.',
       },
       flexibleSection: {
-        title: 'Estructura de Sección Flexible',
+        title: 'Flexibilidad Infinita',
         description:
-          'Redacta y perfecciona tu currículum con varios tipos de secciones para destacar tus habilidades, experiencias y logros únicos de la manera más efectiva.',
+          'Estructure su currículum exactamente como desee con secciones modulares diseñadas para el máximo impacto.',
       },
       latexTypesetting: {
-        title: 'Motor de Composición LaTeX',
+        title: 'Composición de Nivel Profesional',
         description:
-          'Aprovecha el poder de LaTeX para obtener una calidad de composición de nivel profesional que asegura que tu currículum se destaque con espaciado y tipografía perfectos.',
+          'Impulsado por LaTeX para una tipografía perfecta a nivel de píxel, espaciado constante y una estética profesional.',
       },
       customizable: {
-        title: 'Opciones de Diseño Personalizables',
+        title: 'Personalización Profunda',
         description:
-          'Ajusta tu currículum con márgenes de página personalizables, selecciones de fuentes y opciones de tamaño para crear la presentación visual perfecta.',
+          'Control total sobre márgenes, fuentes y tamaños para crear un estilo que sea exclusivamente suyo.',
       },
       multilingual: {
-        title: 'Soporte Multilingüe',
+        title: 'Alcance Global',
         description:
-          'Crea y traduce tu currículum en múltiples idiomas con capacidades integradas de internacionalización y localización.',
+          'Soporte integrado para múltiples idiomas, facilitando las solicitudes internacionales.',
+      },
+      cli: {
+        title: 'CLI para Desarrolladores',
+        description:
+          'Una potente interfaz de línea de comandos para automatizar el flujo de trabajo e integración de su currículum.',
+      },
+      privacy: {
+        title: 'Privacidad Ante Todo',
+        description:
+          'Procese todo localmente. Sus datos personales permanecen en su máquina, siempre.',
+      },
+      themes: {
+        title: 'Temas Universales',
+        description:
+          'Un archivo fuente, infinitas posibilidades con temas profesionales para PDF, HTML y más.',
+      },
+      schema: {
+        title: 'Inteligencia de Esquema',
+        description:
+          'Obtenga comentarios instantáneos y evite errores con la validación de esquema integrada mientras escribe.',
+      },
+      outputs: {
+        title: 'Soporte Multi-Formato',
+        description:
+          'Genere su currículum en múltiples formatos profesionales, incluyendo PDF, HTML receptivo y Markdown limpio.',
+      },
+      templates: {
+        title: 'Plantillas Profesionales',
+        description:
+          'Elija entre una variedad de plantillas LaTeX probadas en combate, diseñadas para la claridad y el impacto profesional.',
       },
     },
     faq: {
@@ -191,35 +253,66 @@ const translations = {
       title: 'Démarrage Rapide en Une Seconde',
     },
     features: {
+      sectionTitle: 'Puissant, Professionnel et Parfait',
       plainText: {
         title: 'Texte Brut en YAML',
         description:
-          "Créez des CV en YAML, qui est plus lisible et rédigeable par l'homme que JSON, permettant le contrôle de version et éliminant le verrouillage fournisseur.",
+          'Gérez votre CV comme du code en YAML — propre, lisible et parfaitement adapté au contrôle de version.',
       },
       richText: {
-        title: 'Texte Enrichi dans les Résumés',
+        title: 'Formatage de Texte Enrichi',
         description:
-          'Exprimez-vous librement avec le formatage de texte enrichi dans les champs de résumé de toutes les sections, permettant des déclarations personnelles plus détaillées et convaincantes.',
+          'Utilisez du texte enrichi de style Markdown dans vos résumés pour faire ressortir vos points clés avec clarté.',
       },
       flexibleSection: {
-        title: 'Structure de Section Flexible',
+        title: 'Flexibilité Infinie',
         description:
-          'Rédigez et peaufinez votre CV avec divers types de sections pour mettre en valeur vos compétences, expériences et réalisations uniques de la manière la plus efficace.',
+          'Structurez votre CV exactement comme vous le souhaitez avec des sections modulaires conçues pour un impact maximal.',
       },
       latexTypesetting: {
-        title: 'Moteur de Composition LaTeX',
+        title: 'Composition de Qualité Professionnelle',
         description:
-          'Tirez parti de la puissance de LaTeX pour une qualité de composition de niveau professionnel qui garantit que votre CV se démarque avec un espacement et une typographie parfaits.',
+          'Propulsé par LaTeX pour une typographie parfaite au pixel près, un espacement constant et une esthétique professionnelle.',
       },
       customizable: {
-        title: 'Options de Mise en Page Personnalisables',
+        title: 'Personnalisation Poussée',
         description:
-          'Affinez votre CV avec des marges de page personnalisables, des sélections de polices et des options de taille pour créer la présentation visuelle parfaite.',
+          'Contrôle total sur les marges, les polices et les tailles pour créer un look qui vous est propre.',
       },
       multilingual: {
-        title: 'Support Multilingue',
+        title: "Visez l'International",
         description:
-          "Créez et traduisez votre CV en plusieurs langues avec des capacités d'internationalisation et de localisation intégrées.",
+          'Prise en charge intégrée de plusieurs langues, facilitant les candidatures internationales.',
+      },
+      cli: {
+        title: 'CLI pour Développeurs',
+        description:
+          "Une interface de ligne de commande puissante pour automatiser le flux de travail et l'intégration de votre CV.",
+      },
+      privacy: {
+        title: "La Privacité d'Abord",
+        description:
+          'Tout est traité localement. Vos données personnelles restent sur votre machine, toujours.',
+      },
+      themes: {
+        title: 'Thèmes Universels',
+        description:
+          'Un seul fichier source, des possibilités infinies avec des thèmes professionnels pour PDF, HTML et plus.',
+      },
+      schema: {
+        title: 'Intelligence de Schéma',
+        description:
+          'Obtenez un retour instantané et évitez les erreurs grâce à la validation de schéma intégrée pendant que vous écrivez.',
+      },
+      outputs: {
+        title: 'Support Multi-Format',
+        description:
+          'Générez votre CV dans plusieurs formats professionnels, y compris PDF, HTML réactif et Markdown propre.',
+      },
+      templates: {
+        title: 'Modèles Professionnels',
+        description:
+          'Choisissez parmi une variété de modèles LaTeX éprouvés, conçus pour la clarté et un impact professionnel.',
       },
     },
     faq: {
@@ -276,34 +369,57 @@ const translations = {
       title: '一秒钟快速开始',
     },
     features: {
+      sectionTitle: '强大、专业、完美',
       plainText: {
         title: 'YAML 纯文本',
         description:
-          '使用 YAML 创建简历，比 JSON 更人性化可读和可写，支持版本控制并消除供应商锁定。',
+          '像写代码一样用 YAML 管理简历——简洁、易读且完美适配版本控制。',
       },
       richText: {
-        title: '摘要中的富文本',
-        description:
-          '在所有章节的摘要字段中自由表达富文本格式，让个人陈述更详细和引人注目。',
+        title: '富文本格式化',
+        description: '在摘要中使用类 Markdown 的富文本，让核心优势清晰呈现。',
       },
       flexibleSection: {
-        title: '灵活的章节结构',
-        description:
-          '使用各种类型的章节来起草和完善您的简历，以最有效的方式突出您独特的技能、经验和成就。',
+        title: '无限灵活结构',
+        description: '自由组合模块化章节，以前所未有的灵活性打造个性化简历。',
       },
       latexTypesetting: {
-        title: 'LaTeX 排版引擎',
-        description:
-          '利用 LaTeX 的专业级排版质量，确保您的简历以完美的间距和排版脱颖而出。',
+        title: '专业级排版引擎',
+        description: '基于 LaTeX 实现像素级完美的排版与间距，尽显专业水准。',
       },
       customizable: {
-        title: '可定制的布局选项',
-        description:
-          '通过可定制的页面边距、字体选择和大小选项来微调您的简历，创造完美的视觉呈现。',
+        title: '深度个性定制',
+        description: '完全掌握边距、字体与字号，打造独一无二的视觉呈现。',
       },
       multilingual: {
-        title: '多语言支持',
-        description: '使用内置的国际化和本地化功能创建和翻译多种语言的简历。',
+        title: '全球化多语言',
+        description: '内置多语言支持，让国际化职位申请变得游刃有余。',
+      },
+      cli: {
+        title: '开发者 CLI 工具',
+        description: '强大的命令行工具，轻松实现简历工作流的自动化与集成。',
+      },
+      privacy: {
+        title: '隐私第一原则',
+        description: '所有处理均在本地完成。您的个人数据永远留在您的机器上。',
+      },
+      themes: {
+        title: '通用主题矩阵',
+        description: '一份源码，无限可能：支持 PDF、HTML 等多种专业主题导出。',
+      },
+      schema: {
+        title: '智能 Schema 校验',
+        description: '实时智能校验，在编写过程中即刻发现并纠正格式错误。',
+      },
+      outputs: {
+        title: '多格式导出支持',
+        description:
+          '支持导出为多种专业格式，包括 PDF、响应式 HTML 以及简洁的 Markdown。',
+      },
+      templates: {
+        title: '专业简历模板',
+        description:
+          '提供多款久经考验的 LaTeX 模板，兼顾信息呈现的清晰度与专业视觉效果。',
       },
     },
     faq: {
@@ -360,34 +476,57 @@ const translations = {
       title: '一秒鐘快速開始',
     },
     features: {
+      sectionTitle: '強大、專業、完美',
       plainText: {
         title: 'YAML 純文字',
         description:
-          '使用 YAML 建立履歷，比 JSON 更人性化可讀和可寫，支援版本控制並消除廠商鎖定。',
+          '像寫程式一樣用 YAML 管理履歷——簡潔、易讀且完美適配版本控制。',
       },
       richText: {
-        title: '摘要中的富文字',
-        description:
-          '在所有章節的摘要欄位中自由表達富文字格式，讓個人陳述更詳細和引人注目。',
+        title: '富文字格式化',
+        description: '在摘要中使用類 Markdown 的富文字，讓核心優勢清晰呈現。',
       },
       flexibleSection: {
-        title: '靈活的章節結構',
-        description:
-          '使用各種類型的章節來起草和完善您的履歷，以最有效的方式突出您獨特的技能、經驗和成就。',
+        title: '無限靈活結構',
+        description: '自由組合模組化章節，以前所未有的靈活性打造個性化履歷。',
       },
       latexTypesetting: {
-        title: 'LaTeX 排版引擎',
-        description:
-          '利用 LaTeX 的專業級排版品質，確保您的履歷以完美的間距和排版脫穎而出。',
+        title: '專業級排版引擎',
+        description: '基於 LaTeX 實現像素級完美的排版與間距，盡顯專業水準。',
       },
       customizable: {
-        title: '可自訂的版面配置選項',
-        description:
-          '透過可自訂的頁面邊距、字型選擇和大小選項來微調您的履歷，創造完美的視覺呈現。',
+        title: '深度個性定制',
+        description: '完全掌握邊距、字體與字型大小，打造獨一無二的視覺呈現。',
       },
       multilingual: {
-        title: '多語言支援',
-        description: '使用內建的國際化和本地化功能建立和翻譯多種語言的履歷。',
+        title: '全球化多語言',
+        description: '內建多語言支援，讓國際化職位申請變得遊刃有餘。',
+      },
+      cli: {
+        title: '開發者 CLI 工具',
+        description: '強大的命令列工具，輕鬆實現履歷工作流的自動化與整合。',
+      },
+      privacy: {
+        title: '隱私第一原則',
+        description: '所有處理均在本地完成。您的個人數據永遠留在您的機器上。',
+      },
+      themes: {
+        title: '通用主題矩陣',
+        description: '一份源碼，無限可能：支持 PDF、HTML 等多種專業主題匯出。',
+      },
+      schema: {
+        title: '智慧 Schema 校驗',
+        description: '即時智慧校驗，在編寫過程中即刻發現並糾正格式錯誤。',
+      },
+      outputs: {
+        title: '多格式匯出支援',
+        description:
+          '支援匯出為多種專業格式，包括 PDF、響應式 HTML 以及簡潔的 Markdown。',
+      },
+      templates: {
+        title: '專業履歷模板',
+        description:
+          '提供多款久經考驗的 LaTeX 模板，兼顧資訊呈現的清晰度與專業視覺效果。',
       },
     },
     faq: {
@@ -444,35 +583,65 @@ const translations = {
       title: '1秒でクイックスタート',
     },
     features: {
+      sectionTitle: 'パワフル、プロフェッショナル、パーフェクト',
       plainText: {
-        title: 'YAMLのプレーンテキスト',
+        title: 'YAMLプレーンテキスト',
         description:
-          'JSONよりも人間が読みやすく書きやすいYAMLで履歴書を作成し、バージョン管理を可能にし、ベンダーロックインを排除します。',
+          '履歴書をYAMLでコードとして管理。クリーンで読みやすく、バージョン管理に最適です。',
       },
       richText: {
-        title: '要約のリッチテキスト',
+        title: 'リッチテキスト対応',
         description:
-          'すべてのセクションの要約フィールドでリッチテキストフォーマットを自由に使用し、より詳細で説得力のある個人ステートメントを作成できます。',
+          '要約部分でMarkdown形式のリッチテキストを使用し、強みを効果的にアピール。',
       },
       flexibleSection: {
-        title: '柔軟なセクション構造',
+        title: '無限の柔軟性',
         description:
-          '様々なセクションタイプで履歴書を下書き・磨き上げ、あなたのユニークなスキル、経験、成果を最も効果的な方法で強調できます。',
+          'モジュール化されたセクションを自由に組み合わせ、独自の構造を構築できます。',
       },
       latexTypesetting: {
-        title: 'LaTeXタイプセッティングエンジン',
+        title: 'プロ仕様の組版エンジン',
         description:
-          'LaTeXの力を活用してプロフェッショナルグレードのタイプセッティング品質を実現し、完璧なスペーシングとタイポグラフィで履歴書を際立たせます。',
+          'LaTeXによるピクセルパーフェクトなタイポグラフィと間距で、圧倒的な品質を実現。',
       },
       customizable: {
-        title: 'カスタマイズ可能なレイアウトオプション',
+        title: '高度なカスタマイズ',
         description:
-          'カスタマイズ可能なページマージン、フォント選択、サイズオプションで履歴書を微調整し、完璧な視覚的プレゼンテーションを作成できます。',
+          '余白、フォント、サイズを自在に調整し、自分だけのデザインを追求。',
       },
       multilingual: {
-        title: '多言語サポート',
+        title: '多言語グローバル対応',
+        description: '標準で多言語に対応。海外への応募もスムーズに行えます。',
+      },
+      cli: {
+        title: '開発者向けCLI',
         description:
-          '複数の言語で履歴書を作成し、グローバルな機会に備えて多様な言語で自分のスキルを表現できます。',
+          '強力なコマンドラインツールにより、作成ワークフローを自動化・統合。',
+      },
+      privacy: {
+        title: 'プライバシー第一',
+        description:
+          'すべての処理はローカルで完結。あなたのデータは常に手元に保たれます。',
+      },
+      themes: {
+        title: 'ユニバーサルテーマ',
+        description:
+          '1つのソースからPDFやHTMLなど、多彩なプロフェッショナルテーマを出力可能。',
+      },
+      schema: {
+        title: 'スキーマインテリジェンス',
+        description:
+          'リアルタイムのバリデーションにより、記述エラーを即座に発見・修正。',
+      },
+      outputs: {
+        title: 'マルチフォーマット対応',
+        description:
+          'PDF、レスポンシブHTML、クリーンなMarkdownなど、複数のプロフェッショナルな形式で履歴書を出力可能。',
+      },
+      templates: {
+        title: 'プロフェッショナル・テンプレート',
+        description:
+          '情報の明快さとプロフェッショナルな印象を両立した、実績のある多彩なLaTeXテンプレートから選択可能。',
       },
     },
     faq: {
