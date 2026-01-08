@@ -83,6 +83,30 @@ const translations = {
           'Choose from a variety of battle-tested LaTeX templates designed for clarity and professional impact.',
       },
     },
+    onboarding: {
+      sectionTitle: 'Get Started in Seconds',
+      recommended: 'Recommended',
+      npx: {
+        title: 'NPX (Recommended)',
+        description: 'Create a new project instantly with zero global installs',
+      },
+      npm: {
+        title: 'NPM Global',
+        description: 'Install as a global CLI tool for system-wide access',
+      },
+      brew: {
+        title: 'Homebrew',
+        description: 'Install on macOS using the Homebrew package manager',
+      },
+      docker: {
+        title: 'Docker',
+        description: 'Run in an isolated container without local dependencies',
+      },
+      json2yamlresume: {
+        title: 'json2yamlresume',
+        description: 'Convert JSON Resume to YAMLResume format seamlessly',
+      },
+    },
     faq: {
       title: 'Frequently Asked Questions',
       questions: {
@@ -197,6 +221,33 @@ const translations = {
         title: 'Plantillas Profesionales',
         description:
           'Elija entre una variedad de plantillas LaTeX probadas en combate, diseñadas para la claridad y el impacto profesional.',
+      },
+    },
+    onboarding: {
+      sectionTitle: 'Comienza en Segundos',
+      recommended: 'Recomendado',
+      npx: {
+        title: 'NPX (Recomendado)',
+        description:
+          'Crea un nuevo proyecto al instante sin instalaciones globales',
+      },
+      npm: {
+        title: 'NPM Global',
+        description:
+          'Instala como herramienta CLI global para acceso en todo el sistema',
+      },
+      brew: {
+        title: 'Homebrew',
+        description: 'Instala en macOS usando el gestor de paquetes Homebrew',
+      },
+      docker: {
+        title: 'Docker',
+        description:
+          'Ejecuta en un contenedor aislado sin dependencias locales',
+      },
+      json2yamlresume: {
+        title: 'json2yamlresume',
+        description: 'Convierte JSON Resume a formato YAMLResume sin problemas',
       },
     },
     faq: {
@@ -315,6 +366,33 @@ const translations = {
           'Choisissez parmi une variété de modèles LaTeX éprouvés, conçus pour la clarté et un impact professionnel.',
       },
     },
+    onboarding: {
+      sectionTitle: 'Démarrez en Quelques Secondes',
+      recommended: 'Recommandé',
+      npx: {
+        title: 'NPX (Recommandé)',
+        description:
+          'Créez un nouveau projet instantanément sans installations globales',
+      },
+      npm: {
+        title: 'NPM Global',
+        description: 'Installez comme outil CLI global pour un accès système',
+      },
+      brew: {
+        title: 'Homebrew',
+        description:
+          'Installez sur macOS avec le gestionnaire de paquets Homebrew',
+      },
+      docker: {
+        title: 'Docker',
+        description:
+          'Exécutez dans un conteneur isolé sans dépendances locales',
+      },
+      json2yamlresume: {
+        title: 'json2yamlresume',
+        description: 'Convertissez JSON Resume en YAMLResume sans effort',
+      },
+    },
     faq: {
       title: 'Questions Fréquemment Posées',
       questions: {
@@ -422,6 +500,30 @@ const translations = {
           '提供多款久经考验的 LaTeX 模板，兼顾信息呈现的清晰度与专业视觉效果。',
       },
     },
+    onboarding: {
+      sectionTitle: '几秒钟即可开始',
+      recommended: '推荐',
+      npx: {
+        title: 'NPX（推荐）',
+        description: '无需全局安装即可立即创建新项目',
+      },
+      npm: {
+        title: 'NPM 全局安装',
+        description: '作为全局 CLI 工具安装以便系统范围访问',
+      },
+      brew: {
+        title: 'Homebrew',
+        description: '在 macOS 上使用 Homebrew 包管理器安装',
+      },
+      docker: {
+        title: 'Docker',
+        description: '在隔离容器中运行，无需本地依赖',
+      },
+      json2yamlresume: {
+        title: 'json2yamlresume',
+        description: '无缝将 JSON Resume 转换为 YAMLResume 格式',
+      },
+    },
     faq: {
       title: '常见问题',
       questions: {
@@ -527,6 +629,30 @@ const translations = {
         title: '專業履歷模板',
         description:
           '提供多款久經考驗的 LaTeX 模板，兼顧資訊呈現的清晰度與專業視覺效果。',
+      },
+    },
+    onboarding: {
+      sectionTitle: '幾秒鐘即可開始',
+      recommended: '推薦',
+      npx: {
+        title: 'NPX（推薦）',
+        description: '無需全域安裝即可立即建立新專案',
+      },
+      npm: {
+        title: 'NPM 全域安裝',
+        description: '作為全域 CLI 工具安裝以便系統範圍存取',
+      },
+      brew: {
+        title: 'Homebrew',
+        description: '在 macOS 上使用 Homebrew 套件管理器安裝',
+      },
+      docker: {
+        title: 'Docker',
+        description: '在隔離容器中執行，無需本地依賴',
+      },
+      json2yamlresume: {
+        title: 'json2yamlresume',
+        description: '無縫將 JSON Resume 轉換為 YAMLResume 格式',
       },
     },
     faq: {
@@ -642,6 +768,32 @@ const translations = {
         title: 'プロフェッショナル・テンプレート',
         description:
           '情報の明快さとプロフェッショナルな印象を両立した、実績のある多彩なLaTeXテンプレートから選択可能。',
+      },
+    },
+    onboarding: {
+      sectionTitle: '数秒で始める',
+      recommended: '推奨',
+      npx: {
+        title: 'NPX（推奨）',
+        description: 'グローバルインストール不要で即座に新規プロジェクトを作成',
+      },
+      npm: {
+        title: 'NPM グローバル',
+        description:
+          'システム全体でアクセス可能なグローバルCLIツールとしてインストール',
+      },
+      brew: {
+        title: 'Homebrew',
+        description:
+          'macOSでHomebrewパッケージマネージャーを使用してインストール',
+      },
+      docker: {
+        title: 'Docker',
+        description: 'ローカル依存関係なしで隔離されたコンテナで実行',
+      },
+      json2yamlresume: {
+        title: 'json2yamlresume',
+        description: 'JSON ResumeをYAMLResume形式にシームレスに変換',
       },
     },
     faq: {

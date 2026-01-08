@@ -88,7 +88,11 @@ function SnippetBody({ code }: SnippetBodyProps) {
       <pre className="overflow-hidden">
         <code>
           {code.split('\n').map((line, i) => (
-            <SnippetLine key={line} line={line} index={i} />
+            <SnippetLine
+              key={`${i}-${line.substring(0, 10)}`}
+              line={line}
+              index={i}
+            />
           ))}
         </code>
       </pre>

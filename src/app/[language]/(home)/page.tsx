@@ -1,10 +1,10 @@
 import 'react-medium-image-zoom/dist/styles.css'
 import {
-  DockerDemoSection,
   FaqSection,
   FeaturesSection,
   HeroSection,
   NewsChannel,
+  OnboardingSection,
   TypographyBackground,
 } from './components'
 
@@ -16,7 +16,7 @@ export default function HomePage() {
       <div className="space-y-20 items-center mt-20  mx-4">
         <HeroSection />
         <FeaturesSection />
-        <DockerDemoSection />
+        <OnboardingSection />
         <FaqSection />
       </div>
     </main>
