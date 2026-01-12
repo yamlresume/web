@@ -1,3 +1,4 @@
+export * from './ComparisonSection'
 export * from './FaqSection'
 export * from './FeaturesSection'
 export * from './Footer'
