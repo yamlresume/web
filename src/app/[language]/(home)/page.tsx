@@ -7,6 +7,7 @@ import {
   NewsChannel,
   OnboardingSection,
   StatsSection,
+  TestimonialsSection,
   TypographyBackground,
 } from './components'
 
@@ -21,6 +22,7 @@ export default function HomePage() {
         <OnboardingSection />
         <ComparisonSection />
         <StatsSection />
+        <TestimonialsSection />
         <FaqSection />
       </div>
     </main>

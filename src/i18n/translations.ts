@@ -83,6 +83,9 @@ const translations = {
           'Choose from a variety of battle-tested LaTeX templates designed for clarity and professional impact.',
       },
     },
+    testimonials: {
+      sectionTitle: 'What People Say',
+    },
     onboarding: {
       sectionTitle: 'Get Started in Seconds',
       recommended: 'Recommended',
@@ -222,6 +225,9 @@ const translations = {
         description:
           'Elija entre una variedad de plantillas LaTeX probadas en combate, diseñadas para la claridad y el impacto profesional.',
       },
+    },
+    testimonials: {
+      sectionTitle: 'Lo Que Dice La Gente',
     },
     onboarding: {
       sectionTitle: 'Comienza en Segundos',
@@ -366,6 +372,9 @@ const translations = {
           'Choisissez parmi une variété de modèles LaTeX éprouvés, conçus pour la clarté et un impact professionnel.',
       },
     },
+    testimonials: {
+      sectionTitle: 'Ce Que Disent Les Gens',
+    },
     onboarding: {
       sectionTitle: 'Démarrez en Quelques Secondes',
       recommended: 'Recommandé',
@@ -500,6 +509,9 @@ const translations = {
           '提供多款久经考验的 LaTeX 模板，兼顾信息呈现的清晰度与专业视觉效果。',
       },
     },
+    testimonials: {
+      sectionTitle: '用户评价',
+    },
     onboarding: {
       sectionTitle: '几秒钟即可开始',
       recommended: '推荐',
@@ -630,6 +642,9 @@ const translations = {
         description:
           '提供多款久經考驗的 LaTeX 模板，兼顧資訊呈現的清晰度與專業視覺效果。',
       },
+    },
+    testimonials: {
+      sectionTitle: '用戶評價',
     },
     onboarding: {
       sectionTitle: '幾秒鐘即可開始',
@@ -769,6 +784,9 @@ const translations = {
         description:
           '情報の明快さとプロフェッショナルな印象を両立した、実績のある多彩なLaTeXテンプレートから選択可能。',
       },
+    },
+    testimonials: {
+      sectionTitle: '利用者の声',
     },
     onboarding: {
       sectionTitle: '数秒で始める',
