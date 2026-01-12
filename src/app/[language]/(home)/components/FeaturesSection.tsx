@@ -28,7 +28,7 @@ import {
   SchemaTerminalDemo,
   TemplatesDemo,
 } from './features'
-import { SectionTitle } from './SectionTitle'
+import { Section } from './Section'
 
 export function FeaturesSection() {
   const t = useTranslations('features')
@@ -140,8 +140,7 @@ feat: update work experience
   ]
 
   return (
-    <section className="container py-24">
-      <SectionTitle title={t('sectionTitle')} />
+    <Section title={t('sectionTitle')}>
       <div
         className={clsx(
           'grid',
@@ -155,6 +154,6 @@ feat: update work experience
           <FeatureCard key={feature.id} {...feature} />
         ))}
       </div>
-    </section>
+    </Section>
   )
 }

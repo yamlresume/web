@@ -15,7 +15,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { getLocalizedUrl, type Language, useTranslations } from '@/i18n'
-import { SectionTitle } from './SectionTitle'
+import { Section } from './Section'
 
 // --- Constants & Styles ---
 
@@ -309,31 +309,27 @@ export function OnboardingSection() {
   ]
 
   return (
-    <section className="container mx-auto">
-      <div className="space-y-8">
-        <SectionTitle title={t('sectionTitle')} />
-
-        <div className={clsx('grid', 'grid-cols-1', 'gap-6', 'md:grid-cols-2')}>
-          {installMethods.map((method) => {
-            const isNpx = method.id === 'npx'
-            return (
-              <div
-                key={method.id}
-                className={clsx(
-                  isNpx && 'md:col-span-2 flex justify-center w-full'
-                )}
-              >
-                <OnboardingCard
-                  method={method}
-                  t={t}
-                  lang={lang}
-                  className={clsx(isNpx && 'w-full md:w-[calc(50%-0.75rem)]')}
-                />
-              </div>
-            )
-          })}
-        </div>
+    <Section title={t('sectionTitle')}>
+      <div className={clsx('grid', 'grid-cols-1', 'gap-6', 'md:grid-cols-2')}>
+        {installMethods.map((method) => {
+          const isNpx = method.id === 'npx'
+          return (
+            <div
+              key={method.id}
+              className={clsx(
+                isNpx && 'md:col-span-2 flex justify-center w-full'
+              )}
+            >
+              <OnboardingCard
+                method={method}
+                t={t}
+                lang={lang}
+                className={clsx(isNpx && 'w-full md:w-[calc(50%-0.75rem)]')}
+              />
+            </div>
+          )
+        })}
       </div>
-    </section>
+    </Section>
   )
 }

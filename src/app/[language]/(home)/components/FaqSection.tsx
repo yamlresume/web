@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 import { useTranslations } from '@/i18n'
 
-import { SectionTitle } from './SectionTitle'
+import { Section } from './Section'
 
 type FaqItem = {
   id: string
@@ -51,8 +51,7 @@ export function FaqSection() {
   }
 
   return (
-    <section className="w-full max-w-screen-lg mx-auto">
-      <SectionTitle title={t('title')} />
+    <Section title={t('title')} className="max-w-screen-lg">
       <div className="space-y-4">
         {faqs.map((faq, index) => (
           <div
@@ -108,6 +107,6 @@ export function FaqSection() {
           </div>
         ))}
       </div>
-    </section>
+    </Section>
   )
 }
