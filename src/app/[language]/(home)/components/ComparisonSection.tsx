@@ -7,7 +7,7 @@ import {
 } from 'react-compare-slider'
 
 import htmlPdf from '@/components/static/images/andy-dufresne-rxresume-example.png'
-import yamlresumePdf from '@/components/static/images/resume-1.webp'
+import yamlresumePdf from '@/components/static/images/moderncv-banking-template.png'
 import { useTranslations } from '@/i18n'
 import { Section } from './common'
 
