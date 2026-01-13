@@ -10,6 +10,7 @@ import Image, { type StaticImageData } from 'next/image'
 import { useTranslations } from '@/i18n'
 
 import { Card } from './Card'
+import { Icon } from './Icon'
 
 import { Section } from './Section'
 import { TESTIMONIALS, type Testimonial } from './testimonials'
@@ -27,21 +28,14 @@ interface PlatformIconProps {
  * Supports Reddit, LinkedIn, and X (Twitter).
  */
 function PlatformIcon({ url }: PlatformIconProps) {
-  const iconProps = {
-    size: 24,
-    className: 'text-fd-foreground/60',
-    stroke: 1.5,
-    'aria-hidden': true,
-  }
-
   if (url.includes('reddit.com')) {
-    return <IconBrandReddit {...iconProps} />
+    return <Icon icon={IconBrandReddit} />
   }
   if (url.includes('linkedin.com')) {
-    return <IconBrandLinkedin {...iconProps} />
+    return <Icon icon={IconBrandLinkedin} />
   }
   if (url.includes('x.com') || url.includes('twitter.com')) {
-    return <IconBrandX {...iconProps} />
+    return <Icon icon={IconBrandX} />
   }
   return null
 }

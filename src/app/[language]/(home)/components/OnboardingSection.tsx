@@ -9,6 +9,7 @@ import {
   IconRocket,
   IconSwitchHorizontal,
   IconTerminal2,
+  type Icon as TablerIcon,
 } from '@tabler/icons-react'
 import clsx from 'clsx'
 import Link from 'next/link'
@@ -16,6 +17,7 @@ import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { getLocalizedUrl, type Language, useTranslations } from '@/i18n'
 import { Card } from './Card'
+import { Icon } from './Icon'
 import { Section } from './Section'
 
 // --- Constants & Styles ---
@@ -72,7 +74,7 @@ const HIGHLIGHT_REGEX = /("[^"]*"|'[^']*'|-[^\s]+|\$[^\s]+|[^\s]+)/g
 
 interface InstallMethod {
   id: string
-  icon: React.ReactNode
+  icon: TablerIcon
   command: string
   href: string
 }
@@ -110,7 +112,8 @@ function OnboardingTitle({ title }: { title: string }) {
         )}
       >
         {title}
-        <IconArrowUpRight
+        <Icon
+          icon={IconArrowUpRight}
           size={18}
           className={clsx(
             'text-fd-foreground',
@@ -121,7 +124,6 @@ function OnboardingTitle({ title }: { title: string }) {
             'opacity-70',
             'group-hover:opacity-100'
           )}
-          aria-hidden="true"
         />
       </span>
     </h3>
@@ -191,9 +193,13 @@ function OnboardingCodeBlock({
         aria-label="Copy command"
       >
         {copied ? (
-          <IconCheck size={16} className="text-green-500" />
+          <Icon icon={IconCheck} size={16} className="text-green-500" />
         ) : (
-          <IconCopy size={16} className="text-fd-muted-foreground" />
+          <Icon
+            icon={IconCopy}
+            size={16}
+            className="text-fd-muted-foreground"
+          />
         )}
       </button>
     </>
@@ -226,7 +232,7 @@ function OnboardingCard({ method, t, lang, className }: OnboardingCardProps) {
       <div className="flex flex-col gap-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
-            <OnboardingIcon icon={method.icon} />
+            <OnboardingIcon icon={<Icon icon={method.icon} size={24} />} />
             <div>
               <OnboardingTitle title={t(`${method.id}.title`)} />
               <p className="text-sm text-fd-muted-foreground">
@@ -256,32 +262,32 @@ export function OnboardingSection() {
   const installMethods: InstallMethod[] = [
     {
       id: 'npx',
-      icon: <IconRocket size={24} />,
+      icon: IconRocket,
       command: 'npx create-yamlresume',
       href: '/docs/ecosystem/create-yamlresume',
     },
     {
       id: 'npm',
-      icon: <IconBrandNpm size={24} />,
+      icon: IconBrandNpm,
       command: 'npm install -g yamlresume',
       href: '/docs/installation#yamlresume-cli',
     },
     {
       id: 'brew',
-      icon: <IconTerminal2 size={24} />,
+      icon: IconTerminal2,
       command: 'brew install yamlresume',
       href: '/docs/installation#yamlresume-cli',
     },
     {
       id: 'docker',
-      icon: <IconBrandDocker size={24} />,
+      icon: IconBrandDocker,
       command:
         'docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new',
       href: '/docs/installation#docker-users',
     },
     {
       id: 'json2yamlresume',
-      icon: <IconSwitchHorizontal size={24} />,
+      icon: IconSwitchHorizontal,
       command: 'npx json2yamlresume input.json output.yaml',
       href: '/docs/ecosystem/json2yamlresume',
     },

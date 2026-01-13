@@ -28,6 +28,7 @@ import {
   SchemaTerminalDemo,
   TemplatesDemo,
 } from './features'
+import { Icon } from './Icon'
 import { Section } from './Section'
 
 export function FeaturesSection() {
@@ -39,7 +40,7 @@ export function FeaturesSection() {
   const features: FeatureCardProps[] = [
     {
       id: 'latexTypesetting',
-      icon: <IconTex size={iconSize} />,
+      icon: <Icon icon={IconTex} size={iconSize} />,
       title: t('latexTypesetting.title'),
       description: t('latexTypesetting.description'),
       className: 'md:col-span-2 lg:col-span-4',
@@ -48,7 +49,7 @@ export function FeaturesSection() {
     },
     {
       id: 'plainText',
-      icon: <IconBrandGit size={iconSize} />,
+      icon: <Icon icon={IconBrandGit} size={iconSize} />,
       title: t('plainText.title'),
       description: t('plainText.description'),
       className: 'col-span-1 lg:col-span-2',
@@ -75,7 +76,7 @@ feat: update work experience
     },
     {
       id: 'cli',
-      icon: <IconTerminal2 size={iconSize} />,
+      icon: <Icon icon={IconTerminal2} size={iconSize} />,
       title: t('cli.title'),
       description: t('cli.description'),
       className: 'col-span-1 lg:col-span-3',
@@ -84,7 +85,7 @@ feat: update work experience
     },
     {
       id: 'schema',
-      icon: <IconCode size={iconSize} />,
+      icon: <Icon icon={IconCode} size={iconSize} />,
       title: t('schema.title'),
       description: t('schema.description'),
       className: 'col-span-1 lg:col-span-3',
@@ -93,7 +94,7 @@ feat: update work experience
     },
     {
       id: 'flexibleSection',
-      icon: <IconLayoutBoard size={iconSize} />,
+      icon: <Icon icon={IconLayoutBoard} size={iconSize} />,
       title: t('flexibleSection.title'),
       description: t('flexibleSection.description'),
       className: 'col-span-1 lg:col-span-2',
@@ -102,7 +103,7 @@ feat: update work experience
     },
     {
       id: 'richText',
-      icon: <IconMarkdown size={iconSize} />,
+      icon: <Icon icon={IconMarkdown} size={iconSize} />,
       title: t('richText.title'),
       description: t('richText.description'),
       className: 'md:col-span-2 lg:col-span-4',
@@ -111,7 +112,7 @@ feat: update work experience
     },
     {
       id: 'multilingual',
-      icon: <IconLanguage size={iconSize} />,
+      icon: <Icon icon={IconLanguage} size={iconSize} />,
       title: t('multilingual.title'),
       description: t('multilingual.description'),
       className: 'col-span-1 lg:col-span-2 order-1 lg:order-none',
@@ -120,7 +121,7 @@ feat: update work experience
     },
     {
       id: 'templates',
-      icon: <IconPalette size={iconSize} />,
+      icon: <Icon icon={IconPalette} size={iconSize} />,
       title: t('templates.title'),
       description: t('templates.description'),
       className:
@@ -130,7 +131,7 @@ feat: update work experience
     },
     {
       id: 'outputs',
-      icon: <IconFileDownload size={iconSize} />,
+      icon: <Icon icon={IconFileDownload} size={iconSize} />,
       title: t('outputs.title'),
       description: t('outputs.description'),
       className: 'col-span-1 lg:col-span-2 order-2 lg:order-none',

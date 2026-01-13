@@ -2,6 +2,7 @@ import { IconArrowUpRight } from '@tabler/icons-react'
 import clsx from 'clsx'
 import type React from 'react'
 import { Card } from '../Card'
+import { Icon } from '../Icon'
 
 /**
  * Props for the FeatureIcon component.
@@ -68,7 +69,8 @@ function FeatureTitle({ title, href }: FeatureTitleProps) {
           )}
         >
           {title}
-          <IconArrowUpRight
+          <Icon
+            icon={IconArrowUpRight}
             size={18}
             className={clsx(
               'text-fd-muted-foreground',
@@ -79,7 +81,6 @@ function FeatureTitle({ title, href }: FeatureTitleProps) {
               'opacity-50',
               'group-hover:opacity-100'
             )}
-            aria-hidden="true"
           />
         </span>
       ) : (
