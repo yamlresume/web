@@ -35,7 +35,7 @@ interface SectionProps {
 export function Section({ title, children, className }: SectionProps) {
   return (
     <section className={`container mx-auto ${className || ''}`}>
-      <div className="flex flex-col gap-16">
+      <div className="flex flex-col gap-24">
         <SectionTitle title={title} />
         {children}
       </div>

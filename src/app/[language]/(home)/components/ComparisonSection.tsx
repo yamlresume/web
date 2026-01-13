@@ -9,7 +9,7 @@ import {
 import htmlPdf from '@/components/static/images/andy-dufresne-rxresume-example.png'
 import yamlresumePdf from '@/components/static/images/resume-1.webp'
 import { useTranslations } from '@/i18n'
-import { Section } from './Section'
+import { Section } from './common'
 
 const labelStyle = clsx(
   'absolute',

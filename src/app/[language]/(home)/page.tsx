@@ -8,15 +8,15 @@ import {
   OnboardingSection,
   StatsSection,
   TestimonialsSection,
-  TypographyBackground,
 } from './components'
+import { TypographyBackground } from './components/common'
 
 export default function HomePage() {
   return (
     <main>
       <NewsChannel />
       <TypographyBackground />
-      <div className="space-y-32 items-center mt-20 mx-4">
+      <div className="space-y-36 items-center mt-20 mx-4">
         <HeroSection />
         <FeaturesSection />
         <OnboardingSection />

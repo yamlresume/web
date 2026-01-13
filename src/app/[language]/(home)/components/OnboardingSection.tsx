@@ -16,9 +16,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { getLocalizedUrl, type Language, useTranslations } from '@/i18n'
-import { Card } from './Card'
-import { Icon } from './Icon'
-import { Section } from './Section'
+import { Card, Icon, Section } from './common'
 
 // --- Constants & Styles ---
 

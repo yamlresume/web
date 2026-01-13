@@ -1,8 +1,7 @@
 import { IconArrowUpRight } from '@tabler/icons-react'
 import clsx from 'clsx'
 import type React from 'react'
-import { Card } from '../Card'
-import { Icon } from '../Icon'
+import { Card, Icon } from '../common'
 
 /**
  * Props for the FeatureIcon component.

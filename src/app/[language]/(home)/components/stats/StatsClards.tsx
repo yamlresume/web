@@ -7,8 +7,7 @@ import {
   IconShieldCheck,
 } from '@tabler/icons-react'
 import { useTranslations } from '@/i18n'
-import { Icon } from '../Icon'
-import { Section } from '../Section'
+import { Icon, Section } from '../common'
 import { StatCard } from './StatCard'
 
 interface StatsCardsProps {

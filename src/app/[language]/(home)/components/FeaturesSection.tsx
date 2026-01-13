@@ -15,6 +15,7 @@ import {
 import clsx from 'clsx'
 import { useParams } from 'next/navigation'
 import { getLocalizedUrl, type Language, useTranslations } from '@/i18n'
+import { Icon, Section } from './common'
 import {
   AnimatedResumeDemo,
   CliTerminalDemo,
@@ -28,8 +29,6 @@ import {
   SchemaTerminalDemo,
   TemplatesDemo,
 } from './features'
-import { Icon } from './Icon'
-import { Section } from './Section'
 
 export function FeaturesSection() {
   const t = useTranslations('features')

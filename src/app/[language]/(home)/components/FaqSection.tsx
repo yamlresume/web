@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 import { useTranslations } from '@/i18n'
 
-import { Section } from './Section'
+import { Section } from './common'
 
 type FaqItem = {
   id: string

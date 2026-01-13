@@ -1,5 +1,5 @@
 import type React from 'react'
-import { Card } from '../Card'
+import { Card } from '../common'
 
 interface StatCardProps {
   icon: React.ReactNode

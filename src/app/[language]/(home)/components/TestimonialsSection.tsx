@@ -9,10 +9,8 @@ import clsx from 'clsx'
 import Image, { type StaticImageData } from 'next/image'
 import { useTranslations } from '@/i18n'
 
-import { Card } from './Card'
-import { Icon } from './Icon'
+import { Card, Icon, Section } from './common'
 
-import { Section } from './Section'
 import { TESTIMONIALS, type Testimonial } from './testimonials'
 
 /**
