@@ -86,6 +86,9 @@ const translations = {
     testimonials: {
       sectionTitle: 'What People Say',
     },
+    stats: {
+      sectionTitle: 'Trusted by Developers',
+    },
     onboarding: {
       sectionTitle: 'Get Started in Seconds',
       recommended: 'Recommended',
@@ -228,6 +231,9 @@ const translations = {
     },
     testimonials: {
       sectionTitle: 'Lo Que Dice La Gente',
+    },
+    stats: {
+      sectionTitle: 'Confiado por Desarrolladores',
     },
     onboarding: {
       sectionTitle: 'Comienza en Segundos',
@@ -375,6 +381,9 @@ const translations = {
     testimonials: {
       sectionTitle: 'Ce Que Disent Les Gens',
     },
+    stats: {
+      sectionTitle: 'Approuvé par les Développeurs',
+    },
     onboarding: {
       sectionTitle: 'Démarrez en Quelques Secondes',
       recommended: 'Recommandé',
@@ -512,6 +521,9 @@ const translations = {
     testimonials: {
       sectionTitle: '用户评价',
     },
+    stats: {
+      sectionTitle: '开发者信赖',
+    },
     onboarding: {
       sectionTitle: '几秒钟即可开始',
       recommended: '推荐',
@@ -645,6 +657,9 @@ const translations = {
     },
     testimonials: {
       sectionTitle: '用戶評價',
+    },
+    stats: {
+      sectionTitle: '開發者信賴',
     },
     onboarding: {
       sectionTitle: '幾秒鐘即可開始',
@@ -787,6 +802,9 @@ const translations = {
     },
     testimonials: {
       sectionTitle: '利用者の声',
+    },
+    stats: {
+      sectionTitle: '開発者に信頼されています',
     },
     onboarding: {
       sectionTitle: '数秒で始める',
