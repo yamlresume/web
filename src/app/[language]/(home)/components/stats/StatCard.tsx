@@ -1,7 +1,5 @@
-'use client'
-
-import clsx from 'clsx'
 import type React from 'react'
+import { Card } from '../Card'
 
 interface StatCardProps {
   icon: React.ReactNode
@@ -11,13 +9,11 @@ interface StatCardProps {
 }
 
 export function StatCard({ icon, value, label, href }: StatCardProps) {
-  const content = (
-    <div
-      className={clsx(
-        'flex flex-col items-center gap-3 p-6',
-        'bg-fd-card border border-fd-border hover:border-fd-foreground/20',
-        'hover:shadow-lg transition-all duration-300'
-      )}
+  return (
+    <Card
+      href={href}
+      className="flex flex-col items-center gap-3 p-6 hover:scale-[1.02]"
+      ariaLabel={label}
     >
       <div className="flex h-12 w-12 shrink-0 items-center justify-center">
         {icon}
@@ -28,21 +24,6 @@ export function StatCard({ icon, value, label, href }: StatCardProps) {
       <div className="text-sm text-fd-muted-foreground text-center">
         {label}
       </div>
-    </div>
+    </Card>
   )
-
-  if (href) {
-    return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block group hover:scale-[1.02] transition-transform"
-      >
-        {content}
-      </a>
-    )
-  }
-
-  return content
 }

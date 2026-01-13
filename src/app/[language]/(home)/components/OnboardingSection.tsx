@@ -15,29 +15,17 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { getLocalizedUrl, type Language, useTranslations } from '@/i18n'
+import { Card } from './Card'
 import { Section } from './Section'
 
 // --- Constants & Styles ---
 
-const CARD_STYLES = clsx(
-  'group',
-  'relative',
-  'flex',
-  'flex-col',
-  'gap-4',
-  'border',
-  'border-fd-foreground/10',
-  'bg-fd-muted/30',
-  'p-4',
-  'transition-all',
-  'duration-300',
-  'hover:border-fd-foreground/20',
-  'hover:shadow-sm'
-)
+const CARD_STYLES = clsx('p-6')
 
 const CODE_BLOCK_CONTAINER_STYLES = clsx(
   'group',
   'relative',
+  'z-10',
   'w-full',
   'flex',
   'items-center',
@@ -109,28 +97,16 @@ function OnboardingIcon({ icon }: { icon: React.ReactNode }) {
   return <div className={ICON_CONTAINER_STYLES}>{icon}</div>
 }
 
-function OnboardingTitle({
-  title,
-  href,
-  lang,
-}: {
-  title: string
-  href: string
-  lang: Language
-}) {
+function OnboardingTitle({ title }: { title: string }) {
   return (
     <h3 className={clsx('text-lg', 'font-semibold', 'text-fd-foreground')}>
-      <Link
-        href={getLocalizedUrl(href, lang)}
+      <span
         className={clsx(
           'inline-flex',
           'items-center',
           'gap-1.5',
           'transition-colors',
-          'hover:text-fd-accent-foreground',
-          'focus:outline-none',
-          'focus-visible:ring-2',
-          'focus-visible:ring-fd-ring'
+          'hover:text-fd-accent-foreground'
         )}
       >
         {title}
@@ -147,7 +123,7 @@ function OnboardingTitle({
           )}
           aria-hidden="true"
         />
-      </Link>
+      </span>
     </h3>
   )
 }
@@ -241,29 +217,32 @@ function OnboardingCodeBlock({
 
 function OnboardingCard({ method, t, lang, className }: OnboardingCardProps) {
   return (
-    <div className={clsx(CARD_STYLES, className)}>
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <OnboardingIcon icon={method.icon} />
-          <div>
-            <OnboardingTitle
-              title={t(`${method.id}.title`)}
-              href={method.href}
-              lang={lang}
-            />
-            <p className="text-sm text-fd-muted-foreground">
-              {t(`${method.id}.description`)}
-            </p>
+    <Card
+      href={getLocalizedUrl(method.href, lang)}
+      className={clsx(CARD_STYLES, className)}
+      external={false}
+      ariaLabel={t(`${method.id}.title`)}
+    >
+      <div className="flex flex-col gap-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <OnboardingIcon icon={method.icon} />
+            <div>
+              <OnboardingTitle title={t(`${method.id}.title`)} />
+              <p className="text-sm text-fd-muted-foreground">
+                {t(`${method.id}.description`)}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <OnboardingCodeBlock
-        command={method.command}
-        lang={lang}
-        className="mb-0"
-      />
-    </div>
+        <OnboardingCodeBlock
+          command={method.command}
+          lang={lang}
+          className="mb-0"
+        />
+      </div>
+    </Card>
   )
 }
 
@@ -310,7 +289,15 @@ export function OnboardingSection() {
 
   return (
     <Section title={t('sectionTitle')}>
-      <div className={clsx('grid', 'grid-cols-1', 'gap-6', 'md:grid-cols-2')}>
+      <div
+        className={clsx(
+          'grid',
+          'grid-cols-1',
+          'gap-4',
+          'md:gap-6',
+          'md:grid-cols-2'
+        )}
+      >
         {installMethods.map((method) => {
           const isNpx = method.id === 'npx'
           return (

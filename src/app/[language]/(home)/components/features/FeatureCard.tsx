@@ -1,7 +1,7 @@
 import { IconArrowUpRight } from '@tabler/icons-react'
 import clsx from 'clsx'
-import Link from 'next/link'
 import type React from 'react'
+import { Card } from '../Card'
 
 /**
  * Props for the FeatureIcon component.
@@ -58,17 +58,13 @@ function FeatureTitle({ title, href }: FeatureTitleProps) {
       )}
     >
       {href ? (
-        <Link
-          href={href}
+        <span
           className={clsx(
             'inline-flex',
             'items-center',
             'gap-1.5',
             'transition-colors',
-            'hover:text-fd-accent-foreground',
-            'focus:outline-none',
-            'focus-visible:ring-2',
-            'focus-visible:ring-fd-ring'
+            'hover:text-fd-accent-foreground'
           )}
         >
           {title}
@@ -85,7 +81,7 @@ function FeatureTitle({ title, href }: FeatureTitleProps) {
             )}
             aria-hidden="true"
           />
-        </Link>
+        </span>
       ) : (
         title
       )}
@@ -206,23 +202,7 @@ export function FeatureCard({
   href,
 }: FeatureCardProps) {
   return (
-    <div
-      className={clsx(
-        'group',
-        'relative',
-        'flex',
-        'flex-col',
-        'overflow-hidden',
-        'border',
-        'border-fd-foreground/10',
-        'bg-fd-muted/50',
-        'transition-all',
-        'duration-300',
-        'hover:border-fd-foreground/20',
-        'hover:shadow-sm',
-        className
-      )}
-    >
+    <Card href={href} className={className} external={false} ariaLabel={title}>
       <FeatureHeader
         title={title}
         description={description}
@@ -230,6 +210,6 @@ export function FeatureCard({
         href={href}
       />
       {demo && <FeatureDemo demo={demo} />}
-    </div>
+    </Card>
   )
 }

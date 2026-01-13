@@ -145,7 +145,8 @@ feat: update work experience
         className={clsx(
           'grid',
           'grid-cols-1',
-          'gap-6',
+          'gap-4',
+          'md:gap-6',
           'md:grid-cols-2',
           'lg:grid-cols-6'
         )}

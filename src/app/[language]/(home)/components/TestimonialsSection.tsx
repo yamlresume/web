@@ -7,8 +7,9 @@ import {
 } from '@tabler/icons-react'
 import clsx from 'clsx'
 import Image, { type StaticImageData } from 'next/image'
-
 import { useTranslations } from '@/i18n'
+
+import { Card } from './Card'
 
 import { Section } from './Section'
 import { TESTIMONIALS, type Testimonial } from './testimonials'
@@ -165,25 +166,14 @@ interface TestimonialCardProps {
  */
 function TestimonialCard({ testimonial }: TestimonialCardProps) {
   return (
-    <a
+    <Card
       href={testimonial.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={clsx(
-        'break-inside-avoid',
-        'mb-4',
-        'block',
-        'border',
-        'border-fd-border',
-        'bg-fd-card',
-        'hover:border-fd-foreground/20',
-        'hover:shadow-sm',
-        'transition-all'
-      )}
+      className="mb-4 break-inside-avoid shadow-none"
+      ariaLabel={`View testimonial by ${testimonial.author}`}
     >
       <TestimonialContent content={testimonial.content} />
       <TestimonialFooter testimonial={testimonial} />
-    </a>
+    </Card>
   )
 }
 
@@ -202,7 +192,8 @@ export function TestimonialsSection() {
           'sm:columns-2',
           'lg:columns-3',
           'xl:columns-4',
-          'gap-4'
+          'gap-4',
+          'md:gap-6'
         )}
       >
         {TESTIMONIALS.map((testimonial: Testimonial) => (
