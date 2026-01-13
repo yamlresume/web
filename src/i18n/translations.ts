@@ -89,6 +89,9 @@ const translations = {
     stats: {
       sectionTitle: 'Trusted by Developers',
     },
+    comparison: {
+      sectionTitle: 'Crafted for Perfection',
+    },
     onboarding: {
       sectionTitle: 'Get Started in Seconds',
       recommended: 'Recommended',
@@ -234,6 +237,11 @@ const translations = {
     },
     stats: {
       sectionTitle: 'Confiado por Desarrolladores',
+    },
+    comparison: {
+      sectionTitle: 'Elaborado para la Perfección',
+      conventional: 'RxResume',
+      yamlresume: 'YAMLResume',
     },
     onboarding: {
       sectionTitle: 'Comienza en Segundos',
@@ -384,6 +392,11 @@ const translations = {
     stats: {
       sectionTitle: 'Approuvé par les Développeurs',
     },
+    comparison: {
+      sectionTitle: 'Conçu pour la Perfection',
+      conventional: 'RxResume',
+      yamlresume: 'YAMLResume',
+    },
     onboarding: {
       sectionTitle: 'Démarrez en Quelques Secondes',
       recommended: 'Recommandé',
@@ -524,6 +537,11 @@ const translations = {
     stats: {
       sectionTitle: '开发者信赖',
     },
+    comparison: {
+      sectionTitle: '精雕细琢，力求完美',
+      conventional: 'RxResume',
+      yamlresume: 'YAMLResume',
+    },
     onboarding: {
       sectionTitle: '几秒钟即可开始',
       recommended: '推荐',
@@ -660,6 +678,11 @@ const translations = {
     },
     stats: {
       sectionTitle: '開發者信賴',
+    },
+    comparison: {
+      sectionTitle: '精雕細琢，力求完美',
+      conventional: 'RxResume',
+      yamlresume: 'YAMLResume',
     },
     onboarding: {
       sectionTitle: '幾秒鐘即可開始',
@@ -805,6 +828,11 @@ const translations = {
     },
     stats: {
       sectionTitle: '開発者に信頼されています',
+    },
+    comparison: {
+      sectionTitle: '完璧を追求した作り',
+      conventional: 'RxResume',
+      yamlresume: 'YAMLResume',
     },
     onboarding: {
       sectionTitle: '数秒で始める',

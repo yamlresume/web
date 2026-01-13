@@ -1,3 +1,5 @@
+'use client'
+
 import clsx from 'clsx'
 import {
   ReactCompareSlider,
@@ -6,6 +8,7 @@ import {
 
 import htmlPdf from '@/components/static/images/andy-dufresne-rxresume-example.png'
 import yamlresumePdf from '@/components/static/images/resume-1.webp'
+import { useTranslations } from '@/i18n'
 import { Section } from './Section'
 
 const labelStyle = clsx(
@@ -45,20 +48,25 @@ function Label({
 }
 
 export function ComparisonSection() {
+  const t = useTranslations('comparison')
+
   return (
-    <Section title="Pixel Perfect PDF" className="max-w-4xl">
-      <div className="relative overflow-hidden border border-gray-400 shadow-lg">
+    <Section title={t('sectionTitle')} className="max-w-4xl">
+      <section
+        className="relative overflow-hidden border border-fd-border shadow-lg"
+        aria-label="Resume comparison slider"
+      >
         <ReactCompareSlider
           boundsPadding={0}
           itemOne={
             <div className="w-full h-full relative group overflow-hidden isolate">
               <ReactCompareSliderImage
                 src={htmlPdf.src}
-                alt="HTML/CSS-based resume PDF"
+                alt="RxResume PDF"
                 style={{ objectFit: 'contain' }}
               />
               <Label side="left" color="gray">
-                RxResume
+                Conventional
               </Label>
             </div>
           }
@@ -78,7 +86,7 @@ export function ComparisonSection() {
           transition="0.25s cubic-bezier(.17,.67,.83,.67)"
           position={50}
         />
-      </div>
+      </section>
     </Section>
   )
 }
