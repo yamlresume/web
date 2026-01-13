@@ -59,7 +59,7 @@ export function ComparisonSection() {
         <ReactCompareSlider
           boundsPadding={0}
           itemOne={
-            <div className="w-full h-full relative group overflow-hidden isolate">
+            <div className="w-full h-full relative group overflow-hidden">
               <ReactCompareSliderImage
                 src={htmlPdf.src}
                 alt="RxResume PDF"
@@ -71,7 +71,7 @@ export function ComparisonSection() {
             </div>
           }
           itemTwo={
-            <div className="w-full h-full relative group overflow-hidden isolate">
+            <div className="w-full h-full relative group overflow-hidden">
               <ReactCompareSliderImage
                 src={yamlresumePdf.src}
                 alt="YAMLResume PDF"
