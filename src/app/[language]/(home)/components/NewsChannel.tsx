@@ -27,16 +27,13 @@ export function NewsChannel() {
         <div className="flex items-center gap-2 py-3">
           <IconSpeakerphone size={20} stroke={1.5} />
           <div className="text-sm text-fd-foreground">
-            YAMLResume v0.9 is released with the new{' '}
+            YAMLResume v0.10 is released with the new VS Code template and Dutch
+            support. Check out the{' '}
             <Link
-              href={getLocalizedUrl('/blog/html-output', language)}
+              href={getLocalizedUrl('/blog/v0.10', language)}
               className="underline"
             >
-              HTML output
-            </Link>
-            . Check out the{' '}
-            <Link href="https://asciinema.org/a/763505" className="underline">
-              demo
+              blog post
             </Link>{' '}
             for more details.
           </div>
