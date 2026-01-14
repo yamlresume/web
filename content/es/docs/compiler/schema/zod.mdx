@@ -253,9 +253,18 @@ Valida la configuración del layout HTML.
 | Prop          | Tipo                                                  | Requerido |
 | ------------- | ----------------------------------------------------- | --------- |
 | `engine`      | `'html'`                                              | ✅        |
+| `advanced?`   | [`HtmlAdvancedSchema`](#htmladvancedschema)           | ⬜️       |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜️       |
 | `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜️       |
 | `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜️       |
+
+##### HtmlAdvancedSchema
+
+Valida opciones de configuración avanzada de HTML.
+
+| Prop         | Tipo      | Requerido | Reglas de validación |
+| ------------ | --------- | --------- | -------------------- |
+| `showIcons?` | `boolean` | ⬜️       | true/false           |
 
 ##### HtmlTemplateSchema
 
@@ -293,15 +302,17 @@ Valida opciones de configuración avanzada de LaTeX.
 | Prop        | Tipo                                 | Requerido | Reglas de validación                                             |
 | ----------- | ------------------------------------ | --------- | ---------------------------------------------------------------- |
 | `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜️       | Debe estar en [opciones de números fontspec](#fontspecnumbers) |
+| `showIcons?` | `boolean`                            | ⬜️       | true/false                                                       |
 
 ##### LatexPageSchema
 
 Valida opciones a nivel de página para la presentación.
 
-| Prop               | Tipo                  | Requerido | Reglas de validación                 |
-| ------------------ | --------------------- | --------- | ------------------------------------ |
-| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜️       | Ver [esquema de márgenes](#marginsschema) |
-| `showPageNumbers?` | `boolean`             | ⬜️       | true/false                           |
+| Prop               | Tipo                   | Requerido | Reglas de validación                                |
+| ------------------ | ---------------------- | --------- | -------------------------------------------------- |
+| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜️       | Ver [esquema de márgenes](#marginsschema)          |
+| `paperSize?`       | [`PaperSize`](#papersize) | ⬜️       | Debe estar en [opciones de tamaño de papel](#papersize) |
+| `showPageNumbers?` | `boolean`              | ⬜️       | true/false                                         |
 
 ##### LatexTypographySchema
 
@@ -437,3 +448,11 @@ Tipo unión que incluye todas las posibles opciones de tamaño de fuente.
 
 - Debe ser uno de: `10pt`, `11pt`, `12pt`
 - `10pt` es el tamaño de fuente por defecto
+
+### PaperSize
+
+Tipo unión que incluye todas las posibles opciones de tamaño de papel LaTeX.
+
+**Reglas de validación:**
+
+- Debe ser uno de: `a4`, `letter`

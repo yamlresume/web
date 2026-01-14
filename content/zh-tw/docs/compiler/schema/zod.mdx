@@ -249,9 +249,18 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 | 屬性          | 類型                                                  | 必需 |
 | ------------- | ----------------------------------------------------- | -------- |
 | `engine`      | `'html'`                                              | ✅       |
+| `advanced?`   | [`HtmlAdvancedSchema`](#htmladvancedschema)           | ⬜       |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       |
 | `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜       |
 | `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜       |
+
+##### HtmlAdvancedSchema
+
+驗證 HTML 的進階佈局配置選項。
+
+| 屬性         | 類型      | 必需 | 驗證規則 |
+| ------------ | --------- | -------- | -------- |
+| `showIcons?` | `boolean` | ⬜       | true/false |
 
 ##### HtmlTemplateSchema
 
@@ -289,15 +298,17 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 | 屬性        | 類型                                 | 必需 | 驗證規則                                                             |
 | ----------- | ------------------------------------ | -------- | -------------------------------------------------------------------------------- |
 | `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜       | 必須來自預定義的[fontspec 數字選項](#fontspecnumbers) |
+| `showIcons?` | `boolean`                            | ⬜       | true/false                                                                       |
 
 ##### LatexPageSchema
 
 驗證文件演示的頁面級設置。
 
-| 屬性               | 類型                  | 必需 | 驗證規則                 |
-| ------------------ | --------------------- | -------- | ------------------------------------ |
+| 屬性               | 類型                   | 必需 | 驗證規則                 |
+| ------------------ | ---------------------- | -------- | ------------------------------------ |
 | `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜       | 參見[頁邊距模式](#marginsschema) |
-| `showPageNumbers?` | `boolean`             | ⬜       | true/false                           |
+| `paperSize?`       | [`PaperSize`](#papersize) | ⬜       | 必須來自預定義的[紙張大小選項](#papersize) |
+| `showPageNumbers?` | `boolean`              | ⬜       | true/false                           |
 
 ##### LatexTypographySchema
 
@@ -507,3 +518,11 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 
 - 必須是以下之一：`10pt`、`11pt`、`12pt`
 - `10pt` 是預設字體大小
+
+### PaperSize
+
+所有可能的 LaTeX 紙張大小選項的聯合類型。
+
+**驗證規則：**
+
+- 必須是以下之一：`a4`、`letter`

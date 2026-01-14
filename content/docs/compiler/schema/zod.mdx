@@ -251,9 +251,18 @@ Validates HTML layout configuration.
 | Prop          | Type                                                  | Required |
 | ------------- | ----------------------------------------------------- | -------- |
 | `engine`      | `'html'`                                              | ✅       |
+| `advanced?`   | [`HtmlAdvancedSchema`](#htmladvancedschema)           | ⬜       |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       |
 | `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜       |
 | `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜       |
+
+##### HtmlAdvancedSchema
+
+Validates advanced HTML configuration options.
+
+| Prop         | Type      | Required | Validation Rules |
+| ------------ | --------- | -------- | ---------------- |
+| `showIcons?` | `boolean` | ⬜       | true/false       |
 
 ##### HtmlTemplateSchema
 
@@ -291,15 +300,17 @@ Validates advanced LaTeX configuration options.
 | Prop        | Type                                 | Required | Validation Rules                                                     |
 | ----------- | ------------------------------------ | -------- | -------------------------------------------------------------------- |
 | `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜       | Must be from predefined [fontspec numbers options](#fontspecnumbers) |
+| `showIcons?` | `boolean`                            | ⬜       | true/false                                                           |
 
 ##### LatexPageSchema
 
 Validates page-level settings for document presentation.
 
-| Prop               | Type                  | Required | Validation Rules                     |
-| ------------------ | --------------------- | -------- | ------------------------------------ |
-| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜       | See [margins schema](#marginsschema) |
-| `showPageNumbers?` | `boolean`             | ⬜       | true/false                           |
+| Prop               | Type                   | Required | Validation Rules                               |
+| ------------------ | ---------------------- | -------- | ---------------------------------------------- |
+| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜       | See [margins schema](#marginsschema)           |
+| `paperSize?`       | [`PaperSize`](#papersize) | ⬜       | Must be from predefined [paper size options](#papersize) |
+| `showPageNumbers?` | `boolean`              | ⬜       | true/false                                     |
 
 ##### LatexTypographySchema
 
@@ -479,6 +490,14 @@ A union type for all possible LaTeX template options.
 
 - Must be one of: `moderncv-banking`, `moderncv-casual`, `moderncv-classic`
 - See also: [templates](/docs/layouts/latex/templates)
+
+### PaperSize
+
+A union type for all possible LaTeX paper size options.
+
+**Validation Rules:**
+
+- Must be one of: `a4`, `letter`
 
 ### LatexFontSize
 

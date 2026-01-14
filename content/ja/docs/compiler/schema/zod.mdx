@@ -249,9 +249,18 @@ HTML レイアウト設定を検証します。
 | 属性          | タイプ                                                  | 必須 |
 | ------------- | ----------------------------------------------------- | -------- |
 | `engine`      | `'html'`                                              | ✅       |
+| `advanced?`   | [`HtmlAdvancedSchema`](#htmladvancedschema)           | ⬜       |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       |
 | `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜       |
 | `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜       |
+
+##### HtmlAdvancedSchema
+
+高度な HTML レイアウト設定を検証します。
+
+| 属性         | タイプ      | 必須 | 検証ルール |
+| ------------ | --------- | -------- | ---------- |
+| `showIcons?` | `boolean` | ⬜       | true/false |
 
 ##### HtmlTemplateSchema
 
@@ -289,15 +298,17 @@ LaTeX の高度な設定オプションを検証します。
 | 属性        | タイプ                                 | 必須 | 検証ルール                                                             |
 | ----------- | ------------------------------------ | -------- | -------------------------------------------------------------------------------- |
 | `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜       | 事前定義された[fontspec 数字オプション](#fontspecnumbers) からである必要があります |
+| `showIcons?` | `boolean`                            | ⬜       | true/false                                                                       |
 
 ##### LatexPageSchema
 
 文書プレゼンテーションのページレベル設定を検証します。
 
-| 属性               | タイプ                  | 必須 | 検証ルール                 |
-| ------------------ | --------------------- | -------- | ------------------------------------ |
+| 属性               | タイプ                   | 必須 | 検証ルール                 |
+| ------------------ | ---------------------- | -------- | ------------------------------------ |
 | `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜       | [マージンスキーマ](#marginsschema) を参照 |
-| `showPageNumbers?` | `boolean`             | ⬜       | true/false                           |
+| `paperSize?`       | [`PaperSize`](#papersize) | ⬜       | 事前定義された[用紙サイズオプション](#papersize) からである必要があります |
+| `showPageNumbers?` | `boolean`              | ⬜       | true/false                           |
 
 ##### LatexTypographySchema
 
@@ -507,3 +518,11 @@ Markdown レイアウト設定を検証します。
 
 - 以下のいずれかである必要があります：`10pt`、`11pt`、`12pt`
 - `10pt` がデフォルトフォントサイズです
+
+### PaperSize
+
+すべての可能な LaTeX 用紙サイズオプションのユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：`a4`、`letter`
