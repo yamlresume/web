@@ -1,0 +1,124 @@
+---
+title: "YAMLResume v0.10 : Modèle VS Code et Support du Néerlandais"
+description:
+  "YAMLResume v0.10 apporte un modèle HTML VS Code axé sur les développeurs,
+  le support de la langue néerlandaise, des contrôles de taille de papier et
+  plus d'options de personnalisation."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-01-14
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+Nous sommes ravis d'annoncer la sortie de
+[YAMLResume v0.10](https://github.com/yamlresume/yamlresume/releases/tag/v0.10.0).
+Cette version se concentre sur l'expansion de notre écosystème de mises en page
+avec un thème favori des développeurs, l'élargissement de notre support
+international et l'ajout d'un contrôle précis sur le formatage des documents.
+
+## Nouveau Modèle HTML : VS Code
+
+Pour les développeurs, votre éditeur de code est votre maison. Désormais, votre
+CV peut être tout aussi familier. Nous avons introduit un nouveau [modèle VS
+Code](/docs/layouts/html/templates/vscode) pour le moteur HTML, avec un thème
+sombre inspiré de la palette de couleurs "Dark+" de Visual Studio Code.
+
+![Modèle VS Code YAMLResume](/static/images/docs/layouts/html/templates/vscode.webp)
+
+Il présente une esthétique de coloration syntaxique—traitant votre nom comme une
+classe, vos compétences comme des objets et votre expérience comme des
+fonctions. Pour l'utiliser, mettez simplement à jour votre configuration de
+mise en page :
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    template: vscode  #[!code highlight]
+```
+
+Ce modèle est parfait pour les ingénieurs logiciel, les professionnels devops
+et tous ceux qui souhaitent signaler immédiatement leurs racines techniques.
+
+## Support de la Langue Néerlandaise
+
+YAMLResume continue de croître à l'échelle mondiale. Grâce à la contribution de
+[MattiaPun](https://github.com/MattiaPun), nous supportons désormais le
+[néerlandais (nl)](/docs/locale/dutch) !
+
+Cela porte notre nombre de langues supportées à six :
+
+- [Anglais (en)](/docs/locale/english)
+- [Chinois (zh)](/docs/locale/chinese)
+- [Espagnol (es)](/docs/locale/spanish)
+- [Français (fr)](/docs/locale/french)
+- [Norvégien (no)](/docs/locale/norwegian)
+- [Néerlandais (nl)](/docs/locale/dutch)
+
+Pour générer votre CV en néerlandais, définissez la langue dans votre
+`resume.yml` :
+
+```yml lineNumbers
+locale:
+  language: nl
+```
+
+Cela traduira automatiquement les en-têtes de section (par exemple,
+"Werkervaring", "Opleidingen"), les formats de date et les noms de pays.
+
+## Support de la Taille de Papier LaTeX
+
+Nous avons ajouté un contrôle explicite sur les tailles de papier pour le
+moteur LaTeX/PDF. Alors que l'A4 est la norme dans de nombreuses régions du
+monde, le format US Letter est essentiel pour l'Amérique du Nord.
+
+Vous pouvez désormais spécifier votre taille de papier préférée directement
+dans la configuration :
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    page:
+      # Options : 'a4' (par défaut) ou 'letter'
+      paperSize: letter   #[!code highlight]
+```
+
+Cela garantit que votre CV au format PDF s'imprime parfaitement, quelle que
+soit votre région. Un grand merci à [djryanj](https://github.com/djryanj) pour
+avoir porté cette fonctionnalité !
+
+## Activer/Désactiver les Icônes
+
+Parfois, moins c'est mieux. Bien que les icônes ajoutent un attrait visuel,
+certains contextes formels ou axés sur les ATS peuvent nécessiter une
+présentation textuelle plus stricte.
+
+Nous avons introduit une option `showIcons` sous les paramètres `advanced` pour
+les moteurs HTML et LaTeX. Cela vous donne la possibilité d'activer ou de
+désactiver les icônes pour les coordonnées et les profils sociaux.
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    advanced:
+      showIcons: false  #[!code highlight]
+  - engine: latex
+    advanced:
+      showIcons: false  #[!code highlight]
+```
+
+## Conclusion
+
+YAMLResume v0.10 vise à vous donner plus de choix—de l'apparence de votre CV à
+son adaptation à vos normes locales.
+
+Mettez à jour dès aujourd'hui pour explorer les nouvelles fonctionnalités :
+
+```console
+$ npm install -g yamlresume@latest
+# ou
+$ brew upgrade yamlresume
+```
+
+Comme toujours, nous apprécions vos commentaires et contributions sur
+[GitHub](https://github.com/yamlresume/yamlresume). Bonne création !

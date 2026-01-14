@@ -1,0 +1,118 @@
+---
+title: "YAMLResume v0.10: VS Code Template & Dutch Support"
+description:
+  "YAMLResume v0.10 brings a developer-focused VS Code HTML template, Dutch
+  language support, paper size controls, and more customization options."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-01-14
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+We are thrilled to announce the release of
+[YAMLResume v0.10](https://github.com/yamlresume/yamlresume/releases/tag/v0.10.0).
+This release focuses on expanding our layout ecosystem with a developer-favorite
+theme, broadening our international support, and adding fine-grained control
+over document formatting.
+
+## New HTML Template: VS Code
+
+For developers, your code editor is your home. Now your resume can feel just as
+familiar. We've introduced a new [VS Code
+template](/docs/layouts/html/templates/vscode) for the HTML engine, featuring a
+dark theme inspired by the "Dark+" color scheme of Visual Studio Code.
+
+![YAMLResume VS Code Template](/static/images/docs/layouts/html/templates/vscode.webp)
+
+It features syntax-highlighting aesthetics—treating your name like a class, your
+skills like objects, and your experience like functions. To use it, simply
+update your layout configuration:
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    template: vscode  #[!code highlight]
+```
+
+This template is perfect for software engineers, devops professionals, and
+anyone who wants to signal their technical roots immediately.
+
+## Dutch Language Support
+
+YAMLResume continues to grow globally. Thanks to the contribution from
+[MattiaPun](https://github.com/MattiaPun), we now support [Dutch
+(nl)](/docs/locale/dutch)!
+
+This brings our supported languages count to six:
+
+- [English (en)](/docs/locale/english)
+- [Chinese (zh)](/docs/locale/chinese)
+- [Spanish (es)](/docs/locale/spanish)
+- [French (fr)](/docs/locale/french)
+- [Norwegian (no)](/docs/locale/norwegian)
+- [Dutch (nl)](/docs/locale/dutch)
+
+To generate your resume in Dutch, set the locale in your `resume.yml`:
+
+```yml lineNumbers
+locale:
+  language: nl
+```
+
+This will automatically translate section headers (e.g., "Werkervaring",
+"Opleidingen"), date formats, and country names.
+
+## LaTeX Paper Size Support
+
+We've added explicit control over paper sizes for the LaTeX/PDF engine. While A4
+is the standard in many parts of the world, US Letter is essential for North
+America.
+
+You can now specify your preferred paper size directly in the configuration:
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    page:
+      # Options: 'a4' (default) or 'letter'
+      paperSize: letter   #[!code highlight]
+```
+
+This ensures your PDF resume prints perfectly regardless of your region. Special
+thanks to [djryanj](https://github.com/djryanj) for driving this feature!
+
+## Toggle Icons
+
+Sometimes less is more. While icons add visual flair, certain formal or
+ATS-focused contexts might require a stricter text-only presentation.
+
+We've introduced a `showIcons` option under the `advanced` settings for both HTML
+and LaTeX engines. This gives you the flexibility to toggle icons for contact
+details and social profiles on or off.
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    advanced:
+      showIcons: false  #[!code highlight]
+  - engine: latex
+    advanced:
+      showIcons: false  #[!code highlight]
+```
+
+## Conclusion
+
+YAMLResume v0.10 is about giving you more choices—from how your resume looks to
+how it fits your local standards.
+
+Upgrade today to explore the new features:
+
+```console
+$ npm install -g yamlresume@latest
+# or
+$ brew upgrade yamlresume
+```
+
+As always, we welcome your feedback and contributions on
+[GitHub](https://github.com/yamlresume/yamlresume). Happy building!

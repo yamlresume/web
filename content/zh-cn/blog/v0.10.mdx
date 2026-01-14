@@ -1,0 +1,95 @@
+---
+title: "YAMLResume v0.10: VS Code 模板与荷兰语支持"
+description: "YAMLResume v0.10 带来了面向开发者的 VS Code HTML 模板、荷兰语支持、纸张大小控制以及更多自定义选项。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-01-14
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+我们很高兴地宣布 [YAMLResume v0.10](https://github.com/yamlresume/yamlresume/releases/tag/v0.10.0) 正式发布。此版本专注于通过开发者最爱的主题扩展我们的布局生态系统，扩大我们的国际化支持，并增加对文档格式的精细控制。
+
+## 新 HTML 模板: VS Code
+
+对于开发者来说，代码编辑器就是你的家。现在，你的简历也可以让你感到同样亲切。我们为 HTML 引擎推出了一款全新的 [VS Code 模板](/docs/layouts/html/templates/vscode)，其深色主题灵感源自 Visual Studio Code 的 "Dark+" 配色方案。
+
+![YAMLResume VS Code 模板](/static/images/docs/layouts/html/templates/vscode.webp)
+
+它的特点是采用语法高亮美学——将你的姓名视为类（class），将你的技能视为对象（object），将你的经历视为函数（function）。要使用它，只需更新你的布局配置：
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    template: vscode  #[!code highlight]
+```
+
+这款模板非常适合软件工程师、DevOps 专业人士以及任何想要立即展现其技术背景的人。
+
+## 荷兰语支持
+
+YAMLResume 在全球范围内持续发展。感谢 [MattiaPun](https://github.com/MattiaPun) 的贡献，我们现在支持 [荷兰语 (nl)](/docs/locale/dutch)！
+
+这使我们支持的语言数量达到了六种：
+
+- [英语 (en)](/docs/locale/english)
+- [中文 (zh)](/docs/locale/chinese)
+- [西班牙语 (es)](/docs/locale/spanish)
+- [法语 (fr)](/docs/locale/french)
+- [挪威语 (no)](/docs/locale/norwegian)
+- [荷兰语 (nl)](/docs/locale/dutch)
+
+要生成荷兰语简历，请在你的 `resume.yml` 中设置语言：
+
+```yml lineNumbers
+locale:
+  language: nl
+```
+
+这将自动翻译章节标题（例如 "Werkervaring"、"Opleidingen"）、日期格式和国家名称。
+
+## LaTeX 纸张大小支持
+
+我们为 LaTeX/PDF 引擎增加了对纸张大小的显式控制。虽然 A4 是世界许多地区的标准，但 US Letter 对于北美地区至关重要。
+
+你现在可以直接在配置中指定首选的纸张大小：
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    page:
+      # 选项: 'a4' (默认) 或 'letter'
+      paperSize: letter   #[!code highlight]
+```
+
+这确保了无论你身处哪个地区，你的 PDF 简历都能完美打印。特别感谢 [djryanj](https://github.com/djryanj) 推动了这一功能的实现！
+
+## 开关图标
+
+有时少即是多。虽然图标可以增加视觉吸引力，但在某些正式场景或针对 ATS（候选人跟踪系统）的语境下，可能需要更严格的纯文本展示。
+
+我们在 HTML 和 LaTeX 引擎的 `advanced` 设置下引入了 `showIcons` 选项。这让你能够灵活地开启或关闭联系信息和社交主页的图标。
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    advanced:
+      showIcons: false  #[!code highlight]
+  - engine: latex
+    advanced:
+      showIcons: false  #[!code highlight]
+```
+
+## 结语
+
+YAMLResume v0.10 旨在为你提供更多选择——从简历的外观到如何符合你当地的标准。
+
+今天就升级以探索新功能：
+
+```console
+$ npm install -g yamlresume@latest
+# 或者
+$ brew upgrade yamlresume
+```
+
+一如既往，我们欢迎你在 [GitHub](https://github.com/yamlresume/yamlresume) 上提出建议和贡献。祝简历制作愉快！

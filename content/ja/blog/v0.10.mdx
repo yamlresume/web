@@ -1,0 +1,95 @@
+---
+title: "YAMLResume v0.10: VS Code テンプレートとオランダ語サポート"
+description: "YAMLResume v0.10 では、開発者向けの VS Code HTML テンプレート、オランダ語のサポート、用紙サイズの制御、およびさらなるカスタマイズオプションが導入されました。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-01-14
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+[YAMLResume v0.10](https://github.com/yamlresume/yamlresume/releases/tag/v0.10.0) のリリースをお知らせできることを嬉しく思います。このリリースでは、開発者に人気のテーマによるレイアウトエコシステムの拡張、国際的なサポートの拡大、およびドキュメント形式のきめ細かな制御の追加に焦点を当てています。
+
+## 新しい HTML テンプレート: VS Code
+
+開発者にとって、コードエディタは自宅のようなものです。これからは、履歴書も同じように親しみやすいものになります。HTML エンジン向けに新しく [VS Code テンプレート](/docs/layouts/html/templates/vscode) を導入しました。これは、Visual Studio Code の "Dark+" カラースキームにインスパイアされたダークテーマを特徴としています。
+
+![YAMLResume VS Code テンプレート](/static/images/docs/layouts/html/templates/vscode.webp)
+
+名前をクラス、スキルをオブジェクト、経験を関数の形にするなど、シンタックスハイライトの美学を取り入れています。使用するには、レイアウト設定を更新するだけです：
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    template: vscode  #[!code highlight]
+```
+
+このテンプレートは、ソフトウェアエンジニア、DevOps プロフェッショナル、および自分の技術的なルーツをすぐにアピールしたいすべての人に最適です。
+
+## オランダ語サポート
+
+YAMLResume は世界中で成長を続けています。[MattiaPun](https://github.com/MattiaPun) 氏の貢献により、[オランダ語 (nl)](/docs/locale/dutch) をサポートしました！
+
+これにより、サポートされている言語は 6 つになりました：
+
+- [英語 (en)](/docs/locale/english)
+- [中国語 (zh)](/docs/locale/chinese)
+- [スペイン語 (es)](/docs/locale/spanish)
+- [フランス語 (fr)](/docs/locale/french)
+- [ノルウェー語 (no)](/docs/locale/norwegian)
+- [オランダ語 (nl)](/docs/locale/dutch)
+
+オランダ語で履歴書を生成するには、`resume.yml` でロケールを設定します：
+
+```yml lineNumbers
+locale:
+  language: nl
+```
+
+これにより、セクションヘッダー（例：「Werkervaring」、「Opleidingen」）、日付形式、および国名が自動的に翻訳されます。
+
+## LaTeX 用紙サイズのサポート
+
+LaTeX/PDF エンジンで用紙サイズを明示的に制御できるようになりました。世界の多くの地域では A4 が標準ですが、北米では US Letter が不可欠です。
+
+設定で直接、好みの用紙サイズを指定できるようになりました：
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    page:
+      # オプション：'a4' (デフォルト) または 'letter'
+      paperSize: letter   #[!code highlight]
+```
+
+これにより、お住まいの地域に関係なく、PDF 履歴書が完璧に印刷されます。この機能を推進してくれた [djryanj](https://github.com/djryanj) 氏に感謝します！
+
+## アイコンの切り替え
+
+時には「少ないほど豊か」なこともあります。アイコンは視覚的な華やかさを添えますが、特定のフォーマルな場面や ATS（採用管理システム）向けの文脈では、テキストのみの厳格なプレゼンテーションが必要になる場合があります。
+
+HTML エンジンと LaTeX エンジンの両方の `advanced` 設定に `showIcons` オプションを導入しました。これにより、連絡先の詳細やソーシャルプロフィールのアイコンの表示・非表示を柔軟に切り替えることができます。
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    advanced:
+      showIcons: false  #[!code highlight]
+  - engine: latex
+    advanced:
+      showIcons: false  #[!code highlight]
+```
+
+## 結論
+
+YAMLResume v0.10 は、履歴書の見栄えから地域の基準への適合まで、より多くの選択肢を提供することを目的としています。
+
+今すぐアップグレードして新機能を試してみてください：
+
+```console
+$ npm install -g yamlresume@latest
+# または
+$ brew upgrade yamlresume
+```
+
+いつものように、[GitHub](https://github.com/yamlresume/yamlresume) でのフィードバックや貢献を歓迎します。Happy building!

@@ -1,0 +1,123 @@
+---
+title: "YAMLResume v0.10: Plantilla de VS Code y Soporte para Holandés"
+description:
+  "YAMLResume v0.10 trae una plantilla HTML de VS Code enfocada en
+  desarrolladores, soporte para el idioma holandés, controles de tamaño de
+  papel y más opciones de personalización."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-01-14
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+Estamos encantados de anunciar el lanzamiento de
+[YAMLResume v0.10](https://github.com/yamlresume/yamlresume/releases/tag/v0.10.0).
+Esta versión se centra en expandir nuestro ecosistema de diseños con un tema
+favorito de los desarrolladores, ampliar nuestro soporte internacional y añadir
+un control preciso sobre el formato del documento.
+
+## Nueva Plantilla HTML: VS Code
+
+Para los desarrolladores, su editor de código es su hogar. Ahora su currículum
+puede sentirse igual de familiar. Hemos introducido una nueva [plantilla de VS
+Code](/docs/layouts/html/templates/vscode) para el motor HTML, con un tema
+oscuro inspirado en el esquema de colores "Dark+" de Visual Studio Code.
+
+![Plantilla VS Code de YAMLResume](/static/images/docs/layouts/html/templates/vscode.webp)
+
+Presenta una estética de resaltado de sintaxis, tratando su nombre como una
+clase, sus habilidades como objetos y su experiencia como funciones. Para
+usarla, simplemente actualice su configuración de diseño:
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    template: vscode  #[!code highlight]
+```
+
+Esta plantilla es perfecta para ingenieros de software, profesionales de devops
+y cualquiera que quiera señalar sus raíces técnicas de inmediato.
+
+## Soporte para el Idioma Holandés
+
+YAMLResume sigue creciendo globalmente. Gracias a la contribución de
+[MattiaPun](https://github.com/MattiaPun), ¡ahora soportamos [holandés
+(nl)](/docs/locale/dutch)!
+
+Esto eleva nuestro número de idiomas soportados a seis:
+
+- [Inglés (en)](/docs/locale/english)
+- [Chino (zh)](/docs/locale/chinese)
+- [Español (es)](/docs/locale/spanish)
+- [Francés (fr)](/docs/locale/french)
+- [Noruego (no)](/docs/locale/norwegian)
+- [Holandés (nl)](/docs/locale/dutch)
+
+Para generar su currículum en holandés, configure el idioma en su `resume.yml`:
+
+```yml lineNumbers
+locale:
+  language: nl
+```
+
+Esto traducirá automáticamente los encabezados de las secciones (por ejemplo,
+"Werkervaring", "Opleidingen"), los formatos de fecha y los nombres de los
+países.
+
+## Soporte de Tamaño de Papel para LaTeX
+
+Hemos añadido un control explícito sobre los tamaños de papel para el motor
+LaTeX/PDF. Mientras que el A4 es el estándar en muchas partes del mundo, el US
+Letter es esencial para América del Norte.
+
+Ahora puede especificar su tamaño de papel preferido directamente en la
+configuración:
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    page:
+      # Opciones: 'a4' (predeterminado) o 'letter'
+      paperSize: letter   #[!code highlight]
+```
+
+Esto asegura que su currículum en PDF se imprima perfectamente sin importar su
+región. ¡Un agradecimiento especial a [djryanj](https://github.com/djryanj) por
+impulsar esta función!
+
+## Alternar Iconos
+
+A veces, menos es más. Aunque los iconos añaden un toque visual, ciertos
+contextos formales o enfocados en ATS podrían requerir una presentación más
+estricta de solo texto.
+
+Hemos introducido una opción `showIcons` bajo los ajustes `advanced` tanto para
+el motor HTML como para el LaTeX. Esto le da la flexibilidad de activar o
+desactivar los iconos para los detalles de contacto y los perfiles sociales.
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    advanced:
+      showIcons: false  #[!code highlight]
+  - engine: latex
+    advanced:
+      showIcons: false  #[!code highlight]
+```
+
+## Conclusión
+
+YAMLResume v0.10 se trata de darle más opciones, desde cómo se ve su currículum
+hasta cómo se adapta a sus estándares locales.
+
+Actualice hoy para explorar las nuevas funciones:
+
+```console
+$ npm install -g yamlresume@latest
+# o
+$ brew upgrade yamlresume
+```
+
+Como siempre, agradecemos sus comentarios y contribuciones en
+[GitHub](https://github.com/yamlresume/yamlresume). ¡Feliz creación!
