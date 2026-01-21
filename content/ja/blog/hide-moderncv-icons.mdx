@@ -1,0 +1,95 @@
+---
+title: "moderncvのアイコンを隠す方法"
+description:
+  "moderncvがFont Awesomeのアイコンをどう使い、\\renewcommandで無効化するかを解説します。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-01-21
+---
+
+[LaTeX](https://www.latex-project.org/)でPDF履歴書を作成する際、小さな見た目の要素が全体の印象を大きく左右します。[`moderncv`](https://ctan.org/pkg/moderncv)クラスは連絡先項目（電話、メール、ホームページなど）の横にアイコンを表示し、見栄えの良いヘッダーを作れますが、誰もがアイコンを使いたいわけではありません。よりミニマルな見た目を好む人もいれば、ピクトグラムを禁止する企業テンプレートに合わせる必要がある人もいます。この記事では、`moderncv`とは何か、使用しているアイコンライブラリ、アイコンを非表示にする方法、そしてそれを可能にするLaTeXの`\renewcommand`マクロについて解説します。
+
+## 1. moderncvとは？
+
+[`moderncv`](https://ctan.org/pkg/moderncv)は、履歴書や職務経歴書のために設計されたLaTeXドキュメントクラスです。名前、肩書き、連絡先、セクション見出し、職歴・学歴のエントリなど、履歴書で頻出する要素を整形するための高レベルなマクロと、統一感のあるプロフェッショナルなレイアウトを提供します。素のLaTeXに比べて、`moderncv`は`banking`や`classic`、`casual`といったスタイルを備え、1ページの履歴書に適した視覚的な階層を標準で用意しています。
+
+`moderncv`のヘッダーは次のように書きます。
+
+```latex
+\name{}{Andy Dufresne}
+\title{Software Engineer}
+\phone[mobile]{+1 555 123 456}
+\email{jane@example.com}
+\homepage{https://example.com}
+```
+
+クラスはこれらのコマンドを解釈して整ったヘッダーを生成します。既定では各項目にアイコンも表示され、連絡先情報を視認しやすくします。
+
+## 2. moderncvが使うアイコンライブラリは？
+
+`moderncv`は[`fontawesome5`](https://ctan.org/pkg/fontawesome5)パッケージでアイコンを提供します。[Font Awesome](https://fontawesome.com/)は有名なアイコンセットで、`fontawesome5`は`\faEnvelope`、`\faMobileAlt`、`\faGlobe`などのコマンドとしてLaTeXから利用できます。`moderncv`では、これらのアイコンを`\emailsymbol`や`\homepagesymbol`といった「シンボル」マクロに紐づけています。`\email{...}`や`\homepage{...}`を呼ぶと、対応するシンボルマクロが前置され、Font Awesomeのグリフが表示されます。
+
+アイコンはシンボルマクロ経由で出力されるため、連絡先の内容を変えずにアイコンだけ置き換えたり削除したりできます。つまり、内容と装飾が分離されているので、いくつかの再定義だけでミニマルなスタイルにできます。
+
+## 3. moderncvのアイコンを隠す方法
+
+最も簡潔な方法は、シンボルマクロを空文字列に再定義することです。LaTeXの`\renewcommand`は既存のマクロを新しい挙動で置き換えます。`moderncv`の各シンボルマクロを空にすれば、ラベルは残り、アイコンだけが消えます。
+
+`moderncv`を読み込んだ後のプリアンブルに、次の最小スニペットを追加してください。
+
+```latex
+% disable icons
+\renewcommand*{\addresssymbol}{}
+\renewcommand*{\mobilephonesymbol}{}
+\renewcommand*{\fixedphonesymbol}{}
+\renewcommand*{\faxphonesymbol}{}
+\renewcommand*{\emailsymbol}{}
+\renewcommand*{\homepagesymbol}{}
+```
+
+この方法は[YAMLResume](https://yamlresume.dev/)の`moderncv`レンダラーでも採用されています。YAMLResumeの[v0.10](/ja/blog/v0.10)では、LaTeXのプリアンブルが`advanced`配下の`showIcons`オプションが`false`のときに、これらの`\renewcommand*`行を[任意で挿入](https://github.com/yamlresume/yamlresume/commit/b53f73d9b4b04bf04b90236ef01da56062f8ca1f)します。つまり、履歴書の内容を触らずにPDF出力のアイコン表示を切り替えられるわけです。
+
+アイコンなしのmoderncv履歴書は次のとおりです。
+
+![アイコンなしのmoderncv履歴書](/static/images/blog/hide-moderncv-icons/hide-icons-resume.png)
+
+該当するLaTeXブロックは次のとおりです。
+
+YAMLResumeを使う場合は、レイアウト設定で制御してレンダラーに自動挿入させられます。手書きのLaTeXなら、プリアンブルにこのスニペットを貼るだけです。どちらでも結果は同じで、ヘッダーのテキストは残り、アイコンだけが消えます。
+
+### 仕組み
+
+`moderncv`は各アイコンに対応するマクロを定義しています。例えば`\emailsymbol`はメールアイコンを表示するためのものです。これを`{}`に再定義すると、LaTeXは展開しますが、出力するものがなくなります。つまり、メール自体を消すのではなく、前に付く装飾だけを消しています。
+
+### 追加のヒント：SNSアイコンを隠す
+
+カスタム行で`\faGithub`や`\faTwitter`を直接使っている場合は、コマンドを呼ばなければアイコンは出ません。YAMLResumeのレンダラーでは、SNSプロフィールにFont Awesomeのグリフを付ける前に`showIcons`フラグを確認しています。やり方は同じで、`\href`の内容は残し、アイコンのプレフィックスだけを省略します。
+
+## 4. \renewcommandマクロとは？
+
+LaTeXはマクロでコマンドの動作を定義します。`\newcommand`は新しいコマンドを作り、`\renewcommand`は既存のコマンドを再定義します。つまり「このコマンドを新しい実装で上書きする」という意味です。
+
+書式は次のとおりです。
+
+```latex
+\renewcommand{\commandname}{replacement}
+```
+
+`\renewcommand*`のスター付き版も同様に動きますが、置き換えテキスト内で段落区切りを許可しない点が異なります。`\emailsymbol`のような短いシンボルマクロでは大きな違いはありませんが、クラスやテンプレートでよく使われます。
+
+`moderncv`ではアイコンマクロがすでに定義されているため、`\newcommand`ではなく`\renewcommand`を使う必要があります。既存マクロに`\newcommand`を使うとLaTeXがエラーを出すため、パッチでは次のように書かれています。
+
+```latex
+\renewcommand*{\emailsymbol}{}
+```
+
+これは「`\emailsymbol`の定義を空文字列に置き換える」という意味です。`\email{...}`はそのまま展開されるので、メールアドレスは表示されますが、アイコンは前置されません。
+
+## まとめ
+
+- `moderncv`はCV向けのLaTeXクラスで、構造化されたマクロと整った既定値を提供します。
+- アイコンは`fontawesome5`パッケージで提供され、`\emailsymbol`や`\homepagesymbol`のようなシンボルマクロ経由で表示されます。
+- これらのマクロを`\renewcommand*`で空文字列に再定義すれば、アイコンだけを非表示にできます。
+- `\renewcommand`は既存のマクロを安全に上書きするLaTeXの仕組みです。
+
+テキストだけのミニマルなヘッダーを目指すなら、この方法が最も堅牢です。将来`moderncv`のスタイルを変えたり新しい連絡先を追加したりしても、対応するシンボルマクロを同じように再定義すればOKです。なお、`advanced.showIcons`オプションは[HTML](/ja/docs/layouts/html)エンジンと[LaTeX](/ja/docs/layouts/latex)エンジンの両方で機能します。

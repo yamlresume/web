@@ -1,0 +1,95 @@
+---
+title: "如何在 moderncv 中隐藏图标"
+description:
+  "讲清楚 moderncv 如何使用 Font Awesome 图标，以及如何用 \\renewcommand 关闭它们。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-01-21
+---
+
+使用 [LaTeX](https://www.latex-project.org/) 生成 PDF 简历时，细小的视觉细节会极大影响整体观感。[`moderncv`](https://ctan.org/pkg/moderncv) 类会在联系方式（电话、邮箱、主页等）旁边显示图标，效果很精致，但并不是所有人都希望头部带图标。有的人追求更极简的风格，有的人需要符合不允许图标的公司模板。本文会解释 `moderncv` 是什么、它使用的图标库、如何隐藏图标，以及让这一切成为可能的 LaTeX `\renewcommand` 宏。
+
+## 1. moderncv 是什么？
+
+[`moderncv`](https://ctan.org/pkg/moderncv) 是一个专为简历和履历设计的 LaTeX 文档类。它提供一致、专业的布局，并给出一组高层宏来格式化常见简历元素：姓名、头衔、联系方式、章节标题以及工作与教育条目。相比手写 LaTeX，`moderncv` 自带成熟的布局体系和多种样式（如 `banking`、`classic`、`casual`），视觉层级很适合一页式简历。
+
+一个典型的 `moderncv` 头部写法如下：
+
+```latex
+\name{}{Andy Dufresne}
+\title{Software Engineer}
+\phone[mobile]{+1 555 123 456}
+\email{jane@example.com}
+\homepage{https://example.com}
+```
+
+类文件会把这些命令渲染成整洁的头部。默认情况下，`moderncv` 还会在每个条目前显示图标，让联系方式更容易扫读。
+
+## 2. moderncv 使用的图标库是什么？
+
+`moderncv` 通过 [`fontawesome5`](https://ctan.org/pkg/fontawesome5) 包提供图标支持。[Font Awesome](https://fontawesome.com/) 是常见的图标库，`fontawesome5` 将其暴露为 LaTeX 命令，例如 `\faEnvelope`、`\faMobileAlt`、`\faGlobe`。在 `moderncv` 中，这些图标被封装进“符号”宏里，比如 `\emailsymbol` 和 `\homepagesymbol`。当你调用 `\email{...}` 或 `\homepage{...}` 时，类会先插入对应的符号宏，再显示具体内容。
+
+由于图标被这些符号宏统一管理，你可以在不改动内容的前提下替换或移除图标。也就是说，内容与装饰是分离的，所以只需少量重定义就能获得更清爽的风格。
+
+## 3. 如何在 moderncv 中隐藏图标
+
+最简单的方式是把符号宏重定义为空字符串。LaTeX 的 `\renewcommand` 能让你替换已有宏的行为。如果你把每个 `moderncv` 符号宏都改成空值，文字还在，图标就消失了。
+
+把下面这段最小化代码放在 preamble（加载 `moderncv` 之后）：
+
+```latex
+% disable icons
+\renewcommand*{\addresssymbol}{}
+\renewcommand*{\mobilephonesymbol}{}
+\renewcommand*{\fixedphonesymbol}{}
+\renewcommand*{\faxphonesymbol}{}
+\renewcommand*{\emailsymbol}{}
+\renewcommand*{\homepagesymbol}{}
+```
+
+这正是 [YAMLResume](https://yamlresume.dev/) 的 `moderncv` 渲染器所使用的方案。在 YAMLResume [v0.10](/zh-cn/blog/v0.10) 中，LaTeX preamble 会在 `advanced` 配置下的 `showIcons` 选项为 `false` 时，[按需插入](https://github.com/yamlresume/yamlresume/commit/b53f73d9b4b04bf04b90236ef01da56062f8ca1f) 这些 `\renewcommand*` 行。这样就能在不改简历内容的情况下切换 PDF 输出是否显示图标。
+
+这里是隐藏图标后的 moderncv 简历：
+
+![moderncv 无图标简历](/static/images/blog/hide-moderncv-icons/hide-icons-resume.png)
+
+对应的 LaTeX 块如下：
+
+如果你使用 YAMLResume，可以通过布局配置来控制，让渲染器自动注入这些覆盖规则。如果你手写 LaTeX，直接把代码贴进 preamble 即可。两种方式的结果一致：头部文字保留，图标被隐藏。
+
+### 为什么这样有效
+
+`moderncv` 为每个图标定义了一个宏。比如 `\emailsymbol` 用来显示邮箱图标。当你把它重定义为 `{}` 时，LaTeX 仍会展开这个宏，但不会输出任何内容。你并没有删除邮箱文本，只是去掉了前面的装饰。
+
+### 补充：隐藏社交图标
+
+如果你在自定义行里直接使用 `\faGithub` 或 `\faTwitter`，只要不调用这些命令，图标就不会出现。YAMLResume 的渲染器也是在插入社交图标前检查 `showIcons` 开关。思路一致：保留 `\href` 内容，省略图标前缀。
+
+## 4. 什么是 \renewcommand 宏？
+
+LaTeX 使用宏来定义命令的行为。`\newcommand` 用于创建新命令，而 `\renewcommand` 用于重定义已有命令。可以把它理解为“用新实现覆盖这个命令”。
+
+语法如下：
+
+```latex
+\renewcommand{\commandname}{replacement}
+```
+
+带星号的 `\renewcommand*` 行为类似，但会禁止替换文本中出现段落换行。对于 `\emailsymbol` 这类短宏来说差异不大，但在类文件和模板中很常见。
+
+在 `moderncv` 中，图标宏已经存在，因此必须用 `\renewcommand` 而不是 `\newcommand`。如果用 `\newcommand` 重新定义已存在的宏，LaTeX 会报错，所以补丁里写的是：
+
+```latex
+\renewcommand*{\emailsymbol}{}
+```
+
+这表示“把 `\emailsymbol` 的定义替换为空字符串”。类文件其余部分照常运行，因为 `\email{...}` 仍会正确展开，只是不会再加图标。
+
+## 总结
+
+- `moderncv` 是简历专用的 LaTeX 类，提供结构化宏和专业布局。
+- 它通过 `fontawesome5` 包提供图标，并通过 `\emailsymbol`、`\homepagesymbol` 等符号宏显示。
+- 通过 `\renewcommand*` 将这些符号宏设为空即可隐藏图标。
+- `\renewcommand` 是 LaTeX 用来安全覆盖已有宏的机制。
+
+如果你希望获得极简的纯文本头部，这种方法最稳妥，也很未来可扩展：以后换模板或新增字段时，只要按同样方式重定义对应符号宏即可。顺便说一句，`advanced.showIcons` 选项同时适用于 [HTML](/zh-cn/docs/layouts/html) 和 [LaTeX](/zh-cn/docs/layouts/latex) 引擎。

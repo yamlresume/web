@@ -1,0 +1,95 @@
+---
+title: "如何在 moderncv 中隱藏圖示"
+description:
+  "說明 moderncv 如何使用 Font Awesome 圖示，以及如何用 \\renewcommand 關閉它們。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-01-21
+---
+
+使用 [LaTeX](https://www.latex-project.org/) 產生 PDF 履歷時，細微的視覺細節會大幅影響整體觀感。[`moderncv`](https://ctan.org/pkg/moderncv) 類別會在聯絡方式（電話、郵件、網站等）旁顯示圖示，效果很精緻，但並非每個人都想要圖示。有些人偏好更極簡的風格，有些人需要符合不允許圖示的公司模板。本文會說明 `moderncv` 是什麼、使用的圖示庫、如何隱藏圖示，以及讓這一切成為可能的 LaTeX `\renewcommand` 巨集。
+
+## 1. moderncv 是什麼？
+
+[`moderncv`](https://ctan.org/pkg/moderncv) 是專為履歷設計的 LaTeX 文件類別。它提供一致、專業的版面，並提供一組高層級巨集來格式化常見履歷元素：姓名、頭銜、聯絡方式、章節標題以及工作與教育條目。相較於直接撰寫 LaTeX，`moderncv` 內建成熟的版面系統與多種樣式（如 `banking`、`classic`、`casual`），視覺層級非常適合單頁履歷。
+
+典型的 `moderncv` 標頭寫法如下：
+
+```latex
+\name{}{Andy Dufresne}
+\title{Software Engineer}
+\phone[mobile]{+1 555 123 456}
+\email{jane@example.com}
+\homepage{https://example.com}
+```
+
+類別會將這些命令渲染成整齊的標頭。預設情況下，`moderncv` 還會在每個項目前顯示圖示，讓聯絡資訊更容易被掃視。
+
+## 2. moderncv 使用的圖示庫是什麼？
+
+`moderncv` 透過 [`fontawesome5`](https://ctan.org/pkg/fontawesome5) 套件提供圖示支援。[Font Awesome](https://fontawesome.com/) 是常見的圖示庫，`fontawesome5` 將其暴露為 LaTeX 命令，例如 `\faEnvelope`、`\faMobileAlt`、`\faGlobe`。在 `moderncv` 中，這些圖示被封裝成「符號」巨集，例如 `\emailsymbol` 與 `\homepagesymbol`。當你呼叫 `\email{...}` 或 `\homepage{...}` 時，類別會先插入對應的符號巨集，再顯示內容。
+
+由於圖示是透過這些符號巨集輸出，你可以在不動內容的前提下替換或移除圖示。這代表內容與裝飾是分離的，所以只要少量重定義就能得到更清爽的風格。
+
+## 3. 如何在 moderncv 中隱藏圖示
+
+最乾淨的方式是把符號巨集重定義為空字串。LaTeX 的 `\renewcommand` 可以讓你替換既有巨集的行為。只要把每個 `moderncv` 符號巨集設為空值，文字仍會保留，圖示就會消失。
+
+把下面這段最小範例放在 preamble（載入 `moderncv` 之後）：
+
+```latex
+% disable icons
+\renewcommand*{\addresssymbol}{}
+\renewcommand*{\mobilephonesymbol}{}
+\renewcommand*{\fixedphonesymbol}{}
+\renewcommand*{\faxphonesymbol}{}
+\renewcommand*{\emailsymbol}{}
+\renewcommand*{\homepagesymbol}{}
+```
+
+這正是 [YAMLResume](https://yamlresume.dev/) 的 `moderncv` 渲染器所採用的作法。在 YAMLResume [v0.10](/zh-tw/blog/v0.10) 中，LaTeX preamble 會在 `advanced` 設定下的 `showIcons` 選項為 `false` 時，[按需插入](https://github.com/yamlresume/yamlresume/commit/b53f73d9b4b04bf04b90236ef01da56062f8ca1f) 這些 `\renewcommand*` 行。這表示你可以不改履歷內容就切換 PDF 輸出是否顯示圖示。
+
+這裡是隱藏圖示後的 moderncv 履歷：
+
+![moderncv 無圖示履歷](/static/images/blog/hide-moderncv-icons/hide-icons-resume.png)
+
+對應的 LaTeX 區塊如下：
+
+如果你使用 YAMLResume，可以透過版面設定控制，讓渲染器自動注入這些覆寫規則。如果你手寫 LaTeX，只要把片段貼進 preamble 即可。兩種方式結果一致：標頭文字保留，圖示被隱藏。
+
+### 為什麼有效
+
+`moderncv` 為每個圖示都定義了對應的巨集。例如 `\emailsymbol` 用於顯示郵件圖示。當你把它重定義為 `{}` 時，LaTeX 仍會展開它，但不會輸出任何內容。你沒有刪除郵件本身，只是移除了前方的裝飾。
+
+### 補充：隱藏社群圖示
+
+如果你在自訂欄位中直接使用 `\faGithub` 或 `\faTwitter`，只要不呼叫這些命令就不會顯示圖示。YAMLResume 的渲染器則是在插入社群圖示前檢查 `showIcons` 開關。做法相同：保留 `\href` 內容，省略圖示前綴。
+
+## 4. 什麼是 \renewcommand 巨集？
+
+LaTeX 以巨集定義命令的行為。`\newcommand` 用來建立新命令，而 `\renewcommand` 用來重定義既有命令。可以理解為「用新的實作覆寫這個命令」。
+
+語法如下：
+
+```latex
+\renewcommand{\commandname}{replacement}
+```
+
+帶星號的 `\renewcommand*` 行為類似，但會禁止替換文字中出現段落換行。對於 `\emailsymbol` 這類短巨集來說差異不大，但在類別與模板中很常見。
+
+在 `moderncv` 中，圖示巨集已經存在，因此必須使用 `\renewcommand` 而不是 `\newcommand`。如果用 `\newcommand` 重新定義既有巨集，LaTeX 會報錯，所以補丁才會這樣寫：
+
+```latex
+\renewcommand*{\emailsymbol}{}
+```
+
+這行的意思是「把 `\emailsymbol` 的定義替換成空字串」。其餘類別仍正常運作，因為 `\email{...}` 仍然會正確展開，只是前面不再顯示圖示。
+
+## 總結
+
+- `moderncv` 是履歷專用的 LaTeX 類別，提供結構化巨集與專業版面。
+- 它透過 `fontawesome5` 套件提供圖示，並用 `\emailsymbol`、`\homepagesymbol` 等符號巨集顯示。
+- 使用 `\renewcommand*` 將符號巨集設為空字串即可隱藏圖示。
+- `\renewcommand` 是 LaTeX 用來安全覆寫既有巨集的機制。
+
+如果你想要極簡、純文字的標頭，這種方法最可靠，而且具備未來相容性：日後更換樣式或新增欄位時，只要重定義相對應的符號巨集即可。另外，`advanced.showIcons` 選項同時適用於 [HTML](/zh-tw/docs/layouts/html) 與 [LaTeX](/zh-tw/docs/layouts/latex) 引擎。

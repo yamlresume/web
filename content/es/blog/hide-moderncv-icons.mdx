@@ -1,0 +1,163 @@
+---
+title: "Cómo ocultar iconos en moderncv"
+description:
+  "Cómo moderncv usa los iconos de Font Awesome y cómo desactivarlos con
+  \\renewcommand."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-01-21
+---
+
+Cuando creas un PDF con [LaTeX](https://www.latex-project.org/), los pequeños
+ detalles visuales pesan mucho. La clase
+[`moderncv`](https://ctan.org/pkg/moderncv) añade iconos junto a los campos de
+contacto (teléfono, email, página personal, etc.), lo que queda muy bien, pero
+no todo el mundo quiere iconos en su encabezado. Algunas personas prefieren un
+estilo más limpio y minimalista, o necesitan ajustarse a una plantilla
+corporativa que no permite pictogramas. En este post explicamos qué es
+`moderncv`, qué biblioteca de iconos utiliza, cómo ocultarlos y cómo el macro
+LaTeX `\renewcommand` lo hace posible.
+
+## 1. ¿Qué es moderncv?
+
+[`moderncv`](https://ctan.org/pkg/moderncv) es una clase de documento LaTeX
+pensada específicamente para CVs y currículums. Ofrece un diseño consistente y
+profesional, además de un conjunto de macros de alto nivel para formatear los
+componentes habituales de un currículum: nombre, título, datos de contacto,
+encabezados de sección y entradas de trabajo o educación. En comparación con un
+LaTeX “en crudo”, `moderncv` te da un sistema de maquetación ya preparado con
+varias variantes de estilo (como `banking`, `classic` o `casual`) y una jerarquía
+visual que funciona muy bien en CVs de una página.
+
+Un encabezado típico de `moderncv` podría verse así:
+
+```latex
+\name{}{Andy Dufresne}
+\title{Software Engineer}
+\phone[mobile]{+1 555 123 456}
+\email{jane@example.com}
+\homepage{https://example.com}
+```
+
+La clase toma estos comandos y los renderiza en un encabezado limpio. Por
+defecto, `moderncv` también muestra iconos junto a cada elemento, lo que facilita
+escaneo visual de la información de contacto.
+
+## 2. ¿Qué biblioteca de iconos usa moderncv?
+
+`moderncv` incluye soporte de iconos mediante el paquete
+[`fontawesome5`](https://ctan.org/pkg/fontawesome5). [Font
+Awesome](https://fontawesome.com/) es un set de iconos muy popular, y
+`fontawesome5` lo expone en LaTeX con comandos como `\faEnvelope`,
+`\faMobileAlt` y `\faGlobe`. En `moderncv`, esos iconos se conectan a macros de
+“símbolo” como `\emailsymbol` y `\homepagesymbol`. Cuando llamas a
+`\email{...}` o `\homepage{...}`, la clase antepone el macro de símbolo
+correspondiente, que a su vez usa un glifo de Font Awesome.
+
+Como los iconos están enrutados a través de estos macros, puedes reemplazarlos o
+eliminarlos sin tocar el contenido real de contacto. Este diseño es importante:
+separa contenido y decoración, así que puedes optar por un estilo más limpio con
+unas pocas redefiniciones.
+
+## 3. Cómo ocultar los iconos en moderncv
+
+La forma más limpia de eliminar los iconos es redefinir los macros de símbolo a
+cadenas vacías. En LaTeX, `\renewcommand` te permite reemplazar un macro
+existente con un nuevo comportamiento. Si pones cada símbolo de `moderncv` a
+nada, las etiquetas siguen ahí pero los iconos desaparecen.
+
+Aquí tienes el fragmento mínimo que puedes poner en el preámbulo, después de
+cargar `moderncv`:
+
+```latex
+% disable icons
+\renewcommand*{\addresssymbol}{}
+\renewcommand*{\mobilephonesymbol}{}
+\renewcommand*{\fixedphonesymbol}{}
+\renewcommand*{\faxphonesymbol}{}
+\renewcommand*{\emailsymbol}{}
+\renewcommand*{\homepagesymbol}{}
+```
+
+Este enfoque refleja lo que hace el renderer de `moderncv` en
+[YAMLResume](https://yamlresume.dev/). En YAMLResume
+[v0.10](/es/blog/v0.10), el preámbulo de LaTeX
+[inserta opcionalmente](https://github.com/yamlresume/yamlresume/commit/b53f73d9b4b04bf04b90236ef01da56062f8ca1f)
+exactamente estas líneas de `\renewcommand*` cuando una opción de layout dentro
+de `advanced`, llamada `showIcons`, se establece en `false`. Eso significa que
+la salida PDF puede alternar iconos sin tocar el contenido del currículum.
+
+Aquí tienes el currículum moderncv sin iconos:
+
+![Currículum moderncv sin iconos](/static/images/blog/hide-moderncv-icons/hide-icons-resume.png)
+
+El bloque de LaTeX relevante se ve así:
+
+Si usas YAMLResume, puedes controlar este comportamiento desde la configuración
+de layout y dejar que el renderer inyecte esos overrides automáticamente. Si
+escribes LaTeX a mano, puedes copiar el fragmento en tu preámbulo. En ambos
+casos, el resultado es el mismo: el encabezado mantiene el texto pero pierde los
+pictogramas.
+
+### Por qué funciona
+
+`moderncv` define un conjunto de macros para cada icono. Por ejemplo,
+`\emailsymbol` se usa para mostrar el icono de email. Cuando redefinimos ese
+macro a `{}`, LaTeX lo expande igualmente, pero no imprime nada. No estás
+eliminando el email; solo estás anulando la decoración que lo precede.
+
+### Consejo extra: ocultar iconos sociales
+
+Si añades iconos manualmente en campos personalizados (por ejemplo, usando
+`\faGithub` o `\faTwitter` en una línea custom), también puedes eliminarlos
+simplemente dejando de llamar esos comandos. En el renderer de YAMLResume, esto
+se maneja comprobando un flag `showIcons` antes de insertar los glifos de Font
+Awesome para perfiles sociales. El patrón es el mismo: mantener el contenido del
+`\href` y omitir el prefijo del icono.
+
+## 4. ¿Qué es el macro \renewcommand?
+
+LaTeX usa macros para definir cómo se comportan los comandos. El macro
+`\newcommand` crea un nuevo comando, mientras que `\renewcommand` redefine uno
+existente. Piénsalo como “sobrescribe este comando con una nueva
+implementación”.
+
+La sintaxis es:
+
+```latex
+\renewcommand{\commandname}{replacement}
+```
+
+La versión con asterisco `\renewcommand*` se comporta de forma similar, pero le
+indica a LaTeX que no permita un salto de párrafo en el texto de reemplazo. Para
+macros de símbolo cortos como `\emailsymbol`, el asterisco no cambia mucho, pero
+es común en clases y plantillas.
+
+En `moderncv`, los macros de icono ya están definidos, así que debes usar
+`\renewcommand` en lugar de `\newcommand`. Si intentas redefinir un macro
+existente con `\newcommand`, LaTeX lanzará un error. Por eso el patch usa:
+
+```latex
+\renewcommand*{\emailsymbol}{}
+```
+
+Esta línea dice: “Reemplaza la definición existente de `\emailsymbol` con una
+cadena vacía”. El resto de la clase sigue funcionando, porque `\email{...}` aún
+se expande correctamente; simplemente ya no antepone el icono.
+
+## En resumen
+
+- `moderncv` es una clase de LaTeX para CVs con macros estructurados y buenos
+  defaults.
+- Usa el paquete `fontawesome5` para iconos, expuestos mediante macros como
+  `\emailsymbol` y `\homepagesymbol`.
+- Puedes ocultar los iconos redefiniendo esos macros a cadenas vacías con
+  `\renewcommand*`.
+- `\renewcommand` es el mecanismo de LaTeX para sobrescribir macros existentes.
+
+Si quieres un encabezado minimalista solo con texto, esta técnica es la más
+robusta. Además, es futura: si luego cambias de estilo o añades nuevos campos de
+contacto, puedes mantener el mismo patrón redefiniendo los símbolos
+correspondientes. Y por cierto, esta opción `advanced.showIcons` funciona tanto
+para el motor [HTML](/es/docs/layouts/html) como para el motor
+[LaTeX](/es/docs/layouts/latex).
