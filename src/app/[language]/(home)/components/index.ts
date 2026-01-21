@@ -1,3 +1,4 @@
+export * from './BuyMeACoffeeSection'
 export * from './ComparisonSection'
 export * from './FaqSection'
 export * from './FeaturesSection'

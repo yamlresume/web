@@ -143,6 +143,12 @@ const translations = {
         },
       },
     },
+    buyMeACoffee: {
+      title: 'Like this project?',
+      description:
+        'YAMLResume is a passion project, built to provide free, private, and powerful resume tooling for everyone. If you find it useful, consider supporting its development. Every coffee helps!',
+      button: 'Buy Me a Coffee',
+    },
     blog: {
       title: 'YAMLResume Blog',
     },
@@ -296,6 +302,12 @@ const translations = {
             'LaTeX es el estándar de oro para la composición de documentos profesionales, especialmente en campos académicos y técnicos. Proporciona tipografía superior con kerning, ligaduras e hiphenación adecuados que son difíciles de lograr con HTML/CSS o procesadores de texto. LaTeX sobresale en espaciado consistente, posicionamiento preciso y diseño flexible. Al usar LaTeX como motor de composición subyacente, YAMLResume asegura que tu currículum tenga una apariencia pulida y profesional que se destaque ante reclutadores y gerentes de contratación.',
         },
       },
+    },
+    buyMeACoffee: {
+      title: '¿Te gusta este proyecto?',
+      description:
+        'YAMLResume es un proyecto de pasión, creado para ofrecer herramientas de currículum gratuitas, privadas y potentes para todos. Si te resulta útil, considera apoyar su desarrollo. ¡Cada café ayuda!',
+      button: 'Cómprame un café',
     },
     blog: {
       title: 'Blog de YAMLResume',
@@ -451,6 +463,12 @@ const translations = {
         },
       },
     },
+    buyMeACoffee: {
+      title: 'Vous aimez ce projet ?',
+      description:
+        'YAMLResume est un projet de passion, conçu pour offrir à tous des outils de CV gratuits, privés et puissants. Si vous le trouvez utile, pensez à soutenir son développement. Chaque café compte !',
+      button: 'M’offrir un café',
+    },
     blog: {
       title: 'Blog YAMLResume',
     },
@@ -593,6 +611,12 @@ const translations = {
         },
       },
     },
+    buyMeACoffee: {
+      title: '喜欢这个项目吗？',
+      description:
+        'YAMLResume 是一个热爱驱动的项目，致力于为所有人提供免费、私密且强大的简历工具。如果你觉得有用，欢迎支持它的持续开发。每一杯咖啡都很有帮助！',
+      button: '请我喝杯咖啡',
+    },
     blog: {
       title: 'YAMLResume 博客',
     },
@@ -734,6 +758,12 @@ const translations = {
             'LaTeX 是專業文件排版的黃金標準，特別是在學術和技術領域。它提供卓越的排版，具有適當的字距調整、連字和斷字功能，這些在 HTML/CSS 或文字處理器中很難實現。LaTeX 在一致的間距、精確定位和靈活版面配置方面表現出色。透過使用 LaTeX 作為底層排版引擎，YAMLResume 確保您的履歷具有精緻、專業的外觀，在招募人員和招聘經理中脫穎而出。',
         },
       },
+    },
+    buyMeACoffee: {
+      title: '喜歡這個專案嗎？',
+      description:
+        'YAMLResume 是一個熱情驅動的專案，致力於為所有人提供免費、私密且強大的履歷工具。如果你覺得有幫助，歡迎支持它的持續開發。每一杯咖啡都很重要！',
+      button: '請我喝杯咖啡',
     },
     blog: {
       title: 'YAMLResume 部落格',
@@ -887,9 +917,16 @@ const translations = {
         },
       },
     },
-    blog: {
-      title: 'YAMLResumeブログ',
+    buyMeACoffee: {
+      title: 'このプロジェクトが気に入りましたか？',
+      description:
+        'YAMLResumeは、誰でも無料かつプライベートに使える強力な履歴書ツールを提供するためのパッションプロジェクトです。役に立ったら開発支援をご検討ください。コーヒー一杯が力になります！',
+      button: 'コーヒーをおごる',
     },
+    blog: {
+      title: 'YAMLResume ブログ',
+    },
+
     footer: {
       copyright: '© 2023年〜現在、',
     },

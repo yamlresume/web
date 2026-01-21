@@ -51,7 +51,7 @@ export function FaqSection() {
   }
 
   return (
-    <Section title={t('title')} className="max-w-screen-lg">
+    <Section title={t('title')} className="max-w-screen-lg pb-16">
       <div className="space-y-4">
         {faqs.map((faq, index) => (
           <div
