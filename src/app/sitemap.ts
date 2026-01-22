@@ -76,6 +76,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.9,
     },
+    {
+      url: url('/developer/cli/index.html'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: url('/developer/core/index.html'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: url('/developer/create-yamlresume/index.html'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: url('/developer/json2yamlresume/index.html'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
     ...(await Promise.all(
       allDocsPages.map(async (page) => {
         const lastmod = page.data.lastModified
