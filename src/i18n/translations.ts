@@ -7,6 +7,7 @@ const translations = {
       blog: 'Blog',
       chat: 'Chat',
       discussions: 'Discussions',
+      developer: 'Developer',
       search: 'Search',
     },
     hero: {
@@ -162,6 +163,7 @@ const translations = {
       blog: 'Blog',
       chat: 'Chat',
       discussions: 'Discusiones',
+      developer: 'Desarrollador',
       search: 'Buscar',
     },
     hero: {
@@ -322,6 +324,7 @@ const translations = {
       blog: 'Blog',
       chat: 'Chat',
       discussions: 'Discussions',
+      developer: 'Développeur',
       search: 'Rechercher',
     },
     hero: {
@@ -482,6 +485,7 @@ const translations = {
       blog: '博客',
       chat: '聊天',
       discussions: '讨论',
+      developer: '开发者',
       search: '搜索',
     },
     hero: {
@@ -630,6 +634,7 @@ const translations = {
       blog: '部落格',
       chat: '聊天',
       discussions: '討論',
+      developer: '開發者',
       search: '搜尋',
     },
     hero: {
@@ -778,6 +783,7 @@ const translations = {
       blog: 'ブログ',
       chat: 'チャット',
       discussions: 'ディスカッション',
+      developer: '開発者',
       search: '検索',
     },
     hero: {

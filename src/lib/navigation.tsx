@@ -1,4 +1,4 @@
-import { Logo } from '@/components'
+import { DeveloperDropdown, Logo } from '@/components'
 import { getLocalizedUrl, getTranslations, i18nConfig } from '@/i18n'
 
 // Shared navigation options function
@@ -28,6 +28,15 @@ export function getNavigationOptions(currentLanguage: string) {
         text: t('blog'),
         url: getLocalizedUrl('/blog', currentLanguage),
         active: 'nested-url' as const,
+      },
+      {
+        type: 'custom' as const,
+        children: (
+          <DeveloperDropdown
+            language={currentLanguage}
+            label={t('developer')}
+          />
+        ),
       },
       {
         text: t('chat'),
