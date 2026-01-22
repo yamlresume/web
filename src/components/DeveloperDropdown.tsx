@@ -32,10 +32,13 @@ export function DeveloperDropdown({
   const getUrl = (path: string) => `/${language}${path}`
 
   const items = [
-    { text: '@yamlresume/core', path: '/developer/core' },
-    { text: 'CLI', path: '/developer/cli' },
-    { text: 'create-yamlresume', path: '/developer/create-yamlresume' },
-    { text: 'json2yamlresume', path: '/developer/json2yamlresume' },
+    { text: '@yamlresume/core', path: '/developer/core/index.html' },
+    { text: 'CLI', path: '/developer/cli/index.html' },
+    {
+      text: 'create-yamlresume',
+      path: '/developer/create-yamlresume/index.html',
+    },
+    { text: 'json2yamlresume', path: '/developer/json2yamlresume/index.html' },
   ]
 
   return (
