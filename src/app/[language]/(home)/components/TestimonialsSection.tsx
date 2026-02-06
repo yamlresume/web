@@ -137,9 +137,11 @@ interface TestimonialContentProps {
 function TestimonialContent({ content }: TestimonialContentProps) {
   return (
     <div className="p-6">
-      <p className="text-fd-foreground text-sm leading-relaxed">
-        &ldquo;{content}&rdquo;
-      </p>
+      <p
+        className="text-fd-foreground text-sm leading-relaxed"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: allow multilines
+        dangerouslySetInnerHTML={{ __html: `&ldquo;${content}&rdquo;` }}
+      />
     </div>
   )
 }
