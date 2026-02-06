@@ -9,6 +9,7 @@ const translations = {
       discussions: 'Discussions',
       developer: 'Developer',
       search: 'Search',
+      Playground: 'Playground',
     },
     hero: {
       tagline: 'Brought to you with ❤️ by <ppresume>PPResume</ppresume>',
@@ -17,6 +18,7 @@ const translations = {
         'YAMLResume allows people to create and version control resumes using YAML and generate pixel perfect PDFs with professional layout and typesetting in a breeze.',
       quickStart: 'Quick Start',
       checkGithub: 'Check Github',
+      Playground: 'Playground',
     },
     quickStart: {
       title: 'Quick Start in One Second',
@@ -165,6 +167,7 @@ const translations = {
       discussions: 'Discusiones',
       developer: 'Desarrollador',
       search: 'Buscar',
+      Playground: 'Playground',
     },
     hero: {
       tagline: 'Traído con ❤️ por <ppresume>PPResume</ppresume>',
@@ -173,6 +176,7 @@ const translations = {
         'YAMLResume permite a las personas crear y versionar currículums usando YAML y generar PDFs perfectos a nivel de píxel con diseño y tipografía profesional en un instante.',
       quickStart: 'Inicio Rápido',
       checkGithub: 'Ver Github',
+      Playground: 'Playground',
     },
     quickStart: {
       title: 'Inicio Rápido en Un Segundo',
@@ -326,6 +330,7 @@ const translations = {
       discussions: 'Discussions',
       developer: 'Développeur',
       search: 'Rechercher',
+      Playground: 'Playground',
     },
     hero: {
       tagline: 'Créé avec ❤️ par <ppresume>PPResume</ppresume>',
@@ -334,6 +339,7 @@ const translations = {
         "YAMLResume permet aux gens de créer et de versionner leurs CV en utilisant YAML et de générer des PDF parfaits au pixel près avec une mise en page et une typographie professionnelles en un clin d'œil.",
       quickStart: 'Démarrage Rapide',
       checkGithub: 'Voir Github',
+      Playground: 'Playground',
     },
     quickStart: {
       title: 'Démarrage Rapide en Une Seconde',
@@ -487,6 +493,7 @@ const translations = {
       discussions: '讨论',
       developer: '开发者',
       search: '搜索',
+      Playground: '演练场',
     },
     hero: {
       tagline: '由 <ppresume>PPResume</ppresume> 精心制作 ❤',
@@ -495,6 +502,7 @@ const translations = {
         'YAMLResume 让人们能够使用 YAML 创建和版本控制简历，并轻松生成具有专业布局和排版的像素级完美 PDF。',
       quickStart: '快速开始',
       checkGithub: '查看 Github',
+      Playground: '演练场',
     },
     quickStart: {
       title: '一秒钟快速开始',
@@ -636,6 +644,7 @@ const translations = {
       discussions: '討論',
       developer: '開發者',
       search: '搜尋',
+      Playground: '演練場',
     },
     hero: {
       tagline: '由 <ppresume>PPResume</ppresume> 精心製作 ❤',
@@ -644,6 +653,7 @@ const translations = {
         'YAMLResume 讓人們能夠使用 YAML 建立和版本控制履歷，並輕鬆產生具有專業版面配置和排版的像素級完美 PDF。',
       quickStart: '快速開始',
       checkGithub: '查看 Github',
+      Playground: '演練場',
     },
     quickStart: {
       title: '一秒鐘快速開始',
@@ -785,6 +795,7 @@ const translations = {
       discussions: 'ディスカッション',
       developer: '開発者',
       search: '検索',
+      Playground: 'プレイグラウンド',
     },
     hero: {
       tagline: '<ppresume>PPResume</ppresume>が❤️でお届け',
@@ -793,6 +804,7 @@ const translations = {
         'YAMLResumeは、YAMLを使用して履歴書を作成・バージョン管理し、プロフェッショナルなレイアウトとタイポグラフィでピクセルパーフェクトなPDFを簡単に生成できます。',
       quickStart: 'クイックスタート',
       checkGithub: 'GitHubを確認',
+      Playground: 'プレイグラウンド',
     },
     quickStart: {
       title: '1秒でクイックスタート',

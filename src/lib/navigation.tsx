@@ -20,6 +20,11 @@ export function getNavigationOptions(currentLanguage: string) {
     },
     links: [
       {
+        text: t('Playground'),
+        url: getLocalizedUrl('/playground', currentLanguage),
+        active: 'nested-url' as const,
+      },
+      {
         text: t('documentation'),
         url: getLocalizedUrl('/docs', currentLanguage),
         active: 'nested-url' as const,

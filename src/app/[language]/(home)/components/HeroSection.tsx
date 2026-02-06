@@ -1,38 +1,49 @@
 'use client'
 
-import { IconBook, IconBrandGithub } from '@tabler/icons-react'
+import { IconBook, IconDeviceDesktop } from '@tabler/icons-react'
 import clsx from 'clsx'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import Zoom from 'react-medium-image-zoom'
+import { useId, useState } from 'react'
 
-import resumeImage from '@/components/static/images/yamlresume-yaml-and-pdf.webp'
+import { WindowFrame } from '@/app/[language]/(home)/components/features/WindowFrame'
+import { PlaygroundBody } from '@/app/playground/components'
+
 import { defaultLanguage, getLocalizedUrl, useTranslations } from '@/i18n'
 
-function YAMLResumePDFSection() {
+const DemoArrow = () => {
+  const id = useId()
   return (
-    <div
-      className={clsx([
-        'relative',
-        'overflow-hidden',
-        'border',
-        'border-gray-400',
-        'shadow-lg',
-        'mt-2',
-      ])}
-      style={{
-        borderRadius: '6px',
-      }}
+    <svg
+      className="absolute -left-8 top-8 hidden md:block text-fd-muted-foreground4 pointer-events-none"
+      width="100"
+      height="100"
+      viewBox="0 0 100 100"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
     >
-      <Zoom zoomMargin={32}>
-        <Image
-          src={resumeImage}
-          alt="YAMLResume preview showing YAML code and PDF output"
-          priority
-        />
-      </Zoom>
-    </div>
+      <title>Demo Arrow</title>
+      <path
+        d="M 50 0 C 20 20 0 60 20 90"
+        stroke="currentColor"
+        strokeWidth="2"
+        fill="none"
+        markerEnd={`url(#${id})`}
+      />
+      <defs>
+        <marker
+          id={id}
+          markerWidth="10"
+          markerHeight="7"
+          refX="9"
+          refY="3.5"
+          orient="auto"
+        >
+          <polygon points="0 0, 10 3.5, 0 7" fill="currentColor" />
+        </marker>
+      </defs>
+    </svg>
   )
 }
 
@@ -40,6 +51,7 @@ export function HeroSection() {
   const params = useParams()
   const language = (params?.language as string) || defaultLanguage
   const t = useTranslations('hero')
+  const [isPlaygroundHovered, setIsPlaygroundHovered] = useState(false)
 
   const linkClasses = clsx([
     'border',
@@ -61,7 +73,7 @@ export function HeroSection() {
   ])
 
   return (
-    <section className="container mx-auto pt-4">
+    <section className="container mx-auto pt-4 pb-16">
       <div className="flex flex-col items-start gap-8">
         <div className="flex flex-col items-start gap-4">
           <p className="text-sm text-fd-muted-foreground2">
@@ -84,6 +96,18 @@ export function HeroSection() {
           </p>
         </div>
         <div className="flex flex-wrap items-start justify-center gap-4">
+          <div className="relative">
+            <DemoArrow />
+            <Link
+              href={getLocalizedUrl('/playground', language)}
+              className={linkClasses}
+              onMouseEnter={() => setIsPlaygroundHovered(true)}
+              onMouseLeave={() => setIsPlaygroundHovered(false)}
+            >
+              <IconDeviceDesktop className="h-5 w-5" />
+              {t('Playground')}
+            </Link>
+          </div>
           <Link
             href={getLocalizedUrl('/docs', language)}
             className={linkClasses}
@@ -91,16 +115,17 @@ export function HeroSection() {
             <IconBook className="h-5 w-5" />
             {t('quickStart')}
           </Link>
-          <Link
-            href="https://github.com/yamlresume/yamlresume"
-            target="_blank"
-            className={linkClasses}
-          >
-            <IconBrandGithub className="h-5 w-5" />
-            {t('checkGithub')}
-          </Link>
         </div>
-        <YAMLResumePDFSection />
+        <div
+          className={clsx(
+            'w-full transition-all duration-300 ease-in-out transform',
+            isPlaygroundHovered ? 'scale-[1.01] ring-1 ring-primary/20' : ''
+          )}
+        >
+          <WindowFrame contentClassName="h-[760px]" className="rounded-xl">
+            <PlaygroundBody />
+          </WindowFrame>
+        </div>
       </div>
     </section>
   )

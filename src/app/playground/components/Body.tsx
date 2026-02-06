@@ -263,7 +263,7 @@ export function PlaygroundBody() {
   const [resume, setResume] = useState(DEFAULT_RESUME)
 
   return (
-    <div className="flex-1 overflow-hidden relative">
+    <div className="flex-1 h-full">
       <Playground yaml={resume} onChange={setResume} filename="resume.yml" />
     </div>
   )
