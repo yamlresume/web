@@ -15,7 +15,7 @@ const translations = {
       tagline: 'Brought to you with ❤️ by <ppresume>PPResume</ppresume>',
       title: 'Resumes as Code in YAML',
       description:
-        'YAMLResume allows people to create and version control resumes using YAML and generate pixel perfect PDFs with professional layout and typesetting in a breeze.',
+        'YAMLResume allows people to create and version control resumes using YAML and generate pixel perfect resumes in multiple formats (PDF, HTML, Markdown, etc.) in a breeze.',
       quickStart: 'Quick Start',
       checkGithub: 'Check Github',
       Playground: 'Playground',
@@ -173,7 +173,7 @@ const translations = {
       tagline: 'Traído con ❤️ por <ppresume>PPResume</ppresume>',
       title: 'Currículums como Código en YAML',
       description:
-        'YAMLResume permite a las personas crear y versionar currículums usando YAML y generar PDFs perfectos a nivel de píxel con diseño y tipografía profesional en un instante.',
+        'YAMLResume permite a las personas crear y versionar currículums usando YAML y generar currículums perfectos en múltiples formatos (PDF, HTML, Markdown, etc.) en un instante.',
       quickStart: 'Inicio Rápido',
       checkGithub: 'Ver Github',
       Playground: 'Playground',
@@ -336,7 +336,7 @@ const translations = {
       tagline: 'Créé avec ❤️ par <ppresume>PPResume</ppresume>',
       title: 'CV en Code YAML',
       description:
-        "YAMLResume permet aux gens de créer et de versionner leurs CV en utilisant YAML et de générer des PDF parfaits au pixel près avec une mise en page et une typographie professionnelles en un clin d'œil.",
+        "YAMLResume permet aux gens de créer et de versionner leurs CV en utilisant YAML et de générer des CV parfaits dans plusieurs formats (PDF, HTML, Markdown, etc.) en un clin d'œil.",
       quickStart: 'Démarrage Rapide',
       checkGithub: 'Voir Github',
       Playground: 'Playground',
@@ -499,7 +499,7 @@ const translations = {
       tagline: '由 <ppresume>PPResume</ppresume> 精心制作 ❤',
       title: 'YAML 代码简历',
       description:
-        'YAMLResume 让人们能够使用 YAML 创建和版本控制简历，并轻松生成具有专业布局和排版的像素级完美 PDF。',
+        'YAMLResume 让人们能够使用 YAML 创建和版本控制简历，并轻松生成多种格式（PDF, HTML, Markdown 等）的像素级完美简历。',
       quickStart: '快速开始',
       checkGithub: '查看 Github',
       Playground: '演练场',
@@ -650,7 +650,7 @@ const translations = {
       tagline: '由 <ppresume>PPResume</ppresume> 精心製作 ❤',
       title: 'YAML 程式碼履歷',
       description:
-        'YAMLResume 讓人們能夠使用 YAML 建立和版本控制履歷，並輕鬆產生具有專業版面配置和排版的像素級完美 PDF。',
+        'YAMLResume 讓人們能夠使用 YAML 建立和版本控制履歷，並輕鬆產生多種格式（PDF, HTML, Markdown 等）的像素級完美履歷。',
       quickStart: '快速開始',
       checkGithub: '查看 Github',
       Playground: '演練場',
@@ -801,7 +801,7 @@ const translations = {
       tagline: '<ppresume>PPResume</ppresume>が❤️でお届け',
       title: 'YAMLでコード化された履歴書',
       description:
-        'YAMLResumeは、YAMLを使用して履歴書を作成・バージョン管理し、プロフェッショナルなレイアウトとタイポグラフィでピクセルパーフェクトなPDFを簡単に生成できます。',
+        'YAMLResumeは、YAMLを使用して履歴書を作成・バージョン管理し、簡単な操作で複数の形式（PDF、HTML、Markdownなど）のピクセルパーフェクトな履歴書を生成できます。',
       quickStart: 'クイックスタート',
       checkGithub: 'GitHubを確認',
       Playground: 'プレイグラウンド',
