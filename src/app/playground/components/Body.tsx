@@ -1,7 +1,7 @@
 'use client'
 
 import { Playground } from '@yamlresume/playground'
-import { useState } from 'react'
+import { useLocalStorage } from 'usehooks-ts'
 
 const DEFAULT_RESUME = `# yaml-language-server: $schema=https://yamlresume.dev/schema.json
 #
@@ -260,7 +260,10 @@ layouts:
 
 // TODO: write test cases
 export function PlaygroundBody() {
-  const [resume, setResume] = useState(DEFAULT_RESUME)
+  const [resume, setResume] = useLocalStorage(
+    'yamlresume-resume',
+    DEFAULT_RESUME
+  )
 
   return (
     <div className="flex-1 h-full">
