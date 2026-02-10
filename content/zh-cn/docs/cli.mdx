@@ -221,6 +221,46 @@ invalid-resume.yml:41:17: warning: font size option is invalid, it must be one o
 ✖ Resume validation failed.
 ```
 
+## Doctor
+
+检查您的环境中的 YAMLResume 依赖项。此命令通过验证所有必需的工具和字体是否正确
+安装来帮助诊断设置问题。
+
+```console
+$ yamlresume doctor
+
+  System:
+    OS: macOS 14.6.1
+    CPU: (10) arm64 Apple M1 Max
+  Binaries:
+    Node: 25.6.0 - /opt/homebrew/bin/node
+    Yarn: 1.22.22 - /Users/hanyu/Library/pnpm/yarn
+    npm: 11.8.0 - /opt/homebrew/bin/npm
+    pnpm: 10.6.3 - /opt/homebrew/bin/pnpm
+
+ℹ Checking XeTeX...
+  XeTeX: XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+
+ℹ Checking Tectonic...
+  Tectonic: tectonic 0.15.0
+
+ℹ Checking Fonts...
+  Linux Libertine O: Not Installed
+  Linux Libertine: Installed
+  Noto Serif CJK SC: Installed
+  Noto Sans CJK SC: Installed
+```
+
+doctor 命令检查:
+
+- **系统信息**: 操作系统、CPU 架构
+- **二进制文件**: Node.js、npm、pnpm、Yarn、Bun
+- **LaTeX 引擎**: XeTeX 和 Tectonic 的可用性
+- **字体**: 最佳简历渲染所需的字体（拉丁文本用 Linux Libertine，中日韩文字用
+  Noto CJK）
+
+这在新机器上设置 YAMLResume 或排查简历构建问题时特别有用。
+
 ## Languages
 
 列出所有可用语言。语言代码遵循 [ISO 639 规范](https://www.iso.org/iso-639-language-code) 中的规范。您可以在 `locale.language` 中指定语言代码以更改简历的语言。更改简历的语言将自动翻译所有固定术语。您可以在我们的 [内容 -> 多语言](/zh-cn/docs/locale) 章节查看更多详细信息。
