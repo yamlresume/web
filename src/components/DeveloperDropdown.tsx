@@ -39,6 +39,7 @@ export function DeveloperDropdown({
       path: '/developer/create-yamlresume/index.html',
     },
     { text: 'json2yamlresume', path: '/developer/json2yamlresume/index.html' },
+    { text: 'playground', path: '/developer/playground/index.html' },
   ]
 
   return (

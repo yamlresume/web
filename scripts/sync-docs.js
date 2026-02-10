@@ -9,7 +9,8 @@ const PACKAGES = [
   'cli',
   'core',
   'create-yamlresume',
-  'json2yamlresume'
+  'json2yamlresume',
+  'playground'
 ];
 
 function main() {
