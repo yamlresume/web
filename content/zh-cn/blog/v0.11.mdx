@@ -1,0 +1,174 @@
+---
+title: "YAMLResume v0.11: Playground、Doctor 命令与更多语言支持"
+description:
+  "YAMLResume v0.11 引入了可嵌入的 Playground 组件、用于环境诊断的新 `doctor`
+  命令、日语和德语支持以及字体系列自定义功能。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-02-10
+---
+
+我们很高兴地宣布 [YAMLResume
+v0.11](https://github.com/yamlresume/yamlresume/releases/tag/v0.11.1) 正式发布。
+此版本带来了显著的开发者体验改进，包括新的可嵌入 Playground 组件、通过 `doctor`
+命令进行环境诊断、扩展的语言支持以及排版自定义功能。
+
+## 新包: @yamlresume/playground
+
+我们已将 Web Playground 提取并发布为独立的 React 组件:
+[`@yamlresume/playground`](https://www.npmjs.com/package/@yamlresume/playground)。
+这个包驱动着官方的 [playground](/playground)，现在可以集成到你自己的应用程序中。
+
+![YAMLResume Playground](/static/images/blog/yamlresume-playground.webp)
+
+```bash
+npm install @yamlresume/playground @yamlresume/core
+```
+
+Playground 组件提供:
+
+- **实时 YAML 编辑器**: 基于 [Monaco
+  编辑器](https://microsoft.github.io/monaco-editor/)，支持 YAML 语法高亮
+- **实时预览**: HTML、Markdown 和 LaTeX 布局的即时预览
+- **响应式设计**: 桌面端为分割面板布局，移动端为标签页界面
+- **导出选项**: 下载、复制或打印你的简历
+
+基本用法非常简单:
+
+```tsx
+import { useState } from "react"
+import { Playground } from "@yamlresume/playground"
+
+function App() {
+  const [yaml, setYaml] = useState("layouts: []");
+
+  return (
+    <Playground yaml={yaml} onChange={(newYaml) => setYaml(newYaml)} />
+  )
+}
+```
+
+该包还导出了 `useResumeState` 和 `useResumeRenderer` 等 hooks，用于构建自定义
+编辑器体验。完整的 API 参考请查看[包的
+README](https://github.com/yamlresume/yamlresume/tree/main/packages/playground)。
+
+## 新命令: yamlresume doctor
+
+设置 LaTeX 环境可能会很棘手。新的 `doctor` 命令通过检查所需的依赖项来帮助诊断
+你的设置:
+
+```console
+$ yamlresume doctor
+
+  System:
+    OS: macOS 14.6.1
+    CPU: (10) arm64 Apple M1 Max
+  Binaries:
+    Node: 25.6.0 - /opt/homebrew/bin/node
+    Yarn: 1.22.22 - /Users/hanyu/Library/pnpm/yarn
+    npm: 11.8.0 - /opt/homebrew/bin/npm
+    pnpm: 10.6.3 - /opt/homebrew/bin/pnpm
+
+ℹ Checking XeTeX...                                                                                                                                                     2:26:36 PM
+  XeTeX: XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+
+ℹ Checking Tectonic...                                                                                                                                                  2:26:36 PM
+  Tectonic: tectonic 0.15.0Tectonic 0.15.0
+
+ℹ Checking Fonts...                                                                                                                                                     2:26:36 PM
+  Linux Libertine O: Not Installed
+  Linux Libertine: Installed
+  Noto Serif CJK SC: Installed
+  Noto Sans CJK SC: Installed
+```
+
+doctor 命令检查:
+
+- **系统信息**: 操作系统、CPU 架构
+- **二进制文件**: Node.js、npm、pnpm、Yarn、Bun
+- **LaTeX 引擎**: XeTeX 和 Tectonic 的可用性
+- **字体**: 最佳简历渲染所需的字体（拉丁文本用 Linux Libertine，中日韩文字用
+  Noto CJK）
+
+这在新机器上设置 YAMLResume 或排查简历构建问题时特别有用。
+
+## 日语和德语支持
+
+YAMLResume 继续扩展其国际化支持。我们现在支持两种新语言:
+
+- **日语 (ja)**: 完全支持日语章节标题、日期格式和国家名称
+- **德语 (de)**: 感谢 [Daniel Bälz](https://github.com/dbaelz) 贡献德语翻译
+
+这使我们支持的语言数量达到八种:
+
+- [英语 (en)](/docs/locale/english)
+- [中文 (zh)](/docs/locale/chinese)
+- [西班牙语 (es)](/docs/locale/spanish)
+- [法语 (fr)](/docs/locale/french)
+- [挪威语 (no)](/docs/locale/norwegian)
+- [荷兰语 (nl)](/docs/locale/dutch)
+- [日语 (ja)](/docs/locale/japanese)
+- [德语 (de)](/docs/locale/german)
+
+要生成日语或德语简历:
+
+```yml lineNumbers
+locale:
+  language: ja  # 或 'de' 表示德语
+```
+
+## 字体系列自定义
+
+现在你可以为 HTML 和 LaTeX 引擎自定义字体系列。这让你可以精确控制排版，以匹配
+你的个人品牌或地区偏好。
+
+### HTML 引擎
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    typography:
+      fontFamily: '"Inter", "Helvetica Neue", sans-serif'
+```
+
+每个 HTML 模板都采用默认字体列表，当你在布局配置中指定 `fontFamily` 时，它将被
+添加到默认列表的前面。
+
+### LaTeX 引擎
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    typography:
+      fontFamily: "EB Garamond"
+```
+
+LaTeX 引擎的 `fontFamily` 也支持 CSS 字体系列语法，即逗号分隔的字体列表。
+YAMLResume 的 LaTeX 引擎将使用 `\IfFontExistsTF` 宏来检查每个字体是否存在，
+并且只会选择列表中 XeTeX/Tectonic 可访问的第一个字体。
+
+## 其他改进
+
+- **Türkiye 命名**: 将国家名称从 "Turkey" 更新为 "Türkiye" 以反映官方名称变更
+  ([#152](https://github.com/yamlresume/yamlresume/issues/152))
+- **改进的测试覆盖率**: 在 macOS、Linux 和 Windows 上添加了 Node.js 22 和 24 的
+  跨平台测试
+
+## 立即升级
+
+获取最新版本:
+
+```console
+$ npm install -g yamlresume@latest
+# 或
+$ brew upgrade yamlresume
+```
+
+检查你的环境是否准备就绪:
+
+```console
+$ yamlresume doctor
+```
+
+一如既往，我们欢迎你在 [GitHub](https://github.com/yamlresume/yamlresume) 上
+提供反馈和贡献。祝构建愉快！

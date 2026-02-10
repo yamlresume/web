@@ -1,0 +1,194 @@
+---
+title: "YAMLResume v0.11 : Playground, Commande Doctor et Plus de Langues"
+description:
+  "YAMLResume v0.11 introduit un composant Playground intégrable, la nouvelle
+  commande `doctor` pour les diagnostics d'environnement, le support du japonais
+  et de l'allemand, et la personnalisation des polices."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-02-10
+---
+
+Nous sommes ravis d'annoncer [YAMLResume
+v0.11](https://github.com/yamlresume/yamlresume/releases/tag/v0.11.1). Cette
+version apporte des améliorations significatives de l'expérience développeur
+avec un nouveau composant Playground intégrable, des diagnostics
+d'environnement via la commande `doctor`, un support linguistique étendu et la
+personnalisation typographique.
+
+## Nouveau Package : @yamlresume/playground
+
+Nous avons extrait et publié notre playground web en tant que composant React
+autonome :
+[`@yamlresume/playground`](https://www.npmjs.com/package/@yamlresume/playground).
+Ce package alimente le [playground](/playground) officiel et peut maintenant
+être intégré dans vos propres applications.
+
+![YAMLResume Playground](/static/images/blog/yamlresume-playground.webp)
+
+```bash
+npm install @yamlresume/playground @yamlresume/core
+```
+
+Le composant Playground fournit :
+
+- **Éditeur YAML en Direct** : [Éditeur basé sur
+  Monaco](https://microsoft.github.io/monaco-editor/) avec coloration syntaxique
+  YAML
+- **Aperçu en Temps Réel** : Aperçu instantané pour les mises en page HTML,
+  Markdown et LaTeX
+- **Design Responsive** : Disposition en panneaux divisés sur bureau, interface
+  à onglets sur mobile
+- **Options d'Export** : Téléchargez, copiez ou imprimez votre CV
+
+L'utilisation de base est simple :
+
+```tsx
+import { useState } from "react"
+import { Playground } from "@yamlresume/playground"
+
+function App() {
+  const [yaml, setYaml] = useState("layouts: []");
+
+  return (
+    <Playground yaml={yaml} onChange={(newYaml) => setYaml(newYaml)} />
+  )
+}
+```
+
+Le package exporte également des hooks comme `useResumeState` et
+`useResumeRenderer` pour créer des expériences d'éditeur personnalisées.
+Consultez le [README du
+package](https://github.com/yamlresume/yamlresume/tree/main/packages/playground)
+pour la référence complète de l'API.
+
+## Nouvelle Commande : yamlresume doctor
+
+Configurer un environnement LaTeX peut être délicat. La nouvelle commande
+`doctor` aide à diagnostiquer votre configuration en vérifiant les dépendances
+requises :
+
+```console
+$ yamlresume doctor
+
+  System:
+    OS: macOS 14.6.1
+    CPU: (10) arm64 Apple M1 Max
+  Binaries:
+    Node: 25.6.0 - /opt/homebrew/bin/node
+    Yarn: 1.22.22 - /Users/hanyu/Library/pnpm/yarn
+    npm: 11.8.0 - /opt/homebrew/bin/npm
+    pnpm: 10.6.3 - /opt/homebrew/bin/pnpm
+
+ℹ Checking XeTeX...                                                                                                                                                     2:26:36 PM
+  XeTeX: XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+
+ℹ Checking Tectonic...                                                                                                                                                  2:26:36 PM
+  Tectonic: tectonic 0.15.0Tectonic 0.15.0
+
+ℹ Checking Fonts...                                                                                                                                                     2:26:36 PM
+  Linux Libertine O: Not Installed
+  Linux Libertine: Installed
+  Noto Serif CJK SC: Installed
+  Noto Sans CJK SC: Installed
+```
+
+La commande doctor vérifie :
+
+- **Informations système** : OS, architecture CPU
+- **Binaires** : Node.js, npm, pnpm, Yarn, Bun
+- **Moteurs LaTeX** : Disponibilité de XeTeX et Tectonic
+- **Polices** : Polices requises pour un rendu optimal du CV (Linux Libertine
+  pour le texte latin, Noto CJK pour le chinois/japonais/coréen)
+
+C'est particulièrement utile lors de la configuration de YAMLResume sur une
+nouvelle machine ou pour résoudre les problèmes de compilation de CV.
+
+## Support du Japonais et de l'Allemand
+
+YAMLResume continue d'étendre son internationalisation. Nous supportons
+maintenant deux langues supplémentaires :
+
+- **Japonais (ja)** : Support complet pour les en-têtes de section en japonais,
+  les formats de date et les noms de pays
+- **Allemand (de)** : Merci à [Daniel Bälz](https://github.com/dbaelz) pour sa
+  contribution aux traductions allemandes
+
+Cela porte notre nombre de langues supportées à huit :
+
+- [Anglais (en)](/docs/locale/english)
+- [Chinois (zh)](/docs/locale/chinese)
+- [Espagnol (es)](/docs/locale/spanish)
+- [Français (fr)](/docs/locale/french)
+- [Norvégien (no)](/docs/locale/norwegian)
+- [Néerlandais (nl)](/docs/locale/dutch)
+- [Japonais (ja)](/docs/locale/japanese)
+- [Allemand (de)](/docs/locale/german)
+
+Pour générer votre CV en japonais ou en allemand :
+
+```yml lineNumbers
+locale:
+  language: ja  # ou 'de' pour l'allemand
+```
+
+## Personnalisation de la Famille de Polices
+
+Vous pouvez maintenant personnaliser la famille de polices pour les moteurs HTML
+et LaTeX. Cela vous donne un contrôle précis sur la typographie pour
+correspondre à votre marque personnelle ou à vos préférences régionales.
+
+### Moteur HTML
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    typography:
+      fontFamily: '"Inter", "Helvetica Neue", sans-serif'
+```
+
+Chaque template HTML adopte une liste de polices par défaut, et lorsque vous
+spécifiez le `fontFamily` dans votre configuration de mise en page, il sera
+ajouté en tête de la liste par défaut.
+
+### Moteur LaTeX
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    typography:
+      fontFamily: "EB Garamond"
+```
+
+`fontFamily` pour le moteur LaTeX supporte également la syntaxe de famille de
+polices CSS, c'est-à-dire la liste de polices séparées par des virgules. Le
+moteur LaTeX de YAMLResume utilisera la macro `\IfFontExistsTF` pour vérifier
+l'existence de chaque police et ne choisira que la première accessible à
+XeTeX/Tectonic dans la liste.
+
+## Autres Améliorations
+
+- **Nom Türkiye** : Mise à jour du nom du pays de "Turkey" à "Türkiye" pour
+  refléter le changement de nom officiel
+  ([#152](https://github.com/yamlresume/yamlresume/issues/152))
+- **Couverture de tests améliorée** : Ajout de tests multi-plateformes sur
+  Node.js 22 et 24 sur macOS, Linux et Windows
+
+## Mettez à Jour Aujourd'hui
+
+Obtenez la dernière version :
+
+```console
+$ npm install -g yamlresume@latest
+# ou
+$ brew upgrade yamlresume
+```
+
+Vérifiez que votre environnement est prêt :
+
+```console
+$ yamlresume doctor
+```
+
+Comme toujours, nous accueillons vos retours et contributions sur
+[GitHub](https://github.com/yamlresume/yamlresume). Bonne construction !

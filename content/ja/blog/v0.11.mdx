@@ -1,0 +1,185 @@
+---
+title: "YAMLResume v0.11: Playground、Doctorコマンド、そしてより多くの言語サポート"
+description:
+  "YAMLResume v0.11では、埋め込み可能なPlaygroundコンポーネント、環境診断用の新しい
+  `doctor`コマンド、日本語とドイツ語のサポート、フォントファミリーのカスタマイズが
+  導入されました。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-02-10
+---
+
+[YAMLResume
+v0.11](https://github.com/yamlresume/yamlresume/releases/tag/v0.11.1)のリリースを
+お知らせいたします。このリリースでは、新しい埋め込み可能なPlaygroundコンポーネント、
+`doctor`コマンドによる環境診断、言語サポートの拡大、タイポグラフィのカスタマイズなど、
+開発者体験の大幅な改善が含まれています。
+
+## 新パッケージ: @yamlresume/playground
+
+WebプレイグラウンドをスタンドアロンのReactコンポーネントとして抽出・公開しました:
+[`@yamlresume/playground`](https://www.npmjs.com/package/@yamlresume/playground)。
+このパッケージは公式の[playground](/playground)を動かしており、あなた自身の
+アプリケーションに統合することができます。
+
+![YAMLResume Playground](/static/images/blog/yamlresume-playground.webp)
+
+```bash
+npm install @yamlresume/playground @yamlresume/core
+```
+
+Playgroundコンポーネントは以下を提供します:
+
+- **ライブYAMLエディター**: YAML構文ハイライト付きの[Monacoベースの
+  エディター](https://microsoft.github.io/monaco-editor/)
+- **リアルタイムプレビュー**: HTML、Markdown、LaTeXレイアウトの即時プレビュー
+- **レスポンシブデザイン**: デスクトップでは分割パネルレイアウト、モバイルでは
+  タブインターフェース
+- **エクスポートオプション**: 履歴書のダウンロード、コピー、印刷
+
+基本的な使い方は簡単です:
+
+```tsx
+import { useState } from "react"
+import { Playground } from "@yamlresume/playground"
+
+function App() {
+  const [yaml, setYaml] = useState("layouts: []");
+
+  return (
+    <Playground yaml={yaml} onChange={(newYaml) => setYaml(newYaml)} />
+  )
+}
+```
+
+このパッケージは、カスタムエディター体験を構築するための`useResumeState`や
+`useResumeRenderer`などのフックもエクスポートしています。完全なAPIリファレンスに
+ついては、[パッケージの
+README](https://github.com/yamlresume/yamlresume/tree/main/packages/playground)を
+ご覧ください。
+
+## 新コマンド: yamlresume doctor
+
+LaTeX環境のセットアップは難しい場合があります。新しい`doctor`コマンドは、
+必要な依存関係をチェックすることでセットアップの診断を支援します:
+
+```console
+$ yamlresume doctor
+
+  System:
+    OS: macOS 14.6.1
+    CPU: (10) arm64 Apple M1 Max
+  Binaries:
+    Node: 25.6.0 - /opt/homebrew/bin/node
+    Yarn: 1.22.22 - /Users/hanyu/Library/pnpm/yarn
+    npm: 11.8.0 - /opt/homebrew/bin/npm
+    pnpm: 10.6.3 - /opt/homebrew/bin/pnpm
+
+ℹ Checking XeTeX...                                                                                                                                                     2:26:36 PM
+  XeTeX: XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+
+ℹ Checking Tectonic...                                                                                                                                                  2:26:36 PM
+  Tectonic: tectonic 0.15.0Tectonic 0.15.0
+
+ℹ Checking Fonts...                                                                                                                                                     2:26:36 PM
+  Linux Libertine O: Not Installed
+  Linux Libertine: Installed
+  Noto Serif CJK SC: Installed
+  Noto Sans CJK SC: Installed
+```
+
+doctorコマンドは以下をチェックします:
+
+- **システム情報**: OS、CPUアーキテクチャ
+- **バイナリ**: Node.js、npm、pnpm、Yarn、Bun
+- **LaTeXエンジン**: XeTeXとTectonicの利用可能性
+- **フォント**: 最適な履歴書レンダリングに必要なフォント（ラテン文字用のLinux
+  Libertine、中国語/日本語/韓国語用のNoto CJK）
+
+これは、新しいマシンでYAMLResumeをセットアップする際や、履歴書ビルドの問題を
+トラブルシューティングする際に特に役立ちます。
+
+## 日本語とドイツ語のサポート
+
+YAMLResumeは国際化を拡大し続けています。新たに2つの言語をサポートするように
+なりました:
+
+- **日本語 (ja)**: 日本語のセクションヘッダー、日付形式、国名の完全サポート
+- **ドイツ語 (de)**: ドイツ語翻訳を提供してくださった[Daniel
+  Bälz](https://github.com/dbaelz)さんに感謝します
+
+これにより、サポートされている言語の数は8つになりました:
+
+- [英語 (en)](/docs/locale/english)
+- [中国語 (zh)](/docs/locale/chinese)
+- [スペイン語 (es)](/docs/locale/spanish)
+- [フランス語 (fr)](/docs/locale/french)
+- [ノルウェー語 (no)](/docs/locale/norwegian)
+- [オランダ語 (nl)](/docs/locale/dutch)
+- [日本語 (ja)](/docs/locale/japanese)
+- [ドイツ語 (de)](/docs/locale/german)
+
+日本語またはドイツ語で履歴書を生成するには:
+
+```yml lineNumbers
+locale:
+  language: ja  # ドイツ語の場合は 'de'
+```
+
+## フォントファミリーのカスタマイズ
+
+HTMLとLaTeXの両方のエンジンでフォントファミリーをカスタマイズできるように
+なりました。これにより、個人のブランドや地域の好みに合わせてタイポグラフィを
+正確にコントロールできます。
+
+### HTMLエンジン
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    typography:
+      fontFamily: '"Inter", "Helvetica Neue", sans-serif'
+```
+
+各HTMLテンプレートはデフォルトのフォントリストを採用しており、レイアウト設定で
+`fontFamily`を指定すると、デフォルトリストの先頭に追加されます。
+
+### LaTeXエンジン
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    typography:
+      fontFamily: "EB Garamond"
+```
+
+LaTeXエンジンの`fontFamily`もCSSフォントファミリー構文、つまりカンマ区切りの
+フォントリストをサポートしています。YAMLResumeのLaTeXエンジンは`\IfFontExistsTF`
+マクロを使用して各フォントの存在を確認し、リスト内でXeTeX/Tectonicがアクセス
+可能な最初のフォントのみを選択します。
+
+## その他の改善
+
+- **Türkiye の命名**: 公式名称変更を反映して国名を「Turkey」から「Türkiye」に更新
+  ([#152](https://github.com/yamlresume/yamlresume/issues/152))
+- **テストカバレッジの改善**: macOS、Linux、WindowsでNode.js 22および24での
+  クロスプラットフォームテストを追加
+
+## 今すぐアップグレード
+
+最新バージョンを取得:
+
+```console
+$ npm install -g yamlresume@latest
+# または
+$ brew upgrade yamlresume
+```
+
+環境が準備できているか確認:
+
+```console
+$ yamlresume doctor
+```
+
+いつものように、[GitHub](https://github.com/yamlresume/yamlresume)でのフィード
+バックと貢献をお待ちしています。Happy building!
