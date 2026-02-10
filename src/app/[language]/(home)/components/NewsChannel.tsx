@@ -27,10 +27,27 @@ export function NewsChannel() {
         <div className="flex items-center gap-2 py-3">
           <IconSpeakerphone size={20} stroke={1.5} />
           <div className="text-sm text-fd-foreground">
-            YAMLResume v0.10 is released with the new VS Code template and Dutch
+            YAMLResume v0.11 is released with the new{' '}
+            <Link href="/playground" className="underline">
+              Playground
+            </Link>{' '}
+            package, Doctor command, and{' '}
+            <Link
+              href={getLocalizedUrl('/docs/locale/japanese', language)}
+              className="underline"
+            >
+              Japanese
+            </Link>
+            /
+            <Link
+              href={getLocalizedUrl('/docs/locale/german', language)}
+              className="underline"
+            >
+              German
+            </Link>{' '}
             support. Check out the{' '}
             <Link
-              href={getLocalizedUrl('/blog/v0.10', language)}
+              href={getLocalizedUrl('/blog/v0.11', language)}
               className="underline"
             >
               blog post
