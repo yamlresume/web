@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation'
 import { useId, useState } from 'react'
 
 import { WindowFrame } from '@/app/[language]/(home)/components/features/WindowFrame'
-import { PlaygroundBody } from '@/app/playground/components'
+import { PlaygroundBody } from '@/app/[language]/playground/components'
 
 import { defaultLanguage, getLocalizedUrl, useTranslations } from '@/i18n'
 

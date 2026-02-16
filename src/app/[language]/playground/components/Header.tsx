@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import { Logo } from '@/components'
+import { getLocalizedUrl } from '@/i18n'
 
-export function PlaygroundHeader() {
+export function PlaygroundHeader({ language }: { language: string }) {
   return (
     <header className="flex items-center justify-between px-4 py-3 border-b border-neutral-800 bg-neutral-900">
       <div className="flex items-center gap-2">
         <Link
-          href="/"
+          href={getLocalizedUrl('/', language)}
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
           <Logo width="24" height="24" className="invert" />
@@ -17,7 +18,7 @@ export function PlaygroundHeader() {
       </div>
       <div className="flex items-center gap-4 hidden md:flex">
         <Link
-          href="/docs"
+          href={getLocalizedUrl('/docs', language)}
           className="text-sm text-neutral-200 hover:text-neutral-200 transition-colors"
         >
           Documentation
