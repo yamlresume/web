@@ -1,13 +1,9 @@
 import { getLocalizedSources } from '@/lib'
 
 function normalizeMdxSlug(slugs: string[]): string[] {
-  if (slugs.length === 0) return slugs
-
-  const normalized = [...slugs]
-  const last = normalized[normalized.length - 1]
-  normalized[normalized.length - 1] = last.replace(/\.mdx$/i, '')
-
-  return normalized.filter((segment) => segment.length > 0)
+  return slugs
+    .map((s, i) => (i === slugs.length - 1 ? s.replace(/\.mdx$/i, '') : s))
+    .filter((segment) => segment.length > 0)
 }
 
 export async function GET(
@@ -22,8 +18,7 @@ export async function GET(
   }
 
   const { docs } = getLocalizedSources(language)
-  const source = docs
-  const page = source.getPage(normalizeMdxSlug(pageSlug))
+  const page = docs.getPage(normalizeMdxSlug(pageSlug))
 
   if (!page) return new Response('Not found', { status: 404 })
 
