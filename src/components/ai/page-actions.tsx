@@ -8,7 +8,13 @@ import {
   PopoverTrigger,
 } from 'fumadocs-ui/components/ui/popover'
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button'
-import { Check, ChevronDown, Copy, ExternalLinkIcon } from 'lucide-react'
+import {
+  Check,
+  ChevronDown,
+  Copy,
+  ExternalLinkIcon,
+  LoaderCircle,
+} from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { cn } from '../../../lib/cn'
 
@@ -61,7 +67,13 @@ export function LLMCopyButton({
       )}
       onClick={onClick}
     >
-      {checked ? <Check /> : <Copy />}
+      {isLoading ? (
+        <LoaderCircle className="animate-spin" />
+      ) : checked ? (
+        <Check />
+      ) : (
+        <Copy />
+      )}
       Copy Markdown
     </button>
   )
