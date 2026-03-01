@@ -2,13 +2,14 @@ import { siteConfig } from '@/config/site'
 import { type Language, languages } from '@/i18n/config'
 import { getLLMLink, getLocalizedSources } from '@/lib'
 
-function isSupportedLanguage(value: Language) {
-  return languages.includes(value)
+export const revalidate = false
+function isSupportedLanguage(value: string): value is Language {
+  return languages.includes(value as Language)
 }
 
 export async function GET(
   _req: Request,
-  props: { params: Promise<{ language: Language }> }
+  props: { params: Promise<{ language: string }> }
 ) {
   const { language } = await props.params
 
