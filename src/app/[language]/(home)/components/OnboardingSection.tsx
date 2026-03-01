@@ -15,7 +15,12 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
-import { getLocalizedUrl, type Language, useTranslations } from '@/i18n'
+import {
+  defaultLanguage,
+  getLocalizedUrl,
+  type Language,
+  useTranslations,
+} from '@/i18n'
 import { Card, Icon, Section } from './common'
 
 // --- Constants & Styles ---
@@ -255,7 +260,7 @@ function OnboardingCard({ method, t, lang, className }: OnboardingCardProps) {
 export function OnboardingSection() {
   const t = useTranslations('onboarding')
   const params = useParams()
-  const lang = (params?.language as Language) || 'en'
+  const lang = (params?.language as Language) || defaultLanguage
 
   const installMethods: InstallMethod[] = [
     {

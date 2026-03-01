@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { Logo } from '@/components'
-import { getLocalizedUrl, getTranslations } from '@/i18n'
+import { getLocalizedUrl, getTranslations, type Language } from '@/i18n'
 
-export function PlaygroundHeader({ language }: { language: string }) {
+export function PlaygroundHeader({ language }: { language: Language }) {
   const t = getTranslations(language, 'navbar')
 
   return (

@@ -1,5 +1,6 @@
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import type { ReactNode } from 'react'
+import { defaultLanguage, type Language } from '@/i18n'
 import { getLocalizedSources, getNavigationOptions } from '@/lib'
 
 export default async function Layout({
@@ -10,8 +11,7 @@ export default async function Layout({
   params: Promise<{ language?: string }>
 }) {
   const { language } = await params
-  const defaultLanguage = 'en'
-  const currentLanguage = language || defaultLanguage
+  const currentLanguage = (language || defaultLanguage) as Language
   const { docs } = getLocalizedSources(currentLanguage)
 
   const options = getNavigationOptions(currentLanguage)

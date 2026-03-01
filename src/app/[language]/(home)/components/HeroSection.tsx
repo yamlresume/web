@@ -9,7 +9,12 @@ import { useId, useState } from 'react'
 import { WindowFrame } from '@/app/[language]/(home)/components/features/WindowFrame'
 import { PlaygroundBody } from '@/app/[language]/playground/components'
 
-import { defaultLanguage, getLocalizedUrl, useTranslations } from '@/i18n'
+import {
+  defaultLanguage,
+  getLocalizedUrl,
+  type Language,
+  useTranslations,
+} from '@/i18n'
 
 const DemoArrow = () => {
   const id = useId()
@@ -49,7 +54,7 @@ const DemoArrow = () => {
 
 export function HeroSection() {
   const params = useParams()
-  const language = (params?.language as string) || defaultLanguage
+  const language = ((params?.language as string) || defaultLanguage) as Language
   const t = useTranslations('hero')
   const [isPlaygroundHovered, setIsPlaygroundHovered] = useState(false)
 

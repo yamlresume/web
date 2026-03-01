@@ -1,8 +1,13 @@
 import { DeveloperDropdown, Logo } from '@/components'
-import { getLocalizedUrl, getTranslations, i18nConfig } from '@/i18n'
+import {
+  getLocalizedUrl,
+  getTranslations,
+  i18nConfig,
+  type Language,
+} from '@/i18n'
 
 // Shared navigation options function
-export function getNavigationOptions(currentLanguage: string) {
+export function getNavigationOptions(currentLanguage: Language) {
   const t = getTranslations(currentLanguage, 'navbar')
 
   return {

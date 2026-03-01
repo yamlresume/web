@@ -14,7 +14,12 @@ import {
 
 import clsx from 'clsx'
 import { useParams } from 'next/navigation'
-import { getLocalizedUrl, type Language, useTranslations } from '@/i18n'
+import {
+  defaultLanguage,
+  getLocalizedUrl,
+  type Language,
+  useTranslations,
+} from '@/i18n'
 import { Icon, Section } from './common'
 import {
   AnimatedResumeDemo,
@@ -33,7 +38,7 @@ import {
 export function FeaturesSection() {
   const t = useTranslations('features')
   const params = useParams()
-  const lang = (params?.language as Language) || 'en'
+  const lang = (params?.language as Language) || defaultLanguage
   const iconSize = 20
 
   const features: FeatureCardProps[] = [
