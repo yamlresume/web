@@ -11,6 +11,17 @@ const translations = {
       search: 'Search',
       Playground: 'Playground',
     },
+    playground: {
+      tooltips: {
+        copy: 'Copy',
+        undo: 'Undo',
+        redo: 'Redo',
+        clear: 'Clear',
+        print: 'Print',
+        openInNewTab: 'Open in New Tab',
+        download: 'Download',
+      },
+    },
     hero: {
       tagline: 'Brought to you with ❤️ by <ppresume>PPResume</ppresume>',
       title: 'Resumes as Code in YAML',
@@ -168,6 +179,17 @@ const translations = {
       developer: 'Desarrollador',
       search: 'Buscar',
       Playground: 'Playground',
+    },
+    playground: {
+      tooltips: {
+        copy: 'Copiar',
+        undo: 'Deshacer',
+        redo: 'Rehacer',
+        clear: 'Limpiar',
+        print: 'Imprimir',
+        openInNewTab: 'Abrir en una pestaña nueva',
+        download: 'Descargar',
+      },
     },
     hero: {
       tagline: 'Traído con ❤️ por <ppresume>PPResume</ppresume>',
@@ -332,6 +354,17 @@ const translations = {
       search: 'Rechercher',
       Playground: 'Playground',
     },
+    playground: {
+      tooltips: {
+        copy: 'Copier',
+        undo: 'Annuler',
+        redo: 'Rétablir',
+        clear: 'Effacer',
+        print: 'Imprimer',
+        openInNewTab: 'Ouvrir dans un nouvel onglet',
+        download: 'Télécharger',
+      },
+    },
     hero: {
       tagline: 'Créé avec ❤️ par <ppresume>PPResume</ppresume>',
       title: 'CV en Code YAML',
@@ -495,6 +528,17 @@ const translations = {
       search: '搜索',
       Playground: '演练场',
     },
+    playground: {
+      tooltips: {
+        copy: '复制',
+        undo: '撤销',
+        redo: '重做',
+        clear: '清空',
+        print: '打印',
+        openInNewTab: '在新标签页打开',
+        download: '下载',
+      },
+    },
     hero: {
       tagline: '由 <ppresume>PPResume</ppresume> 精心制作 ❤',
       title: 'YAML 代码简历',
@@ -646,6 +690,17 @@ const translations = {
       search: '搜尋',
       Playground: '演練場',
     },
+    playground: {
+      tooltips: {
+        copy: '複製',
+        undo: '復原',
+        redo: '重做',
+        clear: '清空',
+        print: '列印',
+        openInNewTab: '在新分頁開啟',
+        download: '下載',
+      },
+    },
     hero: {
       tagline: '由 <ppresume>PPResume</ppresume> 精心製作 ❤',
       title: 'YAML 程式碼履歷',
@@ -796,6 +851,17 @@ const translations = {
       developer: '開発者',
       search: '検索',
       Playground: 'プレイグラウンド',
+    },
+    playground: {
+      tooltips: {
+        copy: 'コピー',
+        undo: '元に戻す',
+        redo: 'やり直し',
+        clear: 'クリア',
+        print: '印刷',
+        openInNewTab: '新しいタブで開く',
+        download: 'ダウンロード',
+      },
     },
     hero: {
       tagline: '<ppresume>PPResume</ppresume>が❤️でお届け',

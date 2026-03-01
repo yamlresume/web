@@ -2,6 +2,7 @@
 
 import { Playground } from '@yamlresume/playground'
 import { useLocalStorage } from 'usehooks-ts'
+import { useTranslations } from '@/i18n'
 
 const DEFAULT_RESUME = `# yaml-language-server: $schema=https://yamlresume.dev/schema.json
 #
@@ -260,6 +261,7 @@ layouts:
 
 // TODO: write test cases
 export function PlaygroundBody() {
+  const t = useTranslations('playground')
   const [resume, setResume] = useLocalStorage(
     'yamlresume-resume',
     DEFAULT_RESUME
@@ -267,7 +269,22 @@ export function PlaygroundBody() {
 
   return (
     <div className="flex-1 h-full">
-      <Playground yaml={resume} onChange={setResume} filename="resume.yml" />
+      <Playground
+        yaml={resume}
+        onChange={setResume}
+        filename="resume.yml"
+        messages={{
+          tooltips: {
+            copy: t('tooltips.copy'),
+            undo: t('tooltips.undo'),
+            redo: t('tooltips.redo'),
+            clear: t('tooltips.clear'),
+            print: t('tooltips.print'),
+            openInNewTab: t('tooltips.openInNewTab'),
+            download: t('tooltips.download'),
+          },
+        }}
+      />
     </div>
   )
 }
