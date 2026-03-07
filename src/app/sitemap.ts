@@ -4,12 +4,14 @@ import {
   blogSourceEs,
   blogSourceFr,
   blogSourceJa,
+  blogSourcePt,
   blogSourceZhCN,
   blogSourceZhTW,
   docsSource,
   docsSourceEs,
   docsSourceFr,
   docsSourceJa,
+  docsSourcePt,
   docsSourceZhCN,
   docsSourceZhTW,
 } from '@/lib'
@@ -28,6 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...docsSourceFr.getPages(),
     ...docsSourceJa.getPages(),
     ...docsSourceEs.getPages(),
+    ...docsSourcePt.getPages(),
   ]
 
   const allBlogPages = [
@@ -37,6 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogSourceFr.getPages(),
     ...blogSourceJa.getPages(),
     ...blogSourceEs.getPages(),
+    ...blogSourcePt.getPages(),
   ]
 
   return [

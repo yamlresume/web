@@ -1,0 +1,474 @@
+---
+title: Instalação
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+O YAMLResume é uma ferramenta Node.js, por baixo do capô, transforma os seus currículos do formato YAML para código LaTeX e depois chama um motor de composição tipográfica LaTeX para compilar o código LaTeX gerado para PDF. Além disso, para obter uma saída PDF ótima, também sugerimos instalar algumas fontes. Em resumo, precisa de instalar o seguinte para começar com o YAMLResume:
+
+- Node.js
+- [pacote yamlresume](https://www.npmjs.com/package/yamlresume)
+- um motor de composição tipográfica
+- [opcional] algumas fontes
+
+Isto parece um pouco complicado, mas não se preocupe, nós cobrimos tudo.
+
+## Utilizadores de Docker
+
+Se é utilizador de docker, tem sorte, temos uma [imagem de docker](https://hub.docker.com/r/yamlresume/yamlresume) para si. Esta imagem tem tudo pré-embalado, incluindo:
+
+- [Node.js](/pt/docs/installation#nodejs)
+- [CLI yamlresume](/pt/docs/installation#yamlresume)
+- [XeTeX](/pt/docs/installation#xetex)
+- [algumas fontes recomendadas](/pt/docs/installation#font)
+
+Pode criar um novo currículo instantaneamente com o seguinte comando:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+<Callout title="Como funciona esta magia do Docker?">
+Este comando criará um novo currículo chamado `my-resume.yml` no seu diretório atual. Passos:
+
+1. `docker run ... yamlresume/yamlresume` - executa um novo contentor da imagem `yamlresume/yamlresume`, se esta imagem não existir na sua máquina local, será descarregada do [Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume).
+2. `--rm` - remove automaticamente o contentor quando sai
+3. `-v $(pwd):/home/yamlresume` - monta o diretório atual (`$(pwd)`) no contentor em `/home/yamlresume`, permitindo ao contentor aceder a ficheiros locais
+4. `new my-resume.yml` - executa o subcomando [new](/pt/docs/cli#new) do CLI yamlresume para criar um novo currículo com o nome de ficheiro `my-resume.yml`
+
+</Callout>
+
+Edite `my-resume.yml` em conformidade e depois construa o currículo de yaml para pdf:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+Basicamente, pode chamar todos os [subcomandos do CLI](/pt/docs/cli) do `yamlresume` desta forma—basta adicionar o subcomando depois de `yamlresume/yamlresume` e depois seguir o guia de utilização correspondente.
+
+A flag `-v` aqui é bastante importante porque monta o diretório atual (`$(pwd)`) no contentor em `/home/yamlresume`, permitindo uma sincronização de ficheiros bidirecional entre o diretório local e o contentor.
+
+<Callout title="Espelho do Github">
+Se tiver problemas em descarregar a imagem `yamlresume/yamlresume` do [Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume), não se preocupe, temos um [espelho do github](https://github.com/yamlresume/yamlresume/pkgs/container/yamlresume) para si.
+
+Pode obter a [imagem ghcr](https://github.com/yamlresume/yamlresume/pkgs/container/yamlresume) através de:
+
+```sh
+docker pull ghcr.io/yamlresume/yamlresume
+```
+
+</Callout>
+
+### Problemas de Permissões
+
+Por vezes pode encontrar [problemas de permissões](https://github.com/yamlresume/yamlresume/issues/24) ao executar o contentor Docker porque a imagem `yamlresume/yamlresume` é construída com uma instrução `USER yamlresume`, que por defeito é executada com menos privilégios.
+
+Há duas formas de resolver este problema:
+
+1. Use o seu nome de utilizador/ID de grupo do host para executar o contentor:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume -u $(id -u):$(id -g) yamlresume/yamlresume new my-resume.yml
+```
+
+Esta é a forma recomendada de executar o contentor. Sempre que o seu utilizador host tiver acesso ao diretório atual, pode executar o contentor com o seu nome de utilizador/ID de grupo do host.
+
+2. Use `-u root` para executar o contentor com acesso root:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume -u root yamlresume/yamlresume new my-resume.yml
+```
+
+Esta é a forma menos recomendada de executar o contentor. Não é recomendada porque pode causar problemas de segurança, por isso só deve fazer isto se tiver a certeza do que está a fazer.
+
+Por último, mas não menos importante, se estiver a executar o contentor Docker `yamlresume` no GitHub Actions, então o acesso root pode ser necessário de acordo com a [documentação do GitHub](https://docs.github.com/en/actions/reference/runners/github-hosted-runners#docker-container-filesystem):
+
+> Nota: O GitHub Actions deve ser executado pelo utilizador Docker padrão (root). Certifique-se de que o seu Dockerfile não define a instrução USER, caso contrário não poderá aceder ao GITHUB_WORKSPACE.
+
+Ref: [Compreendendo a Instrução USER do Docker](https://www.docker.com/blog/understanding-the-docker-user-instruction/)
+
+## Utilizadores Não-Docker
+
+Se não é um utilizador de docker, siga as instruções apropriadas abaixo para instalar o CLI yamlresume e todas as dependências necessárias de acordo com o seu sistema operativo. No momento em que escrevo isto, o nosso guia cobre macOS, Windows e algumas distribuições Linux (Ubuntu e distribuições baseadas em RHEL).
+
+### Node.js
+
+É necessário Node.js 20.x ou posterior.
+
+<Callout title="Porquê Node.js 20.x ou posterior?">
+  Teoricamente o `yamlresume` deveria funcionar com Node.js 18, no entanto, é altamente recomendado usar Node.js 20 ou posterior porque o Node.js 18 LTS está programado para chegar ao fim da sua vida útil a [30 de abril de 2025](https://nodejs.org/en/blog/release/v18.20.8).
+</Callout>
+
+Pode haver mais de 100 métodos para instalar Node.js em diferentes sistemas operativos, pode consultar a [Descarga oficial do Node.js](https://nodejs.org/en/download) para começar.
+
+Recomendamos usar um [gestor de pacotes](https://nodejs.org/en/download/package-manager/all) para instalar o Node.js.
+
+<Tabs groupId='node.js' persist items={['macOS', 'Windows', 'Linux']}>
+<Tab value="macOS">
+Para utilizadores de [Homebrew](https://brew.sh/):
+
+```sh
+brew install node
+```
+
+</Tab>
+
+<Tab value="Windows">
+Para utilizadores de [Chocolatey](https://chocolatey.org/):
+
+```sh
+choco install nodejs.install
+```
+
+</Tab>
+
+<Tab value="Linux">
+<Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
+<Tab value="Ubuntu">
+Para Ubuntu 24.10 ou posterior:
+
+```sh
+sudo apt install nodejs
+```
+
+Para Ubuntu 24.04 ou anterior, por favor consulte o
+[NodeSource](https://downloads.nodesource.com/#debian) para obter Node.js 20 ou
+posterior.
+
+</Tab>
+
+<Tab value="RHEL">
+Para linux baseado em RHEL como Fedora, AlmaLinux, Rocky Linux, etc.:
+
+```sh
+sudo dnf install nodejs
+```
+
+</Tab>
+</Tabs>
+</Tab>
+</Tabs>
+
+### CLI do YAMLResume
+
+Instalar `yamlresume` é muito fácil. Pode instalá-lo usando o seu gestor de pacotes Node.js favorito:
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```console tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+
+</Tabs>
+
+Se é utilizador de macOS e usa [Homebrew](https://brew.sh/), também pode instalar [yamlresume via Homebrew](http://formulae.brew.sh/formula/yamlresume):
+
+```sh
+brew install yamlresume
+```
+
+Verifique que `yamlresume` foi instalado corretamente:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+Se apenas quiser experimentar o `yamlresume` sem o instalar, pode usar `npx`, `pnpx` ou outras ferramentas semelhantes:
+
+<Tabs groupId='package-manager' persist items={['npx', 'yarn', 'pnpx', 'bun']}>
+```console tab="npx"
+npx yamlresume help
+```
+```console tab="yarn"
+yarn dlx yamlresume help
+```
+
+```console tab="pnpx"
+pnpx yamlresume help
+```
+
+```console tab="bun"
+bun exec yamlresume help
+```
+
+</Tabs>
+
+### Motor de Composição Tipográfica
+
+Por baixo do capô, o `yamlresume` faz o trabalho de um compilador, analisando um currículo YAML para um
+[AST](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/ast.ts)
+e depois [transformando o AST para código LaTeX](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/codegen/latex.ts).
+
+Como um mini-compilador, o `yamlresume` depende de um motor de composição tipográfica para compilar o código LaTeX gerado para PDFs. Portanto, primeiro deve instalar um motor de composição tipográfica antes de poder usar o `yamlresume` para gerar PDFs de currículo.
+
+O YAMLResume atualmente suporta dois motores de composição tipográfica: [XeTeX](#xetex) e [Tectonic](#tectonic).
+
+<Callout title="Porquê LaTeX?">
+  No momento em que escrevo isto, o [LaTeX](https://www.latex-project.org/) continua a ser a
+  melhor opção de motor de composição tipográfica para produzir PDFs de aspeto profissional.
+  [Typst](https://typst.app/) é uma grande alternativa, mas ainda está na sua
+  fase inicial e o seu suporte CJK não está maduro nem pronto para produção ainda.
+  Anteriormente escrevi uma publicação [Sobre Motores de Composição Tipográfica](https://blog.ppresume.com/posts/on-typesetting-engines) explicando
+  as razões pelas quais escolhi LaTeX sobre outros motores de composição tipográfica quando fundei
+  [PPResume](https://ppresume.com).
+</Callout>
+
+#### XeTeX
+
+[XeTeX](https://tug.org/xetex/) é um motor de composição tipográfica [TeX](https://en.wikipedia.org/wiki/TeX) que usa [Unicode](https://en.wikipedia.org/wiki/Unicode) e suporta tecnologias de fontes modernas como [OpenType](https://en.wikipedia.org/wiki/OpenType), [Graphite](https://fonts.adobe.com/fonts/graphite) e [Apple Advanced Typography (AAT)](https://en.wikipedia.org/wiki/Apple_Advanced_Typography).
+
+É um motor de composição tipográfica muito maduro e estável que é amplamente utilizado por muitas pessoas académicas e científicas.
+
+<Tabs groupId='os' persist items={['macOS', 'Windows', 'Linux']}>
+<Tab value="macOS">
+A forma mais fácil é instalar a distribuição **MacTeX**.
+
+Inclui XeTeX juntamente com muitos outros programas e pacotes relacionados com TeX. Pode descarregá-lo do [site do MacTeX](https://www.tug.org/mactex/) ou instalá-lo via homebrew:
+
+```sh
+# install the full mactex
+brew install mactex
+# or if you want to save some disk space
+brew install mactex-no-gui
+```
+O MacTeX é uma distribuição grande, por isso pode demorar algum tempo a descarregar e instalar e ocupa cerca de 5GB de espaço em disco. Se deseja uma distribuição menor, pode instalar **BasicTeX**, que é uma versão mínima do MacTeX:
+
+```sh
+brew install --cask basictex
+```
+
+Depois de instalar o BasicTeX, pode precisar de instalar pacotes adicionais manualmente usando o comando `tlmgr`:
+
+```sh
+sudo tlmgr update --self
+sudo tlmgr install moderncv fontawesome5 collection-fontsrecommended
+```
+
+Pode consultar o blog de Kostiantyn Lysenko, [YAMLResume - Resume as Code](https://lysenko.dev/posts/2025-01-yamlresume-resume-as-code/) para mais detalhes sobre basictex com YAMLResume.
+
+[A distribuição MiKTeX](https://miktex.org) é uma opção popular para Windows e inclui XeTeX. Pode descargá-la do [site do MiKTeX](https://miktex.org/download).
+
+Alternativamente, pode instalar **TeX Live** para Windows, que também inclui XeTeX. Descarregue-o do [site do TeX Live](https://www.tug.org/texlive/acquire-netinstall.html).
+
+</Tab>
+
+<Tab value='Windows'>
+[A distribuição MiKTeX](https://miktex.org) é uma opção popular para Windows e inclui XeTeX. Pode descargá-la do [site do MiKTeX](https://miktex.org/download).
+
+Alternativamente, pode instalar **TeX Live** para Windows, que também inclui XeTeX. Descarregue-o do [site do TeX Live](https://www.tug.org/texlive/acquire-netinstall.html).
+
+</Tab>
+
+<Tab value="Linux">
+A maioria das distribuições Linux oferecem TeX Live através dos seus gestores de pacotes. XeTeX está tipicamente incluído no pacote `texlive-xetex` ou num meta-pacote `texlive-full` maior.
+
+<Tabs items={['Ubuntu', 'RHEL']}>
+<Tab value="Ubuntu">
+Para Ubuntu, se a sua rede for boa e tiver cerca de 10GB de espaço em disco, pode instalar a distribuição completa do texlive:
+
+```sh
+sudo apt install texlive-full
+```
+
+Caso contrário, pode instalar os pacotes mínimos necessários:
+
+```sh
+sudo apt install texlive-xetex texlive-fonts-extra texlive-lang-all
+```
+
+</Tab>
+
+<Tab value="RHEL">
+Para linux baseado em RHEL como Fedora, AlmaLinux, Rocky Linux, pode instalar a distribuição completa do TeX Live se tiver espaço em disco suficiente e boa rede:
+
+```sh
+sudo dnf install texlive-scheme-full
+```
+
+Caso contrário, pode instalar os pacotes mínimos necessários:
+
+```sh
+sudo dnf install \
+  texlive-scheme-medium \
+  texlive-moderncv \
+  texlive-ctex \
+  texlive-academicons
+```
+
+</Tab>
+</Tabs>
+
+Alternativamente, pode sempre instalar o TeX Live diretamente do [site do TeX Live](https://www.tug.org/texlive/acquire-netinstall.html) usando o seu instalador, que funciona em diferentes distribuições Linux.
+
+</Tab>
+</Tabs>
+
+Verifique que XeTeX foi instalado corretamente:
+
+```console
+$ xetex -v
+XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+kpathsea version 6.3.4
+Copyright 2022 SIL International, Jonathan Kew and Khaled Hosny.
+There is NO warranty.  Redistribution of this software is
+covered by the terms of both the XeTeX copyright and
+the Lesser GNU General Public License.
+For more information about these matters, see the file
+named COPYING and the XeTeX source.
+Primary author of XeTeX: Jonathan Kew.
+Compiled with ICU version 70.1; using 70.1
+Compiled with zlib version 1.2.11; using 1.2.11
+Compiled with FreeType2 version 2.11.1; using 2.11.1
+Compiled with Graphite2 version 1.3.14; using 1.3.14
+Compiled with HarfBuzz version 3.4.0; using 3.4.0
+Compiled with libpng version 1.6.37; using 1.6.37
+Compiled with pplib version v2.05 less toxic i hope
+Using Mac OS X Core Text and Cocoa frameworks
+```
+
+#### Tectonic
+
+[Tectonic](https://tectonic-typesetting.github.io) é um motor moderno, completo e auto-contido de [TeX](https://en.wikipedia.org/wiki/TeX)/[LaTeX](https://www.latex-project.org/), impulsionado por [XeTeX](https://tug.org/xetex/) e [TeXLive](https://www.tug.org/texlive/).
+
+Uma distribuição completa do TeX Live tipicamente ocupa vários GB de espaço em disco, enquanto a instalação inicial do tectonic ocupa apenas 10+ MB. Descarrega automaticamente os ficheiros de suporte, por isso não tem de instalar uma distribuição completa de LaTeX. Quando começa a usar um novo pacote de LaTeX, o Tectonic simplesmente baixa os ficheiros de que precisa e continua a processar.
+
+O Tectonic fornece um [guia de instalação](https://tectonic-typesetting.github.io/en-US/install.html) oficial, mas isso simplesmente colocaria o tectonic no diretório onde executou o comando de instalação, o `yamlresume` precisa de um comando `tectonic` global no seu `$PATH`, então precisa de resolver isso com alguns truques de shell por sua conta.
+
+Se é utilizador de macOS, tem sorte porque o Homebrew fornece um pacote pré-construído:
+
+```sh
+brew install tectonic
+```
+
+Na minha experiência, o tectonic ainda tem alguns problemas menores de compatibilidade com o XeTeX oficial, então se não se importam com o longo tempo de descarga de uma distribuição completa do TeX Live, o XeTeX continua a ser a opção recomendada aqui.
+
+### Fonte
+
+#### Linux Libertine
+
+O YAMLResume adota [Linux Libertine](https://www.dafont.com/linux-libertine.font) como a fonte predefinida para caracteres latinos. É altamente recomendado instalá-la para obter uma saída PDF ótima.
+
+<Tabs groupId='font-os' persist items={['macOS', 'Windows', 'Linux']}>
+<Tab value="macOS">
+Para utilizadores do Homebrew:
+
+```sh
+brew install font-linux-libertine
+```
+
+Caso contrário, pode descarregar a versão mais recente do [Linux Libertine](https://www.dafont.com/linux-libertine.font) do site e instalar a fonte com o [Catálogo Tipográfico](https://support.apple.com/en-gb/guide/font-book/fntbk1000/mac) do macOS.
+
+</Tab>
+
+<Tab value="Windows">
+  Descarregue a versão mais recente do [Linux Libertine](https://www.dafont.com/linux-libertine.font) do site, extraia o ficheiro e instale a fonte.
+</Tab>
+
+<Tab value="Linux">
+<Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
+<Tab value="Ubuntu">
+Para utilizadores Ubuntu, a fonte Linux Libertine já está incluída no pacote `texlive-fonts-extra`, no entanto, se quiser instalá-la manualmente, pode fazê-lo através de:
+
+```sh
+sudo apt install fonts-linuxlibertine
+```
+
+</Tab>
+
+<Tab value="RHEL">
+Para linux baseado em RHEL como Fedora, AlmaLinux, Rocky Linux, pode instalar a fonte Linux Libertine através de:
+
+```sh
+sudo dnf install linux-libertine-fonts
+```
+
+</Tab>
+</Tabs>
+</Tab>
+</Tabs>
+
+#### Google Noto
+
+Se precisar de currículos em CJK, também precisará de instalar [fontes Google Noto](https://fonts.google.com/noto/) para [melhor cobertura unicode](https://github.com/ppresume/community/issues/63).
+
+<Tabs groupId='os' persist items={['macOS', 'Windows', 'Linux']}>
+
+<Tab value='macOS'>
+Para utilizadores do Homebrew:
+
+```sh
+brew install font-noto-sans-cjk font-noto-serif-cjk
+```
+
+</Tab>
+
+<Tab value="Windows">
+  Descarregue fontes Noto e siga o [guia oficial](https://fonts.google.com/noto/use#use-noto-fonts) para instalar no Windows.
+</Tab>
+
+<Tab value="Linux">
+<Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
+<Tab value="Ubuntu">
+Para utilizadores Ubuntu:
+
+```sh
+sudo apt install fonts-noto-cjk fonts-noto-cjk-extra
+```
+
+</Tab>
+<Tab value="RHEL">
+Para linux baseado em RHEL como Fedora, AlmaLinux, Rocky Linux, pode instalar as fontes Noto através de:
+
+```sh
+sudo dnf install google-noto-sans-cjk-fonts google-noto-serif-cjk-fonts
+```
+
+</Tab>
+</Tabs>
+</Tab>
+</Tabs>
+
+## Resolução de Problemas
+
+Pode [abrir um problema](https://github.com/yamlresume/yamlresume/issues/new) se tiver problemas para instalar o `yamlresume` ou as suas dependências.
+
+Pode ativar o registo detalhado passando uma flag `--verbose` ao `yamlresume` ou aos seus subcomandos.
+
+### Cansado?
+
+Se estiver cansado do processo de instalação, pode experimentar o [PPResume](https://ppresume.com), que é uma solução de construção de currículos comercial e alojada que tornou o YAMLResume em código aberto.

@@ -1,0 +1,55 @@
+---
+title: Moderncv Banking
+---
+
+## Implementação
+
+Moderncv banking é um modelo de currículo moderno e limpo baseado em
+[xdanaux/moderncv](https://github.com/xdanaux/moderncv).
+
+Por baixo do capô, usamos o seguinte código para o preâmbulo do LaTeX:
+
+```latex lineNumbers
+\documentclass[a4paper, serif, 11pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% needed by moderncv for showing icons
+\usepackage{fontawesome5}
+```
+
+Para o estilo moderncv banking, também adotamos alguns processamentos
+especiais para pontuação a fim de fazê-lo funcionar com CJK.
+
+Tecnicamente falando, o inglês e o chinês têm dois pontos diferentes. Os
+dois pontos em inglês são `:`, com Unicode `U+003A`, enquanto os dois pontos
+em chinês são `：`, com Unicode `U+FF1A`. Então, quando o idioma do
+currículo é chinês, adotamos os dois pontos chineses para o moderncv
+sobrescrevendo algumas macros mágicas do LaTeX:
+
+```latex lineNumbers
+% renew moderncv command to adapt for CJK colon
+\newcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}<= &templateTranslations.punctuations.Colon =>}{#3}%
+  \par\addvspace{#1}}
+
+\newcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}<= &templateTranslations.punctuations.Colon =>}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\main@Columnwidth-\separator@Columnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separator@Columnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+```
+
+Consulte o nosso
+[artigo](https://blog.ppresume.com/posts/multi-languagues-support#colon) do
+blog para mais detalhes.
+
+## Pré-visualização
+
+![Modelo Moderncv Banking](/static/images/docs/layouts/latex/templates/moderncv-banking-template.png)

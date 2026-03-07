@@ -1,0 +1,253 @@
+---
+title: "YAMLResume v0.9: Saída HTML"
+description: "YAMLResume v0.9 introduz um motor de design HTML, permitindo currículos prontos para a web e responsivos diretamente a partir do YAML."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-12-22
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+Temos o prazer de anunciar o lançamento de
+[YAMLResume v0.9](https://github.com/yamlresume/yamlresume/releases/tag/v0.9.0),
+introduzindo suporte de primeira classe para [saída HTML](</docs/layouts/html>). Seguindo
+o nosso [lançamento v0.8](/blog/markdown-output) que trouxe [saída
+Markdown](</docs/layouts/markdown>), agora estamos a dar outro passo importante
+para tornar os dados do teu currículo realmente versáteis e nativos da web.
+
+Com a v0.9, agora podes compilar o teu currículo YAML diretamente num arquivo
+HTML independente e responsivo, perfeito para hospedar no teu site pessoal, GitHub Pages,
+ou qualquer plataforma de hospedagem estática. Não mais conversão de PDFs ou manutenção manual de
+versões web separadas do teu currículo.
+
+Por agora apenas fornecemos um modelo para o design HTML: o modelo
+[calm](</docs/layouts/html/templates/calm>), que é inspirado no modelo LaTeX moderncv.
+Apresenta um design minimalista com separação clara de secções
+e um design elegante otimizado para visualização web. Aqui está a pré-visualização:
+
+![Modelo Calm HTML da YAMLResume](/static/images/docs/layouts/html/templates/calm.webp)
+
+Uma demonstração rápida de como usar YAMLResume v0.9 para gerar um currículo HTML:
+
+[![YAMLResume v0.9: Saída HTML](https://asciinema.org/a/763505.svg)](https://asciinema.org/a/763505)
+
+## Por que HTML?
+
+Quando introduzimos a [arquitectura de múltiplos designs](</docs/layouts>) na v0.8,
+imaginamos um mundo onde o teu único `resume.yml` pudesse ser renderizado em qualquer
+formato de que necessitasses. Começamos com [LaTeX/PDF](</docs/layouts/latex>) para
+aplicações profissionais e [Markdown](</docs/layouts/markdown>) para
+interoperabilidade e fluxos de trabalho com LLM. Agora, HTML completa a tríade de formatos
+essenciais de currículo.
+
+HTML oferece vantagens únicas:
+
+**Nativo da Web**: HTML é a linguagem da web. O teu currículo torna-se um cidadão de primeira classe
+na internet, não apenas um documento que tens de incorporar ou converter.
+
+**Design Responsivo**: Ao contrário dos PDFs que requerem pinça e zoom em dispositivos
+móveis, os currículos HTML adaptam-se perfeitamente a qualquer tamanho de ecrã, desde monitores de desktop
+até telemóveis.
+
+**Amigável para SEO**: Os motores de busca podem indexar o teu currículo HTML, tornando as tuas habilidades
+e experiência descobertas. Isto é impossível com currículos apenas em PDF.
+
+**Interativo**: HTML permite links clicáveis, deslocamento suave e outros
+elementos interativos que melhoram a experiência do utilizador para além de documentos estáticos.
+
+**Zero Dependências**: A saída HTML é um arquivo autocontido com CSS inline.
+Coloca-o em qualquer lugar—S3, Netlify, GitHub Pages—e simplesmente funciona.
+
+## Começando
+
+Se tens `yamlresume` instalado (versão 0.9.0 ou superior), adicionar saída HTML
+ao teu currículo é tão simples quanto atualizar a tua configuração de layouts.
+
+### Passo 1: Atualiza a Configuração do teu Currículo
+
+Adiciona o design HTML ao teu `resume.yml`:
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    typography:
+      fontSize: 11pt
+  - engine: markdown
+  - engine: html        #[! code highlight]
+    template: calm      #[! code highlight]
+    typography:         #[! code highlight]
+      fontSize: 16px    #[! code highlight]
+```
+
+O motor HTML admite [tipografia](</docs/layouts/html#typography>) personalizável
+com tamanhos de fonte que variam de 14px até 20px. O modelo padrão `calm` é
+inspirado no popular pacote LaTeX `moderncv`, proporcionando um aspeto limpo e profissional.
+
+### Passo 2: Constrói o teu Currículo
+
+Executa o comando de construção:
+
+```console
+$ yamlresume build my-resume.yml
+✔ Generated resume tex file successfully: my-resume.tex
+◐ Generating resume pdf file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume pdf file successfully: my-resume.pdf
+✔ Generated resume markdown file successfully: my-resume.md
+✔ Generated resume html file successfully: my-resume.html
+```
+
+É tudo! Agora tens três arquivos de saída a partir de uma única fonte de verdade.
+
+## O Modelo Calm
+
+O lançamento inicial inclui o modelo `calm`, um design cuidadosamente concebido
+que equilibra profissionalismo com legibilidade. O modelo apresenta:
+
+- **Tipografia Limpa**: Tamanhos de fonte e alturas de linha otimizados tanto para ecrã como para
+  impressão.
+- **Design Responsivo**: Adapta-se automaticamente desde ecrãs de desktop largos até ecrãs
+  móveis estreitos.
+- **HTML Semântico**: Usa elementos semânticos HTML5 adequados para melhor acessibilidade
+  e SEO.
+- **Amigável para Impressão**: Embora concebido para a web, o modelo inclui estilos de impressão
+  para que fique óptimo quando guardado como PDF a partir do navegador.
+
+## Casos de Uso
+
+### GitHub Pages
+
+Despliega o teu currículo HTML no GitHub Pages com configuração mínima:
+
+```yml
+# .github/workflows/deploy.yml
+name: Deploy Resume
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install -g yamlresume
+      - run: yamlresume build resume.yml
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+```
+
+### Portfólio Responsivo
+
+Incorpora o teu currículo diretamente no teu portfólio. Uma vez que o HTML é
+autocontido, podes até incorporá-lo num iframe ou extrair os estilos para uma integração mais profunda.
+
+### Partilhar Rapidamente
+
+Envia por email o arquivo HTML ou partilha-o via Dropbox/Google Drive. Os destinatários podem abri-lo
+em qualquer navegador sem necessidade de leitores de PDF ou software especial.
+
+## Arquitetura Técnica
+
+O [renderer
+HTML](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/html/renderer.ts)
+é construído com os mesmos rigorosos padrões de engenharia que o nosso motor
+LaTeX/Markdown. Internamente:
+
+1. **Renderização com Segurança de Tipos**: O renderer é escrito em TypeScript com segurança total de tipos
+   através de [esquemas Zod](</docs/compiler/schema/zod>).
+
+2. **Sistema de Modelos**: Os modelos são modulares e extensíveis. Embora enviemos com
+   `calm` inicialmente, a arquitetura suporta múltiplos modelos. Modelos futuros
+   podem ser adicionados facilmente.
+
+3. **Metodologia CSS**: Usamos uma combinação de CSS Reset (baseado em modern-normalize)
+   e estilos de modelo com escopo para garantir uma renderização consistente nos navegadores.
+
+4. **Manipulação de Escape**: Todo o conteúdo está [corretamente
+   escapado em HTML](https://github.com/yamlresume/yamlresume/blob/v0.9.1/packages/core/src/utils/string.ts#L34-L44)
+   para prevenir vulnerabilidades de injeção e garantir que os caracteres especiais sejam renderizados
+   corretamente.
+
+5. **Testes Exaustivos**: O renderer HTML inclui mais de 1.000 linhas de
+   [casos de
+   teste](https://github.com/yamlresume/yamlresume/blob/v0.9.1/packages/core/src/renderer/html/renderer.test.ts)
+   que alcançam 100% de cobertura de testes e garantem que o renderer funcione como
+   esperado.
+
+## Comparação: LaTeX vs Markdown vs HTML
+
+Vejamos como os três motores se comparam:
+
+| Característica      | LaTeX (PDF)    | Markdown           | HTML             |
+| ------------------- | -------------- | ------------------ | ---------------- |
+| **Caso de Uso**     | Aplicações    | AI/LLMs, conteúdo  | Hospedagem web   |
+| **Formato**         | Pixel perfeito| Mínimo             | Responsivo       |
+| **Portabilidade**   | Universal     | Universal          | Nativo da web    |
+| **Personalização**  | Extensiva     | Limitada           | Crescente        |
+| **Tamanho Arquivo** | ~50-200 KB    | ~5-20 KB           | ~20-50 KB        |
+| **Dependências**    | Cadeia LaTeX  | Nenhuma            | Nenhuma          |
+| **Interativo**      | Não           | Não                | Sim              |
+| **SEO**             | Não           | Quando publicado   | Sim              |
+| **Responsivo**      | Não           | Depende do renderer| Sim              |
+
+Cada motor destaca-se no seu domínio. A beleza da arquitetura do YAMLResume é que
+não tens de escolher: gera os três a partir do mesmo arquivo fonte e usa
+cada um onde melhor se adequar.
+
+## O Que Segue?
+
+O motor HTML v0.9 estabeleceu uma base sólida, mas temos planos ambiciosos para
+melhorias futuras:
+
+### Mais Modelos
+
+Adicionaremos modelos adicionais com diferentes estéticas de design: minimalista,
+criativo, corporativo, etc. Queres contribuir com um modelo? Consulta a nossa
+[guia de contribuição](</docs/contributing>).
+
+### Personalização Estendida
+
+Os lançamentos futuros expandirão as opções de tipografia para incluir famílias de fontes, esquemas
+de cores e controles de espaçamento, dando-te mais controle sobre a apresentação
+visual.
+
+### Modo Escuro
+
+Suporte integrado de modo escuro usando variáveis CSS e media queries `prefers-color-scheme`.
+
+### Melhorias de Acessibilidade
+
+Embora a implementação atual use HTML semântico, planeamos adicionar
+etiquetas ARIA completas e suporte de navegação por teclado para tornar os currículos acessíveis para todos
+os utilizadores.
+
+## Conclusão
+
+YAMLResume v0.9 traz suporte de design HTML, completando a trilogia de formatos de saída principais.
+Agora, a partir de um único arquivo `resume.yml`, podes gerar:
+
+- Um PDF profissional via LaTeX para candidaturas de trabalho
+- Um arquivo Markdown limpo para LLMs e fluxos de trabalho de conteúdo
+- Uma página HTML responsiva para hospedagem web e portfólios online
+
+Este lançamento reforça o nosso compromisso com a filosofia "Currículo como Código": escreve
+uma vez, renderiza em qualquer lugar. Os dados do teu currículo permanecem como a única fonte de verdade, e
+as saídas são apenas diferentes vistas otimizadas para diferentes contextos.
+
+Convidamos-te a atualizares para a v0.9 e experimentares a flexibilidade dos
+currículos nativos da web:
+
+```console
+$ npm install -g yamlresume@latest
+$ pnpm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ bun add -g yamlresume@latest
+$ brew install yamlresume
+```
+
+Tens comentários ou ideias para novos modelos? Junta-te à discussão em
+[GitHub](https://github.com/yamlresume/yamlresume/discussions) ou contacta-nos em
+[X/Twitter](https://x.com/xiaohanyu1988). Estamos ansiosos por ver como usas os designs
+HTML no teu fluxo de trabalho!

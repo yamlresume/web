@@ -41,6 +41,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/pt" className="hover:underline">
+                  Português
+                </Link>
+              </li>
+              <li>
                 <Link href="/zh-cn" className="hover:underline">
                   简体中文
                 </Link>

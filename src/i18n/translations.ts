@@ -1015,6 +1015,180 @@ const translations = {
       copyright: '© 2023年〜現在、',
     },
   },
+  pt: {
+    navbar: {
+      documentation: 'Documentação',
+      blog: 'Blog',
+      chat: 'Chat',
+      discussions: 'Discussões',
+      developer: 'Programador',
+      search: 'Pesquisar',
+      Playground: 'Playground',
+    },
+    playground: {
+      tooltips: {
+        copy: 'Copiar',
+        undo: 'Desfazer',
+        redo: 'Refazer',
+        clear: 'Limpar',
+        print: 'Imprimir',
+        openInNewTab: 'Abrir num novo separador',
+        download: 'Descarregar',
+      },
+    },
+    hero: {
+      tagline: 'Criado com ❤️ por <ppresume>PPResume</ppresume>',
+      title: 'Currículos como Código em YAML',
+      description:
+        'O YAMLResume permite às pessoas criar e controlar versões de currículos usando YAML e gerar currículos perfeitos em múltiplos formatos (PDF, HTML, Markdown, etc.) num instante.',
+      quickStart: 'Início Rápido',
+      checkGithub: 'Ver Github',
+      Playground: 'Playground',
+    },
+    quickStart: {
+      title: 'Início Rápido num Segundo',
+    },
+    features: {
+      sectionTitle: 'Potente, Profissional e Perfeito',
+      plainText: {
+        title: 'Texto Simples em YAML',
+        description:
+          'Mantenha o seu currículo como código em YAML — limpo, legível e perfeitamente adequado para controle de versão.',
+      },
+      richText: {
+        title: 'Formatação de Texto Rico',
+        description:
+          'Use texto rico no estilo Markdown nos seus resumos para destacar os seus pontos-chave com clareza.',
+      },
+      flexibleSection: {
+        title: 'Flexibilidade Infinita',
+        description:
+          'Estruture o seu currículo exatamente como deseja com secções modulares concebidas para máximo impacto.',
+      },
+      latexTypesetting: {
+        title: 'Composição de Nível Profissional',
+        description:
+          'Powered by LaTeX para tipografia perfeita ao pixel, espaçamento consistente e estética profissional.',
+      },
+      customizable: {
+        title: 'Personalização Profunda',
+        description:
+          'Controlo total sobre margens, fontes e tamanhos para criar um visual que é exclusivamente seu.',
+      },
+      multilingual: {
+        title: 'Vá para o Global',
+        description:
+          'Suporte integrado para múltiplas línguas, tornando as aplicações internacionais fáceis.',
+      },
+      cli: {
+        title: 'CLI para Programadores',
+        description:
+          'Uma poderosa interface de linha de comandos para automatizar o seu fluxo de trabalho e integração de currículo.',
+      },
+      privacy: {
+        title: 'Privacidade Primeiro',
+        description:
+          'Processe tudo localmente. Os seus dados pessoais permanecem na sua máquina, sempre.',
+      },
+      themes: {
+        title: 'Temas Universais',
+        description:
+          'Um ficheiro de origem, possibilidades infinitas com temas profissionais para PDF, HTML e muito mais.',
+      },
+      schema: {
+        title: 'Inteligência de Schema',
+        description:
+          'Obtenha feedback instantâneo e evite erros com validação de schema integrada enquanto escreve.',
+      },
+      outputs: {
+        title: 'Suporte Multi-Formato',
+        description:
+          'Gere o seu currículo em múltiplos formatos profissionais, incluindo PDF, HTML responsivo e Markdown limpo.',
+      },
+      templates: {
+        title: 'Modelos Profissionais',
+        description:
+          'Escolha entre uma variedade de modelos LaTeX testados, concebidos para clareza e impacto profissional.',
+      },
+    },
+    testimonials: {
+      sectionTitle: 'O Que as Pessoas Dizem',
+    },
+    stats: {
+      sectionTitle: 'Confiado por Programadores',
+    },
+    comparison: {
+      sectionTitle: 'Feito para a Perfeição',
+      conventional: 'RxResume',
+      yamlresume: 'YAMLResume',
+    },
+    onboarding: {
+      sectionTitle: 'Comece em Segundos',
+      recommended: 'Recomendado',
+      npx: {
+        title: 'NPX (Recomendado)',
+        description:
+          'Crie um novo projeto instantaneamente sem instalações globais',
+      },
+      npm: {
+        title: 'NPM Global',
+        description:
+          'Instale como ferramenta CLI global para acesso em todo o sistema',
+      },
+      brew: {
+        title: 'Homebrew',
+        description: 'Instale no macOS usando o gestor de pacotes Homebrew',
+      },
+      docker: {
+        title: 'Docker',
+        description: 'Execute num contentor isolado sem dependências locais',
+      },
+      json2yamlresume: {
+        title: 'json2yamlresume',
+        description:
+          'Converta JSON Resume para formato YAMLResume perfeitamente',
+      },
+    },
+    faq: {
+      title: 'Perguntas Frequentes',
+      questions: {
+        whatIs: {
+          question: 'O que é o YAMLResume?',
+          answer1:
+            'O YAMLResume é uma ferramenta que permite gerir o seu currículo como código usando YAML. Fornece uma forma estruturada de definir a sua experiência profissional, competências, educação e outras secções do currículo num documento de texto simples e controlável por versão. O YAMLResume converte então estes dados YAML em documentos PDF bellamente compostos que estão prontos para candidaturas a empregos e bolsas.',
+          answer2:
+            'O YAMLResume começou como o motor de composição central do PPResume, um construtor de currículos perfeitos ao pixel baseado em LaTeX. Após uma reflexão cuidadosa, decisámos torná-lo open source para que as pessoas possam sempre ter o direito de dizer não ao bloqueio de fornecedores.',
+        },
+        whyYaml: {
+          question: 'Porquê YAML em vez de JSON?',
+          answer:
+            'Em resumo, o YAML foi escolhido porque é mais legível e editável por humanos do que JSON. Apesar da sua sintaxe mais limpa, menos verbosa e mais flexível, o YAML também suporta comentários, permitindo.annotar o seu currículo com notas que não aparecerão na saída final. A estrutura hierárquica do YAML mapeia naturalmente para secções e subsecções, tornando-o perfeito para dados estruturados como currículos.',
+        },
+        howGeneratePdf: {
+          question: 'Como é que o YAMLResume gera PDFs?',
+          answer:
+            'O YAMLResume é na verdade um DSL para escrever currículos, portanto, sob o capô, é um compilador para currículos. Transforma os dados YAML em PDFs num processo de múltiplas etapas. Primeiro, analisa o ficheiro YAML e valida a sua estrutura contra um schema. Depois, processa os dados com um processo de geração de código que gera código LaTeX. Finalmente, este código LaTeX é compilado num PDF de qualidade profissional usando um motor LaTeX. Esta abordagem garante tipografia e layout perfeitos ao pixel que são consistentes em todos os dispositivos e plataformas.',
+        },
+        whyLatex: {
+          question: 'Porquê usar LaTeX?',
+          answer:
+            'LaTeX é o padrão de ouro para composição de documentos profissionais, especialmente em campos académicos e técnicos. Fornece tipografia superior com kerning, ligaduras e hifenização adequados que são difíceis de alcançar com HTML/CSS ou processadores de texto. LaTeX destaca-se em espaçamento consistente, posicionamento preciso e layout flexível. Ao usar LaTeX como motor de composição subjacente, o YAMLResume garante que o seu currículo tem uma aparência polida e profissional que se destaca para recrutadores e gestores de contratação.',
+        },
+      },
+    },
+    buyMeACoffee: {
+      title: 'Gosta deste projeto?',
+      description:
+        'O YAMLResume é um projeto de paixão, criado para fornecer ferramentas de currículo gratuitas, privadas e poderosas para todos. Se o achar útil, considere apoiar o seu desenvolvimento. Cada café ajuda!',
+      button: 'Ofereça-me um café',
+    },
+    blog: {
+      title: 'Blog YAMLResume',
+    },
+    footer: {
+      copyright: '© 2023–Presente, ',
+    },
+  },
 }
 
 // Server-side translation helper

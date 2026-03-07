@@ -1,0 +1,72 @@
+---
+title: Aliases
+---
+
+O YAMLResume fornece títulos predefinidos para [todas as secções do
+currículo exceto](#secções-aliaseáveis) `location` e `profiles`, que são
+[traduzidos](docs/locale) automaticamente de acordo com o [idioma
+local](/pt/docs/layouts#locale) selecionado. No entanto, pode pretender
+personalizar estes títulos para se adaptarem melhor ao seu perfil ou indústria. A
+funcionalidade de `alias de secção` permite sobrescrever os títulos de
+secção predefinidos com os seus próprios nomes personalizados.
+
+Por exemplo, pode preferir "Professional Experience" em vez de "Work" para
+a secção `work`, ou "Technical Proficiencies" em vez de "Skills" para a
+secção `skills`.
+
+## Como Utilizar
+
+Pode definir aliases de secção dentro da configuração `layouts.[].sections` do seu
+ficheiro `resume.yml`. Adicione um objeto `sections` ao seu layout, e dentro dele,
+um mapa `aliases`.
+
+As chaves no mapa `aliases` são os IDs de secção padrão, e os valores
+são os títulos personalizados que pretende utilizar.
+
+## Exemplo
+
+É assim que pode alterar os títulos para as secções `work`, `education` e
+`skills`:
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layouts:
+  - engine: latex
+    sections:
+      aliases:
+        work: Professional Experience
+        education: Academic Background
+        skills: Technical Skills
+```
+
+Quando construir o seu currículo com esta configuração, o PDF gerado utilizará
+"Professional Experience", "Academic Background" e "Technical Skills" como os
+títulos para estas secções, sobrescrevendo os nomes predefinidos ou
+específicos do idioma local.
+
+Se não for fornecido um alias para uma secção, o YAMLResume recorrerá ao título
+predefinido para o idioma local configurado.
+
+## Secções Aliaseáveis
+
+Pode fornecer aliases para as seguintes secções:
+
+- `basics`
+- `education`
+- `work`
+- `volunteer`
+- `awards`
+- `certificates`
+- `publications`
+- `skills`
+- `languages`
+- `interests`
+- `references`
+- `projects`
+
+## Regras e Restrições
+
+- Um alias deve ter entre 2 e 128 caracteres de comprimento.

@@ -1,0 +1,497 @@
+---
+title: Tipos
+---
+
+Este documento descreve os tipos de TypeScript que definem a estrutura de um
+currículo no YAMLResume. Como projeto TypeScript, o YAMLResume emprega tipagem
+estática para garantir a consistência dos dados. Aqui é apresentada uma visão
+geral das estruturas núcleo para representar a informação do currículo,
+incluindo dados pessoais, educação, experiência, competências e muito mais.
+
+Podes consultar
+[types/index.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types/index.ts)
+para a fonte de verdade.
+
+Compreender estes tipos é essencial para contribuir ou estender a funcionalidade
+do YAMLResume.
+
+Este documento serve como referência definitiva para criar um YAMLResume válido,
+esclarecendo a diferença entre campos opcionais e obrigatórios. Para compilar
+com sucesso, um currículo mínimo deve incluir:
+
+- `content.basics.name`
+- `education[number].area`
+- `education[number].degree`
+- `education[number].institution`
+- `education[number].startDate`
+
+Exemplo mínimo viável:
+
+```yml lineNumbers
+content:
+  basics:
+    name: Xiao Hanyu
+  education:
+    - area: Computer Science and Technology
+      degree: Bachelor
+      institution: Zhejiang University
+      startDate: Sep, 2007
+```
+
+## Resume
+
+Define a estrutura global do currículo (conteúdo e layout).
+
+| Prop      | Tipo                          | Obrigatório | Descrição                                       |
+| --------- | ----------------------------- | ------------ | ------------------------------------------------- |
+| `content` | [`Content`](#content)         | ✅           | Estrutura do conteúdo completo do currículo.    |
+| `layouts?` | [`Layouts`](#layouts)        | ⬜️          | Configuração geral do layout.                    |
+| `locale?` | [`Locale`](#locale)           | ⬜️          | Configuração geral de localização.               |
+
+Diagrama de alto nível:
+
+<Mermaid chart='
+flowchart LR
+  A[Resume]
+  B[Layouts]
+  C[Content]
+  D[Locale]
+
+ subgraph Layouts
+ direction TB
+ B1[LatexLayout]
+ B2[MarkdownLayout]
+ B3[HtmlLayout]
+ end
+
+ subgraph Content
+ direction TB
+ C1[basics]
+ C2["education[]"]
+ C3[location]
+ C4[profiles]
+ C5["work[]"]
+ C6["skills[]"]
+ C7["languages[]"]
+ C8["..."]
+ end
+
+ A --> B
+ A --> C
+ A --> D
+ B --> B1
+ B --> B2
+ B --> B3
+ C --> C1
+ C --> C2
+ C --> C3
+ C --> C4
+ C --> C5
+ C --> C6
+ C --> C7
+ C --> C8
+'/>
+
+### Content
+
+Estrutura do conteúdo completo do currículo.
+
+| Prop            | Tipo                                    | Obrigatório | Descrição                                   |
+| --------------- | --------------------------------------- | ------------ | --------------------------------------------- |
+| `basics`        | [`BasicsItem`](#basicsitem)             | ✅           | Informação pessoal e de contacto principal.  |
+| `education`     | [`EducationItem[]`](#educationitem)     | ✅           | Conjunto de experiências educativas.          |
+| `awards?`       | [`AwardItem[]`](#awarditem)             | ⬜️          | Conjunto de prémios e reconhecimentos.       |
+| `certificates?` | [`CertificateItem[]`](#certificateitem) | ⬜️          | Conjunto de certificações e credenciais.      |
+| `interests?`    | [`InterestItem[]`](#interestitem)        | ⬜️          | Interesses, hobbies ou atividades pessoais.   |
+| `languages?`    | [`LanguageItem[]`](#languageitem)        | ⬜️          | Competências linguísticas.                    |
+| `location?`     | [`LocationItem`](#locationitem)          | ⬜️          | Informação de localização.                   |
+| `projects?`     | [`ProjectItem[]`](#projectitem)          | ⬜️          | Projetos.                                     |
+| `profiles?`     | [`ProfileItem[]`](#profileitem)          | ⬜️          | Perfis online.                                 |
+| `publications?` | [`PublicationItem[]`](#publicationitem) | ⬜️          | Publicações.                                   |
+| `references?`   | [`ReferenceItem[]`](#referenceitem)     | ⬜️          | Referências.                                   |
+| `skills?`       | [`SkillItem[]`](#skillitem)             | ⬜️          | Competências.                                  |
+| `volunteer?`    | [`VolunteerItem[]`](#volunteeritem)     | ⬜️          | Experiências de voluntariado.                 |
+| `work?`         | [`WorkItem[]`](#workitem)               | ⬜️          | Experiências laborais e historial de emprego. |
+
+#### AwardItem
+
+Representa um prémio ou honra recebida.
+
+| Prop       | Tipo     | Obr. | Descrição                         |
+| ---------- | -------- | ---- | ----------------------------------- |
+| `awarder`  | `string` | ✅   | Organização que atribui o prémio.  |
+| `title`    | `string` | ✅   | Nome do prémio.                    |
+| `date?`    | `string` | ⬜️  | Data (ex: "2020", "Oct 2020").     |
+| `summary?` | `string` | ⬜️  | Breve descrição.                   |
+
+#### BasicsItem
+
+Informação pessoal principal.
+
+| Prop        | Tipo     | Obr. | Descrição                                        |
+| ----------- | -------- | ---- | -------------------------------------------------- |
+| `name`      | `string` | ✅   | Nome completo.                                    |
+| `email?`    | `string` | ⬜️  | Email.                                            |
+| `headline?` | `string` | ⬜️  | Título profissional (ex: "Software Engineer").     |
+| `phone?`    | `string` | ⬜️  | Telefone.                                         |
+| `summary?`  | `string` | ⬜️  | Resumo profissional.                             |
+| `url?`      | `string` | ⬜️  | Site ou portfólio.                               |
+
+#### CertificateItem
+
+| Prop     | Tipo     | Obr. | Descrição                    |
+| -------- | -------- | ---- | ------------------------------ |
+| `issuer` | `string` | ✅   | Entidade emissora.            |
+| `name`   | `string` | ✅   | Nome do certificado.          |
+| `date?`  | `string` | ⬜️  | Data de obtenção.              |
+| `url?`   | `string` | ⬜️  | Hiperligação de verificação. |
+
+#### EducationItem
+
+| Prop          | Tipo                | Obr. | Descrição                            |
+| ------------- | ------------------- | ---- | -------------------------------------- |
+| `area`        | `string`            | ✅   | Área de estudo.                       |
+| `degree`      | [`Degree`](#degree) | ✅   | Tipo de grau.                         |
+| `institution` | `string`            | ✅   | Instituição.                           |
+| `startDate`   | `string`            | ✅   | Data de início.                       |
+| `courses?`    | `string[]`          | ⬜️  | Disciplinas.                          |
+| `endDate?`    | `string`            | ⬜️  | Data de fim (vazio implica "Atual").  |
+| `summary?`    | `string`            | ⬜️  | Descrição/conquistas.                  |
+| `score?`      | `string`            | ⬜️  | Classificação/GPA.                    |
+| `url?`        | `string`            | ⬜️  | Hiperligação relacionada.             |
+
+#### InterestItem
+
+| Prop        | Tipo       | Obr. | Descrição                  |
+| ----------- | ---------- | ---- | ---------------------------- |
+| `name`      | `string`   | ✅   | Nome do interesse.          |
+| `keywords?` | `string[]` | ⬜️  | Palavras-chave relacionadas. |
+
+#### LanguageItem
+
+| Prop        | Tipo                    | Obr. | Descrição                  |
+| ----------- | ----------------------- | ---- | ---------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅   | Nível de competência.        |
+| `language`  | [`Language`](#language) | ✅   | Idioma.                      |
+| `keywords?` | `string[]`              | ⬜️  | Palavras-chave relacionadas. |
+
+#### LocationItem
+
+| Prop          | Tipo                  | Obr. | Descrição              |
+| ------------- | --------------------- | ---- | ------------------------ |
+| `city`        | `string`              | ✅   | Cidade.                  |
+| `address?`    | `string`              | ⬜️  | Morada.                  |
+| `country?`    | [`Country`](#country) | ⬜️  | País.                    |
+| `postalCode?` | `string`              | ⬜️  | Código postal.           |
+| `region?`     | `string`              | ⬜️  | Região/província/estado. |
+
+#### ProfileItem
+
+| Prop       | Tipo                  | Obr. | Descrição       |
+| ---------- | --------------------- | ---- | ----------------- |
+| `network`  | [`Network`](#network) | ✅   | Rede ou plataforma. |
+| `username` | `string`              | ✅   | Utilizador.        |
+| `url?`     | `string`              | ⬜️  | URL do perfil.    |
+
+#### ProjectItem
+
+| Prop           | Tipo       | Obr. | Descrição           |
+| -------------- | ---------- | ---- | --------------------- |
+| `name`         | `string`   | ✅   | Nome.                 |
+| `startDate`    | `string`   | ✅   | Início.               |
+| `summary`      | `string`   | ✅   | Conquistas/detalhes. |
+| `description?` | `string`   | ⬜️  | Descrição.            |
+| `endDate?`     | `string`   | ⬜️  | Fim.                  |
+| `keywords?`    | `string[]` | ⬜️  | Tecnologias/palavras-chave. |
+| `url?`         | `string`   | ⬜️  | Hiperligação (repo/demo). |
+
+#### PublicationItem
+
+| Prop           | Tipo     | Obr. | Descrição               |
+| -------------- | -------- | ---- | ------------------------- |
+| `name`         | `string` | ✅   | Título da publicação.    |
+| `publisher`    | `string` | ✅   | Editora.                  |
+| `releaseDate?` | `string` | ⬜️  | Data de publicação.      |
+| `summary?`     | `string` | ⬜️  | Resumo/abstract.         |
+| `url?`         | `string` | ⬜️  | Hiperligação (DOI/outro).|
+
+#### ReferenceItem
+
+| Prop            | Tipo     | Obr. | Descrição                   |
+| --------------- | -------- | ---- | ----------------------------- |
+| `name`          | `string` | ✅   | Nome da referência.          |
+| `summary`       | `string` | ✅   | Breve nota.                  |
+| `email?`        | `string` | ⬜️  | Email.                       |
+| `phone?`        | `string` | ⬜️  | Telefone.                    |
+| `relationship?` | `string` | ⬜️  | Relação (ex: "Gestor").      |
+
+#### SkillItem
+
+| Prop        | Tipo              | Obr. | Descrição                  |
+| ----------- | ----------------- | ---- | ---------------------------- |
+| `level`     | [`Level`](#level) | ✅   | Nível da competência.       |
+| `name`      | `string`          | ✅   | Nome da competência.        |
+| `keywords?` | `string[]`        | ⬜️  | Palavras-chave relacionadas. |
+
+#### VolunteerItem
+
+| Prop           | Tipo     | Obr. | Descrição               |
+| -------------- | -------- | ---- | ------------------------- |
+| `organization` | `string` | ✅   | Organização.              |
+| `position`     | `string` | ✅   | Função/posição.          |
+| `startDate`    | `string` | ✅   | Início.                  |
+| `summary`      | `string` | ✅   | Responsabilidades/conquistas. |
+| `endDate?`     | `string` | ⬜️  | Fim.                      |
+| `url?`         | `string` | ⬜️  | Hiperligação relacionada. |
+
+#### WorkItem
+
+| Prop        | Tipo       | Obr. | Descrição                          |
+| ----------- | ---------- | ---- | ------------------------------------ |
+| `name`      | `string`   | ✅   | Empresa.                            |
+| `position`  | `string`   | ✅   | Cargo.                              |
+| `startDate` | `string`   | ✅   | Início.                             |
+| `summary`   | `string`   | ✅   | Resumo de responsabilidades/conquistas. |
+| `endDate?`  | `string`   | ⬜️  | Fim.                                |
+| `keywords?` | `string[]` | ⬜️  | Palavras-chave/tecnologias.         |
+| `url?`      | `string`   | ⬜️  | Hiperligação relacionada.            |
+
+### Locale
+
+Define a configuração de localização para internacionalização.
+
+| Prop        | Tipo                                | Obrigatório | Descrição            |
+| ----------- | ----------------------------------- | ------------ | ---------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜️          | Idioma do currículo.  |
+
+### Layouts
+
+Array de configurações de layout suportando múltiplos formatos de saída.
+
+| Prop        | Tipo                                                                 | Obrigatório | Descrição                       |
+| ----------- | -------------------------------------------------------------------- | ------------ | --------------------------------- |
+| `layouts[]` | [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜️          | Configurações de layout.         |
+
+#### Tipos de Layout Comuns
+
+##### Margins
+
+Define as margens de página para o documento.
+
+| Prop      | Tipo     | Obrigatório | Descrição       |
+| --------- | -------- | ------------ | ----------------- |
+| `top?`    | `string` | ⬜️          | Margem superior.  |
+| `bottom?` | `string` | ⬜️          | Margem inferior.  |
+| `left?`   | `string` | ⬜️          | Margem esquerda. |
+| `right?`  | `string` | ⬜️          | Margem direita.  |
+
+##### Sections
+
+Define aliases de secções para personalizar nomes.
+
+| Prop       | Tipo                        | Obrigatório | Descrição                                                        |
+| ---------- | --------------------------- | ------------ | ------------------------------------------------------------------ |
+| `aliases?` | `Record<SectionID, string>` | ⬜️          | Alias personalizados para nomes de secções.                        |
+| `order?`   | `OrderableSectionID[]`      | ⬜️          | Ordem personalizada para secções na saída final.                  |
+
+#### HtmlLayout
+
+Configuração de layout HTML.
+
+| Prop          | Tipo                                  | Obrigatório | Descrição                              |
+| ------------- | ------------------------------------- | ------------ | ---------------------------------------- |
+| `engine`      | `'html'`                              | ✅           | Motor para gerar o currículo.           |
+| `advanced?`   | [`HtmlAdvanced`](#htmladvanced)       | ⬜️          | Configuração avançada do layout.        |
+| `sections?`   | [`Sections`](#sections)               | ⬜️          | Configuração de secções.                |
+| `template?`   | [`HtmlTemplate`](#htmltemplate)       | ⬜️          | Modelo selecionado.                     |
+| `typography?` | [`HtmlTypography`](#htmltypography)   | ⬜️          | Configuração tipográfica.               |
+
+##### HtmlAdvanced
+
+Define opções de configuração avançada para HTML.
+
+| Prop         | Tipo      | Obrigatório | Descrição                                                |
+| ------------ | --------- | ------------ | ---------------------------------------------------------- |
+| `showIcons?` | `boolean` | ⬜️          | Indica se devem ser mostrados ícones para hiperligações e perfis. |
+| `title?`     | `string`  | ⬜️          | Título personalizado para o documento HTML.              |
+| `footer?`    | `string`  | ⬜️          | Rodapé personalizado para o documento HTML.              |
+| `description?`| `string` | ⬜️          | Meta descrição para o documento HTML.                     |
+| `keywords?`   | `string` | ⬜️          | Meta palavras-chave para o documento HTML.                |
+
+##### HtmlTypography
+
+Define opções tipográficas para formato de documento HTML.
+
+| Prop        | Tipo                              | Obrigatório | Descrição                      |
+| ----------- | --------------------------------- | ------------ | -------------------------------- |
+| `fontFamily?` | `string` | ⬜️ | Uma lista de famílias de fontes separada por vírgulas. |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize)   | ⬜️          | Tamanho base de fonte para o documento. |
+
+#### LatexLayout
+
+Configuração de layout LaTeX.
+
+| Prop          | Tipo                                    | Obrigatório | Descrição                        |
+| ------------- | --------------------------------------- | ------------ | ---------------------------------- |
+| `advanced?`   | [`LatexAdvanced`](#latexadvanced)       | ⬜️          | Configuração avançada.            |
+| `engine`      | `'latex'`                               | ✅           | Motor para gerar o currículo.    |
+| `page?`       | [`LatexPage`](#latexpage)               | ⬜️          | Configuração ao nível de página. |
+| `sections?`   | [`Sections`](#sections)                 | ⬜️          | Configuração de secções.          |
+| `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜️          | Modelo selecionado.              |
+| `typography?` | [`LatexTypography`](#latextypography)   | ⬜️          | Configuração tipográfica.         |
+
+##### LatexAdvanced
+
+Define opções de configuração avançada para LaTeX.
+
+| Prop         | Tipo                                 | Obrigatório | Descrição                                                |
+| ------------ | ------------------------------------ | ------------ | ---------------------------------------------------------- |
+| `fontspec?`  | `{ numbers?: LatexFontspecNumbers }` | ⬜️          | Configuração do pacote fontspec.                          |
+| `showIcons?` | `boolean`                            | ⬜️          | Indica se devem ser mostrados ícones para hiperligações e perfis. |
+
+##### LatexPage
+
+Define opções ao nível de página para LaTeX.
+
+| Prop               | Tipo                   | Obrigatório | Descrição                |
+| ------------------ | ---------------------- | ------------ | -------------------------- |
+| `margins?`         | [`Margins`](#margins)  | ⬜️          | Margens de página.        |
+| `paperSize?`       | [`PaperSize`](#papersize) | ⬜️       | Define o tamanho de papel. |
+| `showPageNumbers?` | `boolean`              | ⬜️          | Mostrar números de página. |
+
+##### LatexTypography
+
+Define opções tipográficas para LaTeX.
+
+| Prop        | Tipo                                | Obrigatório | Descrição            |
+| ----------- | ----------------------------------- | ------------ | ---------------------- |
+| `fontSize?` | [`LatexFontSize`](#latexfontsize)   | ⬜️          | Tamanho base de fonte. |
+| `fontFamily?` | `string` | ⬜️ | Uma lista de famílias de fontes separada por vírgulas. |
+| `links?`    | `{ underline?: boolean }`           | ⬜️          | Estilo de hiperligações. |
+
+#### MarkdownLayout
+
+Configuração de layout Markdown.
+
+| Prop        | Tipo                    | Obrigatório | Descrição                        |
+| ----------- | ----------------------- | ------------ | ---------------------------------- |
+| `engine`    | `'markdown'`            | ✅           | Motor para gerar o currículo.    |
+| `sections?` | [`Sections`](#sections) | ⬜️          | Configuração de secções.          |
+
+## Tipos de Enumeração
+
+### Enums de Conteúdo
+
+#### Country
+
+Tipo união que inclui todos os possíveis países e regiões do mundo.
+
+#### Degree
+
+Tipo união que inclui todos os possíveis graus académicos.
+
+- `Associate`
+- `Bachelor`
+- `Diploma`
+- `Doctor`
+- `High School`
+- `Master`
+- `Middle School`
+
+#### Fluency
+
+Tipo união que inclui todos os possíveis níveis de competência linguística.
+
+- `Elementary Proficiency`
+- `Full Professional Proficiency`
+- `Limited Working Proficiency`
+- `Minimum Professional Proficiency`
+- `Native or Bilingual Proficiency`
+
+#### Language
+
+Tipo união que inclui todos os idiomas suportados.
+
+#### Level
+
+Tipo união que inclui todos os possíveis níveis de domínio de competências.
+
+- `Advanced`
+- `Beginner`
+- `Expert`
+- `Intermediate`
+- `Master`
+- `Novice`
+
+#### Network
+
+Tipo união que inclui todas as possíveis opções de redes sociais.
+
+### Enums de Layout
+
+#### HtmlFontSize
+
+Tipo união de opções de tamanho de fonte HTML.
+
+O motor HTML suporta tamanhos de 14px a 20px:
+
+- `14px`, `15px`, `16px` (por defeito), `17px`, `18px`, `19px`, `20px`
+
+#### HtmlTemplate
+
+Tipo união de opções de modelo HTML.
+
+Ver também: [templates](/pt/docs/layouts/html/templates)
+
+- `calm`
+
+#### LatexFontSize
+
+Tipo união que inclui todas as possíveis opções de tamanho de fonte LaTeX.
+
+Por agora apenas são suportadas 3 opções:
+
+- `10pt` - tamanho de fonte de 10pt (por defeito)
+- `11pt` - tamanho de fonte de 11pt
+- `12pt` - tamanho de fonte de 12pt
+
+#### LatexFontspecNumbers
+
+Tipo união que inclui todas as possíveis opções de números de fontspec de LaTeX.
+
+- `Auto` - permite que o estilo seja determinado automaticamente segundo o
+  `LocaleLanguage` selecionado (por defeito)
+- `Lining` - cifras lining padrão (por defeito para idiomas CJK)
+- `OldStyle` - cifras old style com alturas variáveis (por defeito para idiomas
+  latinos)
+
+#### LatexTemplate
+
+Tipo união que inclui todas as possíveis opções de modelo LaTeX.
+
+Ver também: [templates](/pt/docs/layouts/latex/templates)
+
+- `moderncv-banking`
+- `moderncv-casual`
+- `moderncv-classic`
+
+#### PaperSize
+
+Tipo união que inclui todas as possíveis opções de tamanho de papel LaTeX.
+
+- `a4` (por defeito)
+- `letter`
+
+### Enums de Localização
+
+#### LocaleLanguage
+
+Tipo união que inclui todos os possíveis códigos de língua local.
+
+Ver também: [multi-languages](/pt/docs/locale)
+
+- `en`
+- `es`
+- `zh-hans`
+- `zh-hant-hk`
+- `zh-hant-tw`

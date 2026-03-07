@@ -1,0 +1,223 @@
+---
+title: Contribuir
+---
+
+Antes de mais nada, obrigado por considerar contribuir para o YAMLResume! São
+pessoas como tu que tornam o código aberto incrível. Aceitamos qualquer tipo de
+contribuição, não apenas código. Podes ajudar com:
+
+- Reportar um erro
+- Discutir o estado atual do código
+- Enviar uma correção
+- Propor novas funcionalidades
+- Melhorar a documentação
+
+Aqui estão alguns atalhos para algumas tarefas específicas:
+
+<Cards>
+  <Card
+    title="CLI"
+    href="./contributing/cli"
+    description="Construir e Testar CLI"
+  />
+  <Card
+    title="Docker"
+    href="./contributing/docker"
+    description="Personalização do Docker"
+  />
+  <Card
+    title="Teste"
+    href="./contributing/test"
+    description="Testes e Garantia de Qualidade"
+  />
+  <Card
+    title="Novo Idioma"
+    href="./contributing/new-language"
+    description="Adicionar suporte para um novo idioma no YAMLResume."
+  />
+</Cards>
+
+## Começar
+
+### Pré-requisitos
+
+- [Node.js](https://nodejs.org/) (versão >= 20, verifica `.nvmrc` ou campo
+  engines de `package.json`)
+- [pnpm](https://pnpm.io/) (versão >= 10, verifica campo packageManager de `package.json`)
+- Git
+
+### Configuração
+
+1. **Fazer fork do repositório:** Clica no botão "Fork" na [página do
+   GitHub do YAMLResume](https://github.com/yamlresume/yamlresume). Isto cria a tua
+   própria cópia do projeto.
+
+2. **Clonar o teu fork:**
+
+   ```bash
+   git clone https://github.com/<teu-utilizador>/yamlresume.git
+   cd yamlresume
+   ```
+
+3. **Instalar dependências:**
+
+   ```bash
+   pnpm install
+   ```
+
+   Este comando instala todas as dependências necessárias para todo o workspace.
+
+## Fluxo de Trabalho de Desenvolvimento
+
+### Construir Pacotes
+
+- Construir todos os pacotes uma vez:
+
+  ```bash
+  pnpm build
+  ```
+
+- Construir todos os pacotes e vigiar alterações:
+
+  ```bash
+  pnpm build:watch
+  ```
+
+- Construir para produção (incluindo definições de tipos, minificação):
+
+  ```bash
+  pnpm build:prod
+  ```
+
+### Executar Testes
+
+- Executar testes para todos os pacotes:
+
+  ```bash
+   pnpm test
+   ```
+
+- Executar testes em modo vigilância:
+
+  ```bash
+  pnpm test:watch
+  ```
+
+- Executar testes com relatório de cobertura:
+
+  ```bash
+  pnpm test:cov
+  ```
+
+Consulta [Teste](./contributing/test) para mais detalhes e casos de uso.
+
+### Formatação de Código e Linting
+
+Usamos [Biome](https://biomejs.dev/) para formatação de código e linting. Assegura-te
+de que o teu código segue as guias de estilo do projeto antes de fazer commit.
+
+- Verificar e corrigir automaticamente problemas:
+
+  ```bash
+  pnpm check
+  ```
+
+- Executar verificações sem aplicar correções (útil para CI):
+
+  ```bash
+  pnpm check:ci
+  ```
+
+Também usamos [addlicense](https://github.com/google/addlicense) para assegurar
+que os ficheiros de código tenham o cabeçalho de licença correto. Precisas
+de o instalar para executar os seguintes comandos.
+
+- Adicionar cabeçalhos de licença em falta:
+
+  ```bash
+  pnpm license:add
+  ```
+
+- Verificar cabeçalhos de licença em falta:
+
+  ```bash
+  pnpm license:check
+  ```
+
+## Enviando Contribuições
+
+### Reportar Problemas
+
+Se encontrares um erro ou tens um pedido de funcionalidade, por favor [abre
+um issue](https://github.com/yamlresume/yamlresume/issues) no GitHub.
+Fornece o máximo de detalhe possível, incluindo:
+
+- Um título claro e descritivo.
+- Passos para reproduzir o erro (se aplicável).
+- Comportamento esperado e comportamento real.
+- Capturas de ecrã ou fragmentos de código (se útil).
+- Detalhes do teu ambiente (SO, versão do Node, versão do pnpm).
+
+### Pull Requests (PRs)
+
+Adoramos pull requests! Aqui está um guia rápido:
+
+1. **Criar uma rama:** Começa dalla rama `main` e cria um nome de rama
+   descritivo (ex., `fix/login-bug`, `feat/new-template-option`).
+
+   ```bash
+   git checkout main
+   git pull origin main
+   git checkout -b nome-da-tua-rama
+   ```
+
+2. **Fazer as tuas alterações:** Escreve o teu código ou melhorias na documentação.
+
+3. **Testar as tuas alterações:** Assegura-te de que todos os testes passam:
+
+   ```bash
+   pnpm test
+   ```
+
+4. **Verificar qualidade de código:** Assegura-te de que as verificações de
+   formatação e linting passam:
+
+   ```bash
+   pnpm check
+   ```
+
+5. **Fazer commit das tuas alterações:** Usamos [Conventional
+   Commits](https://www.conventionalcommits.org/) para mensagens de commit,
+   reforçado por `commitlint`. Isto ajuda a automatizar changelogs e versionamento.
+   Uma mensagem de commit típica parece-se com `feat: add new command` ou
+   `fix: resolve issue with parsing`. Podes usar `pnpm commitlint` para
+   ajudar a formatar a tua mensagem se necessário, ou usar ferramentas como [git
+   cz](https://github.com/commitizen/cz-cli) se o tiveres instalado.
+
+   ```bash
+   git add .
+   git commit -m "feat: a tua mensagem de commit descritiva"
+   ```
+
+6. **Push da tua rama:**
+
+   ```bash
+   git push origin nome-da-tua-rama
+   ```
+
+7. **Abrir um Pull Request:** Vai ao repositório do YAMLResume no GitHub e clica
+   no botão "New pull request". Compara a tua rama com a rama `main`.
+
+8. **Descrever o teu PR:** Fornece uma descrição clara das alterações que fizeste.
+   Liga qualquer issue relevante (ex., "Closes #123").
+
+9. **Revisão:** Um mantenedor vai rever o teu PR. Atende qualquer
+   feedback ou alterações solicitadas.
+
+10. **Merge:** Uma vez aprovado, o teu PR será fundido. Obrigado pela tua
+    contribuição!
+
+## Licença
+
+Ao contribuir para o YAMLResume, aceitas que as tuas contribuições serão licenciadas
+sob a [Licença MIT](LICENSE).

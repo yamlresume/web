@@ -1,0 +1,106 @@
+---
+title: Texto Rico
+---
+
+Em YAMLResume, não estás limitado a texto simples. Os campos `summary` em
+diferentes secções (como `work`, `education`, `projects`, etc.), suportam um
+conjunto limitado de sintaxe de
+[Markdown](https://en.wikipedia.org/wiki/Markdown) para permitir formatação de
+texto rico. Isto permite-te criar conteúdo de currículo mais expressivo e
+legível.
+
+## Sintaxe Suportada
+
+Aqui está um resumo rápido das funcionalidades de Markdown que podes usar:
+
+### Negrito e Itálico
+
+Podes enfatizar texto usando estilo negrito ou itálico.
+
+- **Negrito:** `**teu texto em negrito**`
+- **Itálico:** `*teu texto em itálico*`
+- **Ambos:** `***teu texto em negrito e itálico***`
+
+### Ligações
+
+Podes incorporar hiperligações dentro do teu texto.
+
+- **Sintaxe:** `[texto da ligação](https://example.com)`
+
+### Listas
+
+São suportadas tanto listas ordenadas como não ordenadas, incluindo aninhamento.
+
+<Callout title="Compreender o caráter `|` para cadeias de múltiplas linhas em YAML">
+  O caráter `|` (pipe) em YAML é usado para criar um "escalar de bloco
+  literal," que é uma forma de escrever [cadeias de múltiplas
+  linhas](https://stackoverflow.com/a/21699210/2310396) enquanto se preservam
+  as quebras de linha. Isto é particularmente útil para campos como `summary`
+  onde poderias querer incluir listas ou parágrafos. Tudo o que estiver indentado
+  sob o `|` será tratado como uma única cadeia, com quebras de linha mantidas.
+</Callout>
+
+#### Listas Não Ordenadas
+
+Usa um hífen (`-`) ou um asterisco (`*`) para cada elemento da lista.
+
+```yml lineNumbers
+summary: |
+  - Primeiro elemento
+  - Segundo elemento
+  - Terceiro elemento
+```
+
+#### Listas Ordenadas
+
+Usa números seguidos de um ponto para listas ordenadas.
+
+```yml lineNumbers
+summary: |
+  1. Primeiro elemento
+  2. Segundo elemento
+  3. Terceiro elemento
+```
+
+#### Listas Aninhadas
+
+Podes indentar listas para criar estruturas aninhadas.
+
+```yml lineNumbers
+summary: |
+  - Jogador de equipa com mentalidade orientada para detalhes.
+  - Experiente em bases de dados (SQL, NoSQL)
+    - Competente em PostgreSQL e MongoDB.
+    - Familiarizado com Redis para cache.
+  - Fundação sólida em estruturas de dados e algoritmos.
+```
+
+## Um Exemplo Completo
+
+Aqui está um campo `summary` de uma entrada `work` que combina várias das
+funcionalidades de sintaxe suportadas:
+
+```yml lineNumbers
+---
+content:
+  basics:
+    # ...
+    summary: |
+      This is a sample YAML resume that support limited set of markdown rich text syntax (bold, italics, links, lists):
+
+      - Computer Science major with **strong foundation** in data structures, *algorithms*, and software development
+        1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+        2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+Aqui está o PDF gerado:
+
+![Suporte de Texto Rico no Campo Resumo](/static/images/docs/content/rich-text/rich-text-support-in-summary-field.webp)
+
+## O Que Não É Suportado?
+
+YAMLResume apenas suporta a sintaxe listada acima. Outras funcionalidades
+comuns de Markdown como cabeçalhos, citações em bloco, imagens, regras
+horizontais e tabelas **não são suportadas e serão ignoradas durante o
+processamento**.
