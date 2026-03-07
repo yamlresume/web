@@ -1,0 +1,222 @@
+---
+title: json2yamlresume
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+O [json2yamlresume](https://yamlresume.dev/docs/ecosystem/json2yamlresume) é uma
+[ferramenta de linha de comandos](https://npmjs.com/package/json2yamlresume)
+para converter [JSON Resume](https://jsonresume.org/) para o formato
+[YAMLResume](https://yamlresume.dev/).
+
+## Características
+
+- **Conversão de Formato**: converte perfeitamente JSON Resume para o formato
+  YAMLResume
+- **[Transformação de Estrutura](#regras-de-conversão)**
+- **Interface CLI**: interface de linha de comandos simples para conversão fácil
+- **Validação**: construído sobre a robusta [validação de
+  esquema](/docs/compiler/schema) do YAMLResume
+
+## Instalação
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g json2yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g json2yamlresume
+```
+
+```console tab="yarn"
+yarn global add json2yamlresume
+```
+
+```console tab="bun"
+bun add -g json2yamlresume
+```
+
+</Tabs>
+
+## Utilização
+
+### Converter um JSON Resume para YAMLResume
+
+```bash
+$ json2yamlresume input.json output.yaml
+
+# ou chamar o comando sem o caminho de saída opcional, caso em que a
+# saída será escrita no mesmo diretório que o ficheiro de entrada com o mesmo
+# nome mas com extensão .yml
+$ json2yamlresume input.json
+```
+
+### Mostrar ajuda
+
+```bash
+$ json2yamlresume --help
+Usage: json2yamlresume [options] <input-file> [output-file]
+
+Convert JSON Resume to YAMLResume format
+
+Arguments:
+  input-file     Input JSON Resume file path
+  output-file    Output YAMLResume file path
+
+Options:
+  -V, --version  output the version number
+  -h, --help     display help for command
+```
+
+### Mostrar versão
+
+```bash
+$ json2yamlresume --version
+0.7.4
+```
+
+## Exemplo
+
+Aqui está um exemplo de currículo em formato JSON Resume:
+
+```json lineNumbers title="json-resume.json"
+{
+  "basics": {
+    "name": "John Doe",
+    "label": "Software Engineer",
+    "email": "john@example.com",
+    "location": {
+      "city": "San Francisco",
+      "countryCode": "US"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "johndoe",
+        "url": "https://github.com/johndoe"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Tech Corp",
+      "position": "Senior Developer",
+      "startDate": "2020-01",
+      "summary": "Led development of web applications.",
+      "highlights": [
+        "Increased performance by 40%",
+        "Mentored 5 junior developers"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of California",
+      "area": "Computer Science",
+      "studyType": "Bachelor of Science",
+      "startDate": "2018"
+    }
+  ]
+}
+```
+
+Podes executar o seguinte comando para converter o JSON Resume para YAMLResume:
+
+```bash
+$ json2yamlresume json-resume.json yamlresume.yml
+```
+
+Aqui está a saída em formato YAMLResume:
+
+```yaml lineNumbers title="yamlresume.yml"
+---
+content:
+  basics:
+    name: John Doe
+    headline: Software Engineer
+    email: john@example.com
+  education:
+    - institution: University of California
+      area: Computer Science
+      degree: Bachelor of Science
+      startDate: "2018"
+  location:
+    city: San Francisco
+    country: US
+  profiles:
+    - network: GitHub
+      username: johndoe
+      url: https://github.com/johndoe
+  work:
+    - name: Tech Corp
+      position: Senior Developer
+      startDate: 2020-01
+      summary: |-
+        - Increased performance by 40%
+        - Mentored 5 junior developers
+```
+
+## Regras de Conversão
+
+### 1. Movimento de Localização e Perfis
+
+- `basics.location` → `location` de nível superior
+- `basics.profiles` → `profiles` de nível superior
+- `basics.label` → `basics.headline`
+
+### 2. Mapeamento de Campos de Educação
+
+- `education[].studyType` → `education[].degree`
+
+### 3. Integração de Highlights
+
+O conversor funde arrays `highlights` em campos `summary` como listas
+desordenadas de markdown para estas secções:
+
+- `work[]`
+- `volunteer[]`
+- `projects[]`
+
+Exemplo:
+
+```json
+{
+  "summary": "Led development team.",
+  "highlights": ["Increased performance", "Mentored developers"]
+}
+```
+
+É convertido para:
+
+```yaml
+summary: |-
+  Led development team.
+
+  - Increased performance
+  - Mentored developers
+```
+
+Lembra-te que o campo summary do YAMLResume suporta [texto
+enriquecido](/docs/content/rich-text)!
+
+### 4. Referências
+
+- `references[].reference` → `references[].summary`
+
+## Secções de JSON Resume Suportadas
+
+O conversor suporta todas as secções padrão do JSON Resume:
+
+- ✅ `basics`
+- ✅ `work`
+- ✅ `volunteer`
+- ✅ `education`
+- ✅ `awards`
+- ✅ `certificates`
+- ✅ `publications`
+- ✅ `skills`
+- ✅ `languages`
+- ✅ `interests`
+- ✅ `references`
+- ✅ `projects`

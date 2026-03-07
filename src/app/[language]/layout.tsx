@@ -14,14 +14,17 @@ const { provider } = defineI18nUI(i18nConfig, {
     fr: {
       displayName: 'Français',
     },
+    pt: {
+      displayName: 'Português',
+    },
+    ja: {
+      displayName: '日本語',
+    },
     'zh-cn': {
       displayName: '简体中文',
     },
     'zh-tw': {
       displayName: '繁體中文',
-    },
-    ja: {
-      displayName: '日本語',
     },
   },
 })

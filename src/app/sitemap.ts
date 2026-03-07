@@ -13,6 +13,7 @@ import {
   docsSourceZhCN,
   docsSourceZhTW,
 } from '@/lib'
+import { blogSourcePt, docsSourcePt } from '@/lib/source'
 
 export const revalidate = false
 
@@ -28,6 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...docsSourceFr.getPages(),
     ...docsSourceJa.getPages(),
     ...docsSourceEs.getPages(),
+    ...docsSourcePt.getPages(),
   ]
 
   const allBlogPages = [
@@ -37,6 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogSourceFr.getPages(),
     ...blogSourceJa.getPages(),
     ...blogSourceEs.getPages(),
+    ...blogSourcePt.getPages(),
   ]
 
   return [

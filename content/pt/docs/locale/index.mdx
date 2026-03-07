@@ -1,0 +1,154 @@
+---
+title: Localização
+---
+
+Cada currículo vem com um idioma específico. A boa notícia é que
+o YAMLResume foi concebido para suportar múltiplos idiomas de raiz.
+
+Tecnicamente, há duas categorias de coisas a fazer ao suportar múltiplos
+idiomas:
+
+- **[Internacionalização](https://phrase.com/blog/posts/internationalization-vs-localization/#what-is-internationalization-i18n)**:
+  frequentemente abreviada como "i18n" (onde o número 18 representa os 18
+  caracteres entre "i" e "n"), é basicamente um conjunto de práticas que
+  permitem que um produto suporte múltiplos idiomas, i18n consiste
+  principalmente em traduzir o produto para múltiplos idiomas e mudar
+  dinamicamente o idioma de acordo com a escolha do utilizador
+- **[Localização](https://phrase.com/blog/posts/internationalization-vs-localization/#what-is-localization-l10n)**:
+  frequentemente abreviada como "l10n" (o número 10 representa os caracteres entre
+  "l" e "n"), vai além da mera tradução e em vez disso adapta o produto
+  às especificidades culturais do idioma alvo.
+
+Na prática, i18n vem sempre primeiro, l10n vem depois.
+
+Para todos os idiomas suportados, temos as seguintes preocupações desde
+uma perspetiva de design e implementação:
+
+- **[Linguística](https://en.wikipedia.org/wiki/Linguistics)**: o lado teórico
+  de um idioma, incluindo mas não limitado ao conjunto de caracteres do
+  idioma, sintaxe e gramática, história, etc.
+- **Modismos**: convenções comuns e modismos que geralmente são seguidos
+  por um idioma.
+- **[Composição](https://en.wikipedia.org/wiki/Typesetting)**: melhores
+  práticas de composição frequentemente seguidas por um idioma, como itálico,
+  cifras de texto, estilo de fonte, kerning, ligadura, etc.
+- **Traduções**: meras traduções para um conjunto fixo de termos e
+  opções usadas por currículos gerados pelo YAMLResume.
+
+## Idiomas Suportados
+
+O YAMLResume precisa de saber em que idioma está escrito o currículo, para isso,
+precisa de estabelecer uma chave `locale` de nível superior no seu currículo:
+
+```yml lineNumbers
+---
+content:
+  # ...
+
+locale:        # [!code highlight]
+  language: en # [!code highlight]
+
+layouts:
+  - engine: markdown
+  # ...
+```
+
+## Idiomas Suportados
+
+Pode usar `yamlresume languages list` para listar todos os idiomas
+suportados. No momento de escrever, o YAMLResume suporta os seguintes idiomas:
+
+```console
+$ yamlresume languages list
+
+| locale.language | Language Name                   |                                                                                                                                                                                                                                                                                                           1:03:48 PM
+| --------------- | ------------------------------- |
+| en              | English                         |
+| zh-hans         | Simplified Chinese              |
+| zh-hant-hk      | Traditional Chinese (Hong Kong) |
+| zh-hant-tw      | Traditional Chinese (Taiwan)    |
+| es              | Spanish                         |
+| fr              | French                          |
+| no              | Norwegian                       |
+| nl              | Dutch                           |
+| ja              | Japanese                        |
+| de              | German                          |
+```
+
+Consulte as seguintes páginas para mais detalhes sobre cada idioma:
+
+<Cards>
+  <Card
+    title="Chinese"
+    href="/pt/locale/chinese"
+    description="São suportados chinês simplificado e chinês tradicional (Hong Kong e Taiwan)."
+  />
+  <Card
+    title="Dutch"
+    href="/pt/locale/dutch"
+    description="O neerlandês é uma língua germânica ocidental falada nos Países Baixos e Bélgica."
+  />
+  <Card
+    title="English"
+    href="/pt/locale/english"
+    description="O inglês é o idioma predefinido para o YAMLResume quando cria um novo currículo."
+  />
+  <Card
+    title="French"
+    href="/pt/locale/french"
+    description="O francês é uma língua românica falada no mundo."
+  />
+  <Card
+    title="German"
+    href="/pt/locale/german"
+    description="O alemão é uma língua germânica ocidental falada principalmente na Alemanha."
+  />
+  <Card
+    title="Japanese"
+    href="/pt/locale/japanese"
+    description="O japonês é uma língua da Ásia Oriental falada por cerca de 125 milhões de pessoas."
+  />
+  <Card
+    title="Norwegian"
+    href="/pt/locale/norwegian"
+    description="O norueguês é um idioma germânico do norte falado principalmente na Noruega."
+  />
+  <Card
+    title="Spanish"
+    href="/pt/locale/spanish"
+    description="O espanhol também usa escrita latina como sistema de escrita principal."
+  />
+</Cards>
+
+## Glossários
+
+Usámos os seguintes glossários ao longo desta secção:
+
+- **Idiomas de escrita latina**: idiomas que usam [escrita
+  latina](https://en.wikipedia.org/wiki/Latin_script) como [sistemas de
+  escrita](https://en.wikipedia.org/wiki/Writing_system). A maioria das [línguas
+  germânicas](https://en.wikipedia.org/wiki/Germanic_languages), [línguas
+  românicas](https://en.wikipedia.org/wiki/Romance_languages) e muitos outros
+  idiomas como [indonésio](https://en.wikipedia.org/wiki/Indonesian_language) usam
+  escrita latina como sistema de escrita principal.
+- **[CJK](https://en.wikipedia.org/wiki/CJK_characters)**: idiomas chinês,
+  japonês e coreano.
+- **[Conjunto de
+  Caracteres](https://www.creatopy.com/blog/what-is-a-character-set/)**: a
+  coleção completa de caracteres, símbolos, glifos e sinais de pontuação
+  disponíveis dentro de um tipo de letra ou fonte específica.
+- **[Glifo](https://en.wikipedia.org/wiki/Glyph)**: a forma específica, design,
+  ou representação de um caráter em tipografia.
+- **[Divisão silábica](https://en.wikipedia.org/wiki/Syllabification)**, a
+  prática de dividir palavras no final de linhas para melhorar a aparência
+  geral e legibilidade do texto.
+- **[Justificação](https://en.wikipedia.org/wiki/Typographic_alignment#Justified)**:
+  o alinhamento de texto dentro de um bloco para que esteja alinhado tanto com a
+  margem esquerda como direita, geralmente alcançado ajustando o espaçamento entre
+  palavras e letras, criando uma aparência uniforme em cada linha de texto.
+- **[Kerning](https://en.wikipedia.org/wiki/Kerning)**: o processo de ajustar o
+  espaçamento entre caracteres numa fonte proporcional, geralmente para alcançar
+  um resultado visualmente agradável.
+- **[Ligadura](<https://en.wikipedia.org/wiki/Ligature_(writing)>)**: um glifo
+  que une duas ou mais letras em conjunto para melhorar o apelo visual do texto e
+  obter melhor legibilidade.

@@ -1,0 +1,464 @@
+---
+title: Esquema Zod
+---
+
+O YAMLResume adota [zod](https://zod.dev) para validar os dados do currículo
+em tempo de execução.
+
+Este documento descreve todos os esquemas zod usados no YAMLResume. Se te
+interessarem os detalhes de implementação, podes encontrar o código fonte
+[aqui](https://github.com/yamlresume/yamlresume/tree/main/packages/core/src/schema).
+
+## Esquema Resume
+
+Define a validação da estrutura global do currículo, incluindo
+validação de conteúdo e de layout.
+
+| Prop        | Tipo                                            | Obrigatório |
+| ----------- | ----------------------------------------------- | ------------ |
+| `content`   | [`ContentSchema`](#contentschema)               | ✅           |
+| `layouts?`  | [`LayoutsSchema`](#layoutsschema)               | ⬜️          |
+| `locale?`   | [`LocaleSchema`](#localeschema)                 | ⬜️          |
+
+### ContentSchema
+
+Define a estrutura de validação para todo o conteúdo do currículo.
+
+| Prop            | Tipo                                                | Obrigatório |
+| --------------- | --------------------------------------------------- | ------------ |
+| `basics`        | [`BasicsItemSchema`](#basicsitemschema)             | ✅           |
+| `education`     | [`EducationItemSchema[]`](#educationitemschema)     | ✅           |
+| `awards?`       | [`AwardItemSchema[]`](#awarditemschema)             | ⬜️          |
+| `certificates?` | [`CertificateItemSchema[]`](#certificateitemschema) | ⬜️          |
+| `interests?`    | [`InterestItemSchema[]`](#interestitemschema)       | ⬜️          |
+| `languages?`    | [`LanguageItemSchema[]`](#languageitemschema)       | ⬜️          |
+| `location?`     | [`LocationItemSchema`](#locationitemschema)         | ⬜️          |
+| `projects?`     | [`ProjectItemSchema[]`](#projectitemschema)         | ⬜️          |
+| `profiles?`     | [`ProfileItemSchema[]`](#profileitemschema)         | ⬜️          |
+| `publications?` | [`PublicationItemSchema[]`](#publicationitemschema) | ⬜️          |
+| `references?`   | [`ReferenceItemSchema[]`](#referenceitemschema)     | ⬜️          |
+| `skills?`       | [`SkillItemSchema[]`](#skillitemschema)             | ⬜️          |
+| `volunteer?`    | [`VolunteerItemSchema[]`](#volunteeritemschema)     | ⬜️          |
+| `work?`         | [`WorkItemSchema[]`](#workitemschema)               | ⬜️          |
+
+#### AwardItemSchema
+
+Valida um único prémio, honra ou reconhecimento recebido.
+
+| Prop       | Tipo     | Obrigatório | Regras de validação                  |
+| ---------- | -------- | ------------ | ------------------------------------- |
+| `awarder`  | `string` | ✅           | 2-128 caracteres                     |
+| `title`    | `string` | ✅           | 2-128 caracteres                     |
+| `date?`    | `string` | ⬜️          | ver [date schema](#date-schema)       |
+| `summary?` | `string` | ⬜️          | ver [summary schema](#summary-schema) |
+
+#### BasicsItemSchema
+
+Valida a informação pessoal e de contacto principal.
+
+| Prop        | Tipo     | Obrigatório | Regras de validação                  |
+| ----------- | -------- | ------------ | ------------------------------------- |
+| `name`      | `string` | ✅           | 2-128 caracteres                     |
+| `email?`    | `string` | ⬜️          | ver [email schema](#email-schema)     |
+| `headline?` | `string` | ⬜️          | 2-128 caracteres                     |
+| `phone?`    | `string` | ⬜️          | ver [phone schema](#phone-schema)     |
+| `summary?`  | `string` | ⬜️          | ver [summary schema](#summary-schema) |
+| `url?`      | `string` | ⬜️          | ver [url schema](#url-schema)         |
+
+#### CertificateItemSchema
+
+Valida uma certificação, credencial ou qualificação profissional.
+
+| Prop     | Tipo     | Obrigatório | Regras de validação            |
+| -------- | -------- | ------------ | ------------------------------- |
+| `issuer` | `string` | ✅           | 2-128 caracteres               |
+| `name`   | `string` | ✅           | 2-128 caracteres               |
+| `date?`  | `string` | ⬜️          | ver [date schema](#date-schema) |
+| `url?`   | `string` | ⬜️          | ver [url schema](#url-schema)   |
+
+#### EducationItemSchema
+
+Valida uma experiência ou programa educativo.
+
+| Prop          | Tipo                | Obrigatório | Regras de validação                            |
+| ------------- | ------------------- | ------------ | ----------------------------------------------- |
+| `area`        | `string`            | ✅           | 2-64 caracteres                                |
+| `degree`      | [`Degree`](#degree) | ✅           | Deve estar nas [opções de degree](#degree)     |
+| `institution` | `string`            | ✅           | 2-128 caracteres                               |
+| `startDate`   | `string`            | ✅           | ver [date schema](#date-schema)                |
+| `courses?`    | `string[]`          | ⬜️          | Cada item 2-128 caracteres                     |
+| `endDate?`    | `string`            | ⬜️          | ver [date schema](#date-schema)                |
+| `summary?`    | `string`            | ⬜️          | ver [summary schema](#summary-schema)          |
+| `score?`      | `string`            | ⬜️          | 2-32 caracteres                                |
+| `url?`        | `string`            | ⬜️          | ver [url schema](#url-schema)                  |
+
+#### InterestItemSchema
+
+Valida um interesse, hobby ou atividade pessoal.
+
+| Prop        | Tipo       | Obrigatório | Regras de validação                    |
+| ----------- | ---------- | ------------ | --------------------------------------- |
+| `name`      | `string`   | ✅           | 2-128 caracteres                       |
+| `keywords?` | `string[]` | ⬜️          | ver [keywords schema](#keywords-schema) |
+
+#### LanguageItemSchema
+
+Valida um item de competência linguística.
+
+| Prop        | Tipo                    | Obrigatório | Regras de validação                        |
+| ----------- | ----------------------- | ------------ | ------------------------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅           | Deve estar em [fluency options](#fluency)   |
+| `language`  | [`Language`](#language) | ✅           | Deve estar em [language options](#language) |
+| `keywords?` | `string[]`              | ⬜️          | Cada item 1-32 caracteres                  |
+
+#### LocationItemSchema
+
+Valida informação de localização e morada.
+
+| Prop          | Tipo                  | Obrigatório | Regras de validação                      |
+| ------------- | --------------------- | ------------ | ----------------------------------------- |
+| `city`        | `string`              | ✅           | 2-128 caracteres                         |
+| `address?`    | `string`              | ⬜️          | 2-128 caracteres                         |
+| `country?`    | [`Country`](#country) | ⬜️          | Deve estar em [country options](#country) |
+| `postalCode?` | `string`              | ⬜️          | 2-128 caracteres                         |
+| `region?`     | `string`              | ⬜️          | 2-128 caracteres                         |
+
+#### ProfileItemSchema
+
+Valida um perfil online ou presença em redes.
+
+| Prop       | Tipo                  | Obrigatório | Regras de validação                      |
+| ---------- | --------------------- | ------------ | ----------------------------------------- |
+| `network`  | [`Network`](#network) | ✅           | Deve estar em [network options](#network) |
+| `username` | `string`              | ✅           | 2-128 caracteres                         |
+| `url?`     | `string`              | ⬜️          | URL válida, máximo 256 caracteres        |
+
+#### ProjectItemSchema
+
+Valida um projeto, peça de portfólio ou trabalho técnico.
+
+| Prop           | Tipo       | Obrigatório | Regras de validação                  |
+| -------------- | ---------- | ------------ | ------------------------------------- |
+| `name`         | `string`   | ✅           | 2-128 caracteres                     |
+| `startDate`    | `string`   | ✅           | ver [date schema](#date-schema)       |
+| `summary`      | `string`   | ✅           | ver [summary schema](#summary-schema) |
+| `description?` | `string`   | ⬜️          | 4-128 caracteres                      |
+| `endDate?`     | `string`   | ⬜️          | ver [date schema](#date-schema)       |
+| `keywords?`    | `string[]` | ⬜️          | Cada item 1-32 caracteres             |
+| `url?`         | `string`   | ⬜️          | URL válida, máximo 256 caracteres     |
+
+#### PublicationItemSchema
+
+Valida uma publicação, trabalho de investigação ou artigo académico.
+
+| Prop           | Tipo     | Obrigatório | Regras de validação                  |
+| -------------- | -------- | ------------ | ------------------------------------- |
+| `name`         | `string` | ✅           | 2-128 caracteres                     |
+| `publisher`    | `string` | ✅           | 2-128 caracteres                     |
+| `releaseDate?` | `string` | ⬜️          | ver [date schema](#date-schema)       |
+| `summary?`     | `string` | ⬜️          | ver [summary schema](#summary-schema) |
+| `url?`         | `string` | ⬜️          | URL válida, máximo 256 caracteres     |
+
+#### ReferenceItemSchema
+
+Valida uma referência profissional ou recomendação.
+
+| Prop            | Tipo     | Obrigatório | Regras de validação                  |
+| --------------- | -------- | ------------ | ------------------------------------- |
+| `name`          | `string` | ✅           | 2-128 caracteres                     |
+| `summary`       | `string` | ✅           | ver [summary schema](#summary-schema) |
+| `email?`        | `string` | ⬜️          | ver [email schema](#email-schema)     |
+| `phone?`        | `string` | ⬜️          | Formato de telefone válido           |
+| `relationship?` | `string` | ⬜️          | 2-128 caracteres                     |
+
+#### SkillItemSchema
+
+Valida uma competência ou capacidade técnica.
+
+| Prop        | Tipo              | Obrigatório | Regras de validação                  |
+| ----------- | ----------------- | ------------ | ------------------------------------- |
+| `level`     | [`Level`](#level) | ✅           | Deve estar em [level options](#level) |
+| `name`      | `string`          | ✅           | 2-128 caracteres                     |
+| `keywords?` | `string[]`        | ⬜️          | Cada item 1-32 caracteres             |
+
+#### VolunteerItemSchema
+
+Valida uma experiência de voluntariado ou serviço comunitário.
+
+| Prop           | Tipo     | Obrigatório | Regras de validação                  |
+| -------------- | -------- | ------------ | ------------------------------------- |
+| `organization` | `string` | ✅           | 2-128 caracteres                     |
+| `position`     | `string` | ✅           | 2-128 caracteres                     |
+| `startDate`    | `string` | ✅           | ver [date schema](#date-schema)       |
+| `summary`      | `string` | ✅           | ver [summary schema](#summary-schema) |
+| `endDate?`     | `string` | ⬜️          | ver [date schema](#date-schema)       |
+| `url?`         | `string` | ⬜️          | URL válida, máximo 256 caracteres     |
+
+#### WorkItemSchema
+
+Valida uma experiência laboral ou posto.
+
+| Prop        | Tipo       | Obrigatório | Regras de validação                  |
+| ----------- | ---------- | ------------ | ------------------------------------- |
+| `name`      | `string`   | ✅           | 2-128 caracteres                     |
+| `position`  | `string`   | ✅           | 2-128 caracteres                     |
+| `startDate` | `string`   | ✅           | ver [date schema](#date-schema)       |
+| `summary`   | `string`   | ✅           | ver [summary schema](#summary-schema) |
+| `endDate?`  | `string`   | ⬜️          | ver [date schema](#date-schema)       |
+| `keywords?` | `string[]` | ⬜️          | Cada item 1-32 caracteres             |
+| `url?`      | `string`   | ⬜️          | URL válida, máximo 256 caracteres     |
+
+### LocaleSchema
+
+Valida a configuração regional para internacionalização e localização.
+
+| Prop        | Tipo                                | Obrigatório | Regras de validação                                        |
+| ----------- | ----------------------------------- | ------------ | ----------------------------------------------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜️          | Deve estar em [opções de língua local](#locale-language)   |
+
+### LayoutsSchema
+
+Define a configuração geral de validação do layout.
+
+| Prop        | Tipo                                                                                         | Obrigatório | Regras de validação            |
+| ----------- | -------------------------------------------------------------------------------------------- | ------------ | ------------------------------- |
+| `layouts[]` | [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜️          | Array de configurações layout |
+
+#### Esquemas de Layout Comuns
+
+##### MarginsSchema
+
+Valida as margens de página.
+
+| Prop      | Tipo     | Obrigatório | Regras de validação                          |
+| --------- | -------- | ------------ | --------------------------------------------- |
+| `top?`    | `string` | ⬜️          | ver [margin size schema](#margin-size-schema) |
+| `bottom?` | `string` | ⬜️          | ver [margin size schema](#margin-size-schema) |
+| `left?`   | `string` | ⬜️          | ver [margin size schema](#margin-size-schema) |
+| `right?`  | `string` | ⬜️          | ver [margin size schema](#margin-size-schema) |
+
+##### SectionsSchema
+
+Valida a configuração de personalização de secções.
+
+| Prop       | Tipo                        | Obrigatório | Regras de validação                                                 |
+| ---------- | --------------------------- | ------------ | -------------------------------------------------------------------- |
+| `aliases?` | `Record<SectionID, string>` | ⬜️          | Chaves devem ser IDs de secção válidos, valores strings (2-128 ch) |
+| `order?`   | `OrderableSectionID[]`      | ⬜️          | Array de IDs de secção ordenáveis válidos                           |
+
+#### HtmlLayoutSchema
+
+Valida a configuração do layout HTML.
+
+| Prop          | Tipo                                                  | Obrigatório |
+| ------------- | ----------------------------------------------------- | ------------ |
+| `engine`      | `'html'`                                              | ✅           |
+| `advanced?`   | [`HtmlAdvancedSchema`](#htmladvancedschema)           | ⬜️          |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜️          |
+| `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜️          |
+| `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜️          |
+
+##### HtmlAdvancedSchema
+
+Valida opções de configuração avançada de HTML.
+
+| Prop         | Tipo      | Obrigatório | Regras de validação |
+| ------------ | --------- | ------------ | -------------------- |
+| `showIcons?` | `boolean` | ⬜️          | true/false           |
+| `title?`      | `string`  | ⬜️          | -                    |
+| `footer?`     | `string`  | ⬜️          | -                    |
+| `description?`| `string`  | ⬜️          | -                    |
+| `keywords?`   | `string`  | ⬜️          | -                    |
+
+##### HtmlTemplateSchema
+
+Valida a configuração de modelo HTML.
+
+| Prop       | Tipo                            | Obrigatório | Regras de validação                                      |
+| ---------- | ------------------------------- | ------------ | --------------------------------------------------------- |
+| `template` | [`HtmlTemplate`](#htmltemplate) | ⬜️          | Deve ser uma das [opções de modelo](#htmltemplate)      |
+
+##### HtmlTypographySchema
+
+Valida a configuração de tipografia HTML.
+
+| Prop        | Tipo                            | Obrigatório | Regras de validação                                       |
+| ----------- | ------------------------------- | ------------ | ---------------------------------------------------------- |
+| `fontFamily?` | `string` | ⬜️ | Uma lista de famílias de fontes separada por vírgulas. |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize) | ⬜️          | Deve ser uma das [opções de tamanho de fonte](#htmlfontsize) |
+
+#### LatexLayoutSchema
+
+Valida a configuração do layout LaTeX.
+
+| Prop          | Tipo                                                | Obrigatório | Regras de validação                                |
+| ------------- | --------------------------------------------------- | ------------ | --------------------------------------------------- |
+| `advanced?`   | [`LatexAdvancedSchema`](#latexadvancedschema)       | ⬜️          | Ver [esquema avançado](#latexadvancedschema)        |
+| `engine`      | `'latex'`                                           | ✅           | Deve ser "latex"                                   |
+| `page?`       | [`LatexPageSchema`](#latexpageschema)               | ⬜️          | Ver [esquema de página](#latexpageschema)           |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜️          | Ver [esquema de secções](#sectionsschema)           |
+| `template?`   | [`LatexTemplate`](#latextemplate)                   | ⬜️          | Deve estar em [opções de modelo](#template)         |
+| `typography?` | [`LatexTypographySchema`](#latextypographyschema)   | ⬜️          | Ver [esquema de tipografia](#latextypographyschema) |
+
+##### LatexAdvancedSchema
+
+Valida opções de configuração avançada de LaTeX.
+
+| Prop        | Tipo                                 | Obrigatório | Regras de validação                                             |
+| ----------- | ------------------------------------ | ------------ | ---------------------------------------------------------------- |
+| `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜️          | Deve estar em [opções de números fontspec](#fontspecnumbers)   |
+| `showIcons?` | `boolean`                            | ⬜️          | true/false                                                       |
+
+##### LatexPageSchema
+
+Valida opções ao nível de página para a apresentação.
+
+| Prop               | Tipo                   | Obrigatório | Regras de validação                                |
+| ------------------ | ---------------------- | ------------ | -------------------------------------------------- |
+| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜️       | Ver [esquema de margens](#marginsschema)          |
+| `paperSize?`       | [`PaperSize`](#papersize) | ⬜️       | Deve estar em [opções de tamanho de papel](#papersize) |
+| `showPageNumbers?` | `boolean`              | ⬜️          | true/false                                         |
+
+##### LatexTypographySchema
+
+Valida opções tipográficas para o formato do documento.
+
+| Prop        | Tipo                      | Obrigatório | Regras de validação                                   |
+| ----------- | ------------------------- | ------------ | ------------------------------------------------------ |
+| `fontSize?` | `string`                  | ⬜️          | Deve estar em [opções de tamanho de fonte](#fontsize) |
+| `fontFamily?` | `string` | ⬜️ | Uma lista de famílias de fontes separada por vírgulas. |
+| `links?`    | `{ underline?: boolean }` | ⬜️          | true/false                                             |
+
+#### MarkdownLayoutSchema
+
+Valida a configuração do layout Markdown.
+
+| Prop        | Tipo                                | Obrigatório | Regras de validação                        |
+| ----------- | ----------------------------------- | ------------ | ------------------------------------------- |
+| `engine`    | `'markdown'`                        | ✅           | Deve ser "markdown"                         |
+| `sections?` | [`SectionsSchema`](#sectionsschema) | ⬜️          | Ver [esquema de secções](#sectionsschema) |
+
+## Esquemas de Validação de Enum
+
+### Country
+
+Tipo união que inclui todos os possíveis países e regiões do mundo.
+
+**Regras de validação:**
+
+- Deve ser uma das opções de país predefinidas
+- Exemplos: `United States`, `China`, `United Kingdom`, `Germany`
+
+### Degree
+
+Tipo união que inclui todos os possíveis graus académicos.
+
+**Regras de validação:**
+
+- Deve ser um de: `Associate`, `Bachelor`, `Diploma`, `Doctor`, `High School`, `Master`, `Middle School`
+
+### Fluency
+
+Tipo união que inclui todos os possíveis níveis de competência linguística.
+
+**Regras de validação:**
+
+- Deve ser um de:
+  - `Elementary Proficiency`
+  - `Full Professional Proficiency`
+  - `Limited Working Proficiency`
+  - `Minimum Professional Proficiency`
+  - `Native or Bilingual Proficiency`
+
+### Language
+
+Tipo união que inclui todos os idiomas suportados.
+
+**Regras de validação:**
+
+- Deve ser uma das opções de idioma predefinidas
+- Exemplos: `English`, `Chinese`, `Spanish`, `French`, `German`
+
+### Level
+
+Tipo união que inclui todos os possíveis níveis de domínio de competências.
+
+**Regras de validação:**
+
+- Deve ser um de: `Advanced`, `Beginner`, `Expert`, `Intermediate`, `Master`, `Novice`
+
+### Network
+
+Tipo união que inclui todas as possíveis opções de redes sociais.
+
+**Regras de validação:**
+
+- Deve ser uma das opções de rede predefinidas
+- Exemplos: `GitHub`, `LinkedIn`, `Twitter`, `Facebook`, `Instagram`
+
+### HtmlFontSize
+
+Tipo união que inclui todas as possíveis opções de tamanho de fonte HTML.
+
+**Regras de validação:**
+
+- Deve ser um de: `10px`, `11px`, `12px`, `13px`, `14px`, `15px`, `16px`, `17px`, `18px`, `19px`, `20px`, `21px`, `22px`, `23px`, `24px`
+- O motor HTML suporta tamanhos de fonte de 10px a 24px
+- `16px` é o tamanho de fonte por defeito
+
+### HtmlTemplate
+
+Tipo união que inclui todas as possíveis opções de modelo HTML.
+
+**Regras de validação:**
+
+- Deve ser um de: `calm`
+- Ver também: [templates](/pt/docs/layouts/html/templates)
+
+### LatexTemplate
+
+Tipo união que inclui todas as possíveis opções de modelo.
+
+**Regras de validação:**
+
+- Deve ser um de: `moderncv-banking`, `moderncv-casual`, `moderncv-classic`
+- Ver também: [templates](/pt/docs/layouts/latex/templates)
+
+### LocaleLanguage
+
+Tipo união que inclui todos os possíveis códigos de língua local.
+
+**Regras de validação:**
+
+- Deve ser um de: `en`, `es`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`
+- Ver também: [multi-languages](/pt/docs/locale)
+
+### LatexFontspecNumbers
+
+Tipo união que inclui todas as possíveis opções de números de fontspec de LaTeX.
+
+**Regras de validação:**
+
+- Deve ser um de:
+  - `Auto` - permite que o estilo seja determinado automaticamente segundo o
+    `LocaleLanguage` selecionado (por defeito)
+  - `Lining` - cifras lining padrão (por defeito para idiomas CJK)
+  - `OldStyle` - cifras old style com alturas variáveis (por defeito para
+    idiomas latinos)
+
+### LatexFontSize
+
+Tipo união que inclui todas as possíveis opções de tamanho de fonte.
+
+**Regras de validação:**
+
+- Deve ser um de: `10pt`, `11pt`, `12pt`
+- `10pt` é o tamanho de fonte por defeito
+
+### PaperSize
+
+Tipo união que inclui todas as possíveis opções de tamanho de papel LaTeX.
+
+**Regras de validação:**
+
+- Deve ser um de: `a4`, `letter`
