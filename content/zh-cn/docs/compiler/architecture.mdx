@@ -7,8 +7,8 @@ title: 架构
 - **输入阶段**：接受 YAML 和 JSON 简历文件作为输入。
 - **解析阶段**：解析并验证输入文件中的简历内容和布局。
 - **转换阶段**：使用管道转换简历内容和布局数据。
-- **代码生成阶段**：使用 LaTeX 模板渲染简历内容和布局数据。
-- **输出阶段**：生成最终的 PDF 文档。
+- **代码生成阶段**：使用 LaTeX、HTML 或 Markdown 模板渲染简历内容和布局数据。
+- **输出阶段**：生成最终的 PDF、HTML 或 Markdown 文档。
 
 以下是 YAMLResume 的架构图：
 
@@ -34,17 +34,31 @@ title: 架构
     end
 
     subgraph D[代码生成阶段]
-      D1[模板渲染器]
-      D2[moderncv-banking]
-      D3[moderncv-classic]
-      D4[moderncv-casual]
-      E1[LaTeX 文档]
+      subgraph D1[HTML 引擎]
+        D1a[模板渲染器]
+        D1b[calm]
+        D1c[vscode]
+        D1d[HTML 文档]
+      end
+      subgraph D2[LaTeX 引擎]
+        D2a[模板渲染器]
+        D2b[moderncv-banking]
+        D2c[moderncv-classic]
+        D2d[moderncv-casual]
+        D2e[LaTeX 文档]
+      end
+      subgraph D3[Markdown 引擎]
+        D3a[模板渲染器]
+        D3b[default]
+        D3c[Markdown 文档]
+      end
     end
 
     subgraph E[输出阶段]
-      F1[xetex]
-      F2[tectonic]
-      G[resume.pdf]
+      E1[xetex -> resume.pdf]
+      E2[tectonic -> resume.pdf]
+      E3[HTML -> resume.html]
+      E4[Markdown -> resume.md]
     end
 
     A1 --> B1
@@ -56,23 +70,31 @@ title: 架构
     C2 --> C3
     C3 --> C4
     C4 --> C5
-    C5 --> D1
-    D1 --> D2
-    D1 --> D3
-    D1 --> D4
-    D2 --> E1
-    D3 --> E1
-    D4 --> E1
-    E1 --> F1
-    E1 --> F2
-    F1 --> G
-    F2 --> G
+    C5 --> D1a
+    C5 --> D2a
+    C5 --> D3a
+    D1a --> D1b
+    D1a --> D1c
+    D1b --> D1d
+    D1c --> D1d
+    D2a --> D2b
+    D2a --> D2c
+    D2a --> D2d
+    D2b --> D2e
+    D2c --> D2e
+    D2d --> D2e
+    D3a --> D3b
+    D3b --> D3c
+    D1d --> E3
+    D2e --> E1
+    D2e --> E2
+    D3c --> E4
 
 "/>
 
 ## 数据处理管道
 
-转换管道负责处理来自 YAML 文件的原始简历数据，并为其准备 LaTeX 渲染。它在两个主要阶段运行：内容转换和布局转换：
+转换管道负责处理来自 YAML 文件的原始简历数据，并为其准备渲染。它在两个主要阶段运行：内容转换和布局转换：
 
 - 内容转换阶段处理所有文本数据，应用本地化规则，转义 LaTeX 特殊字符，并计算派生值。
 - 布局转换阶段将用户提供的布局设置与默认值合并，并应用特定于区域的排版规则。

@@ -7,8 +7,8 @@ title: アーキテクチャ
 - **入力段階**：YAML と JSON 履歴書ファイルを入力として受け入れます。
 - **解析段階**：入力ファイルの履歴書コンテンツとレイアウトを解析・検証します。
 - **変換段階**：パイプラインを使用して履歴書コンテンツとレイアウトデータを変換します。
-- **コード生成段階**：LaTeX テンプレートを使用して履歴書コンテンツとレイアウトデータをレンダリングします。
-- **出力段階**：最終的な PDF 文書を生成します。
+- **コード生成段階**：LaTeX、HTML、または Markdown テンプレートを使用して履歴書コンテンツとレイアウトデータをレンダリングします。
+- **出力段階**：最終的な PDF、HTML、または Markdown 文書を生成します。
 
 以下は YAMLResume のアーキテクチャ図です：
 
@@ -34,17 +34,31 @@ title: アーキテクチャ
     end
 
     subgraph D[コード生成段階]
-      D1[テンプレートレンダラー]
-      D2[moderncv-banking]
-      D3[moderncv-classic]
-      D4[moderncv-casual]
-      E1[LaTeX 文書]
+      subgraph D1[HTML エンジン]
+        D1a[テンプレートレンダラー]
+        D1b[calm]
+        D1c[vscode]
+        D1d[HTML 文書]
+      end
+      subgraph D2[LaTeX エンジン]
+        D2a[テンプレートレンダラー]
+        D2b[moderncv-banking]
+        D2c[moderncv-classic]
+        D2d[moderncv-casual]
+        D2e[LaTeX 文書]
+      end
+      subgraph D3[Markdown エンジン]
+        D3a[テンプレートレンダラー]
+        D3b[default]
+        D3c[Markdown 文書]
+      end
     end
 
     subgraph E[出力段階]
-      F1[xetex]
-      F2[tectonic]
-      G[resume.pdf]
+      E1[xetex -> resume.pdf]
+      E2[tectonic -> resume.pdf]
+      E3[HTML -> resume.html]
+      E4[Markdown -> resume.md]
     end
 
     A1 --> B1
@@ -56,23 +70,31 @@ title: アーキテクチャ
     C2 --> C3
     C3 --> C4
     C4 --> C5
-    C5 --> D1
-    D1 --> D2
-    D1 --> D3
-    D1 --> D4
-    D2 --> E1
-    D3 --> E1
-    D4 --> E1
-    E1 --> F1
-    E1 --> F2
-    F1 --> G
-    F2 --> G
+    C5 --> D1a
+    C5 --> D2a
+    C5 --> D3a
+    D1a --> D1b
+    D1a --> D1c
+    D1b --> D1d
+    D1c --> D1d
+    D2a --> D2b
+    D2a --> D2c
+    D2a --> D2d
+    D2b --> D2e
+    D2c --> D2e
+    D2d --> D2e
+    D3a --> D3b
+    D3b --> D3c
+    D1d --> E3
+    D2e --> E1
+    D2e --> E2
+    D3c --> E4
 
 "/>
 
 ## データ処理パイプライン
 
-変換パイプラインは、YAML ファイルからの生の履歴書データを処理し、LaTeX レンダリングの準備をします。2 つの主要段階で動作します：コンテンツ変換とレイアウト変換：
+変換パイプラインは、YAML ファイルからの生の履歴書データを処理し、レンダリングの準備をします。2 つの主要段階で動作します：コンテンツ変換とレイアウト変換：
 
 - コンテンツ変換段階では、すべてのテキストデータを処理し、ローカライゼーションルールを適用し、LaTeX 特殊文字をエスケープし、派生値を計算します。
 - レイアウト変換段階では、ユーザーが提供したレイアウト設定をデフォルト値とマージし、地域固有のタイポグラフィルールを適用します。

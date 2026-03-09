@@ -12,8 +12,8 @@ múltiplas fases.
 - **Fase de Transformação**: transforma os dados de conteúdo e layout do
   currículo com um pipeline.
 - **Fase de Geração de Código**: renderiza os dados de conteúdo e layout do
-  currículo usando modelos LaTeX.
-- **Fase de Saída**: gera o documento PDF final.
+  currículo usando modelos LaTeX, HTML ou Markdown.
+- **Fase de Saída**: gera os documentos finais PDF, HTML ou Markdown.
 
 Aqui está um diagrama de arquitetura de alto nível do YAMLResume a 30000
 pés:
@@ -40,17 +40,31 @@ pés:
     end
 
     subgraph D[Fase de Geração de Código]
-      D1[Renderizador de modelos]
-      D2[moderncv-banking]
-      D3[moderncv-classic]
-      D4[moderncv-casual]
-      E1[Documento LaTeX]
+      subgraph D1[Motor HTML]
+        D1a[Renderizador de modelos]
+        D1b[calm]
+        D1c[vscode]
+        D1d[Documento HTML]
+      end
+      subgraph D2[Motor LaTeX]
+        D2a[Renderizador de modelos]
+        D2b[moderncv-banking]
+        D2c[moderncv-classic]
+        D2d[moderncv-casual]
+        D2e[Documento LaTeX]
+      end
+      subgraph D3[Motor Markdown]
+        D3a[Renderizador de modelos]
+        D3b[default]
+        D3c[Documento Markdown]
+      end
     end
 
     subgraph E[Fase de Saída]
-      F1[xetex]
-      F2[tectonic]
-      G[resume.pdf]
+      E1[xetex -> resume.pdf]
+      E2[tectonic -> resume.pdf]
+      E3[HTML -> resume.html]
+      E4[Markdown -> resume.md]
     end
 
     A1 --> B1
@@ -62,24 +76,32 @@ pés:
     C2 --> C3
     C3 --> C4
     C4 --> C5
-    C5 --> D1
-    D1 --> D2
-    D1 --> D3
-    D1 --> D4
-    D2 --> E1
-    D3 --> E1
-    D4 --> E1
-    E1 --> F1
-    E1 --> F2
-    F1 --> G
-    F2 --> G
+    C5 --> D1a
+    C5 --> D2a
+    C5 --> D3a
+    D1a --> D1b
+    D1a --> D1c
+    D1b --> D1d
+    D1c --> D1d
+    D2a --> D2b
+    D2a --> D2c
+    D2a --> D2d
+    D2b --> D2e
+    D2c --> D2e
+    D2d --> D2e
+    D3a --> D3b
+    D3b --> D3c
+    D1d --> E3
+    D2e --> E1
+    D2e --> E2
+    D3c --> E4
 
 "/>
 
 ## Pipeline de Processamento de Dados
 
 O pipeline de transformação é responsável por processar os dados brutos do
-currículo desde ficheiros YAML e prepará-los para a renderização LaTeX. Opera em
+currículo desde ficheiros YAML e prepará-los para a renderização. Opera em
 duas fases principais: transformação de conteúdo e transformação de layout:
 
 - A fase de transformação de conteúdo processa todos os dados textuais,

@@ -12,8 +12,8 @@ múltiples fases.
 - **Fase de Transformación**: transforma los datos de contenido y diseño del
   currículum con una tubería.
 - **Fase de Generación de Código**: renderiza los datos de contenido y diseño
-  del currículum usando plantillas LaTeX.
-- **Fase de Salida**: genera el documento PDF final.
+  del currículum usando plantillas LaTeX, HTML o Markdown.
+- **Fase de Salida**: genera los documentos finales PDF, HTML o Markdown.
 
 Aquí hay un diagrama de arquitectura de alto nivel de YAMLResume desde 30000
 pies:
@@ -40,17 +40,31 @@ pies:
     end
 
     subgraph D[Fase de Generación de Código]
-      D1[Renderizador de plantillas]
-      D2[moderncv-banking]
-      D3[moderncv-classic]
-      D4[moderncv-casual]
-      E1[Documento LaTeX]
+      subgraph D1[Motor HTML]
+        D1a[Renderizador de plantillas]
+        D1b[calm]
+        D1c[vscode]
+        D1d[Documento HTML]
+      end
+      subgraph D2[Motor LaTeX]
+        D2a[Renderizador de plantillas]
+        D2b[moderncv-banking]
+        D2c[moderncv-classic]
+        D2d[moderncv-casual]
+        D2e[Documento LaTeX]
+      end
+      subgraph D3[Motor Markdown]
+        D3a[Renderizador de plantillas]
+        D3b[default]
+        D3c[Documento Markdown]
+      end
     end
 
     subgraph E[Fase de Salida]
-      F1[xetex]
-      F2[tectonic]
-      G[resume.pdf]
+      E1[xetex -> resume.pdf]
+      E2[tectonic -> resume.pdf]
+      E3[HTML -> resume.html]
+      E4[Markdown -> resume.md]
     end
 
     A1 --> B1
@@ -62,24 +76,32 @@ pies:
     C2 --> C3
     C3 --> C4
     C4 --> C5
-    C5 --> D1
-    D1 --> D2
-    D1 --> D3
-    D1 --> D4
-    D2 --> E1
-    D3 --> E1
-    D4 --> E1
-    E1 --> F1
-    E1 --> F2
-    F1 --> G
-    F2 --> G
+    C5 --> D1a
+    C5 --> D2a
+    C5 --> D3a
+    D1a --> D1b
+    D1a --> D1c
+    D1b --> D1d
+    D1c --> D1d
+    D2a --> D2b
+    D2a --> D2c
+    D2a --> D2d
+    D2b --> D2e
+    D2c --> D2e
+    D2d --> D2e
+    D3a --> D3b
+    D3b --> D3c
+    D1d --> E3
+    D2e --> E1
+    D2e --> E2
+    D3c --> E4
 
 "/>
 
 ## Tubería de Procesamiento de Datos
 
 La tubería de transformación es responsable de procesar los datos crudos del
-currículum desde archivos YAML y prepararlos para el renderizado LaTeX. Opera en
+currículum desde archivos YAML y prepararlos para el renderizado. Opera en
 dos fases principales: transformación de contenido y transformación de diseño:
 
 - La fase de transformación de contenido procesa todos los datos textuales,
