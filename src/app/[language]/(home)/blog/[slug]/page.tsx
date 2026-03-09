@@ -6,6 +6,8 @@ import { notFound } from 'next/navigation'
 import { getMDXComponents } from '@/components'
 import { getLocalizedSources } from '@/lib'
 
+export const revalidate = false
+
 export default async function Page(props: {
   params: Promise<{ slug: string; language: string }>
 }) {

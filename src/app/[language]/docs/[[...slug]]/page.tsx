@@ -12,6 +12,8 @@ import { getMDXComponents, LLMCopyButton, ViewOptions } from '@/components'
 import { defaultLanguage } from '@/i18n'
 import { getLocalizedSources } from '@/lib'
 
+export const revalidate = false
+
 export default async function Page(props: {
   params: Promise<{ slug?: string[]; language: string }>
 }) {

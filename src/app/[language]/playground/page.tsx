@@ -1,6 +1,8 @@
 import type { Language } from '@/i18n'
 import { PlaygroundBody, PlaygroundHeader } from './components'
 
+export const revalidate = false
+
 // TODO: write test cases
 export default async function PlaygroundPage(props: {
   params: Promise<{ language: string }>

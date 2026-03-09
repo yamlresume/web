@@ -12,6 +12,8 @@ import {
 } from './components'
 import { TypographyBackground } from './components/common'
 
+export const revalidate = false
+
 export default function HomePage() {
   return (
     <main>

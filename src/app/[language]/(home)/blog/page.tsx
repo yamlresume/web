@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { getLocalizedSources } from '@/lib'
 import { BlogList } from './components'
 
+export const revalidate = false
+
 export default async function Home({
   params,
 }: {

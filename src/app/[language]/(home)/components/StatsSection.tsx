@@ -11,7 +11,7 @@ async function fetchWithDefault<_T>(
 ): Promise<number> {
   try {
     const res = await fetch(url, {
-      next: { revalidate: 3600 }, // Cache for 1 hour
+      next: { revalidate: 3600 * 24 }, // Cache for 1 day
     })
     if (!res.ok) return defaultValue
 
