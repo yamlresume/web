@@ -1,4 +1,6 @@
+import type { Metadata } from 'next'
 import 'react-medium-image-zoom/dist/styles.css'
+import { defaultLanguage, languages } from '@/i18n'
 import {
   BuyMeACoffeeSection,
   ComparisonSection,
@@ -31,4 +33,28 @@ export default function HomePage() {
       <BuyMeACoffeeSection />
     </main>
   )
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ language: string }>
+}): Promise<Metadata> {
+  const { language } = await params
+
+  // Build canonical URL
+  const canonicalPath = language === defaultLanguage ? '/' : `/${language}`
+
+  // Build hreflang alternates for all languages
+  const languagesAlternates: Record<string, string> = {}
+  for (const lang of languages) {
+    languagesAlternates[lang] = lang === defaultLanguage ? '/' : `/${lang}`
+  }
+
+  return {
+    alternates: {
+      canonical: canonicalPath,
+      languages: languagesAlternates,
+    },
+  }
 }

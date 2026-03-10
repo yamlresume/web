@@ -43,65 +43,91 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogSourcePt.getPages(),
   ]
 
+  const now = new Date()
+
   return [
     {
       url: url('/'),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 1,
     },
     {
       url: url('/blog'),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: url('/docs'),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     // Add locale-specific home pages
     {
       url: url('/zh-cn'),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: url('/zh-tw'),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: url('/ja'),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: url('/es'),
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: url('/pt'),
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: url('/fr'),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: url('/developer/cli/index.html'),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: url('/developer/core/index.html'),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: url('/developer/create-yamlresume/index.html'),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: url('/developer/json2yamlresume/index.html'),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: url('/developer/playground/index.html'),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },

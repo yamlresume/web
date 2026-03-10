@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { getMDXComponents } from '@/components'
+import { defaultLanguage, languages } from '@/i18n'
 import { getLocalizedSources } from '@/lib'
 
 export const revalidate = false
@@ -112,9 +113,25 @@ export async function generateMetadata(props: {
 
   const image = `/api/og/blog/${slug}/open-graph.png?language=${language}`
 
+  // Build canonical URL
+  const canonicalPath =
+    language === defaultLanguage ? `/blog/${slug}` : `/${language}/blog/${slug}`
+
+  // Build hreflang alternates for all languages
+  const languagesAlternates: Record<string, string> = {}
+  for (const lang of languages) {
+    const langPath =
+      lang === defaultLanguage ? `/blog/${slug}` : `/${lang}/blog/${slug}`
+    languagesAlternates[lang] = langPath
+  }
+
   return {
     title: page.data.title,
     description: page.data.description,
+    alternates: {
+      canonical: canonicalPath,
+      languages: languagesAlternates,
+    },
     openGraph: {
       images: image,
     },

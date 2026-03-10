@@ -9,7 +9,7 @@ import {
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getMDXComponents, LLMCopyButton, ViewOptions } from '@/components'
-import { defaultLanguage } from '@/i18n'
+import { defaultLanguage, languages } from '@/i18n'
 import { getLocalizedSources } from '@/lib'
 
 export const revalidate = false
@@ -124,9 +124,32 @@ export async function generateMetadata({
   if (!page) notFound()
 
   const image = `/api/og/docs/${slug.join('/')}/open-graph.png?language=${language}`
+
+  // Build canonical URL
+  const slugPath = slug.length > 0 ? `/${slug.join('/')}` : ''
+  const canonicalPath =
+    language === defaultLanguage
+      ? `/docs${slugPath}`
+      : `/${language}/docs${slugPath}`
+
+  // Build hreflang alternates for all languages
+  const languagesAlternates: Record<string, string> = {}
+  for (const lang of languages) {
+    const langSlugPath = slug.length > 0 ? `/${slug.join('/')}` : ''
+    const langPath =
+      lang === defaultLanguage
+        ? `/docs${langSlugPath}`
+        : `/${lang}/docs${langSlugPath}`
+    languagesAlternates[lang] = langPath
+  }
+
   return {
     title: page.data.title,
     description: page.data.description,
+    alternates: {
+      canonical: canonicalPath,
+      languages: languagesAlternates,
+    },
     openGraph: {
       images: image,
     },
