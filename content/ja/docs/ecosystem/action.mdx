@@ -1,0 +1,137 @@
+---
+title: yamlresume/action
+---
+
+[yamlresume/action](https://github.com/marketplace/actions/yamlresume) は、YAMLResume CLI を使用して YAML ファイルからプロフェッショナルな履歴書を構築するための GitHub Action です。YAMLResume を CI/CD パイプラインにシームレスに統合し、履歴書をコードとして扱い、PDF、LaTeX、HTML、Markdown の生成を GitHub 上で直接自動化できます。
+
+## 機能
+
+- **自動ビルド**: push や pull request のたびに履歴書を自動的にビルドします。
+- **複数の履歴書**: 単一のワークフローステップで、複数の履歴書 (例: 異なる言語やバリアント) をビルドできます。
+- **カスタマイズ可能なオプション**: 必要に応じて、スキーマの検証や PDF 生成をスキップできます。
+- **ワークフローの統合**: 生成されたファイルのパスを出力し、後続のステップで使用できるようにします。
+- **アーティファクトのアップロード**: 生成されたファイルを保存するために `actions/upload-artifact` とシームレスに連携します。
+
+## 使用方法
+
+### 基本的な使用方法
+
+単一の履歴書をビルドする場合:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+```
+
+### 複数の履歴書
+
+改行区切りのリストを使用して、複数の履歴書をビルドする場合:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+      resume-fr.yml
+```
+
+### PDF 生成のスキップ
+
+LaTeX ファイルのみを生成する場合 (カスタム PDF パイプラインに便利です):
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-pdf: true
+```
+
+### 検証のスキップ
+
+ビルド中のスキーマ検証をスキップする場合:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-validate: true
+```
+
+### 完全なワークフローの例
+
+以下は、複数の履歴書をビルドし、生成された PDF をアーティファクトとしてアップロードする GitHub Actions ワークフローの完全な例です。
+
+```yaml title=".github/workflows/resume.yml"
+name: Build Resume
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build resumes
+        id: build
+        uses: yamlresume/action@v0.1.1
+        with:
+          resumes: |
+            resume-en.yml
+            resume-zh.yml
+          verbose: true
+
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: resumes
+          path: |
+            *.pdf
+            *.tex
+```
+
+## 入力
+
+| 入力 | 説明 | 必須 | デフォルト |
+| ------------- | ---------------------------------------------------- | -------- | --------- |
+| `resumes` | ビルドする履歴書の YAML ファイル (改行区切りのリスト) | はい | - |
+| `no-validate` | スキーマの検証をスキップする | いいえ | `false` |
+| `no-pdf` | PDF 生成をスキップする (LaTeX のみ生成) | いいえ | `false` |
+| `verbose` | 詳細な出力を有効にする | いいえ | `false` |
+| `version` | YAMLResume Docker イメージのバージョン | いいえ | `v0.11.2` |
+
+## 出力
+
+この Action は以下の出力を提供します。これらは生成されたファイルの改行区切りのリストです。
+
+- `pdf-files`
+- `tex-files`
+- `html-files`
+- `md-files`
+
+### 出力の使用
+
+後続のステップで出力を使用できます:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  id: build
+  with:
+    resumes: resume.yml
+
+- run: |
+    echo "Generated PDFs:"
+    echo "${{ steps.build.outputs.pdf-files }}"
+```
+
+## 要件
+
+- **ランナー**: Linux (Ubuntu を推奨) - Docker が必要です。
+- **Docker**: ランナー上で利用可能である必要があります (GitHub ホストの Ubuntu ランナーにはデフォルトで Docker が含まれています)。

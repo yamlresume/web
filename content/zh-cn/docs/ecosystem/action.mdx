@@ -1,0 +1,137 @@
+---
+title: yamlresume/action
+---
+
+[yamlresume/action](https://github.com/marketplace/actions/yamlresume) 是一个 GitHub Action，旨在使用 YAMLResume CLI 从 YAML 文件构建专业的简历。它将 YAMLResume 无缝集成到你的 CI/CD 流水线中，让你能够将简历视为代码，并在 GitHub 上直接自动化生成 PDF、LaTeX、HTML 和 Markdown 文件。
+
+## 功能特性
+
+- **自动构建**：在每次 push 或 pull request 时自动构建你的简历。
+- **多份简历**：在单个工作流步骤中构建多份简历（例如，不同语言或变体）。
+- **可自定义选项**：如果需要，可以跳过架构验证或 PDF 生成。
+- **工作流集成**：输出生成的文件路径，供后续步骤使用。
+- **制品上传**：与 `actions/upload-artifact` 无缝协作，以保存生成的文件。
+
+## 使用方法
+
+### 基本用法
+
+构建单份简历：
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+```
+
+### 多份简历
+
+使用换行符分隔的列表构建多份简历：
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+      resume-fr.yml
+```
+
+### 跳过 PDF 生成
+
+仅生成 LaTeX 文件（适用于自定义 PDF 流水线）：
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-pdf: true
+```
+
+### 跳过验证
+
+在构建期间跳过架构验证：
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-validate: true
+```
+
+### 完整工作流示例
+
+以下是一个完整的 GitHub Actions 工作流示例，用于构建多份简历并将生成的 PDF 作为制品上传：
+
+```yaml title=".github/workflows/resume.yml"
+name: Build Resume
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build resumes
+        id: build
+        uses: yamlresume/action@v0.1.1
+        with:
+          resumes: |
+            resume-en.yml
+            resume-zh.yml
+          verbose: true
+
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: resumes
+          path: |
+            *.pdf
+            *.tex
+```
+
+## 输入参数
+
+| 输入参数 | 描述 | 是否必须 | 默认值 |
+| ------------- | ---------------------------------------------------- | -------- | --------- |
+| `resumes` | 要构建的简历 YAML 文件（换行符分隔列表） | 是 | - |
+| `no-validate` | 跳过架构验证 | 否 | `false` |
+| `no-pdf` | 跳过 PDF 生成（仅生成 LaTeX） | 否 | `false` |
+| `verbose` | 启用详细输出 | 否 | `false` |
+| `version` | YAMLResume Docker 镜像版本 | 否 | `v0.11.2` |
+
+## 输出结果
+
+该 Action 提供以下输出，它们是生成文件的换行符分隔列表：
+
+- `pdf-files`
+- `tex-files`
+- `html-files`
+- `md-files`
+
+### 使用输出结果
+
+你可以在后续步骤中使用这些输出结果：
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  id: build
+  with:
+    resumes: resume.yml
+
+- run: |
+    echo "Generated PDFs:"
+    echo "${{ steps.build.outputs.pdf-files }}"
+```
+
+## 要求
+
+- **Runner**：Linux（推荐 Ubuntu）- 需要 Docker。
+- **Docker**：必须在 Runner 上可用（GitHub 托管的 Ubuntu Runner 默认包含 Docker）。

@@ -1,0 +1,150 @@
+---
+title: yamlresume/action
+---
+
+[yamlresume/action](https://github.com/marketplace/actions/yamlresume) es una GitHub Action
+para construir currículums profesionales a partir de archivos YAML utilizando la
+CLI de YAMLResume. Integra a la perfección YAMLResume en tus pipelines de CI/CD,
+permitiéndote tratar tu currículum como código y automatizar la generación de
+PDF, LaTeX, HTML y Markdown directamente en GitHub.
+
+## Características
+
+- **Construcciones Automatizadas**: Construye tu currículum automáticamente con
+  cada push o pull request.
+- **Múltiples Currículums**: Construye múltiples currículums (ej. en diferentes
+  idiomas o variantes) en un solo paso del flujo de trabajo.
+- **Opciones Personalizables**: Omite la validación de esquemas o la generación
+  de PDF si es necesario.
+- **Integración con Flujos de Trabajo**: Genera las rutas de los archivos
+  creados para usarlas en pasos posteriores.
+- **Carga de Artefactos**: Funciona sin problemas con `actions/upload-artifact`
+  para guardar los archivos generados.
+
+## Uso
+
+### Uso Básico
+
+Construir un solo currículum:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+```
+
+### Múltiples Currículums
+
+Construye múltiples currículums utilizando una lista separada por saltos de
+línea:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+      resume-fr.yml
+```
+
+### Omitir la Generación de PDF
+
+Generar solo archivos LaTeX (útil para pipelines de PDF personalizados):
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-pdf: true
+```
+
+### Omitir la Validación
+
+Omitir la validación de esquemas durante la construcción:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-validate: true
+```
+
+### Ejemplo Completo de Flujo de Trabajo
+
+Aquí tienes un ejemplo completo de un flujo de trabajo de GitHub Actions que
+construye múltiples currículums y sube los PDF generados como artefactos:
+
+```yaml title=".github/workflows/resume.yml"
+name: Build Resume
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build resumes
+        id: build
+        uses: yamlresume/action@v0.1.1
+        with:
+          resumes: |
+            resume-en.yml
+            resume-zh.yml
+          verbose: true
+
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: resumes
+          path: |
+            *.pdf
+            *.tex
+```
+
+## Entradas
+
+| Entrada       | Descripción                                          | Requerido | Por defecto |
+| ------------- | ---------------------------------------------------- | --------- | ----------- |
+| `resumes`     | Lista separada por saltos de línea de archivos YAML  | Sí        | -           |
+| `no-validate` | Omitir la validación del esquema                     | No        | `false`     |
+| `no-pdf`      | Omitir la generación de PDF (solo genera LaTeX)      | No        | `false`     |
+| `verbose`     | Habilitar la salida detallada                        | No        | `false`     |
+| `version`     | Versión de la imagen Docker de YAMLResume            | No        | `v0.11.2`   |
+
+## Salidas
+
+La Action proporciona las siguientes salidas, que son listas separadas por saltos
+de línea de los archivos generados:
+
+- `pdf-files`
+- `tex-files`
+- `html-files`
+- `md-files`
+
+### Uso de las Salidas
+
+Puedes utilizar las salidas en pasos posteriores:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  id: build
+  with:
+    resumes: resume.yml
+
+- run: |
+    echo "Generated PDFs:"
+    echo "${{ steps.build.outputs.pdf-files }}"
+```
+
+## Requisitos
+
+- **Runner**: Linux (Se recomienda Ubuntu) - Se requiere Docker.
+- **Docker**: Debe estar disponible en el runner (los runners Ubuntu alojados en
+  GitHub incluyen Docker por defecto).

@@ -1,0 +1,150 @@
+---
+title: yamlresume/action
+---
+
+[yamlresume/action](https://github.com/marketplace/actions/yamlresume) est une GitHub Action
+pour construire des CV professionnels à partir de fichiers YAML en utilisant la
+CLI YAMLResume. Elle intègre parfaitement YAMLResume à vos pipelines CI/CD,
+vous permettant de traiter votre CV comme du code et d'automatiser la génération
+de PDF, LaTeX, HTML et Markdown directement sur GitHub.
+
+## Fonctionnalités
+
+- **Générations Automatisées** : Construisez votre CV automatiquement à chaque
+  push ou pull request.
+- **CV Multiples** : Construisez plusieurs CV (par ex. dans différentes langues
+  ou variantes) en une seule étape de workflow.
+- **Options Personnalisables** : Ignorez la validation du schéma ou la génération
+  de PDF si nécessaire.
+- **Intégration au Workflow** : Renvoie les chemins des fichiers générés pour
+  une utilisation dans les étapes suivantes.
+- **Téléchargement d'Artefacts** : Fonctionne parfaitement avec
+  `actions/upload-artifact` pour sauvegarder les fichiers générés.
+
+## Utilisation
+
+### Utilisation de Base
+
+Construire un seul CV :
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+```
+
+### CV Multiples
+
+Construire plusieurs CV en utilisant une liste séparée par des retours à la
+ligne :
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+      resume-fr.yml
+```
+
+### Ignorer la Génération de PDF
+
+Générer uniquement des fichiers LaTeX (utile pour les pipelines PDF sur mesure) :
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-pdf: true
+```
+
+### Ignorer la Validation
+
+Ignorer la validation du schéma pendant la construction :
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-validate: true
+```
+
+### Exemple de Workflow Complet
+
+Voici un exemple complet de workflow GitHub Actions qui construit plusieurs CV
+et télécharge les PDF générés en tant qu'artefacts :
+
+```yaml title=".github/workflows/resume.yml"
+name: Build Resume
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build resumes
+        id: build
+        uses: yamlresume/action@v0.1.1
+        with:
+          resumes: |
+            resume-en.yml
+            resume-zh.yml
+          verbose: true
+
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: resumes
+          path: |
+            *.pdf
+            *.tex
+```
+
+## Entrées
+
+| Entrée        | Description                                          | Requis | Défaut    |
+| ------------- | ---------------------------------------------------- | ------ | --------- |
+| `resumes`     | Liste de fichiers YAML séparée par retours à la ligne| Oui    | -         |
+| `no-validate` | Ignorer la validation du schéma                      | Non    | `false`   |
+| `no-pdf`      | Ignorer la génération de PDF (générer juste LaTeX)   | Non    | `false`   |
+| `verbose`     | Activer la sortie détaillée                          | Non    | `false`   |
+| `version`     | Version de l'image Docker YAMLResume                 | Non    | `v0.11.2` |
+
+## Sorties
+
+L'Action fournit les sorties suivantes, qui sont des listes des fichiers
+générés, séparées par des retours à la ligne :
+
+- `pdf-files`
+- `tex-files`
+- `html-files`
+- `md-files`
+
+### Utiliser les Sorties
+
+Vous pouvez utiliser les sorties dans les étapes suivantes :
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  id: build
+  with:
+    resumes: resume.yml
+
+- run: |
+    echo "Generated PDFs:"
+    echo "${{ steps.build.outputs.pdf-files }}"
+```
+
+## Exigences
+
+- **Runner** : Linux (Ubuntu recommandé) - Docker est requis.
+- **Docker** : Doit être disponible sur le runner (les runners Ubuntu hébergés
+  par GitHub incluent Docker par défaut).
