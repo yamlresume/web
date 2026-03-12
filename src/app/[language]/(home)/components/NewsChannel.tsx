@@ -27,27 +27,18 @@ export function NewsChannel() {
         <div className="flex items-center gap-2 py-3">
           <IconSpeakerphone size={20} stroke={1.5} />
           <div className="text-sm text-fd-foreground">
-            YAMLResume v0.11 is released with the new{' '}
-            <Link href="/playground" className="underline">
-              Playground
-            </Link>{' '}
-            package, Doctor command, and{' '}
             <Link
-              href={getLocalizedUrl('/docs/locale/japanese', language)}
-              className="underline"
+              href="https://github.com/marketplace/actions/yamlresume"
+              className="underline font-semibold"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Japanese
-            </Link>
-            /
-            <Link
-              href={getLocalizedUrl('/docs/locale/german', language)}
-              className="underline"
-            >
-              German
+              YAMLResume GitHub Action
             </Link>{' '}
-            support. Check out the{' '}
+            is officially released! Automate your resume builds directly in your
+            CI/CD pipelines. Check out the{' '}
             <Link
-              href={getLocalizedUrl('/blog/v0.11', language)}
+              href={getLocalizedUrl('/blog/yamlresume-action', language)}
               className="underline"
             >
               blog post
