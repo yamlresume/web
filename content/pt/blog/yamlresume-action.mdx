@@ -1,0 +1,150 @@
+---
+title: Automatize as Builds de Currículo com a YAMLResume GitHub Action
+description:
+  "Construa e implante seus currículos automaticamente usando a nova YAMLResume GitHub
+  Action"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-03-12
+---
+
+Estou emocionado em anunciar a oficial
+[YAMLResume GitHub Action](https://github.com/marketplace/actions/yamlresume)!
+
+Esta nova action leva a filosofia de "Currículo como Código" à sua conclusão
+natural, integrando o YAMLResume perfeitamente aos seus pipelines de CI/CD.
+
+## Por que usar uma GitHub Action?
+
+O YAMLResume tem sido
+[adotado por pessoas no GitHub](https://github.com/yamlresume/yamlresume/discussions/50)
+de todo o mundo. Cada um descobriu seu próprio fluxo de trabalho para construir e
+implantar seus currículos — alguns usam Makefiles, alguns usam scripts shell,
+alguns usam GitHub Actions, alguns publicam no GitHub Pages, etc.
+
+Por exemplo:
+
+- [@drzero42](https://github.com/drzero42) usa
+  [docker e gh-release](https://github.com/drzero42/resume/blob/main/.github/workflows/build-resume.yaml)
+  para construir e hospedar currículos
+- [@mortezaPRK](https://github.com/mortezaPRK) usa
+  [Makefile](https://github.com/mortezaPRK/mortezaPRK.github.io/blob/main/Makefile)
+- [@shamrt](https://github.com/shamrt) instalou
+  [npm, yamlresume e TinyTeX no GitHub runner](https://github.com/shamrt/yamlresume/blob/main/.github/workflows/deploy.yml)
+  e usa um script shell para construir e publicar currículos
+
+É hora de fornecermos uma maneira unificada de fazer isso.
+
+Com a `yamlresume/action`, você pode automatizar isso completamente. Ao enviar
+seu `resume.yml` atualizado para o GitHub, a action pode automaticamente:
+
+1. Validar seu currículo de acordo com o esquema YAMLResume.
+2. Construir as saídas em PDF, LaTeX, HTML e Markdown.
+3. Anexar os PDFs gerados a uma GitHub Release, carregá-los como artefatos
+   do workflow, ou publicá-los no GitHub Pages.
+
+Teoricamente, você nunca mais precisará construir seu currículo localmente.
+
+## Início Rápido
+
+Usar a action é incrivelmente simples. Aqui está um exemplo mínimo de
+`.github/workflows/build.yml` que constrói seu currículo e carrega o PDF gerado
+como um artefato do GitHub Actions:
+
+```yaml
+name: Build Resume
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build resume
+        id: build
+        uses: yamlresume/action@v0.1.1
+        with:
+          resumes: resume.yml
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume
+          path: ${{ steps.build.outputs.pdf-files }}
+```
+
+## Principais Recursos
+
+A GitHub Action não é apenas um simples wrapper; ela vem com recursos
+poderosos projetados para o gerenciamento de currículos no mundo real:
+
+### Múltiplos Currículos de Uma Só Vez
+
+Muitos usuários mantêm várias versões de seus currículos (por exemplo, uma
+versão em inglês e uma versão traduzida, ou uma versão focada em Frontend vs.
+Backend). Você pode construir todos eles simultaneamente passando uma lista
+separada por quebras de linha:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+```
+
+### Builds Personalizáveis
+
+Se você tem um pipeline de geração de PDF personalizado e só precisa da saída
+LaTeX, ou se deseja pular a validação de esquema para um rascunho rápido, a
+action fornece as entradas `no-pdf` e `no-validate` para adaptar o workflow
+às suas necessidades.
+
+#### Pular Geração de PDF
+
+Gere apenas arquivos LaTeX (útil para pipelines de PDF personalizados):
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-pdf: true
+```
+
+#### Pular Validação
+
+Pule a validação de esquema durante a build:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-validate: true
+```
+
+## Por Baixo dos Panos
+
+A `yamlresume/action` aproveita a
+[imagem Docker YAMLResume](https://hub.docker.com/r/yamlresume/yamlresume) que
+[apresentamos anteriormente](/pt/blog/yamlresume-docker).
+
+Como as distribuições LaTeX são notoriamente grandes e demoradas para instalar
+(frequentemente levando de 20 a 30 minutos em um runner do GitHub), construir o
+currículo diretamente no runner atrasaria drasticamente seu pipeline de CI. Ao
+usar nossa imagem Docker pré-empacotada, a action obtém o ambiente necessário
+em uma fração do tempo, resultando em builds rápidas, confiáveis e consistentes.
+
+## Experimente!
+
+Pronto para automatizar sua carreira? Confira o
+[repositório yamlresume/action](https://github.com/marketplace/actions/yamlresume) para
+começar ou leia a
+[Documentação do Ecossistema da GitHub Action](/pt/docs/ecosystem/action)
+detalhada para mais opções de configuração e exemplos de uso avançados.
+
+Feliz automação!

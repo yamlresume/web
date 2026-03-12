@@ -1,0 +1,152 @@
+---
+title: Automatisez les Builds de CV avec la GitHub Action YAMLResume
+description:
+  "Construisez et déployez vos CV automatiquement en utilisant la nouvelle GitHub
+  Action YAMLResume"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-03-12
+---
+
+Je suis ravi d'annoncer la sortie officielle de la
+[GitHub Action YAMLResume](https://github.com/marketplace/actions/yamlresume) !
+
+Cette nouvelle action mène la philosophie du "CV en tant que Code" à sa
+conclusion logique en intégrant parfaitement YAMLResume à vos pipelines CI/CD.
+
+## Pourquoi utiliser une GitHub Action ?
+
+YAMLResume a été
+[adopté par des utilisateurs sur GitHub](https://github.com/yamlresume/yamlresume/discussions/50)
+dans le monde entier. Chacun a trouvé son propre flux de travail pour créer et
+déployer son CV — certains utilisent des Makefiles, d'autres des scripts shell,
+d'autres des GitHub Actions, d'autres encore les publient sur GitHub Pages, etc.
+
+Par exemple :
+
+- [@drzero42](https://github.com/drzero42) utilise
+  [docker et gh-release](https://github.com/drzero42/resume/blob/main/.github/workflows/build-resume.yaml)
+  pour construire et héberger des CV.
+- [@mortezaPRK](https://github.com/mortezaPRK) utilise un
+  [Makefile](https://github.com/mortezaPRK/mortezaPRK.github.io/blob/main/Makefile).
+- [@shamrt](https://github.com/shamrt) a installé
+  [npm, yamlresume et TinyTeX sur le runner GitHub](https://github.com/shamrt/yamlresume/blob/main/.github/workflows/deploy.yml)
+  et utilise un script shell pour construire et publier ses CV.
+
+Il est temps pour nous de fournir un moyen unifié de le faire.
+
+Avec `yamlresume/action`, vous pouvez automatiser cela entièrement. En poussant
+votre `resume.yml` mis à jour sur GitHub, l'action peut automatiquement :
+
+1. Valider votre CV par rapport au schéma YAMLResume.
+2. Construire les sorties PDF, LaTeX, HTML et Markdown.
+3. Joindre les PDF générés à une Release GitHub, les télécharger en tant
+   qu'artefacts de workflow, ou les publier sur GitHub Pages.
+
+Théoriquement, vous n'aurez plus jamais à construire votre CV localement.
+
+## Démarrage Rapide
+
+L'utilisation de l'action est incroyablement simple. Voici un exemple minimal de
+`.github/workflows/build.yml` qui construit votre CV et télécharge le PDF
+généré en tant qu'artefact GitHub Actions :
+
+```yaml
+name: Build Resume
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build resume
+        id: build
+        uses: yamlresume/action@v0.1.1
+        with:
+          resumes: resume.yml
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume
+          path: ${{ steps.build.outputs.pdf-files }}
+```
+
+## Fonctionnalités Clés
+
+La GitHub Action n'est pas seulement un simple wrapper ; elle est livrée avec
+des fonctionnalités puissantes conçues pour la gestion de CV dans le monde réel :
+
+### Plusieurs CV en Une Seule Fois
+
+De nombreux utilisateurs conservent plusieurs versions de leur CV (par exemple,
+une version en anglais et une version traduite, ou une version axée Frontend vs
+Backend). Vous pouvez toutes les construire simultanément en passant une liste
+séparée par des retours à la ligne :
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+```
+
+### Builds Personnalisables
+
+Si vous avez un pipeline de génération de PDF personnalisé et n'avez besoin que
+de la sortie LaTeX, ou si vous souhaitez ignorer la validation du schéma pour un
+brouillon rapide, l'action fournit les entrées `no-pdf` et `no-validate` pour
+adapter le workflow à vos besoins.
+
+#### Ignorer la Génération de PDF
+
+Générer uniquement des fichiers LaTeX (utile pour les pipelines PDF sur mesure) :
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-pdf: true
+```
+
+#### Ignorer la Validation
+
+Ignorer la validation du schéma pendant la construction :
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-validate: true
+```
+
+## Sous le Capot
+
+La `yamlresume/action` tire parti de
+[l'image Docker YAMLResume](https://hub.docker.com/r/yamlresume/yamlresume) que
+nous [avons présentée précédemment](/fr/blog/yamlresume-docker).
+
+Comme les distributions LaTeX sont notoirement volumineuses et longues à installer
+(prenant souvent 20 à 30 minutes sur un runner GitHub), construire le CV
+directement sur le runner ralentirait considérablement votre pipeline CI. En
+utilisant notre image Docker pré-empaquetée, l'action récupère l'environnement
+nécessaire en une fraction du temps, ce qui permet d'obtenir des builds rapides,
+fiables et cohérentes.
+
+## Essayez-le !
+
+Prêt à automatiser votre carrière ? Consultez le
+[dépôt yamlresume/action](https://github.com/marketplace/actions/yamlresume) pour commencer,
+ou lisez la
+[Documentation de l'Écosystème GitHub Action](/fr/docs/ecosystem/action)
+détaillée pour plus d'options de configuration et d'exemples d'utilisation
+avancés.
+
+Bonne automatisation !

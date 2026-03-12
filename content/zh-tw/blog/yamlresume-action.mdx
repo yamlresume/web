@@ -1,0 +1,116 @@
+---
+title: 使用 YAMLResume GitHub Action 自動化建立履歷
+description: '使用全新的 YAMLResume GitHub Action 自動建立並部署你的履歷'
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-03-12
+---
+
+我很高興地宣布官方 [YAMLResume GitHub Action](https://github.com/marketplace/actions/yamlresume) 正式推出！
+
+這個全新的 Action 透過將 YAMLResume 無縫整合到你的 CI/CD 流程中，將「履歷即程式碼」的理念推向了自然而然的下一步。
+
+## 為什麼要使用 GitHub Action？
+
+YAMLResume 已經被來自世界各地的 [GitHub 使用者採用](https://github.com/yamlresume/yamlresume/discussions/50)。每個人都摸索出了自己的一套工作流程來建立和部署履歷——有些人使用 Makefile，有些人使用 Shell 腳本，有些人使用 GitHub Actions，有些人發布到 GitHub Pages 等等。
+
+例如：
+
+- [@drzero42](https://github.com/drzero42) 使用 [docker 和 gh-release](https://github.com/drzero42/resume/blob/main/.github/workflows/build-resume.yaml) 來建立和代管履歷
+- [@mortezaPRK](https://github.com/mortezaPRK) 使用 [Makefile](https://github.com/mortezaPRK/mortezaPRK.github.io/blob/main/Makefile)
+- [@shamrt](https://github.com/shamrt) [在 GitHub runner 上安裝了 npm、yamlresume 和 TinyTeX](https://github.com/shamrt/yamlresume/blob/main/.github/workflows/deploy.yml) 並使用 Shell 腳本來建立和發布履歷
+
+現在是我們提供一種統一的方法來做到這一點的時候了。
+
+透過 `yamlresume/action`，你可以完全自動化這個過程。只需將更新後的 `resume.yml` 推送到 GitHub，該 Action 就能自動：
+
+1. 根據 YAMLResume Schema 驗證你的履歷。
+2. 建立 PDF、LaTeX、HTML 和 Markdown 格式的輸出檔案。
+3. 將產生的 PDF 附加到 GitHub Release，作為工作流成品上傳，或將它們發布到 GitHub Pages。
+
+理論上，你再也不需要在本地端建立履歷了。
+
+## 快速上手
+
+使用這個 Action 非常簡單。以下是一個極簡的 `.github/workflows/build.yml` 範例，它會建立你的履歷並將產生的 PDF 作為 GitHub Actions 成品上傳：
+
+```yaml
+name: Build Resume
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build resume
+        id: build
+        uses: yamlresume/action@v0.1.1
+        with:
+          resumes: resume.yml
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume
+          path: ${{ steps.build.outputs.pdf-files }}
+```
+
+## 核心特色
+
+這個 GitHub Action 不僅僅是一個簡單的包裝器；它附帶了專為真實履歷管理場景設計的強大功能：
+
+### 一次建立多份履歷
+
+許多使用者維護著履歷的多個版本（例如，英文版和翻譯版，或者側重前端與側重後端的版本）。你可以透過傳遞一個換行符分隔的清單，同時建立所有這些版本：
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+```
+
+### 可自訂建立
+
+如果你擁有自訂的 PDF 產生流程，且僅需要 LaTeX 輸出，或者如果你為了快速起草而想要跳過 Schema 驗證，該 Action 提供了 `no-pdf` 和 `no-validate` 輸入參數，以便根據你的需求客製化工作流。
+
+#### 跳過 PDF 產生
+
+僅產生 LaTeX 檔案（適用於自訂 PDF 流程）：
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-pdf: true
+```
+
+#### 跳過驗證
+
+在建置期間跳過 Schema 驗證：
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-validate: true
+```
+
+## 幕後原理
+
+`yamlresume/action` 利用了我們[之前介紹過](/zh-tw/blog/yamlresume-docker)的 [YAMLResume Docker 映像檔](https://hub.docker.com/r/yamlresume/yamlresume)。
+
+由於 LaTeX 發行版以體積龐大、安裝耗時（在 GitHub Runner 上通常需要 20-30 分鐘）而聞名，直接在 Runner 上建立履歷會大幅拖慢你的 CI 流程。透過使用我們預先打包好的 Docker 映像檔，該 Action 能在極短的時間內拉取所需的環境，從而實現快速、可靠且一致的建立。
+
+## 快來試試吧！
+
+準備好自動化你的職涯了嗎？前往 [yamlresume/action 儲存庫](https://github.com/marketplace/actions/yamlresume) 開始使用吧，或者閱讀詳細的 [GitHub Action 生態系統文件](/zh-tw/docs/ecosystem/action) 獲取更多設定選項和進階使用範例。
+
+祝你自動化愉快！

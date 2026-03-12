@@ -1,0 +1,116 @@
+---
+title: YAMLResume GitHub Action で履歴書のビルドを自動化する
+description: '新しい YAMLResume GitHub Action を使用して、履歴書を自動的に構築およびデプロイします'
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-03-12
+---
+
+公式の [YAMLResume GitHub Action](https://github.com/marketplace/actions/yamlresume) を発表できることを嬉しく思います！
+
+この新しい Action は、YAMLResume を CI/CD パイプラインにシームレスに統合することで、「Resume as Code（コードとしての履歴書）」の哲学を自然な結末へと導きます。
+
+## なぜ GitHub Action を使用するのか？
+
+YAMLResume は世界中の [GitHub のユーザーに採用されています](https://github.com/yamlresume/yamlresume/discussions/50)。彼らはそれぞれ、履歴書をビルドしてデプロイするための独自のワークフローを構築しています。Makefile を使用する人もいれば、シェルスクリプトを使用する人、GitHub Actions を使用する人、GitHub Pages に公開する人もいます。
+
+例えば：
+
+- [@drzero42](https://github.com/drzero42) さんは、履歴書をビルドしてホストするために [docker と gh-release](https://github.com/drzero42/resume/blob/main/.github/workflows/build-resume.yaml) を使用しています。
+- [@mortezaPRK](https://github.com/mortezaPRK) さんは [Makefile](https://github.com/mortezaPRK/mortezaPRK.github.io/blob/main/Makefile) を使用しています。
+- [@shamrt](https://github.com/shamrt) さんは [GitHub ランナーに npm、yamlresume、TinyTeX をインストール](https://github.com/shamrt/yamlresume/blob/main/.github/workflows/deploy.yml) し、シェルスクリプトを使用して履歴書をビルドして公開しています。
+
+これを統一された方法で提供する時が来ました。
+
+`yamlresume/action` を使用すると、これを完全に自動化できます。更新した `resume.yml` を GitHub に push するだけで、Action が自動的に以下のことを行います：
+
+1. 履歴書を YAMLResume スキーマに照らして検証する。
+2. PDF、LaTeX、HTML、Markdown の出力をビルドする。
+3. 生成された PDF を GitHub Release に添付するか、ワークフローのアーティファクトとしてアップロードする、あるいは GitHub Pages に公開する。
+
+理論上、もう二度とローカルで履歴書をビルドする必要はありません。
+
+## クイックスタート
+
+Action の使い方は非常に簡単です。履歴書をビルドし、生成された PDF を GitHub Actions のアーティファクトとしてアップロードする最小限の `.github/workflows/build.yml` の例を以下に示します：
+
+```yaml
+name: Build Resume
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build resume
+        id: build
+        uses: yamlresume/action@v0.1.1
+        with:
+          resumes: resume.yml
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume
+          path: ${{ steps.build.outputs.pdf-files }}
+```
+
+## 主な機能
+
+この GitHub Action は単なるラッパーではなく、実際の履歴書管理のために設計された強力な機能が備わっています：
+
+### 複数の履歴書を一度にビルド
+
+多くのユーザーは、履歴書の複数のバージョン（例：英語版と翻訳版、あるいはフロントエンド向けとバックエンド向け）を維持しています。改行区切りのリストを渡すことで、それらをすべて同時にビルドできます：
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+```
+
+### カスタマイズ可能なビルド
+
+独自の PDF 生成パイプラインがあり、LaTeX 出力のみが必要な場合、またはドラフト作成のためにスキーマ検証をスキップしたい場合、この Action には `no-pdf` および `no-validate` 入力が用意されており、ニーズに合わせてワークフローを調整できます。
+
+#### PDF 生成のスキップ
+
+LaTeX ファイルのみを生成する場合（カスタム PDF パイプラインに便利です）：
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-pdf: true
+```
+
+#### 検証のスキップ
+
+ビルド中のスキーマ検証をスキップする場合：
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-validate: true
+```
+
+## 裏側の仕組み
+
+`yamlresume/action` は、[以前に紹介した](/ja/blog/yamlresume-docker) [YAMLResume Docker イメージ](https://hub.docker.com/r/yamlresume/yamlresume) を活用しています。
+
+LaTeX ディストリビューションは非常に大きく、インストールに時間がかかる（GitHub ランナーでは 20〜30 分かかることがよくあります）ため、ランナー上で直接履歴書をビルドすると、CI パイプラインが大幅に遅くなります。事前パッケージ済みの Docker イメージを使用することで、Action は必要な環境をわずかな時間で取得し、高速で信頼性が高く、一貫したビルドを実現します。
+
+## 試してみましょう！
+
+キャリアを自動化する準備はできましたか？[yamlresume/action リポジトリ](https://github.com/marketplace/actions/yamlresume) をチェックして始めてください。または、[GitHub Action エコシステム ドキュメント](/ja/docs/ecosystem/action) で、詳細な設定オプションや高度な使用例を確認してください。
+
+自動化を楽しんでください！

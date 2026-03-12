@@ -1,0 +1,148 @@
+---
+title: Automate Resume Builds with YAMLResume GitHub Action
+description:
+  "Build and deploy your resumes automatically using the new YAMLResume GitHub
+  Action"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-03-12
+---
+
+I am thrilled to announce the official
+[YAMLResume GitHub Action](https://github.com/marketplace/actions/yamlresume)!
+
+This new action brings the "Resume as Code" philosophy to its natural conclusion
+by seamlessly integrating YAMLResume into your CI/CD pipelines.
+
+## Why use a GitHub Action?
+
+YAMLResume has been
+[adopted by people on GitHub](https://github.com/yamlresume/yamlresume/discussions/50)
+from all over the world. Each has figured out their own workflow to build and
+deploy their resumes—some use Makefiles, some use shell scripts, some use GitHub
+Actions, some publish to GitHub Pages, etc.
+
+For example:
+
+- [@drzero42](https://github.com/drzero42) use
+  [docker and gh-relase](https://github.com/drzero42/resume/blob/main/.github/workflows/build-resume.yaml)
+  to build and host resumes
+- [@mortezaPRK](https://github.com/mortezaPRK) use
+  [Makefile](https://github.com/mortezaPRK/mortezaPRK.github.io/blob/main/Makefile)
+- [@shamrt](https://github.com/shamrt) installed
+  [npm, yamlresume and TinyTeX on GitHub runner](https://github.com/shamrt/yamlresume/blob/main/.github/workflows/deploy.yml)
+  and use shell script to build and publish resumes )
+
+It is time for us to provide a unified way to do this.
+
+With `yamlresume/action`, you can automate this entirely. By pushing your
+updated `resume.yml` to GitHub, the action can automatically:
+
+1. Validate your resume against the YAMLResume schema.
+2. Build the PDF, LaTeX, HTML, and Markdown outputs.
+3. Attach the generated PDFs to a GitHub Release, upload them as workflow
+   artifacts, or publish them to GitHub Pages.
+
+Theoretically you never have to build your resume locally again.
+
+## Quick Start
+
+Using the action is incredibly straightforward. Here is a minimal
+`.github/workflows/build.yml` example that builds your resume and uploads the
+generated PDF as a GitHub Actions artifact:
+
+```yaml
+name: Build Resume
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build resume
+        id: build
+        uses: yamlresume/action@v0.1.1
+        with:
+          resumes: resume.yml
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume
+          path: ${{ steps.build.outputs.pdf-files }}
+```
+
+## Key Features
+
+The GitHub Action isn't just a simple wrapper; it comes with powerful features
+designed for real-world resume management:
+
+### Multiple Resumes in One Go
+
+Many users maintain multiple versions of their resume (e.g., an English version
+and a translated version, or a Frontend vs. Backend focused version). You can
+build all of them simultaneously by passing a newline-separated list:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+```
+
+### Customizable Builds
+
+If you have a custom PDF generation pipeline and only need the LaTeX output, or
+if you want to skip schema validation for a quick draft, the action provides
+`no-pdf` and `no-validate` inputs to tailor the workflow to your needs.
+
+#### Skip PDF Generation
+
+Generate only LaTeX files (useful for custom PDF pipelines):
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-pdf: true
+```
+
+#### Skip Validation
+
+Skip schema validation during build:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-validate: true
+```
+
+## Under the Hood
+
+The `yamlresume/action` leverages the
+[YAMLResume Docker image](https://hub.docker.com/r/yamlresume/yamlresume) that
+we [introduced previously](/blog/yamlresume-docker).
+
+Because LaTeX distributions are notoriously large and time-consuming to install
+(often taking 20–30 minutes on a GitHub runner), building the resume directly on
+the runner would drastically slow down your CI pipeline. By using our
+pre-packaged Docker image, the action pulls the necessary environment in a
+fraction of the time, resulting in fast, reliable, and consistent builds.
+
+## Try It Out!
+
+Ready to automate your career? Check out the
+[yamlresume/action repository](https://github.com/marketplace/actions/yamlresume) to get
+started, or read the detailed
+[GitHub Action Ecosystem Documentation](/docs/ecosystem/action) for more
+configuration options and advanced usage examples.
+
+Happy automating!
