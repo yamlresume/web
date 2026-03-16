@@ -3,6 +3,7 @@ import {
   blogSource,
   blogSourceEs,
   blogSourceFr,
+  blogSourceId,
   blogSourceJa,
   blogSourcePt,
   blogSourceZhCN,
@@ -10,6 +11,7 @@ import {
   docsSource,
   docsSourceEs,
   docsSourceFr,
+  docsSourceId,
   docsSourceJa,
   docsSourcePt,
   docsSourceZhCN,
@@ -31,6 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...docsSourceJa.getPages(),
     ...docsSourceEs.getPages(),
     ...docsSourcePt.getPages(),
+    ...docsSourceId.getPages(),
   ]
 
   const allBlogPages = [
@@ -41,6 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogSourceJa.getPages(),
     ...blogSourceEs.getPages(),
     ...blogSourcePt.getPages(),
+    ...blogSourceId.getPages(),
   ]
 
   const now = new Date()
@@ -91,6 +95,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: url('/pt'),
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: url('/id'),
       lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.9,

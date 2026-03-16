@@ -1,0 +1,103 @@
+---
+title: Skema
+---
+
+## Ringkasan
+
+Menulis resume adalah proses yang panjang, membosankan, dan melelahkan. Orang sering
+perlu menghabiskan waktu berjam-jam untuk memperbaiki detail, tetapi kesalahan masih sering terjadi. Misalnya, mungkin
+ada typo pada gelar pendidikan, format email mungkin salah, nama mata kuliah mungkin
+terlalu pendek, dan lainnya.
+
+Bersama dengan [definisi tipe statis](/docs/compiler/types), YAMLResume
+menyediakan skema bawaan yang dapat digunakan untuk validasi runtime. Ini adalah
+inti yang membuat YAMLResume menjadi **kompiler resume**—YAMLResume menyediakan
+**pesan peringatan/kesalahan gaya clang** yang membantu menangkap potensi kesalahan
+pada tahap awal penulisan resume.
+
+Sebagai contoh, untuk resume berikut:
+
+```yml lineNumbers title="invalid-resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp # [!code highlight]
+    url: https//ppresume.com/gallery # [!code highlight]
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S # [!code highlight]
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D # [!code highlight]
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layouts:
+  - engine: latex
+    typography:
+      fontSize: 13pt # [!code highlight]
+```
+
+`yamlresume validate` akan memberikan daftar kesalahan potensial, dengan informasi
+posisi yang jelas yang membantu menemukan lokasi tepat kesalahan,
+sambil bantuan dari
+[yaml-language-server](https://github.com/redhat-developer/yaml-language-server),
+Anda dapat mendapatkan pengalaman editing yang lebih baik dengan
+[auto-completion](/docs/compiler/schema/json#auto-completion), [dokumentasi property
+on-hover](/docs/compiler/schema/json#property-docs), [validasi
+format](/docs/compiler/schema/json#format-validation), dan lainnya.
+
+![YAMLResume validate](/static/images/docs/compiler/schema/yamlresume-validate.webp)
+
+Di balik layar, YAMLResume menggunakan [Zod](https://zod.dev) untuk memvalidasi data resume
+pada runtime. Zod adalah library validasi skema TypeScript-first yang memungkinkan Anda
+mendefinisikan skema untuk data resume Anda, yang bertindak sebagai jaring pengaman yang kuat,
+memastikan bahwa data resume dapat diandalkan, konsisten, dan siap dirender
+menjadi PDF profesional.
+
+Validasi skema adalah alat yang sangat kuat untuk memastikan kebenaran data resume.
+Ini dapat menangkap kesalahan di seluruh siklus hidup penulisan resume,
+yang sangat membantu untuk menghindari kesalahan tingkat rendah dari awal.
+
+## Pelajari Lebih Lanjut
+
+<Cards>
+  <Card
+    description="Validasi JSON Schema"
+    href="/docs/compiler/schema/json"
+    title="JSON Schema"
+  />
+  <Card
+    description="Validasi Zod schema"
+    href="/docs/compiler/schema/zod"
+    title="Zod Schema"
+  />
+  <Card
+    description="Perintah validate CLI YAMLResume"
+    href="/docs/cli#validate"
+    title="Validate"
+  />
+</Cards>

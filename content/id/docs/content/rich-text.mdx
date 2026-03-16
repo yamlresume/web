@@ -1,0 +1,104 @@
+---
+title: Rich Text
+---
+
+Di YAMLResume, Anda tidak terbatas pada teks biasa. Kolom `summary` di berbagai
+bagian (seperti `work`, `education`, `projects`, dll.), mendukung himpunan terbatas
+sintaks [Markdown](https://en.wikipedia.org/wiki/Markdown) untuk memungkinkan
+pemformatan rich text. Ini memungkinkan Anda membuat konten resume yang lebih
+ekspresif dan mudah dibaca.
+
+## Sintaks yang Didukung
+
+Berikut adalah gambaran cepat tentang fitur Markdown yang dapat Anda gunakan:
+
+### Bold dan Italic
+
+Anda dapat menekankan teks menggunakan gaya bold atau italic.
+
+-   **Bold:** `**teks bold Anda**`
+-   **Italic:** `*teks italic Anda*`
+-   **Keduanya:** `***teks bold dan italic Anda***`
+
+### Tautan
+
+Anda dapat menyematkan hyperlink dalam teks Anda.
+
+-   **Sintaks:** `[teks tautan](https://example.com)`
+
+### Daftar
+
+Daftar berurutan dan tidak berurutan didukung, termasuk bersarang.
+
+<Callout title="Memahami karakter `|` untuk string multi-baris di YAML">
+  Karakter `|` (pipe) di YAML digunakan untuk membuat "literal block scalar,"
+  yang merupakan cara untuk menulis [string multi-baris](https://stackoverflow.com/a/21699210/2310396)
+  sambil mempertahankan baris baru. Ini sangat berguna untuk kolom seperti `summary`
+  di mana Anda mungkin ingin menyertakan daftar atau paragraf. Semua yang
+  menjorok di bawah `|` akan diperlakukan sebagai string tunggal, dengan
+  pematian baris dipertahankan.
+</Callout>
+
+#### Daftar Tidak Berurutan
+
+Gunakan hyphen (`-`) atau asterisk (`*`) untuk setiap item daftar.
+
+```yml lineNumbers
+summary: |
+  - Item pertama
+  - Item kedua
+  - Item ketiga
+```
+
+#### Daftar Berurutan
+
+Gunakan angka diikuti dengan titik untuk daftar berurutan.
+
+```yml lineNumbers
+summary: |
+  1. Item pertama
+  2. Item kedua
+  3. Item ketiga
+```
+
+#### Daftar Bersarang
+
+Anda dapat membuat indentasi daftar untuk membuat struktur bersarang.
+
+```yml lineNumbers
+summary: |
+  - Team player dengan mindset yang detail-oriented.
+  - Berpengalaman dalam database (SQL, NoSQL).
+    - Mahir dalam PostgreSQL dan MongoDB.
+    - Familiar dengan Redis untuk caching.
+  - Fondasi kuat dalam struktur data dan algoritma.
+```
+
+## Contoh Lengkap
+
+Berikut adalah kolom `summary` dari entri `work` yang menggabungkan beberapa
+fitur sintaks yang didukung:
+
+```yml lineNumbers
+---
+content:
+  basics:
+    # ...
+    summary: |
+      Ini adalah contoh resume YAML yang mendukung himpunan terbatas sintaks rich text markdown (bold, italic, tautan, daftar):
+
+      - Jurusan Ilmu Komputer dengan **fondasi kuat** dalam struktur data, *algoritma*, dan pengembangan perangkat lunak
+        1. Full stack web developer pixel perfect, khusus dalam membuat сайт web berkualitas tinggi yang menarik secara visual
+        2. Berpengalaman dalam database (SQL, NoSQL), familiar dengan teknologi server-side ([Node.js](https://nodejs.org/en), Express, dll.)
+      - Team player, dengan mindset detail-oriented dan mata yang tajam untuk desain dan pengalaman pengguna
+```
+
+Berikut adalah PDF yang dihasilkan:
+
+![Dukungan Rich Text di Kolom Summary](/static/images/docs/content/rich-text/rich-text-support-in-summary-field.webp)
+
+## Apa yang Tidak Didukung?
+
+YAMLResume hanya mendukung sintaks yang tercantum di atas. Fitur Markdown umum
+lainnya seperti heading, blockquote, gambar, horizontal rules, dan tabel **tidak
+didukung dan akan diabaikan selama pemrosesan**.

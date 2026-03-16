@@ -1,0 +1,224 @@
+---
+title: Kontribusi
+---
+
+Pertama-tama, terima kasih telah mempertimbangkan untuk berkontribusi pada YAMLResume!
+Orang-orang seperti Anda yang membuat open source menjadi luar biasa. Kami
+menyambut baik segala jenis kontribusi, tidak hanya kode. Anda dapat membantu dengan:
+
+- Melaporkan bug
+- Membahas keadaan kode saat ini
+- Mengirimkan perbaikan
+- Mengusulkan fitur baru
+- Meningkatkan dokumentasi
+
+Berikut adalah pintasan untuk beberapa tugas spesifik:
+
+<Cards>
+  <Card
+    title="CLI"
+    href="./contributing/cli"
+    description="Membangun dan Menguji CLI"
+  />
+  <Card
+    title="Docker"
+    href="./contributing/docker"
+    description="Kustomisasi Docker"
+  />
+  <Card
+    title="Tes"
+    href="./contributing/test"
+    description="Pengujian dan Jaminan Kualitas"
+  />
+  <Card
+    title="Bahasa Baru"
+    href="./contributing/new-language"
+    description="Tambahkan dukungan untuk bahasa baru di YAMLResume."
+  />
+</Cards>
+
+## Memulai
+
+### Prasyarat
+
+- [Node.js](version >= 20, cek `.nvmrc` atau
+  kolom `engines` di `package.json`)
+- [pnpm](https://pnpm.io/) (versi >= 10, cek kolom `packageManager`
+  di `package.json`)
+- Git
+
+### Pengaturan
+
+1. **Fork repository:** Klik tombol "Fork" di [halaman GitHub
+   YAMLResume](https://github.com/yamlresume/yamlresume). Ini membuat salinan
+   proyek Anda sendiri.
+
+2. **Clone fork Anda:**
+
+   ```bash
+   git clone https://github.com/<username-anda>/yamlresume.git
+   cd yamlresume
+   ```
+
+3. **Instal dependensi:**
+
+   ```bash
+   pnpm install
+   ```
+
+   Perintah ini menginstal semua dependensi yang diperlukan untuk seluruh workspace.
+
+## Alur Kerja Pengembangan
+
+### Membangun Paket
+
+- Bangun semua paket sekali:
+
+  ```bash
+  pnpm build
+  ```
+
+- Bangun semua paket dan pantau perubahan:
+
+  ```bash
+  pnpm build:watch
+  ```
+
+- Bangun untuk produksi (termasuk definisi tipe, minifikasi):
+
+  ```bash
+  pnpm build:prod
+  ```
+
+### Menjalankan Tes
+
+- Jalankan tes untuk semua paket:
+
+  ```bash
+  pnpm test
+  ```
+
+- Jalankan tes dalam mode watch:
+
+  ```bash
+   pnpm test:watch
+   ```
+
+- Jalankan tes dengan laporan cakupan:
+
+  ```bash
+  pnpm test:cov
+  ```
+
+Lihat [Tes](./contributing/test) untuk detail dan kasus penggunaan lainnya.
+
+### Pemformatan dan Linting Kode
+
+Kami menggunakan [Biome](https://biomejs.dev/) untuk pemformatan dan linting kode.
+Pastikan kode Anda sesuai dengan panduan gaya proyek sebelum melakukan commit.
+
+- Periksa dan perbaiki masalah secara otomatis:
+
+  ```bash
+  pnpm check
+  ```
+
+- Jalankan pemeriksaan tanpa menerapkan perbaikan (berguna untuk CI):
+
+  ```bash
+  pnpm check:ci
+  ```
+
+Kami juga menggunakan [addlicense](https://github.com/google/addlicense) untuk
+memastikan file sumber memiliki header lisensi yang benar. Anda perlu
+menginstalnya untuk menjalankan perintah berikut.
+
+- Tambahkan header lisensi yang hilang:
+
+  ```bash
+  pnpm license:add
+  ```
+
+- Periksa header lisensi yang hilang:
+
+  ```bash
+  pnpm license:check
+  ```
+
+## Mengirim Kontribusi
+
+### Melaporkan Masalah
+
+Jika Anda menemukan bug atau memiliki permintaan fitur, silakan
+[buka masalah](https://github.com/yamlresume/yamlresume/issues) di GitHub.
+Berikan detail sebanyak mungkin, termasuk:
+
+- Judul yang jelas dan deskriptif.
+- Langkah-langkah untuk mereproduksi bug (jika applicable).
+- Perilaku yang diharapkan dan perilaku aktual.
+- Tangkapan layar atau cuplikan kode (jika membantu).
+- Detail lingkungan Anda (OS, versi Node, versi pnpm).
+
+### Pull Request (PR)
+
+Kami suka pull request! Berikut panduan singkat:
+
+1. **Buat branch:** Mulai dari branch `main` dan buat nama branch yang
+   deskriptif (mis., `fix/login-bug`, `feat/new-template-option`).
+
+   ```bash
+   git checkout main
+   git pull origin main
+   git checkout -b nama-branch-anda
+   ```
+
+2. **Buat perubahan Anda:** Tulis kode atau peningkatan dokumentasi Anda.
+
+3. **Uji perubahan Anda:** Pastikan semua tes lulus:
+
+   ```bash
+   pnpm test
+   ```
+
+4. **Periksa kualitas kode:** Pastikan pemeriksaan pemformatan dan linting lulus:
+
+   ```bash
+   pnpm check
+   ```
+
+5. **Commit perubahan Anda:** Kami menggunakan
+   [Conventional Commits](https://www.conventionalcommits.org/) untuk pesan
+   commit, yang diberlakukan oleh `commitlint`. Ini membantu mengotomatisasi
+   changelog dan versioning. Pesan commit tipikal terlihat seperti
+   `feat: add new command` atau `fix: resolve issue with parsing`. Anda dapat
+   menggunakan `pnpm commitlint` untuk membantu memformat pesan Anda jika perlu,
+   atau gunakan alat seperti [git cz](https://github.com/commitizen/cz-cli) jika
+   sudah terinstal.
+
+   ```bash
+   git add .
+   git commit -m "feat: pesan commit deskriptif Anda"
+   ```
+
+6. **Push branch Anda:**
+
+   ```bash
+   git push origin nama-branch-anda
+   ```
+
+7. **Buka Pull Request:** Buka repository YAMLResume di GitHub dan klik tombol
+   "New pull request". Bandingkan branch Anda dengan branch `main`.
+
+8. **Jelaskan PR Anda:** Berikan deskripsi yang jelas tentang perubahan yang
+   Anda buat. Tautkan masalah yang relevan (mis., "Closes #123").
+
+9. **Tinjauan:** Maintainer akan meninjau PR Anda. Atasi setiap umpan balik atau
+   perubahan yang diminta.
+
+10. **Merge:** Setelah disetujui, PR Anda akan digabungkan. Terima kasih atas
+     kontribusi Anda!
+
+## Lisensi
+
+Dengan berkontribusi pada YAMLResume, Anda setuju bahwa kontribusi Anda akan
+dilisensikan di bawah [Lisensi MIT](LICENSE).

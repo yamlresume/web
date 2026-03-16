@@ -9,6 +9,7 @@ export const languages = [
   'ja',
   'zh-cn',
   'zh-tw',
+  'id',
 ] as const
 
 export type Language = (typeof languages)[number]
@@ -21,6 +22,7 @@ export const languageNames: Record<Language, string> = {
   ja: '日本語',
   'zh-cn': '简体中文',
   'zh-tw': '繁體中文',
+  id: 'Bahasa Indonesia',
 }
 
 export const i18nConfig = defineI18n({

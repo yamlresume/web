@@ -1,0 +1,108 @@
+---
+title: Bahasa Baru
+---
+
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+YAMLResume dirancang untuk mendukung [multi
+bahasa](/docs/locale) dari bawah ke atas, memungkinkan pengguna untuk membuat
+resume dalam bahasa yang mereka pilih.
+
+Pada saat penulisan, YAMLResume mendukung bahasa berikut:
+
+- [English](/docs/locale/english)
+- [Chinese](/docs/locale/chinese)
+- [Norwegian](/docs/locale/norwegian)
+- [Spanish](/docs/locale/spanish)
+
+Jika bahasa pilihan Anda tidak tercantum, Anda dapat berkontribusi dengan
+mengikuti langkah-langkah di bawah untuk menambahkan dukungan untuk bahasa
+baru.
+
+<Steps>
+
+<Step>
+## Daftarkan Bahasa Anda
+
+Untuk menambahkan opsi `locale.language` baru ke YAMLResume, pertama
+daftarkan bahasa Anda di
+[models/resume.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/resume.ts)
+dengan menambahkan entri baru ke `LOCALE_LANGUAGE_OPTIONS`.
+
+**Checklist:**
+
+- [ ] Tambahkan bahasa Anda ke `LOCALE_LANGUAGE_OPTIONS`.
+- [ ] Build dan uji CLI baru](/docs/contributing/cli#yamlresumecli-build)
+      dengan `pnpm cli dev languages list`, pastikan bahasa Anda muncul
+      di daftar.
+
+</Step>
+
+<Step>
+## Tambahkan Terjemahan
+
+Sediakan terjemahan untuk semua
+[opsi](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/translations/options.ts)
+yang relevan,
+[tanda baca dan
+istilah](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/translations/template.ts)
+yang digunakan di YAMLResume. Ini memastikan pengguna dapat membuat resume
+dalam bahasa baru dengan label, opsi, terjemahan istilah, dan nama bagian yang
+akurat. Berikut adalah referensi [PR](https://github.com/yamlresume/yamlresume/pull/44)
+untuk menambahkan terjemahan untuk bahasa Norwegia.
+
+**Checklist:**
+
+- [ ] Tambahkan terjemahan untuk [nama
+      negara](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/country.ts)
+- [ ] Tambahkan terjemahan opsi untuk `degrees`, `fluency`, `languages`,
+      `sections`, dan `skills`
+- [ ] Tambahkan terjemahan tanda baca untuk `comma`, `colon`, dan `separator`
+- [ ] Tambahkan terjemahan istilah untuk `courses`, `keywords`, dan `score`
+
+</Step>
+
+<Step>
+## Perbarui Konfigurasi Babel
+
+YAMLResume menggunakan LaTeX untuk menghasilkan PDF, dan untuk mendapatkan hasil
+typesetting terbaik, kami perlu mengatur konfigurasi paket [babel](https://latex3.github.io/babel/)
+yang tepat. Berikut adalah referensi
+[commit](https://github.com/yamlresume/yamlresume/commit/b72a4441ad2542873f449bc35a265e7208eafbe7)
+untuk bahasa Norwegia.
+
+**Checklist:**
+
+- [ ] Perbarui fungsi `renderBabelConfig()` di
+      [preamble.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/preamble.ts)
+      untuk menyertakan paket babel untuk bahasa baru Anda.
+
+</Step>
+
+<Step>
+## Uji dengan Bahasa Baru
+
+[Build](/docs/contributing/cli#yamlresumecore-build) paket `yamlresume/core` dan
+`yamlresume/cli`, lalu:
+
+- [ ] Buat resume baru `pnpm cli dev new my-resume.yml`
+- [ ] Atur `locale.language` ke bahasa baru yang baru saja Anda tambahkan
+- [ ] Uji perubahan Anda dengan menghasilkan resume dalam bahasa baru
+      dengan `pnpm cli dev build my-resume.yml`
+- [ ] Pastikan kedua output PDF berfungsi seperti yang diharapkan.
+
+</Step>
+
+<Step>
+## Mengirim PR Anda
+
+Setelah Anda menyelesaikan langkah-langkah di atas, kirim pull request dengan
+deskripsi yang jelas tentang perubahan dan bahasa yang Anda tambahkan.
+Maintainer akan meninjau PR Anda dan mungkin meminta perubahan atau klarifikasi.
+
+</Step>
+
+</Steps>
+
+Terima kasih telah membantu membuat YAMLResume dapat diakses oleh lebih banyak
+orang di seluruh dunia!

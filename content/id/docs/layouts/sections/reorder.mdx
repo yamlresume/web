@@ -1,0 +1,123 @@
+---
+title: Mengatur Ulang
+---
+
+Secara default, YAMLResume mengatur bagian-bagian dalam urutan standar. Namun,
+Anda dapat dengan mudah mengubah ini dengan menyediakan daftar `order` kustom.
+Ini memungkinkan Anda menyorot informasi paling penting terlebih dahulu.
+
+## Cara Menggunakan
+
+Sebagai contoh, jika Anda ingin menempatkan bagian "Keterampilan" dan "Proyek"
+sebelum pengalaman "Pekerjaan", Anda dapat mendefinisikan urutan seperti ini:
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layouts:
+  - engine: latex
+    sections:
+      order:
+        - skills
+        - projects
+        - work
+```
+
+Setiap bagian yang termasuk dalam daftar `order` akan muncul pertama, dalam
+urutan yang Anda tentukan. Bagian yang tidak termasuk dalam daftar akan
+ditambahkan setelahnya, mengikuti urutan default mereka.
+
+## Contoh
+
+### Mengutamakan Pengalaman Kerja
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    sections:
+      order:
+        - work
+        - education
+```
+
+Hasil: pengalaman kerja muncul pertama, diikuti pendidikan, lalu semua bagian
+lainnya dalam urutan default.
+
+### Menyorot Keterampilan dan Bahasa
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    sections:
+      order:
+        - skills
+        - languages
+        - work
+```
+
+Hasil: keterampilan dan bahasa muncul dengan menonjol di bagian atas, diikuti
+pengalaman kerja, lalu bagian-bagian lainnya.
+
+### Fokus Akademik
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    sections:
+      order:
+        - education
+        - publications
+        - awards
+        - certificates
+```
+
+Hasil: bagian-bagian akademik muncul pertama, diikuti bagian-bagian lain dalam
+urutan default.
+
+## Urutan Bagian Default
+
+Ketika tidak ada urutan kustom yang ditentukan, bagian-bagian dirender dalam
+urutan default ini:
+
+1. `basics` (secara default dirender ke bagian atas resume sebagai bagian ringkasan)
+2. `education`
+3. `work`
+4. `languages`
+5. `skills`
+6. `awards`
+7. `certificates`
+8. `publications`
+9. `references`
+10. `projects`
+11. `interests`
+12. `volunteer`
+
+## Detail Implementasi
+
+- **Prioritas**: Bagian yang ditentukan dalam `order` muncul pertama dalam
+  urutan yang ditentukan
+- **Fallback**: Bagian-bagian lain mengikuti dalam urutan default
+- **Deduplikasi**: Bagian duplikat dalam array order dihapus (kemunculan pertama
+  disimpan)
+- **Bagian Kosong**: Bagian tanpa konten secara otomatis disaring
+- **Fleksibilitas**: Pengguna dapat menentukan subset bagian yang dapat
+  diurutkan
+
+## Bagian yang Dapat Diurutkan
+
+Bagian-bagian berikut dapat diurutkan kembali:
+
+- `basics`
+- `education`
+- `work`
+- `volunteer`
+- `awards`
+- `certificates`
+- `publications`
+- `skills`
+- `languages`
+- `interests`
+- `references`
+- `projects`

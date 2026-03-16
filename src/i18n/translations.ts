@@ -1189,6 +1189,178 @@ const translations = {
       copyright: '© 2023–Presente, ',
     },
   },
+  id: {
+    navbar: {
+      documentation: 'Dokumentasi',
+      blog: 'Blog',
+      chat: 'Obrolan',
+      discussions: 'Diskusi',
+      developer: 'Pengembang',
+      search: 'Cari',
+      Playground: 'Playground',
+    },
+    playground: {
+      tooltips: {
+        copy: 'Salin',
+        undo: 'Urungkan',
+        redo: 'Ulangi',
+        clear: 'Hapus',
+        print: 'Cetak',
+        openInNewTab: 'Buka di Tab Baru',
+        download: 'Unduh',
+      },
+    },
+    hero: {
+      tagline: 'Dibuat dengan ❤️ oleh <ppresume>PPResume</ppresume>',
+      title: 'Resume sebagai Kode dalam YAML',
+      description:
+        'YAMLResume memungkinkan orang untuk membuat dan mengontrol versi resume menggunakan YAML dan menghasilkan resume sempurna dalam berbagai format (PDF, HTML, Markdown, dll) dengan mudah.',
+      quickStart: 'Mulai Cepat',
+      checkGithub: 'Lihat Github',
+      Playground: 'Playground',
+    },
+    quickStart: {
+      title: 'Mulai Cepat dalam Satu Detik',
+    },
+    features: {
+      sectionTitle: 'Kuat, Profesional & Sempurna',
+      plainText: {
+        title: 'Teks Biasa dalam YAML',
+        description:
+          'Kelola resume Anda sebagai kode dalam YAML—bersih, mudah dibaca, dan sempurna untuk kontrol versi.',
+      },
+      richText: {
+        title: 'Pemformatan Teks Kaya',
+        description:
+          'Gunakan teks kaya gaya Markdown dalam ringkasan Anda untuk membuat poin utama Anda menonjol dengan jelas.',
+      },
+      flexibleSection: {
+        title: 'Fleksibilitas Tanpa Batas',
+        description:
+          'Strukturkan resume Anda persis seperti yang Anda inginkan dengan bagian modular yang dirancang untuk dampak maksimal.',
+      },
+      latexTypesetting: {
+        title: 'Typesetting Tingkat Profesional',
+        description:
+          'Didukung oleh LaTeX untuk tipografi sempurna piksel, jarak yang konsisten, dan estetika profesional.',
+      },
+      customizable: {
+        title: 'Kustomisasi Mendalam',
+        description:
+          'Kontrol total atas margin, font, dan ukuran untuk menciptakan tampilan yang uniquely milik Anda.',
+      },
+      multilingual: {
+        title: 'Go Global',
+        description:
+          'Dukungan bawaan untuk berbagai bahasa, membuat aplikasi internasional menjadi mudah.',
+      },
+      cli: {
+        title: 'CLI untuk Pengembang',
+        description:
+          'Antarmuka baris perintah yang kuat untuk mengotomatiskan alur kerja dan integrasi resume Anda.',
+      },
+      privacy: {
+        title: 'Privasi Pertama',
+        description:
+          'Proses semuanya secara lokal. Data pribadi Anda tetap di mesin Anda, selalu.',
+      },
+      themes: {
+        title: 'Tema Universal',
+        description:
+          'Satu file sumber, kemungkinan tak terbatas dengan tema profesional untuk PDF, HTML, dan banyak lagi.',
+      },
+      schema: {
+        title: 'Inteligensi Skema',
+        description:
+          'Dapatkan umpan balik instan dan cegah kesalahan dengan validasi skema bawaan saat Anda mengetik.',
+      },
+      outputs: {
+        title: 'Dukungan Multi-Output',
+        description:
+          'Hasilkan resume Anda dalam berbagai format profesional termasuk PDF, HTML responsif, dan Markdown bersih.',
+      },
+      templates: {
+        title: 'Template Profesional',
+        description:
+          'Pilih dari berbagai template LaTeX yang teruji, dirancang untuk kejelasan dan dampak profesional.',
+      },
+    },
+    testimonials: {
+      sectionTitle: 'Apa yang Orang Katakan',
+    },
+    stats: {
+      sectionTitle: 'Dipercaya oleh Pengembang',
+    },
+    comparison: {
+      sectionTitle: 'Dibuat untuk Kesempurnaan',
+      conventional: 'RxResume',
+      yamlresume: 'YAMLResume',
+    },
+    onboarding: {
+      sectionTitle: 'Mulai dalam Detik',
+      recommended: 'Disarankan',
+      npx: {
+        title: 'NPX (Disarankan)',
+        description: 'Buat proyek baru secara instan tanpa instalasi global',
+      },
+      npm: {
+        title: 'NPM Global',
+        description:
+          'Instal sebagai alat CLI global untuk akses di seluruh sistem',
+      },
+      brew: {
+        title: 'Homebrew',
+        description: 'Instal di macOS menggunakan manajer paket Homebrew',
+      },
+      docker: {
+        title: 'Docker',
+        description: 'Jalankan dalam wadah terisolasi tanpa dependensi lokal',
+      },
+      json2yamlresume: {
+        title: 'json2yamlresume',
+        description: 'Konversi JSON Resume ke format YAMLResume dengan mulus',
+      },
+    },
+    faq: {
+      title: 'Pertanyaan yang Sering Diajukan',
+      questions: {
+        whatIs: {
+          question: 'Apa itu YAMLResume?',
+          answer1:
+            'YAMLResume adalah alat yang memungkinkan Anda mengelola resume sebagai kode menggunakan YAML. Ini menyediakan cara terstruktur untuk mendefinisikan pengalaman kerja, keterampilan, pendidikan, dan bagian resume lainnya dalam dokumen teks biasa yang sederhana dan dapat dikontrol versinya. YAMLResume kemudian mengonversi data YAML ini menjadi dokumen PDF yang tersusun dengan indah yang siap untuk lamaran pekerjaan dan beasiswa.',
+          answer2:
+            'YAMLResume dimulai sebagai mesin typesetting inti untuk PPResume, pembuat resume sempurna piksel berbasis LaTeX. Setelah pertimbangan matang, kami memutuskan untuk membuatnya open source sehingga orang selalu memiliki hak untuk mengatakan tidak pada vendor lock-in.',
+        },
+        whyYaml: {
+          question: 'Mengapa YAML daripada JSON?',
+          answer:
+            'Pada intinya, YAML dipilih karena lebih dapat dibaca dan ditulis oleh manusia daripada JSON. Meskipun sintaksnya lebih bersih, kurang verbose, dan lebih fleksibel, YAML juga mendukung komentar, memungkinkan Anda mengannotasi resume dengan catatan yang tidak akan muncul di output akhir. Struktur hierarkis YAML secara alami memetakan ke bagian dan sub-bagian, menjadikannya sempurna untuk data terstruktur seperti resume.',
+        },
+        howGeneratePdf: {
+          question: 'Bagaimana YAMLResume menghasilkan PDF?',
+          answer:
+            'YAMLResume sebenarnya adalah DSL untuk menulis resume, jadi di balik layar itu adalah kompiler untuk resume. Ini mengubah data YAML menjadi PDF dalam proses multi-langkah. Pertama, ia mengurai file YAML dan memvalidasinya terhadap skema. Kemudian, ia memproses data dengan proses codegen yang menghasilkan kode LaTeX. Terakhir, kode LaTeX ini dikompilasi menjadi PDF berkualitas profesional menggunakan mesin LaTeX. Pendekatan ini memastikan tipografi dan tata letak sempurna piksel yang konsisten di semua perangkat dan platform.',
+        },
+        whyLatex: {
+          question: 'Mengapa menggunakan LaTeX?',
+          answer:
+            'LaTeX adalah standar emas untuk typesetting dokumen profesional, terutama di bidang akademik dan teknis. Ini menyediakan tipografi superior dengan kerning, ligatur, dan hyphenation yang tepat yang sulit dicapai dengan HTML/CSS atau pengolah kata. LaTeX unggul dalam jarak yang konsisten, penempatan yang tepat, dan tata letak yang fleksibel. Dengan menggunakan LaTeX sebagai mesin typesetting yang mendasari, YAMLResume memastikan resume Anda memiliki tampilan yang halus dan profesional yang menonjol kepada perekrut dan manajer hiring.',
+        },
+      },
+    },
+    buyMeACoffee: {
+      title: 'Suka proyek ini?',
+      description:
+        'YAMLResume adalah proyek passion, dibuat untuk menyediakan alat resume gratis, pribadi, dan kuat untuk semua orang. Jika Anda merasa berguna, pertimbangkan untuk mendukung pengembangannya. Setiap kopi membantu!',
+      button: 'Beli Saya Kopi',
+    },
+    blog: {
+      title: 'Blog YAMLResume',
+    },
+    footer: {
+      copyright: '© 2023–Sekarang, ',
+    },
+  },
 }
 
 // Server-side translation helper

@@ -1,0 +1,49 @@
+---
+title: Mesin Markdown
+---
+
+Mesin markdown menghasilkan versi Markdown biasa dari resume Anda. Ini sangat
+berguna ketika Anda perlu menyalin-tempel konten resume Anda ke dalam sistem
+pelacakan pelamar (ATS) atau formulir lain yang tidak mendukung upload PDF.
+
+## Konfigurasi
+
+Untuk menggunakan mesin markdown, tentukan `engine: markdown` dalam konfigurasi
+tata letak Anda.
+
+```yml
+layouts:
+  - engine: markdown
+```
+
+Output markdown akan dihasilkan bersama dengan PDF Anda (jika Anda juga
+mengonfigurasi tata letak LaTeX) atau sebagai file standalone.
+
+Berbeda dengan [tata letak LaTeX](./latex), tata letak Markdown adalah tata
+letak sederhana yang tidak memiliki konfigurasi tambahan kecuali untuk [alias
+bagian](/docs/layouts/sections/aliases) dan [pengurutan
+bagian](/docs/layouts/sections/reorder).
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+locale:
+  language: en
+
+layouts:
+  - engine: markdown
+    sections:
+      aliases:
+        work: Pengalaman Profesional
+        education: Latar Belakang Pendidikan
+        skills: Keahlian Teknis
+      order:
+        - basics
+        - work
+        - education
+        - skills
+```
+
+Alias dan `order` bagian akan dihormati dalam output markdown akhir.

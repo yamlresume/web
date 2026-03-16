@@ -5,6 +5,7 @@ import {
   blog,
   blogEs,
   blogFr,
+  blogId,
   blogJa,
   blogPt,
   blogZhCN,
@@ -12,6 +13,7 @@ import {
   docs,
   docsEs,
   docsFr,
+  docsId,
   docsJa,
   docsPt,
   docsZhCN,
@@ -61,6 +63,12 @@ const i18nPt = defineI18n({
   fallbackLanguage: 'pt',
 })
 
+const i18nId = defineI18n({
+  defaultLanguage: 'id',
+  languages: ['id'],
+  fallbackLanguage: 'id',
+})
+
 // Create sources for each language
 export const blogSource = loader({
   baseUrl: '/blog',
@@ -102,6 +110,12 @@ export const blogSourcePt = loader({
   baseUrl: '/blog',
   source: createMDXSource(blogPt),
   i18n: i18nPt,
+})
+
+export const blogSourceId = loader({
+  baseUrl: '/blog',
+  source: createMDXSource(blogId),
+  i18n: i18nId,
 })
 
 export const docsSource = loader({
@@ -146,6 +160,12 @@ export const docsSourcePt = loader({
   i18n: i18nPt,
 })
 
+export const docsSourceId = loader({
+  baseUrl: '/docs',
+  source: docsId.toFumadocsSource(),
+  i18n: i18nId,
+})
+
 // Helper function to get localized sources
 export function getLocalizedSources(locale: string) {
   switch (locale) {
@@ -178,6 +198,11 @@ export function getLocalizedSources(locale: string) {
       return {
         docs: docsSourcePt,
         blog: blogSourcePt,
+      }
+    case 'id':
+      return {
+        docs: docsSourceId,
+        blog: blogSourceId,
       }
     default:
       return {

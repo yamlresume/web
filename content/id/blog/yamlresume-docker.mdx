@@ -1,0 +1,165 @@
+---
+title: YAMLResume di Docker
+description: 'Jalankan YAMLResume secara instan dengan Docker'
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-06-06
+---
+
+Saya sangat senang mengumumkan bahwa YAMLResume sekarang memiliki [image
+docker](https://hub.docker.com/r/yamlresume/yamlresume), dan Anda dapat
+[menjalankan YAMLResume secara instan dengan
+docker](https://asciinema.org/a/722057).
+
+![YAMLResume Docker
+asciinema](/static/images/blog/yamlresume-docker/yamlresume-docker-asciinema.gif)
+
+## Mengapa Docker?
+
+YAMLResume adalah CLI tool Node.js dan
+[library](https://www.npmjs.com/package/@yamlresume/core). Memasang
+YAMLResume sendiri tidak sulit karena hanya membutuhkan Node.js. Bahkan, kita
+bisa mengkompilasinya menjadi binary dan menjalankannya langsung tanpa
+memasang Node.js.
+
+Namun, YAMLResume memiliki dependensi wajib pada LaTeX, yang membawa beberapa
+masalah baru:
+
+- Memasang LaTeX memakan waktu; biasanya butuh sekitar 5–10 menit untuk
+  mendownload distribusi LaTeX yang tepat dan mengkonfigurasinya.
+- LaTeX bukan program binary tunggal; itu adalah kumpulan program. Beberapa
+  pengguna [tidak suka memasang banyak program di
+  mesin mereka](https://github.com/yamlresume/yamlresume/issues/6#issuecomment-2916479009).
+
+Meskipun kami sudah menyediakan [panduan instalasi](/docs/installation) yang
+sangat komprehensif yang mencakup macOS, Windows, Ubuntu, dan RHEL, bahkan
+dengan instruksi untuk memasang YAMLResume dan LaTeX dan membuatnya bekerja
+bersama, prosesnya masih bisa menyakitkan bagi beberapa pengguna.
+
+Docker adalah solusi yang great untuk masalah-masalah ini: ia dapat
+mengemas semuanya menjadi satu image, membuat instalasi dan konfigurasi
+menjadi mudah.
+
+## Cara Menggunakannya
+
+Sebuah gambar bernilai seribu kata. Berikut adalah screenshot yang
+menunjukkan cara menggunakannya:
+
+![YAMLResume Docker
+Demo](/static/images/blog/yamlresume-docker/yamlresume-docker-demo.svg)
+
+[Image docker](https://hub.docker.com/r/yamlresume/yamlresume) kami telah
+terbundel sebelumnya dengan semua yang diperlukan, termasuk:
+
+- [Node.js](/docs/installation#nodejs)
+- [yamlresume CLI](/docs/installation#yamlresume)
+- [XeTeX](/docs/installation#xetex)
+- [beberapa font yang direkomendasikan](/docs/installation#font)
+
+Anda dapat membuat curriculum vitae baru secara instan dengan perintah
+berikut:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+Edit `my-resume.yml` sesuai kebutuhan dan kemudian bangun curriculum vitae dari
+YAML ke PDF:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+#### Di Balik Layar
+
+Jika Anda familiar dengan docker, Anda mungkin sudah tahu cara kerjanya.
+Jika tidak, berikut penjelasan singkat:
+
+1. `docker run ... yamlresume/yamlresume` - menjalankan container baru dari
+   image `yamlresume/yamlresume`. Jika image ini tidak ada di mesin lokal
+   Anda, itu akan menariknya dari [docker
+   Hub](https://hub.docker.com/r/yamlresume/yamlresume).
+2. `--rm` - secara otomatis menghapus container saat keluar.
+3. `-v $(pwd):/home/yamlresume` - me-mount direktori saat ini (`$(pwd)`) ke
+   container di `/home/yamlresume`, memungkinkan container mengakses file
+   lokal.
+4. `new my-resume.yml` atau `build my-resume.yml` - menjalankan sub-command
+   CLI yamlresume [new](/docs/cli#new) atau [build](/docs/cli#build) untuk
+   membuat atau membangun curriculum vitae dengan nama file
+   `my-resume.yml`.
+
+Pada dasarnya, Anda dapat memanggil semua [sub-command CLI
+`yamlresume`](/cli) dengan cara ini—cukup tambahkan sub-command setelah
+`yamlresume/yamlresume` dan kemudian ikuti panduan penggunaan yang sesuai.
+
+Flag `-v` cukup penting karena me-mount direktori saat ini (`$(pwd)`) ke
+container di `/home/yamlresume`, memungkinkan sinkronisasi file dua arah
+antara direktori lokal dan container. Tanpa flag ini, artefak output build
+akan hilang setelah container keluar.
+
+## Teknik
+
+Membuat image docker tidak sulit jika Anda sedikit familiar dengan docker.
+Namun, membungkus YAMLResume di docker tidak semudah yang terdengar. Berikut
+beberapa tantangan.
+
+### Konfigurasi LaTeX yang Membosankan
+
+Memasang distribusi LaTeX yang dapat bekerja memakan waktu; biasanya butuh
+sekitar 5–10 menit untuk mendownload dan mengkonfigurasi distribusi LaTeX
+yang tepat. Di GitHub Action runner, proses ini [lebih lama—hingga 20+
+menit](https://github.com/yamlresume/yamlresume/actions/runs/15438395862/job/43450134447).
+
+```docker
+RUN apt update && \
+    apt install -y \
+    texlive-xetex \
+    texlive-fonts-extra \
+    texlive-lang-all \
+    fonts-noto-cjk \
+    fonts-noto-cjk-extra \
+```
+
+Kami membuatnya menjadi proses 3 langkah untuk membangun [image docker
+yamlresume](https://hub.docker.com/r/yamlresume/yamlresume):
+
+1. Mulai dari image Node.js sebagai base.
+2. Pasang dan konfigurasi distribusi LaTeX.
+3. Pasang CLI yamlresume.
+
+Seperti yang disebutkan, langkah 2 adalah bagian yang paling memakan waktu.
+Jika kami harus memulai dari awal setiap kali kami perlu memperbarui image
+docker, butuh 30 menit untuk membangun image docker di github action runner.
+
+Untuk menghindari ini, kami menggunakan build multi-stage untuk caching
+distribusi LaTeX, jadi kami tidak perlu memasangnya dari awal setiap kali
+kami memperbarui image docker.
+
+Oleh karena itu, kami membuat
+[yamlresume/yamlresume-base](https://hub.docker.com/r/yamlresume/yamlresume-base)
+yang baru, yang merupakan image base yang memiliki Node.js dan distribusi
+LaTeX yang terpasang. Image base ini stabil dan tidak akan diperbarui terlalu
+sering, dan image `yamlresume/yamlresume` kami dibangun di atas image base
+ini. Hanya butuh 3 menit untuk menarik image `yamlresume/yamlresume-base` dan
+memasang CLI yamlresume di atasnya, yang secara drastis mengurangi waktu
+iterasi.
+
+### Dukungan Multi-Platform
+
+Tantangan lain adalah mendukung [build
+multi-platform](https://docs.docker.com/build/building/multi-platform/). Seperti
+yang kita ketahui, macOS M1 dan yang lebih baru adalah mesin berbasis ARM.
+Meskipun mereka dapat menjalankan image docker dengan arsitektur AMD64 melalui
+emulasi, performanya 10x lebih buruk.
+
+Karenanya, kami harus mendukung image multi-platform untuk
+`yamlresume/yamlresume`. Untungnya, docker secara resmi menyediakan panduan
+rinci tentang cara [membangun image multi-platform di github
+actions](https://docs.docker.com/build/ci/github-actions/multi-platform/).
+
+Image docker YAMLResume mendukung [dua
+platform](https://hub.docker.com/r/yamlresume/yamlresume/tags): `linux/amd64`
+dan `linux/arm64`, yang seharusnya cukup untuk mencakup sebagian besar mesin
+desktop dan server.
+
+Nikmati YAMLResume dengan docker!

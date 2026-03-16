@@ -14,6 +14,9 @@ const { provider } = defineI18nUI(i18nConfig, {
     fr: {
       displayName: 'Français',
     },
+    id: {
+      displayName: 'Bahasa Indonesia',
+    },
     pt: {
       displayName: 'Português',
     },

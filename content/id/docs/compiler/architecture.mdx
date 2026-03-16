@@ -1,0 +1,130 @@
+---
+title: Arsitektur
+---
+
+Seperti kompiler lainnya, YAMLResume juga memiliki pipeline yang mengubah data resume
+dari input ke output melalui beberapa fase.
+
+- **Fase Input**: menerima file resume YAML dan JSON sebagai input.
+- **Fase Parsing**: memvalidasi konten dan tata letak resume dari file input.
+- **Fase Transformasi**: mengubah konten dan data tata letak resume dengan pipeline.
+- **Fase Codegen**: merender konten dan data tata letak resume menggunakan template LaTeX,
+  HTML, atau Markdown.
+- **Fase Output**: menghasilkan dokumen PDF, HTML, atau Markdown final.
+
+Berikut adalah diagram arsitektur tingkat tinggi YAMLResume dari ketinggian 30000 feet:
+
+<Mermaid chart="
+  flowchart TD
+    subgraph A[Input Phase]
+      A1[YAML Resume File]
+      A2[JSON Resume File]
+    end
+
+    subgraph B[Parsing Phase]
+      B1[yaml.parse]
+      B2[schema validation]
+      B3[MarkdownParser]
+    end
+
+    subgraph C[Transformation Phase]
+      C1[escape-latex processing]
+      C2[date localization]
+      C3[URL transformation]
+      C4[location transformation]
+      C5[...]
+    end
+
+    subgraph D[Codegen Phase]
+      subgraph D1[HTML Engine]
+        D1a[Template renderer]
+        D1b[calm]
+        D1c[vscode]
+        D1d[HTML document]
+      end
+      subgraph D2[LaTeX Engine]
+        D2a[Template renderer]
+        D2b[moderncv-banking]
+        D2c[moderncv-classic]
+        D2d[moderncv-casual]
+        D2e[LaTeX document]
+      end
+      subgraph D3[Markdown Engine]
+        D3a[Template renderer]
+        D3b[default]
+        D3c[Markdown document]
+      end
+    end
+
+    subgraph E[Output Phase]
+      E1[xetex -> resume.pdf]
+      E2[tectonic -> resume.pdf]
+      E3[HTML -> resume.html]
+      E4[Markdown -> resume.md]
+    end
+
+    A1 --> B1
+    A2 --> B1
+    B1 --> B2
+    B2 --> B3
+    B3 --> C1
+    C1 --> C2
+    C2 --> C3
+    C3 --> C4
+    C4 --> C5
+    C5 --> D1a
+    C5 --> D2a
+    C5 --> D3a
+    D1a --> D1b
+    D1a --> D1c
+    D1b --> D1d
+    D1c --> D1d
+    D2a --> D2b
+    D2a --> D2c
+    D2a --> D2d
+    D2b --> D2e
+    D2c --> D2e
+    D2d --> D2e
+    D3a --> D3b
+    D3b --> D3c
+    D1d --> E3
+    D2e --> E1
+    D2e --> E2
+    D3c --> E4
+
+"/>
+
+## Pipeline Pemrosesan Data
+
+Pipeline transformasi bertanggung jawab untuk memproses data resume mentah dari
+file YAML dan mempersiapkannya untuk dirender. Pipeline ini beroperasi dalam dua fase utama:
+transformasi konten dan transformasi tata letak:
+
+- Fase transformasi konten memproses semua data teks, menerapkan aturan
+  lokalisasi, mengubah karakter khusus LaTeX, dan menghitung nilai turunan.
+- Fase transformasi tata letak menggabungkan pengaturan tata letak yang disediakan pengguna dengan
+  default dan menerapkan aturan tipografi spesifik locale.
+
+<Mermaid
+  chart="
+flowchart TD
+  A[Raw Resume Data] --> B[transformResume]
+  B --> B1[transformResumeContent]
+  B1 --> B2[transformEducationCourse]
+  B2 --> B3[transformEducationDegree]
+  B3 --> B4[transformDate]
+  B4 --> B5[transformEndDate]
+  B5 --> B6[transformKeywords]
+  B6 --> B7[...]
+  B --> C1[transformResumeLayout]
+  C1 --> C2[set default values]
+  C2 --> C3[set locale adjustments]
+  B7 --> D[Transformed Resume]
+  C3 --> D
+  D --> D1[Ready for Codegen]
+"
+/>
+
+Untuk pipeline pemrosesan data yang panjang seperti ini, kode berbicara lebih dari kata-kata, Anda dapat memeriksa
+[transform.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/preprocess/transform.ts)
+untuk detail jika Anda tertarik dengan implementasinya.

@@ -1,0 +1,65 @@
+---
+title: Docker
+---
+
+Selain [paket CLI](https://www.npmjs.com/package/yamlresume), YAMLResume juga
+menyediakan [image docker](https://hub.docker.com/r/yamlresume/yamlresume)
+untuk onboarding yang mudah.
+
+Seperti yang telah [kami dokumentasikan](/docs/installation#docker-users), Anda
+dapat menjalankan container yamlresume docker dengan perintah berikut:
+
+```bash
+docker run --rm -v $(pwd):/app -w /app yamlresume/yamlresume <command>
+```
+
+Namun jika Anda tertarik, Anda dapat mengkustomisasi image Docker untuk
+memenuhi kebutuhan Anda.
+
+## Build Image Docker
+
+Image Docker YAMLResume dibuat dan dihasilkan dalam dua fase:
+
+### Dockerfile.base
+
+[Dockerfile.base](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base)
+berisi lingkungan dasar untuk menjalankan YAMLResume, termasuk semua dependensi
+yang diperlukan seperti [XeTeX](/docs/installation#xetex) dari [TeX
+Live](https://www.tug.org/texlive/) dan [Google Noto
+Font](/docs/installation#google-noto).
+
+Ini adalah image dasar yang mostly digunakan untuk mempercepat proses build di
+Github Actions—menginstal texlive dengan `apt install texlive-xetex` memakan
+waktu sekitar [30 menit](https://github.com/yamlresume/yamlresume/actions/runs/15438395862),
+yang terlalu lama untuk dijalankan di setiap build docker, jadi kami memutuskan
+untuk membangun dan [mempublish image dasar
+sekali](https://hub.docker.com/r/yamlresume/yamlresume-base) dan menggunakan
+kembali ini untuk setiap build selanjutnya.
+
+Secara umum Anda tidak perlu membangun image ini sendiri, Anda dapat
+menggunakan kembali image yang sudah dipublish di dockerhub.
+
+### Dockerfile
+
+[Dockerfile](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile)
+mendefinisikan bagaimana image `yamlresume/yamlresume` dibangun, ini sangat
+sederhana dan straightforward, hanya menginstal `yamlresume` dari npmjs dengan
+`npm install -g yamlresume@latest` dan membuat user dan group yang diperlukan
+sesuai dengan [best practices
+keamanan](https://www.docker.com/blog/understanding-the-docker-user-instruction/)
+Docker.
+
+Membangun image yamlresume secara lokal adalah tugas yang trivial. Anda hanya
+perlu menjalankan
+
+```bash
+docker build -t yamlresume/yamlresume .
+```
+
+Anda mungkin perlu melihat [docker multi-platform
+build](https://docs.docker.com/build/building/multi-platform/) jika Anda, misalnya,
+mengalami masalah membangun image docker untuk arsitektur yang berbeda.
+
+Saya menulis [beberapa tips di
+X](https://x.com/xiaohanyu1988/status/1931178628785778722), Anda dapat melihat
+jika Anda tertarik.

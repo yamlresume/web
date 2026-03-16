@@ -1,0 +1,115 @@
+---
+title: Locale
+---
+
+Setiap resume dilengkapi dengan bahasa tertentu. Kabar baiknya adalah YAMLResume dirancang untuk mendukung banyak bahasa secara default.
+
+Secara teknis, ada dua kategori hal yang perlu dilakukan saat mendukung multi bahasa:
+
+- **[Internationalization](https://phrase.com/blog/posts/internationalization-vs-localization/#what-is-internationalization-i18n)**:
+  sering disingkat sebagai "i18n" (di mana angka 18 mewakili 18 karakter antara "i" dan "n"), pada dasarnya adalah serangkaian praktik yang memungkinkan produk mendukung banyak bahasa, i18n terutama terdiri dari menerjemahkan produk ke berbagai bahasa dan secara dinamis beralih bahasa sesuai pilihan pengguna
+- **[Localization](https://phrase.com/blog/posts/internationalization-vs-localization/#what-is-localization-l10n)**:
+  sering disingkat sebagai "l10n" (angka 10 mewakili karakter antara "l" dan "n"), ini melampaui sekadar terjemahan dan sebaliknya mengadaptasi produk ke spesifik budaya bahasa target.
+
+Dalam praktik, i18n selalu datang lebih dulu, l10n datang setelahnya.
+
+Untuk semua bahasa yang didukung, kami memiliki pertimbangan berikut dari perspektif desain dan implementasi:
+
+- **[Linguistics](https://en.wikipedia.org/wiki/Linguistics)**: sisi teoretis dari bahasa, termasuk tetapi tidak terbatas pada karakter set bahasa, sintaks dan grammar, sejarah, dll.
+- **Idioms**: konvensi dan idiom umum yang umumnya diikuti oleh suatu bahasa.
+- **[Typesetting](https://en.wikipedia.org/wiki/Typesetting)**: praktik typesetting terbaik yang sering diikuti oleh suatu bahasa, seperti italic, text figures, gaya font, kerning, ligature, dll.
+- **Translations**: terjemahan semata untuk serangkaian istilah dan opsi tetap yang digunakan oleh resume yang dihasilkan oleh YAMLResume.
+
+## Bahasa yang Didukung
+
+YAMLResume perlu diberitahu dalam bahasa apa resume ditulis, untuk melakukan itu, Anda perlu mengatur kunci `locale` di level atas di resume Anda:
+
+```yml lineNumbers
+---
+content:
+  # ...
+
+locale:        # [!code highlight]
+  language: en # [!code highlight]
+
+layouts:
+  - engine: markdown
+  # ...
+```
+
+Anda dapat menggunakan `yamlresume languages list` untuk melihat semua bahasa yang didukung. Pada saat penulisan, YAMLResume mendukung bahasa berikut:
+
+```console
+$ yamlresume languages list
+
+| locale.language | Language Name                   |                                                                                                                                                                                                                                                                                                           1:03:48 PM
+| --------------- | ------------------------------- |
+| en              | English                         |
+| zh-hans         | Simplified Chinese              |
+| zh-hant-hk      | Traditional Chinese (Hong Kong) |
+| zh-hant-tw      | Traditional Chinese (Taiwan)    |
+| es              | Spanish                         |
+| fr              | French                          |
+| no              | Norwegian                       |
+| nl              | Dutch                           |
+| ja              | Japanese                        |
+| de              | German                          |
+```
+
+Lihat halaman berikut untuk detail lebih lanjut tentang setiap bahasa:
+
+<Cards>
+  <Card
+    title="Chinese"
+    href="/docs/locale/chinese"
+    description="Simplified Chinese dan Traditional Chinese (Hong Kong dan Taiwan) didukung."
+  />
+  <Card
+    title="Dutch"
+    href="/docs/locale/dutch"
+    description="Dutch adalah bahasa Germanic Barat yang dituturkan di Belanda dan Belgia."
+  />
+  <Card
+    title="English"
+    href="/docs/locale/english"
+    description="English adalah bahasa default untuk YAMLResume saat Anda membuat resume baru."
+  />
+  <Card
+    title="French"
+    href="/docs/locale/french"
+    description="French adalah bahasa Roman yang dituturkan di seluruh dunia."
+  />
+  <Card
+    title="German"
+    href="/docs/locale/german"
+    description="German adalah bahasa Germanic Barat yang terutama dituturkan di Jerman."
+  />
+  <Card
+    title="Japanese"
+    href="/docs/locale/japanese"
+    description="Japanese adalah bahasa Asia Timur yang dituturkan oleh sekitar 125 juta orang."
+  />
+  <Card
+    title="Norwegian"
+    href="/docs/locale/norwegian"
+    description="Norwegian adalah bahasa Germanic Utara yang terutama dituturkan di Norwegia."
+  />
+  <Card
+    title="Spanish"
+    href="/docs/locale/spanish"
+    description="Spanish juga menggunakan aksara Latin sebagai sistem penulisan utama."
+  />
+</Cards>
+
+## Glosarium
+
+Kami telah menggunakan glosarium berikut di seluruh bagian ini:
+
+- **Bahasa aksara Latin**: bahasa yang menggunakan [Latin script](https://en.wikipedia.org/wiki/Latin_script) sebagai [sistem penulisan](https://en.wikipedia.org/wiki/Writing_system). Sebagian besar [bahasa Germanic](https://en.wikipedia.org/wiki/Germanic_languages), [bahasa Roman](https://en.wikipedia.org/wiki/Romance_languages) dan banyak bahasa lain seperti [https://en.wikipedia.org/wiki/Indonesian_language](https://en.wikipedia.org/wiki/Indonesian_language) menggunakan aksara Latin sebagai sistem penulisan utama.
+- **[CJK](https://en.wikipedia.org/wiki/CJK_characters)**: bahasa China, Jepang dan Korea.
+- **[Character Set](https://www.creatopy.com/blog/what-is-a-character-set/)**: koleksi lengkap karakter, simbol, glyph, dan tanda baca yang tersedia dalam typeface atau font tertentu.
+- **[Glyph](https://en.wikipedia.org/wiki/Glyph)**: bentuk, desain, atau representasi spesifik dari karakter dalam tipografi.
+- **[Hyphenation](https://en.wikipedia.org/wiki/Syllabification)**, praktik memecah kata di akhir baris untuk meningkatkan tampilan keseluruhan dan keterbacaan teks.
+- **[Justification](https://en.wikipedia.org/wiki/Typographic_alignment#Justified)**: perataan teks dalam blok sehingga sejajar dengan kiri dan kanan, umumnya dicapai dengan menyesuaikan jarak antar kata dan huruf, menciptakan tampilan seragam di setiap baris teks.
+- **[Kerning](https://en.wikipedia.org/wiki/Kerning)**: proses menyesuaikan jarak antar karakter dalam font proporsional, biasanya untuk mencapai hasil yang visually pleasing.
+- **[Ligature](<https://en.wikipedia.org/wiki/Ligature_(writing)>)**: glyph yang menggabungkan dua atau lebih huruf secara bersamaan untuk meningkatkan daya tarik visual teks dan mendapatkan keterbacaan yang lebih baik.

@@ -1,0 +1,536 @@
+---
+title: Zod Schema
+---
+
+YAMLResume menggunakan [zod](https://zod.dev) untuk memvalidasi data resume pada runtime.
+
+Dokumen ini menguraikan semua schema zod yang digunakan dalam YAMLResume. Jika Anda tertarik
+dengan detail implementasi, Anda dapat menemukan kode sumbernya
+[di sini](https://github.com/yamlresume/yamlresume/tree/main/packages/core/src/schema).
+
+## Resume Schema
+
+Mendefinisikan validasi struktur resume keseluruhan, termasuk validasi konten dan tata letak.
+
+| Kolom        | Tipe                                            | Wajib |
+| ----------- | ----------------------------------------------- | -------- |
+| `content`   | [`ContentSchema`](#contentschema)               | ✅       |
+| `layouts?`  | [`LayoutsSchema`](#layoutsschema)               | ⬜       |
+| `locale?`   | [`LocaleSchema`](#localeschema)                 | ⬜       |
+
+### ContentSchema
+
+Mendefinisikan struktur validasi untuk seluruh konten resume.
+
+| Kolom            | Tipe                                                | Wajib |
+| --------------- | --------------------------------------------------- | -------- |
+| `basics`        | [`BasicsItemSchema`](#basicsitemschema)             | ✅       |
+| `education`     | [`EducationItemSchema[]`](#educationitemschema)     | ✅       |
+| `awards?`       | [`AwardItemSchema[]`](#awarditemschema)             | ⬜       |
+| `certificates?` | [`CertificateItemSchema[]`](#certificateitemschema) | ⬜       |
+| `interests?`    | [`InterestItemSchema[]`](#interestitemschema)       | ⬜       |
+| `languages?`    | [`LanguageItemSchema[]`](#languageitemschema)       | ⬜       |
+| `location?`     | [`LocationItemSchema`](#locationitemschema)         | ⬜       |
+| `projects?`     | [`ProjectItemSchema[]`](#projectitemschema)         | ⬜       |
+| `profiles?`     | [`ProfileItemSchema[]`](#profileitemschema)         | ⬜       |
+| `publications?` | [`PublicationItemSchema[]`](#publicationitemschema) | ⬜       |
+| `references?`   | [`ReferenceItemSchema[]`](#referenceitemschema)     | ⬜       |
+| `skills?`       | [`SkillItemSchema[]`](#skillitemschema)             | ⬜       |
+| `volunteer?`    | [`VolunteerItemSchema[]`](#volunteeritemschema)     | ⬜       |
+| `work?`         | [`WorkItemSchema[]`](#workitemschema)               | ⬜       |
+
+#### AwardItemSchema
+
+Memvalidasi satu penghargaan, kehormatan, atau pengakuan yang diterima.
+
+| Kolom       | Tipe     | Wajib | Aturan Validasi                      |
+| ---------- | -------- | -------- | ------------------------------------- |
+| `awarder`  | `string` | ✅       | 2-128 karakter                      |
+| `title`    | `string` | ✅       | 2-128 karakter                      |
+| `date?`    | `string` | ⬜       | lihat [skema tanggal](#date-schema)       |
+| `summary?` | `string` | ⬜       | lihat [skema ringkasan](#summary-schema) |
+
+#### BasicsItemSchema
+
+Memvalidasi informasi inti pribadi dan kontak.
+
+| Kolom        | Tipe     | Wajib | Aturan Validasi                      |
+| ----------- | -------- | -------- | ------------------------------------- |
+| `name`      | `string` | ✅       | 2-128 karakter                      |
+| `email?`    | `string` | ⬜       | lihat [skema email](#email-schema)     |
+| `headline?` | `string` | ⬜       | 2-128 karakter                      |
+| `phone?`    | `string` | ⬜       | lihat [skema telepon](#phone-schema)     |
+| `summary?`  | `string` | ⬜       | lihat [skema ringkasan](#summary-schema) |
+| `url?`      | `string` | ⬜       | lihat [skema url](#url-schema)         |
+
+#### CertificateItemSchema
+
+Memvalidasi satu sertifikasi, kredensial, atau kualifikasi profesional.
+
+| Kolom     | Tipe     | Wajib | Aturan Validasi                |
+| -------- | -------- | -------- | ------------------------------- |
+| `issuer` | `string` | ✅       | 2-128 karakter                |
+| `name`   | `string` | ✅       | 2-128 karakter                |
+| `date?`  | `string` | ⬜       | lihat [skema tanggal](#date-schema) |
+| `url?`   | `string` | ⬜       | lihat [skema url](#url-schema)   |
+
+#### EducationItemSchema
+
+Memvalidasi satu pengalaman pendidikan atau program gelar.
+
+| Kolom          | Tipe                | Wajib | Aturan Validasi                                  |
+| ------------- | ------------------- | -------- | ------------------------------------------------- |
+| `area`        | `string`            | ✅       | 2-64 karakter                                   |
+| `degree`      | [`Degree`](#degree) | ✅       | Harus dari [opsi gelar](#degree) yang telah ditentukan |
+| `institution` | `string`            | ✅       | 2-128 karakter                                  |
+| `startDate`   | `string`            | ✅       | lihat [skema tanggal](#date-schema)                   |
+| `courses?`    | `string[]`          | ⬜       | Setiap item 2-128 karakter                        |
+| `endDate?`    | `string`            | ⬜       | lihat [skema tanggal](#date-schema)                   |
+| `summary?`    | `string`            | ⬜       | lihat [skema ringkasan](#summary-schema)             |
+| `score?`      | `string`            | ⬜       | 2-32 karakter                                   |
+| `url?`        | `string`            | ⬜       | lihat [skema url](#url-schema)                     |
+
+#### InterestItemSchema
+
+Memvalidasi satu minat, hobi, atau aktivitas pribadi.
+
+| Kolom        | Tipe       | Wajib | Aturan Validasi                        |
+| ----------- | ---------- | -------- | --------------------------------------- |
+| `name`      | `string`   | ✅       | 2-128 karakter                        |
+| `keywords?` | `string[]` | ⬜       | lihat [skema kata kunci](#keywords-schema) |
+
+#### LanguageItemSchema
+
+Memvalidasi satu item kemampuan bahasa.
+
+| Kolom        | Tipe                    | Wajib | Aturan Validasi                                      |
+| ----------- | ----------------------- | -------- | ----------------------------------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅       | Harus dari [opsi fluency](#fluency) yang telah ditentukan   |
+| `language`  | [`Language`](#language) | ✅       | Harus dari [opsi bahasa](#language) yang telah ditentukan |
+| `keywords?` | `string[]`              | ⬜       | Setiap item 1-32 karakter                             |
+
+#### LocationItemSchema
+
+Memvalidasi informasi lokasi dan alamat.
+
+| Kolom          | Tipe                  | Wajib | Aturan Validasi                                    |
+| ------------- | --------------------- | -------- | --------------------------------------------------- |
+| `city`        | `string`              | ✅       | 2-128 karakter                                    |
+| `address?`    | `string`              | ⬜       | 2-128 karakter                                    |
+| `country?`    | [`Country`](#country) | ⬜       | Harus dari [opsi negara](#country) yang telah ditentukan |
+| `postalCode?` | `string`              | ⬜       | 2-128 karakter                                    |
+| `region?`     | `string`              | ⬜       | 2-128 karakter                                    |
+
+#### ProfileItemSchema
+
+Memvalidasi satu profil online atau kehadiran media sosial.
+
+| Kolom       | Tipe                  | Wajib | Aturan Validasi                                    |
+| ---------- | --------------------- | -------- | --------------------------------------------------- |
+| `network`  | [`Network`](#network) | ✅       | Harus dari [opsi jaringan](#network) yang telah ditentukan |
+| `username` | `string`              | ✅       | 2-128 karakter                                    |
+| `url?`     | `string`              | ⬜       | URL valid, maks 256 karakter                            |
+
+#### ProjectItemSchema
+
+Memvalidasi satu proyek, karya portofolio, atau karya teknis.
+
+| Kolom           | Tipe       | Wajib | Aturan Validasi                      |
+| -------------- | ---------- | -------- | ------------------------------------- |
+| `name`         | `string`   | ✅       | 2-128 karakter                      |
+| `startDate`    | `string`   | ✅       | lihat [skema tanggal](#date-schema)       |
+| `summary`      | `string`   | ✅       | lihat [skema ringkasan](#summary-schema) |
+| `description?` | `string`   | ⬜       | 4-128 karakter                      |
+| `endDate?`     | `string`   | ⬜       | lihat [skema tanggal](#date-schema)       |
+| `keywords?`    | `string[]` | ⬜       | Setiap item 1-32 karakter             |
+| `url?`         | `string`   | ⬜       | URL valid, maks 256 karakter              |
+
+#### PublicationItemSchema
+
+Memvalidasi satu publikasi, karya penelitian, atau makalah akademik.
+
+| Kolom           | Tipe     | Wajib | Aturan Validasi                      |
+| -------------- | -------- | -------- | ------------------------------------- |
+| `name`         | `string` | ✅       | 2-128 karakter                      |
+| `publisher`    | `string` | ✅       | 2-128 karakter                      |
+| `releaseDate?` | `string` | ⬜       | lihat [skema tanggal](#date-schema)       |
+| `summary?`     | `string` | ⬜       | lihat [skema ringkasan](#summary-schema) |
+| `url?`         | `string` | ⬜       | URL valid, maks 256 karakter              |
+
+#### ReferenceItemSchema
+
+Memvalidasi satu referensi profesional atau rekomendasi.
+
+| Kolom            | Tipe     | Wajib | Aturan Validasi                      |
+| --------------- | -------- | -------- | ------------------------------------- |
+| `name`          | `string` | ✅       | 2-128 karakter                      |
+| `summary`       | `string` | ✅       | lihat [skema ringkasan](#summary-schema) |
+| `email?`        | `string` | ⬜       | lihat [skema email](#email-schema)     |
+| `phone?`        | `string` | ⬜       | Format telepon valid                    |
+| `relationship?` | `string` | ⬜       | 2-128 karakter                      |
+
+#### SkillItemSchema
+
+Memvalidasi satu keterampilan, kompetensi, atau kemampuan teknis.
+
+| Kolom        | Tipe              | Wajib | Aturan Validasi                                |
+| ----------- | ----------------- | -------- | ----------------------------------------------- |
+| `level`     | [`Level`](#level) | ✅       | Harus dari [opsi level](#level) yang telah ditentukan |
+| `name`      | `string`          | ✅       | 2-128 karakter                                |
+| `keywords?` | `string[]`        | ⬜       | Setiap item 1-32 karakter                       |
+
+#### VolunteerItemSchema
+
+Memvalidasi satu pengalaman volunteer atau layanan komunitas.
+
+| Kolom           | Tipe     | Wajib | Aturan Validasi                      |
+| -------------- | -------- | -------- | ------------------------------------- |
+| `organization` | `string` | ✅       | 2-128 karakter                      |
+| `position`     | `string` | ✅       | 2-128 karakter                      |
+| `startDate`    | `string` | ✅       | lihat [skema tanggal](#date-schema)       |
+| `summary`      | `string` | ✅       | lihat [skema ringkasan](#summary-schema) |
+| `endDate?`     | `string` | ⬜       | lihat [skema tanggal](#date-schema)       |
+| `url?`         | `string` | ⬜       | URL valid, maks 256 karakter              |
+
+#### WorkItemSchema
+
+Memvalidasi satu pengalaman kerja atau posisi pekerjaan.
+
+| Kolom        | Tipe       | Wajib | Aturan Validasi                      |
+| ----------- | ---------- | -------- | ------------------------------------- |
+| `name`      | `string`   | ✅       | 2-128 karakter                      |
+| `position`  | `string`   | ✅       | 2-128 karakter                      |
+| `startDate` | `string`   | ✅       | lihat [skema tanggal](#date-schema)       |
+| `summary`   | `string`   | ✅       | lihat [skema ringkasan](#summary-schema) |
+| `endDate?`  | `string`   | ⬜       | lihat [skema tanggal](#date-schema)       |
+| `keywords?` | `string[]` | ⬜       | Setiap item 1-32 karakter             |
+| `url?`      | `string`   | ⬜       | URL valid, maks 256 karakter              |
+
+### LocaleSchema
+
+Memvalidasi pengaturan locale untuk internasionalisasi dan lokalisasi.
+
+| Kolom        | Tipe                                | Wajib | Aturan Validasi                                                    |
+| ----------- | ----------------------------------- | -------- | ------------------------------------------------------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | Harus dari [opsi bahasa locale](#locale-language) yang telah ditentukan |
+
+### LayoutsSchema
+
+Mendefinisikan konfigurasi validasi tata letak keseluruhan.
+
+| Kolom        | Tipe                                                                                         | Wajib | Aturan Validasi                |
+| ----------- | -------------------------------------------------------------------------------------------- | -------- | ------------------------------- |
+| `layouts[]` | [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | Array konfigurasi tata letak. |
+
+#### Common Layout Schemas
+
+##### MarginsSchema
+
+Memvalidasi pengaturan margin halaman untuk tata letak dokumen.
+
+| Kolom      | Tipe     | Wajib | Aturan Validasi                              |
+| --------- | -------- | -------- | --------------------------------------------- |
+| `top?`    | `string` | ⬜       | lihat [skema ukuran margin](#margin-size-schema) |
+| `bottom?` | `string` | ⬜       | lihat [skema ukuran margin](#margin-size-schema) |
+| `left?`   | `string` | ⬜       | lihat [skema ukuran margin](#margin-size-schema) |
+| `right?`  | `string` | ⬜       | lihat [skema ukuran margin](#margin-size-schema) |
+
+##### SectionsSchema
+
+Memvalidasi pengaturan kustomisasi bagian.
+
+| Kolom       | Tipe                        | Wajib | Aturan Validasi                                                     |
+| ---------- | --------------------------- | -------- | -------------------------------------------------------------------- |
+| `aliases?` | `Record<SectionID, string>` | ⬜       | Key harus ID bagian yang valid, nilai harus string (2-128 karakter) |
+| `order?`   | `OrderableSectionID[]`      | ⬜       | Array ID bagian yang dapat diurutkan yang valid                                 |
+
+#### HtmlLayoutSchema
+
+Memvalidasi konfigurasi tata letak HTML.
+
+| Kolom          | Tipe                                                  | Wajib |
+| ------------- | ----------------------------------------------------- | -------- |
+| `engine`      | `'html'`                                              | ✅       |
+| `advanced?`   | [`HtmlAdvancedSchema`](#htmladvancedschema)           | ⬜       |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       |
+| `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜       |
+| `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜       |
+
+##### HtmlAdvancedSchema
+
+Memvalidasi opsi konfigurasi HTML lanjutan.
+
+| Kolom          | Tipe      | Wajib | Aturan Validasi |
+| ------------- | --------- | -------- | ---------------- |
+| `showIcons?`  | `boolean` | ⬜       | true/false       |
+| `title?`      | `string`  | ⬜       | -                |
+| `footer?`     | `string`  | ⬜       | -                |
+| `description?`| `string`  | ⬜       | -                |
+| `keywords?`   | `string`  | ⬜       | -                |
+
+##### HtmlTemplateSchema
+
+Memvalidasi konfigurasi template HTML.
+
+| Kolom       | Tipe                            | Wajib | Aturan Validasi                                          |
+| ---------- | ------------------------------- | -------- | --------------------------------------------------------- |
+| `template` | [`HtmlTemplate`](#htmltemplate) | ⬜       | Harus dari [opsi template](#htmltemplate) yang telah ditentukan |
+
+##### HtmlTypographySchema
+
+Memvalidasi pengaturan tipografi HTML.
+
+| Kolom        | Tipe                            | Wajib | Aturan Validasi                                           |
+| ----------- | ------------------------------- | -------- | ---------------------------------------------------------- |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize) | ⬜       | Harus dari [opsi ukuran font](#htmlfontsize) yang telah ditentukan |
+| `fontFamily?` | `string`                      | ⬜       | Daftar keluarga font yang dipisahkan koma.                   |
+
+#### LatexLayoutSchema
+
+Memvalidasi konfigurasi tata letak LaTeX.
+
+| Kolom          | Tipe                                                | Wajib | Aturan Validasi                                      |
+| ------------- | --------------------------------------------------- | -------- | ----------------------------------------------------- |
+| `advanced?`   | [`LatexAdvancedSchema`](#latexadvancedschema)       | ⬜       | Lihat [skema lanjutan](#latexadvancedschema)           |
+| `engine`      | `'latex'`                                           | ✅       | Harus "latex"                                       |
+| `page?`       | [`LatexPageSchema`](#latexpageschema)               | ⬜       | Lihat [skema halaman](#latexpageschema)                   |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | Lihat [skema bagian](#sectionsschema)                |
+| `template?`   | [`LatexTemplate`](#latextemplate)                   | ⬜       | Harus dari [opsi template](#template) yang telah ditentukan |
+| `typography?` | [`LatexTypographySchema`](#latextypographyschema)   | ⬜       | Lihat [skema tipografi](#latextypographyschema)       |
+
+##### LatexAdvancedSchema
+
+Memvalidasi opsi konfigurasi LaTeX lanjutan.
+
+| Kolom        | Tipe                                 | Wajib | Aturan Validasi                                                     |
+| ----------- | ------------------------------------ | -------- | -------------------------------------------------------------------- |
+| `fontspec?` | `{ numbers?: LatexFontspecNumbers }` | ⬜       | Harus dari [opsi nomor fontspec](#fontspecnumbers) yang telah ditentukan |
+| `showIcons?` | `boolean`                            | ⬜       | true/false                                                           |
+
+##### LatexPageSchema
+
+Memvalidasi pengaturan tingkat halaman untuk presentasi dokumen.
+
+| Kolom               | Tipe                   | Wajib | Aturan Validasi                               |
+| ------------------ | ---------------------- | -------- | ---------------------------------------------- |
+| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜       | Lihat [skema margins](#marginsschema)           |
+| `paperSize?`       | [`PaperSize`](#papersize) | ⬜       | Harus dari [opsi ukuran kertas](#papersize) yang telah ditentukan |
+| `showPageNumbers?` | `boolean`              | ⬜       | true/false                                     |
+
+##### LatexTypographySchema
+
+Memvalidasi pengaturan tipografi untuk pemformatan dokumen.
+
+| Kolom        | Tipe                      | Wajib | Aturan Validasi                                       |
+| ----------- | ------------------------- | -------- | ------------------------------------------------------ |
+| `fontSize?` | `string`                  | ⬜       | Harus dari [opsi ukuran font](#fontsize) yang telah ditentukan |
+| `fontFamily?` | `string`                | ⬜       | Daftar keluarga font yang dipisahkan koma.               |
+| `links?`    | `{ underline?: boolean }` | ⬜       | true/false                                             |
+
+#### MarkdownLayoutSchema
+
+Memvalidasi konfigurasi tata letak Markdown.
+
+| Kolom        | Tipe                                | Wajib | Aturan Validasi                       |
+| ----------- | ----------------------------------- | -------- | -------------------------------------- |
+| `engine`    | `'markdown'`                        | ✅       | Harus "markdown"                     |
+| `sections?` | [`SectionsSchema`](#sectionsschema) | ⬜       | Lihat [skema sections](#sectionsschema) |
+
+## Skema Validasi Primitif
+
+### Email Schema
+
+Memvalidasi alamat email dengan persyaratan format yang ketat.
+
+**Aturan Validasi:**
+
+- Harus format email yang valid
+- Pattern: `^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$`
+- Contoh: `hi@ppresume.com`, `first.last@company.org`, `test+tag@domain.co.uk`
+
+### Phone Schema
+
+Memvalidasi nomor telepon dengan dukungan format fleksibel.
+
+**Aturan Validasi:**
+
+- Pattern: `^[+]?[(]?[0-9\\s-]{1,15}[)]?[0-9\\s-]{1,15}$`
+- Dapat menyertakan kode negara, tanda kurung, spasi, dan tanda hubung
+- Contoh: `555-123-4567`, `+44 20 7946 0958`, `(555) 123-4567`
+
+### Summary Schema
+
+Memvalidasi teks ringkasan dengan batasan panjang.
+
+**Aturan Validasi:**
+
+- Harus antara 16 dan 1024 karakter
+- Contoh:
+  - "Experienced software engineer with 5+ years in full-stack development."
+  - "Creative designer passionate about user experience and modern design principles."
+  - "Dedicated project manager with proven track record of delivering complex projects on time and budget."
+
+### URL Schema
+
+Memvalidasi URL dengan batasan panjang.
+
+**Aturan Validasi:**
+
+- Harus format URL yang valid
+- Panjang maksimum 256 karakter
+- Contoh: `https://yamlresume.dev`, `https://ppresume.com`, `https://github.com/yamlresume/yamlresume`
+
+### Keywords Schema
+
+Memvalidasi array kata kunci dengan batasan item individual.
+
+**Aturan Validasi:**
+
+- Array dari string
+- Setiap kata kunci harus antara 1 dan 32 karakter
+- Contoh: `["Javascript", "React", "Typescript"]`, `["Design", "UI", "UX"]`
+
+### Date Schema
+
+Memvalidasi string tanggal dengan persyaratan format.
+
+**Aturan Validasi:**
+
+- Harus antara 4 dan 32 karakter
+- Harus dapat di-parse oleh `Date.parse()`
+- Contoh: `2025-01-01`, `Jul 2025`, `July 3, 2025`, `2025-02-02T00:00:03.123Z`
+
+### Margin Size Schema
+
+Memvalidasi string ukuran margin dengan persyaratan unit.
+
+**Aturan Validasi:**
+
+- Harus antara 2 dan 32 karakter
+- Pattern: `^\\d+(\\.\\d+)?(cm|pt|in)$`
+- Harus angka positif diikuti unit yang valid: cm, pt, atau in
+- Contoh: `2.5cm`, `1in`, `72pt`, `0.5cm`, `12pt`
+
+## Skema Validasi Enum
+
+### Country
+
+Union type untuk semua negara dan wilayah possible di dunia.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari opsi negara yang telah ditentukan
+- Contoh: `United States`, `China`, `United Kingdom`, `Germany`
+
+### Degree
+
+Union type untuk semua gelar possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari: `Associate`, `Bachelor`, `Diploma`, `Doctor`, `High School`, `Master`, `Middle School`
+
+### Fluency
+
+Union type untuk semua level kefasihan bahasa possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari:
+  - `Elementary Proficiency`
+  - `Full Professional Proficiency`
+  - `Limited Working Proficiency`
+  - `Minimum Professional Proficiency`
+  - `Native or Bilingual Proficiency`
+
+### Language
+
+Union type untuk semua bahasa yang didukung.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari opsi bahasa yang telah ditentukan
+- Contoh: `English`, `Chinese`, `Spanish`, `French`, `German`
+
+### Level
+
+Union type untuk semua level keterampilan possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari: `Advanced`, `Beginner`, `Expert`, `Intermediate`, `Master`, `Novice`
+
+### Network
+
+Union type untuk semua opsi jaringan sosial possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari opsi jaringan yang telah ditentukan
+- Contoh: `GitHub`, `LinkedIn`, `Twitter`, `Facebook`, `Instagram`
+
+### HtmlFontSize
+
+Union type untuk semua opsi ukuran font HTML possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari: `10px`, `11px`, `12px`, `13px`, `14px`, `15px`, `16px`, `17px`, `18px`, `19px`, `20px`, `21px`, `22px`, `23px`, `24px`
+- Mesin HTML mendukung ukuran font dari 10px hingga 24px
+- `16px` adalah ukuran font default
+
+### HtmlTemplate
+
+Union type untuk semua opsi template HTML possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari: `calm`
+- Lihat juga: [templates](/docs/layouts/html/templates)
+
+### LatexTemplate
+
+Union type untuk semua opsi template LaTeX possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari: `moderncv-banking`, `moderncv-casual`, `moderncv-classic`
+- Lihat juga: [templates](/docs/layouts/latex/templates)
+
+### PaperSize
+
+Union type untuk semua opsi ukuran kertas LaTeX possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari: `a4`, `letter`
+
+### LatexFontSize
+
+Union type untuk semua opsi ukuran font LaTeX possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari: `10pt`, `11pt`, `12pt`
+- `10pt` adalah ukuran font default
+
+### LatexFontspecNumbers
+
+Union type untuk semua opsi nomor fontspec latex possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari:
+  - `Auto` - memungkinkan gaya ditentukan secara otomatis berdasarkan
+    `LocaleLanguage` yang dipilih (default)
+  - `Lining` - angka lining standar (default untuk bahasa CJK)
+  - `OldStyle` - angka gaya lama dengan ketinggian bervariasi (default untuk bahasa Latin)
+
+### LocaleLanguage
+
+Union type untuk semua bahasa locale possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari: `en`, `es`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`
+- Lihat juga: [multi-languages](/docs/locale)

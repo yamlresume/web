@@ -1,0 +1,287 @@
+---
+title: "YAMLResume v0.7: Mode Dev"
+description: |
+  YAMLResume v0.7 memperkenalkan mode `dev` baru yang menyediakan pengalaman
+  real-time, watch-mode untuk pembuatan curriculum vitae, yang secara drastis
+  meningkatkan developer experience.
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-08-30
+---
+
+Saya sangat senang untuk memperkenalkan [YAMLResume
+v0.7](https://github.com/yamlresume/yamlresume/releases/tag/v0.7.0), rilis yang
+berfokus pada peningkatan developer experience (DX) Anda. Yang menjadi fokus
+utama pembaruan ini adalah [mode `dev`](/docs/cli#dev)—fitur yang membawa
+workflow pengembangan real-time yang mulus ke proses pembuatan curriculum
+vitae Anda.
+
+![Dev Mode Workflow](/static/images/blog/dev-mode/dev-mode-vs-code.webp)
+
+Gone are the days of the tedious edit-save-build cycle. Dengan mode `dev`,
+YAMLResume sekarang mengawasi file curriculum vitae Anda untuk perubahan dan
+secara otomatis membangun ulang PDF hampir secara real-time. Penambahan
+sederhana ini mengubah pengalaman menyusun curriculum vitae menjadi proses
+yang lebih fluid, interaktif, dan jauh lebih menyenangkan.
+
+## Gesekan Workflow Lama
+
+Sebelum v0.7, membuat curriculum vitae dengan YAMLResume, meskipun powerful,
+melibatkan proses manual yang repetitif. Anda akan:
+
+1. Buka file `my-resume.yml` di editor teks favorit Anda.
+2. Buat perubahan—mungkin memperbarui deskripsi pekerjaan atau menambahkan
+   keterampilan baru.
+3. Simpan file.
+4. Beralih ke terminal.
+5. Jalankan perintah `yamlresume build my-resume.yml`.
+6. Tunggu hingga perintah selesai.
+7. Beralih ke PDF viewer dan segarkan untuk melihat hasilnya.
+8. Perhatikan typo kecil atau masalah pemformatan.
+9. Ulangi seluruh siklus.
+
+Loop ini, diilustrasikan di bawah, memperkenalkan gesekan signifikan ke dalam
+proses pembuatan curriculum vitae. Setiap perubahan, tidak peduli seberapa
+kecil, memerlukan switching konteks dan eksekusi perintah manual. Gangguan
+terus-menerus ini merusak alur kreatif dan memperlambat proses
+menyempurnakan curriculum vitae Anda.
+
+<Mermaid
+  chart={`
+graph TD
+  A[Edit my-resume.yml] --> B{Save File};
+  B --> C[Switch to Terminal];
+  C --> D[Run 'yamlresume build'];
+  D --> E{Wait for Build};
+  E --> F[Switch to PDF Viewer];
+  F --> G{Refresh PDF};
+  G --> H{Review Changes};
+  H -- Correction Needed --> A;
+  H -- Looks Good --> I[Done];
+  subgraph Manual Build Cycle
+    A
+    B
+    C
+    D
+    E
+    F
+    G
+    H
+  end
+`}
+/>
+
+Di dunia pengembangan perangkat lunak modern, kami telah terbiasa dengan
+alat yang memberikan umpan balik instan. Pengembang web memiliki [hot
+reloading](https://webpack.js.org/concepts/hot-module-replacement/), yang
+memperbarui browser secara otomatis saat mereka mengubah kode. Loop umpan
+balik ketat ini sangat penting untuk produktivitas dan merupakan prinsip inti
+dari developer experience yang great. Kami percaya bahwa menyusun curriculum
+vitae Anda sebagai kode tidak seharusnya berbeda.
+
+## Solusi: Mode Dev yang Mulus
+
+Perintah `yamlresume dev` menghilangkan siklus build manual sepenuhnya. Anda
+memulai sekali, dan itu bekerja dengan tenang di latar belakang, mengawasi
+perubahan Anda dan membangun ulang curriculum vitae secara otomatis.
+
+Untuk memulai mode pengembangan, cukup jalankan:
+
+```bash
+yamlresume dev my-resume.yml
+```
+
+Sekarang, Anda dapat membuka file `my-resume.yml` dan PDF Anda berdampingan.
+Setiap kali Anda menyimpan perubahan ke file YAML, YAMLResume akan secara
+otomatis mendeteksinya dan memicu pembangunan ulang. PDF viewer Anda akan
+diperbarui beberapa saat kemudian, menunjukkan versi terbaru curriculum vitae
+Anda.
+
+Workflow baru jauh lebih sederhana dan efisien:
+
+<Mermaid chart={`
+graph TD
+  A[Start 'yamlresume dev'] --> B[Edit my-resume.yml];
+  B --> C{Save File};
+  C --> D{PDF Automatically Rebuilt};
+  D --> E{Review Changes in PDF};
+  E -- Correction Needed --> B;
+  E -- Looks Good --> F[Stop Dev Mode];
+
+  subgraph Real-Time Workflow
+    B
+    C
+    D
+    E
+  end
+`}/>
+
+Loop umpan balik instan ini memungkinkan Anda untuk iterate dengan cepat,
+bereksperimen dengan frasa berbeda, dan menyempurnakan tata letak curriculum
+vitae Anda tanpa switching konteks yang konstan. Ini membuat proses terasa
+kurang seperti tugas dan lebih seperti upaya kreatif.
+
+Berikut adalah demo langsung dari mode `dev` beraksi:
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/blog/dev-mode/dev-mode-vs-code-demo.mp4"
+/>
+
+Anda dapat melihat [demo youtube](https://youtu.be/xytlzedEQ_w) untuk detail
+lebih lanjut.
+
+## Bagaimana Cara Keriknya: Pandangan di Balik Layar
+
+Meskipun mode `dev` sederhana untuk digunakan, ada beberapa teknologi menarik
+yang bekerja di balik layar untuk memastikan itu robust dan efisien.
+
+### File Watcher: `chokidar`
+
+Di jantung mode `dev` adalah file watcher. Pendekatan naif adalah
+menggunakan [`fs.watch`
+API](https://nodejs.org/docs/latest/api/fs.html#fswatchfilename-options-listener)
+bawaan Node.js. Namun, `fs.watch` memiliki keterbatasan dan inkonsistensi
+yang diketahui di berbagai sistem operasi. Yang lebih penting, ia
+bermasalah dengan perilaku editor teks tertentu.
+
+Misalnya, editor seperti Vim menggunakan strategi "atomic save". Saat Anda
+menyimpan file, Vim tidak langsung menulis ke file asli. Sebaliknya, ia
+menulis perubahan ke file sementara (file `.swp` yang terkenal), kemudian
+ganti nama file sementara itu untuk mengganti yang asli. Proses ini dapat
+membingungkan file watcher dasar, yang mungkin melewatkan perubahan sama sekali
+atau memicu beberapa peristiwa.
+
+Untuk memberikan pengalaman yang reliable, kami mengadopsi
+**[chokidar](https://github.com/paulmillr/chokidar)**, pustaka file-watching
+yang populer dan telah teruji dalam pertempuran. Chokidar
+memABSTRACTkan inkonsistensi lintas platform dan dirancang khusus untuk
+menangani perilaku editor yang rumit ini dengan elegan. Kami telah
+mengkonfigurasinya untuk menunggu sampai file selesai ditulis sebelum memicu
+pembangunan ulang, memastikan bahwa kami tidak mencoba membangun file yang
+sebagian disimpan.
+
+### Mencegah Build Storm: `coalescifn`
+
+Apa yang terjadi jika Anda menyimpan file beberapa kali berturut-turut?
+Implementasi sederhana mungkin mencoba memulai build baru untuk setiap
+peristiwa penyimpanan. Ini dapat menyebabkan "build storm," di mana beberapa
+proses build berjalan secara bersamaan, mengonsumsi sumber daya sistem yang
+tidak perlu dan berpotensi menyebabkan race condition.
+
+Untuk memecahkan ini, kami menulis dan membuka sumber utility cerdik
+bernama [coalescifn](https://github.com/yamlresume/coalescifn). Utility ini
+membantu kami **menggabungkan** beberapa panggilan menjadi satu. Begini
+cara kerjanya dalam konteks mode `dev`:
+
+1. Ketika perubahan file pertama terdeteksi, kami segera memulai build.
+2. Jika lebih banyak perubahan terdeteksi *sambil build berjalan*, kami tidak
+   memulai build baru. Kami hanya membuat catatan bahwa file telah berubah
+   lagi.
+3. Setelah build awal selesai, kami memeriksa apakah ada perubahan lagi yang
+   terjadi selama waktu itu.
+4. Jika ada perubahan selanjutnya, kami menjalankan tepat _satu_ build lagi
+   untuk memastikan PDF final mencerminkan versi terbaru file. Jika tidak ada
+   perubahan baru, kami tidak melakukan apa-apa dan menunggu peristiwa
+   penyimpanan berikutnya.
+
+Strategi ini memastikan bahwa hanya ada satu build yang berjalan pada satu
+waktu, dan itu menjamin bahwa build final selalu menggunakan versi terbaru
+dari file curriculum vitae Anda. Ini adalah pendekatan yang efisien yang
+menjaga mode `dev` responsif dan ringan pada sumber daya sistem.
+
+Berikut adalah diagram yang mengilustrasikan logika coalescing:
+
+<Mermaid chart={`
+sequenceDiagram
+  participant User
+  participant Watcher
+  participant Coalesce
+  participant Builder
+
+  User->>Watcher: Save file (t=0s)
+  Watcher->>Coalesce: Trigger build
+  Coalesce->>Builder: Start Build #1
+  User->>Watcher: Save file (t=1s)
+  Watcher->>Coalesce: Trigger build (ignored, build in progress)
+  User->>Watcher: Save file (t=2s)
+  Watcher->>Coalesce: Trigger build (ignored, build in progress)
+  Builder-->>Coalesce: Finish Build #1 (t=3s)
+  Coalesce->>Builder: Start Build #2 (with latest file content)
+  Builder-->>Coalesce: Finish Build #2 (t=6s)
+`}/>
+```
+
+## Kontrol Lanjutan
+
+Perintah `dev` juga hadir dengan opsi untuk memberi Anda lebih banyak kontrol
+atas proses build, mencerminkan flag yang tersedia di perintah `build`.
+
+### Melewati Generasi PDF
+
+Terkadang, Anda mungkin hanya ingin memeriksa file LaTeX intermediate (`.tex`)
+yang dihasilkan YAMLResume. Ini berguna untuk debugging atau untuk mereka yang
+ingin menyesuaikan kode LaTeX secara manual. Menghasilkan PDF adalah bagian
+paling memakan waktu dari proses build. Jika Anda tidak membutuhkannya, Anda
+dapat memberitahu mode `dev` untuk melompatkannya:
+
+```bash
+yamlresume dev my-resume.yml --no-pdf
+```
+
+Dengan flag ini, mode `dev` masih akan mengawasi perubahan dan meregenerasi
+file `.tex` secara instan, tetapi tidak akan menjalankan perintah `xelatex`.
+Ini membuat proses rebuild hampir seketika.
+
+### Menonaktifkan Validasi
+
+Pada [v0.5](/blog/yamlresume-compiler), YAMLResume menyertakan langkah
+validasi schema yang powerful yang menangkap potensi error dalam curriculum
+vitae Anda selama build. Meskipun ini sangat berguna untuk memastikan
+kebenaran, mungkin ada saat-saat Anda ingin menonaktifkannya sementara.
+Misalnya, Anda mungkin sedang melakukan refaktorasi besar dari struktur
+curriculum vitae Anda dan tidak ingin terganggu oleh error validasi.
+
+Anda dapat menonaktifkan validasi dengan flag `--no-validate`:
+
+```bash
+yamlresume dev my-resume.yml --no-validate
+```
+
+Ini memungkinkan Anda untuk bekerja lebih bebas, dengan pemahaman bahwa Anda
+harus mengaktifkan kembali validasi nanti untuk memastikan curriculum vitae
+Anda well-formed.
+
+## DX Baru untuk "Resume as Code"
+
+Pengenalan mode `dev` lebih dari sekadar fitur baru; ini adalah langkah
+menuju pemenuhan janji sejati "Resume as Code." Ini meningkatkan pengalaman
+dari proses statis yang didorong command-line menjadi dinamis dan interaktif
+yang terasa jauh lebih seperti pengembangan perangkat lunak modern.
+
+Mungkin Anda terbiasa dengan `npm run build` dan `npm run dev` di masa lalu?
+YAMLResume sekarang memiliki workflow yang samabuilt in.
+
+Dengan menutup loop umpan balik, kami membuatnya lebih mudah dan lebih cepat
+untuk Anda membuat curriculum vitae yang indah dan profesional. Kami percaya
+ini akan mendorong lebih banyak eksperimen dan memungkinkan Anda untuk fokus
+pada apa yang benar-benar penting: konten curriculum vitae Anda dan bagaimana
+itu menceritakan kisah profesional Anda.
+
+Kami mengundang Anda untuk memperbarui ke YAMLResume v0.7 dan mengalami mode
+`dev` baru sendiri.
+
+- **Pasang atau perbarui** ke versi terbaru: `npm install -g
+  yamlresume@latest`
+- **Coba** dengan curriculum vitae yang ada: `yamlresume dev my-resume.yml`
+- **Bergabunglah dengan komunitas kami** di
+  [GitHub](https://github.com/yamlresume/yamlresume/discussions) untuk
+  berbagi umpan balik, mengajukan pertanyaan, atau berkontribusi pada masa
+  depan YAMLResume.
+
+Kami berkomitmen untuk membangun developer experience terbaik yang mungkin
+untuk pembuatan curriculum vitae, dan kami tidak sabar untuk mendengar apa
+yang Anda pikirkan tentang rilis baru ini!

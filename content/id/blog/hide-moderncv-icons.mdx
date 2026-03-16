@@ -1,0 +1,170 @@
+---
+title: Cara Menyembunyikan Ikon di moderncv
+description:
+  "Bagaimana moderncv menggunakan ikon Font Awesome dan cara menonaktifkannya
+  dengan \\renewcommand."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-01-21
+---
+
+Ketika Anda membangun PDF curriculum vitae dengan
+[LaTeX](https://www.latex-project.org/), detail visual kecil membawa bobot
+yang besar. Kelas
+[`moderncv`](https://ctan.org/pkg/moderncv) menambahkan ikon di samping kolom
+kontak (telepon, email, homepage, dan sebagainya), yang bagus untuk
+tampilan yang rapi, tetapi tidak semua orang ingin ikon di header mereka.
+Beberapa orang lebih menyukai gaya yang lebih bersih dan minimal, atau perlu
+mencocokkan template korporat yang melarangpiktogram. Postingan ini menjelaskan
+apa itu `moderncv`, pustaka ikon apa yang digunakan, cara menyembunyikan
+ikonnya, dan bagaimana makro LaTeX `\renewcommand` membuatnya semua mungkin.
+
+## 1. Apa itu moderncv?
+
+[`moderncv`](https://ctan.org/pkg/moderncv) adalah kelas dokumen LaTeX yang
+dirancang khusus untuk CV dan curriculum vitae. Ini menyediakan tata letak
+yang konsisten dan profesional dan serangkaian makro tingkat tinggi untuk
+memformat elemen curriculum vitae umum: nama, judul, detail kontak, judul
+bagian, dan entri untuk pekerjaan dan pendidikan. Dibandingkan dengan
+dokumen LaTeX mentah, `moderncv` memberi Anda sistem tata letak yang
+dibangun untuk tujuan dengan beberapa varian gaya (seperti `banking`,
+`classic`, atau `casual`, dll.)
+
+Header `moderncv` tipikal mungkin terlihat seperti ini:
+
+```latex
+\name{}{Andy Dufresna}
+\title{Software Engineer}
+\phone[mobile]{+1 555 123 456}
+\email{jane@example.com}
+\homepage{https://example.com}
+```
+
+Kelas mengambil perintah-perintah ini dan merendernya dalam header yang rapi.
+Secara default, `moderncv` juga menampilkan ikon di samping setiap item,
+yang dapat membuat info kontak lebih mudah dipindai.
+
+## 2. Apa library ikon yang digunakan oleh moderncv?
+
+`moderncv` dikirimkan dengan dukungan ikon melalui paket
+[`fontawesome5`](https://ctan.org/pkg/fontawesome5).
+[Font Awesome](https://fontawesome.com/) adalah set ikon populer, dan
+`fontawesome5` mengeksposnya ke LaTeX dengan perintah seperti `\faEnvelope`,
+`\faMobileAlt`, dan `\faGlobe`. Di `moderncv`, ikon-ikon tersebut
+dihubungkan ke makro "simbol" seperti `\emailsymbol` dan
+`\homepagesymbol`. Ketika Anda memanggil `\email{...}` atau
+`\homepage{...}`, kelas menambahkan makro simbol yang sesuai sebelumnya, yang
+pada gilirannya menggunakan glyph Font Awesome.
+
+Karena ikon-ikon dialihkan melalui makro simbol ini, Anda dapat mengganti atau
+menghapusnya tanpa mengubah konten kontak aktual. Desain ini penting: konten
+dan dekorasi terpisah, jadi Anda dapat memilih gaya yang lebih bersih dengan
+beberapa override.
+
+## 3. Cara menyembunyikan ikon di moderncv
+
+Cara paling bersih untuk menghapus ikon adalah mendefinisikan ulang makro
+simbol ke string kosong. Di LaTeX, `\renewcommand` memungkinkan Anda mengganti
+makro yang ada dengan perilaku baru. Jika Anda menetapkan setiap makro simbol
+`moderncv` ke tidak ada, label akan tetap ada, tetapi ikon menghilang.
+
+Berikut adalah snippet minimal yang dapat Anda letakkan di preamble, setelah
+memuat `moderncv`:
+
+```latex
+% disable icons
+renewcommand*{\addresssymbol}{}
+renewcommand*{\mobilephonesymbol}{}
+renewcommand*{\fixedphonesymbol}{}
+renewcommand*{\faxphonesymbol}{}
+renewcommand*{\emailsymbol}{}
+renewcommand*{\homepagesymbol}{}
+```
+
+Ini mencerminkan pendekatan yang digunakan di renderer `moderncv`
+[YAMLResume](https://yamlresume.dev/). Di YAMLResume [v0.10](/blog/v0.10),
+preamble LaTeX secara opsional
+memasukkan](https://github.com/yamlresume/yamlresume/commit/b53f73d9b4b04bf04b90236ef01da56062f8ca1f)
+tepat baris `\renewcommand*` ini ketika opsi layout di bawah `advanced`
+bernama `showIcons` diatur ke `false`. Itu berarti output PDF dapat
+mengalihkan ikon tanpa menyentuh konten curriculum vitae.
+
+Ini curriculum vitae moderncv tanpa ikon:
+
+![Moderncv Resume without Icons](/static/images/blog/hide-moderncv-icons/hide-icons-resume.png)
+
+Jika Anda menggunakan YAMLResume, Anda dapat mengontrol perilaku ini melalui
+pengaturan layout dan membiarkan renderer menyuntikkan override itu secara
+otomatis. Jika Anda menulis LaTeX mentah, Anda dapat menyalin snippet ke
+preamble Anda. Either way, hasil akhirnya sama: header Anda menyimpan teks
+tetapi kehilangan piktogram.
+
+### Mengapa ini berfungsi
+
+`moderncv` mendefinisikan serangkaian makro untuk setiap ikon. Misalnya,
+`\emailsymbol` digunakan untuk menampilkan ikon email. Ketika Anda
+mendefinisikan ulang makro itu ke `{}`, LaTeX masih memperluasnya, tetapi
+tidak ada yang dicetak. Anda tidak menghapus email itu sendiri; Anda hanya
+mengganti override dekorasi yang mendahuluinya.
+
+### Tips ekstra: menyembunyikan ikon sosial
+
+Jika Anda menambahkan ikon secara manual di kolom kustom (misalnya,
+menggunakan `\faGithub` atau `\faTwitter` di baris kustom), Anda juga dapat
+menghapusnya dengan tidak memanggil perintah-perintah itu. Di renderer
+YAMLResume, ini ditangani dengan memeriksa flag `sebelum menyisipkan glyph
+Font Awesome untuk profil sosial. Polanya sama: simpan konten `\href`,
+tetapi omit awalan ikon.
+
+## 4. Apa itu makro \renewcommand?
+
+LaTeX menggunakan makro untuk menentukan bagaimana perintah berperilaku.
+Makro `\newcommand` membuat perintah baru, sementara `\documentclass`
+mendefinisikan ulang yang sudah ada. Pikirkan sebagai "ganti perintah ini
+dengan implementasi baru."
+
+Sintaksnya adalah:
+
+```latex
+renewcommand{\commandname}{replacement}
+```
+
+Versi berbintang `\renewcommand*` berperilaku serupa, tetapi memberitahu
+LaTeX untuk tidak mengizinkan paragraph break di teks pengganti. Untuk makro
+simbol pendek seperti `\emailsymbol`, bintang tidak membuat perbedaan praktis,
+tetapi umum di kelas file dan template.
+
+Di `moderncv`, makro ikon sudah didefinisikan, jadi Anda harus menggunakan
+`\renewcommand` bukan `\newcommand`. Jika Anda mencoba mendefinisikan ulang
+makro yang ada dengan `\newcommand`, LaTeX akan melempar error. Itu
+mengapa patch menggunakan:
+
+```latex
+renewcommand*{\emailsymbol}{}
+```
+
+Baris ini berkata: "Ganti definisi yang ada dari `\emailsymbol` dengan string
+kosong." Kelas lainnya tetap berfungsi, karena `\email{...}` masih
+diperluas dengan benar; itu hanya tidak menambahkan ikon lagi.
+
+## Menggabungkan Semuanya
+
+Ringkasan:
+
+- `moderncv` adalah kelas LaTeX untuk CV dan curriculum vitae dengan makro
+  terstruktur dan default yang bagus.
+- Ini menggunakan paket `fontawesome5` untuk ikon, diekspos melalui makro
+  simbol seperti `\emailsymbol` dan `\homepagesymbol`.
+- Anda dapat menyembunyikan ikon dengan mendefinisikan ulang makro simbol
+  tersebut ke string kosong dengan `\renewcommand*`.
+- `\renewcommand` adalah mekanisme LaTeX untuk mendefinisikan ulang makro
+  yang ada dengan aman.
+
+Jika Anda ingin header teks-saja yang minimal, pendekatan override adalah
+yang paling robust. Ini juga future-proof: jika Anda kemudian beralih ke
+gaya `moderncv` baru atau menambahkan kolom kontak baru, Anda dapat
+mempertahankan pola yang sama dengan mendefinisikan ulang makro simbol yang
+sesuai. Dan jika Anda menggunakan renderer seperti YAMLResume, flag sederhana
+dapat mengalihkan seluruh blok untuk Anda. Ngomong-ngomong, ini
+`advanced.showIcons` berfungsi untuk mesin [HTML](/docs/layouts/html) dan
+[LaTeX](/docs/layouts/latex).

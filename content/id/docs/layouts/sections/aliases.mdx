@@ -1,0 +1,72 @@
+---
+title: Alias
+---
+
+YAML menyediakan judul default untuk [semua bagian resume
+kecuali](#bagian-yang-bisa-dialias) `location` dan `profiles`, yang secara otomatis
+[diterjemahkan](/docs/locale) berdasarkan [locale
+language](/docs/layouts#locale) yang dipilih. Namun, Anda mungkin ingin menyesuaikan
+judul-judul ini agar lebih sesuai dengan profil atau industri Anda. Fitur `alias
+bagian` memungkinkan Anda mengganti nama bagian default dengan nama kustom Anda
+sendiri.
+
+Sebagai contoh, Anda mungkin lebih memilih "Pengalaman Profesional" daripada
+"Pekerjaan" untuk bagian `work`, atau "Keahlian Teknis" daripada "Keterampilan"
+untuk bagian `skills`.
+
+## Cara Menggunakan
+
+Anda dapat mendefinisikan alias bagian dalam konfigurasi `layouts.[].sections`
+file `resume.yml` Anda. Tambahkan objek `sections` ke tata letak Anda, dan di
+dalamnya, peta `aliases`.
+
+Kunci dalam peta `aliases` adalah ID bagian standar, dan nilainya adalah judul
+kustom yang ingin Anda gunakan.
+
+## Contoh
+
+Berikut adalah cara Anda dapat mengubah judul untuk bagian `work`, `education`,
+dan `skills`:
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layouts:
+  - engine: latex
+    sections:
+      aliases:
+        work: Pengalaman Profesional
+        education: Latar Belakang Pendidikan
+        skills: Keahlian Teknis
+```
+
+Ketika Anda membangun resume dengan konfigurasi ini, PDF yang dihasilkan akan
+menggunakan "Pengalaman Profesional", "Latar Belakang Pendidikan", dan
+"Keahlian Teknis" sebagai judul untuk bagian-bagian ini, mengganti nama default
+atau spesifik locale.
+
+Jika alias tidak disediakan untuk suatu bagian, YAMLResume akan kembali ke
+judul default untuk locale yang dikonfigurasi.
+
+## Bagian yang Bisa Dialias
+
+Anda dapat menyediakan alias untuk bagian-bagian berikut:
+
+- `basics`
+- `education`
+- `work`
+- `volunteer`
+- `awards`
+- `certificates`
+- `publications`
+- `skills`
+- `languages`
+- `interests`
+- `references`
+- `projects`
+
+## Aturan dan Batasan
+
+- Alias harus memiliki panjang antara 2 dan 128 karakter.

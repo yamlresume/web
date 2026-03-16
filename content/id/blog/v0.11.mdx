@@ -1,0 +1,193 @@
+---
+title: "YAMLResume v0.11: Playground, Perintah Doctor & Bahasa Lainnya"
+description:
+  "YAMLResume v0.11 memperkenalkan komponen Playground yang dapat disematkan,
+  perintah `doctor` baru untuk diagnostik lingkungan, dukungan bahasa Jepang
+  dan Jerman, dan kustomisasi keluarga font."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-02-10
+---
+
+Kami dengan excited mengumumkan [YAMLResume
+v0.11](https://github.com/yamlresume/yamlresume/releases/tag/v0.11.1). Rilis
+ini membawa peningkatan developer experience yang signifikan dengan komponen
+Playground baru yang dapat disematkan, diagnostik lingkungan melalui perintah
+`doctor`, dukungan bahasa yang diperluas, dan kustomisasi tipografi.
+
+## Paket Baru: @yamlresume/playground
+
+Kami telah mengekstrak dan mempublikasikan playground web kami sebagai
+komponen React standalone:
+[`@yamlresume/playground`](https://www.npmjs.com/package/@yamlresume/playground).
+Paket ini menggerakkan [playground](/playground) resmi dan sekarang dapat
+diintegrasikan ke aplikasi Anda sendiri.
+
+![YAMLResume Playground](/static/images/blog/v0.11/yamlresume-playground.webp)
+
+```bash
+npm install @yamlresume/playground @yamlresume/core
+```
+
+Komponen Playground menyediakan:
+
+- **Editor YAML Langsung**: Editor berbasis [Monaco](https://microsoft.github.io/monaco-editor/)
+  dengan syntax highlighting YAML
+- **Pratinjau Real-time**: Pratinjau instan untuk layout HTML, Markdown dan
+  LaTeX
+- **Desain Responsif**: Layout split-pane di desktop, antarmuka tab di mobile
+- **Opsi Ekspor**: Unduh, salin, atau cetak curriculum vitae Anda
+
+Penggunaan dasar straightforward:
+
+```tsx
+import { useState } from "react"
+import { Playground } from "@yamlresume/playground"
+
+function App() {
+  const [yaml, setYaml] = useState("layouts: []");
+
+  return (
+    <Playground yaml={yaml} onChange={(newYaml) => setYaml(newYaml)} />
+  )
+}
+```
+
+Paket ini juga mengekspor hook seperti `useResumeState` dan
+`useResumeRenderer` untuk membangun pengalaman editor khusus. Lihat [README
+paket](https://github.com/yamlresume/yamlresume/tree/main/packages/playground)
+untuk referensi API lengkap.
+
+## Perintah Baru: yamlresume doctor
+
+Menyiapkan lingkungan LaTeX bisa rumit. Perintah `doctor` baru membantu
+mendiagnosis pengaturan Anda dengan memeriksa dependensi yang diperlukan:
+
+```console
+$ yamlresume doctor
+
+  System:
+    OS: macOS 14.6.1
+    CPU: (10) arm64 Apple M1 Max
+  Binaries:
+    Node: 25.6.0 - /opt/homebrew/bin/node
+    Yarn: 1.22.22 - /Users/hanyu/Library/pnpm/yarn
+    npm: 11.8.0 - /opt/homebrew/bin/npm
+    pnpm: 10.6.3 - /opt/homebrew/bin/pnpm
+
+ℹ Checking XeTeX...                                                                                                                                                     2:26:36 PM
+  XeTeX: XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+
+ℹ Checking Tectonic...                                                                                                                                                  2:26:36 PM
+  Tectonic: tectonic 0.15.0Tectonic 0.15.0
+
+ℹ Checking Fonts...                                                                                                                                                     2:26:36 PM
+  Linux Libertine O: Not Installed
+  Linux Libertine: Installed
+  Noto Serif CJK SC: Installed
+  Noto Sans CJK SC: Installed
+```
+
+Perintah doctor memeriksa:
+
+- **Informasi Sistem**: OS, arsitektur CPU
+- **Binari**: Node.js, npm, pnpm, Yarn, Bun
+- **Mesin LaTeX**: Ketersediaan XeTeX dan Tectonic
+- **Font**: Font yang diperlukan untuk rendering curriculum vitae optimal
+  (Linux Libertine untuk teks Latin, Noto CJK untuk Tionghoa/Jepang/Korea)
+
+Ini sangat membantu saat menyiapkan YAMLResume di mesin baru atau
+memecahkan masalah build curriculum vitae.
+
+## Dukungan Bahasa Jepang dan Jerman
+
+YAMLResume terus memperluas internationalisasinya. Kami sekarang mendukung
+dua bahasa lagi:
+
+- **Jepang (ja)**: Dukungan penuh untuk header bagian Jepang, format tanggal,
+  dan nama negara
+- **Jerman (de)**: Terima kasih kepada [Daniel Bälz](https://github.com/dbaelz)
+  atas kontribusi terjemahan Jerman
+
+Ini membawa jumlah bahasa yang kami dukung menjadi delapan:
+
+- [Inggris (en)](/docs/locale/english)
+- [Tionghoa (zh)](/docs/locale/chinese)
+- [Spanyol (es)](/docs/locale/spanish)
+- [Prancis (fr)](/docs/locale/french)
+- [Norwegia (no)](/docs/locale/norwegian)
+- [Belanda (nl)](/docs/locale/dutch)
+- [Jepang (ja)](/docs/locale/japanese)
+- [Jerman (de)](/docs/locale/german)
+
+Untuk menghasilkan curriculum vitae Anda dalam bahasa Jepang atau Jerman:
+
+```yml lineNumbers
+locale:
+  language: ja  # or 'de' for German
+```
+
+## Kustomisasi Keluarga Font
+
+Anda sekarang dapat menyesuaikan keluarga font untuk mesin HTML dan LaTeX. Ini
+memberi Anda kontrol tepat atas tipografi untuk mencocokkan merek pribadi
+atau preferensi regional Anda.
+
+### Mesin HTML
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    typography:
+      fontFamily: '"Inter", "Helvetica Neue", sans-serif'
+```
+
+Setiap template HTML mengadopsi daftar font sebagai default, dan ketika Anda
+menentukan `fontFamily` dalam konfigurasi layout Anda, itu akan ditambahkan
+ke daftar default.
+
+### Mesin LaTeX
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    typography:
+      fontFamily: "EB Garamond"
+```
+
+`fontFamily` untuk mesin LaTeX juga mendukung sintaks keluarga font CSS,
+yaitu daftar font yang dipisahkan koma. Mesin LaTeX YAMLResume akan
+menggunakan makro `\IfFontExistsTF` untuk memeriksa keberadaan setiap font
+dan hanya memilih font pertama yang dapat diakses oleh XeTeX/Tectonic dalam
+daftar.
+
+Berikut adalah contoh curriculum vitae LaTeX dengan [font Big Calson](https://fontsinuse.com/typefaces/555/big-caslon) di macOS:
+
+![YAMLResume LaTeX Big Calson Font Resume](/static/images/blog/v0.11/yamlresume-latex-big-caslon-10pt.png)
+
+## Peningkatan Lainnya
+
+- **Penamaan Türkiye**: Nama negara yang diperbarui dari "Turkey" ke
+  "Türkiye" untuk mencerminkan perubahan nama resmi
+  ([#152](https://github.com/yamlresume/yamlresume/issues/152))
+- **Cakupan pengujian yang ditingkatkan**: Pengujian lintas platform pada
+  Node.js 22 dan 24 di macOS, Linux, dan Windows
+
+## Perbarui Hari Ini
+
+Dapatkan versi terbaru:
+
+```console
+$ npm install -g yamlresume@latest
+# or
+$ brew upgrade yamlresume
+```
+
+Periksa lingkungan Anda sudah siap:
+
+```console
+$ yamlresume doctor
+```
+
+Seperti biasa, kami menerima umpan balik dan kontribusi Anda di
+[GitHub](https://github.com/yamlresume/yamlresume). Selamat membangun!

@@ -1,0 +1,366 @@
+---
+title: Memperkenalkan YAMLResume
+description: 'YAMLResume: Curriculum Vitae sebagai Kode dalam YAML'
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-05-21
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+Setiap developer membutuhkan curriculum vitae kecuali Anda adalah profesional
+ter terkenal di dunia. Menulis curriculum vitae mungkin tidak sulit, tetapi
+pasti tidak menyenangkan dan membosankan. Banyak orang menghabiskan hari-hari
+untuk menyusun curriculum vitae mereka, mengejar curriculum vitae yang 100%
+bebas typo, telah diperiksa tata bahasa, dengan tata letak dan typesetting
+profesional.
+
+[YAMLResume](https://yamlresume.dev) memungkinkan Anda membuat dan mengontrol
+versi curriculum vitae Anda menggunakan [YAML](https://yaml.org/) dan
+menghasilkan PDF yang terlihat profesional dengan typesetting yang indah
+dengan mudah.
+
+YAMLResume dimulai sebagai mesin typesetting inti untuk
+[PPResume](https://ppresume.com)—sebuah
+[LaTeX](https://www.latex-project.org/)-based, komersial, pixel perfect
+resume builder yang sudah membantu ribuan orang membuat curriculum vitae
+dengan typesetting yang indah. Tanpa banyak keraguan, kami memutuskan untuk
+membuka sumbernya sehingga orang-orang selalu dapat berkata [tidak untuk
+vendor lock-in](https://blog.ppresume.com/posts/no-vendor-lock-in).
+
+![YAMLResume New and Build Resume](/static/images/blog/introducing-yamlresume/yamlresume-new-and-build.webp)
+
+## Quick Start
+
+YAMLResume menyediakan [CLI tool](https://www.npmjs.com/package/yamlresume),
+selain itu, ia memiliki dependensi wajib pada mesin typesetting untuk
+menghasilkan PDF. Dengan kata lain, Anda harus [menginstal mesin
+typesetting](/docs/installation#typesetting-engine) terlebih dahulu jika
+ingin menghasilkan PDF.
+
+Memasang CLI `yamlresume` sangat mudah. Anda dapat menginstalnya menggunakan
+package manager Node.js favorit Anda:
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```console tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+</Tabs>
+
+Verifikasi bahwa `yamlresume` berhasil dipasang:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___   ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version   output the version number
+  -v, --verbose   verbose output
+  -h, --help      display help for command
+
+Commands:
+  new [filename]  create a new resume
+  build <source>  build a resume to LaTeX and PDF
+  languages       i18n and l10n support
+  templates       manage resume templates
+  help [command]  display help for command
+```
+
+Kami juga merekomendasikan Anda untuk menginstal font [Linux
+Libertine](http://yamlresume.dev/docs/installation#linux-libertine) untuk
+mendapatkan PDF yang terlihat terbaik.
+
+Terakhir tetapi tidak kalah penting, jika Anda ingin membuat curriculum vitae
+CJK, kami juga merekomendasikan untuk menginstal [Google Noto
+fonts](https://fonts.google.com/noto/) untuk [cakupan unicode
+terbaik](https://github.com/ppresume/community/issues/63).
+
+### Membuat Curriculum Vitae Baru
+
+Anda dapat membuat curriculum vitae baru dengan satu baris perintah:
+
+```console
+$ yamlresume new my-resume.yml
+✔ Created my-resume.yml successfully.
+```
+
+Di baliknya, `yamlresume new` akan mengkloning contoh curriculum vitae dari
+[tautan
+ini](https://github.com/yamlresume/yamlresume/blob/main/packages/cli/resources/resume.yml).
+Kemudian Anda bisa mendapatkan PDF dengan satu baris perintah lagi:
+
+```console
+$ yamlresume build my-resume.yml
+◐ Generating resume PDF with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume PDF successfully.
+```
+
+Selesai! Periksa PDF curriculum vitae yang dihasilkan:
+
+![Resume Page 1](/static/images/blog/introducing-yamlresume/resume-1.webp)
+![Resume Page 2](/static/images/blog/introducing-yamlresume/resume-2.webp)
+
+Anda dapat melihat [PPResume Gallery](https://ppresume.com/gallery) untuk
+contoh lainnya yang menggunakan YAMLResume sebagai mesin typesetting.
+
+### Pemecahan Masalah
+
+CLI YAMLResume menyediakan flag verbose `-v`/`--verbose` untuk menampilkan
+informasi logging yang lebih detail. Jika Anda mengalami masalah dalam membuat
+curriculum vitae, Anda dapat mencoba menjalankan perintah lagi dengan flag
+verbose ini dan paste output ke [github
+issues](https://github.com/yamlresume/yamlresume/issues), saya akan
+memeriksa dan merespons Anda.
+
+## Bagaimana Cara Kerjanya?
+
+Di baliknya, YAMLResume bekerja seperti compiler mini, yaitu mengambil input,
+mem-parsing-nya ke [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
+dan kemudian menghasilkan output.
+
+<Mermaid
+  chart="
+  flowchart TD
+    A[Resumes in YAML]
+    A --> B[Parsing YAML to AST]
+    A --> C[Parsing summary field]
+    C --> D[Transform AST to LaTeX]
+    B --> D
+    D --> E[Compile LaTeX to PDF]
+"
+/>
+
+Prinsip desain inti dari YAMLResume adalah [separation of
+concerns](https://en.wikipedia.org/wiki/Separation_of_concerns). Salah satu
+contoh paling terkenal yang mengikuti prinsip ini adalah HTML & CSS, yang
+merupakan fondasi web modern—HTML digunakan untuk mengorganisir konten di
+halaman web, CSS digunakan untuk mendefinisikan gaya presentasi konten.
+
+Mengikuti prinsip inti, YAMLResume dirancang berdasarkan persyaratan berikut:
+
+- konten curriculum vitae harus ditulis dalam plain text, yang ramah untuk
+  version control
+- plain text harus menggunakan format yang sepenuhnya terstruktur, yang
+  memberikan lebih banyak kontrol dan fleksibilitas
+- YAML lebih baik daripada JSON karena lebih mudah dibaca dan ditulis oleh
+  manusia
+- plain text YAML kemudian di-render menjadi PDF dengan mesin typesetting
+  yang dapat diubah-ubah
+- tata letak yang opinionated harus disediakan secara default, sambil tetap
+  memungkinkan orang untuk menyesuaikan opsi sesuai kebutuhan seperti ukuran
+  font, margin halaman, dll.
+
+## Mengapa YAML?
+
+[JSON Resume](https://jsonresume.org/) adalah proyek lain yang memungkinkan
+orang untuk membuat curriculum vitae dalam format terstruktur. Namun, sebagian
+besar pengembang akan setuju bahwa YAML lebih baik dari JSON dalam hal
+keterbacaan dan kemampuan menulis oleh manusia. Misalnya, sangat tidak nyaman
+untuk merepresentasikan string multi-baris di JSON, sementara YAML memiliki
+dukungan native untuknya.
+
+Bandingkan cuplikan curriculum vitae di JSON dan YAML:
+
+```json
+{
+  "content": {
+    "basics": {
+      "name": "Andy Dufresne",
+      "headline": "Headed for the Pacific",
+      "phone": "(213) 555-9876",
+      "email": "hi@ppresume.com",
+      "url": "https://ppresume.com/gallery",
+      "summary": "- Computer Science major with strong foundation in data structures, algorithms, and software development\n- Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites\n- Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)\n- Team player, with detail-oriented mindset and a keen eye for design and user experiences"
+    }
+  }
+}
+```
+
+```yml lineNumbers
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@ppresume.com
+    url: https://ppresume.com/gallery
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+Mana yang lebih mudah dibaca dan ditulis? Jawabannya jelas.
+
+JSON Resume tidak peduli tentang tata letak curriculum vitae. Di dunia nyata,
+Anda tidak bisa hanya mengirim file JSON ke perekrut bukan? Format curriculum
+vitae terstruktur perlu dikonversi ke format dokumen yang dapat dibaca manusia
+seperti docx, PDF, dll. YAMLResume menawarkan konfigurasi tata letak yang
+opinionated, dan menjamin output PDF yang pixel perfect.
+
+Pada saat penulisan, tata letak opinionated YAMLResume mendukung:
+
+- bahasa lokal
+  - Inggris
+  - Mandarin Sederhana
+  - Mandarin Tradisional
+  - Spanyol
+- margin
+  - atas
+  - kiri
+  - kanan
+  - bawah
+- nomor halaman
+- template
+- tipografi
+  - ukuran font
+
+Berikut adalah contoh kode untuk konfigurasi tata letak di YAMLResume:
+
+```yml lineNumbers
+layout:
+  locale:
+    language: en
+  margins:
+    top: 2.5cm
+    left: 1.5cm
+    right: 1.5cm
+    bottom: 2.5cm
+  page:
+    showPageNumbers: true
+  template: moderncv-banking
+  typography:
+    fontSize: 11pt
+```
+
+## Mengapa Bukan Markdown?
+
+[Markdown](https://en.wikipedia.org/wiki/Markdown) adalah pilihan populer
+lainnya untuk menulis curriculum vitae, ada juga beberapa resume builder yang
+mengadopsi markdown sebagai format input utama. Namun, markdown adalah bahasa
+markup tujuan umum untuk membuat teks yang terformat, sementara curriculum
+vitae hanya menggunakan set fitur markdown yang sangat terbatas.
+
+Sebagai contoh, sintaks markdown berikut sangat tidak mungkin digunakan dalam
+curriculum vitae:
+
+- blockquote
+- code block
+- horizontal rules
+- images
+- tables
+- html markup
+- dll.
+
+Kedua, markdown terlalu fleksibel, sering memberikan pengguna lebih banyak
+kebebasan daripada yang mereka butuhkan untuk membuat curriculum vitae. Akan
+sulit untuk dengan andal mem-parse dokumen markdown generik sebagai curriculum
+vitae.
+
+Ketiga, fitur seperti penggantian template, kontrol tata letak yang tepat
+(seperti `\hfill` dan `\hspace` di LaTeX) sangat sulit diimplementasikan di
+markdown.
+
+Kesimpulannya, menggunakan format yang sepenuhnya terstruktur seperti
+YAML/JSON memberikan lebih banyak kontrol dan keandalan atas pemformatan dan
+tata letak curriculum vitae.
+
+## Mengapa Tetap LaTeX?
+
+[LaTeX](https://www.latex-project.org/) adalah mesin typesetting yang sangat
+matang dan stabil yang dapat menghasilkan PDF dengan kualitas sangat tinggi.
+Namun, banyak pengguna LaTeX, bahkan penggemar LaTeX, akan setuju bahwa bahasa
+LaTeX sudah agak ketinggalan zaman—pesan kesalahannya sering cukup membingungkan,
+dan ketergantungan pada variabel global sering menyebabkan konflik antar
+package, kecepatan kompilasi lambat untuk dokumen besar dan sering cukup
+rumit, dan menghasilkan file intermediate yang ugly (`.aux`, `.log`, dll.).
+
+Beberapa menyarankan untuk mengganti LaTeX dengan [typst](https://github.com/typst/typst),
+yang merupakan mesin typesetting modern, dengan DX yang jauh lebih baik dan
+kompilasi yang jauh lebih cepat. Namun, setelah evaluasi dengan hati-hati,
+saya memutuskan untuk tetap menggunakan LaTeX. Yang menjadi penentu di sini
+adalah, YAMLResume dirancang untuk mendukung multi bahasa dengan kualitas
+typesetting terbaik, namun dukungan CJK typst masih tidak stabil dan
+kurang lengkap.
+
+Nanti mungkin saya akan menambahkan backend renderer baru untuk mendukung typst.
+
+## Dukungan Rich Text
+
+Meskipun kami memutuskan untuk tidak menggunakan markdown sebagai format
+input curriculum vitae, kami mendukung set terbatas sintaks rich text markdown
+untuk kolom `summary` di berbagai bagian.
+
+Untuk saat ini, kami mendukung sintaks markdown berikut:
+
+- `**bold**`
+- `*italic*`
+- `[link](https://www.google.com)`
+- ordered list
+- unordered list
+- nested list
+- paragraphs
+
+Sebagai contoh, ini adalah contoh kode untuk kolom `content.basics.summary`:
+
+```yml lineNumbers
+---
+content:
+  # ...
+  summary: |
+    This is a sample YAML resume that support limited set of markdown rich text syntax (bold, italics, links, lists):
+
+    - Computer Science major with **strong foundation** in data structures, *algorithms*, and software development
+      1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)
+    - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+Dan ini adalah PDF yang dihasilkan:
+
+![Rich Text Support in Summary Field](/static/images/blog/introducing-yamlresume/rich-text-support-in-summary-field.webp)
+
+Anda dapat melihat sintaks rich text dirender dengan benar dengan bold,
+italics, links, lists, cukup solid, bukan?
+
+## Roadmap
+
+Secara keseluruhan proyek masih dalam tahap yang sangat awal, kami memiliki
+jalan yang panjang untuk ditempuh. Saya sudah merencanakan daftar fitur yang
+akan dilakukan dalam waktu dekat:
+
+1. bahasa lainnya, Jepang, Jerman, Prancis, dll
+2. template lainnya
+3. [section alias](https://github.com/yamlresume/yamlresume/issues/11)
+4. [section reordering](https://github.com/yamlresume/yamlresume/issues/12)
+5. [schema validation](https://github.com/yamlresume/yamlresume/issues/10)
+
+Untuk masalah apapun, Anda dapat:
+
+- membuat [issue](https://github.com/yamlresume/yamlresume/issues/)
+- membuka [discussion](https://github.com/yamlresume/yamlresume/discussions)
+- meninggalkan [message](https://discord.gg/9SyT7mVV4K)
+
+Tetap pantau perkembangan terbaru!

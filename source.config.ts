@@ -70,6 +70,15 @@ export const docsPt = defineDocs({
   },
 })
 
+export const docsId = defineDocs({
+  dir: 'content/id/docs',
+  docs: {
+    postprocess: {
+      includeProcessedMarkdown: true,
+    },
+  },
+})
+
 export default defineConfig({
   mdxOptions: {
     // MDX options
@@ -159,6 +168,19 @@ export const blogEs = defineCollections({
 export const blogPt = defineCollections({
   type: 'doc',
   dir: 'content/pt/blog',
+  postprocess: {
+    includeProcessedMarkdown: true,
+  },
+  schema: frontmatterSchema.extend({
+    author: z.string(),
+    date: z.string().date().or(z.date()),
+    profile: z.string(),
+  }),
+})
+
+export const blogId = defineCollections({
+  type: 'doc',
+  dir: 'content/id/blog',
   postprocess: {
     includeProcessedMarkdown: true,
   },

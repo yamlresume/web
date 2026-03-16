@@ -1,0 +1,208 @@
+---
+title: 1000 Bintang
+description: YAMLResume mencapai 1.000 GitHub bintang dalam waktu ~6 bulan; highlight dari v0.5–v0.7 dan apa yang selanjutnya
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-11-26
+---
+
+YAMLResume baru saja melewati tonggak besar: [1.000 GitHub
+stars](https://github.com/yamlresume/yamlresume/stargazers)—sekitar setengah
+tahun setelah [membuka sumber proyek ini](/blog/introducing-yamlresume). Terima
+kasih untuk setiap bintang, issue, diskusi, kontribusi, dan berbagi dari mulut
+ke mulut. Ini adalah lencana kecil, tetapi momentum yang nyata untuk "resume
+as code", typesetting yang hebat, dan workflow yang berpusat pada developer.
+
+![YAMLResume 1000 Stars History](/static/images/blog/1000-stars/star-history-20251126.webp)
+
+Di Juni kami merayakan [500 bintang](/blog/500-stars), hari ini kami kembali
+dengan 1000. Di antaranya, YAMLResume matang secara signifikan—terutama di
+tiga rilis yang banyak dari Anda ikuti dan adopsi dengan cepat:
+[v0.5](/blog/yamlresume-compiler), [v0.6](/blog/section-customization), dan
+[v0.7](/blog/dev-mode). Postingan ini merangkum hal paling penting yang kami
+kirimkan, kemudian menjelaskan roadmap pragmatis untuk tahap selanjutnya
+perjalanan.
+
+## Rangkuman
+
+### v0.5: Resume Compiler yang dapat dipercaya
+
+[v0.5](/blog/yamlresume-compiler) memposisikan ulang YAMLResume tidak hanya
+sebagai formatter, tetapi sebagai compiler. Pergeseran konseptual tunggal
+ini—memperlakukan YAML curriculum vitae seperti kode—membuka kebenaran,
+konsistensi, dan workflow CLI yang sangat sederhana.
+
+Ide kunci yang kami kirimkan di v0.5:
+
+- [Arsitektur compiler](/docs/compiler/architecture) dan [model data
+  standar](/docs/compiler/schema): Kami memformalisasikan struktur resume
+  sehingga setiap downstream renderer atau template mendapatkan data yang
+  bersih dan dapat diprediksi. Ini mengurangi footguns dan meningkatkan
+  portabilitas template.
+- Validasi kuat di dua tingkat: [JSON Schema untuk integrasi
+  editor](/docs/compiler/schema/json) (auto-completion, hover docs, early
+  format checks) dan [Zod untuk keamanan runtime dan diagnostik
+  detail](/docs/compiler/schema/zod). Editor terasa pintar; build terasa
+  aman.
+- Perintah baru yang memperpendek loop: [`yamlresume
+  validate`](/docs/cli#validate) untuk pemeriksaan cepat, dan `build` yang
+  ditingkatkan yang selalu memvalidasi terlebih dahulu. Dengan opsi
+  `--no-validate`, Anda tetap bergerak selama pengeditan besar.
+- [Output error gaya Clang](https://asciinema.org/a/728098): Error yang jelas
+  terikat pada nama file dan baris menghemat menit untuk setiap iterasi.
+
+v0.5 membuat YAMLResume menjadi alat yang dapat dipercaya—bahkan di bawah
+tenggat waktu. Jika Anda belum, lihat contoh dan video di blog v0.5; mereka
+menunjukkan validator, schema hints, dan diagnostik beraksi.
+
+### v0.6: Kustomisasi Bagian yang Cocok dengan Cara Anda Menceritakan Cerita
+
+[v0.6](/blog/section-customization) berfokus pada sesuatu yang sangat
+sederhana tetapi sangat kuat: mengekspresikan narasi Anda dengan suara dan
+urutan Anda sendiri, tanpa fork template atau hacking LaTeX.
+
+Yang dikirimkan:
+
+- [Alias bagian](/docs/layouts/sections/aliases): Ganti nama bagian kanonik
+  (misalnya, ubah `work` menjadi "Professional Experience", `education`
+  menjadi "Academic Background") menggunakan `layout.sections.aliases`. Ini
+  sangat berguna untuk nada, wilayah/budaya, atau targeting peran.
+- [Pengurutan ulang bagian](/docs/layouts/sections/reorder): Pindahkan bagian
+  yang paling relevan ke atas dengan `layout.sections.order`. Letakkan
+  `skills` di depan `work`, atau munculkan `projects` terlebih dahulu untuk
+  peran yang berfokus pada portofolio.
+- Ketahanan praktis: Peningkatan seperti toleransi tanggal tidak valid
+  (fallback ke string)
+
+Mengapa itu penting:
+
+- Konteks rekrutmen berbeda. PhD yang melamar ke postdoc ingin `education`
+  terlebih dahulu; staff engineer ingin `work` terlebih dahulu. v0.6
+  menempatkan pilihan itu satu edit YAML jauhnya.
+- Bahasa dan nada membentuk persepsi. Aliasing memungkinkan Anda
+  mencocokkan norma industri ("Experience", "Selected Publications", "Open
+  Source") tanpa operasi template.
+
+Singkatnya: v0.6 membuat YAMLResume dapat beradaptasi dengan narasi Anda,
+bukan sebaliknya.
+
+### v0.7: Mode dev, karena curriculum vitae juga layak mendapatkan DX modern
+
+[v0.7](/blog/dev-mode) mengirimkan flow pengembangan watch-mode yang terasa
+seperti hot reloading untuk curriculum vitae. Simpan YAML Anda, dan PDF
+dibangun ulang secara otomatis. Perubahan kecil tidak lagi membutuhkan
+switching konteks besar.
+
+Yang dikirimkan:
+
+- [`yamlresume dev`](/docs/cli#dev): Proses persisten yang mengawasi file
+  curriculum vitae Anda dan membangun ulang saat disimpan. Pasangkan dengan
+  PDF viewer berdampingan untuk umpan balik instan.
+- Internals watch yang kuat: Kami mengadopsi
+  [chokidar](https://github.com/paulmillr/chokidar) dan menambahkan [logika
+  coalescing](https://github.com/yamlresume/coalescifn) sehingga kami tidak
+  pernah membanjiri build pada penyimpanan berturut-turut yang cepat. Hanya
+  satu build pada satu waktu; state terbaru selalu menang.
+- Flag praktis di dev: `--no-pdf` saat Anda hanya membutuhkan `.tex` untuk
+  debugging, `--no-validate` selama refaktorasi besar saat kecepatan paling
+  penting.
+
+Mengapa itu penting:
+
+- Anda mengiterasi lebih cepat dan menulis lebih baik.
+- Alat mengambil keberisikauhan, Anda tetap menjaga alur. Itulah intinya
+  dari DX.
+
+Jika Anda terbiasa dengan `npm run dev`, Anda akan merasa seperti di rumah.
+
+### YAMLResume dengan Homebrew
+
+Terakhir tetapi tidak kalah penting, YAMLResume sekarang tersedia di
+[Homebrew](https://brew.sh):
+
+```sh
+brew install yamlresume
+```
+
+Kami telah memposting blog baru untuk menjelaskan cara menggunakannya secara
+terperinci: [YAMLResume
+Mendarat di Homebrew](/blog/yamlresume-homebrew).
+
+![brew install yamlresume](/static/images/blog/yamlresume-homebrew/brew-install-yamlresume.webp)
+
+## Melihat ke Depan
+
+YAMLResume telah berkembang jauh dari mesin inti kecil
+[PPResume](https://ppresume.com) hingga compiler curriculum vitae yang
+powerful hari ini. Tetapi kami masih memiliki banyak pekerjaan untuk
+ditingkatkan lebih lanjut kemampuan YAMLResume dan membuatnya menjadi alat
+ideal untuk membuat curriculum vitae.
+
+### Banyak Layout
+
+Saat ini YAMLResume hanya mendukung output LaTeX. Kami akan memperpanjang
+pipeline compiler-to-renderer untuk mendukung banyak layout engine dan format
+output, dimulai dengan Markdown, kemudian HTML.
+
+Berikut adalah fitur yang akan kami kirimkan:
+
+- [Output Markdown](https://github.com/yamlresume/yamlresume/issues/110):
+  Artefak Markdown yang bersih dan terstruktur yang mencerminkan bagian dan
+  konten curriculum vitae Anda. Berguna untuk README, portal lowongan yang
+  menerima Markdown, atau handover ke resume builder lain yang menerima
+  markdown.
+- [Output HTML](https://github.com/yamlresume/yamlresume/issues/45): HTML
+  adalah format output paling populer untuk curriculum vitae web. Hari ketika
+  YAMLResume mendukung output HTML, Anda dapat menghosting curriculum vitae
+  Anda di mana saja, membagikannya dengan siapa saja, dan membukanya di
+  perangkat apa pun.
+
+Satu model data, banyak output. Validasi compiler tetap menjadi tulang
+punggung; renderer menjadi plugin. Anda memilih output per audiens: PDF untuk
+pengajuan formal, HTML untuk kehadiran web, Markdown untuk channel yang
+menghadap developer.
+
+### GitHub Actions
+
+Beberapa orang mengadopsi YAMLResume untuk [membangun dan menghosting
+curriculum vitae mereka di
+GitHub](https://github.com/yamlresume/yamlresume/discussions/50), masing-masing
+memiliki workflow sendiri untuk menghasilkan PDF.
+
+Kami akan mengirim action YAMLResume GitHub resmi sehingga orang dapat
+memvalidasi, membangun, menghosting, dan mempublikasikan curriculum vitae
+mereka tanpa harus menulis workflow mereka sendiri.
+
+Dengan GitHub Action khusus, pembaruan menjadi push-dan-selesai.
+
+### Bahasa Lainnya
+
+YAMLResume v0.7 sudah mendukung
+[Inggris](/docs/locale/english),
+[Tionghoa](/docs/locale/chinese),
+[Norwegia](/docs/locale/norwegian) dan
+[Spanyol](/docs/locale/spanish), kami akan memperluas
+daftar untuk mendukung bahasa lain, membuat YAMLResume semakin dapat diakses
+oleh lebih banyak orang di seluruh dunia.
+
+Prancis, Jerman, Jepang akan menjadi bahasa pertama yang akan kami dukung
+dalam beberapa bulan ke depan.
+
+## Salam
+
+1000 bintang bukanlah akhir tetapi awal lain. Itu datang dari adopsi awal
+Anda, laporan bug, kontribusi bahasa, dan permintaan yang dipikirkan dengan
+baik yang membentuk roadmap. Terima kasih atas dukungan dan kontribusi Anda.
+
+Inilah cara untuk menjaga momentum:
+
+- Coba CLI terbaru: `npm install -g yamlresume@latest` atau `brew install
+  yamlresume` di macOS.
+- Gunakan mode dev untuk loop pengeditan berikutnya: `yamlresume dev
+  my-resume.yml`.
+- File issue dan ide: https://github.com/yamlresume/yamlresume/issues
+- Bergabunglah dengan diskusi: https://github.com/yamlresume/yamlresume/discussions
+
+Kami akan terus mengirimkan fitur pragmatis yang membuat penulisan curriculum
+vitae lebih tenang, lebih cepat, dan lebih baik—sambil tetap setia pada
+sumber kebenaran tunggal yang tervalidasi. Menuju tonggak berikutnya.

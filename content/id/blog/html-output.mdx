@@ -1,0 +1,328 @@
+---
+title: "YAMLResume v0.9: Output HTML"
+description:
+  "YAMLResume v0.9 memperkenalkan layout engine HTML, memungkinkan curriculum
+  vitae yang siap untuk web dan responsif langsung dari YAML."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-12-22
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+Kami dengan senang hati mengumumkan rilis
+[YAMLResume v0.9](https://github.com/yamlresume/yamlresume/releases/tag/v0.9.0),
+yang memperkenalkan dukungan kelas satu untuk [output
+HTML](/docs/layouts/html). Setelah [rilis v0.8](/blog/markdown-output) kami
+yang membawa [output Markdown](/docs/layouts/markdown), kami sekarang
+mengambil langkah besar lainnya dalam membuat data curriculum vitae Anda
+benar-benar serbaguna dan web-native.
+
+Dengan v0.9, Anda sekarang dapat mengkompilasi curriculum vitae YAML Anda
+langsung menjadi file HTML responsif yang berdiri sendiri—sempurna untuk
+di-host di situs web pribadi Anda, GitHub Pages, atau platform hosting statis
+apapun. Tidak perlu lagi mengonversi PDF atau mempertahankan versi web
+terpisah dari curriculum vitae Anda secara manual.
+
+Untuk saat ini kami hanya menyediakan satu template untuk layout HTML—template
+[calm](/docs/layouts/html/templates/calm), yang terinspirasi oleh template
+LaTeX moderncv. Ini menampilkan desain minimalis dengan pemisahan bagian yang
+jelas dan tata letak elegan yang dioptimalkan untuk tampilan web. Berikut
+pratinjaunya:
+
+![YAMLResume HTML Calm Template](/static/images/docs/layouts/html/templates/calm.webp)
+
+Demo cepat untuk cara menggunakan YAMLResume v0.9 untuk menghasilkan curriculum
+vitae HTML:
+
+[![YAMLResume v0.9: HTML Output](https://asciinema.org/a/763505.svg)](https://asciinema.org/a/763505)
+
+## Mengapa HTML?
+
+Ketika kami memperkenalkan arsitektur [multiple layouts](/docs/layouts) di v0.8,
+kami membayangkan dunia di mana `resume.yml` tunggal Anda dapat di-render ke
+format apa pun yang Anda butuhkan. Kami mulai dengan
+[LaTeX/PDF](/docs/layouts/latex) untuk aplikasi profesional dan
+[Markdown](/docs/layouts/markdown) untuk interoperabilitas dan workflow LLM.
+Sekarang, HTML melengkapi tiga format esensial curriculum vitae.
+
+HTML menawarkan keuntungan unik:
+
+**Web-Native**: HTML adalah bahasa web. Curriculum vitae Anda menjadi warga
+kelas satu di internet, bukan hanya dokumen yang harus Anda sematkan atau
+konversikan.
+
+**Responsive Design**: Berbeda dengan PDF yang memerlukan cubitan dan zoom
+perangkat mobile, curriculum vitae HTML beradaptasi dengan mulus ke ukuran
+layar apa pun—dari monitor desktop hingga smartphone.
+
+**SEO-Friendly**: Mesin telusur dapat mengindeks curriculum vitae HTML Anda,
+menjadikan keterampilan dan pengalaman Anda dapat ditemukan. Ini tidak
+mungkin dilakukan dengan curriculum vitae PDF saja.
+
+**Interaktif**: HTML mengaktifkan tautan yang dapat diklik, scrolling halus,
+dan elemen interaktif lainnya yang meningkatkan pengalaman pengguna di luar
+dokumen statis.
+
+**Zero Dependencies**: Output HTML adalah file yang sepenuhnya berdiri sendiri
+dengan CSS inline. Letakkan di mana saja—S3, Netlify, GitHub Pages—dan itu
+hanya berfungsi.
+
+## Memulai
+
+Jika Anda telah menginstal `yamlresume` (versi 0.9.0 atau lebih tinggi),
+menambahkan output HTML ke curriculum vitae Anda semudah memperbarui konfigurasi
+layouts Anda.
+
+### Langkah 1: Perbarui Konfigurasi Curriculum Vitae Anda
+
+Tambahkan layout HTML ke `resume.yml` Anda:
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    template: moderncv-banking
+    typography:
+      fontSize: 11pt
+  - engine: markdown
+  - engine: html        #[! code highlight]
+    template: calm      #[! code highlight]
+    typography:         #[! code highlight]
+      fontSize: 16px    #[! code highlight]
+```
+
+Mesin HTML mendukung kustomisasi [tipografi](/docs/layouts/html#typography)
+yang dapat disesuaikan dengan ukuran font dari 14px hingga 20px. Template
+`calm` default terinspirasi oleh paket LaTeX `moderncv` yang populer,
+menyediakan tampilan yang bersih dan profesional.
+
+### Langkah 2: Bangun Curriculum Vitae Anda
+
+Jalankan perintah build:
+
+```console
+$ yamlresume build my-resume.yml
+✔ Generated resume tex file successfully: my-resume.tex
+◐ Generating resume pdf file with command: xelatex -halt-on-error my-resume.tex...
+✔ Generated resume pdf file successfully: my-resume.pdf
+✔ Generated resume markdown file successfully: my-resume.md
+✔ Generated resume html file successfully: my-resume.html
+```
+
+Itu saja! Sekarang Anda memiliki tiga file output dari satu sumber kebenaran.
+
+## Template Calm
+
+Rilis awal mencakup template `calm`, tata letak yang dirancang dengan cermat
+yang menyeimbangkan profesionalisme dengan keterbacaan. Template ini
+menampilkan:
+
+- **Tipografi Bersih**: Ukuran font dan line height yang dioptimalkan untuk
+  layar dan cetak.
+- **Tata Letak Responsif**: Secara otomatis beradaptasi dari layar desktop
+  lebar hingga layar mobile sempit.
+- **HTML Semantik**: Menggunakan elemen semantik HTML5 yang tepat untuk
+  aksesibilitas dan SEO yang lebih baik.
+- **Cetak-Friendly**: Meskipun dirancang untuk web, template menyertakan gaya
+  cetak sehingga terlihat bagus saat disimpan sebagai PDF dari browser.
+
+Filosofi desain template calm mencerminkan estetika template LaTeX
+moderncv—modern, bersih, dan berfokus pada konten.
+
+## Fitur Layout HTML
+
+### Kustomisasi Tipografi
+
+Mesin HTML saat ini mendukung kustomisasi ukuran font:
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    template: calm
+    typography:
+      fontSize: 16px  # Range: 14px to 20px
+```
+
+Penyesuaian ukuran font mempengaruhi seluruh dokumen secara proporsional,
+mempertahankan hierarki visual dan keterbacaan. Kami memilih rentang 14px
+hingga 20px berdasarkan praktik terbaik tipografi web—memastikan
+keterbacaan tanpa mengorbankan desain.
+
+### Output yang Berdiri Sendiri
+
+File HTML yang dihasilkan sepenuhnya berdiri sendiri. Semua gaya CSS
+di-inline, meaning Anda tidak perlu khawatir tentang stylesheet eksternal,
+tautan CDN, atau dependensi yang hilang. Unggah file `.html` tunggal di mana
+saja dan itu akan dirender dengan sempurna.
+
+### Sesuai Standar
+
+Output HTML mengikuti standar web modern:
+
+- Markup HTML5 yang valid
+- CSS untuk styling dan desain responsif
+- Encoding UTF-8 untuk dukungan karakter internasional
+- Elemen semantik (`<header>`, `<section>`) untuk struktur yang lebih baik
+
+## Kasus Penggunaan
+
+### Situs Web Pribadi
+
+Host curriculum vitae Anda sebagai halaman `/resume` atau `/cv` di domain
+pribadi Anda. Karena file HTML statis, itu memuat instan dan tidak memerlukan
+infrastruktur backend.
+
+```console
+$ yamlresume build resume.yml
+$ cp resume.html ~/my-website/public/cv/index.html
+$ git add . && git commit -m "Update CV"
+$ git push
+```
+
+Curriculum vitae Anda yang diperbarui sekarang langsung tersedia.
+
+### GitHub Pages
+
+Gabungkan YAMLResume dengan GitHub Actions untuk secara otomatis
+mempublikasikan curriculum vitae Anda ke GitHub Pages setiap kali Anda
+memperbarui `resume.yml` Anda:
+
+```yaml
+name: Deploy Resume
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install YAMLResume
+        run: npm install -g yamlresume
+      - name: Build Resume
+        run: yamlresume build --no-pdf -o public resume.yml
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+```
+
+### Portofolio Responsif
+
+Sematkan curriculum vitae Anda langsung ke portofolio Anda. Karena HTML
+berdiri sendiri, Anda bahkan dapat iframe atau mengekstrak gaya untuk
+integrasi yang lebih dalam.
+
+### Berbagi Cepat
+
+Kirimkan file HTML atau bagikan melalui Dropbox/Google Drive. Penerima dapat
+membukanya di browser mana pun tanpa memerlukan pembaca PDF atau perangkat
+lunak khusus.
+
+## Arsitektur Teknis
+
+[Renderer HTML](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/html/renderer.ts)
+dibangun dengan standar teknik yang ketat sama dengan mesin LaTeX/Markdown
+kami. Di baliknya:
+
+1. **Type-Safe Rendering**: Renderer ditulis dalam TypeScript dengan
+   keamanan tipe penuh melalui [Zod schemas](/docs/compiler/schema/zod).
+
+2. **Sistem Template**: Template modular dan dapat diperluas. Meskipun kami
+   mengirim dengan `calm` untuk saat ini, arsitektur mendukung banyak
+   template. Template masa depan dapat ditambahkan dengan mudah.
+
+3. **Metodologi CSS**: Kami menggunakan kombinasi CSS Reset (berdasarkan
+   modern-normalize) dan gaya template yang di-scoped untuk memastikan
+   rendering konsisten di seluruh browser.
+
+4. **Penanganan Escape**: Semua konten [di-escape HTML dengan
+   benar](https://github.com/yamlresume/yamlresume/blob/v0.9.1/packages/core/src/utils/string.ts#L34-L44)
+   untuk mencegah kerentanan injeksi dan memastikan karakter khusus
+   dirender dengan benar.
+
+5. **Pengujian Komprehensif**: Renderer HTML mencakup lebih dari 1.000 baris
+   [kasus
+   uji](https://github.com/yamlresume/yamlresume/blob/v0.9.1/packages/core/src/renderer/html/renderer.test.ts)
+   yang mencapai 100% cakupan pengujian dan menjamin renderer berfungsi
+   seperti yang diharapkan.
+
+## Perbandingan: LaTeX vs Markdown vs HTML
+
+Mari kita lihat bagaimana ketiga mesin dibandingkan:
+
+| Fitur           | LaTeX (PDF)      | Markdown           | HTML               |
+| ----------------- | ---------------- | ------------------ | ------------------ |
+| **Kasus Penggunaan**      | Lamaran Pekerjaan | AI/LLM, konten   | Web hosting        |
+| **Pemformatan**    | Pixel-perfect    | Minimal            | Responsif         |
+| **Portabilitas**   | Universal        | Universal          | Web-native         |
+| **Kustomisasi** | Extensive        | Limited            | Growing            |
+| **Ukuran File**     | ~50-200 KB       | ~5-20 KB           | ~20-50 KB          |
+| **Dependensi**  | LaTeX toolchain  | None               | None               |
+| **Interaktif**   | No               | No                 | Yes                |
+| **SEO**           | No               | Saat diterbitkan     | Yes                |
+| **Responsif**    | No               | Depends on renderer| Yes                |
+
+Setiap mesin unggul di domainnya. Keindahan arsitektur YAMLResume adalah
+Anda tidak harus memilih—hasilkan ketiganya dari file sumber yang sama dan
+gunakan masing-masing di mana paling cocok.
+
+## Apa Selanjutnya?
+
+Mesin HTML v0.9 telah menetapkan fondasi yang solid, tetapi kami memiliki
+rencana ambisius untuk peningkatan masa depan:
+
+### Template Lainnya
+
+Kami akan menambahkan template tambahan dengan estetika desain
+yang berbeda—minimalis, kreatif, korporat, dll. Ingin berkontribusi pada
+template? Lihat [panduan kontribusi](/docs/contributing) kami.
+
+### Kustomisasi yang Diperluas
+
+Rilis masa depan akan memperluas opsi tipografi untuk menyertakan keluarga
+font, skema warna, dan kontrol Spacing, memberi Anda lebih banyak kontrol
+atas presentasi visual.
+
+### Mode Gelap
+
+Dukungan mode gelap bawaan menggunakan variabel CSS dan kueri media
+`prefers-color-scheme`.
+
+### Peningkatan Aksesibilitas
+
+Meskipun implementasi saat ini menggunakan HTML semantik, kami berencana
+untuk menambahkan label ARIA komprehensif dan dukungan keyboard navigation
+untuk membuat curriculum vitae dapat diakses oleh semua pengguna.
+
+## Kesimpulan
+
+YAMLResume v0.9 membawa dukungan layout HTML, melengkapi trilogi format
+output inti. Sekarang, dari file `resume.yml` tunggal, Anda dapat
+menghasilkan:
+
+- PDF profesional melalui LaTeX untuk lamaran pekerjaan
+- File Markdown yang bersih untuk LLM dan workflow konten
+- Halaman HTML responsif untuk web hosting dan portofolio online
+
+Rilis ini memperkuat komitmen kami pada filosofi "Resume as Code": tulis
+sekali, render di mana saja. Data curriculum vitae Anda tetap menjadi sumber
+kebenaran tunggal, dan output hanyalah tampilan berbeda yang dioptimalkan
+untuk konteks yang berbeda.
+
+Kami mengundang Anda untuk meningkatkan ke v0.9 dan mengalami fleksibilitas
+curriculum vitae web-native:
+
+```console
+$ npm install -g yamlresume@latest
+$ pnpm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ bun add -g yamlresume@latest
+$ brew install yamlresume
+```
+
+Memiliki umpan balik atau ide untuk template baru? Bergabunglah dengan
+diskusi di [GitHub](https://github.com/yamlresume/yamlresume/discussions) atau
+hubungi kami di [X/Twitter](https://x.com/xiaohanyu1988). Kami tidak sabar
+untuk melihat bagaimana Anda menggunakan layout HTML dalam workflow Anda!

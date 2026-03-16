@@ -1,0 +1,521 @@
+---
+title: Tipe
+---
+
+Dokumen ini menguraikan tipe TypeScript yang mendefinisikan struktur resume
+dengan YAMLResume. Sebagai proyek TypeScript, YAMLResume menggunakan
+pengetikan statis untuk memastikan konsistensi data. File ini memberikan gambaran umum tentang struktur
+data inti yang digunakan untuk merepresentasikan informasi resume, termasuk detail pribadi,
+pendidikan, pengalaman, keterampilan, dan lainnya.
+
+Anda dapat memeriksa
+[types/index.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/types/index.ts)
+untuk sumber kebenaran detail.
+
+Memahami tipe-tipe ini sangat penting bagi kontributor dan pengembang yang ingin
+menyesuaikan atau memperluas fungsionalitas YAMLResume.
+
+Dokumen ini serve sebagai referensi definitif bagi pengguna yang ingin membuat
+YAMLResume yang valid, mengklarifikasi perbedaan antara kolom opsional dan wajib.
+Untuk menjamin kompilasi berhasil dalam YAMLResume, resume minimal harus
+memasukkan kolom esensial berikut:
+
+- `content.basics.name`
+- `education[number].area`
+- `education[number].degree`
+- `education[number].institution`
+- `education[number].startDate`
+
+Jadi secara teoritis resume minimum terlihat seperti berikut:
+
+```yml lineNumbers
+content:
+  basics:
+    name: Xiao Hanyu
+  education:
+    - area: Computer Science and Technology
+      degree: Bachelor
+      institution: Zhejiang University
+      startDate: Sep, 2007
+```
+
+## Resume
+
+Mendefinisikan struktur resume keseluruhan, termasuk konten dan tata letak.
+
+| Kolom      | Tipe                          | Wajib | Deskripsi                                          |
+| --------- | ----------------------------- | -------- | ---------------------------------------------------- |
+| `content` | [`Content`](#content)         | ✅       | Mendefinisikan struktur untuk seluruh konten resume. |
+| `layouts?` | [`Layouts`](#layouts)        | ⬜       | Mendefinisikan konfigurasi tata letak keseluruhan.            |
+| `locale?` | [`Locale`](#locale)           | ⬜       | Mendefinisikan konfigurasi locale keseluruhan.            |
+
+Berikut adalah diagram tingkat tinggi dari struktur resume:
+
+<Mermaid chart='
+ flowchart LR
+   A[Resume]
+   B[Layouts]
+   C[Content]
+   D[Locale]
+
+ subgraph Layouts
+ direction TB
+ B1[LatexLayout]
+ B2[MarkdownLayout]
+ B3[HtmlLayout]
+ end
+
+ subgraph Content
+ direction TB
+ C1[basics]
+ C2["education[]"]
+ C3[location]
+ C4[profiles]
+ C5["work[]"]
+ C6["skills[]"]
+ C7["languages[]"]
+ C8["..."]
+ end
+
+ A --> B
+ A --> C
+ A --> D
+ B --> B1
+ B --> B2
+ B --> B3
+ C --> C1
+ C --> C2
+ C --> C3
+ C --> C4
+ C --> C5
+ C --> C6
+ C --> C7
+ C --> C8
+ '/>
+
+### Content
+
+Mendefinisikan struktur untuk seluruh konten resume.
+
+| Kolom            | Tipe                                    | Wajib | Deskripsi                                                          |
+| --------------- | --------------------------------------- | -------- | -------------------------------------------------------------------- |
+| `basics`        | [`BasicsItem`](#basicsitem)             | ✅       | Mewakikan informasi inti pribadi dan kontak.                |
+| `education`     | [`EducationItem[]`](#educationitem)     | ✅       | Berisi koleksi pengalaman pendidikan.                    |
+| `awards?`       | [`AwardItem[]`](#awarditem)             | ⬜       | Berisi koleksi penghargaan dan pengakuan.                    |
+| `certificates?` | [`CertificateItem[]`](#certificateitem) | ⬜       | Berisi koleksi sertifikasi dan kredensial.             |
+| `interests?`    | [`InterestItem[]`](#interestitem)       | ⬜       | Berisi koleksi minat, hobi, atau aktivitas pribadi. |
+| `languages?`    | [`LanguageItem[]`](#languageitem)       | ⬜       | Berisi koleksi kemampuan bahasa.                     |
+| `location?`     | [`LocationItem`](#locationitem)         | ⬜       | Berisi informasi lokasi.                                       |
+| `projects?`     | [`ProjectItem[]`](#projectitem)         | ⬜       | Berisi koleksi proyek.                                   |
+| `profiles?`     | [`ProfileItem[]`](#profileitem)         | ⬜       | Berisi koleksi profil online.                            |
+| `publications?` | [`PublicationItem[]`](#publicationitem) | ⬜       | Berisi koleksi publikasi.                               |
+| `references?`   | [`ReferenceItem[]`](#referenceitem)     | ⬜       | Berisi koleksi referensi.                                 |
+| `skills?`       | [`SkillItem[]`](#skillitem)             | ⬜       | Berisi koleksi keterampilan.                                     |
+| `volunteer?`    | [`VolunteerItem[]`](#volunteeritem)     | ⬜       | Berisi koleksi pengalaman volunteers.                      |
+| `work?`         | [`WorkItem[]`](#workitem)               | ⬜       | Berisi koleksi pengalaman kerja dan riwayat pekerjaan.    |
+
+#### AwardItem
+
+Mewakikan satu penghargaan, kehormatan, atau pengakuan yang diterima.
+
+| Kolom       | Tipe     | Wajib | Deskripsi                                                 |
+| ---------- | -------- | -------- | ----------------------------------------------------------- |
+| `awarder`  | `string` | ✅       | Organisasi atau entitas yang memberikan penghargaan.             |
+| `title`    | `string` | ✅       | Nama atau judul penghargaan.                             |
+| `date?`    | `string` | ⬜       | Tanggal penghargaan diterima (misal "2020", "Oct 2020"). |
+| `summary?` | `string` | ⬜       | Deskripsi singkat atau detail tentang penghargaan.             |
+
+#### BasicsItem
+
+Mewakikan informasi inti pribadi dan kontak.
+
+| Kolom        | Tipe     | Wajib | Deskripsi                                                         |
+| ----------- | -------- | -------- | ------------------------------------------------------------------- |
+| `name`      | `string` | ✅       | Nama lengkap.                                                          |
+| `email?`    | `string` | ⬜       | Alamat email.                                                      |
+| `headline?` | `string` | ⬜       | Judul profesional singkat (misal "Software Engineer"). |
+| `phone?`    | `string` | ⬜       | Nomor telepon.                                                       |
+| `summary?`  | `string` | ⬜       | Ringkasan atau tujuan profesional.                      |
+| `url?`      | `string` | ⬜       | URL situs web atau portofolio pribadi.                                  |
+
+#### CertificateItem
+
+Mewakikan satu sertifikasi, kredensial, atau kualifikasi profesional.
+
+| Kolom     | Tipe     | Wajib | Deskripsi                                                       |
+| -------- | -------- | -------- | ----------------------------------------------------------------- |
+| `issuer` | `string` | ✅       | Organisasi yang menerbitkan sertifikat.                     |
+| `name`   | `string` | ✅       | Nama sertifikat.                                      |
+| `date?`  | `string` | ⬜       | Tanggal sertifikat diperoleh (misal "2021", "Nov 2021"). |
+| `url?`   | `string` | ⬜       | URL terkait sertifikat (misal link verifikasi).         |
+
+#### EducationItem
+
+Mewakikan satu pengalaman pendidikan atau program gelar.
+
+| Kolom          | Tipe                | Wajib | Deskripsi                                                            |
+| ------------- | ------------------- | -------- | ---------------------------------------------------------------------- |
+| `area`        | `string`            | ✅       | Area studi (misal "Computer Science").                              |
+| `degree`      | [`Degree`](#degree) | ✅       | Jenis gelar yang diperoleh.                                           |
+| `institution` | `string`            | ✅       | Nama institusi.                                               |
+| `startDate`   | `string`            | ✅       | Tanggal mulai studi (misal "2016", "Sep 2016").                        |
+| `courses?`    | `string[]`          | ⬜       | Daftar mata kuliah yang diambil.                                                 |
+| `endDate?`    | `string`            | ⬜       | Tanggal selesai studi (misal "2020", "May 2020"), kosong berarti "Present". |
+| `summary?`    | `string`            | ⬜       | Deskripsi pencapaian atau detail.                             |
+| `score?`      | `string`            | ⬜       | IPK atau nilai akademik.                                                 |
+| `url?`        | `string`            | ⬜       | URL terkait institusi atau gelar.                              |
+
+#### InterestItem
+
+Mewakikan satu minat, hobi, atau aktivitas pribadi.
+
+| Kolom        | Tipe       | Wajib | Deskripsi                                                     |
+| ----------- | ---------- | -------- | --------------------------------------------------------------- |
+| `name`      | `string`   | ✅       | Nama kategori minat (misal "Reading", "Photography"). |
+| `keywords?` | `string[]` | ⬜       | Kata kunci terkait minat.                               |
+
+#### LanguageItem
+
+Mewakikan satu item kemampuan bahasa.
+
+| Kolom        | Tipe                    | Wajib | Deskripsi                                                         |
+| ----------- | ----------------------- | -------- | ------------------------------------------------------------------- |
+| `fluency`   | [`Fluency`](#fluency)   | ✅       | Tingkat kemampuan bahasa.                           |
+| `language`  | [`Language`](#language) | ✅       | Bahasa.                                                       |
+| `keywords?` | `string[]`              | ⬜       | Kata kunci spesifik terkait kemampuan bahasa (misal "Translation"). |
+
+#### LocationItem
+
+Mewakikan informasi lokasi dan alamat.
+
+| Kolom          | Tipe                  | Wajib | Deskripsi                 |
+| ------------- | --------------------- | -------- | --------------------------- |
+| `city`        | `string`              | ✅       | Nama kota.                  |
+| `address?`    | `string`              | ⬜       | Alamat jalan.             |
+| `country?`    | [`Country`](#country) | ⬜       | Kode atau nama negara.       |
+| `postalCode?` | `string`              | ⬜       | Kode pos.         |
+| `region?`     | `string`              | ⬜       | Negara bagian, provinsi, atau wilayah. |
+
+#### ProfileItem
+
+Mewakikan satu profil online atau kehadiran media sosial.
+
+| Kolom       | Tipe                  | Wajib | Deskripsi                          |
+| ---------- | --------------------- | -------- | ------------------------------------ |
+| `network`  | [`Network`](#network) | ✅       | Nama jaringan atau platform. |
+| `username` | `string`              | ✅       | Username di platform.        |
+| `url?`     | `string`              | ⬜       | URL profil.              |
+
+#### ProjectItem
+
+Mewakikan satu proyek, karya portofolio, atau karya teknis.
+
+| Kolom           | Tipe       | Wajib | Deskripsi                                               |
+| -------------- | ---------- | -------- | --------------------------------------------------------- |
+| `name`         | `string`   | ✅       | Nama proyek.                                      |
+| `startDate`    | `string`   | ✅       | Tanggal mulai proyek (misal "2021", "Jan 2021").     |
+| `summary`      | `string`   | ✅       | Pencapaian detail untuk proyek.                 |
+| `description?` | `string`   | ⬜       | Deskripsi proyek.                               |
+| `endDate?`     | `string`   | ⬜       | Tanggal selesai proyek (misal "2022", "Jul 2022").       |
+| `keywords?`    | `string[]` | ⬜       | Kata kunci atau teknologi yang digunakan dalam proyek.             |
+| `url?`         | `string`   | ⬜       | URL terkait proyek (misal repositori, demo langsung). |
+
+#### PublicationItem
+
+Mewakikan satu publikasi, karya penelitian, atau makalah akademik.
+
+| Kolom           | Tipe     | Wajib | Deskripsi                                       |
+| -------------- | -------- | -------- | ------------------------------------------------- |
+| `name`         | `string` | ✅       | Nama atau judul publikasi.                 |
+| `publisher`    | `string` | ✅       | Penerbit karya.                            |
+| `releaseDate?` | `string` | ⬜       | Tanggal publikasi (misal "2023", "Mar 2023").   |
+| `summary?`     | `string` | ⬜       | Ringkasan atau abstrak publikasi.           |
+| `url?`         | `string` | ⬜       | URL terkait publikasi (misal DOI, link). |
+
+#### ReferenceItem
+
+Mewakikan satu referensi profesional atau rekomendasi.
+
+| Kolom            | Tipe     | Wajib | Deskripsi                                             |
+| --------------- | -------- | -------- | ------------------------------------------------------- |
+| `name`          | `string` | ✅       | Nama referensi.                                  |
+| `summary`       | `string` | ✅       | Catatan singkat tentang referensi.                       |
+| `email?`        | `string` | ⬜       | Alamat email referensi.                         |
+| `phone?`        | `string` | ⬜       | Nomor telepon referensi.                          |
+| `relationship?` | `string` | ⬜       | Hubungan dengan referensi (misal "Former Manager"). |
+
+#### SkillItem
+
+Mewakikan satu keterampilan, kompetensi, atau kemampuan teknis.
+
+| Kolom        | Tipe              | Wajib | Deskripsi                                             |
+| ----------- | ----------------- | -------- | ------------------------------------------------------- |
+| `level`     | [`Level`](#level) | ✅       | Tingkat keterampilan.                         |
+| `name`      | `string`          | ✅       | Nama keterampilan.                                      |
+| `keywords?` | `string[]`        | ⬜       | Kata kunci atau teknologi spesifik terkait keterampilan. |
+
+#### VolunteerItem
+
+Mewakikan satu pengalaman volunteer atau layanan komunitas.
+
+| Kolom           | Tipe     | Wajib | Deskripsi                                                  |
+| -------------- | -------- | -------- | ------------------------------------------------------------ |
+| `organization` | `string` | ✅       | Nama organisasi.                                    |
+| `position`     | `string` | ✅       | Peran atau posisi yang diemban.                                       |
+| `startDate`    | `string` | ✅       | Tanggal mulai volunteer (misal "2019", "Jun 2019"). |
+| `summary`      | `string` | ✅       | Ringkasan tanggung jawab atau pencapaian.                 |
+| `endDate?`     | `string` | ⬜       | Tanggal selesai volunteer (misal "2020", "Dec 2020").   |
+| `url?`         | `string` | ⬜       | URL terkait organisasi atau pekerjaan.                     |
+
+#### WorkItem
+
+Mewakikan satu pengalaman kerja atau posisi pekerjaan.
+
+| Kolom        | Tipe       | Wajib | Deskripsi                                          |
+| ----------- | ---------- | -------- | ---------------------------------------------------- |
+| `name`      | `string`   | ✅       | Nama perusahaan atau pemberi kerja.                     |
+| `position`  | `string`   | ✅       | Judul pekerjaan atau posisi yang diemban.                          |
+| `startDate` | `string`   | ✅       | Tanggal mulai pekerjaan (misal "2021", "Apr 2021"). |
+| `summary`   | `string`   | ✅       | Ringkasan tanggung jawab dan pencapaian.     |
+| `endDate?`  | `string`   | ⬜       | Tanggal selesai pekerjaan (misal "2023", "Aug 2023").   |
+| `keywords?` | `string[]` | ⬜       | Kata kunci terkait peran atau teknologi yang digunakan.   |
+| `url?`      | `string`   | ⬜       | URL terkait perusahaan atau pekerjaan.                  |
+
+### Locale
+
+Mendefinisikan pengaturan locale untuk internasionalisasi dan lokalisasi.
+
+| Kolom        | Tipe                                | Wajib | Deskripsi                                                      |
+| ----------- | ----------------------------------- | -------- | ---------------------------------------------------------------- |
+| `language?` | [`LocaleLanguage`](#localelanguage) | ⬜       | Bahasa yang dipilih untuk konten resume dan istilah template. |
+
+### Layouts
+
+Array item tata letak yang mendukung berbagai format output.
+
+| Kolom        | Tipe                                                                 | Wajib | Deskripsi                            |
+| ----------- | -------------------------------------------------------------------- | -------- | -------------------------------------- |
+| `layouts[]` | [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜       | Beberapa konfigurasi tata letak output. |
+
+#### Common Layout Types
+
+##### Margins
+
+Mendefinisikan pengaturan margin halaman untuk tata letak dokumen.
+
+| Kolom      | Tipe     | Wajib | Deskripsi                          |
+| --------- | -------- | -------- | ------------------------------------ |
+| `top?`    | `string` | ⬜       | Nilai margin atas (misal "2.5cm").    |
+| `bottom?` | `string` | ⬜       | Nilai margin bawah (misal "2.5cm"). |
+| `left?`   | `string` | ⬜       | Nilai margin kiri (misal "1.5cm").   |
+| `right?`  | `string` | ⬜       | Nilai margin kanan (misal "1.5cm").  |
+
+##### Sections
+
+Mendefinisikan pengaturan alias bagian untuk menyesuaikan nama bagian.
+
+| Kolom       | Tipe                        | Wajib | Deskripsi                                                        |
+| ---------- | --------------------------- | -------- | ------------------------------------------------------------------ |
+| `aliases?` | `Record<SectionID, string>` | ⬜       | Alias kustom untuk nama bagian, mengoverride terjemahan default. |
+| `order?`   | `OrderableSectionID[]`      | ⬜       | Urutan kustom untuk bagian dalam output akhir.                     |
+
+#### HtmlLayout
+
+Konfigurasi tata letak HTML.
+
+| Kolom          | Tipe                                  | Wajib | Deskripsi                              |
+| ------------- | ------------------------------------- | -------- | ---------------------------------------- |
+| `engine`      | `'html'`                              | ✅       | Mesin untuk menghasilkan resume.       |
+| `advanced?`   | [`HtmlAdvanced`](#htmladvanced)       | ⬜       | Mendefinisikan opsi konfigurasi lanjutan.  |
+| `sections?`   | [`Sections`](#sections)               | ⬜       | Mendefinisikan pengaturan kustomisasi bagian.  |
+| `template?`   | [`HtmlTemplate`](#htmltemplate)       | ⬜       | Mendefinisikan template yang dipilih.           |
+| `typography?` | [`HtmlTypography`](#htmltypography)   | ⬜       | Mendefinisikan pengaturan tipografi untuk pemformatan dokumen. |
+
+##### HtmlAdvanced
+
+Mendefinisikan opsi konfigurasi HTML lanjutan.
+
+| Kolom         | Tipe      | Wajib | Deskripsi                                          |
+| ------------ | --------- | -------- | ---------------------------------------------------- |
+| `showIcons?` | `boolean` | ⬜       | Apakah menampilkan ikon untuk tautan dan profil.     |
+| `title?`     | `string`  | ⬜       | Judul kustom untuk dokumen HTML.                  |
+| `footer?`    | `string`  | ⬜       | Footer kustom untuk dokumen HTML.                 |
+| `description?`| `string` | ⬜       | Meta deskripsi untuk dokumen HTML.              |
+| `keywords?`   | `string` | ⬜       | Meta kata kunci untuk dokumen HTML.                 |
+
+##### HtmlTypography
+
+Mendefinisikan pengaturan tipografi HTML untuk pemformatan dokumen.
+
+| Kolom        | Tipe                              | Wajib | Deskripsi                      |
+| ----------- | --------------------------------- | -------- | -------------------------------- |
+| `fontSize?` | [`HtmlFontSize`](#htmlfontsize)   | ⬜       | Ukuran font dasar untuk dokumen. |
+| `fontFamily?` | `string`                        | ⬜       | Daftar keluarga font yang dipisahkan koma. |
+
+#### LatexLayout
+
+Konfigurasi tata letak LaTeX.
+
+| Kolom          | Tipe                                    | Wajib | Deskripsi                                           |
+| ------------- | --------------------------------------- | -------- | ----------------------------------------------------- |
+| `engine`      | `'latex'`                               | ✅       | Mesin untuk menghasilkan resume.                    |
+| `advanced?`   | [`LatexAdvanced`](#latexadvanced)       | ⬜       | Mendefinisikan opsi konfigurasi lanjutan.               |
+| `page?`       | [`LatexPage`](#latexpage)               | ⬜       | Mendefinisikan pengaturan tingkat halaman untuk presentasi dokumen.|
+| `sections?`   | [`Sections`](#sections)                 | ⬜       | Mendefinisikan pengaturan kustomisasi bagian.               |
+| `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜       | Mendefinisikan template yang dipilih.                        |
+| `typography?` | [`LatexTypography`](#latextypography)   | ⬜       | Mendefinisikan pengaturan tipografi untuk pemformatan dokumen.  |
+
+##### LatexAdvanced
+
+Mendefinisikan opsi konfigurasi latex lanjutan.
+
+| Kolom         | Tipe                                 | Wajib | Deskripsi                                          |
+| ------------ | ------------------------------------ | -------- | ---------------------------------------------------- |
+| `fontspec?`  | `{ numbers?: LatexFontspecNumbers }` | ⬜       | Konfigurasi paket fontspec LaTeX.               |
+| `showIcons?` | `boolean`                            | ⬜       | Apakah menampilkan ikon untuk tautan dan profil.     |
+
+##### LatexPage
+
+Mendefinisikan pengaturan tingkat halaman latex untuk presentasi dokumen.
+
+| Kolom               | Tipe                   | Wajib | Deskripsi                          |
+| ------------------ | ---------------------- | -------- | ------------------------------------ |
+| `margins?`         | [`Margins`](#margins)  | ⬜       | Mendefinisikan pengaturan margin halaman.        |
+| `paperSize?`       | [`PaperSize`](#papersize) | ⬜       | Mendefinisikan ukuran kertas.              |
+| `showPageNumbers?` | `boolean`              | ⬜       | Apakah menampilkan nomor halaman.     |
+
+##### LatexTypography
+
+Mendefinisikan pengaturan tipografi latex untuk pemformatan dokumen.
+
+| Kolom        | Tipe                                | Wajib | Deskripsi                      |
+| ----------- | ----------------------------------- | -------- | -------------------------------- |
+| `fontSize?` | [`LatexFontSize`](#latexfontsize)   | ⬜       | Ukuran font dasar untuk dokumen. |
+| `fontFamily?` | `string`                          | ⬜       | Daftar keluarga font yang dipisahkan koma. |
+| `links?`    | `{ underline?: boolean }`           | ⬜       | Pengaturan gaya tautan.           |
+
+#### MarkdownLayout
+
+Konfigurasi tata letak Markdown.
+
+| Kolom        | Tipe                    | Wajib | Deskripsi                             |
+| ----------- | ----------------------- | -------- | --------------------------------------- |
+| `engine`    | `'markdown'`            | ✅       | Mesin untuk menghasilkan resume.      |
+| `sections?` | [`Sections`](#sections) | ⬜       | Mendefinisikan pengaturan kustomisasi bagian. |
+
+## Enum Tipe
+
+### Content Enum
+
+#### Country
+
+Union type untuk semua negara dan wilayah possible di dunia.
+
+#### Degree
+
+Union type untuk semua gelar possible.
+
+- `Associate`
+- `Bachelor`
+- `Diploma`
+- `Doctor`
+- `High School`
+- `Master`
+- `Middle School`
+
+#### Fluency
+
+Union type untuk semua level kefasihan bahasa possible.
+
+- `Elementary Proficiency`
+- `Full Professional Proficiency`
+- `Limited Working Proficiency`
+- `Minimum Professional Proficiency`
+- `Native or Bilingual Proficiency`
+
+#### Language
+
+Union type untuk semua bahasa yang didukung.
+
+#### Level
+
+Union type untuk semua level keterampilan possible.
+
+- `Advanced`
+- `Beginner`
+- `Expert`
+- `Intermediate`
+- `Master`
+- `Novice`
+
+#### Network
+
+Union type untuk semua opsi jaringan sosial possible.
+
+### Layout Enum
+
+#### HtmlFontSize
+
+Union type untuk semua opsi ukuran font HTML possible.
+
+Mesin HTML mendukung ukuran font dari 14px hingga 20px:
+
+- `14px`, `15px`, `16px` (default), `17px`, `18px`, `19px`, `20px`
+
+#### HtmlTemplate
+
+Union type untuk semua opsi template HTML possible.
+
+Lihat juga: [templates](/docs/layouts/html/templates)
+
+- `calm`
+
+#### LatexFontSize
+
+Union type untuk semua opsi ukuran font LaTeX possible.
+
+Untuk sekarang hanya 3 opsi yang didukung:
+
+- `10pt` - ukuran font 10pt (default)
+- `11pt` - ukuran font 11pt
+- `12pt` - ukuran font 12pt
+
+#### LatexFontspecNumbers
+
+Union type untuk semua opsi nomor fontspec latex possible.
+
+- `Auto` - memungkinkan gaya ditentukan secara otomatis berdasarkan
+  `LocaleLanguage` yang dipilih (default)
+- `Lining` - angka lining standar (default untuk bahasa CJK)
+- `OldStyle` - angka gaya lama dengan ketinggian bervariasi (default untuk bahasa Latin)
+
+#### LatexTemplate
+
+Union type untuk semua opsi template LaTeX possible.
+
+Lihat juga: [templates](/docs/layouts/latex/templates)
+
+- `moderncv-banking`
+- `moderncv-casual`
+- `moderncv-classic`
+
+#### PaperSize
+
+Union type untuk semua opsi ukuran kertas LaTeX possible.
+
+- `a4` (default)
+- `letter`
+
+### Locale Enum
+
+#### LocaleLanguage
+
+Union type untuk semua bahasa locale possible.
+
+Lihat juga: [multi-languages](/docs/locale)
+
+- `en`
+- `es`
+- `zh-hans`
+- `zh-hant-hk`
+- `zh-hant-tw`

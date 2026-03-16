@@ -1,0 +1,273 @@
+---
+title: "YAMLResume v0.5: Resume Compiler"
+description: >-
+  Memperkenalkan YAMLResume v0.5, resume compiler yang membawa kekuatan
+  static analysis ke curriculum vitae Anda.
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-07-16
+---
+
+Kami dengan sukacita mengumumkan rilis [YAMLResume
+v0.5](https://github.com/yamlresume/yamlresume/releases/tag/v0.8.1), tonggak
+penting yang mengubah YAMLResume dari alat sederhana menjadi **resume compiler**
+yang lengkap. Rilis ini memperkenalkan arsitektur yang robust, validasi schema
+yang powerful, dan CLI yang ditingkatkan untuk membuat proses pembuatan
+curriculum vitae Anda lebih reliable, efisien, dan bebas error.
+
+## Masalah dengan Penulisan Curriculum Vitae Manual
+
+Menyusun curriculum vitae sering merupakan proses yang membosankan dan rentan
+terhadap kesalahan. Baik Anda menggunakan pengolah kata atau bahasa markup
+sederhana, mudah untuk membuat kesalahan:
+
+- Typos di kolom kunci seperti `degree` atau `fluency`.
+- Alamat email atau URL yang formatnya salah.
+- Format tanggal yang tidak konsisten.
+- Lupa kolom yang diperlukan untuk lamaran pekerjaan.
+
+Kesalahan kecil ini dapat menyebabkan siklus editing, generating, dan
+proofreading yang frustrasi. Masalah utamanya adalah kurangnya sistem untuk
+menerapkan struktur dan memvalidasi data _sebelum_ dokumen akhir dihasilkan.
+
+## Solusi: Resume Compiler
+
+Terinspirasi oleh compiler bahasa pemrograman, [YAMLResume
+v0.5](https://github.com/yamlresume/yamlresume/releases/tag/v0.8.1)
+memperkenalkan arsitektur compiler baru yang memperlakukan file sumber
+curriculum vitae Anda (dalam YAML) sebagai kode. "Kode" ini kemudian diproses
+melalui pipeline untuk menghasilkan PDF yang halus dan profesional.
+
+<Mermaid chart="
+  flowchart TD
+    subgraph Input
+      A[resume.yaml]
+    end
+    subgraph Compiler
+      B[Parsing & Validation]
+      C[Transformation]
+      D[Code Generation]
+    end
+    subgraph Output
+      E[resume.pdf]
+    end
+
+    A --> B --> C --> D --> E
+"/>
+
+Arsitektur baru ini mendefinisikan dua komponen inti:
+
+1.  [Format data standar](/docs/compiler/types) untuk curriculum vitae,
+    bersama dengan [schema](/docs/compiler/schema) untuk memvalidasi data.
+2.  Compiler referensi yang mengimplementasikan format data dan validasi schema.
+
+Pendekatan ini membawa beberapa keunggulan kunci:
+
+- **Pemisahan Kepentingan**: Anda fokus sepenuhnya pada **konten**
+  curriculum vitae Anda. Compiler menangani **presentasi**—layout, tipografi,
+  dan pemformatan.
+- **Deteksi Error Dini**: Compiler memvalidasi curriculum vitae Anda terhadap
+  schema yang telah ditentukan, menangkap error secara instan dengan umpan
+  balik yang jelas dan dapat ditindaklanjuti.
+- **Konsistensi dan Keandalan**: Dengan menerapkan struktur standar,
+  compiler memastikan data curriculum vitae Anda selalu konsisten dan siap untuk
+  template apa pun.
+
+### Lihat Beraksi
+
+Sebagai contoh, pertimbangkan curriculum vitae berikut dengan beberapa error
+umum:
+
+```yml lineNumbers title="invalid-resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp # [!code highlight]
+    url: https//ppresume.com/gallery # [!code highlight]
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S # [!code highlight]
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D # [!code highlight]
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layout:
+  typography:
+    fontSize: 13pt # [!code highlight]
+```
+
+Kami memiliki beberapa masalah:
+
+1. `email: hi@pp` - format tidak valid
+2. `url: https//ppresume.com/gallery` - bagian protokol kehilangan `:`
+3. `city: S` - terlalu pendek, seharusnya 2 karakter atau lebih, apakah ada
+   kota di dunia whose name is only 1 character?
+4. `- D` - kursus pertama terlalu pendek, seharusnya 2 karakter atau lebih
+5. `fontSize: 13pt` - seharusnya 10pt, 11pt atau 12pt, 13pt terlalu besar
+   dan tidak masuk akal dalam skenario penulisan curriculum vitae
+
+Error-error ini, yang mungkin sebelumnya tidak terdeteksi, sekarang tertangkap
+secara instan. Anda dapat menjalankan `yamlresume validate my-resume.yml` atau
+hanya `yamlresume build my-resume.yml`. YAMLResume akan melaporkan semua
+masalah dalam [format error gaya clang](https://clang.llvm.org/diagnostics.html)
+yang banyak diadopsi, memungkinkan Anda untuk memperbaikinya sebelum PDF akhir
+dihasilkan.
+
+![YAMLResume Validate Command Output](/static/images/blog/yamlresume-validate.webp)
+
+## Di Jantung Compiler: Schema
+
+Landasan dari rilis baru ini adalah **[YAMLResume
+Schema](/docs/compiler/schema)**. Kami menyediakan schema komprehensif yang
+mendefinisikan struktur dan aturan untuk setiap bagian data dalam curriculum
+vitae Anda.
+
+Kami menggunakan dua teknologi powerful untuk ini:
+
+- **[Zod](https://zod.dev)**: Untuk validasi runtime dalam compiler,
+  menyediakan jaring keamanan yang robust dan pesan error yang detail.
+- **[JSON Schema](https://json-schema.org)**: Untuk integrasi editor dan IDE.
+  Dengan menambahkan satu baris ke file YAML Anda, Anda membuka
+  auto-completion, dokumentasi properti inline on-hover, dan validasi format
+  real-time langsung di editor Anda.
+
+Jika Anda memiliki curriculum vitae yang dibuat sebelum v0.5, Anda masih dapat
+menggunakan keuntungan dari validasi schema. Cukup tambahkan baris berikut ke
+file curriculum vitae Anda dan instal [YAML Language
+Server](https://github.com/redhat-developer/yaml-language-server) untuk
+editor Anda.
+
+```yml lineNumbers
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+```
+
+Integrasi ini menyediakan serangkaian keuntungan yang secara dramatis
+meningkatkan pengalaman penulisan curriculum vitae:
+
+### Auto-Completion
+
+Habiskan lebih sedikit waktu untuk mencari nama kolom. Editor Anda akan
+menyarankan properti yang valid saat Anda mengetik, memastikan Anda
+menggunakan kolom yang benar setiap saat.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-auto-completion.mp4"
+/>
+
+### Validasi Format Real-time
+
+Tangkap error saat terjadi. Validasi schema memberikan umpan balik instan
+untuk segalanya mulai dari typo sederhana hingga format email yang salah atau
+kolom wajib yang hilang.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-field-error.mp4"
+/>
+
+Jika kunci yang diperlukan hilang, peringatan ditingkatkan ke objek
+induknya, membuatnya mudah untuk ditemukan dan diperbaiki.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-object-error.mp4"
+/>
+
+### Dokumentasi Properti Inline
+
+Tidak perlu menebak-nebak apa yang dilakukan kolom. Arahkan mouse ke
+properti mana pun untuk mendapatkan dokumentasi instan yang menjelaskan
+tujuannya, format yang diharapkan, dan nilai yang diizinkan.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-property-docs.mp4"
+/>
+
+## CLI yang Ditingkatkan
+
+CLI [yamlresume](/docs/cli) sekarang lebih powerful dari sebelumnya.
+Perintah [build](/docs/cli#build) menjalankan seluruh pipeline compiler, dari
+validasi hingga pembuatan PDF, sementara perintah [validate](/docs/cli#validate)
+baru memungkinkan Anda memeriksa curriculum vitae tanpa membangunnya.
+
+[![YAMLResume Compiler Demo](https://asciinema.org/a/728098.svg)](https://asciinema.org/a/728098)
+
+Workflow yang mulus ini mengubah proses pembuatan curriculum vitae Anda,
+menjadikannya lebih efisien dan reliable sambil meminimalkan error.
+
+## Apa Ini Berarti untuk Anda
+
+Dengan [YAMLResume
+v0.5](https://github.com/yamlresume/yamlresume/releases/tag/v0.8.1), Anda
+dapat:
+
+- **Menulis dengan Percaya Diri**: Ketahui bahwa struktur curriculum vitae
+  Anda sound dan data Anda valid.
+- **Hemat Waktu**: Tangkap error lebih awal dan eliminate siklus
+  proofreading yang membosankan.
+- **Tetap Fleksibel**: Beralih antara template curriculum vitae yang berbeda
+  dengan mudah.
+- **Nikmati Pengalaman Editing yang Lebih Baik**: Dapatkan umpan balik
+  real-time dan auto-completion di editor favorit Anda.
+
+Kami mengundang Anda untuk mengalami kekuatan dan kesederhanaan compiler
+YAMLResume baru:
+
+- **Pasang atau perbarui** ke versi terbaru: `npm install -g
+  yamlresume@latest`
+- **Baca [Dokumentasi Compiler](/docs/compiler)** baru untuk mempelajari
+  lebih lanjut tentang arsitektur dan schema.
+- **Bergabunglah dengan komunitas kami** di
+  [GitHub](https://github.com/yamlresume/yamlresume/discussions) untuk
+  bertanya, melaporkan masalah, atau berkontribusi.
+
+Kami percaya rilis ini menandai era baru untuk pembuatan curriculum vitae,
+membawa kekuatan dan reliability compiler untuk semua orang. Kami tidak sabar
+untuk melihat curriculum vitae amazing yang akan Anda bangun!
+
+Dan jangan lupa, Anda dapat mencoba compiler baru dengan [image
+Docker](/blog/yamlresume-docker) kami:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```

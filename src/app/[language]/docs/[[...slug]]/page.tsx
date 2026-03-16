@@ -103,6 +103,10 @@ export async function generateStaticParams() {
     .docs.generateParams()
     .map((p) => ({ ...p, language: 'es' }))
 
+  const idParams = getLocalizedSources('id')
+    .docs.generateParams()
+    .map((p) => ({ ...p, language: 'id' }))
+
   return [
     ...enParams,
     ...frParams,
@@ -110,6 +114,7 @@ export async function generateStaticParams() {
     ...zhCNParams,
     ...zhTWParams,
     ...esParams,
+    ...idParams,
   ]
 }
 

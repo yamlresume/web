@@ -1,0 +1,137 @@
+---
+title: yamlresume/action
+---
+
+[yamlresume/action](https://github.com/marketplace/actions/yamlresume) adalah GitHub Action untuk membangun resume profesional dari file YAML menggunakan YAMLResume CLI. Ini secara mulus mengintegrasikan YAMLResume ke dalam pipeline CI/CD Anda, memungkinkan Anda untuk memperlakukan resume Anda sebagai kode dan mengotomatiskan pembuatan PDF, LaTeX, HTML, dan Markdown secara langsung di GitHub.
+
+## Fitur
+
+- **Build Otomatis**: Bangun resume Anda secara otomatis pada setiap push atau pull request.
+- **Multiple Resumes**: Bangun beberapa resume (misalnya, dalam bahasa atau varian berbeda) dalam satu langkah workflow.
+- **Opsi yang Dapat Disesuaikan**: Lewati validasi skema atau pembuatan PDF jika diperlukan.
+- **Integrasi Workflow**: Mengeluarkan jalur file yang dihasilkan untuk digunakan dalam langkah selanjutnya.
+- **Upload Artifact**: Berfungsi secara mulus dengan `actions/upload-artifact` untuk menyimpan file yang dihasilkan.
+
+## Penggunaan
+
+### Penggunaan Dasar
+
+Bangun satu resume:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+```
+
+### Multiple Resumes
+
+Bangun beberapa resume menggunakan daftar yang dipisahkan baris baru:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+      resume-fr.yml
+```
+
+### Lewati Pembuatan PDF
+
+Hasilkan hanya file LaTeX (berguna untuk pipeline PDF kustom):
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-pdf: true
+```
+
+### Lewati Validasi
+
+Lewati validasi skema selama build:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-validate: true
+```
+
+### Contoh Workflow Lengkap
+
+Berikut adalah contoh lengkap dari workflow GitHub Actions yang membangun beberapa resume dan mengunggah PDF yang dihasilkan sebagai artifacts:
+
+```yaml title=".github/workflows/resume.yml"
+name: Build Resume
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build resumes
+        id: build
+        uses: yamlresume/action@v0.1.1
+        with:
+          resumes: |
+            resume-en.yml
+            resume-zh.yml
+          verbose: true
+
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: resumes
+          path: |
+            *.pdf
+            *.tex
+```
+
+## Input
+
+| Input         | Deskripsi                                                     | Wajib | Default   |
+| ------------- | ------------------------------------------------------------- | ----- | --------- |
+| `resumes`     | Daftar file YAML resume yang dipisahkan baris baru untuk dibuat | Ya    | -         |
+| `no-validate` | Lewati validasi skema                                          | Tidak | `false`   |
+| `no-pdf`      | Lewati pembuatan PDF (hasilkan hanya LaTeX)                    | Tidak | `false`   |
+| `verbose`     | Aktifkan output verbose                                        | Tidak | `false`   |
+| `version`     | Versi image Docker YAMLResume                                  | Tidak | `v0.11.2` |
+
+## Output
+
+Action ini menyediakan output berikut, yang merupakan daftar yang dipisahkan baris baru dari file yang dihasilkan:
+
+- `pdf-files`
+- `tex-files`
+- `html-files`
+- `md-files`
+
+### Menggunakan Output
+
+Anda dapat menggunakan output dalam langkah selanjutnya:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  id: build
+  with:
+    resumes: resume.yml
+
+- run: |
+    echo "Generated PDFs:"
+    echo "${{ steps.build.outputs.pdf-files }}"
+```
+
+## Persyaratan
+
+- **Runner**: Linux (Ubuntu direkomendasikan) - Docker diperlukan.
+- **Docker**: Harus tersedia pada runner (runner Ubuntu yang di-hosting GitHub menyertakan Docker secara default).

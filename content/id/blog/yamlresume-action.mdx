@@ -1,0 +1,153 @@
+---
+title: Otomatisasi Build Curriculum Vitae dengan YAMLResume GitHub Action
+description:
+  "Build dan deploy curriculum vitae Anda secara otomatis menggunakan
+  YAMLResume GitHub Action baru"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-03-12
+---
+
+Saya sangat senang mengumumkan [YAMLResume GitHub Action](https://github.com/marketplace/actions/yamlresume)
+resmi!
+
+Action baru ini membawa filosofi "Resume as Code" ke kesimpulannya yang
+alamiah dengan mengintegrasikan YAMLResume secara mulus ke pipeline CI/CD
+Anda.
+
+## Mengapa Menggunakan GitHub Action?
+
+YAMLResume telah [ diadopsi oleh orang-orang di GitHub](https://github.com/yamlresume/yamlresume/discussions/50)
+dari seluruh dunia. Masing-masing telah menemukan workflow mereka sendiri
+untuk membangun dan men-deploy curriculum vitae mereka—beberapa menggunakan
+Makefile, beberapa menggunakan shell script, beberapa menggunakan GitHub
+Actions, beberapa mempublikasikan ke GitHub Pages, dll.
+
+Misalnya:
+
+- [@drzero42](https://github.com/drzero42) menggunakan [docker dan
+  gh-relase](https://github.com/drzero42/resume/blob/main/.github/workflows/build-resume.yaml)
+  untuk membangun dan menghosting curriculum vitae
+- [@mortezaPRK](https://github.com/mortezaPRK) menggunakan
+  [Makefile](https://github.com/mortezaPRK/mortezaPRK.github.io/blob/main/Makefile)
+- [@shamrt](https://github.com/shamrt) menginstal [npm, yamlresume dan
+  TinyTeX di GitHub
+  runner](https://github.com/shamrt/yamlresume/blob/main/.github/workflows/deploy.yml)
+  dan menggunakan shell script untuk membangun dan mempublikasikan curriculum
+  vitae )
+
+Sudah saatnya bagi kami untuk menyediakan cara terpadu untuk melakukan ini.
+
+Dengan `yamlresume/action`, Anda dapat mengotomatiskan ini sepenuhnya. Dengan
+mendorong `resume.yml` yang diperbarui ke GitHub, action dapat secara otomatis:
+
+1. Memvalidasi curriculum vitae Anda terhadap schema YAMLResume.
+2. Membangun output PDF, LaTeX, HTML, dan Markdown.
+3. Melampirkan PDF yang dihasilkan ke GitHub Release, mengunggahnya sebagai
+   artifact workflow, atau mempublikasikannya ke GitHub Pages.
+
+Secara teori Anda tidak pernah harus membangun curriculum vitae Anda secara
+lokal lagi.
+
+## Quick Start
+
+Menggunakan action sangat straightforward. Berikut adalah contoh minimal
+`.github/workflows/build.yml` yang membangun curriculum vitae Anda dan
+mengunggah PDF yang dihasilkan sebagai artifact GitHub Actions:
+
+```yaml
+name: Build Resume
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build resume
+        id: build
+        uses: yamlresume/action@v0.1.1
+        with:
+          resumes: resume.yml
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume
+          path: ${{ steps.build.outputs.pdf-files }}
+```
+
+## Fitur Utama
+
+GitHub Action bukan hanya wrapper sederhana; itu hadir dengan fitur powerful
+yang dirancang untuk manajemen curriculum vitae dunia nyata:
+
+### Banyak Curriculum Vitae Sekaligus
+
+Banyak pengguna memelihara beberapa versi curriculum vitae mereka (misalnya,
+versi Inggris dan versi terjemahan, atau versi Frontend vs Backend). Anda
+dapat membangun semuanya secara bersamaan dengan meneruskan daftar yang
+dipisahkan newline:
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+```
+
+### Build yang Dapat Disesuaikan
+
+Jika Anda memiliki pipeline generasi PDF kustom dan hanya membutuhkan output
+LaTeX, atau jika Anda ingin melewati validasi schema untuk draft cepat,
+action menyediakan input `no-pdf` dan `no-validate` untuk menyesuaikan
+workflow dengan kebutuhan Anda.
+
+#### Lewati Generasi PDF
+
+Hanya hasilkan file LaTeX (berguna untuk pipeline PDF kustom):
+
+```yaml
+- uses: yamlresume/action@v0.1.1
+  with:
+    resumes: resume.yml
+    no-pdf: true
+```
+
+#### Lewati Validasi
+
+Lewati validasi schema selama build:
+
+```yaml
+- uses: yamlresume/action@v0.1.2
+  with:
+    resumes: resume.yml
+    no-validate: true
+```
+
+## Di Balik Layar
+
+`yamlresume/action` memanfaatkan [Image Docker YAMLResume](https://hub.docker.com/r/yamlresume/yamlresume)
+yang [kami perkenalkan sebelumnya](/blog/yamlresume-docker).
+
+Karena distribusi LaTeX terkenal sangat besar dan memakan waktu untuk
+dipasang (sering memakan waktu 20–30 menit di GitHub runner), membangun
+curriculum vitae langsung di runner akan secara drastis memperlambat pipeline
+CI Anda. Dengan menggunakan image Docker pra-paket kami, action menarik
+lingkungan yang diperlukan dalam sebagian kecil waktu, menghasilkan build
+yang cepat, reliable, dan konsisten.
+
+## Coba!
+
+Siap mengotomasi karir Anda? Lihat [repositori
+yamlresume/action](https://github.com/marketplace/actions/yamlresume) untuk
+memulai, atau baca [Dokumentasi Ekosistem GitHub Action](/docs/ecosystem/action)
+untuk opsi konfigurasi dan contoh penggunaan lanjutan.
+
+Selamat mengotomasi!

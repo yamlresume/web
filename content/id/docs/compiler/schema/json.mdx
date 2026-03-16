@@ -1,0 +1,151 @@
+---
+title: JSON Schema
+---
+
+## Ringkasan
+
+YAMLResume menyediakan [JSON Schema](https://json-schema.org) resmi untuk
+memvalidasi data resume.
+
+JSON Schema resmi terbaru dihosting di:
+[https://yamlresume.com/schema.json](https://yamlresume.com/schema.json).
+Namun, jika Anda ingin versi yang lebih ringkas untuk IDE/editor Anda, Anda juga dapat menggunakan
+versi canary
+[schema.json](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/schema.json)
+dari repo GitHub kami.
+
+Sementara itu, seiring evolusi YAMLResume, JSON Schema resmi akan diperbarui
+secara konstan, oleh karena itu kami juga menyediakan semua versi arsip JSON Schema di:
+`https://yamlresume.com/schemas/<version>/schema.json`.
+
+Untuk saat ini kami memiliki versi arsip untuk:
+
+- [v0.11.0](/schemas/v0.11.0/schema.json)
+- [v0.10.1](/schemas/v0.10.1/schema.json)
+- [v0.10.0](/schemas/v0.10.0/schema.json)
+- [v0.9.1](/schemas/v0.9.1/schema.json)
+- [v0.8.0](/schemas/v0.8.0/schema.json)
+- [v0.7.5](/schemas/v0.7.5/schema.json)
+- [v0.7.0](/schemas/v0.7.0/schema.json)
+- [v0.6.0](/schemas/v0.6.0/schema.json)
+- [v0.5.1](/schemas/v0.5.1/schema.json)
+
+## Apa itu JSON Schema?
+
+[JSON Schema](https://json-schema.org) adalah format berbasis JSON untuk mendefinisikan
+struktur data JSON. Ini adalah alat yang powerful untuk memvalidasi dan mendokumentasikan
+data JSON.
+
+JSON Schema memungkinkan Anda menentukan struktur yang diharapkan, tipe, dan batasan
+data JSON Anda. Dengan JSON Schema, Anda dapat mendefinisikan properti mana yang
+diperlukan, tipe nilai apa yang diperbolehkan (seperti string, number, array, atau
+object), dan bahkan mengatur aturan untuk format nilai (seperti alamat email atau URL).
+
+Dengan menggunakan JSON Schema, pengembang dan alat dapat secara otomatis memvalidasi data JSON
+untuk memastikan cocok dengan format yang diharapkan sebelum diproses. Ini membantu
+menangkap kesalahan lebih awal, meningkatkan kualitas data, dan mengaktifkan fitur seperti auto-completion
+dan dokumentasi inline di editor kode modern.
+
+JSON Schema didukung secara luas dan dapat digunakan untuk file konfigurasi, payload API,
+dan dalam kasus YAMLResume, untuk memvalidasi data resume untuk memastikan
+konsistensi dan kebenaran.
+
+## Manfaat
+
+Mengintegrasikan JSON Schema YAMLResume ke IDE/editor Anda saat menulis resume
+memberikan beberapa manfaat:
+
+- **Auto Completion:** Saat Anda mulai mengetik, IDE/editor Anda akan menyarankan
+  properti dan tipe yang diharapkan, membantu Anda menulis resume lebih cepat dan
+  dengan lebih sedikit kesalahan.
+
+- **Format Validation:** IDE/editor Anda akan menyoroti kesalahan format
+  (seperti tanggal atau URL yang tidak valid) saat Anda mengetik, mencegah Anda memasukkan
+  informasi yang salah.
+
+- **Property Docs:** Dapatkan dokumentasi inline untuk setiap properti,
+  menjelaskan tujuan, nilai yang diperbolehkan, dan persyaratan format khusus.
+
+### Auto Completion
+
+Semua [tipe enum](/docs/compiler/types#enum-types) akan di-auto complete saat mengetik. Anda hanya perlu mengetik
+beberapa huruf pertama dari opsi dan IDE/editor akan menyarankan daftar opsi yang valid,
+kemudian Anda dapat menggunakan tombol panah atas/bawah untuk memilih yang benar.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-auto-completion.mp4"
+/>
+
+### Format Validation
+
+Setiap pasangan key-value akan divalidasi secara real-time terhadap skema yang telah ditentukan.
+IDE/editor Anda akan memperingatkan dengan pesan kesalahan yang tepat untuk membantu menghindari
+kesalahan tingkat rendah seperti format email yang salah, opsi gelar yang tidak valid, typo
+dalam level kefasihan bahasa, dll.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-field-error.mp4"
+/>
+
+Dan jika key yang diperlukan hilang, pesan peringatan akan naik ke parent
+object secara default, sehingga Anda dapat dengan mudah menemukan key yang hilang.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-object-error.mp4"
+/>
+
+### Property Docs
+
+Terakhir tetapi tidak kalah penting, Anda dapat mendapatkan dokumentasi inline untuk setiap properti,
+menjelaskan tujuan, nilai yang diperbolehkan, dan persyaratan format khusus.
+Anda dapat mengarahkan mouse ke property key atau nilai untuk melihat dokumentasi.
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-property-docs.mp4"
+/>
+
+## Cara Menggunakan JSON Schema?
+
+Anda perlu menginstal
+[yaml-language-server](https://github.com/redhat-developer/yaml-language-server)
+untuk menggunakan JSON schema YAMLResume untuk resume Anda. Tergantung pada IDE/editor Anda,
+Anda mungkin perlu menginstal
+[ekstensi](https://github.com/redhat-developer/yaml-language-server?tab=readme-ov-file#clients) yang berbeda.
+
+Setelah terinstal, Anda perlu menambahkan baris berikut di bagian atas file resume Anda:
+
+```
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+```
+
+Lalu Anda dapat menikmati fitur [auto-completion](#auto-completion), [validasi
+format](#format-validation), dan [dokumentasi properti](#property-docs) semuanya
+di ujung jari Anda.
+
+## Teknik
+
+Di balik layar, JSON schema YAMLResume dihasilkan dengan bantuan [Zod
+v4](https://zod.dev/json-schema), yang merupakan library validasi skema TypeScript-first yang awesome.
+
+Kami mendefinisikan skema di
+[schema/resume.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/resume.ts),
+kemudian menghasilkan JSON schema dalam [test
+case](https://github.com/yamlresume/yamlresume/blob/99de/packages/core/src/schema/resume.test.ts#L272-L277).
+
+Bukankah inikeren?

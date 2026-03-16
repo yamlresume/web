@@ -1,0 +1,457 @@
+---
+title: Instalasi
+---
+
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+YAMLResume adalah alat Node.js, di baliknya, ini mengubah resume Anda dari format YAML ke kode LaTeX dan kemudian memanggil mesin typesetting LaTeX untuk mengompilasi kode LaTeX yang dihasilkan ke PDF. Selain itu, untuk mendapatkan output PDF yang optimal, kami juga menyarankan untuk menginstal beberapa font. Singkatnya, Anda perlu menginstal hal-hal berikut untuk memulai dengan YAMLResume:
+
+- Node.js
+- [paket yamlresume](https://www.npmjs.com/package/yamlresume)
+- mesin typesetting
+- [opsional] beberapa font
+
+Kedengarannya sedikit rumit, tapi jangan khawatir, kami siap membantu Anda.
+
+## Pengguna Docker
+
+Jika Anda pengguna docker, Anda beruntung, kami memiliki [image docker](https://hub.docker.com/r/yamlresume/yamlresume) untuk Anda. Image ini memiliki semuanya sudah dikemas, termasuk:
+
+- [Node.js](/docs/installation#nodejs)
+- [yamlresume CLI](/docs/installation#yamlresume)
+- [XeTeX](/docs/installation#xetex)
+- [beberapa font yang direkomendasikan](/docs/installation#font)
+
+Anda dapat membuat resume baru secara instan dengan perintah berikut:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+<Callout title="Bagaimana Docker ini bekerja?">
+Perintah ini akan membuat resume baru bernama `my-resume.yml` di direktori Anda saat ini. Langkah-langkahnya:
+
+1. `docker run ... yamlresume/yamlresume` - menjalankan container baru dari image `yamlresume/yamlresume`, jika image ini tidak ada di mesin lokal Anda, itu akan menariknya dari [Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume).
+2. `--rm` - secara otomatis menghapus container saat keluar
+3. `-v $(pwd):/home/yamlresume` - mount direktori saat ini (`$(pwd)`) ke container di `/home/yamlresume`, memungkinkan container mengakses file lokal
+4. `new my-resume.yml` - menjalankan sub-command [new](/docs/cli#new) dari yamlresume CLI untuk membuat resume baru dengan nama file `my-resume.yml`
+
+</Callout>
+
+Edit `my-resume.yml` sesuai kebutuhan lalu build resume dari yaml ke pdf:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+Pada dasarnya, Anda dapat memanggil semua sub-command `yamlresume` [CLI](/cli) dengan cara ini—cukup tambahkan sub-command setelah `yamlresume/yamlresume` lalu ikuti panduan penggunaan yang sesuai.
+
+Flag `-v` di sini cukup penting karena mount direktori saat ini (`$(pwd)`) ke container di `/home/yamlresume`, memungkinkan sinkronisasi file dua arah antara direktori lokal dan container.
+
+<Callout title="Github Mirror">
+Jika Anda kesulitan menarik image `yamlresume/yamlresume` dari [Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume), jangan khawatir, kami memiliki [mirror github](https://github.com/yamlresume/yamlresume/pkgs/container/yamlresume) untuk Anda.
+
+Anda dapat mendapatkan [image ghcr](https://github.com/yamlresume/yamlresume/pkgs/container/yamlresume) dengan:
+
+```sh
+docker pull ghcr.io/yamlresume/yamlresume
+```
+
+</Callout>
+
+### Masalah Izin
+
+Terkadang Anda mungkin mengalami [masalah izin](https://github.com/yamlresume/yamlresume/issues/24) saat menjalankan container Docker karena image `yamlresume/yamlresume` dibangun dengan instruksi `USER yamlresume`, yang secara default berjalan dengan lebih sedikit hak istimewa.
+
+Ada dua cara untuk menyelesaikan masalah ini:
+
+1. Gunakan username/group ID host Anda untuk menjalankan container:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume -u $(id -u):$(id -g) yamlresume/yamlresume new my-resume.yml
+```
+
+Ini adalah cara yang direkomendasikan untuk menjalankan container. Selama pengguna host Anda memiliki akses ke direktori saat ini, Anda dapat menjalankan container dengan username/group ID host Anda.
+
+2. Gunakan `-u root` untuk menjalankan container dengan akses root:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume -u root yamlresume/yamlresume new my-resume.yml
+```
+
+Ini adalah cara yang paling tidak direkomendasikan untuk menjalankan container. Ini tidak direkomendasikan karena dapat menyebabkan masalah keamanan, jadi Anda hanya boleh melakukan ini jika Anda yakin dengan apa yang Anda lakukan.
+
+Terakhir tetapi tidak kalah penting, jika Anda menjalankan container `yamlresume` Docker di GitHub Actions, akses root mungkin diperlukan sesuai dengan [dokumentasi GitHub](https://docs.github.com/en/actions/reference/runners/github-hosted-runners#docker-container-filesystem):
+
+> Catatan: GitHub Actions harus dijalankan oleh pengguna Docker default (root). Pastikan Dockerfile Anda tidak menyetel instruksi USER, jika tidak Anda tidak akan dapat mengakses GITHUB_WORKSPACE.
+
+Ref: [Memahami Instruksi USER Docker](https://www.docker.com/blog/understanding-the-docker-user-instruction/)
+
+## Pengguna Non-Docker
+
+Jika Anda bukan pengguna docker, silakan ikuti petunjuk yang sesuai di bawah ini untuk menginstal yamlresume CLI dan semua dependensi yang diperlukan berdasarkan sistem operasi Anda. Pada saat penulisan, panduan kami mencakup macOS, Windows, dan beberapa distro Linux (Ubuntu dan distro berbasis RHEL).
+
+### Node.js
+
+Node.js 20.x atau yang lebih baru diperlukan.
+
+<Callout title="Mengapa Node.js 20.x atau yang lebih baru?">
+Secara teori `yamlresume` seharusnya bekerja dengan Node.js 18, namun sangat disarankan untuk menggunakan Node.js 20 atau yang lebih baru karena Node.js 18 LTS dijadwalkan mencapai End-of-Life pada [30 April 2025](https://nodejs.org/en/blog/release/v18.20.8).
+</Callout>
+
+Mungkin ada lebih dari 100+ metode untuk menginstal Node.js pada OS yang berbeda, Anda dapat melihat [Unduhan Node.js resmi](https://nodejs.org/en/download) untuk memulai.
+
+Kami merekomendasikan menggunakan [package manager](https://nodejs.org/en/download/package-manager/all) untuk menginstal Node.js.
+
+<Tabs groupId='node.js' persist items={['macOS', 'Windows', 'Linux']}>
+<Tab value="macOS">
+Untuk pengguna [Homebrew](https://brew.sh/):
+
+```sh
+brew install node
+```
+
+</Tab>
+
+<Tab value="Windows">
+Untuk pengguna [Chocolatey](https://chocolatey.org/):
+
+```sh
+choco install nodejs.install
+```
+
+</Tab>
+
+<Tab value="Linux">
+<Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
+<Tab value="Ubuntu">
+Untuk Ubuntu 24.10 atau yang lebih baru:
+
+```sh
+sudo apt install nodejs
+```
+
+Untuk Ubuntu 24.04 atau yang lebih lama, silakan lihat [NodeSource](https://downloads.nodesource.com/#debian) untuk mendapatkan Node.js 20 atau yang lebih baru.
+
+</Tab>
+
+<Tab value="RHEL">
+Untuk linux berbasis RHEL seperti Fedora, AlmaLinux, Rocky Linux, dll:
+
+```sh
+sudo dnf install nodejs
+```
+
+</Tab>
+</Tabs>
+</Tab>
+</Tabs>
+
+### YAMLResume CLI
+
+Menginstal `yamlresume` sangat mudah. Anda dapat menginstalnya menggunakan manajer paket Node.js favorit Anda:
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']}>
+```console tab="npm"
+npm install -g yamlresume
+```
+
+```console tab="pnpm"
+pnpm add -g yamlresume
+```
+
+```console tab="yarn"
+yarn global add yamlresume
+```
+
+```console tab="bun"
+bun add -g yamlresume
+```
+
+</Tabs>
+
+Jika Anda pengguna macOS dan menggunakan [Homebrew](https://brew.sh/), Anda juga dapat menginstal [yamlresume melalui Homebrew](http://formulae.brew.sh/formula/yamlresume):
+
+```sh
+brew install yamlresume
+```
+
+Verifikasi bahwa `yamlresume` berhasil terinstal:
+
+```console
+$ yamlresume help
+Usage: yamlresume [options] [command]
+
+YAMLResume — Resume as Code in YAML
+
+ __   __ _    __  __ _     ____
+ \ \ / // \  |  \/  | |   |  _ \ ___  ___ _   _ ___  ___
+  \ V // _ \ | |\/| | |   | |_) / _ \/ __| | | / _ \/ _ \ / _ \
+   | |/ ___ \| |  | | |___|  _ <  __/\__ \ |_| | | | | | |  __/
+   |_/_/   \_\_|  |_|_____|_| \_\___||___/\____|_| |_| |_|\___|
+
+
+Options:
+  -V, --version                  output the version number
+  -v, --verbose                  verbose output
+  -h, --help                     display help for command
+
+Commands:
+  new [filename]                 create a new resume
+  build [options] <resume-path>  build a resume to LaTeX and PDF
+  dev [options] <resume-path>    build a resume on file changes (watch mode)
+  languages                      i18n and l10n support
+  templates                      manage resume templates
+  validate <resume-path>         validate a resume against the YAMLResume schema
+  help [command]                 display help for command
+```
+
+Jika Anda hanya ingin mencoba `yamlresume` tanpa menginstalnya, Anda dapat menggunakan `npx`, `pnpx` atau alat serupa lainnya:
+
+<Tabs groupId='package-manager' persist items={['npx', 'yarn', 'pnpx', 'bun']}>
+```console tab="npx"
+npx yamlresume help
+```
+```console tab="yarn"
+yarn dlx yamlresume help
+```
+
+```console tab="pnpx"
+pnpx yamlresume help
+```
+
+```console tab="bun"
+bun exec yamlresume help
+```
+
+</Tabs>
+
+### Mesin Typesetting
+
+Di balik layar, `yamlresume` melakukan pekerjaan sebagai kompiler, mengurai resume YAML ke [AST](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/ast.ts) dan kemudian [mentransformasi AST ke kode LaTeX](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/codegen/latex.ts).
+
+Sebagai kompiler mini, `yamlresume` bergantung pada mesin typesetting untuk mengompilasi kode LaTeX yang dihasilkan ke PDF. Oleh karena itu, Anda harus terlebih dahulu menginstal mesin typesetting sebelum Anda dapat menggunakan `yamlresume` untuk menghasilkan resume PDF.
+
+YAMLResume saat ini mendukung dua mesin typesetting: [XeTeX](#xetex) dan [Tectonic](#tectonic).
+
+<Callout title="Mengapa LaTeX?">
+Pada saat penulisan, [LaTeX](https://www.latex-project.org/) masih menjadi pilihan terbaik mesin typesetting untuk menghasilkan PDF yang terlihat profesional. [Typst](https://typst.app/) adalah alternatif yang bagus, tetapi masih dalam tahap awal dan dukungan CJK-nya belum matang dan siap produksi. Sebelumnya saya menulis posting [On Typesetting Engines](https://blog.ppresume.com/posts/on-typesetting-engines) yang menjelaskan mengapa saya memilih LaTeX daripada mesin typesetting lain ketika saya mendirikan [PPResume](https://ppresume.com).
+</Callout>
+
+#### XeTeX
+
+[XeTeX](https://tug.org/xetex/) adalah mesin typesetting [TeX](https://en.wikipedia.org/wiki/TeX) menggunakan [Unicode](https://en.wikipedia.org/wiki/Unicode) dan mendukung teknologi font modern seperti [OpenType](https://en.wikipedia.org/wiki/OpenType), [Graphite](https://fonts.adobe.com/fonts/graphite) dan [Apple Advanced Typography (AAT)](https://en.wikipedia.org/wiki/Apple_Advanced_Typography).
+
+Ini adalah mesin typesetting yang sangat matang dan stabil yang banyak digunakan oleh banyak orang akademis dan ilmiah.
+
+<Tabs groupId='os' persist items={['macOS', 'Windows', 'Linux']}>
+<Tab value="macOS">
+Cara termudah adalah menginstal distribusi **MacTeX**.
+
+Ini termasuk XeTeX bersama dengan banyak program dan paket TeX lainnya. Anda dapat mengunduhnya dari [situs web MacTeX](https://www.tug.org/mactex/) atau menginstalnya melalui homebrew:
+
+```sh
+# install the full mactex
+brew install mactex
+# or if you want to save some disk space
+brew install mactex-no-gui
+```
+MacTeX adalah distribusi yang besar, jadi mungkin perlu beberapa waktu untuk mengunduh dan menginstal dan membutuhkan ruang disk sekitar 5GB. Jika Anda ingin distribusi yang lebih kecil, Anda dapat menginstal **BasicTeX**, yang merupakan versi minimal dari MacTeX:
+
+```sh
+brew install --cask basictex
+```
+
+Setelah menginstal BasicTeX, Anda mungkin perlu menginstal paket tambahan secara manual menggunakan perintah `tlmgr`:
+
+```sh
+sudo tlmgr update --self
+sudo tlmgr install moderncv fontawesome5 collection-fontsrecommended
+```
+
+Anda dapat melihat blog Kostiantyn Lysenko, [YAMLResume - Resume as Code](https://lysenko.dev/posts/2025-01-yamlresume-resume-as-code/) untuk lebih detail tentang basictex dengan YAMLResume.
+
+[Distribusi MiKTeX](https://miktex.org) adalah pilihan populer untuk Windows dan termasuk XeTeX. Anda dapat mengunduhnya dari [situs web MiKTeX](https://miktex.org/download).
+
+Atau, Anda dapat menginstal **TeX Live** untuk Windows, yang juga termasuk XeTeX. Unduh dari [situs web TeX Live](https://www.tug.org/texlive/acquire-netinstall.html).
+
+</Tab>
+
+<Tab value="Linux">
+Sebagian besar distribusi Linux menawarkan TeX Live melalui package manager mereka. XeTeX biasanya termasuk dalam paket `texlive-xetex` atau paket meta `texlive-full` yang lebih besar.
+
+<Tabs items={['Ubuntu', 'RHEL']}>
+<Tab value="Ubuntu">
+Untuk Ubuntu, jika jaringan Anda baik dan Anda memiliki ruang disk sekitar 10GB, Anda dapat menginstal distribusi texlive lengkap:
+
+```sh
+sudo apt install texlive-full
+```
+
+Atau, Anda dapat menginstal paket minimum yang diperlukan:
+
+```sh
+sudo apt install texlive-xetex texlive-fonts-extra texlive-lang-all
+```
+
+</Tab>
+
+<Tab value="RHEL">
+Untuk linux berbasis RHEL seperti Fedora, AlmaLinux, Rocky Linux, Anda dapat menginstal distribusi TeX Live lengkap jika Anda memiliki ruang disk dan jaringan yang baik:
+
+```sh
+sudo dnf install texlive-scheme-full
+```
+
+Atau Anda dapat menginstal paket minimum yang diperlukan:
+
+```sh
+sudo dnf install \
+  texlive-scheme-medium \
+  texlive-moderncv \
+  texlive-ctex \
+  texlive-academicons
+```
+
+</Tab>
+</Tabs>
+
+Atau, Anda selalu dapat menginstal TeX Live langsung dari [situs web TeX Live](https://www.tug.org/texlive/acquire-netinstall.html) menggunakan penginstalnya, yang berfungsi di berbagai distribusi Linux.
+
+</Tab>
+</Tabs>
+
+Verifikasi bahwa XeTeX berhasil terinstal:
+
+```console
+$ xetex -v
+XeTeX 3.141592653-2.6-0.999994 (TeX Live 2022)
+kpathsea version 6.3.4
+Copyright 2022 SIL International, Jonathan Kew and Khaled Hosny.
+There is NO warranty.  Redistribution of this software is
+covered by the terms of both the XeTeX copyright and
+the Lesser GNU General Public License.
+For more information about these matters, see the file
+named COPYING and the XeTeX source.
+Primary author of XeTeX: Jonathan Kew.
+Compiled with ICU version 70.1; using 70.1
+Compiled with zlib version 1.2.11; using 1.2.11
+Compiled with FreeType2 version 2.11.1; using 2.11.1
+Compiled with Graphite2 version 1.3.14; using 1.3.14
+Compiled with HarfBuzz version 3.4.0; using 3.4.0
+Compiled with libpng version 1.6.37; using 1.6.37
+pplib version v2.05 less toxic i hope
+Using Mac OS X Core Text and Cocoa frameworks
+```
+
+#### Tectonic
+
+[Tectonic](https://tectonic-typesetting.github.io) adalah mesin [TeX](https://en.wikipedia.org/wiki/TeX)/[LaTeX](https://www.latex-project.org/) yang dimodenkan, lengkap, dan mandiri, didukung oleh [XeTeX](https://tug.org/xetex/) dan [TeXLive](https://www.tug.org/texlive/).
+
+Distribusi TeX Live lengkap biasanya membutuhkan ruang disk beberapa GB, sementara instalasi awal tectonic hanya membutuhkan 10+ MB. Ini secara otomatis mengunduh file dukungan, jadi Anda tidak perlu menginstal distribusi LaTeX lengkap. Saat Anda mulai menggunakan paket LaTeX baru, Tectonic cukup mengunduh file yang dibutuhkan dan melanjutkan pemrosesan.
+
+Tectonic menyediakan [panduan instalasi resmi](https://tectonic-typesetting.github.io/en-US/install.html), tetapi ini akan menempatkan tectonic di direktori tempat Anda menjalankan perintah instalasi, `yamlresume` membutuhkan perintah `tectonic` global di `$PATH` Anda, jadi Anda perlu mencari tahu itu dengan beberapa hacks shell sendiri.
+
+Jika Anda pengguna macOS, Anda ber karena Homebrew menyediakan paket prebuilt:
+
+```sh
+brew install tectonic
+```
+
+Berdasarkan pengalaman saya, tectonic masih memiliki beberapa masalah kompatibilitas minor dengan XeTeX resmi, jadi jika Anda tidak介意 dengan waktu unduh lama dari distribusi TeX Live lengkap, XeTeX masih menjadi pilihan yang direkomendasikan di sini.
+
+### Font
+
+#### Linux Libertine
+
+YAMLResume mengadopsi [Linux Libertine](https://www.dafont.com/linux-libertine.font) sebagai font default untuk karakter Latin. Sangat disarankan untuk menginstalnya untuk mendapatkan output PDF yang optimal.
+
+<Tabs groupId='font-os' persist items={['macOS', 'Windows', 'Linux']}>
+<Tab value="macOS">
+Untuk pengguna Homebrew:
+
+```sh
+brew install font-linux-libertine
+```
+
+Atau Anda dapat mengunduh versi terbaru [Linux Libertine](https://www.dafont.com/linux-libertine.font) dari situs web dan menginstal font dengan [Font Book](https://support.apple.com/en-gb/guide/font-book/fntbk1000/mac) macOS.
+
+</Tab>
+
+<Tab value="Windows">
+  Unduh versi terbaru [Linux Libertine](https://www.dafont.com/linux-libertine.font) dari situs web dan ekstrak arsip dan instal font.
+</Tab>
+
+<Tab value="Linux">
+<Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
+<Tab value="Ubuntu">
+Untuk pengguna Ubuntu, font Linux Libertine sudah termasuk dalam paket `texlive-fonts-extra`, namun jika Anda ingin menginstalnya secara manual, Anda dapat melakukannya dengan:
+
+```sh
+sudo apt install fonts-linuxlibertine
+```
+
+</Tab>
+
+<Tab value="RHEL">
+Untuk linux berbasis RHEL seperti Fedora, AlmaLinux, Rocky Linux, Anda dapat menginstal font Linux Libertine dengan:
+
+```sh
+sudo dnf install linux-libertine-fonts
+```
+
+</Tab>
+</Tabs>
+</Tab>
+</Tabs>
+
+#### Google Noto
+
+Jika Anda membutuhkan resume CJK, Anda juga perlu menginstal [font Google Noto](https://fonts.google.com/noto/) untuk [cakupan unicode terbaik](https://github.com/ppresume/community/issues/63).
+
+<Tabs groupId='os' persist items={['macOS', 'Windows', 'Linux']}>
+
+<Tab value='macOS'>
+Untuk pengguna Homebrew:
+
+```sh
+brew install font-noto-sans-cjk font-noto-serif-cjk
+```
+
+</Tab>
+
+<Tab value="Windows">
+  Unduh font Noto dan ikuti [panduan resmi](https://fonts.google.com/noto/use#use-noto-fonts) untuk menginstal di Windows.
+</Tab>
+
+<Tab value="Linux">
+<Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
+<Tab value="Ubuntu">
+Untuk pengguna Ubuntu:
+
+```sh
+sudo apt install fonts-noto-cjk fonts-noto-cjk-extra
+```
+
+</Tab>
+<Tab value="RHEL">
+Untuk linux berbasis RHEL seperti Fedora, AlmaLinux, Rocky Linux, Anda dapat menginstal font Noto dengan:
+
+```sh
+sudo dnf install google-noto-sans-cjk-fonts google-noto-serif-cjk-fonts
+```
+
+</Tab>
+</Tabs>
+</Tab>
+</Tabs>
+
+## Pemecahan Masalah
+
+Anda dapat [mengirim issue](https://github.com/yamlresume/yamlresume/issues/new) jika Anda kesulitan menginstal `yamlresume` atau dependensinya.
+
+Anda dapat mengaktifkan logging verbose dengan memberikan flag `--verbose` ke `yamlresume` atau subcommandnya.
+
+### Lelah?
+
+Jika Anda lelah dengan proses instalasi, Anda dapat mencoba [PPResume](https://ppresume.com), yang merupakan solusi builder resume komersial yang di-hosting yang membuka sumber YAMLResume.

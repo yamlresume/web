@@ -1,0 +1,221 @@
+---
+title: "YAMLResume v0.6: Kustomisasi Bagian"
+description: |
+  YAMLResume v0.6 memperkenalkan fitur alias bagian dan pengurutan ulang yang
+  semakin meningkatkan kemampuan i18n untuk mendukung bahasa yang belum didukung.
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2025-07-22
+---
+
+YAMLResume [v0.6](https://github.com/yamlresume/yamlresume/releases/tag/v0.6.0)
+hadir dengan dua fitur powerful untuk menyesuaikan struktur curriculum vitae
+Anda: [alias bagian](/docs/layouts/sections/aliases) dan [pengurutan ulang
+bagian](/docs/layouts/sections/reorder). Fitur-fitur ini memungkinkan Anda
+untuk mengganti nama judul bagian dan mengontrol urutan mereka di PDF akhir,
+memberikan Anda fleksibilitas lebih besar untuk menyesuaikan curriculum vitae
+Anda.
+
+Mari kita lihat cara kerjanya.
+
+## Alias Bagian
+
+Judul bagian default di YAMLResume (misalnya, `education`, `work`) secara
+otomatis [diterjemahkan](/docs/locale) berdasarkan [bahasa
+lokal](/docs/layouts#locale) yang Anda pilih. Namun, Anda mungkin lebih
+memilih judul yang berbeda. Misalnya, Anda mungkin ingin mengubah "Work"
+menjadi "Professional Experience" untuk bagian `work`.
+
+Untuk mendefinisikan alias, gunakan peta `layout.sections.aliases` di
+`resume.yml` Anda.
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:                               # [!code focus]
+  sections:                           # [!code focus]
+    aliases:                          # [!code focus]
+      work: Professional Experience   # [!code focus]
+      education: Academic Background  # [!code focus]
+      skills: Technical Skills        # [!code focus]
+```
+
+
+## Pengurutan Ulang Bagian
+
+Secara default, bagian dirender dalam [urutan
+standar](/docs/layouts/sections/reorder#default-section-order). Fitur
+`layout.sections.order` memungkinkan Anda mengubah urutan ini untuk
+menyorot informasi paling penting terlebih dahulu.
+
+Misalnya, untuk menempatkan bagian "Skills" dan "Projects" sebelum pengalaman
+"Work" Anda, Anda dapat mendefinisikan urutan seperti ini:
+
+```yml lineNumbers title="resume.yml"
+---
+content:
+  # ...
+
+layout:           #[!code focus]
+  sections:       #[!code focus]
+    order:        #[!code focus]
+      - skills    #[!code focus]
+      - projects  #[!code focus]
+      - work      #[!code focus]
+```
+
+Bagian dalam daftar `order` akan muncul terlebih dahulu, diikuti oleh bagian
+yang tersisa dalam urutan default mereka.
+
+## Menggabungkan Semuanya: Contoh Lengkap
+
+Mari kita buat curriculum vitae satu halaman yang menggunakan kedua fitur
+tersebut. Kami akan alias dan mengurutkan ulang beberapa bagian pada saat yang
+bersamaan.
+
+```yml lineNumbers title="resume.yml"
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+
+---
+
+layout:
+  sections:                          # [!code highlight]
+    aliases:                         # [!code highlight]
+      work: Professional Experience  # [!code highlight]
+      education: Academic Background # [!code highlight]
+      skills: Technical Skills       # [!code highlight]
+    order:                           # [!code highlight]
+      - basics                       # [!code highlight]
+      - work                         # [!code highlight]
+      - education                    # [!code highlight]
+      - skills                       # [!code highlight]
+  template: moderncv-banking
+  typography:
+    fontSize: 11pt
+
+content:
+  basics:
+    name: Jane Doe
+    headline: Senior Software Engineer
+    email: jane.doe@example.com
+    phone: "555-123-4567"
+    summary: |
+      A passionate and experienced software engineer with a proven track record
+      of designing, developing, and deploying robust web applications. Skilled
+      in both front-end and back-end development, with a keen eye for detail and
+      a dedication to writing clean, efficient code.
+  education:
+    - institution: Tech University
+      area: Software Engineering
+      degree: Master
+      startDate: 2018-09-01
+      endDate: 2020-06-01
+      summary: Specialized in distributed systems and cloud computing.
+    - institution: State University
+      area: Computer Science
+      degree: Bachelor
+      startDate: 2014-09-01
+      endDate: 2018-06-01
+      summary: |
+        - Graduated with honors.
+        - Focused on algorithms, data structures, and distributed systems.
+      courses:
+        - Data Structures & Algorithms
+        - Operating Systems
+        - Computer Networks
+        - Database Systems
+  work:
+    - name: Tech Solutions Inc.
+      position: Senior Software Engineer
+      startDate: 2020-07-01
+      summary: |
+        - Led the development of a new microservices-based architecture, improving system scalability and reliability.
+        - Mentored junior engineers, providing guidance on best practices and code quality.
+        - Optimized application performance, reducing API response times by 30%.
+    - name: Innovate Corp.
+      position: Software Engineer
+      startDate: 2018-07-01
+      endDate: 2020-06-30
+      summary: |
+        - Developed and maintained features for a large-scale e-commerce platform using React and Node.js.
+        - Collaborated with product managers and designers to deliver high-quality user experiences.
+        - Participated in on-call rotation to ensure application stability.
+    - name: Data Systems LLC
+      position: Software Engineer Intern
+      startDate: 2017-06-01
+      endDate: 2017-08-31
+      summary: |
+        - Assisted in the development of a data processing pipeline.
+        - Wrote unit tests to ensure code quality.
+        - Gained experience with Agile development methodologies.
+  skills:
+    - name: Programming Languages
+      level: Expert
+      keywords:
+        - JavaScript (ES6+)
+        - TypeScript
+        - Python
+        - Go
+    - name: Technologies & Frameworks
+      level: Advanced
+      keywords:
+        - React
+        - Node.js
+        - Express
+        - Docker
+        - Kubernetes
+        - PostgreSQL
+    - name: Developer Tools
+      level: Advanced
+      keywords:
+        - Git & GitHub
+        - Webpack
+        - Jest
+        - CircleCI
+  languages:
+    - language: English
+      fluency: Native or Bilingual Proficiency
+    - language: Spanish
+      fluency: Limited Working Proficiency
+```
+
+Di sini kami mengalias bagian `work`, `education`, dan `skills`, dan mengurutkan
+ulang bagian dengan memberikan prioritas lebih tinggi ke `work` daripada
+`education`, diikuti oleh bagian `skills`:
+
+Sekarang, mari kita bangun curriculum vitae:
+
+```bash
+yamlresume build resume.yml
+```
+
+Anda akan mendapatkan file PDF dengan konten berikut—saya menyorot bagian-bagian
+dengan kustomisasi:
+
+![Section Customization](/static/images/blog/section-customization/resume-highlight.webp)
+
+Hebat, berfungsi seperti yang diharapkan! Bukankah ini keren?
+
+## Ringkasan
+
+Dengan alias bagian dan pengurutan ulang, Anda sekarang memiliki kontrol
+terperinci atas struktur curriculum vitae Anda. Kami harap fitur-fitur ini
+membantu Anda membuat curriculum vitae yang lebih personal dan efektif.
+
+Bagian terbaik dari kustomisasi bagian adalah Anda selalu dapat memperluas
+kemampuan [i18n YAMLResume untuk mendukung lebih banyak
+bahasa](/docs/layouts/sections/reorder#default-section-order) sendiri. Secara
+default, judul bagian default akan diterjemahkan ke bahasa lokal target
+(diatur melalui `layout.locale.language`) secara otomatis. Namun, selalu ada
+kasus di mana YAMLResume [belum mendukung bahasa target
+Anda](https://github.com/yamlresume/yamlresume/discussions/36), sehingga Anda
+dapat mengganti nama judul bagian default dengan nama Anda sendiri.
+
+Sementara itu, orang dengan latar belakang berbeda memiliki preferensi berbeda
+untuk urutan bagian. Misalnya, kandidat yang mencari pekerjaan industri mungkin
+mengurutkan `work` di depan `education`, sementara peneliti postdoc yang
+mencari posisi akademis akan mengurutkan `education` di depan `work`.
+
+Semoga Anda menikmati fitur-fitur baru ini!
