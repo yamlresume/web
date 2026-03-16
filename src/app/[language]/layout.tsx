@@ -43,6 +43,10 @@ export default async function LanguageLayout({
   const currentLanguage = language || defaultLanguage
 
   return (
-    <RootProvider i18n={provider(currentLanguage)}>{children}</RootProvider>
+    <html lang={currentLanguage} suppressHydrationWarning>
+      <body>
+        <RootProvider i18n={provider(currentLanguage)}>{children}</RootProvider>
+      </body>
+    </html>
   )
 }

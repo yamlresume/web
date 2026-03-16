@@ -104,7 +104,8 @@ export function generateStaticParams() {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    // biome-ignore lint/a11y/useHtmlLang: lang is set dynamically in [language]/layout.tsx
+    <html suppressHydrationWarning>
       <head />
       <body className="flex flex-col min-h-screen">
         <RootProvider i18n={provider('en')}>
