@@ -140,7 +140,7 @@ feat: update work experience
       description: t('outputs.description'),
       className: 'col-span-1 lg:col-span-2 order-2 lg:order-none',
       demo: <MultiOutputsDemo />,
-      href: getLocalizedUrl('/docs/outputs', lang),
+      href: getLocalizedUrl('/docs/layouts', lang),
     },
   ]
 
