@@ -99,6 +99,13 @@ export function generateStaticParams(): { slug: string; language: string }[] {
       language: 'id',
     }))
 
+  const ptParams = getLocalizedSources('pt')
+    .blog.getPages()
+    .map((page) => ({
+      slug: page.slugs[0],
+      language: 'pt',
+    }))
+
   return [
     ...enParams,
     ...frParams,
@@ -107,6 +114,7 @@ export function generateStaticParams(): { slug: string; language: string }[] {
     ...zhTWParams,
     ...esParams,
     ...idParams,
+    ...ptParams,
   ]
 }
 
