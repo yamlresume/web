@@ -278,10 +278,11 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 
 驗證 HTML 排版設置。
 
-| 屬性        | 類型                            | 必需 | 驗證規則                                           |
-| ----------- | ------------------------------- | -------- | ---------------------------------------------------------- |
-| `fontFamily?` | `string` | ⬜ | 逗號分隔的字體家族列表。 |
-| `fontSize?` | [`HtmlFontSize`](#htmlfontsize) | ⬜       | 必須來自預定義的[字體大小選項](#htmlfontsize) |
+| 屬性          | 類型                              | 必需 | 驗證規則                                            |
+| ------------- | --------------------------------- | -------- | ----------------------------------------------------- |
+| `fontFamily?` | `string`                          | ⬜       | 逗號分隔的字體家族列表。                   |
+| `fontSize?`   | [`HtmlFontSize`](#htmlfontsize)     | ⬜       | 必須來自預定義的[字體大小選項](#htmlfontsize) |
+| `lineSpacing?` | [`LineSpacing`](#linespacing)      | ⬜       | 必須來自預定義的[行距選項](#linespacing) |
 
 #### LatexLayoutSchema
 
@@ -319,11 +320,12 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 
 驗證文件格式的排版設置。
 
-| 屬性        | 類型                      | 必需 | 驗證規則                                               |
-| ----------- | ------------------------- | -------- | ------------------------------------------------------------------ |
-| `fontSize?` | `string`                  | ⬜       | 必須來自預定義的[字體大小選項](#fontsize) |
-| `fontFamily?` | `string` | ⬜ | 逗號分隔的字體家族列表。 |
-| `links?`    | `{ underline?: boolean }` | ⬜       | true/false                                                         |
+| 屬性          | 類型                            | 必需 | 驗證規則                                            |
+| ------------- | ------------------------------- | -------- | ----------------------------------------------------- |
+| `fontSize?`   | `string`                        | ⬜       | 必須來自預定義的[字體大小選項](#fontsize)   |
+| `fontFamily?` | `string`                        | ⬜       | 逗號分隔的字體家族列表。                   |
+| `lineSpacing?` | [`LineSpacing`](#linespacing)   | ⬜       | 必須來自預定義的[行距選項](#linespacing) |
+| `links?`      | `{ underline?: boolean }`        | ⬜       | true/false                                           |
 
 #### MarkdownLayoutSchema
 
@@ -524,6 +526,19 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 
 - 必須是以下之一：`10pt`、`11pt`、`12pt`
 - `10pt` 是預設字體大小
+
+### LineSpacing
+
+所有可能的行距選項的聯合類型。
+
+**驗證規則：**
+
+- 必須是以下之一：
+  - `tight` - 緊湊間距，適合容納更多內容
+  - `snug` - 比 tight 稍多的空間
+  - `normal` - 均衡的可讀性（預設）
+  - `relaxed` - 行之間更多呼吸空間
+  - `loose` - 非常寬鬆的佈局
 
 ### PaperSize
 

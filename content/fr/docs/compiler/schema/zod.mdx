@@ -280,10 +280,11 @@ Valide la configuration du modèle HTML.
 
 Valide les paramètres de typographie HTML.
 
-| Prop        | Type                            | Requis | Règles de Validation                                       |
-| ----------- | ------------------------------- | ------ | ---------------------------------------------------------- |
-| `fontFamily?` | `string` | ⬜ | Une liste de familles de polices séparées par des virgules. |
-| `fontSize?` | [`HtmlFontSize`](#htmlfontsize) | ⬜     | Doit être parmi les [options de taille de police](#htmlfontsize) prédéfinies |
+| Prop          | Type                              | Requis | Règles de Validation                                       |
+| ------------- | --------------------------------- | ------ | ---------------------------------------------------------- |
+| `fontFamily?` | `string`                          | ⬜     | Une liste de familles de polices séparées par des virgules. |
+| `fontSize?`   | [`HtmlFontSize`](#htmlfontsize)   | ⬜     | Doit être parmi les [options de taille de police](#htmlfontsize) prédéfinies |
+| `lineSpacing?` | [`LineSpacing`](#linespacing)     | ⬜     | Doit être parmi les [options d'interligne](#linespacing) prédéfinies |
 
 #### LatexLayoutSchema
 
@@ -321,11 +322,12 @@ Valide les paramètres au niveau de la page pour la présentation du document.
 
 Valide les paramètres typographiques pour le formatage du document.
 
-| Prop        | Type                      | Requis | Règles de Validation                                               |
-| ----------- | ------------------------- | ------ | ------------------------------------------------------------------ |
-| `fontSize?` | `string`                  | ⬜     | Doit être parmi les [options de taille de police](#fontsize) prédéfinies |
-| `fontFamily?` | `string` | ⬜ | Une liste de familles de polices séparées par des virgules. |
-| `links?`    | `{ underline?: boolean }` | ⬜     | true/false                                                         |
+| Prop          | Type                            | Requis | Règles de Validation                                       |
+| ------------- | ------------------------------- | ------ | ---------------------------------------------------------- |
+| `fontSize?`   | `string`                        | ⬜     | Doit être parmi les [options de taille de police](#fontsize) prédéfinies |
+| `fontFamily?` | `string`                        | ⬜     | Une liste de familles de polices séparées par des virgules. |
+| `lineSpacing?` | [`LineSpacing`](#linespacing)  | ⬜     | Doit être parmi les [options d'interligne](#linespacing) prédéfinies |
+| `links?`      | `{ underline?: boolean }`       | ⬜     | true/false                                                 |
 
 #### MarkdownLayoutSchema
 
@@ -516,6 +518,19 @@ Un type union pour toutes les options de nombres fontspec latex possibles.
   - `Auto` - permettant au style d'être automatiquement déterminé basé sur la `LocaleLanguage` sélectionnée (par défaut)
   - `Lining` - chiffres standards de ligne (par défaut pour les langues CJK)
   - `OldStyle` - anciens chiffres de style avec des hauteurs variables (par défaut pour les langues latines)
+
+### LineSpacing
+
+Un type union pour toutes les options d'interligne possibles.
+
+**Règles de Validation :**
+
+- Doit être l'un de :
+  - `tight` - Interligne compact pour plus de contenu
+  - `snug` - Un peu plus d'espace que tight
+  - `normal` - Lisibilité équilibrée (par défaut)
+  - `relaxed` - Plus d'espace entre les lignes
+  - `loose` - Mise en page très aérée
 
 ### LatexFontSize
 

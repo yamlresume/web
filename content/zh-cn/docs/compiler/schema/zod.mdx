@@ -278,10 +278,11 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 
 验证 HTML 排版设置。
 
-| 属性        | 类型                            | 必需 | 验证规则                                           |
-| ----------- | ------------------------------- | -------- | ---------------------------------------------------------- |
-| `fontFamily?` | `string` | ⬜ | 逗号分隔的字体家族列表。 |
-| `fontSize?` | [`HtmlFontSize`](#htmlfontsize) | ⬜       | 必须来自预定义的[字体大小选项](#htmlfontsize) |
+| 属性          | 类型                              | 必需 | 验证规则                                            |
+| ------------- | --------------------------------- | -------- | ----------------------------------------------------- |
+| `fontFamily?` | `string`                          | ⬜       | 逗号分隔的字体家族列表。                             |
+| `fontSize?`   | [`HtmlFontSize`](#htmlfontsize)    | ⬜       | 必须来自预定义的[字体大小选项](#htmlfontsize) |
+| `lineSpacing?` | [`LineSpacing`](#linespacing)      | ⬜       | 必须来自预定义的[行间距选项](#linespacing)   |
 
 #### LatexLayoutSchema
 
@@ -319,11 +320,12 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 
 验证文档格式的排版设置。
 
-| 属性        | 类型                      | 必需 | 验证规则                                               |
-| ----------- | ------------------------- | -------- | ------------------------------------------------------------------ |
-| `fontSize?` | `string`                  | ⬜       | 必须来自预定义的[字体大小选项](#fontsize) |
-| `fontFamily?` | `string` | ⬜ | 逗号分隔的字体家族列表。 |
-| `links?`    | `{ underline?: boolean }` | ⬜       | true/false                                                         |
+| 属性          | 类型                            | 必需 | 验证规则                                            |
+| ------------- | ------------------------------- | -------- | ----------------------------------------------------- |
+| `fontSize?`   | `string`                        | ⬜       | 必须来自预定义的[字体大小选项](#fontsize)   |
+| `fontFamily?` | `string`                        | ⬜       | 逗号分隔的字体家族列表。                             |
+| `lineSpacing?` | [`LineSpacing`](#linespacing)    | ⬜       | 必须来自预定义的[行间距选项](#linespacing) |
+| `links?`      | `{ underline?: boolean }`       | ⬜       | true/false                                           |
 
 #### MarkdownLayoutSchema
 
@@ -515,6 +517,19 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
   - `Auto` - 允许根据选定的 `LocaleLanguage` 自动确定样式（默认）
   - `Lining` - 标准衬线数字（CJK 语言的默认值）
   - `OldStyle` - 不同高度的旧式数字（拉丁语言的默认值）
+
+### LineSpacing
+
+所有可能的行间距选项的联合类型。
+
+**验证规则：**
+
+- 必须是以下之一：
+  - `tight` - 紧凑间距，适合容纳更多内容
+  - `snug` - 比 tight 稍多的空间
+  - `normal` - 均衡的可读性（默认）
+  - `relaxed` - 行之间更多呼吸空间
+  - `loose` - 非常宽松的布局
 
 ### LatexFontSize
 
