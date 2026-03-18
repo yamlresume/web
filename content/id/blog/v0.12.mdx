@@ -1,0 +1,156 @@
+---
+title: "YAMLResume v0.12: Template Jake, Bahasa Indonesia & Spasi Baris"
+description:
+  "YAMLResume v0.12 memperkenalkan template populer Jake's Resume LaTeX, menambah
+  dukungan bahasa Indonesia, dukungan tanggal hanya tahun dan kustomisasi spasi
+  baris, plus berbagai perbaikan bug dan peningkatan."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-03-18
+---
+
+Kami dengan senang mengumumkan [YAMLResume
+v0.12](https://github.com/yamlresume/yamlresume/releases/tag/v0.12.0). Rilis
+ini memperkenalkan template populer Jake's Resume LaTeX, menambah dukungan
+[bahasa Indonesia](/id/docs/locale/indonesian), membawa format tanggal fleksibel, dan
+termasuk berbagai perbaikan bug dan peningkatan.
+
+## Template Baru: Jake's Resume (LaTeX)
+
+Kami telah mengadaptasi template populer [Jake's Resume](https://github.com/jakegut/resume)
+ke arsitektur YAMLResume. Template bersih dan profesional ini telah banyak digunakan
+di komunitas LaTeX.
+
+![Template Jake](/static/images/docs/layouts/latex/templates/jake-template.png)
+
+Template ini menyederhanakan template Jake asli secara signifikan dan hanya menyimpan
+makro penting dari yang asli:
+
+- `\resumeSubheading` - untuk entri kerja, pendidikan, proyek, dll.
+- `\titleformat` - untuk penataan gaya header bagian
+
+Semua fitur YAMLResume berfungsi langsung dengan template Jake, termasuk dukungan
+multi-bahasa, font kustom, dan semua bagian curriculum vitae.
+
+Untuk menggunakan template Jake:
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    template: jake
+```
+
+## Dukungan Bahasa Indonesia
+
+YAMLResume terus memperluas internasionalisasinya. Kami menambahkan bahasa Indonesia
+(Bahasa Indonesia), bahasa resmi Indonesia—negara kepulauan terbesar di dunia dengan
+lebih dari 270 juta penutur.
+
+Ini membawa jumlah bahasa yang kami dukung menjadi sembilan:
+
+- [Inggris (en)](/id/docs/locale/english)
+- [Tionghoa (zh-hans, zh-hant-tw, zh-hant-hk)](/id/docs/locale/chinese)
+- [Spanyol (es)](/id/docs/locale/spanish)
+- [Prancis (fr)](/id/docs/locale/french)
+- [Norwegia (no)](/id/docs/locale/norwegian)
+- [Belanda (nl)](/id/docs/locale/dutch)
+- [Jepang (ja)](/id/docs/locale/japanese)
+- [Jerman (de)](/id/docs/locale/german)
+- [Indonesia (id)](/id/docs/locale/indonesian)
+
+Untuk menghasilkan curriculum vitae Anda dalam bahasa Indonesia:
+
+```yml lineNumbers
+locale:
+  language: id
+```
+
+Semua [opsi yang telah ditentukan](/id/docs/compiler/types#enum-types) akan diterjemahkan
+secara otomatis ke bahasa Indonesia.
+
+## Tanggal Hanya Tahun
+
+Anda sekarang dapat menentukan hanya tahun untuk bidang tanggal, berguna untuk entri
+curriculum vitae yang sedang berlangsung atau berfokus pada tahun:
+
+```yml lineNumbers
+work:
+  - name: Nama Perusahaan
+    position: Insinyur Perangkat Lunak
+    startDate: "2024"
+    endDate: "2026"
+```
+
+Ini sangat berguna untuk:
+
+- Posisi saat ini (tentukan tahun mulai saja)
+- Sorotan karier awal (hanya tahun untuk peran singkat)
+- Sertifikasi atau pencapaian tahunan
+
+## Kustomisasi Spasi Baris
+
+Kontrol spasi baris di curriculum vitae LaTeX Anda dengan opsi `lineSpacing` baru:
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    typography:
+      lineSpacing: relaxed
+```
+
+Nilai yang didukung:
+
+- `tight` - Spasi kompak untuk menyesuaikan lebih banyak konten
+- `snug` - Sedikit lebih banyak ruang dari tight
+- `normal` - Keterbacaan seimbang (default)
+- `relaxed` - Lebih banyak ruang bernapas di antara baris
+- `loose` - Tata letak sangat luas
+
+Ini memberi Anda kontrol terperinci atas densitas dan keterbacaan dokumen.
+
+Sebagai contoh, berikut adalah spasi baris ketat:
+
+![Template Jake dengan Spasi Baris Ketat](/static/images/docs/layouts/latex/typography/line-spacing/jake-tight.png)
+
+Dan berikut adalah spasi baris longgar:
+
+![Template Jake dengan Spasi Baris Longgar](/static/images/docs/layouts/latex/typography/line-spacing/jake-loose.png)
+
+## Perbaikan Bug
+
+### Peningkatan Penanganan URL
+
+- Makro `\homepage` untuk URL umum di moderncv: Kolom `basics.url` sekarang
+  mendukung berbagai skema URL di luar HTTP/HTTPS (`ftp://`, `ws://`, dll.),
+  membuat skema lebih konsisten secara semantik,
+  [percobaan bug awal di sini](https://github.com/yamlresume/yamlresume/pull/158)
+
+### Peningkatan Playground
+
+- Menambahkan pesan tooltip yang dilokalkan untuk pengalaman pengguna internasional
+  yang lebih baik
+- Perbaikan perilaku area scroll untuk pengeditan yang lebih halus
+
+Penghargaan
+[besar](https://github.com/yamlresume/yamlresume/commits?author=aojunhao123) untuk
+[aojunhao123](https://www.aojunhao.com/) di sini.
+
+## Tingkatkan Hari Ini
+
+Dapatkan versi terbaru:
+
+```console
+$ npm install -g yamlresume@latest
+# atau
+$ brew upgrade yamlresume
+```
+
+## Kredit
+
+Saya ingin mengucapkan terima kasih kepada [aojunhao123](https://www.aojunhao.com/)
+atas kontribusinya pada rilis ini, ia membuat [playground](/id/playground) lebih baik,
+memperbaiki beberapa bug di situs web kami dan mengoptimalkan seluruh alur kerja
+pengembangan.
+
+Seperti biasa, kami menyambut umpan balik dan kontribusi Anda di
+[GitHub](https://github.com/yamlresume/yamlresume). Selamat membangun!

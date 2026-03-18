@@ -1,0 +1,152 @@
+---
+title: "YAMLResume v0.12: Jakeテンプレート、インドネシア語サポート、行間調整"
+description:
+  "YAMLResume v0.12では、人気のJake's Resume LaTeXテンプレートを導入、インドネシア語
+  サポート、年号のみの日付サポート、行間のカスタマイズを可能にし、さまざまなバグ修正と
+  改善が含まれています。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-03-18
+---
+
+[YAMLResume
+v0.12](https://github.com/yamlresume/yamlresume/releases/tag/v0.12.0)のリリースを
+お知らせいたします。このバージョンでは、人気のJake's Resume LaTeXテンプレートを
+導入し、[インドネシア語](/ja/docs/locale/indonesian)サポートを追加、柔軟な日付フォーマット
+を提供し、さまざまなバグ修正と改善が含まれています。
+
+## 新テンプレート: Jake's Resume (LaTeX)
+
+[YAMLResume](https://github.com/jakegut/resume)の間で広く使われているこのクリーンで
+プロフェッショナルなテンプレートを、YAMLResumeの架构に適応させました。
+
+![Jakeテンプレート](/static/images/docs/layouts/latex/templates/jake-template.png)
+
+このテンプレートは元のJakeテンプレートを大きく簡素化し、元のテンプレートの重要な
+マクロのみを維持しています：
+
+- `\resumeSubheading` - 仕事、教育、プロジェクトなどのエントリ用
+- `\titleformat` - セクションヘッダーのスタイリング用
+
+Jakeテンプレートでは、多言語サポート、カスタムフォント、すべての履歴書セクションを
+含むYAMLResumeの全機能がそのまま動作します。
+
+Jakeテンプレートを使用するには：
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    template: jake
+```
+
+## インドネシア語サポート
+
+YAMLResumeは国際化を拡大し続けています。インドネシア共和国——世界最大の群岛国家で、
+2億7千万人以上の話し手を持つ——の公用語であるインドネシア語（Bahasa Indonesia）を
+追加しました。
+
+これにより、サポートされている言語の数は9つになりました：
+
+- [英語 (en)](/ja/docs/locale/english)
+- [中国語 (zh-hans, zh-hant-tw, zh-hant-hk)](/ja/docs/locale/chinese)
+- [スペイン語 (es)](/ja/docs/locale/spanish)
+- [フランス語 (fr)](/ja/docs/locale/french)
+- [ノルウェー語 (no)](/ja/docs/locale/norwegian)
+- [オランダ語 (nl)](/ja/docs/locale/dutch)
+- [日本語 (ja)](/ja/docs/locale/japanese)
+- [ドイツ語 (de)](/ja/docs/locale/german)
+- [インドネシア語 (id)](/ja/docs/locale/indonesian)
+
+インドネシア語で履歴書を生成するには：
+
+```yml lineNumbers
+locale:
+  language: id
+```
+
+すべての[事前定義オプション](/ja/docs/compiler/types#enum-types)は自動的にインドネシア語に
+翻訳されます。
+
+## 年号のみの日付
+
+日付フィールドに年号のみを指定できるようになり、継続中または年号に焦点を当てた
+履歴書エントリに便利です：
+
+```yml lineNumbers
+work:
+  - name: 会社名
+    position: ソフトウェアエンジニア
+    startDate: "2024"
+    endDate: "2026"
+```
+
+これは特に便利です：
+
+- 現在の职位（開始年号のみ指定）
+- 初期キャリアのハイライト（短期の役割に年号のみ）
+- 年次認定または受賞
+
+## 行間のカスタマイズ
+
+新しい`lineSpacing`オプションでLaTeX履歴書の行間を制御できます：
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    typography:
+      lineSpacing: relaxed
+```
+
+サポートされている値：
+
+- `tight` - より多くのコンテンツを収めるためのコンパクトな間隔
+- `snug` - tightよりわずかに広い間隔
+- `normal` - バランス 取れた読みやすさ（デフォルト）
+- `relaxed` - 行間に更多的呼吸スペース
+- `loose` - 非常に宽敞なレイアウト
+
+これにより、ドキュメントの密度と読みやすさを微調整できます。
+
+たとえば、紧凑な行間はこのようになります：
+
+![Jakeテンプレート（紧凑な行間）](/static/images/docs/layouts/latex/typography/line-spacing/jake-tight.png)
+
+そして、宽松な行間はこのようなものです：
+
+![Jakeテンプレート（宽松な行間）](/static/images/docs/layouts/latex/typography/line-spacing/jake-loose.png)
+
+## バグ修正
+
+### URL処理の改善
+
+- moderncvの一般的なURL用の`\homepage`マクロ：`basics.url`フィールドは
+  HTTP/HTTPS（`ftp://`、`ws://`など）を超えるさまざまなURLスキームをサポートする
+  ようになり、スキーマがより意味的に一貫性が 保たれるようになりました
+  ([最初のバグ試行](https://github.com/yamlresume/yamlresume/pull/158)
+
+### Playgroundの改善
+
+- より良い国際的なユーザー体験のために、ローカライズされたツールチップメッセージを追加
+- より滑らかな編集のためのスクロール領域の動作を改善
+
+[aojunhao123](https://github.com/yamlresume/yamlresume/commits?author=aojunhao123)の
+ここに大きな功績があります。
+
+## 今すぐアップグレード
+
+最新バージョンを取得：
+
+```console
+$ npm install -g yamlresume@latest
+# または
+$ brew upgrade yamlresume
+```
+
+## クレジット
+
+このリリースに貢献してくれた[aojunhao123](https://www.aojunhao.com/)に感謝します。
+彼は[playground](/ja/playground)を改善し、私たちのウェブサイトのいくつかのバグを修正し、
+開発ワークフロー全体を最適化してくれました。
+
+いつものように、[GitHub](https://github.com/yamlresume/yamlresume)でのフィードバックと
+貢献をお待ちしています。Happy building!

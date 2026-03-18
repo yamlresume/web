@@ -1,0 +1,155 @@
+---
+title: "YAMLResume v0.12: Jake's Template, Indonesian Language & Line Spacing"
+description:
+  "YAMLResume v0.12 introduces the popular Jake's Resume LaTeX template, adds
+  Indonesian language support, brings year-only date support and line spacing
+  customization, plus various bug fixes and improvements."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-03-18
+---
+
+We're excited to announce [YAMLResume
+v0.12](https://github.com/yamlresume/yamlresume/releases/tag/v0.12.0). This
+release introduces the popular Jake's Resume LaTeX template, adds [Indonesian
+language](/docs/locale/indonesian) support, brings flexible date formatting, and
+includes various bug fixes and improvements.
+
+## New Template: Jake's Resume (LaTeX)
+
+We've adapted the popular [Jake's Resume](https://github.com/jakegut/resume)
+template to YAMLResume's architecture. This clean, professional template has been
+widely used in the LaTeX community.
+
+![Jake Template](/static/images/docs/layouts/latex/templates/jake-template.png)
+
+The template simplified the original Jake's template a lot and keeps only
+essential macros from the original:
+
+- `\resumeSubheading` - for work, education, projects, etc. entries
+- `\titleformat` - for section header styling
+
+All YAMLResume features work out of the box with Jake's template, including
+multi-language support, custom fonts, and all resume sections.
+
+To use Jake's template:
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    template: jake
+```
+
+## Indonesian Language Support
+
+YAMLResume continues to expand its internationalization. We're adding Indonesian
+(Bahasa Indonesia), the official language of Indonesia—the world's largest
+archipelagic nation with over 270 million speakers.
+
+This brings our supported language count to nine:
+
+- [English (en)](/docs/locale/english)
+- [Chinese (zh-hans, zh-hant-tw, zh-hant-hk)](/docs/locale/chinese)
+- [Spanish (es)](/docs/locale/spanish)
+- [French (fr)](/docs/locale/french)
+- [Norwegian (no)](/docs/locale/norwegian)
+- [Dutch (nl)](/docs/locale/dutch)
+- [Japanese (ja)](/docs/locale/japanese)
+- [German (de)](/docs/locale/german)
+- [Indonesian (id)](/docs/locale/indonesian)
+
+To generate your resume in Indonesian:
+
+```yml lineNumbers
+locale:
+  language: id
+```
+
+All [predefined options](/docs/compiler/types#enum-types) will be translated
+automatically to Indonesian.
+
+## Year-Only Dates
+
+You can now specify just the year for date fields, useful for ongoing or
+year-focused resume entries:
+
+```yml lineNumbers
+work:
+  - name: Company Name
+    position: Software Engineer
+    startDate: "2024"
+    endDate: "2026"
+```
+
+This is particularly handy for:
+
+- Current positions (specify start year only)
+- Early career highlights (year-only for brief roles)
+- Annual certifications or achievements
+
+## Line Spacing Customization
+
+Control the line spacing in your LaTeX resumes with the new `lineSpacing`
+option:
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    typography:
+      lineSpacing: relaxed
+```
+
+Supported values:
+
+- `tight` - Compact spacing for fitting more content
+- `snug` - Slightly more space than tight
+- `normal` - Balanced readability (default)
+- `relaxed` - More breathing room between lines
+- `loose` - Very spacious layout
+
+This gives you fine-grained control over document density and readability.
+
+For example, here is the tight line spacing:
+
+![Jake Template with Tight Line Spacing](/static/images/docs/layouts/latex/typography/line-spacing/jake-tight.png)
+
+And here is the loose line spacing:
+
+![Jake Template with Loose Line Spacing](/static/images/docs/layouts/latex/typography/line-spacing/jake-loose.png)
+
+## Bug Fixes
+
+### URL Handling Improvements
+
+- `\homepage` macro for general URLs in moderncv: The `basics.url` field now
+supports various URL schemes beyond HTTP/HTTPS (`ftp://`, `ws://`, etc.), making
+the schema more semantically consistent, [initial bug trial
+here](https://github.com/yamlresume/yamlresume/pull/158)
+
+### Playground Improvements
+
+- Added localized tooltip messages for better international user experience
+- Improved scroll area behavior for smoother editing
+
+Big
+[credit](https://github.com/yamlresume/yamlresume/commits?author=aojunhao123) to
+[aojunhao123](https://www.aojunhao.com/) here.
+
+## Upgrade Today
+
+Get the latest version:
+
+```console
+$ npm install -g yamlresume@latest
+# or
+$ brew upgrade yamlresume
+```
+
+## Credit
+
+I would like to thank [aojunhao123](https://www.aojunhao.com/) for his
+contributions to this release, he made the [playground](/playground) better,
+fixed some bugs in our website and optimized the whole dev workflow.
+
+As always, we welcome your feedback and contributions on
+[GitHub](https://github.com/yamlresume/yamlresume). Happy building!

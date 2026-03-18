@@ -1,0 +1,158 @@
+---
+title: "YAMLResume v0.12: Plantilla de Jake, Idioma Indonesio y Espaciado de Línea"
+description:
+  "YAMLResume v0.12 introduce la popular plantilla Jake's Resume LaTeX, añade
+  soporte para idioma indonesio, soporte para fechas con solo año y personalización
+  del espaciado de línea, además de varias correcciones de errores y mejoras."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-03-18
+---
+
+Nos complace anunciar [YAMLResume
+v0.12](https://github.com/yamlresume/yamlresume/releases/tag/v0.12.0). Esta
+versión introduce la popular plantilla Jake's Resume LaTeX, añade soporte para
+[idioma indonesio](/es/docs/locale/indonesian), trae formato de fecha flexible, y
+incluye varias correcciones de errores y mejoras.
+
+## Nueva Plantilla: Jake's Resume (LaTeX)
+
+Hemos adaptado la popular plantilla [Jake's Resume](https://github.com/jakegut/resume)
+a la arquitectura de YAMLResume. Esta plantilla limpia y profesional ha sido
+ampliamente utilizada en la comunidad de LaTeX.
+
+![Plantilla Jake](/static/images/docs/layouts/latex/templates/jake-template.png)
+
+La plantilla simplificó enormemente la plantilla Jake original y solo mantiene
+los macros esenciales del original:
+
+- `\resumeSubheading` - para entradas de trabajo, educación, proyectos, etc.
+- `\titleformat` - para estilo de encabezados de sección
+
+Todas las funciones de YAMLResume funcionan de forma inmediata con la plantilla
+Jake, incluyendo soporte multiidioma, fuentes personalizadas y todas las secciones
+del currículum.
+
+Para usar la plantilla Jake:
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    template: jake
+```
+
+## Soporte para Idioma Indonesio
+
+YAMLResume continúa expandiendo su internacionalización. Estamos añadiendo indonesio
+(Bahasa Indonesia), el idioma oficial de Indonesia—la nación archipelágica más grande
+del mundo con más de 270 millones de hablantes.
+
+Esto eleva nuestro número de idiomas soportados a nueve:
+
+- [Inglés (en)](/es/docs/locale/english)
+- [Chino (zh-hans, zh-hant-tw, zh-hant-hk)](/es/docs/locale/chinese)
+- [Español (es)](/es/docs/locale/spanish)
+- [Francés (fr)](/es/docs/locale/french)
+- [Noruego (no)](/es/docs/locale/norwegian)
+- [Holandés (nl)](/es/docs/locale/dutch)
+- [Japonés (ja)](/es/docs/locale/japanese)
+- [Alemán (de)](/es/docs/locale/german)
+- [Indonesio (id)](/es/docs/locale/indonesian)
+
+Para generar tu currículum en indonesio:
+
+```yml lineNumbers
+locale:
+  language: id
+```
+
+Todas las [opciones predefinidas](/es/docs/compiler/types#enum-types) se traducirán
+automáticamente al indonesio.
+
+## Fechas Solo con Año
+
+Ahora puedes especificar solo el año para los campos de fecha, útil para entradas
+de currículum en curso o enfocadas en años:
+
+```yml lineNumbers
+work:
+  - name: Nombre de la Empresa
+    position: Ingeniero de Software
+    startDate: "2024"
+    endDate: "2026"
+```
+
+Esto es particularmente útil para:
+
+- Posiciones actuales (especifica solo el año de inicio)
+- Destacados de carrera temprana (solo año para roles breves)
+- Certificaciones o logros anuales
+
+## Personalización del Espaciado de Línea
+
+Controla el espaciado de línea en tus currículums LaTeX con la nueva opción
+`lineSpacing`:
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    typography:
+      lineSpacing: relaxed
+```
+
+Valores soportados:
+
+- `tight` - Espaciado compacto para ajustar más contenido
+- `snug` - Espacio ligeramente mayor que tight
+- `normal` - Legibilidad equilibrada (predeterminado)
+- `relaxed` - Más espacio para respirar entre líneas
+- `loose` - Diseño muy espacioso
+
+Esto te da control detallado sobre la densidad y legibilidad del documento.
+
+Por ejemplo, aquí está el espaciado de línea apretado:
+
+![Plantilla Jake con Espaciado Apretado](/static/images/docs/layouts/latex/typography/line-spacing/jake-tight.png)
+
+Y aquí está el espaciado de línea suelto:
+
+![Plantilla Jake con Espaciado Suelto](/static/images/docs/layouts/latex/typography/line-spacing/jake-loose.png)
+
+## Correcciones de Errores
+
+### Mejoras en el Manejo de URL
+
+- Macro `\homepage` para URLs generales en moderncv: El campo `basics.url`
+  ahora soporta varios esquemas de URL más allá de HTTP/HTTPS (`ftp://`,
+  `ws://`, etc.), haciendo el esquema más semánticamente consistente,
+  [intento inicial de error aquí](https://github.com/yamlresume/yamlresume/pull/158)
+
+### Mejoras en el Playground
+
+- Se añadieron mensajes de información herramientas localizados para una mejor
+  experiencia de usuario internacional
+- Comportamiento mejorado del área de desplazamiento para una edición más fluida
+
+Gran
+[crédito](https://github.com/yamlresume/yamlresume/commits?author=aojunhao123) a
+[aojunhao123](https://www.aojunhao.com/) aquí.
+
+## Actualiza Hoy
+
+Obtén la última versión:
+
+```console
+$ npm install -g yamlresume@latest
+# o
+$ brew upgrade yamlresume
+```
+
+## Crédito
+
+Me gustaría agradecer a [aojunhao123](https://www.aojunhao.com/) por sus
+contribuciones a esta versión, hizo el [playground](/es/playground) mejor, arregló
+algunos errores en nuestro sitio web y optimizó todo el flujo de trabajo de
+desarrollo.
+
+Como siempre, agradecemos tus comentarios y contribuciones en
+[GitHub](https://github.com/yamlresume/yamlresume). ¡Feliz construcción!

@@ -1,0 +1,143 @@
+---
+title: "YAMLResume v0.12：Jake 模板、印尼语支持与行间距自定义"
+description:
+  "YAMLResume v0.12 引入了流行的 Jake's Resume LaTeX 模板，新增印尼语支持，
+  支持仅年份日期格式和行间距自定义，以及各种错误修复和改进。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-03-18
+---
+
+我们很高兴地宣布 [YAMLResume
+v0.12](https://github.com/yamlresume/yamlresume/releases/tag/v0.12.0) 正式发布。
+此版本引入了流行的 Jake's Resume LaTeX 模板，新增印尼语支持，支持仅年份日期格式，
+以及各种错误修复和改进。
+
+## 新模板：Jake's Resume (LaTeX)
+
+我们已将流行的 [Jake's Resume](https://github.com/jakegut/resume)
+模板适配到 YAMLResume 架构中。这个简洁、专业的模板在 LaTeX 社区中已被广泛使用。
+
+![Jake 模板](/static/images/docs/layouts/latex/templates/jake-template.png)
+
+该模板大幅简化了原始 Jake 模板，仅保留以下必要的宏：
+
+- `\resumeSubheading` - 用于工作、教育、项目等条目
+- `\titleformat` - 用于章节标题样式
+
+Jake 模板开箱即用支持所有 YAMLResume 功能，包括多语言支持、自定义字体和所有简历章节。
+
+使用 Jake 模板：
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    template: jake
+```
+
+## 印尼语支持
+
+YAMLResume 持续扩展其国际化支持。我们新增了印尼语（Bahasa Indonesia），这是印度尼西亚——
+世界最大群岛国家的官方语言，拥有超过 2.7 亿使用者。
+
+这使我们的支持语言数量达到九种：
+
+- [英语 (en)](/zh-cn/docs/locale/english)
+- [中文 (zh-hans, zh-hant-tw, zh-hant-hk)](/zh-cn/docs/locale/chinese)
+- [西班牙语 (es)](/zh-cn/docs/locale/spanish)
+- [法语 (fr)](/zh-cn/docs/locale/french)
+- [挪威语 (no)](/zh-cn/docs/locale/norwegian)
+- [荷兰语 (nl)](/zh-cn/docs/locale/dutch)
+- [日语 (ja)](/zh-cn/docs/locale/japanese)
+- [德语 (de)](/zh-cn/docs/locale/german)
+- [印尼语 (id)](/zh-cn/docs/locale/indonesian)
+
+使用印尼语生成简历：
+
+```yml lineNumbers
+locale:
+  language: id
+```
+
+所有[预定义选项](/zh-cn/docs/compiler/types#enum-types)将自动翻译为印尼语。
+
+## 仅年份日期
+
+现在你只需为日期字段指定年份，适用于持续进行或以年份为重点的简历条目：
+
+```yml lineNumbers
+work:
+  - name: 公司名称
+    position: 软件工程师
+    startDate: "2024"
+    endDate: "2026"
+```
+
+这特别适用于：
+
+- 当前职位（仅指定开始年份）
+- 早期职业亮点（短期角色仅使用年份）
+- 年度认证或成就
+
+## 行间距自定义
+
+使用新的 `lineSpacing` 选项控制 LaTeX 简历中的行间距：
+
+```yml lineNumbers
+layouts:
+  - engine: latex
+    typography:
+      lineSpacing: relaxed
+```
+
+支持的值：
+
+- `tight` - 紧凑间距，适合容纳更多内容
+- `snug` - 比 tight 稍多的间距
+- `normal` - 平衡可读性（默认）
+- `relaxed` - 行间更多呼吸空间
+- `loose` - 非常宽松的布局
+
+这让你能够精细控制文档密度和可读性。
+
+例如，这是紧凑行间距的效果：
+
+![Jake 模板紧凑行间距](/static/images/docs/layouts/latex/typography/line-spacing/jake-tight.png)
+
+这是宽松行间距的效果：
+
+![Jake 模板宽松行间距](/static/images/docs/layouts/latex/typography/line-spacing/jake-loose.png)
+
+## 错误修复
+
+### URL 处理改进
+
+- moderncv 中用于通用 URL 的 `\homepage` 宏：`basics.url` 字段现在支持
+  HTTP/HTTPS 之外的多种 URL 方案（`ftp://`、`ws://` 等），使模式更加语义一致，
+  [初始错误尝试](https://github.com/yamlresume/yamlresume/pull/158)
+
+### Playground 改进
+
+- 添加了本地化工具提示消息，带来更好的国际用户体验
+- 改进了滚动区域行为，实现更流畅的编辑体验
+
+感谢 [aojunhao123](https://github.com/yamlresume/yamlresume/commits?author=aojunhao123) 的
+重要贡献。
+
+## 立即升级
+
+获取最新版本：
+
+```console
+$ npm install -g yamlresume@latest
+# 或
+$ brew upgrade yamlresume
+```
+
+## 致谢
+
+感谢 [aojunhao123](https://www.aojunhao.com/) 对本版本的贡献，他让
+[playground](/zh-cn/playground) 变得更好，修复了我们网站的一些错误，并优化了整个开发流程。
+
+一如既往，我们欢迎你在 [GitHub](https://github.com/yamlresume/yamlresume) 上
+提供反馈和贡献。祝构建愉快！
