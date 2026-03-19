@@ -28,20 +28,18 @@ export function NewsChannel() {
           <IconSpeakerphone size={20} stroke={1.5} />
           <div className="text-sm text-fd-foreground">
             <Link
-              href="https://github.com/marketplace/actions/yamlresume"
+              href={getLocalizedUrl('/blog/v0.12', language)}
               className="underline font-semibold"
-              target="_blank"
-              rel="noopener noreferrer"
             >
-              YAMLResume GitHub Action
+              YAMLResume v0.12
             </Link>{' '}
-            is officially released! Automate your resume builds directly in your
-            CI/CD pipelines. Check out the{' '}
+            is here! New Jake's Resume template, Indonesian language support,
+            year-only dates, and line spacing customization. Check out the{' '}
             <Link
-              href={getLocalizedUrl('/blog/yamlresume-action', language)}
+              href={getLocalizedUrl('/blog/v0.12', language)}
               className="underline"
             >
-              blog post
+              release notes
             </Link>{' '}
             for more details.
           </div>
