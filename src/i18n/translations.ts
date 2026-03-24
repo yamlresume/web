@@ -113,6 +113,11 @@ const translations = {
         title: 'NPX (Recommended)',
         description: 'Create a new project instantly with zero global installs',
       },
+      action: {
+        title: 'GitHub Action',
+        description:
+          'Build resumes in CI/CD workflows with GitHub Actions integration',
+      },
       npm: {
         title: 'NPM Global',
         description: 'Install as a global CLI tool for system-wide access',
@@ -284,6 +289,11 @@ const translations = {
         title: 'NPX (Recomendado)',
         description:
           'Crea un nuevo proyecto al instante sin instalaciones globales',
+      },
+      action: {
+        title: 'GitHub Action',
+        description:
+          'Compila currículums en flujos de trabajo CI/CD con integración de GitHub Actions',
       },
       npm: {
         title: 'NPM Global',
@@ -459,6 +469,11 @@ const translations = {
         description:
           'Créez un nouveau projet instantanément sans installations globales',
       },
+      action: {
+        title: 'GitHub Action',
+        description:
+          'Générez des CV dans les workflows CI/CD avec GitHub Actions',
+      },
       npm: {
         title: 'NPM Global',
         description: 'Installez comme outil CLI global pour un accès système',
@@ -623,6 +638,10 @@ const translations = {
         title: 'NPX（推荐）',
         description: '无需全局安装即可立即创建新项目',
       },
+      action: {
+        title: 'GitHub Action',
+        description: '通过 GitHub Actions 集成在 CI/CD 工作流中构建简历',
+      },
       npm: {
         title: 'NPM 全局安装',
         description: '作为全局 CLI 工具安装以便系统范围访问',
@@ -784,6 +803,10 @@ const translations = {
       npx: {
         title: 'NPX（推薦）',
         description: '無需全域安裝即可立即建立新專案',
+      },
+      action: {
+        title: 'GitHub Action',
+        description: '透過 GitHub Actions 整合在 CI/CD 工作流中建置履歷',
       },
       npm: {
         title: 'NPM 全域安裝',
@@ -954,6 +977,10 @@ const translations = {
       npx: {
         title: 'NPX（推奨）',
         description: 'グローバルインストール不要で即座に新規プロジェクトを作成',
+      },
+      action: {
+        title: 'GitHub Action',
+        description: 'GitHub Actions連携でCI/CDワークフローで履歴書をビルド',
       },
       npm: {
         title: 'NPM グローバル',
@@ -1130,6 +1157,11 @@ const translations = {
         description:
           'Crie um novo projeto instantaneamente sem instalações globais',
       },
+      action: {
+        title: 'GitHub Action',
+        description:
+          'Compile currículos em fluxos de trabalho CI/CD com integração do GitHub Actions',
+      },
       npm: {
         title: 'NPM Global',
         description:
@@ -1302,6 +1334,11 @@ const translations = {
       npx: {
         title: 'NPX (Disarankan)',
         description: 'Buat proyek baru secara instan tanpa instalasi global',
+      },
+      action: {
+        title: 'GitHub Action',
+        description:
+          'Bangun resume dalam alur kerja CI/CD dengan integrasi GitHub Actions',
       },
       npm: {
         title: 'NPM Global',

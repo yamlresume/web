@@ -3,6 +3,7 @@
 import {
   IconArrowUpRight,
   IconBrandDocker,
+  IconBrandGithub,
   IconBrandNpm,
   IconCheck,
   IconCopy,
@@ -270,6 +271,12 @@ export function OnboardingSection() {
       href: '/docs/ecosystem/create-yamlresume',
     },
     {
+      id: 'action',
+      icon: IconBrandGithub,
+      command: '- uses: yamlresume/action@v1',
+      href: '/docs/ecosystem/action',
+    },
+    {
       id: 'npm',
       icon: IconBrandNpm,
       command: 'npm install -g yamlresume',
@@ -308,20 +315,9 @@ export function OnboardingSection() {
         )}
       >
         {installMethods.map((method) => {
-          const isNpx = method.id === 'npx'
           return (
-            <div
-              key={method.id}
-              className={clsx(
-                isNpx && 'md:col-span-2 flex justify-center w-full'
-              )}
-            >
-              <OnboardingCard
-                method={method}
-                t={t}
-                lang={lang}
-                className={clsx(isNpx && 'w-full md:w-[calc(50%-0.75rem)]')}
-              />
+            <div key={method.id}>
+              <OnboardingCard method={method} t={t} lang={lang} />
             </div>
           )
         })}
