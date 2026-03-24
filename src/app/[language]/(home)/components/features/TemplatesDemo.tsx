@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 const TEMPLATE_IMAGES = [
+  '/static/images/docs/layouts/latex/templates/jake-template.png',
   '/static/images/docs/layouts/latex/templates/moderncv-casual-template.png',
   '/static/images/docs/layouts/latex/templates/moderncv-banking-template.png',
   '/static/images/docs/layouts/latex/templates/moderncv-classic-template.png',
