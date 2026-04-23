@@ -89,15 +89,17 @@ Build resume dari YAML ke PDF. Ini akan menghasilkan kode latex dan PDF pada saa
 $ yamlresume build --help
 Usage: yamlresume build [options] <resume-path>
 
-build a resume to LaTeX and PDF
+build a resume to LaTeX, PDF, Markdown, or HTML
 
 Arguments:
-  resume-path    the resume file path
+  resume-path              the resume file path
 
 Options:
-  --no-pdf       only generate TeX file without PDF
-  --no-validate  skip resume schema validation
-  -h, --help     display help for command
+  --no-pdf                 only generate TeX file without PDF (for LaTeX layouts)
+  --no-validate            skip resume schema validation
+  -o, --output <dir>       output directory for generated files
+  -t, --timeout <seconds>  timeout for LaTeX compilation in seconds (default: 30, 0 to disable)
+  -h, --help               display help for command
 
 $ yamlresume build my-resume.yml
 ◐ Generating resume PDF file with command: xelatex -halt-on-error my-resume.tex...
@@ -118,6 +120,25 @@ Jika Anda ingin melewati validasi schema resume, Anda dapat menggunakan opsi `--
 
 ```console
 $ yamlresume build --no-validate my-resume.yml
+```
+
+### `--output`
+
+Jika Anda ingin menentukan direktori output kustom untuk file yang dihasilkan,
+Anda dapat menggunakan opsi `-o, --output`.
+
+```console
+$ yamlresume build -o ./output my-resume.yml
+```
+
+### `--timeout`
+
+Jika Anda ingin menyesuaikan timeout untuk kompilasi LaTeX, Anda dapat
+menggunakan opsi `--timeout`. Timeout default adalah 30 detik. Anda dapat
+menonaktifkan timeout dengan mengaturnya ke 0.
+
+```console
+$ yamlresume build --timeout 60 my-resume.yml
 ```
 
 ## Dev

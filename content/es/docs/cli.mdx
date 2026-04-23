@@ -98,15 +98,17 @@ mismo tiempo, con algunos archivos intermedios `.aux`, `.log`, etc., si usas
 $ yamlresume build --help
 Usage: yamlresume build [options] <resume-path>
 
-build a resume to LaTeX and PDF
+build a resume to LaTeX, PDF, Markdown, or HTML
 
 Arguments:
-  resume-path    the resume file path
+  resume-path              the resume file path
 
 Options:
-  --no-pdf       only generate TeX file without PDF
-  --no-validate  skip resume schema validation
-  -h, --help     display help for command
+  --no-pdf                 only generate TeX file without PDF (for LaTeX layouts)
+  --no-validate            skip resume schema validation
+  -o, --output <dir>       output directory for generated files
+  -t, --timeout <seconds>  timeout for LaTeX compilation in seconds (default: 30, 0 to disable)
+  -h, --help               display help for command
 
 $ yamlresume build my-resume.yml
 ◐ Generating resume PDF file with command: xelatex -halt-on-error my-resume.tex...
@@ -129,6 +131,25 @@ opción `--no-validate`.
 
 ```console
 $ yamlresume build --no-validate my-resume.yml
+```
+
+### `--output`
+
+Si quieres especificar un directorio de salida personalizado para los archivos
+generados, puedes usar la opción `-o, --output`.
+
+```console
+$ yamlresume build -o ./output my-resume.yml
+```
+
+### `--timeout`
+
+Si quieres personalizar el tiempo de espera para la compilación LaTeX, puedes
+usar la opción `--timeout`. El tiempo de espera predeterminado es 30 segundos.
+Puedes desactivar el tiempo de espera estableciéndolo en 0.
+
+```console
+$ yamlresume build --timeout 60 my-resume.yml
 ```
 
 ## Dev
