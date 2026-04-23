@@ -44,7 +44,7 @@ export default async function LanguageLayout({
 
   return (
     <html lang={currentLanguage} suppressHydrationWarning>
-      <body>
+      <body className="flex flex-col min-h-screen">
         <RootProvider i18n={provider(currentLanguage)}>{children}</RootProvider>
       </body>
     </html>
