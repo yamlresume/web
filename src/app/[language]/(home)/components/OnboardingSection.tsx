@@ -273,7 +273,7 @@ export function OnboardingSection() {
     {
       id: 'action',
       icon: IconBrandGithub,
-      command: '- uses: yamlresume/action@v1',
+      command: '- uses: yamlresume/action@v0.2.3',
       href: '/docs/ecosystem/action',
     },
     {
