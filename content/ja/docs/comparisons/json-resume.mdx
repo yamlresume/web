@@ -1,0 +1,409 @@
+---
+title: YAMLResume と JSON Resume の比較
+---
+
+[JSON Resume](https://jsonresume.org) は、履歴書の構造化データ形式のためのオープン標準を構築した先駆者です。最初の[公式リリース](https://jsonresume.org/blog/first-official-release)は2014年7月31日で、10年以上前のことになります。
+
+公式ウェブサイトからの引用です：
+
+```markdown
+## Origins and Conceptualization
+
+JSON Resume was conceived as a solution to the fragmented and inconsistent
+landscape of resume formats. Traditional resumes, typically created in formats
+like Microsoft Word or PDF, often suffer from compatibility issues when parsed
+by different systems. Recognizing this problem, Thomas Davis and Roland Sharp
+initiated JSON Resume as an open-source project to create a universal,
+machine-readable format for resumes.
+
+## Development Milestones
+
+The project began gaining momentum in the early 2010s, with significant
+milestones such as the creation of the JSON Resume schema, the development of
+the first CLI tools, and the establishment of the JSON Resume registry. These
+milestones were driven by community contributions and the growing recognition of
+the need for a standardized resume format in the tech industry.
+```
+
+JSON Resume は、構造化された履歴書データのためのオープン標準を確立したという点で優れた仕事をしました。しかし、それは**データのみ**のものです。JSON での履歴書の構造化方法を定めていますが、そのデータを美しくプロフェッショナルに組版された文書に変換するための独断的な解決策は提供していません。
+
+YAMLResume は [JSON Resume](https://jsonresume.org/) から深くインスパイアされており、より**独断的でバッテリー内蔵（batteries-included）**なアプローチを取っています。以下に両者の比較を示します：
+
+## 機能比較
+
+| 機能 | YAMLResume | JSON Resume |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| **データ形式** | YAML | JSON |
+| **国際化（i18n）** | [10言語](/ja/docs/locale)を内蔵 | なし |
+| **リッチテキストサポート** | `summary` フィールドでの [Markdown リッチテキスト構文](/ja/docs/content/rich-text) の選択的サポート | なし |
+| **スキーマ検証** | [コンパイラ](/ja/docs/compiler/architecture) + IDE 統合による [厳格なスキーマ検証](/ja/docs/compiler/schema) | [基本的な JSON Schema 検証](https://jsonresume.org/schema) |
+| **フォントカスタマイズ** | [フォントファミリー、フォントサイズ、行間](/ja/docs/layouts/latex) など | なし |
+| **レイアウトカスタマイズ** | [ページ余白、ページ番号、用紙サイズ](/ja/docs/layouts/latex#page) など | なし |
+| **セクションカスタマイズ** | [エイリアス](/ja/docs/layouts/sections/aliases) と [並べ替え](/ja/docs/layouts/sections/reorder) | なし |
+| **組版エンジン** | [HTML](/ja/docs/layouts/html)、[Markdown](/ja/docs/layouts/markdown)、[LaTeX](/ja/docs/layouts/latex) | HTML |
+| **出力形式** | HTML、Markdown、LaTeX/PDF | [HTML と PDF](https://github.com/jsonresume/resume-cli) |
+| **テンプレート** | 複数の公式 [LaTeX](/ja/docs/layouts/latex/templates) および [HTML](/ja/docs/layouts/html/templates) テンプレート | 数十の [HTML テーマ](https://jsonresume.org/themes) |
+| **Dev モード** | 自動リビルド付き [Dev モード](/ja/docs/cli#dev) | あり |
+| **変換ツール** | JSON Resume から YAMLResume への変換を支援する [json2yamlresume](/ja/docs/ecosystem/json2yamlresume) | 該当なし |
+| **Docker サポート** | LaTeX と YAMLResume がプリインストールされた [公式 Docker イメージ](/ja/docs/contributing/docker) | なし |
+| **GitHub Action** | CI/CD 用の [公式 GitHub Action](https://github.com/yamlresume/action) | なし |
+| **Homebrew** | macOS および Linux での簡単なインストールのための [Homebrew 公式パッケージ](https://formulae.brew.sh/formula/yamlresume) | なし |
+| **Web プレイグラウンド** | インタラクティブな Web ベースの [プレイグラウンド](/ja/playground) | なし |
+
+## 主な違いの解説
+
+YAMLResume と JSON Resume の違いを一言で表すとすれば、それは**独断的（opinionated）**という言葉になるでしょう。JSON Resume は、JSON での履歴書の構造化方法を定義するデータ標準ですが、それ以外のほとんど全てをユーザーに委ねています。一方、YAMLResume はより独断的でバッテリー内蔵のアプローチを取っており、データ形式だけでなく、履歴書を複数の形式や言語で検証、カスタマイズ、レンダリング、配布するための豊富なツールセットも提供しています。
+
+### コンテンツ
+
+YAMLResume と JSON Resume は似たようなコンテンツ構造を共有していますが、YAMLResume はデータモデルを強化されたスキーマ検証、より標準化されたフィールド、`summary` フィールドでのリッチテキストサポート、そしてよりフラットな構造で拡張しています。
+
+#### 強化されたスキーマ検証
+
+YAMLResume には[非常に包括的な Zod スキーマ](/ja/docs/compiler/schema)が付属しており、コンパイル時に履歴書を検証し、型安全性やフォーマットの正確性を [clang スタイルのエラーメッセージ](/ja/docs/cli#validate) で強制することができます。
+
+例えば、無効なメールアドレス、短すぎる市区町村名、範囲外のフォントサイズを含む以下の履歴書について：
+
+```yml lineNumbers
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp #[!code highlight]
+    url: https://ppresume.com/gallery
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S #[!code highlight]
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layouts:
+  - engine: latex
+    typography:
+      fontSize: 13pt #[!code highlight]
+```
+
+`yamlresume validate` は、明確な位置情報を伴う潜在的なエラーの一覧を表示します：
+
+```console
+$ yamlresume validate my-resume.yml
+my-resume.yml:9:12: warning: email is invalid.
+    email: hi@pp
+           ^
+my-resume.yml:38:10: error: city is too short.
+    city: S
+          ^
+my-resume.yml:41:14: error: font size must be between 10pt and 12pt.
+    fontSize: 13pt
+              ^
+```
+
+YAMLResume には、IDE の自動補完、ホバー時のドキュメント表示、VS Code などのエディターでのリアルタイム検証のための公式 [JSON Schema](/ja/docs/compiler/schema/json) も付属しています。
+
+YAMLResume の JSON Schema を使用した VS Code での自動補完：
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-auto-completion.mp4"
+/>
+
+VS Code でのフォーマット検証：
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-field-error.mp4"
+/>
+
+一方、JSON Resume は構造をチェックする[基本的な JSON Schema 検証](https://jsonresume.org/schema)を提供していますが、セマンティックな検証は限定的です。行番号付きのコンパイル時エラー報告、IDE 統合、最小文字列長や列挙値の検証などのビジネスルールチェックはありません。
+
+#### リッチテキスト
+
+YAMLResume は、`summary` フィールドを持つすべてのセクションの `summary` フィールドで、[限定された Markdown 構文](/ja/docs/content/rich-text)（太字、斜体、リンク、リスト、段落）をサポートしています。これにより、テーマ固有のレンダリングルールに依存することなく、主要な成果を強調したり、入れ子のリストで責任を構造化したりすることができます。
+
+JSON ではなく YAML を採用した中核的な理由の一つは、**YAML の複数行文字列構文により、履歴書のソースファイル内でリッチテキストコンテンツを直接書き、読むことがはるかに容易になる**ということです。JSON のように改行や特殊文字をエスケープする必要がありません。
+
+例えば、以下はサポートされている構文機能のいくつかを組み合わせた `work` エントリからの `summary` フィールドです：
+
+```yml lineNumbers
+---
+content:
+  basics:
+    # ...
+    summary: |
+      This is a sample YAML resume that support limited set of markdown rich text syntax (bold, italics, links, lists):
+
+      - Computer Science major with **strong foundation** in data structures, *algorithms*, and software development
+        1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+        2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+LaTeX エンジンで生成された PDF は以下の通りです：
+
+![Rich Text Support in Summary Field](/static/images/docs/content/rich-text/rich-text-support-in-summary-field.webp)
+
+同じコンテンツを JSON で表現したリッチテキスト構文は以下の通りです：
+
+```json lineNumbers
+{
+  "content": {
+    "basics": {
+      "summary": "This is a sample YAML resume that support limited set of markdown rich text syntax (bold, italics, links, lists):\n\n- Computer Science major with **strong foundation** in data structures, *algorithms*, and software development\n  1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites\n  2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)\n- Team player, with detail-oriented mindset and a keen eye for design and user experiences\n"
+    }
+  }
+}
+```
+
+JSON バージョンは、特に複数の段落や入れ子のリストを含む長いサマリーでは、読み書きがはるかに困難であることは間違いありません。
+
+JSON Resume はフォーマットについて何も定めておらず、その `summary` フィールドはプレーンテキストのみです。スタイリングは完全に個々のテーマに委ねられているため、同じ履歴書データでも選択したテーマによって異なるレンダリング結果になる（あるいはセマンティック構造が完全に失われる）可能性があります。
+
+#### 標準化されたフィールド
+
+YAMLResume は、一般的に使用される値を固定された語彙に正規化し、コンパイル時に検証され、サポートされているすべてのロケールで翻訳されます：
+
+- **学位**（`Middle School`、`High School`、`Bachelor`、`Master`、`Doctor` など）
+- **スキルレベル**（`Novice`、`Beginner`、`Intermediate`、`Advanced`、`Expert`、`Master`）
+- **言語の流暢さ**（`Elementary` から `Native` まで）
+- **国と地域**（サポートされているすべての言語に翻訳される）
+
+これらの値は限定されたセットから抽出されるため、YAMLResume はそれらを検証し、翻訳し、一貫してレンダリングできます。出力形式やロケールに関係なく。一方、JSON Resume は自由形式の文字列を受け付けるため、`BS`、`B.S.`、`Bachelor of Science`、`Bachelor` と書かれた学位はそのまま通過し、一貫性とローカリゼーションはユーザーに委ねられます。
+
+#### よりフラットな構造
+
+YAMLResume は `location` とソーシャル `profiles` キーを `basics` から分離してトップレベルに配置し、これによりデータモデルを単純化し、セクション間でより整合性と一貫性を持たせています。JSON Resume はこれらを `basics` の下に入れ子にしており、より複雑なデータ構造になる可能性があります。
+
+### レイアウト
+
+JSON Resume はデータレイヤーで止まっています。JSON での履歴書の構造化方法を示しますが、レンダリングは完全に後回しにしています。YAMLResume は、YAML ソースから完成度の高い出力までの完全で独断的なパイプラインを提供します：
+
+- **[HTML エンジン](/ja/docs/layouts/html)**：SEO メタデータを持つレスポンシブで Web 対応の履歴書
+- **[Markdown エンジン](/ja/docs/layouts/markdown)**：LLM、ATS システム、静的サイト向けのクリーンなテキスト
+- **[LaTeX エンジン](/ja/docs/layouts/latex)**：プロフェッショナルなタイポグラフィによるピクセルパーフェクトな PDF
+
+単一の `yamlresume build` コマンドで、同じソースファイルから 3 つの形式すべてを生成できます。
+
+YAMLResume は、JSON Resume が提供するものを超える豊富なレイアウトカスタマイズオプションも提供しています。
+
+#### ページカスタマイズ
+
+YAMLResume は[物理的なページレイアウト](/ja/docs/layouts/latex#page)を完全に制御でき、これは精密なフォーマットが重要な LaTeX エンジンの PDF 出力にとって不可欠です：
+
+- **用紙サイズ**：地域の標準に合わせて A4（デフォルト）と US Letter の間で選択
+- **ページ余白**：上下左右の余白をセンチメートル単位で独立して設定し（例：`left: 1.5cm`、`top: 2.5cm`）、空白とコンテンツ密度を制御
+- **ページ番号**：ページ番号のオン/オフを切り替え、複数ページの履歴書での位置とスタイルを制御
+
+これらの設定は[LaTeX エンジン](/ja/docs/layouts/latex)において特に重要であり、わずかな余白の調整でもコンテンツがページ間でどのように流れるかに大きな影響を与える可能性があります。
+
+#### タイポグラフィカスタマイズ
+
+YAMLResume は、エンジン固有の実装に対応する[セマンティックなタイポグラフィ制御](/ja/docs/layouts/latex#typography)を提供します：
+
+- **フォントファミリー**：フォント名の優先順位リストを指定します（例：`"Merriweather, serif"`）。HTML では CSS の `font-family` のように動作し、LaTeX では XeTeX のフォント選択として動作します
+- **フォントサイズ**：LaTeX は 10pt、11pt、12pt をサポート。HTML は 14px から 20px をサポート
+- **行間**：5 つのセマンティックレベル（`tight`、`snug`、`normal`、`relaxed`、`loose`）から選択し、リーディング値を手動で計算することなくコンテンツ密度を制御。LaTeX と HTML の両方のエンジンをサポート
+
+JSON Resume にはタイポグラフィシステムが全くありません。フォーマットは完全にテーマに依存するため、テーマを切り替えると履歴書の外観が劇的に変わる可能性があります。
+
+#### セクションカスタマイズ
+
+YAMLResume では、基盤となるデータに触れることなく、[セクションエイリアス](/ja/docs/layouts/sections/aliases)と[セクションの並べ替え](/ja/docs/layouts/sections/reorder)により履歴書の構造を再構築できます：
+
+- **セクションエイリアス**：12 のエイリアス可能なセクションすべてのデフォルトのセクションタイトルを上書きできます。「Work」を「Professional Experience」に、「Education」を「Academic Background」に、「Skills」を「Technical Proficiencies」に変更するなど、業界や個人の好みに合わせて名前を付けられます。エイリアスは 2〜128 文字をサポートし、指定されていない場合はロケール固有のデフォルトにフォールバックします。
+- **セクションの並べ替え**：シンプルな `order` リストでセクションの表示順序を変更できます。`skills` を `work` の前に配置したり、学術的な役割で `publications` と `awards` を強調したり、ポートフォリオスタイルの履歴書で `projects` を先頭にしたりできます。明示的にリストされていないセクションはデフォルトの順序で追加され、空のセクションは自動的に除外されます。
+
+JSON Resume はスキーマ内でセクション構造を定義していますが、セクションの名前変更や並べ替えのメカニズムは提供しておらず、表示はテーマがハードコードしたものに固定されます。
+
+### ロケール（i18n）
+
+執筆時点で、YAMLResume は 10 言語をすぐに使用可能です（[English](/ja/docs/locale/english)、[Chinese](/ja/docs/locale/chinese)、[Spanish](/ja/docs/locale/spanish)、[French](/ja/docs/locale/french)、[Norwegian](/ja/docs/locale/norwegian)、[Dutch](/ja/docs/locale/dutch)、[Japanese](/ja/docs/locale/japanese)、[German](/ja/docs/locale/german)、[Indonesian](/ja/docs/locale/indonesian) など）。セクションヘッダー、国名、各種用語の組み込み翻訳、慣用的な住所や日付の形式、ベストプラクティスの LaTeX 設定などが含まれます。
+
+`yamlresume languages list` を使用すると、サポートされているすべての言語を確認できます：
+
+```console
+$ yamlresume languages list
+
+| locale.language | Language Name                   |
+| --------------- | ------------------------------- |
+| en              | English                         |
+| zh-hans         | Simplified Chinese              |
+| zh-hant-hk      | Traditional Chinese (Hong Kong) |
+| zh-hant-tw      | Traditional Chinese (Taiwan)    |
+| es              | Spanish                         |
+| fr              | French                          |
+| no              | Norwegian                       |
+| nl              | Dutch                           |
+| ja              | Japanese                        |
+| id              | Indonesian                      |
+| de              | German                          |
+| pt-br           | Brazilian Portuguese            |
+```
+
+YAMLResume は以下の方法で i18n をサポートしています：
+
+#### 用語の翻訳
+
+YAMLResume は、さまざまなフィールドにより標準化されたデータも提供します：
+
+- **学位**：YAMLResume は教育学位を固定されたセット（`Bachelor`、`Master`、`Doctor` など）に正規化し、一貫したフォーマットを実現します
+- **スキルレベル**：YAMLResume は標準化された表示のための定義済みスキルレベル（`Novice` から `Master` まで）を提供します
+- **言語の流暢さ**：YAMLResume は、サポートされているすべてのロケールで流暢さのレベル（`Elementary` から `Native` まで）を標準化します
+
+#### 句読点
+
+YAMLResume は、生成された履歴書でロケールに適した句読点を自動的に使用します。言語によっては、単純な翻訳を超えた独自の句読点ルールがあります：
+
+- **CJK 言語**（[Chinese](/ja/docs/locale/chinese#punctuations)、[Japanese](/ja/docs/locale/japanese#punctuations)）：文字幅に合わせて全角の句読点（読点 `、`、コロン `：` など）を使用
+- **[French](/ja/docs/locale/french#punctuations)**：二重句読点（`:` `!` `?`）の前にノーブレークスペースを追加し、引用符にはギュメ（`« »`）を使用
+- **[German](/ja/docs/locale/german#punctuations)**：下上引用符（`„“`）または内向きのギュメ（`»«`）を使用
+- **[Spanish](/ja/docs/locale/spanish#punctuations)**：逆さ句読点（`¿` `¡`）をサポート
+
+履歴書テンプレートは、`locale.language` の設定に基づいて正しい句読点スタイルを自動的に選択し、ローカルな慣習とのタイポグラフィックな一貫性を確保します。
+
+#### 日付の書式設定
+
+YAMLResume は、単一のグローバルな形式を使用するのではなく、ロケール固有の慣習に従って日付をフォーマットします：
+
+- **English**："Jun 2018 – Present"（月名を省略形、en ダッシュ区切り）
+- **Chinese**："2018年6月至今"（年を先頭に、全角文字、"至" 区切り）
+- **Japanese**："2016年10月～2018年1月"（範囲区切りに全角チルダ）
+- **German**：月名の頭文字を大文字に（"Januar"、"Februar"）
+- **French**：小文字の省略形の月名にピリオドを付加（"janv."、"févr."）
+- **Spanish**：小文字の省略形の月名（"ene"、"feb"）
+
+月名、日付の順序、範囲の区切りはすべて、選択された言語に自動的に適応します。
+
+#### 住所の書式設定
+
+YAMLResume は、ローカルな慣習に合わせて住所の表示を適応させます：
+
+- **English**：Address → City → State → Country（最も具体的から最も一般的へ）
+- **Chinese**：Country → Region → City → Address（最も一般的から最も具体的へ）
+- **German**：Street + House Number、次に Postal Code を City の前に（"Musterstraße 123, 10115 Berlin"）
+- **Japanese**：Country → Region（Prefecture）→ City → Address → Postal Code
+
+住所の構成要素は、ロケールに基づいて自動的に並べ替えられ、各言語の文化的な期待に合わせられます。
+
+#### LaTeX babel カスタマイズ
+
+YAMLResume は、PDF 出力での適切な組版を確保するため、サポートされている各言語に対して [LaTeX babel パッケージ](https://latex3.github.io/babel/) を設定します：
+
+- **ハイフネーション**：言語固有のハイフネーション
+- **日付形式**：生成された文書でのローカライズされた日付文字列
+- **タイポグラフィ**：言語固有のスペーシングと句読点ルール
+- **文字処理**：ダイアクリティカルマーク、合字、特殊文字（例：ドイツ語の ß、フランス語の ç、スペイン語の ñ）の適切なサポート
+
+例えば、French babel の設定では、コロンの前の細いノーブレークスペースを適切に処理でき、German babel では複合語の正しいハイフネーションパターンを確保します。このレベルのタイポグラフィックな洗練は、JSON Resume の HTML のみのエコシステムでは利用できません。
+
+### 開発者体験（DX）
+
+YAMLResume は、JSON Resume に欠けているモダンな DX 機能を提供します：
+
+- **`yamlresume new`**：公式テンプレートからワンコマンドで新しい履歴書を作成
+- **`yamlresume build`**：履歴書を HTML、Markdown、PDF に一括でビルド
+- **`yamlresume dev`**：保存するたびに履歴書をリビルドする[ウォッチモード](/ja/blog/dev-mode)
+- **`yamlresume doctor`**：LaTeX 環境とフォント設定を診断し、トラブルシューティングを容易に
+- **`yamlresume validate`**：ビルドせずに履歴書をチェック
+- **`yamlresume languages list`**：サポートされているすべての言語とそのロケールコードを一覧表示
+- **`yamlresume templates list`**：各エンジンで利用可能なすべてのテンプレートを一覧表示
+
+YAMLResume は履歴書をコードとして扱います。組み込みの[コンパイラ](/ja/docs/compiler)が YAML を解析し、包括的な Zod スキーマに対して検証し、データを変換して出力を生成します。先述したように、[clang スタイルの診断](/ja/blog/yamlresume-compiler)により早期にエラーを検出します。
+
+## エコシステムとコミュニティ
+
+### json2yamlresume
+
+既存の JSON Resume がある場合、[`json2yamlresume`](/ja/docs/ecosystem/json2yamlresume) CLI ツールを使用して YAMLResume に変換できます：
+
+```console
+$ npm install -g json2yamlresume
+$ json2yamlresume resume.json resume.yml
+```
+
+コンバータは、JSON Resume のすべての標準セクションを処理し、入れ子構造（`basics.location` や `basics.profiles` など）を YAMLResume のよりフラットなトップレベル形式に変換します。
+
+### Docker
+
+YAMLResume は、Node.js、LaTeX、推奨フォントを含むすべての依存関係がプリインストールされた[公式 Docker イメージ](https://hub.docker.com/r/yamlresume/yamlresume)を提供しています。これにより、ローカルでのインストールなしに簡単に始めることができます：
+
+```bash
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+JSON Resume には公式の Docker サポートがなく、環境設定は完全にユーザーに委ねられています。
+
+### Homebrew
+
+YAMLResume は、macOS および Linux ユーザー向けに [Homebrew](https://formulae.brew.sh/formula/yamlresume) で利用可能です：
+
+```bash
+brew install yamlresume
+```
+
+これにより CLI がインストールされ、グローバルに利用可能になります。JSON Resume には Homebrew の Formula がなく、npm 経由でインストールする必要があります。
+
+### GitHub Action
+
+YAMLResume は、CI/CD パイプライン向けに[公式 GitHub Action](https://github.com/yamlresume/action)を提供しています。プッシュのたびに履歴書の PDF を自動的にビルドしてコミットできます：
+
+```yaml
+- uses: yamlresume/action@v0.2.3
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+      resume-fr.yml
+```
+
+JSON Resume には公式の GitHub Action はありませんが、コミュニティによるソリューションは存在します。
+
+### プレイグラウンド
+
+YAMLResume は、インタラクティブな Web ベースの[プレイグラウンド](/ja/playground)を提供しており、リアルタイムで履歴書を編集し、サポートされているすべての出力形式での即時プレビューを確認できます。プレイグラウンドは [`@yamlresume/playground`](https://www.npmjs.com/package/@yamlresume/playground) React コンポーネントをベースに構築されており、以下の機能を備えています：
+
+- **ライブ YAML エディター**：Monaco ベースのエディターで、YAML シンタックスハイライトと[スキーマ検証](/ja/docs/compiler/schema/json)を提供
+- **リアルタイムプレビュー**：[HTML](/ja/docs/layouts/html)、[Markdown](/ja/docs/layouts/markdown)、[LaTeX](/ja/docs/layouts/latex) レイアウトの即時レンダリング
+- **エクスポートオプション**：ブラウザから直接履歴書をダウンロード、コピー、印刷
+- **レスポンシブデザイン**：デスクトップでは分割ペインレイアウト、モバイルではタブ型インターフェース
+
+プレイグラウンドは、履歴書デザインの迅速なプロトタイピング、レイアウト設定のテスト、ローカルの開発環境を必要とせずに履歴書のドラフトを共有するのに役立ちます。プレイグラウンドは完全にブラウザ内で動作するため、Node.js、LaTeX、その他の依存関係をインストールすることなく、どのデバイスからでも使用できます。
+
+JSON Resume に同等のインタラクティブなプレイグラウンドはなく、ユーザーは CLI をインストールし、テーマをプレビューするためのローカル環境をセットアップする必要があります。
+
+## まとめ
+
+JSON Resume は**データ交換形式**として優れています。つまり、履歴書データを構造化するための標準化された方法です。YAMLResume はその考え方を**完全な履歴書ソリューション**に拡張し、データ形式だけでなく、複数の形式や言語で履歴書を検証、レンダリング、カスタマイズ、配布するための包括的なツールセットも提供します。
+
+軽量で広く採用されているデータ標準が必要で、独自のレンダリングパイプラインを構築する予定がある場合は、**JSON Resume** を選びましょう。
+
+データの検証からプロフェッショナルな PDF 生成まですべてを処理し、ウォッチモード、Docker サポート、CI/CD 統合などのモダンな開発者ツールを備えた、独断的でバッテリー内蔵のソリューションが必要な場合は、**YAMLResume** を選びましょう。

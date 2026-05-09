@@ -1,0 +1,409 @@
+---
+title: YAMLResume 與 JSON Resume 的比較
+---
+
+[JSON Resume](https://jsonresume.org) 是建立履歷結構化資料格式開放標準的先驅。其第一個[官方發布](https://jsonresume.org/blog/first-official-release)是在 2014 年 7 月 31 日——距今已超過 10 年。
+
+摘自其官方網站：
+
+```markdown
+## Origins and Conceptualization
+
+JSON Resume was conceived as a solution to the fragmented and inconsistent
+landscape of resume formats. Traditional resumes, typically created in formats
+like Microsoft Word or PDF, often suffer from compatibility issues when parsed
+by different systems. Recognizing this problem, Thomas Davis and Roland Sharp
+initiated JSON Resume as an open-source project to create a universal,
+machine-readable format for resumes.
+
+## Development Milestones
+
+The project began gaining momentum in the early 2010s, with significant
+milestones such as the creation of the JSON Resume schema, the development of
+the first CLI tools, and the establishment of the JSON Resume registry. These
+milestones were driven by community contributions and the growing recognition of
+the need for a standardized resume format in the tech industry.
+```
+
+JSON Resume 在建立履歷結構化資料的開放標準方面表現出色。然而，它**僅限於資料**——它規定了如何以 JSON 結構化您的履歷，但並未提供任何具體方案來將這些資料轉換為美觀且專業排版的文件。
+
+YAMLResume 深受 [JSON Resume](https://jsonresume.org/) 的啟發，採取了更**具有明確意見、開箱即用**的做法。以下為兩者的比較：
+
+## 功能比較
+
+| 功能                      | YAMLResume                                                                                                       | JSON Resume                                                   |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| **資料格式**              | YAML                                                                                                             | JSON                                                          |
+| **國際化**                | 內建 [10 種語言](/zh-tw/docs/locale)                                                                             | 無                                                            |
+| **富文字支援**            | 在 `summary` 欄位支援精選的 [Markdown 富文字語法](/zh-tw/docs/content/rich-text)                                 | 無                                                            |
+| **結構驗證**              | [嚴格的結構驗證](/zh-tw/docs/compiler/schema)，搭配 [編譯器](/zh-tw/docs/compiler/architecture)與 IDE 整合      | [基本 JSON Schema 驗證](https://jsonresume.org/schema)        |
+| **字型自訂**              | [字型家族、字型大小、行距](/zh-tw/docs/layouts/latex) 等                                                         | 無                                                            |
+| **版面自訂**              | [頁面邊距、頁碼、紙張大小](/zh-tw/docs/layouts/latex#page) 等                                                    | 無                                                            |
+| **章節自訂**              | [別名](/zh-tw/docs/layouts/sections/aliases)與[重新排序](/zh-tw/docs/layouts/sections/reorder)                   | 無                                                            |
+| **排版引擎**              | [HTML](/zh-tw/docs/layouts/html)、[Markdown](/zh-tw/docs/layouts/markdown)、[LaTeX](/zh-tw/docs/layouts/latex)   | HTML                                                          |
+| **輸出格式**              | HTML、Markdown、LaTeX/PDF                                                                                        | [HTML 與 PDF](https://github.com/jsonresume/resume-cli)       |
+| **模板**                  | 多個官方 [LaTeX](/zh-tw/docs/layouts/latex/templates) 與 [HTML](/zh-tw/docs/layouts/html/templates) 模板         | 數十個 [HTML 主題](https://jsonresume.org/themes)             |
+| **開發模式**              | 自動重建的[開發模式](/zh-tw/docs/cli#dev)                                                                        | 是                                                            |
+| **轉換工具**              | [json2yamlresume](/zh-tw/docs/ecosystem/json2yamlresume) 協助將 JSON Resume 轉換為 YAMLResume                    | 不適用                                                        |
+| **Docker 支援**           | [官方 Docker 映像檔](/zh-tw/docs/contributing/docker)，已預先安裝 LaTeX 與 YAMLResume                            | 無                                                            |
+| **GitHub Action**         | 用於 CI/CD 的[官方 GitHub Action](https://github.com/yamlresume/action)                                          | 無                                                            |
+| **Homebrew**              | 可在 macOS 與 Linux 上輕鬆安裝的 [Homebrew formula](https://formulae.brew.sh/formula/yamlresume)                  | 無                                                            |
+| **線上 Playground**       | 互動式網頁 [playground](/zh-tw/playground)                                                                       | 無                                                            |
+
+## 主要差異說明
+
+如果必須用一個詞來總結 YAMLResume 與 JSON Resume 的差異，那就是**具有明確意見**。JSON Resume 是一種資料標準，定義了如何以 JSON 結構化您的履歷，但幾乎將其他所有事情都留給您自行處理。YAMLResume 則採取更具明確意見、開箱即用的做法，不僅提供資料格式，還提供一整套豐富的工具來驗證、自訂、渲染並以多種格式與語言分發您的履歷。
+
+### 內容
+
+YAMLResume 與 JSON Resume 擁有相似的內容結構，但 YAMLResume 擴展了資料模型，提供更強的結構驗證、更標準化的欄位、`summary` 欄位的富文字支援，以及更扁平的結構：
+
+#### 更強的結構驗證
+
+YAMLResume 配備了[非常全面的 Zod 結構](/zh-tw/docs/compiler/schema)，可以在編譯時驗證您的履歷並強制執行型別安全、格式正確性，同時提供 [clang 風格的錯誤訊息](/zh-tw/docs/cli#validate)：
+
+例如，對於以下包含無效電子郵件、城市名稱過短以及字型大小超出範圍的履歷：
+
+```yml lineNumbers
+# yaml-language-server: $schema=https://yamlresume.dev/schema.json
+---
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Headed for the Pacific
+    phone: "(213) 555-9876"
+    email: hi@pp #[!code highlight]
+    url: https://ppresume.com/gallery
+    summary: |
+      - Computer Science major with strong foundation in data structures, algorithms, and software development
+      - Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+      - Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+  location:
+    address: 123 Main Street
+    region: California
+    city: S #[!code highlight]
+    country: United States
+    postalCode: "95814"
+  education:
+    - institution: University of Southern California
+      url: https://www.cs.usc.edu/
+      degree: Bachelor
+      area: Computer Engineering and Computer Science
+      score: "3.8"
+      startDate: Sep 1, 2016
+      endDate:
+      courses:
+        - D
+        - Programming Language Concepts
+      summary: |
+        - Developed proficiency in programming languages such as Java, C++, and Python
+        - Gained hands-on experience in software development through various projects and assignments
+        - Strong communication and teamwork skills acquired through group projects and presentations
+
+layouts:
+  - engine: latex
+    typography:
+      fontSize: 13pt #[!code highlight]
+```
+
+`yamlresume validate` 將顯示一系列潛在錯誤，並提供清楚的位置資訊：
+
+```console
+$ yamlresume validate my-resume.yml
+my-resume.yml:9:12: warning: email is invalid.
+    email: hi@pp
+           ^
+my-resume.yml:38:10: error: city is too short.
+    city: S
+          ^
+my-resume.yml:41:14: error: font size must be between 10pt and 12pt.
+    fontSize: 13pt
+              ^
+```
+
+YAMLResume 還提供官方 [JSON Schema](/zh-tw/docs/compiler/schema/json)，可在 VS Code 等編輯器中實現 IDE 自動完成、懸停文件與即時驗證。
+
+在 VS Code 中使用 YAMLResume 的 JSON Schema 進行自動完成：
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-auto-completion.mp4"
+/>
+
+在 VS Code 中進行格式驗證：
+
+<video
+  autoPlay
+  controls
+  loop
+  muted
+  src="/static/videos/docs/compiler/schema/json/json-schema-format-validation-field-error.mp4"
+/>
+
+另一方面，JSON Resume 提供[基本的 JSON Schema 驗證](https://jsonresume.org/schema)，僅能檢查結構，語意驗證有限——沒有帶行號的編譯時錯誤報告、沒有 IDE 整合，也沒有最小字串長度或列舉值驗證等業務規則檢查。
+
+#### 富文字
+
+YAMLResume 在所有包含 `summary` 欄位的章節中，支援[有限的一組 Markdown 語法](/zh-tw/docs/content/rich-text)（粗體、斜體、連結、清單與段落）。這讓您能夠強調關鍵成就或以巢狀清單結構化職責描述，而無需仰賴主題特定的渲染規則。
+
+採用 YAML 而非 JSON 的核心原因之一，就是**YAML 的多行字串語法讓直接在履歷原始檔案中撰寫與閱讀富文字內容變得更加容易**，無需像在 JSON 中那樣跳脫換行符號或特殊字元。
+
+例如，以下是一個來自 `work` 條目的 `summary` 欄位，結合了多項支援的語法功能：
+
+```yml lineNumbers
+---
+content:
+  basics:
+    # ...
+    summary: |
+      This is a sample YAML resume that support limited set of markdown rich text syntax (bold, italics, links, lists):
+
+      - Computer Science major with **strong foundation** in data structures, *algorithms*, and software development
+        1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+        2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)
+      - Team player, with detail-oriented mindset and a keen eye for design and user experiences
+```
+
+以下是使用 LaTeX 引擎產生的 PDF：
+
+![Rich Text Support in Summary Field](/static/images/docs/content/rich-text/rich-text-support-in-summary-field.webp)
+
+以下是使用 JSON 表達相同富文字語法內容的範例：
+
+```json lineNumbers
+{
+  "content": {
+    "basics": {
+      "summary": "This is a sample YAML resume that support limited set of markdown rich text syntax (bold, italics, links, lists):\n\n- Computer Science major with **strong foundation** in data structures, *algorithms*, and software development\n  1. Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites\n  2. Experiened in databases (SQL, NoSQL), familiar with server-side technologies ([Node.js](https://nodejs.org/en), Express, etc.)\n- Team player, with detail-oriented mindset and a keen eye for design and user experiences\n"
+    }
+  }
+}
+```
+
+毫無疑問，JSON 版本在閱讀與編輯上困難許多，尤其是對於包含多個段落與巢狀清單的較長摘要。
+
+JSON Resume 對格式沒有任何規範——其 `summary` 欄位僅支援純文字。任何樣式都完全交由個別主題處理，這意味著相同的履歷資料可能會因選擇的主題不同而渲染出不同的結果（或完全失去語意結構）。
+
+#### 標準化欄位
+
+YAMLResume 將常用數值標準化為固定詞彙，在編譯時進行驗證，並在所有支援的語系中進行翻譯：
+
+- **學位**（`Middle School`、`High School`、`Bachelor`、`Master`、`Doctor` 等）
+- **技能等級**（`Novice`、`Beginner`、`Intermediate`、`Advanced`、`Expert`、`Master`）
+- **語言流利度**（從 `Elementary` 到 `Native`）
+- **國家與地區**（翻譯為每一種支援的語言）
+
+由於這些數值來自封閉集合，YAMLResume 能夠驗證、翻譯並一致地渲染它們——無論輸出格式或語系為何。JSON Resume 接受自由格式的字串，因此 `BS`、`B.S.`、`Bachelor of Science` 或 `Bachelor` 等學位寫法將會原封不動地傳遞，一致性和在地化則交由使用者自行處理。
+
+#### 更扁平的結構
+
+YAMLResume 將 `location` 與社交 `profiles` 金鑰置於最上層，與 `basics` 分開，簡化了資料模型，並使其在各個章節之間更加一致。JSON Resume 將這些嵌套在 `basics` 之下，可能導致更複雜的資料結構。
+
+### 版面配置
+
+JSON Resume 止步於資料層。它告訴您如何以 JSON 結構化履歷，但將渲染完全留給您自行處理。YAMLResume 則提供從 YAML 原始碼到精美輸出的完整、具明確意見的流程：
+
+- **[HTML 引擎](/zh-tw/docs/layouts/html)**：具備回應式設計與 SEO 中繼資料的網頁就緒履歷
+- **[Markdown 引擎](/zh-tw/docs/layouts/markdown)**：適用於 LLM、ATS 系統與靜態網站的純淨文字
+- **[LaTeX 引擎](/zh-tw/docs/layouts/latex)**：具備專業排版的像素級精準 PDF
+
+單一 `yamlresume build` 指令即可從相同的原始檔案產生這三種格式。
+
+YAMLResume 還提供一組豐富的版面配置自訂選項，遠超 JSON Resume 所提供的功能。
+
+#### 頁面自訂
+
+YAMLResume 讓您完全掌控[實體頁面版面](/zh-tw/docs/layouts/latex#page)，這對於 LaTeX 引擎的 PDF 輸出至關重要，因為精確的格式設定在此十分重要：
+
+- **紙張大小**：在 A4（預設）與 US Letter 之間選擇，以符合各地區標準
+- **頁面邊距**：獨立設定上下左右的邊距，單位為公分（例如 `left: 1.5cm`、`top: 2.5cm`），以控制留白與內容密度
+- **頁碼**：開啟或關閉頁碼，並控制多頁履歷中頁碼的位置與樣式
+
+這些設定對於 [LaTeX 引擎](/zh-tw/docs/layouts/latex)尤為重要，因為即使是微小的邊距調整，也可能顯著影響內容在頁面之間的流動方式。
+
+#### 排版自訂
+
+YAMLResume 提供[語意化排版控制](/zh-tw/docs/layouts/latex#typography)，對應至引擎特定的實作：
+
+- **字型家族**：指定依優先順序排列的字型名稱清單（例如 `"Merriweather, serif"`），其運作方式類似 CSS 的 `font-family`（適用於 HTML）或 XeTeX 的字型選擇（適用於 LaTeX）
+- **字型大小**：LaTeX 支援 10pt、11pt 或 12pt；HTML 支援 14px 至 20px
+- **行距**：從五個語意化層級中選擇——`tight`、`snug`、`normal`、`relaxed` 或 `loose`——以控制內容密度，無需手動計算行高數值，同時支援 LaTeX 與 HTML 引擎
+
+JSON Resume 完全沒有排版系統。格式設定完全取決於主題，這意味著切換主題可能會大幅改變您履歷的外觀。
+
+#### 章節自訂
+
+YAMLResume 讓您能夠透過[章節別名](/zh-tw/docs/layouts/sections/aliases)與[章節重新排序](/zh-tw/docs/layouts/sections/reorder)來重塑履歷結構，而無需修改底層資料：
+
+- **章節別名**：覆寫 12 個可設定別名章節的預設標題。將「Work」重新命名為「Professional Experience」、將「Education」重新命名為「Academic Background」，或將「Skills」重新命名為「Technical Proficiencies」，以符合您的產業或個人偏好。別名支援 2 至 128 個字元，若未提供則會回退至語系特定的預設值。
+- **章節重新排序**：使用簡單的 `order` 清單變更章節的呈現順序。將 `skills` 置於 `work` 之前、在學術職位中突顯 `publications` 與 `awards`，或以 `projects` 作為作品集風格履歷的開頭。未明確列出的章節將以預設順序附加，空章節則會自動過濾掉。
+
+JSON Resume 在結構中定義了章節結構，但沒有提供重新命名或重新排序的機制——呈現方式完全被鎖定為主題所硬編碼的內容。
+
+### 語系（國際化）
+
+在撰寫本文時，YAMLResume 開箱即用地支援 10 種語言（[English](/zh-tw/docs/locale/english)、[Chinese](/zh-tw/docs/locale/chinese)、[Spanish](/zh-tw/docs/locale/spanish)、[French](/zh-tw/docs/locale/french)、[Norwegian](/zh-tw/docs/locale/norwegian)、[Dutch](/zh-tw/docs/locale/dutch)、[Japanese](/zh-tw/docs/locale/japanese)、[German](/zh-tw/docs/locale/german)、[Indonesian](/zh-tw/docs/locale/indonesian) 等），內建翻譯包括章節標題、國家名稱與各種詞彙、慣用的地址與日期格式、最佳實踐 LaTeX 設定等。
+
+您可以使用 `yamlresume languages list` 查看所有支援的語言：
+
+```console
+$ yamlresume languages list
+
+| locale.language | Language Name                   |
+| --------------- | ------------------------------- |
+| en              | English                         |
+| zh-hans         | Simplified Chinese              |
+| zh-hant-hk      | Traditional Chinese (Hong Kong) |
+| zh-hant-tw      | Traditional Chinese (Taiwan)    |
+| es              | Spanish                         |
+| fr              | French                          |
+| no              | Norwegian                       |
+| nl              | Dutch                           |
+| ja              | Japanese                        |
+| id              | Indonesian                      |
+| de              | German                          |
+| pt-br           | Brazilian Portuguese            |
+```
+
+YAMLResume 透過以下方式支援國際化：
+
+#### 詞彙翻譯
+
+YAMLResume 也為各個欄位提供更標準化的資料：
+
+- **學位**：YAMLResume 將教育學位標準化為固定集合（`Bachelor`、`Master`、`Doctor` 等），以確保格式一致
+- **技能等級**：YAMLResume 提供預定義的技能等級（從 `Novice` 到 `Master`），以標準化呈現方式
+- **語言流利度**：YAMLResume 在所有支援的語系中標準化流利度等級（從 `Elementary` 到 `Native`）
+
+#### 標點符號
+
+YAMLResume 在產生的履歷中自動使用適合該語系的標點符號。不同語言有著超越單純翻譯的獨特標點規則：
+
+- **CJK 語言**（[Chinese](/zh-tw/docs/locale/chinese#punctuations)、[Japanese](/zh-tw/docs/locale/japanese#punctuations)）：使用全形標點符號（`、`表示逗號，`：`表示冒號）以配合字元寬度
+- **[French](/zh-tw/docs/locale/french#punctuations)**：在高標點符號（`:` `!` `?`）前加入不斷行空格，並使用尖引號（`« »`）表示引用
+- **[German](/zh-tw/docs/locale/german#punctuations)**：使用低高引號（`„“`）或內指向尖引號（`»«`）
+- **[Spanish](/zh-tw/docs/locale/spanish#punctuations)**：支援倒置標點符號（`¿` `¡`）
+
+履歷模板會根據 `locale.language` 設定自動選擇正確的標點樣式，確保與當地慣例的排版一致性。
+
+#### 日期格式
+
+YAMLResume 根據語系特定的慣例格式化日期，而非使用單一的全局格式：
+
+- **English**：「Jun 2018 – Present」（縮寫月份，en-dash 分隔符）
+- **Chinese**：「2018年6月至今」（年份在前，全形字元，「至」分隔符）
+- **Japanese**：「2016年10月～2018年1月」（全形波浪號作為範圍分隔符）
+- **German**：首字母大寫的月份名稱（「Januar」、「Februar」）
+- **French**：小寫縮寫月份搭配句點（「janv.」、「févr.」）
+- **Spanish**：小寫縮寫月份（「ene」、「feb」）
+
+月份名稱、日期順序與範圍分隔符都會自動適應所選語言。
+
+#### 地址格式
+
+YAMLResume 調整地址呈現方式以符合當地慣例：
+
+- **English**：Address → City → State → Country（由最具體到最一般）
+- **Chinese**：Country → Region → City → Address（由最一般到最具體）
+- **German**：街道＋門牌號碼，然後郵遞區號在前、城市在後（「Musterstraße 123, 10115 Berlin」）
+- **Japanese**：Country → Region（都道府縣）→ City → Address → Postal Code
+
+地址元件會根據語系自動重新排序，以符合每種語言的文化期望。
+
+#### LaTeX babel 自訂
+
+YAMLResume 為每種支援的語言設定 [LaTeX babel 套件](https://latex3.github.io/babel/)，以確保 PDF 輸出的正確排版：
+
+- **斷字規則**：語言特定的斷字規則
+- **日期格式**：產生文件中的在地化日期字串
+- **排版**：語言特定的間距與標點規則
+- **字元處理**：正確支援變音符號、連字與特殊字元（例如德文 ß、法文 ç、西班牙文 ñ）
+
+例如，法文 babel 設定可正確處理冒號前的細不斷行空格，而德文 babel 則確保複合詞的正確斷字模式。這種程度的排版精緻度在 JSON Resume 僅限 HTML 的生態系統中是無法實現的。
+
+### 開發者體驗
+
+YAMLResume 提供 JSON Resume 所缺乏的現代化開發者體驗功能：
+
+- **`yamlresume new`**：透過單一指令從官方模板建立新履歷
+- **`yamlresume build`**：一次將您的履歷建置為 HTML、Markdown 與 PDF
+- **`yamlresume dev`**：每次儲存時自動重建履歷的[監看模式](/zh-tw/blog/dev-mode)
+- **`yamlresume doctor`**：診斷您的 LaTeX 環境與字型設定，簡化疑難排解
+- **`yamlresume validate`**：無需建置即可檢查您的履歷
+- **`yamlresume languages list`**：列出所有支援的語言及其語系代碼
+- **`yamlresume templates list`**：列出每個引擎所有可用的模板
+
+YAMLResume 將您的履歷視為程式碼。內建的[編譯器](/zh-tw/docs/compiler)會解析您的 YAML、針對全面的 Zod 結構進行驗證、轉換資料，並產生輸出——如前所述，透過 [clang 風格的診斷訊息](/zh-tw/blog/yamlresume-compiler)及早發現錯誤。
+
+## 生態系統與社群
+
+### json2yamlresume
+
+如果您已經有現有的 JSON Resume，可以使用 [`json2yamlresume`](/zh-tw/docs/ecosystem/json2yamlresume) CLI 工具將其轉換為 YAMLResume：
+
+```console
+$ npm install -g json2yamlresume
+$ json2yamlresume resume.json resume.yml
+```
+
+此轉換器會處理所有標準的 JSON Resume 章節，並將嵌套結構（如 `basics.location` 與 `basics.profiles`）轉換為 YAMLResume 更扁平的最上層格式。
+
+### Docker
+
+YAMLResume 提供[官方 Docker 映像檔](https://hub.docker.com/r/yamlresume/yamlresume)，已預先安裝所有相依項目，包括 Node.js、LaTeX 與推薦字型。這讓您無需本機安裝即可輕鬆開始使用：
+
+```bash
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+JSON Resume 沒有官方 Docker 支援，環境設定完全交由使用者自行處理。
+
+### Homebrew
+
+YAMLResume 可透過 [Homebrew](https://formulae.brew.sh/formula/yamlresume) 在 macOS 與 Linux 上使用：
+
+```bash
+brew install yamlresume
+```
+
+這會安裝 CLI 並使其全域可用。JSON Resume 沒有 Homebrew formula，必須透過 npm 安裝。
+
+### GitHub Action
+
+YAMLResume 提供用於 CI/CD 管道的[官方 GitHub Action](https://github.com/yamlresume/action)。您可以自動在每次推送時建置並提交履歷 PDF：
+
+```yaml
+- uses: yamlresume/action@v0.2.3
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+      resume-fr.yml
+```
+
+JSON Resume 沒有官方 GitHub Action，雖然社群解決方案存在。
+
+### Playground
+
+YAMLResume 提供互動式網頁 [playground](/zh-tw/playground)，讓您可以即時編輯履歷並查看所有支援輸出格式的即時預覽。Playground 建基於 [`@yamlresume/playground`](https://www.npmjs.com/package/@yamlresume/playground) React 元件，並具備以下功能：
+
+- **即時 YAML 編輯器**：基於 Monaco 的編輯器，具備 YAML 語法醒目提示與[結構驗證](/zh-tw/docs/compiler/schema/json)
+- **即時預覽**：針對 [HTML](/zh-tw/docs/layouts/html)、[Markdown](/zh-tw/docs/layouts/markdown) 與 [LaTeX](/zh-tw/docs/layouts/latex) 版面的即時渲染
+- **匯出選項**：直接從瀏覽器下載、複製或列印您的履歷
+- **響應式設計**：桌面版採用分割窗格版面，行動版採用分頁介面
+
+Playground 適合用於快速原型設計履歷樣式、測試版面配置，或分享履歷草稿而無需本機開發環境。由於 playground 完全在瀏覽器中執行，您可以在任何裝置上使用它，無需安裝 Node.js、LaTeX 或任何其他相依項目。
+
+JSON Resume 沒有類似的互動式 playground——使用者必須安裝 CLI 並設定本機環境才能預覽主題。
+
+## 總結
+
+JSON Resume 的強項在於作為**資料交換格式**——一種結構化履歷資料的標準化方式。YAMLResume 則將這個概念延伸為**完整的履歷解決方案**，不僅提供資料格式，還提供一整套全面的工具來驗證、渲染、自訂並以多種格式與語言分發您的履歷。
+
+如果您需要輕量、廣泛採用的資料標準，並計畫建置自己的渲染管道，請選擇 **JSON Resume**。
+
+如果您想要一個具有明確意見、開箱即用的解決方案，能夠處理從資料驗證到專業 PDF 產生的所有事情，並具備監看模式、Docker 支援與 CI/CD 整合等現代化開發者工具，請選擇 **YAMLResume**。
