@@ -1,4 +1,5 @@
 import type { StaticImageData } from 'next/image'
+import architectureCorner from './avatars/architecture-corner.webp'
 import deepanshkhurana from './avatars/deepanshkhurana.png'
 import diqitalb from './avatars/diqitalb.webp'
 import dthelcydragon from './avatars/dthelcydragon.webp'
@@ -114,9 +115,16 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     content:
-      "Your Resume in YAML = LLM Superpowers<br /><br />I switched to keeping my resume in YAML format using YAMLResume, and it's been a game-changer to have a fast feedback loop between my resume and AI agents.<br /><br />Pros:<br /> - Analyze your resume into Claude code/Codex and get instant feedback<br /> - Ask to tailor it for a specific job description<br /> - Version control with git - track every change<br /> - Generate professional LaTeX PDFs<br />Cons:<br /> - Latex setup can be complicated - but Claude Code will save you :)<br /><br />The workflow: edit YAML → LLM review → refine → build PDF.<br /><br />No more wrestling with Word formatting or manually comparing versions. Just clean, structured data that LLMs can actually understand and help improve.<br /><br />P.S. I wonder are there a resume skill for Claude Code?",
+      "Your Resume in YAML = LLM Superpowers<br /><br />I switched to keeping my resume in YAML format using YAMLResume, and it's been a game-changer to have a fast feedback loop between my resume and AI agents.<br /><br />Pros:<br /> - Analyze your resume into Claude code/Codex and get instant feedback<br /> - Ask to tailor it for a specific job description<br /> - Version control with git - track every change<br /> - Generate professional LaTeX PDFs<br />Cons:<br /> - LaTeX setup can be complicated - but Claude Code will save you :)<br /><br />The workflow: edit YAML → LLM review → refine → build PDF.<br /><br />No more wrestling with Word formatting or manually comparing versions. Just clean, structured data that LLMs can actually understand and help improve.<br /><br />P.S. I wonder are there a resume skill for Claude Code?",
     author: 'Kostiantyn Lysenko',
     url: 'https://www.linkedin.com/feed/update/urn:li:activity:7423219135549091840/',
     avatar: kostiantyn,
+  },
+  {
+    content:
+      'This may fall outside the regular article I comment on here, but I find it cool nonetheless. <br /><br />...<br /><br />What does this have to do with YAMLResume? Well, it is an interesting tool that enables you to generate professional-looking PDFs with typesetting from a YAML file. <br /><br />It is nice how it uses the separation of concerns and keeps your document in plain text, easily version-controlled, while leveraging LaTeX for the final generation. <br /><br />The project is still evolving, but consider checking it out here.',
+    author: 'Architecture Corner',
+    url: 'https://substack.com/home/post/p-197337239',
+    avatar: architectureCorner,
   },
 ]

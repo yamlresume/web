@@ -4,6 +4,7 @@ import {
   IconBrandLinkedin,
   IconBrandReddit,
   IconBrandX,
+  IconStack2,
 } from '@tabler/icons-react'
 import clsx from 'clsx'
 import Image, { type StaticImageData } from 'next/image'
@@ -34,6 +35,10 @@ function PlatformIcon({ url }: PlatformIconProps) {
   }
   if (url.includes('x.com') || url.includes('twitter.com')) {
     return <Icon icon={IconBrandX} />
+  }
+  if (url.includes('substack.com')) {
+    // Substack doesn't have a widely recognized icon, so we can return null or a generic icon.
+    return <Icon icon={IconStack2} /> // Using a generic stack icon for Substack
   }
   return null
 }
