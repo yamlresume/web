@@ -1,0 +1,453 @@
+---
+title: YAMLResume 与 RenderCV 对比
+---
+
+[RenderCV](https://rendercv.com) 是另一款流行的基于 YAML 的简历构建工具，由
+[Sina Atalay](https://github.com/sinaatalay) 创建。它使用 Python 编写，并以
+[Typst](https://typst.app)——一种现代排版系统——作为 PDF 引擎。RenderCV 在开源社区
+获得了广泛关注，GitHub 星标超过 17,000。
+
+以下引自其官方仓库：
+
+```markdown
+将你的 CV 或简历写成 YAML，然后运行 RenderCV，
+
+rendercv render John_Doe_CV.yaml
+
+即可获得一份排版完美的 PDF。
+
+使用 RenderCV，你可以：
+
+- 对 CV 进行版本控制——它只是一段文本。
+- 专注内容——无需担心格式。
+- 获得完美排版——一致的居中对齐与间距，自动处理。
+```
+
+RenderCV 采用**内容优先**的方式：你将简历数据写成 YAML，RenderCV 通过 Typst 将其
+转换为专业排版的 PDF。它提供了广泛的设计自定义、任意章节标题，以及内容与展示之间
+的清晰分离。
+
+YAMLResume 与 RenderCV 共享相同的核心理念——**简历即代码**——但两者在架构、国际化
+深度、生态工具以及数据模型灵活性方面存在显著差异。以下是详细对比：
+
+## 功能对比
+
+| 功能                | YAMLResume                                                                                                                                             | RenderCV                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| **语言**            | TypeScript/Node.js                                                                                                                                     | Python 3.12+                                                                              |
+| **数据格式**        | YAML                                                                                                                                                   | YAML                                                                                      |
+| **排版引擎**        | [Docx](/zh-cn/docs/layouts/docx)、[HTML](/zh-cn/docs/layouts/html)、[Markdown](/zh-cn/docs/layouts/markdown)、[LaTeX/XeTeX](/zh-cn/docs/layouts/latex) | Typst                                                                                     |
+| **输出格式**        | Docx、HTML、Markdown、LaTeX/PDF                                                                                                                        | PDF、Markdown、HTML、PNG                                                                  |
+| **Schema 验证**     | [严格的 Zod Schema 验证](/zh-cn/docs/compiler/schema)，配合[编译器](/zh-cn/docs/compiler/architecture) + IDE 集成                                      | Pydantic 验证，并提供 JSON Schema 用于 IDE 自动补全                                       |
+| **错误报告**        | [clang 风格的诊断信息](/zh-cn/docs/cli#validate)，包含行号和位置信息                                                                                   | Pydantic 错误信息，附带字段路径                                                           |
+| **国际化**          | 内置 [12 种语言](/zh-cn/docs/locale)，深度本地化                                                                                                       | 22 个内置语言区域（月份名称、日期字符串），需要手动自定义                                 |
+| **日期格式**        | 符合语言区域习惯的地道格式（地址顺序、标点符号、月份名称）                                                                                             | 通过 `locale` 字段配置（月份缩写、当前时间字符串）                                        |
+| **地址格式**        | 具备语言区域感知重排（例如中文 vs. 德文 vs. 英文）                                                                                                     | 自由文本                                                                                  |
+| **富文本支持**      | 在 `summary` 字段中支持精选的 [Markdown 富文本语法](/zh-cn/docs/content/rich-text)                                                                     | 所有文本字段均支持 Markdown + Typst 数学/命令                                             |
+| **字体自定义**      | [字体族、字号、行距](/zh-cn/docs/layouts/latex#typography) 等                                                                                          | 字体族、字号、行距、加粗、小型大写字母等                                                  |
+| **颜色自定义**      | 无（依赖主题）                                                                                                                                         | 对每一个元素（姓名、链接、章节标题等）均可完全控制 RGB 颜色                               |
+| **布局自定义**      | [页边距、页码、纸张尺寸](/zh-cn/docs/layouts/latex#page) 等                                                                                            | 页边距、纸张尺寸、页眉对齐、照片位置、页脚等                                              |
+| **章节自定义**      | [别名](/zh-cn/docs/layouts/sections/aliases)与[重新排序](/zh-cn/docs/layouts/sections/reorder)                                                         | 任意章节标题；每个章节一种条目类型                                                        |
+| **条目类型**        | 每个章节采用固定 Schema（work、education、projects 等）                                                                                                | 9 种可复用条目类型（ExperienceEntry、EducationEntry、BulletEntry 等）                     |
+| **模板/主题**       | 多个官方 [LaTeX](/zh-cn/docs/layouts/latex/templates) 和 [HTML](/zh-cn/docs/layouts/html/templates) 模板                                               | 9 个内置主题，支持完整模板覆盖                                                            |
+| **自定义主题**      | 基于模板（DOCX/HTML/LaTeX 源文件）                                                                                                                     | `rendercv create-theme`，可编辑 Typst/Jinja2 模板                                         |
+| **开发模式**        | [开发模式](/zh-cn/docs/cli#dev)，自动重建                                                                                                              | `--watch` 标志实现自动重载                                                                |
+| **Docker 支持**     | [官方 Docker 镜像](/zh-cn/docs/contributing/docker)，预装 LaTeX 和 YAMLResume                                                                          | 官方 [GHCR Docker 镜像](https://ghcr.io/rendercv/rendercv)（linux/amd64 与 linux/arm64）  |
+| **GitHub Action**   | [官方 GitHub Action](https://github.com/yamlresume/action)，用于 CI/CD                                                                                 | 无（存在社区解决方案）                                                                    |
+| **Homebrew**        | [Homebrew formula](https://formulae.brew.sh/formula/yamlresume)，便于在 macOS 和 Linux 上安装                                                          | 无（仅支持 pip install）                                                                  |
+| **网页 Playground** | 交互式网页 [Playground](/zh-cn/playground)                                                                                                             | 在线应用 [rendercv.com](https://rendercv.com)                                             |
+| **AI 集成**         | 无                                                                                                                                                     | 官方 [AI agent skill](https://docs.rendercv.com/user_guide/how_to/use_the_ai_agent_skill) |
+| **确定性输出**      | 是                                                                                                                                                     | 是（相同输入生成字节级一致的输出）                                                        |
+
+## 关键差异详解
+
+如果用一个词来概括 YAMLResume 与 RenderCV 的区别，那就是**固执己见与灵活多变**。
+YAMLResume 强制执行严格、标准化的数据模型，并具备深度的语言区域支持和多种渲染引
+擎。RenderCV 在章节结构和视觉自定义方面给予你更大的自由度，代价是较少的内置标准
+化。
+
+### 数据模型
+
+两者都使用 YAML 作为输入格式，但对数据建模的方式不同。
+
+#### 结构化 vs. 灵活的章节
+
+YAMLResume 使用**固定 Schema**，包含定义明确的章节（`basics`、`work`、
+`education`、`skills`、`projects`、`publications`、`awards`、
+`certificates`、`volunteer`、`references`、`languages`、 `interests`）。每个章节
+都有可预测的形状，编译器会对其进行严格验证。这使得简历数据易于分享、转换和以编程
+方式处理。
+
+YAMLResume 还深受 [JSON Resume](https://jsonresume.org/) 的启发，两者 Schema 高
+度一致。YAMLResume 的编译器直接接受 JSON Resume 文件，并且
+[`json2yamlresume`](/zh-cn/docs/ecosystem/json2yamlresume) 转换器可处理所有标准
+JSON Resume 章节。这意味着 YAMLResume 的简历可与更广泛的 JSON Resume 生态系统——
+主题、注册表、API 和第三方工具——互操作，无需自定义适配器。
+
+RenderCV 使用**灵活的字典模型**：章节标题是任意字符串，每个章节包含一个条目列
+表。你可以将章节命名为任何名称——"Professional Experience"、"Employment History"
+或 "Things I Did"——并从 9 种条目类型中选择（`ExperienceEntry`、
+`EducationEntry`、`PublicationEntry`、`NormalEntry`、`OneLineEntry`、
+`BulletEntry`、`NumberedEntry`、`ReversedNumberedEntry`、`TextEntry`）。
+
+这种灵活性对一次性自定义非常强大，但在跨工具或主题共享数据时可能导致不一致。
+YAMLResume 的固定模型以牺牲部分灵活性换取一致性、验证深度和更简便的数据交换。
+
+#### 固定键与数据交换
+
+固定章节名称与任意章节名称之间的区别不仅仅是表面上的——当你存储、查询或集成简历数
+据时，它会产生实际的工程影响。
+
+使用 YAMLResume 时，每份简历都使用相同的键。如果你将简历以 JSONB 形式存储在
+PostgreSQL 数据库中，可以使用简单可靠的表达式查询工作经验、技能或证书：
+
+```sql
+-- 查找掌握 Python 技能的候选人
+SELECT id, content->'basics'->>'name'
+FROM resumes
+WHERE content->'skills' @? '$[*].keywords ? (@ == "Python")';
+
+-- 查找至少有三段工作经验的候选人
+SELECT id, content->'basics'->>'name'
+FROM resumes
+WHERE jsonb_array_length(content->'work') >= 3;
+```
+
+由于 RenderCV 的章节标题是任意字符串，同样的查询会变得复杂得多。一段工作经历可能
+被命名为 "Experience"、"Professional Experience"、"Employment History" 或
+"Career"，数据库没有可靠的键来查找。你只能选择：
+
+1. 编写启发式规则，检查每个章节的条目，并从 `company` 或 `position` 等字段推断类
+   型。
+2. 维护一个从用户提供的章节标题到语义类型的单独映射。
+3. 接受跨简历的筛选和聚合将不一致的事实。
+
+RenderCV 的条目类型确实在章节*内部*提供了结构，但章节容器本身是自由格式的。
+YAMLResume 的固定键让你可以将简历视为统一记录：导入数据库、提供给 API，或使用标
+准工具进行转换，而无需首先规范化不可预测的章节标题。
+
+#### 标准化字段
+
+YAMLResume 将常用值规范化为固定词汇表，在编译时进行验证，并在所有支持的语言区域
+中进行翻译：
+
+- **教育学位**（`Middle School`、`High School`、`Bachelor`、`Master`、 `Doctor`
+  等）
+- **技能等级**（`Novice`、`Beginner`、`Intermediate`、`Advanced`、
+  `Expert`、`Master`）
+- **语言熟练度**（从 `Elementary` 到 `Native`）
+- **国家和地区**（翻译为每一种支持的语言）
+
+RenderCV 对这些字段接受自由格式字符串，给予你完全控制权，但将一致性和本地化完全
+留给你自己处理。
+
+#### 更扁平的结构
+
+YAMLResume 将 `location` 和社交 `profiles` 键放在顶层，与 `basics` 分开，这简化
+了数据模型，并使其在各个章节之间更加一致和对齐。RenderCV 将 location 嵌套在 `cv`
+头对象下，并使用 `social_networks` 表示社交连接。
+
+#### RenderCV 的其他数据模型功能
+
+RenderCV 的 YAML 输入还包含一些 YAMLResume 目前尚未具备的功能：
+
+- **`settings` 章节**：顶层的 `settings` 块，用于设置 `pdf_title` 和
+  `current_date: today` 等选项。
+- **头像照片**：`cv.photo` 接受本地路径或 URL。
+- **自定义联系方式**：`cv.custom_connections` 允许你添加任意页眉链接，支持自定义
+  占位文本和 Font Awesome 图标。
+- **多个联系值**：`email`、`phone` 和 `website` 均可以为值列表。
+
+### 内容与富文本
+
+两者都支持 Markdown 格式，但范围和能力不同。
+
+#### Markdown 支持
+
+YAMLResume 支持[精选的 Markdown 语法](/zh-cn/docs/content/rich-text)（粗体、斜
+体、链接、列表和段落），应用于所有包含 `summary` 字段的章节。这是有意限制的，以
+确保在 LaTeX、HTML 和 Markdown 引擎之间实现一致的渲染。
+
+RenderCV 在**所有**文本字段（包括 highlights 和 summaries）中支持基本
+Markdown（粗体、斜体、链接、行内代码）。Highlights 还支持嵌套子项目符号。此
+外，RenderCV 支持 Typst 数学语法（`$$f(x) = x^2$$`）和 Typst 命令
+（`#emph[text]`），这对需要在 CV 中插入方程式的学者和工程师非常有用。
+
+#### 多行字符串
+
+YAMLResume 的核心设计决策之一是充分利用 YAML 的多行字符串语法来编写可读的富文
+本。RenderCV 也受益于 YAML 的多行语法，但由于其 Markdown 支持更广、适用字段更
+多，可读性优势是共享的。
+
+### 验证
+
+两者都重视验证，但方法不同。
+
+YAMLResume 使用[全面的 Zod Schema](/zh-cn/docs/compiler/schema)，配合编译时验证
+和 [clang 风格的错误信息](/zh-cn/blog/yamlresume-compiler)，包含行号、列号和上下
+文片段：
+
+```console
+$ yamlresume validate my-resume.yml
+my-resume.yml:9:12: warning: email is invalid.
+    email: hi@pp
+           ^
+my-resume.yml:38:10: error: city is too short.
+    city: S
+          ^
+```
+
+YAMLResume 还提供官方 [JSON Schema](/zh-cn/docs/compiler/schema/json)，用于 IDE
+自动补全、悬停文档以及在 VS Code 等编辑器中的实时验证。
+
+RenderCV 使用 Pydantic 进行验证，提供强类型检查和附带字段路径的清晰错误信息。它
+还生成 JSON Schema 用于 IDE 集成。
+
+### 布局与渲染
+
+两者都分离了内容与设计，但渲染架构存在显著差异。
+
+#### 引擎
+
+YAMLResume 提供四种渲染引擎：
+
+- **[DOCX 引擎](/zh-cn/docs/layouts/docx)**：Microsoft Word 文档，便于编辑和分享
+- **[HTML 引擎](/zh-cn/docs/layouts/html)**：响应式、适合网页展示的简历，带 SEO
+  元数据
+- **[Markdown 引擎](/zh-cn/docs/layouts/markdown)**：干净的纯文本，适用于
+  LLM、ATS 系统和静态站点
+- **[LaTeX 引擎](/zh-cn/docs/layouts/latex)**：像素级完美的 PDF，通过 XeTeX 实现
+  专业排版
+
+一条 `yamlresume build` 命令即可从同一份源文件生成所有四种格式。
+
+RenderCV 使用 [Typst](https://typst.app) 作为主要排版引擎。Typst 是 LaTeX 的现代
+替代方案，编译速度更快，并生成符合标准的 PDF。一条 `rendercv render` 命令可输出
+PDF、Markdown、HTML 和 PNG，以及中间 Typst 源文件（`.typ`）。自 v2.8 起，
+`rendercv-typst` 包和 Font Awesome 已打包在 Python wheel 中，因此 PDF 编译可离线
+工作，无需运行时下载。
+
+#### DOCX 输出
+
+输出格式中一个实际的差异是对 Microsoft Word（DOCX）的支持。YAMLResume 包含专用的
+[DOCX 引擎](/zh-cn/docs/layouts/docx)，可从同一份 YAML 源文件生成可编辑的
+`.docx` 文件，这在需要与期望 Word 文档的招聘人员或招聘经理分享简历，或希望在文字
+处理器中进行最后修改时非常有用。RenderCV 不提供 DOCX 输出；其流水线围绕 Typst 构
+建，PDF 是主要交付物，Markdown、HTML 和 PNG 为次要格式。
+
+#### 设计自定义
+
+RenderCV 比 YAMLResume 提供更细粒度的视觉控制：
+
+- **颜色**：对每一个文本元素（正文、姓名、标题、链接、章节标题、页脚）均可完全控
+  制 RGB 颜色
+- **排版**：按元素设置字体族、按元素设置字号、加粗/小型大写字母切换、行距、文本
+  对齐
+- **页面**：纸张尺寸包括 `a4`、`a5`、`us-letter` 和 `us-executive`
+- **页眉**：照片位置和大小、联系信息分隔符、社交网络图标、电话号码格式
+  （`national`、`international` 或 `E164`）
+- **章节标题**：8 种不同标题样式（带/不带分隔线、居中等）
+- **条目**：列宽、项目符号字符、间距、分页行为、自动时间跨度计算（例如 "2 years
+  3 months"）
+- **模板**：使用 Jinja2 模板覆盖每种条目类型的渲染方式，支持 `NAME`、
+  `COMPANY`、`DATE` 等占位符
+
+YAMLResume 的 LaTeX 引擎提供[页面自定义](/zh-cn/docs/layouts/latex#page)（纸张尺
+寸、页边距、页码）和[排版控制](/zh-cn/docs/layouts/latex#typography)（字体族、字
+号、行距），但不暴露按元素的颜色或细粒度间距控制。这是有意为之：YAMLResume 的模
+板将视觉决策封装起来，让你无需亲自做出这些决策。
+
+#### 章节自定义
+
+YAMLResume 允许你通
+过[章节别名](/zh-cn/docs/layouts/sections/aliases)和[章节重新排序](/zh-cn/docs/layouts/sections/reorder)重
+塑简历结构，而无需修改底层数据：
+
+- **章节别名**：覆盖 12 个可别名章节中任意一个的默认章节标题
+- **章节重新排序**：通过简单的 `order` 列表更改章节的展示顺序
+
+RenderCV 的章节模型根本不同：由于章节标题是任意字符串，"别名"就是写一个不同的标
+题。重新排序只需重新排列 YAML 字典中的键。RenderCV 还支持 `design.templates` 用
+于覆盖单个条目类型的渲染方式，这远远超出了 YAMLResume 的别名/重新排序系统。
+
+### 语言区域（i18n）
+
+这是两者最大的差异之一。
+
+YAMLResume 开箱即用地支持 10 多种语言
+（[English](/zh-cn/docs/locale/english)、[Chinese](/zh-cn/docs/locale/chinese)、
+[Spanish](/zh-cn/docs/locale/spanish)、[French](/zh-cn/docs/locale/french)、
+[Norwegian](/zh-cn/docs/locale/norwegian)、[Dutch](/zh-cn/docs/locale/dutch)、
+[Japanese](/zh-cn/docs/locale/japanese)、[German](/zh-cn/docs/locale/german)、
+[Indonesian](/zh-cn/docs/locale/indonesian)、
+[Brazilian Portuguese](/zh-cn/docs/locale/portuguese) 等），内置章节标题、国家名
+称、学位、技能等级、语言熟练度等级、地道的地址和日期格式、适合语言区域的标点符号
+以及 LaTeX babel 配置。
+
+例如，YAMLResume 会自动：
+
+- 为中文重新排序地址组件（国家 → 地区 → 城市 → 地址），而英文为（地址 → 城市 →
+  地区 → 国家）
+- 为 CJK 语言使用全角标点符号（`、`表示逗号，`：`表示冒号）
+- 在法语高标点符号前添加不间断空格（`:` `!` `?`）
+- 按语言区域习惯格式化日期："Jun 2018 – Present"（英文）、"2018年6月至今"（中
+  文）、"2016年10月～2018年1月"（日文）
+- 配置 LaTeX babel，实现正确的断字、日期格式和字符处理
+
+RenderCV 包含 22 个内置语言区域，提供月份名称、日期缩写和少量可翻译字符串
+（`present`、`last_updated` 等），包括阿拉伯语、希伯来语和波斯语等从右到左
+（RTL）语言。你也可以通过填写所有字段完全自定义语言区域，并通过 `locale.phrases`
+自定义语言特定短语（例如 "DEGREE in AREA"）。然而，**RenderCV 不会自动重排地址、
+应用语言特定标点规则，或为语言区域特定排版配置排版引擎。它给你基础构
+件；YAMLResume 给你完整方案**。
+
+#### CJK 与复杂文字排版
+
+排版引擎的选择也会影响各自工具处理中文、日文、韩文（CJK）以及其他复杂文字的能
+力。
+
+YAMLResume 的 LaTeX 引擎可以利用数十年来专为 CJK 设计的工具：
+[ctex](https://ctex.org) 用于中文、[luatexja](https://ctan.org/pkg/luatexja) 用
+于日文、[kotex](https://ctan.org/pkg/kotex) 用于韩文、
+[xeCJK](https://ctan.org/pkg/xecjk) 用于 XeLaTeX。这些包可开箱即用地处理字体回
+退、全角标点压缩、CJK-拉丁间距、竖排、注音/振り仮名以及语言区域感知断
+行。YAMLResume 的语言区域层会自动为每种支持的语言配置正确的包和字体，因此中文或
+日文简历无需手动调整Typst 即可正确渲染。
+
+RenderCV 的 Typst 引擎现代且快速，但其 CJK 支持仍在追赶。社区维护的
+[clreq-gap for Typst](https://typst-doc-cn.github.io/clreq/) 记录了截至 Typst
+v0.15.1 仍存在的诸多中文排版差距，包括：无竖排模式、CJK 字形默认字体回退不可靠、
+代码块和数学公式中 CJK 回退不正确、CJK 与拉丁文混排时下划线对齐错误、无原生注音/
+拼音标注、全角引号处理不一致等。其中许多对于简单水平简历而言是边界情况，但如果你
+需要出版级 CJK 排版，它们就很重要。
+
+简而言之：对于 CJK 简历，YAMLResume 的 LaTeX 路径是当今更成熟、更经得起考验的选
+择。RenderCV 适用于简单的水平 CJK 内容，并且正在快速改进，但在高级 CJK 功能方面
+LaTeX 仍然领先。
+
+关于 LaTeX 与 Typst 作为排版引擎的更多差异，请参阅这篇
+[文章](https://blog.ppresume.com/posts/on-typesetting-engines)。
+
+### 开发者体验
+
+两者都提供现代的 CLI 体验。
+
+YAMLResume 提供：
+
+- **`yamlresume new`**：从官方模板创建新简历
+- **`yamlresume build`**：一键将简历构建为 DOCX、HTML、Markdown 和 PDF
+- **`yamlresume dev`**：[监听模式](/zh-cn/blog/dev-mode)，每次保存自动重建简历
+- **`yamlresume doctor`**：诊断 LaTeX 环境和字体配置
+- **`yamlresume validate`**：无需构建即可检查简历
+- **`yamlresume languages list`**：列出所有支持的语言
+- **`yamlresume templates list`**：列出每个引擎的所有可用模板
+
+RenderCV 提供：
+
+- **`rendercv new`**：使用所选主题生成示例 CV
+- **`rendercv render`**：从 YAML 输入生成 PDF、Markdown、HTML 和 PNG
+- **`rendercv render --watch`**：编辑时自动重载
+- **`rendercv render --output-folder`**：指定自定义输出目录
+- **`rendercv create-theme`**：搭建可编辑模板的自定义主题
+- **点号表示法覆盖**：无需编辑文件即可从 CLI 更改特定 YAML 字段
+
+RenderCV 的 `--watch` 模式和点号表示法 CLI 覆盖对于快速迭代特别方便。YAMLResume
+的 `doctor` 命令和多引擎构建流水线在故障排查和多格式输出方面具有独特优势。
+
+## 生态系统与社区
+
+### Docker
+
+YAMLResume 提供
+了[官方 Docker 镜像](https://hub.docker.com/r/yamlresume/yamlresume)，预装了所有
+依赖，包括 Node.js、LaTeX 和推荐字体：
+
+```bash
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+RenderCV 也提供
+了[官方 Docker 镜像](https://github.com/rendercv/rendercv/pkgs/container/rendercv)，
+地址为 `ghcr.io/rendercv/rendercv`，同时支持 `linux/amd64` 和 `linux/arm64`，预
+装 Python 和 RenderCV：
+
+```bash
+docker run --rm -v "$PWD":/work -u $(id -u):$(id -g) -e HOME=/tmp -w /work ghcr.io/rendercv/rendercv new "Your Name"
+```
+
+### Homebrew
+
+YAMLResume 可通过 [Homebrew](https://formulae.brew.sh/formula/yamlresume) 在
+macOS 和 Linux 上安装：
+
+```bash
+brew install yamlresume
+```
+
+RenderCV 没有 Homebrew formula，必须通过 `pip install "rendercv[full]"` 安装。
+
+### GitHub Action
+
+YAMLResume 提供了[官方 GitHub Action](https://github.com/yamlresume/action)，用
+于 CI/CD 流水线：
+
+```yaml
+- uses: yamlresume/action@v0.2.3
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+      resume-fr.yml
+```
+
+RenderCV 没有官方 GitHub Action，尽管存在社区工作流。
+
+### 独立可执行文件
+
+RenderCV 在 GitHub Releases 上为 Linux（x86_64 和 ARM64）、macOS（ARM64）和
+Windows（x86_64）发布独立可执行文件，因此用户无需安装 Python 即可运行 RenderCV。
+
+### Web 界面
+
+YAMLResume 提供了一个交互式网页 [Playground](/zh-cn/playground)，你可以在其中实
+时编辑简历并即时预览所有支持的输出格式。Playground 完全在浏览器中运行，无需服务
+端渲染。
+
+RenderCV 运营 [rendercv.com](https://rendercv.com)，这是一款在浏览器中运行相同
+Typst 流水线的在线应用。它还提供官方
+[AI agent skill](https://docs.rendercv.com/user_guide/how_to/use_the_ai_agent_skill)
+（`npx skills add rendercv/rendercv-skill`），可与 Claude Code、Cursor、Copilot
+等 AI 编码代理配合使用。
+
+## 总结
+
+**RenderCV** 适合如果你需要：
+
+- 深度视觉自定义（颜色、字体、间距、模板），而无需编辑原始排版代码
+- 现代、快速的 PDF 引擎（Typst），具备出色的 ATS 兼容性，通过标签 PDF 实现，现已
+  打包支持离线渲染
+- 任意章节标题和灵活的条目类型，用于高度自定义的 CV 结构
+- 对学术和技术内容的 Typst 数学和命令支持
+- 内置 RTL 支持和 22 个语言区域
+- 头像照片、自定义页眉联系信息和其他灵活的页眉选项
+- 用于自然语言简历编辑的 AI agent skill
+
+**YAMLResume** 适合如果你需要：
+
+- 深度国际化，包含地道的日期格式、地址排序、标点规则和 12 种语言的 LaTeX babel
+  配置
+- 通过 ctex、luatexja、kotex、xeCJK 等 LaTeX 包实现成熟的 CJK 和复杂文字排版
+- 从单份源文件输出多种渲染引擎（DOCX、HTML、Markdown、LaTeX/PDF）
+- 原生 Microsoft Word（DOCX）输出，满足招聘人员或招聘经理对可编辑文档的需求
+- 严格验证、标准化的数据模型，确保跨简历、团队和工具的一致性
+- 与 JSON Resume 兼容的固定章节数据，易于在数据库中查询、从 API 消费以及与其他工
+  具交换
+- 丰富的分发工具生态：Docker、Homebrew、GitHub Action 和交互式网页 Playground
+- 一种开箱即用的方案，将排版和布局最佳实践编码在官方模板中
+
+如果你是学者或工程师，希望精细控制每一个视觉细节，并更喜欢 Typst 的现代排版而非
+LaTeX，请选择 **RenderCV**。
+
+如果你希望一种固执己见、开箱即用的解决方案，涵盖从数据验证到跨多种格式和语言的专
+业 PDF 生成，并附带监听模式、Docker 支持和 CI/CD 集成等现代开发者工具，请选择
+**YAMLResume**。

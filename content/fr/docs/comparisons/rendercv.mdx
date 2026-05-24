@@ -1,0 +1,570 @@
+---
+title: YAMLResume contre RenderCV
+---
+
+[RenderCV](https://rendercv.com) est un autre constructeur de CV populaire basé
+sur YAML, créé par [Sina Atalay](https://github.com/sinaatalay). Il est écrit en
+Python et utilise [Typst](https://typst.app) — un système de composition moderne
+— comme moteur PDF. RenderCV a gagné une traction significative dans la
+communauté open-source avec plus de 17 000 étoiles GitHub.
+
+D'après son dépôt officiel :
+
+```markdown
+Write your CV or resume as YAML, then run RenderCV,
+
+rendercv render John_Doe_CV.yaml
+
+and get a PDF with perfect typography.
+
+With RenderCV, you can:
+
+- Version-control your CV — it's just text.
+- Focus on content — don't worry about the formatting.
+- Get perfect typography — consistent alignment and spacing, handled for you.
+```
+
+RenderCV adopte une approche **centrée sur le contenu** : vous écrivez les
+données de votre CV en YAML et RenderCV les transforme en PDF
+professionnellement composé via Typst. Il offre une personnalisation visuelle
+étendue, des titres de section arbitraires et une séparation claire entre
+contenu et présentation.
+
+YAMLResume et RenderCV partagent la même philosophie fondamentale — **le CV
+comme code** — mais ils diffèrent significativement en architecture, profondeur
+de l'internationalisation, outillage de l'écosystème et flexibilité de leurs
+modèles de données. Voici comment ils se comparent :
+
+## Comparaison des fonctionnalités
+
+| Fonctionnalité                          | YAMLResume                                                                                                                                 | RenderCV                                                                                            |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| **Langage**                             | TypeScript/Node.js                                                                                                                         | Python 3.12+                                                                                        |
+| **Format de données**                   | YAML                                                                                                                                       | YAML                                                                                                |
+| **Moteur de composition**               | [DOCX](/fr/docs/layouts/docx), [HTML](/fr/docs/layouts/html), [Markdown](/fr/docs/layouts/markdown), [LaTeX/XeTeX](/fr/docs/layouts/latex) | Typst                                                                                               |
+| **Formats de sortie**                   | DOCX, HTML, Markdown, LaTeX/PDF                                                                                                            | PDF, Markdown, HTML, PNG                                                                            |
+| **Validation du schéma**                | [Validation stricte du schéma Zod](/fr/docs/compiler/schema) avec [compilateur](/fr/docs/compiler/architecture) + intégration IDE          | Validation Pydantic avec JSON Schema pour l'auto-complétion IDE                                     |
+| **Rapport d'erreurs**                   | [Diagnostics de style clang](/fr/docs/cli#validate) avec numéros de ligne et informations positionnelles                                   | Messages d'erreur Pydantic avec chemins de champs                                                   |
+| **Internationalisation**                | [12 langues](/fr/docs/locale) intégrées avec localisation profonde                                                                         | 22 locales intégrées (noms de mois, chaînes de dates), personnalisation manuelle requise            |
+| **Formatage des dates**                 | Formats idiomatiques spécifiques à la locale (ordre de l'adresse, ponctuation, noms de mois)                                               | Configurable via le champ `locale` (abréviations de mois, chaîne present)                           |
+| **Formatage des adresses**              | Réordonnancement adapté à la locale (par ex., chinois vs allemand vs anglais)                                                              | Texte libre                                                                                         |
+| **Support de texte enrichi**            | Un ensemble sélectionné de [syntaxe Markdown pour texte enrichi](/fr/docs/content/rich-text) dans les champs `summary`                     | Markdown + mathématiques/commandes Typst dans tous les champs texte                                 |
+| **Personnalisation des polices**        | [Famille de police, taille de police, interligne](/fr/docs/layouts/latex#typography), etc.                                                 | Famille de police, taille de police, interligne, gras, petites capitales, etc.                      |
+| **Personnalisation des couleurs**       | Aucune (dépendante du thème)                                                                                                               | Contrôle RGB complet pour chaque élément (nom, liens, titres de section, etc.)                      |
+| **Personnalisation de la mise en page** | [Marges de page, numéros de page, taille du papier](/fr/docs/layouts/latex#page), etc.                                                     | Marges de page, taille du papier, alignement de l'en-tête, position de la photo, pied de page, etc. |
+| **Personnalisation des sections**       | [Alias](/fr/docs/layouts/sections/aliases) et [réorganisation](/fr/docs/layouts/sections/reorder)                                          | Titres de section arbitraires ; un type d'entrée par section                                        |
+| **Types d'entrées**                     | Schéma fixe par section (work, education, projects, etc.)                                                                                  | 9 types d'entrées réutilisables (ExperienceEntry, EducationEntry, BulletEntry, etc.)                |
+| **Modèles/Thèmes**                      | Plusieurs modèles officiels [LaTeX](/fr/docs/layouts/latex/templates) et [HTML](/fr/docs/layouts/html/templates)                           | 9 thèmes intégrés avec support complet de substitution de modèle                                    |
+| **Thèmes personnalisés**                | Basé sur les modèles (source DOCX/HTML/LaTeX)                                                                                              | `rendercv create-theme` avec modèles Typst/Jinja2 modifiables                                       |
+| **Mode dev**                            | [Mode dev](/fr/docs/cli#dev) avec reconstruction automatique                                                                               | Drapeau `--watch` pour rechargement automatique                                                     |
+| **Support Docker**                      | [Image Docker officielle](/fr/docs/contributing/docker) avec LaTeX et YAMLResume préinstallés                                              | [Image Docker officielle sur GHCR](https://ghcr.io/rendercv/rendercv) (linux/amd64 et linux/arm64)  |
+| **GitHub Action**                       | [GitHub Action officielle](https://github.com/yamlresume/action) pour CI/CD                                                                | Aucune (des solutions communautaires existent)                                                      |
+| **Homebrew**                            | [Formule Homebrew](https://formulae.brew.sh/formula/yamlresume) pour une installation facile sur macOS et Linux                            | Aucun (installation via pip uniquement)                                                             |
+| **Playground Web**                      | [Playground](/fr/playground) interactif basé sur le web                                                                                    | Application web sur [rendercv.com](https://rendercv.com)                                            |
+| **Intégration IA**                      | Aucune                                                                                                                                     | [AI agent skill](https://docs.rendercv.com/user_guide/how_to/use_the_ai_agent_skill) officiel       |
+| **Sortie déterministe**                 | Oui                                                                                                                                        | Oui (identique octet pour octet à partir de la même entrée)                                         |
+
+## Principales différences expliquées
+
+Si nous devions choisir un mot pour résumer la différence entre YAMLResume et
+RenderCV, ce serait **opinionated versus flexible**. YAMLResume applique un
+modèle de données strict et standardisé avec un support localisé profond et
+plusieurs moteurs de rendu. RenderCV vous donne plus de liberté sur la façon
+dont vous structurez vos sections et une palette beaucoup plus large pour la
+personnalisation visuelle, au prix d'une standardisation intégrée moins forte.
+
+### Modèle de données
+
+Les deux outils utilisent YAML comme format d'entrée, mais ils abordent la
+modélisation des données différemment.
+
+#### Sections structurées vs flexibles
+
+YAMLResume utilise un **schéma fixe** avec des sections bien définies (`basics`,
+`work`, `education`, `skills`, `projects`, `publications`, `awards`,
+`certificates`, `volunteer`, `references`, `languages`, `interests`). Chaque
+section a une forme prévisible que le compilateur valide rigoureusement. Cela
+facilite le partage, la conversion et le raisonnement programmatique sur les
+données de CV.
+
+YAMLResume est également profondément inspiré par
+[JSON Resume](https://jsonresume.org/), et les deux schémas s'alignent
+étroitement. Le compilateur de YAMLResume accepte directement les fichiers JSON
+Resume, et le convertisseur
+[`json2yamlresume`](/fr/docs/ecosystem/json2yamlresume) gère toutes les sections
+standard de JSON Resume. Cela signifie que les CV YAMLResume sont interopérables
+avec l'écosystème plus large de JSON Resume — thèmes, registres, APIs et outils
+tiers — sans adaptateurs personnalisés.
+
+RenderCV utilise un **modèle de dictionnaire flexible** où les titres de section
+sont des chaînes arbitraires et chaque section contient une liste d'entrées.
+Vous pouvez nommer une section comme vous voulez — « Professional Experience »,
+« Employment History » ou « Things I Did » — et choisir parmi 9 types d'entrées
+(`ExperienceEntry`, `EducationEntry`, `PublicationEntry`, `NormalEntry`,
+`OneLineEntry`, `BulletEntry`, `NumberedEntry`, `ReversedNumberedEntry`,
+`TextEntry`).
+
+Cette flexibilité est puissante pour une personnalisation ponctuelle, mais elle
+peut conduire à des incohérences lors du partage de données entre outils ou
+thèmes. Le modèle fixe de YAMLResume échange une partie de cette flexibilité
+contre la cohérence, la profondeur de validation et un échange de données plus
+facile.
+
+#### Clés fixes et échange de données
+
+La différence entre noms de section fixes et arbitraires n'est pas qu'esthétique
+— elle a de réelles conséquences techniques lorsque vous stockez, interrogez ou
+intégrez des données de CV.
+
+Avec YAMLResume, chaque CV utilise les mêmes clés. Si vous stockez des CV dans
+une base de données PostgreSQL en JSONB, vous pouvez interroger l'expérience
+professionnelle, les compétences ou les certifications avec des expressions
+simples et fiables :
+
+```sql
+-- Find candidates with Python in their skills
+SELECT id, content->'basics'->>'name'
+FROM resumes
+WHERE content->'skills' @? '$[*].keywords ? (@ == "Python")';
+
+-- Find candidates with at least three work experiences
+SELECT id, content->'basics'->>'name'
+FROM resumes
+WHERE jsonb_array_length(content->'work') >= 3;
+```
+
+Parce que les titres de section de RenderCV sont des chaînes arbitraires, la
+même requête devient beaucoup plus complexe. Une section d'historique
+professionnelle peut s'intituler « Experience », « Professional Experience », «
+Employment History » ou « Career », et la base de données n'a aucune clé fiable
+pour rechercher. Vous devez soit :
+
+1. Écrire des heuristiques pour inspecter les entrées de chaque section et
+   déduire le type à partir de champs comme `company` ou `position`.
+2. Maintenir une correspondance séparée entre les titres de section fournis par
+   l'utilisateur et les types sémantiques.
+3. Accepter que le filtrage et l'agrégation entre CV seront incohérents.
+
+Les types d'entrées de RenderCV fournissent bien une structure _à l'intérieur_
+d'une section, mais le conteneur de section lui-même est libre. Les clés fixes
+de YAMLResume vous permettent de traiter les CV comme des enregistrements
+uniformes : importez-les dans une base de données, alimentez une API ou
+transformez-les avec des outils standard sans avoir d'abord à normaliser des
+titres de section imprévisibles.
+
+#### Champs standardisés
+
+YAMLResume normalise les valeurs couramment utilisées en vocabulaires fixes qui
+sont validés à la compilation et traduites dans toutes les locales prises en
+charge :
+
+- **Diplômes d'études** (`Middle School`, `High School`, `Bachelor`, `Master`,
+  `Doctor`, etc.)
+- **Niveaux de compétence** (`Novice`, `Beginner`, `Intermediate`, `Advanced`,
+  `Expert`, `Master`)
+- **Niveaux de langue** (`Elementary` à `Native`)
+- **Pays et régions** (traduits dans chaque langue prise en charge)
+
+RenderCV accepte du texte libre pour ces champs, vous donnant un contrôle total
+mais laissant la cohérence et la localisation entièrement à votre charge.
+
+#### Structure plus plate
+
+YAMLResume place les clés `location` et les profils sociaux `profiles` au niveau
+supérieur, séparées de `basics`, ce qui simplifie le modèle de données et le
+rend plus aligné et cohérent entre les sections. RenderCV imbrique la
+localisation sous l'objet d'en-tête `cv` et utilise `social_networks` pour les
+connexions.
+
+#### Autres fonctionnalités du modèle de données de RenderCV
+
+L'entrée YAML de RenderCV inclut également quelques capacités pas encore
+reproduites dans YAMLResume :
+
+- **Section `settings`** : Un bloc `settings` de niveau supérieur pour des
+  options comme `pdf_title` et `current_date: today`.
+- **Photo de profil** : `cv.photo` accepte un chemin local ou une URL.
+- **Connexions personnalisées** : `cv.custom_connections` permet d'ajouter des
+  liens d'en-tête arbitraires avec du texte d'espace réservé personnalisé et des
+  icônes Font Awesome.
+- **Plusieurs valeurs de contact** : `email`, `phone` et `website` peuvent
+  chacun être une liste de valeurs.
+
+### Contenu et texte enrichi
+
+Les deux outils supportent le formatage Markdown, mais avec des portées et des
+capacités différentes.
+
+#### Support Markdown
+
+YAMLResume prend en charge un
+[ensemble limité de syntaxe Markdown](/fr/docs/content/rich-text) (gras,
+italique, liens, listes et paragraphes) dans les champs `summary` de toutes les
+sections qui en ont. Cela est intentionnellement limité pour garantir un rendu
+cohérent entre les moteurs LaTeX, HTML et Markdown.
+
+RenderCV prend en charge le Markdown de base (gras, italique, liens, code en
+ligne) dans **tous** les champs texte, y compris les points forts et les
+résumés. Les points forts supportent également des sous-listes imbriquées. De
+plus, RenderCV supporte la syntaxe mathématique Typst (`$$f(x) = x^2$$`) et les
+commandes Typst (`#emph[text]`), ce qui est utile pour les universitaires et les
+ingénieurs qui ont besoin d'équations dans leur CV.
+
+#### Chaînes multi-lignes
+
+L'une des décisions de conception fondamentales de YAMLResume est d'exploiter la
+syntaxe de chaînes multi-lignes de YAML pour du texte enrichi lisible. RenderCV
+bénéficie aussi de la syntaxe multi-lignes de YAML, mais comme son support
+Markdown est plus large et s'applique à plus de champs, l'avantage de lisibilité
+est partagé.
+
+### Validation
+
+Les deux outils prennent la validation au sérieux, mais leurs approches
+diffèrent.
+
+YAMLResume utilise un [schéma Zod complet](/fr/docs/compiler/schema) avec une
+validation à la compilation et des
+[messages d'erreur de style clang](/fr/blog/yamlresume-compiler) incluant les
+numéros de ligne, les numéros de colonne et des extraits contextuels :
+
+```console
+$ yamlresume validate my-resume.yml
+my-resume.yml:9:12: warning: email is invalid.
+    email: hi@pp
+           ^
+my-resume.yml:38:10: error: city is too short.
+    city: S
+          ^
+```
+
+YAMLResume est également livré avec un
+[JSON Schema](/fr/docs/compiler/schema/json) officiel pour l'auto-complétion
+IDE, la documentation au survol et la validation en temps réel dans des éditeurs
+comme VS Code.
+
+RenderCV utilise Pydantic pour la validation, ce qui fournit une vérification de
+type forte et des messages d'erreur clairs avec des chemins de champs. Il génère
+également un JSON Schema pour l'intégration IDE.
+
+### Mises en page et rendu
+
+Les deux outils séparent contenu et design, mais leurs architectures de rendu
+divergent significativement.
+
+#### Moteurs
+
+YAMLResume fournit quatre moteurs de rendu :
+
+- **[Moteur DOCX](/fr/docs/layouts/docx)** : Documents Microsoft Word pour
+  faciliter l'édition et le partage
+- **[Moteur HTML](/fr/docs/layouts/html)** : CV réactifs et prêts pour le web
+  avec des métadonnées SEO
+- **[Moteur Markdown](/fr/docs/layouts/markdown)** : Texte propre pour les LLM,
+  les systèmes ATS et les sites statiques
+- **[Moteur LaTeX](/fr/docs/layouts/latex)** : PDF pixel-perfect avec une
+  typographie professionnelle via XeTeX
+
+Une seule commande `yamlresume build` peut générer les quatre formats à partir
+du même fichier source.
+
+RenderCV utilise [Typst](https://typst.app) comme moteur de composition
+principal. Typst est une alternative moderne à LaTeX qui compile plus rapidement
+et produit des PDF conformes aux standards. Une seule commande `rendercv render`
+génère du PDF, Markdown, HTML et PNG, plus le source Typst intermédiaire
+(`.typ`). Depuis la v2.8, le package `rendercv-typst` et Font Awesome sont
+intégrés dans le wheel Python, donc la compilation PDF fonctionne hors ligne
+sans téléchargements à l'exécution.
+
+#### Sortie DOCX
+
+Une différence pratique dans les formats de sortie est le support de Microsoft
+Word (DOCX). YAMLResume inclut un [moteur DOCX](/fr/docs/layouts/docx) dédié qui
+produit des fichiers `.docx` modifiables à partir de la même source YAML, ce qui
+est utile lorsque vous devez partager un CV avec des recruteurs ou des
+responsables d'embauche qui attendent un document Word, ou lorsque vous voulez
+faire des modifications de dernière minute dans un traitement de texte. RenderCV
+n'offre pas de sortie DOCX ; son pipeline est construit autour de Typst, avec le
+PDF comme livrable principal et Markdown, HTML et PNG comme formats secondaires.
+
+#### Personnalisation du design
+
+RenderCV offre un contrôle visuel beaucoup plus granulaire que YAMLResume :
+
+- **Couleurs** : Contrôle RGB complet sur chaque élément textuel (corps, nom,
+  titres, liens, titres de section, pied de page)
+- **Typographie** : Famille de police par élément, taille de police par élément,
+  bascules gras/petites capitales, interligne, alignement du texte
+- **Page** : Tailles de papier incluant `a4`, `a5`, `us-letter` et
+  `us-executive`
+- **En-tête** : Position et taille de la photo, séparateur de connexion, icônes
+  de réseaux sociaux, et format de numéro de téléphone (`national`,
+  `international` ou `E164`)
+- **Titres de section** : 8 styles de titres différents (avec/sans lignes,
+  centré, etc.)
+- **Entrées** : Largeurs de colonnes, caractères de puce, espacement,
+  comportement de saut de page, et calculs automatiques de durées (par ex., « 2
+  years 3 months »)
+- **Modèles** : Remplacer le rendu de chaque type d'entrée en utilisant des
+  modèles Jinja2 avec des espaces réservés comme `NAME`, `COMPANY`, `DATE`
+
+Le moteur LaTeX de YAMLResume fournit une
+[personnalisation de page](/fr/docs/layouts/latex#page) (taille du papier,
+marges, numéros de page) et des
+[contrôles typographiques](/fr/docs/layouts/latex#typography) (famille de
+police, taille de police, interligne), mais n'expose pas de contrôle de couleur
+par élément ni de contrôle fin de l'espacement. Cela est intentionnel : les
+modèles YAMLResume encapsulent les décisions visuelles pour que vous n'ayez pas
+à les prendre.
+
+#### Personnalisation des sections
+
+YAMLResume vous permet de remodeler la structure de votre CV via des
+[alias de sections](/fr/docs/layouts/sections/aliases) et la
+[réorganisation de sections](/fr/docs/layouts/sections/reorder) sans toucher aux
+données sous-jacentes :
+
+- **Alias de sections** : Remplacez les titres de section par défaut pour l'une
+  des 12 sections pouvant être aliasées
+- **Réorganisation des sections** : Changez l'ordre de présentation des sections
+  avec une simple liste `order`
+
+Le modèle de sections de RenderCV est fondamentalement différent : parce que les
+titres de section sont des chaînes arbitraires, « aliaser » consiste simplement
+à écrire un titre différent. Réordonner est une question de réarrangement des
+clés dans le dictionnaire YAML. RenderCV supporte également `design.templates`
+pour remplacer le rendu des types d'entrées individuels, ce qui va bien au-delà
+du système d'alias/réorganisation de YAMLResume.
+
+### Locale (i18n)
+
+C'est l'une des plus grandes différences entre les deux outils.
+
+YAMLResume prend en charge 10+ langues dès le départ
+([anglais](/fr/docs/locale/english), [chinois](/fr/docs/locale/chinese),
+[espagnol](/fr/docs/locale/spanish), [français](/fr/docs/locale/french),
+[norvégien](/fr/docs/locale/norwegian), [néerlandais](/fr/docs/locale/dutch),
+[japonais](/fr/docs/locale/japanese), [allemand](/fr/docs/locale/german),
+[indonésien](/fr/docs/locale/indonesian),
+[portugais brésilien](/fr/docs/locale/portuguese), etc.) avec des traductions
+intégrées des en-têtes de section, des noms de pays, des diplômes, des niveaux
+de compétence, des niveaux de langue, des formats d'adresse et de date
+idiomatiques, une ponctuation adaptée à la locale, et une configuration LaTeX
+babel.
+
+Par exemple, YAMLResume automatise :
+
+- Le réordonnancement des composants d'adresse pour le chinois (pays → région →
+  ville → adresse) vs. l'anglais (adresse → ville → région → pays)
+- L'utilisation de ponctuation pleine chasse pour les langues CJK (`、` pour la
+  virgule, `：` pour les deux-points)
+- L'ajout d'espaces insécables avant la ponctuation haute en français (`:` `!`
+  `?`)
+- Le formatage idiomatique des dates : « Jun 2018 – Present » (anglais), « 2018
+  年6月至今 » (chinois), « 2016年10月～2018年1月 » (japonais)
+- La configuration LaTeX babel pour une césure, des formats de date et une
+  gestion des caractères appropriés
+
+RenderCV inclut 22 locales intégrées qui fournissent les noms de mois, les
+abréviations de dates et une poignée de chaînes traduisibles (`present`,
+`last_updated`, etc.), y compris les langues écrites de droite à gauche (RTL)
+telles que l'arabe, l'hébreu et le persan. Vous pouvez également créer une
+locale complètement personnalisée en remplissant tous les champs manuellement,
+et personnaliser les phrases spécifiques à une langue via `locale.phrases` (par
+ex., « DEGREE in AREA »). Cependant, **RenderCV ne réordonne pas automatiquement
+les adresses, n'applique pas les règles de ponctuation spécifiques à une langue,
+ne configure pas les moteurs de composition pour la typographie spécifique à une
+locale. Il vous donne les primitives ; YAMLResume vous donne le package
+complet**.
+
+#### Typographie CJK et écritures complexes
+
+Le choix du moteur de composition affecte également la façon dont chaque outil
+gère le chinois, le japonais, le coréen (CJK) et d'autres écritures complexes.
+
+Le moteur LaTeX de YAMLResume peut tirer parti de décennies d'outils spécifiques
+au CJK : [ctex](https://ctex.org) pour le chinois,
+[luatexja](https://ctan.org/pkg/luatexja) pour le japonais,
+[kotex](https://ctan.org/pkg/kotex) pour le coréen, et
+[xeCJK](https://ctan.org/pkg/xecjk) pour XeLaTeX. Ces packages gèrent le
+fallback de police, la compression de ponctuation pleine chasse, l'espacement
+CJK-Latin, l'écriture verticale, les ruby/furigana, et la césure adaptée à la
+locale dès le départ. La couche locale de YAMLResume configure automatiquement
+les bons packages et polices pour chaque langue prise en charge, donc un CV
+chinois ou japonais s'affiche correctement sans réglage Typst manuel.
+
+Le moteur Typst de RenderCV est moderne et rapide, mais son support CJK est
+encore en train de rattraper son retard. Le document communautaire
+[clreq-gap for Typst](https://typst-doc-cn.github.io/clreq/) recense un éventail
+de lacunes de mise en page chinoise à partir de Typst v0.15.1, notamment : pas
+de mode d'écriture verticale, fallback de police par défaut peu fiable pour les
+glyphes CJK, fallback CJK incorrect dans les blocs de code et les équations
+mathématiques, mauvais alignement du soulignement lors du mélange de textes CJK
+et latins, pas d'annotations ruby/pinyin natives, et gestion incohérente des
+guillemets pleine chasse. Beaucoup de ces cas sont des cas limites pour des CV
+horizontaux simples, mais ils comptent si vous avez besoin d'une typographie CJK
+de qualité publication.
+
+En bref : pour les CV CJK, le chemin LaTeX de YAMLResume est l'option la plus
+mature et éprouvée aujourd'hui. RenderCV fonctionne pour du contenu CJK
+horizontal simple et s'améliore rapidement, mais LaTeX reste en tête sur les
+fonctionnalités CJK avancées.
+
+Pour plus de détails sur les différences entre LaTeX et Typst en tant que
+moteurs de composition, consultez ce
+[post](https://blog.ppresume.com/posts/on-typesetting-engines).
+
+### Expérience développeur
+
+Les deux outils fournissent des expériences CLI modernes.
+
+YAMLResume fournit :
+
+- **`yamlresume new`** : Crée un nouveau CV à partir d'un modèle officiel
+- **`yamlresume build`** : Compile votre CV en DOCX, HTML, Markdown et PDF en
+  une seule fois
+- **`yamlresume dev`** : [Mode surveillance](/fr/blog/dev-mode) qui reconstruit
+  votre CV à chaque sauvegarde
+- **`yamlresume doctor`** : Diagnostique votre environnement LaTeX et votre
+  configuration de polices
+- **`yamlresume validate`** : Vérifie votre CV sans le compiler
+- **`yamlresume languages list`** : Liste toutes les langues prises en charge
+- **`yamlresume templates list`** : Liste tous les modèles disponibles pour
+  chaque moteur
+
+RenderCV fournit :
+
+- **`rendercv new`** : Génère un exemple de CV avec un thème choisi
+- **`rendercv render`** : Génère du PDF, Markdown, HTML et PNG à partir de votre
+  entrée YAML
+- **`rendercv render --watch`** : Rechargement automatique pendant l'édition
+- **`rendercv render --output-folder`** : Spécifie un répertoire de sortie
+  personnalisé
+- **`rendercv create-theme`** : Génère la structure d'un thème personnalisé avec
+  des modèles modifiables
+- **Substitutions par notation pointée** : Modifiez des champs YAML spécifiques
+  depuis la CLI sans éditer le fichier
+
+Le mode `--watch` de RenderCV et les substitutions CLI par notation pointée sont
+particulièrement pratiques pour une itération rapide. La commande `doctor` de
+YAMLResume et le pipeline de compilation multi-moteur sont des avantages uniques
+pour le dépannage et la sortie multi-format.
+
+## Écosystème et communauté
+
+### Docker
+
+YAMLResume fournit une
+[image Docker officielle](https://hub.docker.com/r/yamlresume/yamlresume) avec
+toutes les dépendances préinstallées, incluant Node.js, LaTeX et les polices
+recommandées :
+
+```bash
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+RenderCV fournit également une
+[image Docker officielle](https://github.com/rendercv/rendercv/pkgs/container/rendercv)
+sur `ghcr.io/rendercv/rendercv` pour `linux/amd64` et `linux/arm64`, avec Python
+et RenderCV préinstallés :
+
+```bash
+docker run --rm -v "$PWD":/work -u $(id -u):$(id -g) -e HOME=/tmp -w /work ghcr.io/rendercv/rendercv new "Your Name"
+```
+
+### Homebrew
+
+YAMLResume est disponible via
+[Homebrew](https://formulae.brew.sh/formula/yamlresume) pour macOS et Linux :
+
+```bash
+brew install yamlresume
+```
+
+RenderCV n'a pas de formule Homebrew et doit être installé via
+`pip install "rendercv[full]"`.
+
+### GitHub Action
+
+YAMLResume fournit une
+[GitHub Action officielle](https://github.com/yamlresume/action) pour les
+pipelines CI/CD :
+
+```yaml
+- uses: yamlresume/action@v0.2.3
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+      resume-fr.yml
+```
+
+RenderCV n'a pas de GitHub Action officielle, bien que des solutions
+communautaires existent.
+
+### Exécutables autonomes
+
+RenderCV publie des exécutables autonomes pour Linux (x86_64 et ARM64), macOS
+(ARM64) et Windows (x86_64) sur GitHub Releases, permettant aux utilisateurs
+d'exécuter RenderCV sans installer Python.
+
+### Interface Web
+
+YAMLResume fournit un [playground](/fr/playground) interactif basé sur le web où
+vous pouvez modifier votre CV en temps réel et voir des aperçus instantanés dans
+tous les formats de sortie pris en charge. Le playground fonctionne entièrement
+dans le navigateur sans rendu côté serveur.
+
+RenderCV exploite [rendercv.com](https://rendercv.com), une application web qui
+exécute le même pipeline Typst dans votre navigateur. Elle fournit également une
+[AI agent skill](https://docs.rendercv.com/user_guide/how_to/use_the_ai_agent_skill)
+officielle (`npx skills add rendercv/rendercv-skill`) qui fonctionne avec Claude
+Code, Cursor, Copilot et autres agents de codage IA.
+
+## Résumé
+
+**RenderCV** excelle si vous voulez :
+
+- Une personnalisation visuelle profonde (couleurs, polices, espacement,
+  modèles) sans éditer du code de composition brut
+- Un moteur PDF moderne et rapide (Typst) avec une excellente compatibilité ATS
+  via des PDF balisés, maintenant intégré pour le rendu hors ligne
+- Des titres de section arbitraires et des types d'entrées flexibles pour des
+  structures de CV hautement personnalisées
+- Le support des mathématiques et commandes Typst pour le contenu académique et
+  technique
+- Un support RTL intégré et 22 locales
+- Des photos de profil, des connexions d'en-tête personnalisées et d'autres
+  options d'en-tête flexibles
+- Une AI agent skill pour l'édition de CV en langage naturel
+
+**YAMLResume** excelle si vous voulez :
+
+- Une internationalisation profonde avec des formats de date idiomatiques, un
+  ordre d'adresse adapté, des règles de ponctuation et une configuration LaTeX
+  babel pour 12 langues
+- Une typographie CJK et écritures complexes mature via des packages LaTeX comme
+  ctex, luatexja, kotex et xeCJK
+- Plusieurs moteurs de rendu (DOCX, HTML, Markdown, LaTeX/PDF) à partir d'un
+  seul fichier source
+- Une sortie native Microsoft Word (DOCX) pour les recruteurs ou responsables
+  d'embauche qui ont besoin d'un document modifiable
+- Un modèle de données strictement validé et standardisé qui assure la cohérence
+  entre CV, équipes et outils
+- Des données à sections fixes compatibles JSON Resume, faciles à interroger
+  dans des bases de données, consommer depuis des APIs et échanger avec d'autres
+  outils
+- Un riche écosystème d'outils de distribution : Docker, Homebrew, GitHub
+  Action, et un playground web interactif
+- Une approche batteries included où les bonnes pratiques typographiques et de
+  mise en page sont encodées dans les modèles officiels
+
+Choisissez **RenderCV** si vous êtes un universitaire ou un ingénieur qui veut
+un contrôle fin sur chaque détail visuel et préfère la composition moderne de
+Typst à LaTeX.
+
+Choisissez **YAMLResume** si vous voulez une solution opinionated, batteries
+included, qui gère tout de la validation des données à la génération
+professionnelle de PDF dans plusieurs formats et langues, avec des outils de
+développement modernes comme le mode surveillance, le support Docker et
+l'intégration CI/CD.

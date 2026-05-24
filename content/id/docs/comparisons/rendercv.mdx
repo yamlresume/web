@@ -1,0 +1,542 @@
+---
+title: YAMLResume VS RenderCV
+---
+
+[RenderCV](https://rendercv.com) adalah pembuat resume berbasis YAML populer
+lainnya yang dibuat oleh [Sina Atalay](https://github.com/sinaatalay). RenderCV
+ditulis dalam Python dan menggunakan [Typst](https://typst.app)—sistem
+typesetting modern—sebagai mesin PDF-nya. RenderCV telah mendapatkan daya tarik
+yang signifikan di komunitas open-source dengan lebih dari 17.000 bintang
+GitHub.
+
+Dari repositori resminya:
+
+```markdown
+Write your CV or resume as YAML, then run RenderCV,
+
+rendercv render John_Doe_CV.yaml
+
+and get a PDF with perfect typography.
+
+With RenderCV, you can:
+
+- Version-control your CV — it's just text.
+- Focus on content — don't worry about the formatting.
+- Get perfect typography — consistent alignment and spacing, handled for you.
+```
+
+RenderCV mengambil pendekatan **konten-utama**: Anda menulis data resume dalam
+YAML dan RenderCV mengubahnya menjadi PDF yang ditype dengan profesional melalui
+Typst. RenderCV menawarkan kustomisasi desain yang ekstensif, judul bagian
+sewenang-wenang, dan pemisahan yang bersih antara konten dan presentasi.
+
+YAMLResume dan RenderCV memiliki filosofi inti yang sama—**resume sebagai
+kode**—tetapi keduanya berbeda secara signifikan dalam arsitektur, kedalaman
+internasionalisasi, peralatan ekosistem, dan fleksibilitas model datanya.
+Berikut adalah perbandingannya:
+
+## Perbandingan Fitur
+
+| Fitur                      | YAMLResume                                                                                                                                 | RenderCV                                                                                         |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| **Bahasa**                 | TypeScript/Node.js                                                                                                                         | Python 3.12+                                                                                     |
+| **Format Data**            | YAML                                                                                                                                       | YAML                                                                                             |
+| **Mesin Typesetting**      | [DOCX](/id/docs/layouts/docx), [HTML](/id/docs/layouts/html), [Markdown](/id/docs/layouts/markdown), [LaTeX/XeTeX](/id/docs/layouts/latex) | Typst                                                                                            |
+| **Format Output**          | Docx, HTML, Markdown, LaTeX/PDF                                                                                                            | PDF, Markdown, HTML, PNG                                                                         |
+| **Validasi Skema**         | [Validasi skema Zod ketat](/id/docs/compiler/schema) dengan [compiler](/id/docs/compiler/architecture) + integrasi IDE                     | Validasi Pydantic dengan JSON Schema untuk auto-completion IDE                                   |
+| **Pelaporan Kesalahan**    | [Diagnostik gaya clang](/id/docs/cli#validate) dengan nomor baris dan info posisional                                                      | Pesan kesalahan Pydantic dengan jalur bidang                                                     |
+| **Internasionalisasi**     | [12 bahasa](/id/docs/locale) bawaan dengan pelokalan mendalam                                                                              | 22 lokal bawaan (nama bulan, string tanggal), kustomisasi manual diperlukan                      |
+| **Pemformatan Tanggal**    | Format idiomatis sesuai lokal (pengurutan alamat, tanda baca, nama bulan)                                                                  | Dapat dikonfigurasi melalui bidang `locale` (singkatan bulan, string present)                    |
+| **Pemformatan Alamat**     | Pengurutan sadar lokal (mis., Chinese vs. German vs. English)                                                                              | Teks bebas                                                                                       |
+| **Dukungan Teks Kaya**     | Sekumpulan [sintaks teks kaya Markdown](/id/docs/content/rich-text) di bidang `summary`                                                    | Markdown + matematika/perintah Typst di semua bidang teks                                        |
+| **Kustomisasi Font**       | [Keluarga font, ukuran font, jarak baris](/id/docs/layouts/latex#typography), dll                                                          | Keluarga font, ukuran font, jarak baris, bold, small caps, dll                                   |
+| **Kustomisasi Warna**      | Tidak ada (tergantung tema)                                                                                                                | Kontrol warna RGB penuh untuk setiap elemen (nama, tautan, judul bagian, dll)                    |
+| **Kustomisasi Tata Letak** | [Margin halaman, nomor halaman, ukuran kertas](/id/docs/layouts/latex#page), dll                                                           | Margin halaman, ukuran kertas, perataan header, posisi foto, footer, dll                         |
+| **Kustomisasi Bagian**     | [Alias](/id/docs/layouts/sections/aliases) dan [pengurutan ulang](/id/docs/layouts/sections/reorder)                                       | Judul bagian sewenang-wenang; satu jenis entri per bagian                                        |
+| **Jenis Entri**            | Skema tetap per bagian (work, education, projects, dll)                                                                                    | 9 jenis entri yang dapat digunakan kembali (ExperienceEntry, EducationEntry, BulletEntry, dll)   |
+| **Template/Tema**          | Beberapa template [LaTeX](/id/docs/layouts/latex/templates) dan [HTML](/id/docs/layouts/html/templates) resmi                              | 9 tema bawaan dengan dukungan penimpaan template penuh                                           |
+| **Tema Kustom**            | Berbasis template (sumber DOCX/HTML/LaTeX)                                                                                                 | `rendercv create-theme` dengan template Typst/Jinja2 yang dapat diedit                           |
+| **Mode Dev**               | [Mode dev](/id/docs/cli#dev) dengan pembangunan otomatis                                                                                   | Flag `--watch` untuk muat ulang otomatis                                                         |
+| **Dukungan Docker**        | [Gambar docker resmi](/id/docs/contributing/docker) dengan LaTeX dan YAMLResume yang sudah terinstal                                       | Gambar [Docker resmi di GHCR](https://ghcr.io/rendercv/rendercv) (linux/amd64 dan linux/arm64)   |
+| **GitHub Action**          | [GitHub action resmi](https://github.com/yamlresume/action) untuk CI/CD                                                                    | Tidak ada (solusi komunitas tersedia)                                                            |
+| **Homebrew**               | [Formula Homebrew](https://formulae.brew.sh/formula/yamlresume) untuk instalasi mudah di macOS dan Linux                                   | Tidak ada (hanya pip install)                                                                    |
+| **Taman Bermain Web**      | [Taman bermain](/id/playground) berbasis web interaktif                                                                                    | Aplikasi web di [rendercv.com](https://rendercv.com)                                             |
+| **Integrasi AI**           | Tidak ada                                                                                                                                  | [Keterampilan agen AI resmi](https://docs.rendercv.com/user_guide/how_to/use_the_ai_agent_skill) |
+| **Output Deterministik**   | Ya                                                                                                                                         | Ya (byte-for-byte identik dari input yang sama)                                                  |
+
+## Perbedaan Kunci Dijelaskan
+
+Jika kita harus memilih satu kata untuk merangkum perbedaan antara YAMLResume
+dan RenderCV, kata itu adalah **berpendapat versus fleksibel**. YAMLResume
+menegakkan model data yang ketat, terstandarisasi dengan dukungan lokal yang
+mendalam dan beberapa mesin rendering. RenderCV memberi Anda lebih banyak
+kebebasan dalam cara menyusun bagian-bagian Anda dan palet yang jauh lebih luas
+untuk kustomisasi visual, dengan biaya standarisasi bawaan yang lebih sedikit.
+
+### Model Data
+
+Kedua alat menggunakan YAML sebagai format input, tetapi mereka mendekati
+pemodelan data secara berbeda.
+
+#### Terstruktur vs Bagian Fleksibel
+
+YAMLResume menggunakan **skema tetap** dengan bagian-bagian yang terdefinisi
+dengan baik (`basics`, `work`, `education`, `skills`, `projects`,
+`publications`, `awards`, `certificates`, `volunteer`, `references`,
+`languages`, `interests`). Setiap bagian memiliki bentuk yang dapat diprediksi
+yang divalidasi secara ketat oleh compiler. Ini memudahkan untuk berbagi,
+mengkonversi, dan bernalar tentang data resume secara terprogram.
+
+YAMLResume juga sangat terinspirasi oleh [JSON Resume](https://jsonresume.org/),
+dan kedua skema tersebut selaras secara erat. Compiler YAMLResume menerima file
+JSON Resume secara langsung, dan konverter
+[`json2yamlresume`](/id/docs/ecosystem/json2yamlresume) menangani semua bagian
+JSON Resume standar. Ini berarti resume YAMLResume dapat dioperasikan dengan
+ekosistem JSON Resume yang lebih luas—tema, registry, API, dan alat pihak
+ketiga—tanpa adapter kustom.
+
+RenderCV menggunakan **model kamus fleksibel** di mana judul bagian adalah
+string sewenang-wenang dan setiap bagian berisi daftar entri. Anda dapat memberi
+nama bagian apa saja—"Professional Experience", "Employment History", atau
+"Things I Did"—dan memilih dari 9 jenis entri (`ExperienceEntry`,
+`EducationEntry`, `PublicationEntry`, `NormalEntry`, `OneLineEntry`,
+`BulletEntry`, `NumberedEntry`, `ReversedNumberedEntry`, `TextEntry`).
+
+Fleksibilitas ini sangat kuat untuk kustomisasi satu kali tetapi dapat
+menyebabkan ketidakkonsistenan saat berbagi data di berbagai alat atau tema.
+Model tetap YAMLResume mengorbankan sebagian fleksibilitas untuk konsistensi,
+kedalaman validasi, dan pertukaran data yang lebih mudah.
+
+#### Kunci Tetap dan Pertukaran Data
+
+Perbedaan antara nama bagian tetap dan sewenang-wenang tidak hanya kosmetik—ini
+memiliki konsekuensi teknik nyata saat Anda menyimpan, mengkueri, atau
+mengintegrasikan data resume.
+
+Dengan YAMLResume, setiap resume menggunakan kunci yang sama. Jika Anda
+menyimpan resume dalam database PostgreSQL sebagai JSONB, Anda dapat mengkueri
+pengalaman kerja, keterampilan, atau sertifikasi dengan ekspresi yang sederhana
+dan dapat diandalkan:
+
+```sql
+-- Find candidates with Python in their skills
+SELECT id, content->'basics'->>'name'
+FROM resumes
+WHERE content->'skills' @? '$[*].keywords ? (@ == "Python")';
+
+-- Find candidates with at least three work experiences
+SELECT id, content->'basics'->>'name'
+FROM resumes
+WHERE jsonb_array_length(content->'work') >= 3;
+```
+
+Karena judul bagian RenderCV adalah string sewenang-wenang, kueri yang sama
+menjadi jauh lebih rumit. Bagian riwayat kerja mungkin berjudul "Experience",
+"Professional Experience", "Employment History", atau "Career", dan database
+tidak memiliki kunci yang dapat diandalkan untuk dicari. Anda harus salah satu
+dari:
+
+1. Menulis heuristik untuk memeriksa setiap entri bagian dan menyimpulkan
+   jenisnya dari bidang seperti `company` atau `position`.
+2. Memelihara pemetaan terpisah dari judul bagian yang diberikan pengguna ke
+   jenis semantik.
+3. Menerima bahwa pemfilteran dan agregasi di berbagai resume akan tidak
+   konsisten.
+
+Jenis entri RenderCV memang menyediakan struktur _di dalam_ sebuah bagian,
+tetapi wadah bagian itu sendiri bebas bentuk. Kunci tetap YAMLResume
+memungkinkan Anda memperlakukan resume sebagai catatan seragam: impor ke
+database, masukkan ke API, atau transformasikan dengan alat standar tanpa
+terlebih dahulu menormalkan judul bagian yang tidak dapat diprediksi.
+
+#### Bidang Standar
+
+YAMLResume menormalkan nilai yang umum digunakan ke dalam kosakata tetap yang
+divalidasi pada waktu kompilasi dan diterjemahkan di semua lokal yang didukung:
+
+- **Gelar pendidikan** (`Middle School`, `High School`, `Bachelor`, `Master`,
+  `Doctor`, dll.)
+- **Tingkat keterampilan** (`Novice`, `Beginner`, `Intermediate`, `Advanced`,
+  `Expert`, `Master`)
+- **Kefasihan bahasa** (`Elementary` hingga `Native`)
+- **Negara dan wilayah** (diterjemahkan ke dalam setiap bahasa yang didukung)
+
+RenderCV menerima string bebas untuk bidang-bidang ini, memberi Anda kontrol
+penuh tetapi meninggalkan konsistensi dan pelokalan sepenuhnya kepada Anda.
+
+#### Struktur yang Lebih Datar
+
+YAMLResume menempatkan kunci `location` dan `profiles` sosial di tingkat atas,
+terpisah dari `basics`, yang menyederhanakan model data dan membuatnya lebih
+selaras dan konsisten di semua bagian. RenderCV menyarangkan lokasi di bawah
+objek header `cv` dan menggunakan `social_networks` untuk koneksi.
+
+#### Fitur Model Data RenderCV Lainnya
+
+Input YAML RenderCV juga mencakup beberapa kemampuan yang belum tercermin dalam
+YAMLResume:
+
+- **Bagian `settings`**: Blok `settings` tingkat atas untuk opsi seperti
+  `pdf_title` dan `current_date: today`.
+- **Foto profil**: `cv.photo` menerima path lokal atau URL.
+- **Koneksi kustom**: `cv.custom_connections` memungkinkan Anda menambahkan
+  tautan header sewenang-wenang dengan teks placeholder kustom dan ikon Font
+  Awesome.
+- **Beberapa nilai kontak**: `email`, `phone`, dan `website` dapat masing-masing
+  berupa daftar nilai.
+
+### Konten dan Teks Kaya
+
+Kedua alat mendukung pemformatan Markdown, tetapi dengan cakupan dan kemampuan
+yang berbeda.
+
+#### Dukungan Markdown
+
+YAMLResume mendukung
+[sekumpulan sintaks Markdown terbatas](/id/docs/content/rich-text) (tebal,
+miring, tautan, daftar, dan paragraf) di bidang `summary` di semua bagian yang
+memilikinya. Ini sengaja dibatasi untuk memastikan rendering yang konsisten di
+mesin LaTeX, HTML, dan Markdown.
+
+RenderCV mendukung Markdown dasar (tebal, miring, tautan, kode inline) di
+**semua** bidang teks, termasuk highlights dan ringkasan. Highlights juga
+mendukung sub-bullet bersarang. Selain itu, RenderCV mendukung sintaks
+matematika Typst (`$$f(x) = x^2$$`) dan perintah Typst (`#emph[text]`), yang
+berguna untuk akademisi dan insinyur yang membutuhkan persamaan dalam CV mereka.
+
+#### String Multi-baris
+
+Salah satu keputusan desain inti YAMLResume adalah memanfaatkan sintaks string
+multi-baris YAML untuk teks kaya yang dapat dibaca. RenderCV juga mendapat
+manfaat dari sintaks multi-baris YAML, tetapi karena dukungan Markdown-nya lebih
+luas dan berlaku untuk lebih banyak bidang, keuntungan keterbacaan dibagi.
+
+### Validasi
+
+Kedua alat menganggap validasi serius, tetapi pendekatannya berbeda.
+
+YAMLResume menggunakan [skema Zod komprehensif](/id/docs/compiler/schema) dengan
+validasi waktu kompilasi dan
+[pesan kesalahan gaya clang](/id/blog/yamlresume-compiler) yang mencakup nomor
+baris, nomor kolom, dan cuplikan kontekstual:
+
+```console
+$ yamlresume validate my-resume.yml
+my-resume.yml:9:12: warning: email is invalid.
+    email: hi@pp
+           ^
+my-resume.yml:38:10: error: city is too short.
+    city: S
+          ^
+```
+
+YAMLResume juga dikirimkan dengan [JSON Schema](/id/docs/compiler/schema/json)
+resmi untuk auto-completion IDE, dokumentasi saat mengarahkan kursor, dan
+validasi real-time di editor seperti VS Code.
+
+RenderCV menggunakan Pydantic untuk validasi, yang menyediakan pemeriksaan tipe
+yang kuat dan pesan kesalahan yang jelas dengan jalur bidang. RenderCV juga
+menghasilkan JSON Schema untuk integrasi IDE.
+
+### Tata Letak dan Rendering
+
+Kedua alat memisahkan konten dari desain, tetapi arsitektur rendering mereka
+berbeda secara signifikan.
+
+#### Mesin
+
+YAMLResume menyediakan empat mesin rendering:
+
+- **[Mesin DOCX](/id/docs/layouts/docx)**: Dokumen Microsoft Word untuk
+  pengeditan dan berbagi yang mudah
+- **[Mesin HTML](/id/docs/layouts/html)**: Resume responsif dan siap web dengan
+  metadata SEO
+- **[Mesin Markdown](/id/docs/layouts/markdown)**: Teks bersih untuk LLM, sistem
+  ATS, dan situs statis
+- **[Mesin LaTeX](/id/docs/layouts/latex)**: PDF yang sempurna secara piksel
+  dengan tipografi profesional melalui XeTeX
+
+Satu perintah `yamlresume build` dapat menghasilkan keempat format dari file
+sumber yang sama.
+
+RenderCV menggunakan [Typst](https://typst.app) sebagai mesin typesetting
+utamanya. Typst adalah alternatif modern dari LaTeX yang mengkompilasi lebih
+cepat dan menghasilkan PDF yang sesuai standar. Satu perintah `rendercv render`
+menghasilkan PDF, Markdown, HTML, dan PNG, ditambah sumber Typst perantara
+(`.typ`). Sejak v2.8, paket `rendercv-typst` dan Font Awesome disertakan dalam
+Python wheel, sehingga kompilasi PDF berfungsi secara offline tanpa unduhan
+runtime.
+
+#### Output DOCX
+
+Salah satu perbedaan praktis dalam format output adalah dukungan Microsoft Word
+(DOCX). YAMLResume menyertakan [mesin DOCX](/id/docs/layouts/docx) khusus yang
+menghasilkan file `.docx` yang dapat diedit dari sumber YAML yang sama, yang
+berguna saat Anda perlu membagikan resume dengan recruiter atau hiring manager
+yang mengharapkan dokumen Word, atau saat Anda ingin melakukan pengeditan menit
+terakhir di pengolah kata. RenderCV tidak menawarkan output DOCX; pipeline-nya
+dibangun di sekitar Typst, dengan PDF sebagai deliverable utama dan Markdown,
+HTML, dan PNG sebagai format sekunder.
+
+#### Kustomisasi Desain
+
+RenderCV menawarkan kontrol visual yang jauh lebih terperinci daripada
+YAMLResume:
+
+- **Warna**: Kontrol RGB penuh atas setiap elemen teks (body, nama, headline,
+  tautan, judul bagian, footer)
+- **Tipografi**: Keluarga font per elemen, ukuran font per elemen, pengalihan
+  bold/small caps, jarak baris, perataan teks
+- **Halaman**: Ukuran kertas termasuk `a4`, `a5`, `us-letter`, dan
+  `us-executive`
+- **Header**: Posisi dan ukuran foto, pemisah koneksi, ikon social network, dan
+  format nomor telepon (`national`, `international`, atau `E164`)
+- **Judul bagian**: 8 gaya judul berbeda (dengan/tanpa garis, di tengah, dll.)
+- **Entri**: Lebar kolom, karakter bullet, jarak, perilaku page break, dan
+  perhitungan rentang waktu otomatis (mis., "2 years 3 months")
+- **Template**: Menimpa cara setiap jenis entri merender menggunakan template
+  Jinja2 dengan placeholder seperti `NAME`, `COMPANY`, `DATE`
+
+Mesin LaTeX YAMLResume menyediakan
+[kustomisasi halaman](/id/docs/layouts/latex#page) (ukuran kertas, margin, nomor
+halaman) dan [kontrol tipografi](/id/docs/layouts/latex#typography) (keluarga
+font, ukuran font, jarak baris), tetapi tidak memaparkan kontrol warna per
+elemen atau kontrol jarak yang halus. Ini sengaja demikian: template YAMLResume
+mengenkapsulasi keputusan visual sehingga Anda tidak perlu membuatnya.
+
+#### Kustomisasi Bagian
+
+YAMLResume memungkinkan Anda membentuk kembali struktur resume Anda melalui
+[alias bagian](/id/docs/layouts/sections/aliases) dan
+[pengurutan ulang bagian](/id/docs/layouts/sections/reorder) tanpa menyentuh
+data yang mendasarinya:
+
+- **Alias bagian**: Menimpa judul bagian default untuk salah satu dari 12 bagian
+  yang dapat dialiaskan
+- **Pengurutan ulang bagian**: Mengubah urutan presentasi bagian dengan daftar
+  `order` yang sederhana
+
+Model bagian RenderCV pada dasarnya berbeda: karena judul bagian adalah string
+sewenang-wenang, "alias" hanyalah menulis judul yang berbeda. Pengurutan adalah
+masalah menyusun ulang kunci dalam kamus YAML. RenderCV juga mendukung
+`design.templates` untuk menimpa cara jenis entri individual merender, yang jauh
+melampaui sistem alias/pengurutan YAMLResume.
+
+### Lokal (i18n)
+
+Ini adalah salah satu perbedaan terbesar antara kedua alat.
+
+YAMLResume mendukung 10+ bahasa langsung ([English](/id/docs/locale/english),
+[Chinese](/id/docs/locale/chinese), [Spanish](/id/docs/locale/spanish),
+[French](/id/docs/locale/french), [Norwegian](/id/docs/locale/norwegian),
+[Dutch](/id/docs/locale/dutch), [Japanese](/id/docs/locale/japanese),
+[German](/id/docs/locale/german), [Indonesian](/id/docs/locale/indonesian),
+[Brazilian Portuguese](/id/docs/locale/portuguese), dll.) dengan terjemahan
+bawaan header bagian, nama negara, gelar, tingkat keterampilan, tingkat
+kefasihan bahasa, format alamat dan tanggal idiomatis, tanda baca yang sesuai
+lokal, dan konfigurasi LaTeX babel.
+
+Misalnya, YAMLResume secara otomatis:
+
+- Mengurutkan ulang komponen alamat untuk Chinese (country → region → city →
+  address) vs. English (address → city → region → country)
+- Menggunakan tanda baca lebar penuh untuk bahasa CJK (`、` untuk koma, `：`
+  untuk titik dua)
+- Menambahkan spasi non-breaking sebelum tanda baca tinggi dalam bahasa French
+  (`:` `!` `?`)
+- Memformat tanggal secara idiomatis: "Jun 2018 – Present" (English), "2018年6月
+  至今" (Chinese), "2016年10月～2018年1月" (Japanese)
+- Mengkonfigurasi LaTeX babel untuk pemenggalan kata yang tepat, format tanggal,
+  dan penanganan karakter
+
+RenderCV menyertakan 22 lokal bawaan yang menyediakan nama bulan, singkatan
+tanggal, dan segelintir string yang dapat diterjemahkan (`present`,
+`last_updated`, dll.), termasuk bahasa right-to-left (RTL) seperti Arabic,
+Hebrew, dan Persian. Anda juga dapat membuat lokal kustom sepenuhnya dengan
+mengisi semua bidang secara manual, dan menyesuaikan frasa khusus bahasa via
+`locale.phrases` (mis., "DEGREE in AREA"). Namun, **RenderCV tidak secara
+otomatis mengurutkan ulang alamat, menerapkan aturan tanda baca khusus bahasa,
+atau mengkonfigurasi mesin typesetting untuk tipografi khusus lokal. RenderCV
+memberi Anda primitifnya; YAMLResume memberi Anda paket lengkapnya**.
+
+#### Tipografi CJK dan Aksara Kompleks
+
+Pilihan mesin typesetting juga memengaruhi seberapa baik masing-masing alat
+menangani Chinese, Japanese, Korean (CJK), dan aksara kompleks lainnya.
+
+Mesin LaTeX YAMLResume dapat memanfaatkan puluhan tahun peralatan khusus CJK:
+[ctex](https://ctex.org) untuk Chinese,
+[luatexja](https://ctan.org/pkg/luatexja) untuk Japanese,
+[kotex](https://ctan.org/pkg/kotex) untuk Korean, dan
+[xeCJK](https://ctan.org/pkg/xecjk) untuk XeLaTeX. Paket-paket ini menangani
+fallback font, kompresi tanda baca lebar penuh, jarak CJK-Latin, penulisan
+vertikal, ruby/furigana, dan pemenggalan baris yang sadar lokal langsung dari
+kotak. Lapisan lokal YAMLResume secara otomatis mengkonfigurasi paket dan font
+yang tepat untuk setiap bahasa yang didukung, sehingga resume Chinese atau
+Japanese merender dengan benar tanpa penyetelan Typst manual.
+
+Mesin Typst RenderCV modern dan cepat, tetapi dukungan CJK-nya masih mengejar.
+Yang dikelola komunitas
+[clreq-gap untuk Typst](https://typst-doc-cn.github.io/clreq/) mendokumentasikan
+berbagai kesenjangan tata letak Chinese yang tersisa per Typst v0.15.1,
+termasuk: tidak ada mode penulisan vertikal, fallback font default yang tidak
+dapat diandalkan untuk glif CJK, fallback CJK yang tidak benar di blok kode dan
+persamaan matematika, perataan garis bawah yang salah saat mencampur teks CJK
+dan Latin, tidak ada anotasi ruby/pinyin asli, dan penanganan tanda kutip lebar
+penuh yang tidak konsisten. Banyak dari ini adalah kasus tepi untuk resume
+horizontal sederhana, tetapi mereka penting jika Anda membutuhkan tipografi CJK
+yang berkualitas publikasi.
+
+Singkatnya: untuk resume CJK, jalur LaTeX YAMLResume adalah pilihan yang lebih
+matang dan teruji hari ini. RenderCV berfungsi untuk konten CJK horizontal yang
+mudah dan berkembang pesat, tetapi LaTeX masih unggul dalam fitur CJK lanjutan.
+
+Untuk detail lebih lanjut tentang perbedaan antara LaTeX dan Typst sebagai mesin
+typesetting, lihat
+[postingan](https://blog.ppresume.com/posts/on-typesetting-engines) ini.
+
+### Pengalaman Pengembang
+
+Kedua alat menyediakan pengalaman CLI modern.
+
+YAMLResume menyediakan:
+
+- **`yamlresume new`**: Buat resume baru dari template resmi
+- **`yamlresume build`**: Bangun resume Anda menjadi DOCX, HTML, Markdown, dan
+  PDF dalam satu kali jalan
+- **`yamlresume dev`**: [Mode watch](/id/blog/dev-mode) yang membangun ulang
+  resume Anda pada setiap simpan
+- **`yamlresume doctor`**: Diagnosis lingkungan LaTeX dan pengaturan font Anda
+- **`yamlresume validate`**: Periksa resume Anda tanpa membangun
+- **`yamlresume languages list`**: Daftar semua bahasa yang didukung
+- **`yamlresume templates list`**: Daftar semua template yang tersedia untuk
+  setiap mesin
+
+RenderCV menyediakan:
+
+- **`rendercv new`**: Hasilkan contoh CV dengan tema yang dipilih
+- **`rendercv render`**: Hasilkan PDF, Markdown, HTML, dan PNG dari input YAML
+  Anda
+- **`rendercv render --watch`**: Muat ulang otomatis saat mengedit
+- **`rendercv render --output-folder`**: Tentukan direktori output kustom
+- **`rendercv create-theme`**: Scaffolding tema kustom dengan template yang
+  dapat diedit
+- **Penimpaan notasi titik**: Ubah bidang YAML tertentu dari CLI tanpa mengedit
+  file
+
+Mode `--watch` RenderCV dan penimpaan CLI notasi titik sangat nyaman untuk
+iterasi cepat. Perintah `doctor` YAMLResume dan pipeline build multi-mesin
+adalah keunggulan unik untuk pemecahan masalah dan output multi-format.
+
+## Ekosistem dan Komunitas
+
+### Docker
+
+YAMLResume menyediakan
+[gambar Docker resmi](https://hub.docker.com/r/yamlresume/yamlresume) dengan
+semua dependensi yang sudah terinstal, termasuk Node.js, LaTeX, dan font yang
+direkomendasikan:
+
+```bash
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+RenderCV juga menyediakan
+[gambar Docker resmi](https://github.com/rendercv/rendercv/pkgs/container/rendercv)
+di `ghcr.io/rendercv/rendercv` untuk `linux/amd64` dan `linux/arm64`, dengan
+Python dan RenderCV yang sudah terinstal:
+
+```bash
+docker run --rm -v "$PWD":/work -u $(id -u):$(id -g) -e HOME=/tmp -w /work ghcr.io/rendercv/rendercv new "Your Name"
+```
+
+### Homebrew
+
+YAMLResume tersedia melalui
+[Homebrew](https://formulae.brew.sh/formula/yamlresume) untuk macOS dan Linux:
+
+```bash
+brew install yamlresume
+```
+
+RenderCV tidak memiliki formula Homebrew dan harus diinstal melalui
+`pip install "rendercv[full]"`.
+
+### GitHub Action
+
+YAMLResume menyediakan
+[GitHub Action resmi](https://github.com/yamlresume/action) untuk pipeline
+CI/CD:
+
+```yaml
+- uses: yamlresume/action@v0.2.3
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+      resume-fr.yml
+```
+
+RenderCV tidak memiliki GitHub Action resmi, meskipun solusi komunitas tersedia.
+
+### Eksekusi Mandiri
+
+RenderCV menerbitkan eksekusi mandiri untuk Linux (x86_64 dan ARM64), macOS
+(ARM64), dan Windows (x86_64) di GitHub Releases, sehingga pengguna dapat
+menjalankan RenderCV tanpa menginstal Python.
+
+### Antarmuka Web
+
+YAMLResume menyediakan [playground](/id/playground) berbasis web interaktif
+dimana Anda dapat mengedit resume Anda secara real time dan melihat pratinjau
+instan di semua format output yang didukung. Playground berjalan sepenuhnya di
+browser tanpa rendering sisi server.
+
+RenderCV mengoperasikan [rendercv.com](https://rendercv.com), aplikasi web yang
+menjalankan pipeline Typst yang sama di browser Anda. RenderCV juga menyediakan
+[keterampilan agen AI resmi](https://docs.rendercv.com/user_guide/how_to/use_the_ai_agent_skill)
+(`npx skills add rendercv/rendercv-skill`) yang bekerja dengan Claude Code,
+Cursor, Copilot, dan agen pengkodean AI lainnya.
+
+## Ringkasan
+
+**RenderCV** unggul jika Anda menginginkan:
+
+- Kustomisasi visual mendalam (warna, font, jarak, template) tanpa mengedit kode
+  typesetting mentah
+- Mesin PDF modern dan cepat (Typst) dengan kompatibilitas ATS yang sangat baik
+  melalui PDF yang ditandai, sekarang disertakan untuk rendering offline
+- Judul bagian sewenang-wenang dan jenis entri fleksibel untuk struktur CV yang
+  sangat dikustomisasi
+- Dukungan matematika dan perintah Typst untuk konten akademik dan teknis
+- Dukungan RTL bawaan dan 22 lokal
+- Foto profil, koneksi header kustom, dan opsi header fleksibel lainnya
+- Keterampilan agen AI untuk pengeditan resume dalam bahasa alami
+
+**YAMLResume** unggul jika Anda menginginkan:
+
+- Internasionalisasi mendalam dengan format tanggal idiomatis, pengurutan
+  alamat, aturan tanda baca, dan konfigurasi LaTeX babel untuk 12 bahasa
+- Tipografi CJK dan aksara kompleks yang matang melalui paket LaTeX seperti
+  ctex, luatexja, kotex, dan xeCJK
+- Beberapa mesin rendering (DOCX, HTML, Markdown, LaTeX/PDF) dari satu file
+  sumber
+- Output Microsoft Word (DOCX) asli untuk recruiter atau hiring manager yang
+  membutuhkan dokumen yang dapat diedit
+- Model data terstandarisasi yang divalidasi secara ketat yang memastikan
+  konsistensi di berbagai resume, tim, dan alat
+- Data bagian tetap yang kompatibel dengan JSON Resume yang mudah dikueri dalam
+  database, dikonsumsi dari API, dan ditukar dengan alat lain
+- Ekosistem alat distribusi yang kaya: Docker, Homebrew, GitHub Action, dan
+  taman bermain web interaktif
+- Pendekatan baterai-termasuk di mana praktik terbaik tipografi dan tata letak
+  dienkode dalam template resmi
+
+Pilih **RenderCV** jika Anda adalah akademisi atau insinyur yang menginginkan
+kontrol terperinci atas setiap detail visual dan lebih menyukai typesetting
+modern Typst daripada LaTeX.
+
+Pilih **YAMLResume** jika Anda menginginkan solusi yang berpendapat,
+baterai-termasuk yang menangani segalanya mulai dari validasi data hingga
+generasi PDF profesional di berbagai format dan bahasa, dengan alat pengembang
+modern seperti mode watch, dukungan Docker, dan integrasi CI/CD.

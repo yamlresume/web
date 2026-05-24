@@ -1,0 +1,516 @@
+---
+title: YAMLResume と RenderCV の比較
+---
+
+[RenderCV](https://rendercv.com)
+は、[Sina Atalay](https://github.com/sinaatalay) によって作成された、もう一つの
+人気のある YAML ベースの履歴書ビルダーです。Python で書かれており、PDF エンジン
+として現代的な組版システムである [Typst](https://typst.app) を使用していま
+す。RenderCV は 17,000 以上の GitHub スターを獲得し、オープンソースコミュニティ
+で大きな注目を集めています。
+
+公式リポジトリからの引用です：
+
+```markdown
+Write your CV or resume as YAML, then run RenderCV,
+
+rendercv render John_Doe_CV.yaml
+
+and get a PDF with perfect typography.
+
+With RenderCV, you can:
+
+- Version-control your CV — it's just text.
+- Focus on content — don't worry about the formatting.
+- Get perfect typography — consistent alignment and spacing, handled for you.
+```
+
+RenderCV は **コンテンツファースト** のアプローチを取ります：履歴書データを YAML
+で記述すると、RenderCV が Typst を介してプロフェッショナルに組版された PDF に変
+換します。広範なデザインカスタマイズ、任意のセクションタイトル、コンテンツと表現
+の明確な分離を提供します。
+
+YAMLResume と RenderCV は同じ中核となる哲学、つまり **履歴書をコードとして** 扱
+うという点で共通していますが、アーキテクチャ、国際化の深さ、エコシステムツール、
+データモデルの柔軟性において大きく異なります。以下に両者の比較を示します：
+
+## 機能比較
+
+| 機能                       | YAMLResume                                                                                                                                 | RenderCV                                                                                           |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| **言語**                   | TypeScript/Node.js                                                                                                                         | Python 3.12+                                                                                       |
+| **データ形式**             | YAML                                                                                                                                       | YAML                                                                                               |
+| **組版エンジン**           | [DOCX](/ja/docs/layouts/docx)、[HTML](/ja/docs/layouts/html)、[Markdown](/ja/docs/layouts/markdown)、[LaTeX/XeTeX](/ja/docs/layouts/latex) | Typst                                                                                              |
+| **出力形式**               | Docx、HTML、Markdown、LaTeX/PDF                                                                                                            | PDF、Markdown、HTML、PNG                                                                           |
+| **スキーマ検証**           | [厳格な Zod スキーマ検証](/ja/docs/compiler/schema) と [コンパイラ](/ja/docs/compiler/architecture) + IDE 統合                             | Pydantic 検証と IDE 自動補完のための JSON Schema                                                   |
+| **エラー報告**             | 行番号と位置情報を含む [clang スタイルの診断](/ja/docs/cli#validate)                                                                       | フィールドパスを含む Pydantic エラーメッセージ                                                     |
+| **国際化（i18n）**         | 深いローカリゼーションを備えた [12 言語](/ja/docs/locale) を内蔵                                                                           | 22 の組み込みロケール（月名、日付文字列）、手動でのカスタマイズが必要                              |
+| **日付の書式設定**         | ロケール固有の慣用的な形式（住所の順序、句読点、月名）                                                                                     | `locale` フィールドで設定可能（月の省略形、現在時刻の文字列）                                      |
+| **住所の書式設定**         | ロケールを認識した並べ替え（例：中国語 vs ドイツ語 vs 英語）                                                                               | 自由形式のテキスト                                                                                 |
+| **リッチテキストサポート** | `summary` フィールドでの一部の [Markdown リッチテキスト構文](/ja/docs/content/rich-text) のサポート                                        | すべてのテキストフィールドで Markdown + Typst の数式/コマンドをサポート                            |
+| **フォントカスタマイズ**   | [フォントファミリー、フォントサイズ、行間](/ja/docs/layouts/latex#typography) など                                                         | フォントファミリー、フォントサイズ、行間、太字、スモールキャップなど                               |
+| **カラーカスタマイズ**     | なし（テーマ依存）                                                                                                                         | すべての要素（名前、リンク、セクションタイトルなど）で完全な RGB カラー制御                        |
+| **レイアウトカスタマイズ** | [ページ余白、ページ番号、用紙サイズ](/ja/docs/layouts/latex#page) など                                                                     | ページ余白、用紙サイズ、ヘッダーの配置、写真の位置、フッターなど                                   |
+| **セクションカスタマイズ** | [エイリアス](/ja/docs/layouts/sections/aliases) と [並べ替え](/ja/docs/layouts/sections/reorder)                                           | 任意のセクションタイトル；セクションごとに 1 つのエントリタイプ                                    |
+| **エントリタイプ**         | セクションごとに固定されたスキーマ（work、education、projects など）                                                                       | 9 つの再利用可能なエントリタイプ（ExperienceEntry、EducationEntry、BulletEntry など）              |
+| **テンプレート/テーマ**    | 複数の公式 [LaTeX](/ja/docs/layouts/latex/templates) および [HTML](/ja/docs/layouts/html/templates) テンプレート                           | 完全なテンプレート上書きサポートを備えた 9 つの組み込みテーマ                                      |
+| **カスタムテーマ**         | テンプレートベース（DOCX/HTML/LaTeX ソース）                                                                                               | 編集可能な Typst/Jinja2 テンプレートで `rendercv create-theme` を実行                              |
+| **Dev モード**             | 自動リビルド付き [Dev モード](/ja/docs/cli#dev)                                                                                            | 自動リロード用の `--watch` フラグ                                                                  |
+| **Docker サポート**        | LaTeX と YAMLResume がプリインストールされた [公式 Docker イメージ](/ja/docs/contributing/docker)                                          | [GHCR の公式 Docker イメージ](https://ghcr.io/rendercv/rendercv)（linux/amd64 と linux/arm64）     |
+| **GitHub Action**          | CI/CD 用の [公式 GitHub Action](https://github.com/yamlresume/action)                                                                      | なし（コミュニティのソリューションが存在）                                                         |
+| **Homebrew**               | macOS および Linux での簡単なインストールのための [Homebrew 公式パッケージ](https://formulae.brew.sh/formula/yamlresume)                   | なし（pip install のみ）                                                                           |
+| **Web プレイグラウンド**   | インタラクティブな Web ベースの [プレイグラウンド](/ja/playground)                                                                         | [rendercv.com](https://rendercv.com) の Web アプリ                                                 |
+| **AI 統合**                | なし                                                                                                                                       | 公式の [AI エージェントスキル](https://docs.rendercv.com/user_guide/how_to/use_the_ai_agent_skill) |
+| **決定論的出力**           | はい                                                                                                                                       | はい（同じ入力からバイト単位で同一の出力）                                                         |
+
+## 主な違いの解説
+
+YAMLResume と RenderCV の違いを一言で表すとすれば、それは **独断的
+（opinionated）対 柔軟（flexible）** という言葉になるでしょう。YAMLResume は、厳
+格で標準化されたデータモデルと深いロケールサポート、複数のレンダリングエンジンを
+強制します。RenderCV は、セクションの構造化方法においてより多くの自由度と、はる
+かに広い視覚的カスタマイズの選択肢を提供しますが、その代償として組み込みの標準化
+が少なくなります。
+
+### データモデル
+
+両ツールとも YAML を入力形式として使用しますが、データモデリングへのアプローチは
+異なります。
+
+#### 構造化されたセクション vs 柔軟なセクション
+
+YAMLResume は、明確に定義されたセクション
+（`basics`、`work`、`education`、`skills`、`projects`、`publications`、`awards`、`certificates`、`volunteer`、`references`、`languages`、`interests`）
+を持つ **固定スキーマ** を使用します。各セクションにはコンパイラが厳密に検証する
+予測可能な形状があり、履歴書データをプログラムで共有、変換、推論することが容易に
+なります。
+
+YAMLResume は [JSON Resume](https://jsonresume.org/) からも深くインスパイアされ
+ており、両者のスキーマは緊密に整合しています。YAMLResume のコンパイラは JSON
+Resume ファイルを直接受け入
+れ、[`json2yamlresume`](/ja/docs/ecosystem/json2yamlresume) コンバータはすべての
+標準 JSON Resume セクションを処理します。これは、YAMLResume の履歴書が、カスタム
+アダプタなしに、より広範な JSON Resume エコシステム（テーマ、レジストリ、API、
+サードパーティツール）と相互運用可能であることを意味します。
+
+RenderCV は、セクションタイトルが任意の文字列であり、各セクションがエントリのリ
+ストを含む **柔軟な辞書モデル** を使用します。セクションに "Professional
+Experience"、"Employment History"、"Things I Did" など任意の名前を付けることがで
+き、9 つのエントリタイプ
+（`ExperienceEntry`、`EducationEntry`、`PublicationEntry`、`NormalEntry`、`OneLineEntry`、`BulletEntry`、`NumberedEntry`、`ReversedNumberedEntry`、`TextEntry`）
+から選択できます。
+
+この柔軟性は、1 回限りのカスタマイズには強力ですが、ツールやテーマ間でデータを共
+有する際に不整合を招く可能性があります。YAMLResume の固定モデルは、一部の柔軟性
+を一貫性、検証の深さ、より簡単なデータ交換と引き換えています。
+
+#### 固定キーとデータ交換
+
+固定されたセクション名と任意のセクション名の違いは、見た目だけの問題ではありませ
+ん。履歴書データを保存、クエリ、統合する際に実際のエンジニアリング上の影響があり
+ます。
+
+YAMLResume では、すべての履歴書が同じキーを使用します。履歴書を PostgreSQL デー
+タベースに JSONB として保存している場合、以下のようなシンプルで信頼性の高い式で
+職務経験、スキル、資格をクエリできます：
+
+```sql
+-- Python スキルを持つ候補者を検索
+SELECT id, content->'basics'->>'name'
+FROM resumes
+WHERE content->'skills' @? '$[*].keywords ? (@ == "Python")';
+
+-- 3 つ以上の職務経験を持つ候補者を検索
+SELECT id, content->'basics'->>'name'
+FROM resumes
+WHERE jsonb_array_length(content->'work') >= 3;
+```
+
+RenderCV のセクションタイトルは任意の文字列であるため、同じクエリははるかに複雑
+になります。職務経歴セクションのタイトルは "Experience"、"Professional
+Experience"、"Employment History"、"Career" など様々であり、データベースには検索
+できる信頼性の高いキーがありません。以下のいずれかを行う必要があります：
+
+1. 各セクションのエントリを調べ、フィールド名からタイプを推論するヒューリス
+   ティックを書く。
+2. ユーザーが指定したセクションタイトルから意味的なタイプへの別のマッピングを維
+   持する。
+3. 履歴書全体でのフィルタリングや集計が一貫しないことを受け入れる。
+
+RenderCV のエントリタイプは、セクション _内部_ に構造を提供しますが、セクション
+コンテナ自体は自由形式です。YAMLResume の固定キーにより、履歴書を均一なレコード
+として扱うことができます。予測不可能なセクションタイトルを最初に正規化することな
+く、データベースにインポートしたり、API に供給したり、標準ツールで変換したりでき
+ます。
+
+#### 標準化されたフィールド
+
+YAMLResume は、一般的に使用される値を固定された語彙に正規化し、コンパイル時に検
+証され、すべてのサポートされているロケールで翻訳されます：
+
+- **学位**（`Middle School`、`High School`、`Bachelor`、`Master`、`Doctor` な
+  ど）
+- **スキルレベ
+  ル**（`Novice`、`Beginner`、`Intermediate`、`Advanced`、`Expert`、`Master`）
+- **言語の流暢さ**（`Elementary` から `Native` まで）
+- **国と地域**（サポートされているすべての言語に翻訳される）
+
+RenderCV はこれらのフィールドに自由形式の文字列を受け入れ、完全な制御を提供しま
+すが、一貫性とローカリゼーションは完全にユーザーに委ねられます。
+
+#### よりフラットな構造
+
+YAMLResume は、`location` とソーシャル `profiles` キーを `basics` から分離して
+トップレベルに配置し、これによりデータモデルを単純化し、セクション間でより整合性
+と一貫性を持たせています。RenderCV は `cv` ヘッダーオブジェクトの下に住所を入れ
+子にし、接続には `social_networks` を使用します。
+
+#### その他の RenderCV のデータモデル機能
+
+RenderCV の YAML 入力には、YAMLResume にまだないいくつかの機能も含まれています：
+
+- **`settings` セクション**：`pdf_title` や `current_date: today` などのオプショ
+  ンを設定するトップレベルの `settings` ブロック。
+- **プロフィール写真**：`cv.photo` はローカルパスまたは URL を受け入れます。
+- **カスタム接続**：`cv.custom_connections` により、カスタムプレースホルダーテキ
+  ストと Font Awesome アイコンを持つ任意のヘッダーリンクを追加できます。
+- **複数の連絡先値**：`email`、`phone`、`website` はそれぞれ値のリストにできま
+  す。
+
+### コンテンツとリッチテキスト
+
+両ツールとも Markdown フォーマットをサポートしていますが、範囲と機能は異なりま
+す。
+
+#### Markdown サポート
+
+YAMLResume は、すべての `summary` フィールドを持つセクション
+で、[限定された Markdown 構文](/ja/docs/content/rich-text)（太字、斜体、リンク、
+リスト、段落）をサポートしています。これは、LaTeX、HTML、Markdown エンジン間で一
+貫したレンダリングを保証するために意図的に制限されています。
+
+RenderCV は、ハイライトとサマリーを含む **すべての** テキストフィールドで、基本
+的な Markdown（太字、斜体、リンク、インラインコード）をサポートします。ハイライ
+トは入れ子のサブ箇条書きもサポートしています。さらに、RenderCV は Typst の数式構
+文（`$$f(x) = x^2$$`）と Typst コマンド（`#emph[text]`）をサポートしており、CV
+に数式が必要な学者やエンジニアにとって有用です。
+
+#### 複数行文字列
+
+YAMLResume の中核となる設計上の決定の一つは、読みやすいリッチテキストのために
+YAML の複数行文字列構文を活用することです。RenderCV も YAML の複数行構文の恩恵を
+受けますが、Markdown サポートがより広範でより多くのフィールドに適用されるため、
+読みやすさの利点は共有されています。
+
+### 検証
+
+両ツールとも検証を真剣に受け止めていますが、アプローチは異なります。
+
+YAMLResume は、コンパイル時の検証を備えた
+[包括的な Zod スキーマ](/ja/docs/compiler/schema) を使用し、行番号、列番号、コン
+テキスト付きスニペットを含む
+[clang スタイルのエラーメッセージ](/ja/blog/yamlresume-compiler) を提供します：
+
+```console
+$ yamlresume validate my-resume.yml
+my-resume.yml:9:12: warning: email is invalid.
+    email: hi@pp
+           ^
+my-resume.yml:38:10: error: city is too short.
+    city: S
+          ^
+```
+
+YAMLResume には、VS Code などのエディターでの IDE 自動補完、ホバー時のドキュメン
+ト表示、リアルタイム検証のための公式
+[JSON Schema](/ja/docs/compiler/schema/json) も付属しています。
+
+RenderCV は Pydantic を検証に使用し、強力な型チェックとフィールドパスを含む明確
+なエラーメッセージを提供します。また、IDE 統合のための JSON Schema も生成しま
+す。
+
+### レイアウトとレンダリング
+
+両ツールともコンテンツとデザインを分離しますが、レンダリングアーキテクチャは大き
+く異なります。
+
+#### エンジン
+
+YAMLResume は 4 つのレンダリングエンジンを提供します：
+
+- **[DOCX エンジン](/ja/docs/layouts/docx)**：簡単な編集と共有が可能な Microsoft
+  Word 文書
+- **[HTML エンジン](/ja/docs/layouts/html)**：SEO メタデータを持つレスポンシブで
+  Web 対応の履歴書
+- **[Markdown エンジン](/ja/docs/layouts/markdown)**：LLM、ATS システム、静的サ
+  イト向けのクリーンなテキスト
+- **[LaTeX エンジン](/ja/docs/layouts/latex)**：XeTeX によるプロフェッショナルな
+  タイポグラフィのピクセルパーフェクトな PDF
+
+単一の `yamlresume build` コマンドで、同じソースファイルから 4 つの形式すべてを
+生成できます。
+
+RenderCV は主要な組版エンジンとして [Typst](https://typst.app) を使用しま
+す。Typst は LaTeX に代わる現代的なツールで、より高速にコンパイルし、標準準拠の
+PDF を生成します。単一の `rendercv render` コマンドで PDF、Markdown、HTML、PNG、
+および中間 Typst ソース（`.typ`）を出力します。v2.8 以降、`rendercv-typst` パッ
+ケージと Font Awesome は Python wheel にバンドルされているため、PDF コンパイルは
+ランタイムダウンロードなしでオフラインで動作します。
+
+#### DOCX 出力
+
+出力形式の実践的な違いの一つは、Microsoft Word（DOCX）のサポートです。YAMLResume
+には、同じ YAML ソースから編集可能な `.docx` ファイルを生成する専用の
+[DOCX エンジン](/ja/docs/layouts/docx) が含まれており、Word 文書を期待する採用担
+当者や Hiring Manager と履歴書を共有する際、またはワードプロセッサで最後の編集を
+行う際に便利です。RenderCV は DOCX 出力を提供しません。そのパイプラインは Typst
+を中心に構築されており、PDF が主要な成果物で、Markdown、HTML、PNG が二次的な形式
+です。
+
+#### デザインカスタマイズ
+
+RenderCV は、YAMLResume よりはるかにきめ細かな視覚的制御を提供します：
+
+- **カラー**：すべてのテキスト要素（本文、名前、見出し、リンク、セクションタイト
+  ル、フッター）で完全な RGB 制御
+- **タイポグラフィ**：要素ごとのフォントファミリー、要素ごとのフォントサイズ、太
+  字/スモールキャップの切り替え、行間、テキストの配置
+- **ページ**：`a4`、`a5`、`us-letter`、`us-executive` を含む用紙サイズ
+- **ヘッダー**：写真の位置とサイズ、接続の区切り、ソーシャルネットワークアイコ
+  ン、電話番号の形式（`national`、`international`、`E164`）
+- **セクションタイトル**：8 つの異なるタイトルスタイル（線あり/なし、中央揃えな
+  ど）
+- **エントリ**：列幅、箇条書き文字、間隔、改ページ動作、自動的な期間計算（例："2
+  years 3 months"）
+- **テンプレート**：`NAME`、`COMPANY`、`DATE` などのプレースホルダーを持つ
+  Jinja2 テンプレートを使用して、各エントリタイプのレンダリング方法を上書き
+
+YAMLResume の LaTeX エンジン
+は、[ページカスタマイズ](/ja/docs/layouts/latex#page)（用紙サイズ、余白、ページ
+番号）と [タイポグラフィ制御](/ja/docs/layouts/latex#typography)（フォントファミ
+リー、フォントサイズ、行間）を提供しますが、要素ごとのカラーやきめ細かな間隔制御
+は提供しません。これは意図的な設計です：YAMLResume のテンプレートは視覚的な決定
+をカプセル化するため、ユーザーがそれらを行う必要がありません。
+
+#### セクションカスタマイズ
+
+YAMLResume では、基盤となるデータに触れることな
+く、[セクションエイリアス](/ja/docs/layouts/sections/aliases) と
+[セクションの並べ替え](/ja/docs/layouts/sections/reorder) により履歴書の構造を再
+構築できます：
+
+- **セクションエイリアス**：12 のエイリアス可能なセクションすべてのデフォルトの
+  セクションタイトルを上書き
+- **セクションの並べ替え**：シンプルな `order` リストでセクションの表示順序を変
+  更
+
+RenderCV のセクションモデルは根本的に異なります。セクションタイトルが任意の文字
+列であるため、「エイリアス」とは単に異なるタイトルを書くことです。並べ替え
+は、YAML 辞書内のキーを並べ替えることです。RenderCV はまた、個々のエントリタイプ
+のレンダリング方法を上書きする `design.templates` をサポートしており、これは
+YAMLResume のエイリアス/並べ替えシステムをはるかに超えています。
+
+### ロケール（i18n）
+
+これは、両ツール間の最大の違いの一つです。
+
+YAMLResume は、すぐに使用可能な 10 以上の言語
+（[English](/ja/docs/locale/english)、[Chinese](/ja/docs/locale/chinese)、[Spanish](/ja/docs/locale/spanish)、[French](/ja/docs/locale/french)、[Norwegian](/ja/docs/locale/norwegian)、[Dutch](/ja/docs/locale/dutch)、[Japanese](/ja/docs/locale/japanese)、[German](/ja/docs/locale/german)、[Indonesian](/ja/docs/locale/indonesian)、[Brazilian Portuguese](/ja/docs/locale/portuguese)
+など）をサポートしています。セクションヘッダー、国名、学位、スキルレベル、言語の
+流暢さレベル、慣用的な住所と日付の形式、ロケールに適した句読点、LaTeX babel 設定
+の組み込み翻訳が含まれます。
+
+例えば、YAMLResume は自動的に：
+
+- 住所の構成要素を中国語（国 → 地域 → 都市 → 住所）と英語（住所 → 都市 → 地域 →
+  国）で並べ替えます
+- CJK 言語で全角の句読点を使用します（カンマ `、`、コロン `：`）
+- フランス語で高い句読点の前にノーブレークスペースを追加します（`:` `!` `?`）
+- 日付を慣用的にフォーマットします："Jun 2018 – Present"（英語）、"2018年6月至
+  今"（中国語）、"2016年10月～2018年1月"（日本語）
+- 適切なハイフネーション、日付形式、文字処理のために LaTeX babel を設定します
+
+RenderCV は 22 の組み込みロケールを含み、月名、日付の省略形、いくつかの翻訳可能
+な文字列（`present`、`last_updated` など）を提供し、アラビア語、ヘブライ語、ペル
+シア語などの右から左（RTL）言語も含みます。また、すべてのフィールドを手動で埋め
+ることで完全にカスタムなロケールを作成したり、`locale.phrases`（例："DEGREE in
+AREA"）を介して言語固有のフレーズをカスタマイズしたりできます。しか
+し、**RenderCV は住所の自動並べ替え、言語固有の句読点ルールの適用、ロケール固有
+のタイポグラフィのための組版エンジン設定を行いません。RenderCV は基本要素を提供
+します；YAMLResume は完全なパッケージを提供します**。
+
+#### CJK と複雑なスクリプトのタイポグラフィ
+
+組版エンジンの選択は、中国語、日本語、韓国語（CJK）、およびその他の複雑なスクリ
+プトをそれぞれのツールがどれだけうまく処理できるかにも影響します。
+
+YAMLResume の LaTeX エンジンは、数十年にわたる CJK 特化ツールを活用できます：中
+国語用の [ctex](https://ctex.org)、日本語用の
+[luatexja](https://ctan.org/pkg/luatexja)、韓国語用の
+[kotex](https://ctan.org/pkg/kotex)、XeLaTeX 用の
+[xeCJK](https://ctan.org/pkg/xecjk) です。これらのパッケージは、フォントフォール
+バック、全角句読点の圧縮、CJK-Latin の間隔、縦書き、ルビ/ふりがな、ロケールを認
+識した改行をすぐに処理します。YAMLResume のロケール層は、サポートされている各言
+語に対して適切なパッケージとフォントを自動的に設定するため、中国語や日本語の履歴
+書を手動で Typst を調整することなく正しくレンダリングできます。
+
+RenderCV の Typst エンジンは現代的で高速ですが、CJK サポートはまだ追いついている
+最中です。コミュニティによって維持されている
+[clreq-gap for Typst](https://typst-doc-cn.github.io/clreq/) では、Typst v0.15.1
+時点で残っている中国語レイアウトの差異が文書化されています。これには、縦書きモー
+ドの欠如、CJK グリフの信頼性の低いデフォルトフォントフォールバック、コードブロッ
+クと数式での CJK フォールバックの誤り、CJK とラテン文字を混在させた際のアンダー
+ラインのずれ、ネイティブなルビ/ピンイン注釈の欠如、全角引用符の一貫性のない処理
+などが含まれます。これらの多くは、シンプルな横書きの履歴書ではエッジケースです
+が、出版物品質の CJK タイポグラフィが必要な場合には重要です。
+
+要するに：CJK の履歴書には、今日の時点で YAMLResume の LaTeX パスがより成熟し、
+実績のある選択肢です。RenderCV は単純な横書きの CJK コンテンツには対応し、急速に
+改善されていますが、高度な CJK 機能では LaTeX がまだリードしています。
+
+LaTeX と Typst を組版エンジンとして比較した際の違いの詳細については、この
+[記事](https://blog.ppresume.com/posts/on-typesetting-engines) を参照してくださ
+い。
+
+### 開発者体験（DX）
+
+両ツールとも、モダンな CLI 体験を提供します。
+
+YAMLResume は以下を提供します：
+
+- **`yamlresume new`**：公式テンプレートから新しい履歴書を作成
+- **`yamlresume build`**：履歴書を DOCX、HTML、Markdown、PDF に一括でビルド
+- **`yamlresume dev`**：保存するたびに履歴書をリビルドする
+  [ウォッチモード](/ja/blog/dev-mode)
+- **`yamlresume doctor`**：LaTeX 環境とフォント設定を診断
+- **`yamlresume validate`**：ビルドせずに履歴書をチェック
+- **`yamlresume languages list`**：サポートされているすべての言語を一覧表示
+- **`yamlresume templates list`**：各エンジンで利用可能なすべてのテンプレートを
+  一覧表示
+
+RenderCV は以下を提供します：
+
+- **`rendercv new`**：選択したテーマでサンプル CV を生成
+- **`rendercv render`**：YAML 入力から PDF、Markdown、HTML、PNG を生成
+- **`rendercv render --watch`**：編集中の自動リロード
+- **`rendercv render --output-folder`**：カスタム出力ディレクトリを指定
+- **`rendercv create-theme`**：編集可能なテンプレートでカスタムテーマの足場を作
+  成
+- **ドット記法の上書き**：ファイルを編集せずに CLI から特定の YAML フィールドを
+  変更
+
+RenderCV の `--watch` モードとドット記法の CLI 上書きは、迅速な反復作業に特に便
+利です。YAMLResume の `doctor` コマンドとマルチエンジンのビルドパイプラインは、
+トラブルシューティングとマルチフォーマット出力において独自の利点です。
+
+## エコシステムとコミュニティ
+
+### Docker
+
+YAMLResume は、Node.js、LaTeX、推奨フォントを含むすべての依存関係がプリインス
+トールされた
+[公式 Docker イメージ](https://hub.docker.com/r/yamlresume/yamlresume) を提供し
+ています：
+
+```bash
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+```
+
+RenderCV も、`linux/amd64` と `linux/arm64` の両方に対応した
+`ghcr.io/rendercv/rendercv` で
+[公式 Docker イメージ](https://github.com/rendercv/rendercv/pkgs/container/rendercv)
+を提供し、Python と RenderCV がプリインストールされています：
+
+```bash
+docker run --rm -v "$PWD":/work -u $(id -u):$(id -g) -e HOME=/tmp -w /work ghcr.io/rendercv/rendercv new "Your Name"
+```
+
+### Homebrew
+
+YAMLResume は、macOS および Linux 向けに
+[Homebrew](https://formulae.brew.sh/formula/yamlresume) で利用可能です：
+
+```bash
+brew install yamlresume
+```
+
+RenderCV には Homebrew の Formula がなく、`pip install "rendercv[full]"` を介し
+てインストールする必要があります。
+
+### GitHub Action
+
+YAMLResume は、CI/CD パイプライン向けに
+[公式 GitHub Action](https://github.com/yamlresume/action) を提供しています：
+
+```yaml
+- uses: yamlresume/action@v0.2.3
+  with:
+    resumes: |
+      resume-en.yml
+      resume-zh.yml
+      resume-fr.yml
+```
+
+RenderCV には公式の GitHub Action はありませんが、コミュニティのワークフローは存
+在します。
+
+### スタンドアロン実行ファイル
+
+RenderCV は、Linux（x86_64 および ARM64）、macOS（ARM64）、Windows（x86_64）向け
+のスタンドアロン実行ファイルを GitHub Releases で公開しており、Python をインス
+トールせずに RenderCV を実行できます。
+
+### Web インターフェース
+
+YAMLResume は、インタラクティブな Web ベースの
+[プレイグラウンド](/ja/playground) を提供しており、リアルタイムで履歴書を編集
+し、サポートされているすべての出力形式での即時プレビューを確認できます。プレイグ
+ラウンドは完全にブラウザ内で動作し、サーバーサイドのレンダリングはありません。
+
+RenderCV は [rendercv.com](https://rendercv.com) を運営しており、ブラウザ内で同
+じ Typst パイプラインを実行する Web アプリです。また、Claude
+Code、Cursor、Copilot、その他の AI コーディングエージェントで動作する公式の
+[AI エージェントスキル](https://docs.rendercv.com/user_guide/how_to/use_the_ai_agent_skill)（`npx skills add rendercv/rendercv-skill`）
+も提供しています。
+
+## まとめ
+
+**RenderCV** は、以下を求める場合に優れています：
+
+- 生の組版コードを編集せずに、深い視覚的カスタマイズ（カラー、フォント、間隔、テ
+  ンプレート）
+- タグ付き PDF で優れた ATS 互換性を持つ、モダンで高速な PDF エンジン（Typst）。
+  オフラインレンダリングのためにバンドルされています
+- 高度にカスタマイズされた CV 構造のための任意のセクションタイトルと柔軟なエント
+  リタイプ
+- 学術的および技術的コンテンツのための Typst の数式とコマンドサポート
+- 組み込みの RTL サポートと 22 のロケール
+- プロフィール写真、カスタムヘッダー接続、その他の柔軟なヘッダーオプション
+- 自然言語による履歴書編集のための AI エージェントスキル
+
+**YAMLResume** は、以下を求める場合に優れています：
+
+- 慣用的な日付形式、住所の順序、句読点ルール、12 の言語向けの LaTeX babel 設定を
+  含む、深い国際化
+- ctex、luatexja、kotex、xeCJK などの LaTeX パッケージによる、成熟した CJK と複
+  雑なスクリプトのタイポグラフィ
+- 単一のソースファイルからの複数のレンダリングエンジン
+  （DOCX、HTML、Markdown、LaTeX/PDF）
+- 編集可能な文書を必要とする採用担当者や Hiring Manager 向けのネイティブ
+  Microsoft Word（DOCX）出力
+- 履歴書、チーム、ツール間で一貫性を保証する、厳密に検証された標準化されたデータ
+  モデル
+- データベースでのクエリ、API からの消費、その他のツールとの交換が容易な、JSON
+  Resume 互換の固定セクションデータ
+- Docker、Homebrew、GitHub Action、インタラクティブな Web プレイグラウンドを含む
+  豊富な配布ツールのエコシステム
+- タイポグラフィとレイアウトのベストプラクティスが公式テンプレートに組み込まれ
+  た、バッテリー内蔵のアプローチ
+
+Typst の現代的な組版を LaTeX より好み、すべての視覚的ディテールをきめ細かく制御
+したい学者やエンジニアであれば、**RenderCV** を選びましょう。
+
+データの検証からプロフェッショナルな PDF 生成まで、複数の形式と言語にわたってす
+べてを処理し、ウォッチモード、Docker サポート、CI/CD 統合などのモダンな開発者
+ツールを備えた、独断的でバッテリー内蔵のソリューションが必要な場合
+は、**YAMLResume** を選びましょう。
