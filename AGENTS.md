@@ -10,6 +10,7 @@ This file contains guidelines for AI coding agents working in this repository.
 - **UI**: React 19 + Tailwind CSS 4
 - **Docs Framework**: Fumadocs (fumadocs-core, fumadocs-ui, fumadocs-mdx)
 - **Linting/Formatting**: Biome (not ESLint/Prettier)
+- **Testing**: Vitest + React Testing Library + jsdom
 
 ## Build, Lint, and Test Commands
 
@@ -24,7 +25,10 @@ pnpm build            # Production build
 pnpm check            # Lint and format with auto-fix
 pnpm check:ci         # CI mode (no auto-fix, exits with error)
 
-# Note: No test framework is currently configured
+# Unit Tests (Vitest + React Testing Library + jsdom)
+pnpm test:unit        # Run unit tests once
+pnpm test:unit:ui     # Run unit tests with the Vitest UI
+pnpm test:coverage    # Run unit tests with coverage report
 ```
 
 ## Project Structure
