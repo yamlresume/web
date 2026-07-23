@@ -53,17 +53,18 @@ export function ComparisonSection() {
   return (
     <Section title={t('sectionTitle')} className="max-w-4xl">
       <section
-        className="relative overflow-hidden border border-fd-border shadow-lg"
+        className="relative overflow-hidden border border-fd-border shadow-lg aspect-[5/7]"
         aria-label="Resume comparison slider"
       >
         <ReactCompareSlider
-          boundsPadding="0"
+          boundsPadding="0px"
+          className="w-full h-full"
           itemOne={
             <div className="w-full h-full relative group overflow-hidden">
               <ReactCompareSliderImage
                 src={htmlPdf.src}
                 alt="RxResume PDF"
-                style={{ objectFit: 'contain' }}
+                className="w-full h-full object-contain"
               />
               <Label side="left" color="gray">
                 Conventional
@@ -75,7 +76,7 @@ export function ComparisonSection() {
               <ReactCompareSliderImage
                 src={yamlresumePdf.src}
                 alt="YAMLResume PDF"
-                style={{ objectFit: 'contain' }}
+                className="w-full h-full object-contain"
               />
               <Label side="right" color="green">
                 YAMLResume
