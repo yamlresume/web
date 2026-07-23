@@ -21,7 +21,7 @@ export default function HomePage() {
     <main>
       <NewsChannel />
       <TypographyBackground />
-      <div className="space-y-36 items-center mt-20 mx-4">
+      <div className="fd-container mt-20 space-y-36">
         <HeroSection />
         <FeaturesSection />
         <OnboardingSection />

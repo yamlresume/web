@@ -21,7 +21,7 @@ export function BlogList({ posts }: BlogListProps) {
   const t = useTranslations('blog')
 
   return (
-    <main className="container mx-auto mt-16 min-h-[900px]">
+    <main className="fd-container mt-16 min-h-[900px]">
       <h1 className="text-4xl font-bold mb-12">{t('title')}</h1>
       <div
         className={clsx([

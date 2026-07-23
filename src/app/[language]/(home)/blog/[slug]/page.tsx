@@ -20,7 +20,7 @@ export default async function Page(props: {
   const Mdx = page.data.body
 
   return (
-    <div className="container mx-auto">
+    <div className="fd-container">
       <div className="mt-16">
         <h1 className="mb-2 text-3xl font-bold">{page.data.title}</h1>
         <p className="text-fd-muted-foreground">{page.data.description}</p>

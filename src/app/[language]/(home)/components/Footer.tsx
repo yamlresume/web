@@ -9,8 +9,8 @@ export function Footer() {
 
   return (
     <footer className="w-full py-12 border-t border-fd-foreground/10">
-      <div className="flex justify-center">
-        <div className="container mx-4 grow flex items-start justify-between">
+      <div className="fd-container">
+        <div className="flex items-start justify-between">
           <div className="text-fd-muted-foreground2">
             {t('copyright')}
             <Link href="https://ppresume.com" target="_blank">
