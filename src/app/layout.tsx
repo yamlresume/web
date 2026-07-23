@@ -1,7 +1,7 @@
 import './global.css'
 import { Analytics as VercelAnalytics } from '@vercel/analytics/next'
 import { defineI18nUI } from 'fumadocs-ui/i18n'
-import { RootProvider } from 'fumadocs-ui/provider'
+import { RootProvider } from 'fumadocs-ui/provider/next'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import { Analytics } from '@/components'
@@ -70,31 +70,29 @@ export const metadata: Metadata = {
 }
 
 const { provider } = defineI18nUI(i18nConfig, {
-  translations: {
-    en: {
-      displayName: 'English',
-    },
-    es: {
-      displayName: 'Español',
-    },
-    fr: {
-      displayName: 'Français',
-    },
-    id: {
-      displayName: 'Bahasa Indonesia',
-    },
-    pt: {
-      displayName: 'Português',
-    },
-    ja: {
-      displayName: '日本語',
-    },
-    'zh-cn': {
-      displayName: '简体中文',
-    },
-    'zh-tw': {
-      displayName: '繁體中文',
-    },
+  en: {
+    displayName: 'English',
+  },
+  es: {
+    displayName: 'Español',
+  },
+  fr: {
+    displayName: 'Français',
+  },
+  id: {
+    displayName: 'Bahasa Indonesia',
+  },
+  pt: {
+    displayName: 'Português',
+  },
+  ja: {
+    displayName: '日本語',
+  },
+  'zh-cn': {
+    displayName: '简体中文',
+  },
+  'zh-tw': {
+    displayName: '繁體中文',
   },
 })
 

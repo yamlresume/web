@@ -69,6 +69,7 @@ export default async function Page(props: {
       <DocsBody>
         <MDXContent
           components={getMDXComponents({
+            // @ts-expect-error Fumadocs 16 i18n source types differ per locale
             a: createRelativeLink(docs, page),
           })}
         />

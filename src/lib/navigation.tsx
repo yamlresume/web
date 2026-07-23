@@ -1,10 +1,5 @@
 import { DeveloperDropdown, Logo } from '@/components'
-import {
-  getLocalizedUrl,
-  getTranslations,
-  i18nConfig,
-  type Language,
-} from '@/i18n'
+import { getLocalizedUrl, getTranslations, type Language } from '@/i18n'
 
 // Shared navigation options function
 export function getNavigationOptions(currentLanguage: Language) {
@@ -59,6 +54,6 @@ export function getNavigationOptions(currentLanguage: Language) {
     ],
     githubUrl: 'https://github.com/yamlresume/yamlresume',
     // Enable language switcher
-    i18n: i18nConfig,
+    i18n: true,
   }
 }

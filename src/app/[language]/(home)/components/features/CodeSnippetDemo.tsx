@@ -89,6 +89,7 @@ function SnippetBody({ code }: SnippetBodyProps) {
         <code>
           {code.split('\n').map((line, i) => (
             <SnippetLine
+              // biome-ignore lint/suspicious/noArrayIndexKey: snippet lines are static demo content
               key={`${i}-${line.substring(0, 10)}`}
               line={line}
               index={i}

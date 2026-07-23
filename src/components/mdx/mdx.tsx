@@ -8,7 +8,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     ...defaultComponents,
     Mermaid,
-    img: (props) => <ImageZoom {...props} />,
+    img: (props) => <ImageZoom {...props} src={props.src as string} />,
     ...components,
   }
 }

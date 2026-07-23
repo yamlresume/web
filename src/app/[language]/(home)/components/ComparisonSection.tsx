@@ -57,7 +57,7 @@ export function ComparisonSection() {
         aria-label="Resume comparison slider"
       >
         <ReactCompareSlider
-          boundsPadding={0}
+          boundsPadding="0"
           itemOne={
             <div className="w-full h-full relative group overflow-hidden">
               <ReactCompareSliderImage
@@ -84,7 +84,7 @@ export function ComparisonSection() {
           }
           keyboardIncrement="5%"
           transition="0.25s cubic-bezier(.17,.67,.83,.67)"
-          position={50}
+          defaultPosition={50}
         />
       </section>
     </Section>

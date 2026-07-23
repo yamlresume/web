@@ -1,6 +1,6 @@
 import { defineI18n } from 'fumadocs-core/i18n'
 import { loader } from 'fumadocs-core/source'
-import { createMDXSource } from 'fumadocs-mdx'
+import { toFumadocsSource } from 'fumadocs-mdx/runtime/server'
 import {
   blog,
   blogEs,
@@ -18,7 +18,7 @@ import {
   docsPt,
   docsZhCN,
   docsZhTW,
-} from '@/.source'
+} from '@/.source/server'
 
 // Create i18n configurations for each locale
 const i18nEn = defineI18n({
@@ -72,49 +72,49 @@ const i18nId = defineI18n({
 // Create sources for each language
 export const blogSource = loader({
   baseUrl: '/blog',
-  source: createMDXSource(blog),
+  source: toFumadocsSource(blog, []),
   i18n: i18nEn,
 })
 
 export const blogSourceFr = loader({
   baseUrl: '/blog',
-  source: createMDXSource(blogFr),
+  source: toFumadocsSource(blogFr, []),
   i18n: i18nFr,
 })
 
 export const blogSourceEs = loader({
   baseUrl: '/blog',
-  source: createMDXSource(blogEs),
+  source: toFumadocsSource(blogEs, []),
   i18n: i18nEs,
 })
 
 export const blogSourceJa = loader({
   baseUrl: '/blog',
-  source: createMDXSource(blogJa),
+  source: toFumadocsSource(blogJa, []),
   i18n: i18nJa,
 })
 
 export const blogSourceZhCN = loader({
   baseUrl: '/blog',
-  source: createMDXSource(blogZhCN),
+  source: toFumadocsSource(blogZhCN, []),
   i18n: i18nZhCN,
 })
 
 export const blogSourceZhTW = loader({
   baseUrl: '/blog',
-  source: createMDXSource(blogZhTW),
+  source: toFumadocsSource(blogZhTW, []),
   i18n: i18nZhTW,
 })
 
 export const blogSourcePt = loader({
   baseUrl: '/blog',
-  source: createMDXSource(blogPt),
+  source: toFumadocsSource(blogPt, []),
   i18n: i18nPt,
 })
 
 export const blogSourceId = loader({
   baseUrl: '/blog',
-  source: createMDXSource(blogId),
+  source: toFumadocsSource(blogId, []),
   i18n: i18nId,
 })
 

@@ -157,6 +157,7 @@ function ShellCommandHighlighter({ command }: { command: string }) {
         }
 
         return (
+          // biome-ignore lint/suspicious/noArrayIndexKey: command tokens are static and order-stable
           <span key={`${index}-${part}`} className={colorClass}>
             {part}
             {index < matches.length - 1 ? ' ' : ''}

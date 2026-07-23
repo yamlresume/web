@@ -40,7 +40,7 @@ export default async function Page(props: {
           <div>
             <p className="mb-1 text-sm text-fd-muted-foreground">At</p>
             <p className="font-medium">
-              {new Date(page.data.date ?? page.file.name).toDateString()}
+              {new Date(page.data.date).toDateString()}
             </p>
           </div>
         </div>

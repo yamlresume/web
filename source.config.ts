@@ -4,6 +4,7 @@ import {
   defineDocs,
   frontmatterSchema,
 } from 'fumadocs-mdx/config'
+import lastModified from 'fumadocs-mdx/plugins/last-modified'
 import { z } from 'zod'
 
 // Define docs for each locale
@@ -83,7 +84,7 @@ export default defineConfig({
   mdxOptions: {
     // MDX options
   },
-  lastModifiedTime: 'git',
+  plugins: [lastModified()],
 })
 
 // Define blog collections for each locale
