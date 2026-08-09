@@ -1,0 +1,172 @@
+---
+title: "YAMLResume v0.14: Pembuatan Resume Berbasis AI"
+description:
+  "YAMLResume v0.14 memperkenalkan pembuatan resume berbasis AI dengan perintah
+  `yamlresume ai generate` yang baru, paket `@yamlresume/ai`, dan beberapa
+  penyedia LLM."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-04
+---
+
+Kami dengan senang mengumumkan [YAMLResume
+v0.14](https://github.com/yamlresume/yamlresume/releases/tag/v0.14.0). Rilis ini
+membawa pembuatan resume berbasis AI ke YAMLResume dengan perintah `yamlresume ai
+generate` yang baru, paket `@yamlresume/ai` yang sepenuhnya baru, dukungan untuk
+beberapa penyedia LLM, dan berbagai perbaikan bug serta peningkatan seperti biasa.
+
+## Paket Baru: @yamlresume/ai
+
+Inti dari rilis ini adalah paket baru
+[`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai). Paket ini
+menyediakan kemampuan pembuatan berbasis AI untuk YAMLResume dan dibangun di atas
+[Vercel AI SDK](https://sdk.vercel.ai/).
+
+Paket ini mengekspos API pemrograman yang bersih untuk menghasilkan resume:
+
+```ts
+import { generateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+
+const yaml = await generateResume({
+  position: "Software Engineer",
+  language: "en",
+  model,
+});
+```
+
+Output yang dihasilkan diuraikan dan divalidasi terhadap [skema YAMLResume](https://yamlresume.dev/docs/compiler/schema) dari
+`@yamlresume/core`. Jika validasi gagal, permintaan akan dicoba ulang secara
+otomatis (default: hingga 2 kali percobaan ulang) dengan kesalahan sebelumnya
+diberikan kembali ke model, sehingga Anda mendapatkan YAML resume yang valid,
+bukan draf yang rusak.
+
+## Perintah Baru: yamlresume ai generate
+
+Fitur utama adalah perintah baru `yamlresume ai generate`, yang mengubah posisi
+dan bahasa menjadi file resume yang lengkap dan realistis.
+
+### Penyedia yang didukung
+
+YAMLResume mendukung beberapa penyedia LLM melalui endpoint yang kompatibel
+dengan OpenAI. Penyedia disimpulkan dari variabel lingkungan:
+
+| Provider                                       | Required env variable | Default model       | Optional overrides                              |
+| ---------------------------------------------- | --------------------- | ------------------- | ----------------------------------------------- |
+| [DeepSeek](https://www.deepseek.com/)          | `DEEPSEEK_API_KEY`    | `deepseek-v4-flash` | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Kimi](https://www.moonshot.cn/) (Moonshot AI) | `MOONSHOT_API_KEY`    | `kimi-k2.6`         | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Ollama](https://ollama.com/) (local)          | `OLLAMA_HOST`         | `llama3.2`          | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [OpenAI](https://openai.com/)                  | `OPENAI_API_KEY`      | `gpt-5`             | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+
+Penyedia dideteksi sesuai urutan di atas. Ketika tidak ada penyedia yang
+deteksi, Kimi digunakan sebagai default sehingga kunci API yang hilang
+menghasilkan kesalahan konfigurasi yang jelas.
+
+### Hasilkan resume pertamamu
+
+Atur kunci API penyedia dan jalankan:
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai generate --position "Software Engineer" --language en resume.yml
+```
+
+Perintah ini akan menghasilkan file resume lengkap di `resume.yml` dengan bagian
+seperti basics, location, profiles, education, work, skills, languages, dan
+bagian opsional yang relevan yang disesuaikan dengan posisi tersebut.
+
+### Menimpa model dan URL dasar
+
+Anda dapat menimpa model dan URL dasar baik melalui variabel lingkungan maupun
+flag CLI. Flag CLI diutamakan daripada variabel lingkungan.
+
+```console
+$ yamlresume ai generate \
+    --position "Registered Nurse" \
+    --language en \
+    --model gpt-5 \
+    --base-url https://custom.openai.endpoint/v1 \
+    resume.yml
+```
+
+Alternatifnya:
+
+```console
+$ export YAMLRESUME_AI_MODEL=gpt-5
+$ export YAMLRESUME_AI_BASE_URL=https://custom.openai.endpoint/v1
+$ yamlresume ai generate --position "Registered Nurse" --language en resume.yml
+```
+
+Jalankan `yamlresume ai generate --help` untuk melihat semua opsi dan variabel
+lingkungan yang tersedia.
+
+## Cara kerjanya
+
+`yamlresume ai generate` membangun prompt detail dari aturan [skema YAMLResume](https://yamlresume.dev/docs/compiler/schema)
+dan contoh resume, lalu meminta LLM untuk menghasilkan resume lengkap. Prompt
+tersebut menginstruksikan model untuk:
+
+- Hanya mengeluarkan YAML yang valid, tanpa pembatas markdown.
+- Menjaga komentar YAML sehingga file yang dihasilkan tetap ramah untuk
+  validasi editor/IDE.
+- Mengikuti semua batasan skema seperti panjang bidang, format tanggal, nilai
+  enum, dan URL yang valid.
+- Menemukan konten orisinal dan realistis yang disesuaikan dengan posisi dan
+  lokal target, tanpa menyalin detail pribadi dari contoh resume.
+
+Teks yang dihasilkan kemudian diuraikan dan divalidasi. Jika validasi gagal,
+model diminta untuk memperbaiki kesalahan dan mencoba lagi, hingga batas
+percobaan ulang yang dikonfigurasi.
+
+## Perbaikan Bug dan Peningkatan
+
+### Rilis patch sejak v0.13.0
+
+Antara v0.13.0 dan v0.14.0 kami merilis dua rilis patch dengan beberapa
+peningkatan:
+
+**v0.13.2**
+
+- Menambahkan [mesin DOCX](/id/docs/layouts/docx) ke layout default yang
+  dihasilkan oleh `yamlresume new`
+- Menambahkan `Discord` ke opsi jejaring sosial yang didukung
+- Memperpanjang panjang maksimum deskripsi proyek dari 128 menjadi 1024 karakter
+- Menambahkan atribut `id` ke elemen bagian HTML untuk navigasi jangkar
+- Membuat `education.startDate` menjadi opsional
+
+**v0.13.1**
+
+- Memperbaiki tinggi toolbar playground dan perilaku pengguliran konten DOCX
+- Membisukan peringatan `localStorage` yang berisik di konsol browser
+
+### Perbaikan v0.14.0
+
+### Tata letak keterampilan template Calm HTML
+
+- Keterampilan dalam template Calm HTML sekarang ditumpuk secara vertikal saat
+  menggunakan kata kunci, meningkatkan keterbacaan di viewport sempit. Kredit
+  untuk [couimet](https://github.com/couimet) atas
+  [PR](https://github.com/yamlresume/yamlresume/pull/248)-nya.
+
+## Tingkatkan Hari Ini
+
+Dapatkan versi terbaru:
+
+```console
+$ npm install -g yamlresume@latest
+# atau
+$ brew upgrade yamlresume
+```
+
+Kemudian hasilkan resume AI pertamamu:
+
+```console
+$ yamlresume ai generate --position "Software Engineer" --language en resume.yml
+```
+
+## Kredit
+
+Seperti biasa, kami menyambut umpan balik dan kontribusi Anda di
+[GitHub](https://github.com/yamlresume/yamlresume). Selamat membangun!

@@ -1,0 +1,155 @@
+---
+title: "YAMLResume v0.14：AI 驅動的履歷生成"
+description:
+  "YAMLResume v0.14 引入了 AI 驅動的履歷生成功能，透過全新的 `yamlresume ai generate`
+  指令、`@yamlresume/ai` 套件以及多個 LLM 提供者來實現。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-04
+---
+
+我們很高興地宣佈 [YAMLResume
+v0.14](https://github.com/yamlresume/yamlresume/releases/tag/v0.14.0) 正式發布。
+此版本為 YAMLResume 帶來了 AI 驅動的履歷生成功能，包含全新的 `yamlresume ai
+generate` 指令、`@yamlresume/ai` 套件、對多個 LLM 提供者的支援，以及慣例的錯誤修復和
+改進。
+
+## 新套件：@yamlresume/ai
+
+此版本的核心是全新的
+[`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai) 套件。它為
+YAMLResume 提供 AI 驅動的生成能力，並建構在 [Vercel AI SDK](https://sdk.vercel.ai/)
+之上。
+
+此套件提供了一個簡潔的程式化 API 來生成履歷：
+
+```ts
+import { generateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+
+const yaml = await generateResume({
+  position: "Software Engineer",
+  language: "en",
+  model,
+});
+```
+
+生成的輸出會根據 `@yamlresume/core` 的 [YAMLResume schema](https://yamlresume.dev/docs/compiler/schema) 進行解析與驗證。如果驗證失敗，
+系統會自動重試（預設最多 2 次），並將先前的錯誤回饋給模型，因此你得到的是有效的履歷 YAML，
+而不是破碎的草稿。
+
+## 新指令：yamlresume ai generate
+
+此版本的頭號功能是全新的 `yamlresume ai generate` 指令，它能將職位和語言轉換為一份完整、
+真實的履歷檔案。
+
+### 支援的提供者
+
+YAMLResume 透過 OpenAI 相容端點支援多個 LLM 提供者。提供者會從環境變數中自動推斷：
+
+| Provider                                       | Required env variable | Default model       | Optional overrides                              |
+| ---------------------------------------------- | --------------------- | ------------------- | ----------------------------------------------- |
+| [DeepSeek](https://www.deepseek.com/)          | `DEEPSEEK_API_KEY`    | `deepseek-v4-flash` | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Kimi](https://www.moonshot.cn/) (Moonshot AI) | `MOONSHOT_API_KEY`    | `kimi-k2.6`         | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Ollama](https://ollama.com/) (local)          | `OLLAMA_HOST`         | `llama3.2`          | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [OpenAI](https://openai.com/)                  | `OPENAI_API_KEY`      | `gpt-5`             | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+
+提供者會依照上表順序進行偵測。當未偵測到任何提供者時，會使用 Kimi 作為預設值，以便在缺少 API
+key 時產生明確的設定錯誤訊息。
+
+### 生成你的第一份履歷
+
+設定提供者 API key 後，執行：
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai generate --position "Software Engineer" --language en resume.yml
+```
+
+此指令會在 `resume.yml` 生成一份完整的履歷檔案，包含 basics、location、profiles、
+education、work、skills、languages 等區段，以及根據職位量身打造的相關可選區段。
+
+### 覆寫模型與基礎 URL
+
+你可以透過環境變數或 CLI 旗標來覆寫模型和基礎 URL。CLI 旗標的優先順序高於環境變數。
+
+```console
+$ yamlresume ai generate \
+    --position "Registered Nurse" \
+    --language en \
+    --model gpt-5 \
+    --base-url https://custom.openai.endpoint/v1 \
+    resume.yml
+```
+
+或者：
+
+```console
+$ export YAMLRESUME_AI_MODEL=gpt-5
+$ export YAMLRESUME_AI_BASE_URL=https://custom.openai.endpoint/v1
+$ yamlresume ai generate --position "Registered Nurse" --language en resume.yml
+```
+
+執行 `yamlresume ai generate --help` 以查看所有可用的選項和環境變數。
+
+## 運作方式
+
+`yamlresume ai generate` 會從 [YAMLResume schema](https://yamlresume.dev/docs/compiler/schema) 規則和一份範例履歷建構詳細的 prompt，
+然後要求 LLM 產出一份完整履歷。此 prompt 會指示模型：
+
+- 只輸出有效的 YAML，不要加上 markdown 圍欄。
+- 保留 YAML 註解，讓生成的檔案對編輯器/IDE 驗證更友善。
+- 遵守所有 schema 限制，例如欄位長度、日期格式、列舉值和有效 URL。
+- 發明原創且真實的內容，並根據目標職位與地區進行調整，但不複製範例履歷的個人資訊。
+
+生成的文字接著會被解析並驗證。如果驗證失敗，模型會被要求修正錯誤並重試，最多到設定的重試上限。
+
+## 錯誤修復與改進
+
+### 自 v0.13.0 以來的修補版本
+
+在 v0.13.0 與 v0.14.0 之間，我們發布了兩個修補版本，包含多項改進：
+
+**v0.13.2**
+
+- 將 [DOCX 引擎](/zh-tw/docs/layouts/docx) 加入 `yamlresume new` 預設生成的版面配置中
+- 將 `Discord` 加入支援的社群網路選項
+- 將專案描述的最大長度從 128 個字元延長至 1024 個字元
+- 為 HTML 區段元素新增 `id` 屬性以支援錨點導覽
+- 將 `education.startDate` 設為選填
+
+**v0.13.1**
+
+- 修復 playground 工具列高度與 DOCX 內容捲動行為
+- 關閉瀏覽器控制台中惱人的 `localStorage` 警告
+
+### v0.14.0 修復
+
+### HTML Calm 模板技能版面
+
+- HTML Calm 模板中的技能在使用關鍵詞時現在會垂直堆疊，以改善窄視窗下的可讀性。感謝
+  [couimet](https://github.com/couimet) 的
+  [PR](https://github.com/yamlresume/yamlresume/pull/248)。
+
+## 立即升級
+
+取得最新版本：
+
+```console
+$ npm install -g yamlresume@latest
+# 或
+$ brew upgrade yamlresume
+```
+
+然後生成你的第一份 AI 履歷：
+
+```console
+$ yamlresume ai generate --position "Software Engineer" --language en resume.yml
+```
+
+## 致謝
+
+一如既往，我們歡迎你在 [GitHub](https://github.com/yamlresume/yamlresume) 上
+提供回饋和貢獻。祝建構愉快！

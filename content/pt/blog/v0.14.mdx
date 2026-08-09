@@ -1,0 +1,173 @@
+---
+title: "YAMLResume v0.14: Geração de Currículos com IA"
+description:
+  "YAMLResume v0.14 introduz a geração de currículos com IA através do novo comando
+  `yamlresume ai generate`, do pacote `@yamlresume/ai` e de múltiplos provedores
+  de LLM."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-04
+---
+
+Temos o prazer de anunciar [YAMLResume
+v0.14](https://github.com/yamlresume/yamlresume/releases/tag/v0.14.0). Esta
+versão traz a geração de currículos com IA para o YAMLResume com o novo comando
+`yamlresume ai generate`, um pacote `@yamlresume/ai` completamente novo, suporte
+para múltiplos provedores de LLM, e as habituais correções de bugs e melhorias.
+
+## Novo Pacote: @yamlresume/ai
+
+No centro desta versão está o novo pacote
+[`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai). Ele fornece
+capacidades de geração com IA para o YAMLResume e é construído sobre o [Vercel
+AI SDK](https://sdk.vercel.ai/).
+
+O pacote expõe uma API programática limpa para gerar currículos:
+
+```ts
+import { generateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+
+const yaml = await generateResume({
+  position: "Software Engineer",
+  language: "en",
+  model,
+});
+```
+
+A saída gerada é analisada e validada contra o [schema YAMLResume](https://yamlresume.dev/docs/compiler/schema) do
+`@yamlresume/core`. Se a validação falhar, o pedido é repetido automaticamente
+(padrão: até 2 tentativas) com o erro anterior fornecido ao modelo, para que
+obtenhas um YAML de currículo válido em vez de um rascunho partido.
+
+## Novo Comando: yamlresume ai generate
+
+A funcionalidade principal é o novo comando `yamlresume ai generate`, que
+transforma uma posição e idioma num ficheiro de currículo completo e realista.
+
+### Provedores suportados
+
+O YAMLResume suporta múltiplos provedores de LLM através de endpoints
+compatíveis com OpenAI. O provedor é inferido a partir de variáveis de ambiente:
+
+| Provider                                       | Required env variable | Default model       | Optional overrides                              |
+| ---------------------------------------------- | --------------------- | ------------------- | ----------------------------------------------- |
+| [DeepSeek](https://www.deepseek.com/)          | `DEEPSEEK_API_KEY`    | `deepseek-v4-flash` | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Kimi](https://www.moonshot.cn/) (Moonshot AI) | `MOONSHOT_API_KEY`    | `kimi-k2.6`         | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Ollama](https://ollama.com/) (local)          | `OLLAMA_HOST`         | `llama3.2`          | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [OpenAI](https://openai.com/)                  | `OPENAI_API_KEY`      | `gpt-5`             | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+
+O provedor é detetado pela ordem apresentada acima. Quando nenhum provedor é
+detetado, o Kimi é usado como padrão para que uma chave de API em falta produza
+um erro de configuração claro.
+
+### Gera o teu primeiro currículo
+
+Define uma chave de API do provedor e executa:
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai generate --position "Software Engineer" --language en resume.yml
+```
+
+O comando irá gerar um ficheiro de currículo completo em `resume.yml` com
+secções como basics, location, profiles, education, work, skills, languages, e
+secções opcionais relevantes adaptadas à posição.
+
+### Substituir modelo e URL base
+
+Podes substituir o modelo e a URL base quer através de variáveis de ambiente
+quer de flags CLI. As flags CLI têm precedência sobre as variáveis de ambiente.
+
+```console
+$ yamlresume ai generate \
+    --position "Registered Nurse" \
+    --language en \
+    --model gpt-5 \
+    --base-url https://custom.openai.endpoint/v1 \
+    resume.yml
+```
+
+Alternativamente:
+
+```console
+$ export YAMLRESUME_AI_MODEL=gpt-5
+$ export YAMLRESUME_AI_BASE_URL=https://custom.openai.endpoint/v1
+$ yamlresume ai generate --position "Registered Nurse" --language en resume.yml
+```
+
+Executa `yamlresume ai generate --help` para ver todas as opções e variáveis de
+ambiente disponíveis.
+
+## Como funciona
+
+O `yamlresume ai generate` constrói um prompt detalhado a partir das regras do
+[schema YAMLResume](https://yamlresume.dev/docs/compiler/schema) e de um currículo de exemplo, depois pede ao LLM para produzir
+um currículo completo. O prompt instrui o modelo a:
+
+- Produzir apenas YAML válido, sem fences de markdown.
+- Manter comentários YAML para que o ficheiro gerado permaneça amigável para
+  validação em editores/IDEs.
+- Seguir todas as restrições do schema, como comprimentos de campos, formatos de
+  datas, valores de enumeração e URLs válidos.
+- Inventar conteúdo original e realista adaptado à posição e localização alvo,
+  sem copiar os dados pessoais do currículo de exemplo.
+
+O texto gerado é depois analisado e validado. Se a validação falhar, o modelo é
+pedido para corrigir os erros e tentar novamente, até ao limite de tentativas
+configurado.
+
+## Correções de Bugs e Melhorias
+
+### Lançamentos de patch desde v0.13.0
+
+Entre v0.13.0 e v0.14.0 lançámos duas versões de patch com várias melhorias:
+
+**v0.13.2**
+
+- Adicionado o [motor DOCX](/pt/docs/layouts/docx) aos layouts predefinidos
+  gerados por `yamlresume new`
+- Adicionado `Discord` às opções de redes sociais suportadas
+- Estendido o comprimento máximo das descrições de projetos de 128 para 1024
+  caracteres
+- Adicionados atributos `id` aos elementos de secção HTML para navegação por
+  âncora
+- Tornado `education.startDate` opcional
+
+**v0.13.1**
+
+- Corrigida a altura da barra de ferramentas do playground e o comportamento de
+  scroll do conteúdo DOCX
+- Silenciados avisos ruidosos do `localStorage` na consola do navegador
+
+### Correções do v0.14.0
+
+### Layout de skills do template Calm HTML
+
+- As skills no template Calm HTML agora empilham-se verticalmente quando usam
+  keywords, melhorando a legibilidade em viewports estreitas. Crédito a
+  [couimet](https://github.com/couimet) pelo seu
+  [PR](https://github.com/yamlresume/yamlresume/pull/248).
+
+## Atualiza Hoje
+
+Obtém a versão mais recente:
+
+```console
+$ npm install -g yamlresume@latest
+# ou
+$ brew upgrade yamlresume
+```
+
+Depois gera o teu primeiro currículo com IA:
+
+```console
+$ yamlresume ai generate --position "Software Engineer" --language en resume.yml
+```
+
+## Crédito
+
+Como sempre, agradecemos os teus comentários e contribuições em
+[GitHub](https://github.com/yamlresume/yamlresume). Boa construção!

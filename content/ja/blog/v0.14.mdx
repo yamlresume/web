@@ -1,0 +1,163 @@
+---
+title: "YAMLResume v0.14: AIによる履歴書生成"
+description:
+  "YAMLResume v0.14では、新しい `yamlresume ai generate` コマンド、`@yamlresume/ai`
+  パッケージ、および複数のLLMプロバイダーを通じて、AI駆動の履歴書生成機能を導入します。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-04
+---
+
+[YAMLResume
+v0.14](https://github.com/yamlresume/yamlresume/releases/tag/v0.14.0)のリリースを
+お知らせいたします。このバージョンでは、新しい `yamlresume ai generate` コマンド、
+まったく新しい `@yamlresume/ai` パッケージ、複数のLLMプロバイダーへの対応により、
+YAMLResumeにAI駆動の履歴書生成功能が加わり、さまざまなバグ修正と改善も含まれています。
+
+## 新パッケージ: @yamlresume/ai
+
+このリリースの中心となるのは、新しい
+[`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai) パッケージです。
+YAMLResumeにAI駆動の生成機能を提供し、[Vercel AI SDK](https://sdk.vercel.ai/)の上に
+構築されています。
+
+このパッケージは、履歴書を生成するためのクリーンなプログラマティックAPIを公開しています：
+
+```ts
+import { generateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+
+const yaml = await generateResume({
+  position: "Software Engineer",
+  language: "en",
+  model,
+});
+```
+
+生成された出力は、`@yamlresume/core` の[YAMLResumeスキーマ](https://yamlresume.dev/docs/compiler/schema)に対して解析および検証されます。
+検証に失敗した場合、前回のエラーをモデルにフィードバックし、自動的に再試行（デフォルト：
+最大2回）されるため、壊れた下書きではなく、有効な履歴書YAMLが得られます。
+
+## 新コマンド: yamlresume ai generate
+
+目玉機能は、新しい `yamlresume ai generate` コマンドです。職位と言語を入力するだけで、
+完全で現実的な履歴書ファイルを生成します。
+
+### サポートされるプロバイダー
+
+YAMLResumeは、OpenAI互換エンドポイントを介して複数のLLMプロバイダーをサポートしています。
+プロバイダーは環境変数から推論されます：
+
+| Provider                                       | Required env variable | Default model       | Optional overrides                              |
+| ---------------------------------------------- | --------------------- | ------------------- | ----------------------------------------------- |
+| [DeepSeek](https://www.deepseek.com/)          | `DEEPSEEK_API_KEY`    | `deepseek-v4-flash` | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Kimi](https://www.moonshot.cn/) (Moonshot AI) | `MOONSHOT_API_KEY`    | `kimi-k2.6`         | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Ollama](https://ollama.com/) (local)          | `OLLAMA_HOST`         | `llama3.2`          | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [OpenAI](https://openai.com/)                  | `OPENAI_API_KEY`      | `gpt-5`             | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+
+プロバイダーは上記の順序で検出されます。プロバイダーが検出されない場合、APIキーが欠落して
+いる際に明確な設定エラーが出力されるよう、デフォルトとしてKimiが使用されます。
+
+### 最初の履歴書を生成する
+
+プロバイダーのAPIキーを設定し、実行してください：
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai generate --position "Software Engineer" --language en resume.yml
+```
+
+このコマンドは、`resume.yml` に basics、location、profiles、education、work、skills、
+languages などのセクションと、職位に合わせた関連するオプションセクションを含む完全な履歴書
+ファイルを生成します。
+
+### モデルとベースURLの上書き
+
+モデルとベースURLは、環境変数またはCLIフラグのいずれかで上書きできます。CLIフラグは環境変数
+よりも優先されます。
+
+```console
+$ yamlresume ai generate \
+    --position "Registered Nurse" \
+    --language en \
+    --model gpt-5 \
+    --base-url https://custom.openai.endpoint/v1 \
+    resume.yml
+```
+
+または：
+
+```console
+$ export YAMLRESUME_AI_MODEL=gpt-5
+$ export YAMLRESUME_AI_BASE_URL=https://custom.openai.endpoint/v1
+$ yamlresume ai generate --position "Registered Nurse" --language en resume.yml
+```
+
+利用可能なすべてのオプションと環境変数を確認するには、`yamlresume ai generate --help` を
+実行してください。
+
+## 仕組み
+
+`yamlresume ai generate` は、[YAMLResumeスキーマ](https://yamlresume.dev/docs/compiler/schema)のルールとサンプル履歴書から詳細な
+プロンプトを構築し、LLMに完全な履歴書を生成するよう要求します。プロンプトはモデルに対して、
+次のように指示します：
+
+- markdownのフェンスなしで、有効なYAMLのみを出力すること。
+- YAMLコメントを保持し、生成されたファイルがエディタ/IDEの検証に優しいものにすること。
+- フィールド長、日付形式、列挙値、有効なURLなど、すべてのスキーマ制約に従うこと。
+- ターゲットの職位とロケールに合わせた、オリジナルで現実的なコンテンツを作成すること。ただし、
+  サンプル履歴書の個人情報をコピーしないこと。
+
+生成されたテキストはその後解析および検証されます。検証に失敗した場合、モデルはエラーを修正し、
+設定された再試行上限まで再試行するよう求められます。
+
+## バグ修正と改善
+
+### v0.13.0以降のパッチリリース
+
+v0.13.0からv0.14.0の間に、複数の改善を含む2つのパッチリリースを出荷しました：
+
+**v0.13.2**
+
+- `yamlresume new` が生成するデフォルトレイアウトに [DOCXエンジン](/ja/docs/layouts/docx) を追加
+- サポートされるソーシャルネットワークのオプションに `Discord` を追加
+- プロジェクト説明の最大長を128文字から1024文字に拡張
+- アンカーナビゲーション用にHTMLセクション要素に `id` 属性を追加
+- `education.startDate` をオプションに変更
+
+**v0.13.1**
+
+- Playgroundツールバーの高さとDOCXコンテンツのスクロール動作を修正
+- ブラウザコンソールでの煩わしい `localStorage` 警告を抑制
+
+### v0.14.0の修正
+
+### HTML Calmテンプレートのスキルレイアウト
+
+- HTML Calmテンプレートのスキルは、キーワードを使用する際に垂直にスタックされるようになり、
+  狭いビューポートでの可読性が向上しました。貢献者は
+  [couimet](https://github.com/couimet) 氏の
+  [PR](https://github.com/yamlresume/yamlresume/pull/248) です。
+
+## 今すぐアップグレード
+
+最新バージョンを取得：
+
+```console
+$ npm install -g yamlresume@latest
+# または
+$ brew upgrade yamlresume
+```
+
+次に、最初のAI履歴書を生成します：
+
+```console
+$ yamlresume ai generate --position "Software Engineer" --language en resume.yml
+```
+
+## クレジット
+
+いつものように、[GitHub](https://github.com/yamlresume/yamlresume)でのフィードバックと
+貢献をお待ちしています。Happy building!
