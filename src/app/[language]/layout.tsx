@@ -1,34 +1,8 @@
-import { defineI18nUI } from 'fumadocs-ui/i18n'
 import { RootProvider } from 'fumadocs-ui/provider/next'
 import type { ReactNode } from 'react'
-import { defaultLanguage, i18nConfig } from '@/i18n'
-
-const { provider } = defineI18nUI(i18nConfig, {
-  en: {
-    displayName: 'English',
-  },
-  es: {
-    displayName: 'Español',
-  },
-  fr: {
-    displayName: 'Français',
-  },
-  id: {
-    displayName: 'Bahasa Indonesia',
-  },
-  pt: {
-    displayName: 'Português',
-  },
-  ja: {
-    displayName: '日本語',
-  },
-  'zh-cn': {
-    displayName: '简体中文',
-  },
-  'zh-tw': {
-    displayName: '繁體中文',
-  },
-})
+import { HtmlLang } from '@/components'
+import { defaultLanguage } from '@/i18n'
+import { provider } from '@/i18n/ui'
 
 export default async function LanguageLayout({
   children,
@@ -41,10 +15,9 @@ export default async function LanguageLayout({
   const currentLanguage = language || defaultLanguage
 
   return (
-    <html lang={currentLanguage} suppressHydrationWarning>
-      <body className="flex flex-col min-h-screen">
-        <RootProvider i18n={provider(currentLanguage)}>{children}</RootProvider>
-      </body>
-    </html>
+    <RootProvider i18n={provider(currentLanguage)}>
+      <HtmlLang language={currentLanguage} />
+      {children}
+    </RootProvider>
   )
 }

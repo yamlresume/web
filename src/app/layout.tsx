@@ -1,12 +1,12 @@
 import './global.css'
 import { Analytics as VercelAnalytics } from '@vercel/analytics/next'
-import { defineI18nUI } from 'fumadocs-ui/i18n'
 import { RootProvider } from 'fumadocs-ui/provider/next'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import { Analytics } from '@/components'
 import { siteConfig } from '@/config/site'
-import { i18nConfig, languages } from '@/i18n/config'
+import { languages } from '@/i18n/config'
+import { provider } from '@/i18n/ui'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -69,40 +69,13 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
 }
 
-const { provider } = defineI18nUI(i18nConfig, {
-  en: {
-    displayName: 'English',
-  },
-  es: {
-    displayName: 'Español',
-  },
-  fr: {
-    displayName: 'Français',
-  },
-  id: {
-    displayName: 'Bahasa Indonesia',
-  },
-  pt: {
-    displayName: 'Português',
-  },
-  ja: {
-    displayName: '日本語',
-  },
-  'zh-cn': {
-    displayName: '简体中文',
-  },
-  'zh-tw': {
-    displayName: '繁體中文',
-  },
-})
-
 export function generateStaticParams() {
   return languages.map((language) => ({ language }))
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    // biome-ignore lint/a11y/useHtmlLang: lang is set dynamically in [language]/layout.tsx
+    // biome-ignore lint/a11y/useHtmlLang: per-locale lang is updated client-side by HtmlLang
     <html suppressHydrationWarning>
       <head />
       <body className="flex flex-col min-h-screen">
