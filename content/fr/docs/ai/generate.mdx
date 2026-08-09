@@ -1,0 +1,111 @@
+---
+title: Générer
+---
+
+La commande `yamlresume ai generate` génère un fichier CV complet et réaliste
+à partir d'un poste et d'une langue cible.
+
+```console
+$ yamlresume ai generate --help
+Usage: yamlresume ai generate [options] <filename>
+
+generate a new resume with AI
+
+Arguments:
+  filename                   output filename
+
+Options:
+  -p, --position <position>  target position or job title
+  -l, --language <language>  target locale language
+  -m, --model <model>        AI provider model to use
+  -b, --base-url <url>       AI provider base URL
+  -h, --help                 display help for command
+
+Environment variables:
+
+  Required (one API key for the selected cloud provider):
+    DEEPSEEK_API_KEY          DeepSeek API key
+    OPENAI_API_KEY            OpenAI API key
+    MOONSHOT_API_KEY          Kimi (Moonshot AI) API key
+
+  Optional:
+    OLLAMA_HOST               Ollama host for local models
+    YAMLRESUME_AI_MODEL       model override (overridden by --model)
+    YAMLRESUME_AI_BASE_URL    API base URL override (overridden by --base-url)
+```
+
+## Fournisseurs pris en charge
+
+YAMLResume prend en charge plusieurs fournisseurs de LLM via des endpoints
+compatibles OpenAI. Le fournisseur est déduit des variables d'environnement :
+
+| Fournisseur                                    | Variable d'environnement requise | Modèle par défaut | Remplacements optionnels                        |
+| ---------------------------------------------- | -------------------------------- | ----------------- | ----------------------------------------------- |
+| [DeepSeek](https://www.deepseek.com/)          | `DEEPSEEK_API_KEY`               | `deepseek-v4-flash` | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Kimi](https://www.moonshot.cn/) (Moonshot AI) | `MOONSHOT_API_KEY`               | `kimi-k2.6`       | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Ollama](https://ollama.com/) (local)          | `OLLAMA_HOST`                    | `llama3.2`        | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [OpenAI](https://openai.com/)                  | `OPENAI_API_KEY`                 | `gpt-5`           | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+
+## Exemples
+
+Définissez une clé API fournisseur et exécutez :
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai generate --position "Software Engineer" --language en resume.yml
+```
+
+Remplacez le modèle et l'URL de base via les options CLI :
+
+```console
+$ yamlresume ai generate \
+    --position "Registered Nurse" \
+    --language en \
+    --model gpt-5 \
+    --base-url https://custom.openai.endpoint/v1 \
+    resume.yml
+```
+
+Ou via des variables d'environnement :
+
+```console
+$ export YAMLRESUME_AI_MODEL=gpt-5
+$ export YAMLRESUME_AI_BASE_URL=https://custom.openai.endpoint/v1
+$ yamlresume ai generate --position "Registered Nurse" --language en resume.yml
+```
+
+## Comment ça marche
+
+`yamlresume ai generate` construit un prompt détaillé à partir des règles du
+[schéma YAMLResume](/docs/compiler/schema) et d'un exemple de CV, puis demande
+au LLM de produire un CV complet. Le prompt demande au modèle de :
+
+- Produire uniquement du YAML valide, sans barrières markdown.
+- Conserver les commentaires YAML pour que le fichier généré reste adapté à la
+  validation dans les éditeurs/IDE.
+- Respecter toutes les contraintes du schéma, telles que les longueurs de
+  champs, les formats de dates, les valeurs d'énumération et les URL valides.
+- Inventer un contenu original et réaliste adapté au poste et à la langue
+  cibles, sans copier les données personnelles de l'exemple de CV.
+
+Le texte généré est ensuite analysé et validé. Si la validation échoue, le
+modèle est invité à corriger les erreurs et réessayer, jusqu'à la limite de
+réessais configurée.
+
+## API programmatique
+
+Le paquet [`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai)
+expose également une API programmatique pour générer des CV :
+
+```ts
+import { generateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+
+const yaml = await generateResume({
+  position: "Software Engineer",
+  language: "en",
+  model,
+});
+```

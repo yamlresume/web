@@ -1,0 +1,101 @@
+---
+title: Generate
+---
+
+`yamlresume ai generate` コマンドは、職種と対象言語から完全で現実的な履歴書ファイルを生成します。
+
+```console
+$ yamlresume ai generate --help
+Usage: yamlresume ai generate [options] <filename>
+
+generate a new resume with AI
+
+Arguments:
+  filename                   output filename
+
+Options:
+  -p, --position <position>  target position or job title
+  -l, --language <language>  target locale language
+  -m, --model <model>        AI provider model to use
+  -b, --base-url <url>       AI provider base URL
+  -h, --help                 display help for command
+
+Environment variables:
+
+  Required (one API key for the selected cloud provider):
+    DEEPSEEK_API_KEY          DeepSeek API key
+    OPENAI_API_KEY            OpenAI API key
+    MOONSHOT_API_KEY          Kimi (Moonshot AI) API key
+
+  Optional:
+    OLLAMA_HOST               Ollama host for local models
+    YAMLRESUME_AI_MODEL       model override (overridden by --model)
+    YAMLRESUME_AI_BASE_URL    API base URL override (overridden by --base-url)
+```
+
+## サポートされているプロバイダー
+
+YAMLResume は、OpenAI 互換エンドポイントを介して複数の LLM プロバイダーをサポートしています。プロバイダーは環境変数から推論されます：
+
+| プロバイダー                                   | 必要な環境変数       | デフォルトモデル   | オプションの上書き                              |
+| ---------------------------------------------- | -------------------- | ------------------ | ----------------------------------------------- |
+| [DeepSeek](https://www.deepseek.com/)          | `DEEPSEEK_API_KEY`   | `deepseek-v4-flash` | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Kimi](https://www.moonshot.cn/) (Moonshot AI) | `MOONSHOT_API_KEY`   | `kimi-k2.6`        | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Ollama](https://ollama.com/) (ローカル)       | `OLLAMA_HOST`        | `llama3.2`         | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [OpenAI](https://openai.com/)                  | `OPENAI_API_KEY`     | `gpt-5`            | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+
+## 例
+
+プロバイダーの API キーを設定して実行します：
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai generate --position "Software Engineer" --language en resume.yml
+```
+
+CLI フラグでモデルとベース URL を上書きします：
+
+```console
+$ yamlresume ai generate \
+    --position "Registered Nurse" \
+    --language en \
+    --model gpt-5 \
+    --base-url https://custom.openai.endpoint/v1 \
+    resume.yml
+```
+
+または環境変数を使用します：
+
+```console
+$ export YAMLRESUME_AI_MODEL=gpt-5
+$ export YAMLRESUME_AI_BASE_URL=https://custom.openai.endpoint/v1
+$ yamlresume ai generate --position "Registered Nurse" --language en resume.yml
+```
+
+## 仕組み
+
+`yamlresume ai generate` は、[YAMLResume スキーマ](/docs/compiler/schema)のルールとサンプルの履歴書から詳細なプロンプトを構築し、LLM に完全な履歴書を生成するように依頼します。プロンプトはモデルに対して以下を指示します：
+
+- Markdown のフェンスなしで、有効な YAML のみを出力すること。
+- YAML コメントを保持し、生成されたファイルがエディターや IDE での検証に適したままであること。
+- フィールド長、日付形式、列挙値、有効な URL など、すべてのスキーマ制約に従うこと。
+- サンプル履歴書の個人情報をコピーせず、対象の職種とロケールに合わせた独自で現実的なコンテンツを作成すること。
+
+生成されたテキストは解析および検証されます。検証に失敗した場合、モデルにはエラーを修正して再試行するよう求められ、設定された再試行上限まで繰り返されます。
+
+## プログラム API
+
+[`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai) パッケージには、履歴書を生成するためのプログラム API も用意されています：
+
+```ts
+import { generateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+
+const yaml = await generateResume({
+  position: "Software Engineer",
+  language: "en",
+  model,
+});
+```

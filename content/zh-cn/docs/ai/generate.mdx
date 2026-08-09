@@ -1,0 +1,103 @@
+---
+title: Generate
+---
+
+`yamlresume ai generate` 命令根据职位和目标语言生成一份完整、真实的简历文件。
+
+```console
+$ yamlresume ai generate --help
+Usage: yamlresume ai generate [options] <filename>
+
+generate a new resume with AI
+
+Arguments:
+  filename                   output filename
+
+Options:
+  -p, --position <position>  target position or job title
+  -l, --language <language>  target locale language
+  -m, --model <model>        AI provider model to use
+  -b, --base-url <url>       AI provider base URL
+  -h, --help                 display help for command
+
+Environment variables:
+
+  Required (one API key for the selected cloud provider):
+    DEEPSEEK_API_KEY          DeepSeek API key
+    OPENAI_API_KEY            OpenAI API key
+    MOONSHOT_API_KEY          Kimi (Moonshot AI) API key
+
+  Optional:
+    OLLAMA_HOST               Ollama host for local models
+    YAMLRESUME_AI_MODEL       model override (overridden by --model)
+    YAMLRESUME_AI_BASE_URL    API base URL override (overridden by --base-url)
+```
+
+## 支持的提供商
+
+YAMLResume 通过 OpenAI 兼容端点支持多个 LLM 提供商。提供商会根据环境变量推断：
+
+| 提供商                                         | 必需的环境变量   | 默认模型            | 可选覆盖项                                      |
+| ---------------------------------------------- | ---------------- | ------------------- | ----------------------------------------------- |
+| [DeepSeek](https://www.deepseek.com/)          | `DEEPSEEK_API_KEY` | `deepseek-v4-flash` | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Kimi](https://www.moonshot.cn/)（Moonshot AI） | `MOONSHOT_API_KEY` | `kimi-k2.6`         | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [Ollama](https://ollama.com/)（本地）          | `OLLAMA_HOST`    | `llama3.2`          | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+| [OpenAI](https://openai.com/)                  | `OPENAI_API_KEY` | `gpt-5`             | `YAMLRESUME_AI_MODEL`, `YAMLRESUME_AI_BASE_URL` |
+
+## 示例
+
+设置提供商 API 密钥并运行：
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai generate --position "Software Engineer" --language en resume.yml
+```
+
+通过 CLI 标志覆盖模型和 base URL：
+
+```console
+$ yamlresume ai generate \
+    --position "Registered Nurse" \
+    --language en \
+    --model gpt-5 \
+    --base-url https://custom.openai.endpoint/v1 \
+    resume.yml
+```
+
+或者通过环境变量：
+
+```console
+$ export YAMLRESUME_AI_MODEL=gpt-5
+$ export YAMLRESUME_AI_BASE_URL=https://custom.openai.endpoint/v1
+$ yamlresume ai generate --position "Registered Nurse" --language en resume.yml
+```
+
+## 工作原理
+
+`yamlresume ai generate` 基于 [YAMLResume
+schema](/docs/compiler/schema) 规则和一份示例简历构建详细提示词，然后请求
+LLM 生成一份完整简历。提示词要求模型：
+
+- 只输出有效的 YAML，不包含 markdown 围栏。
+- 保留 YAML 注释，使生成的文件仍然便于编辑器/IDE 验证。
+- 遵循所有 schema 约束，例如字段长度、日期格式、枚举值和有效 URL。
+- 创作针对目标职位和区域设置的原创、真实内容，不复制示例简历的个人信息。
+
+生成的文本随后会被解析和验证。如果验证失败，模型会被要求修复错误并重试，直到达到配置的重试上限。
+
+## 程序化 API
+
+[`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai) 包还暴露了用于生成简历的程序化 API：
+
+```ts
+import { generateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+
+const yaml = await generateResume({
+  position: "Software Engineer",
+  language: "en",
+  model,
+});
+```
