@@ -28,29 +28,26 @@ export function NewsChannel() {
           <IconSpeakerphone size={20} stroke={1.5} />
           <div className="text-sm text-fd-foreground">
             <Link
-              href={getLocalizedUrl('/blog/v0.13', language)}
+              href={getLocalizedUrl('/blog/v0.14', language)}
               className="underline font-semibold"
             >
-              YAMLResume v0.13
+              YAMLResume v0.14
             </Link>{' '}
             is here! New{' '}
             <Link
-              href={getLocalizedUrl('/docs/layouts/docx', language)}
+              href={getLocalizedUrl('/blog/v0.14', language)}
               className="underline"
             >
-              DOCX rendering engine
+              AI-powered resume generation
             </Link>
             ,{' '}
             <Link
-              href={getLocalizedUrl(
-                '/docs/locale/brazilian-portuguese',
-                language
-              )}
+              href={getLocalizedUrl('/blog/v0.14', language)}
               className="underline"
             >
-              Brazilian Portuguese language support
+              @yamlresume/ai package
             </Link>
-            , and various bug fixes.
+            , and multiple LLM providers.
           </div>
         </div>
       </div>
