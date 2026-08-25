@@ -51,7 +51,8 @@ Commands:
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
-  new [filename]                 create a new resume
+  new [options] [filename]       create a new resume
+  samples                        manage sample resumes
   templates                      manage resume templates
   validate <resume-path>         validate a resume against the YAMLResume schema
   help [command]                 display help for command
@@ -61,7 +62,7 @@ Tampilkan versi YAMLResume CLI:
 
 ```console
 $ yamlresume -V
-0.5.0
+0.15.0
 ```
 
 ## New
@@ -75,14 +76,94 @@ Usage: yamlresume new [options] [filename]
 create a new resume
 
 Arguments:
-  filename    output filename (default: "resume.yml")
+  filename               output filename (default: "resume.yml")
 
 Options:
-  -h, --help  display help for command
+  --sample <id>          create from a curated sample resume
+  --language <language>  locale language for the sample (default: "en")
+  -h, --help             display help for command
 
 $ yamlresume new my-resume.yml
 ✔ Created my-resume.yml successfully.
 ```
+
+Sejak v0.15.0, `yamlresume new` membuat resume Anda dari contoh resume terkurasi
+(defaultnya adalah contoh `software-engineer` dalam bahasa Inggris). File yang
+dihasilkan dilengkapi komentar YAML yang membantu untuk validasi skema di
+editor/IDE serta serangkaian layout default, sehingga Anda dapat langsung
+membangunnya.
+
+### `--sample`
+
+Jika Anda ingin memulai dari contoh resume terkurasi tertentu, gunakan opsi
+`--sample`. Jalankan [`yamlresume samples list`](#samples) untuk melihat semua
+contoh yang tersedia:
+
+```console
+$ yamlresume new ux-designer.yml --sample ux-designer
+✔ Created ux-designer.yml from sample "ux-designer" successfully.
+```
+
+Jika diberikan id contoh yang tidak dikenal, CLI akan menampilkan semua contoh
+yang tersedia untuk membantu Anda memilih:
+
+```console
+$ yamlresume new my-resume.yml --sample no-such-sample
+
+ ERROR  Sample resume not found: no-such-sample
+
+ℹ Available samples:
+  - data-analyst: Data Analyst
+  - data-scientist: Data Scientist
+  - product-manager: Product Manager
+  - software-engineer: Software Engineer
+  - ux-designer: UX Designer
+```
+
+### `--language`
+
+Semua contoh resume telah diterjemahkan ke dalam 12 bahasa lokal. Anda dapat
+menggunakan opsi `--language` untuk membuat resume dari contoh yang telah
+dilokalkan, yang sangat berguna untuk menulis resume non-Inggris:
+
+```console
+$ yamlresume new my-resume.yml --sample software-engineer --language zh-hans
+✔ Created my-resume.yml successfully.
+```
+
+## Samples
+
+YAMLResume dilengkapi serangkaian contoh resume terkurasi untuk posisi-posisi
+umum, yang diterjemahkan ke dalam 12 bahasa lokal (`de`, `en`, `es`, `fr`, `id`,
+`ja`, `nl`, `no`, `pt-br`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`). Lihat semuanya
+dengan sub-command `samples list`:
+
+```console
+$ yamlresume samples --help
+Usage: yamlresume samples [options] [command]
+
+manage sample resumes
+
+Options:
+  -h, --help      display help for command
+
+Commands:
+  list            list all sample resumes
+  help [command]  display help for command
+
+$ yamlresume samples list
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+```
+
+Gunakan [`yamlresume new --sample <id>`](#new) untuk membuat file resume baru
+dari sebuah contoh.
 
 ## Build
 

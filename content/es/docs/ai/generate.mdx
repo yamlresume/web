@@ -19,6 +19,7 @@ Options:
   -l, --language <language>  target locale language
   -m, --model <model>        AI provider model to use
   -b, --base-url <url>       AI provider base URL
+  -r, --retry <count>        maximum retries when validation fails (default: 2)
   -h, --help                 display help for command
 
 Environment variables:
@@ -73,6 +74,28 @@ $ export YAMLRESUME_AI_MODEL=gpt-5
 $ export YAMLRESUME_AI_BASE_URL=https://custom.openai.endpoint/v1
 $ yamlresume ai generate --position "Registered Nurse" --language en resume.yml
 ```
+
+### `--retry`
+
+La generación se valida contra el [esquema de YAMLResume](/docs/compiler/schema)
+después de cada intento. Si la validación falla, los errores se retroalimentan
+al modelo y se reintenta la generación. El número máximo de reintentos es 2 por
+defecto.
+
+Puedes personalizarlo con la opción `-r, --retry`, que acepta un entero no
+negativo. Por ejemplo, para permitir hasta 5 reintentos para un puesto
+complicado:
+
+```console
+$ yamlresume ai generate \
+    --position "Software Engineer" \
+    --language en \
+    --retry 5 \
+    resume.yml
+```
+
+Usa `--retry 0` para desactivar por completo los reintentos y fallar rápidamente
+ante el primer error de validación.
 
 ## Cómo funciona
 

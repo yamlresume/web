@@ -55,7 +55,8 @@ Commands:
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
-  new [filename]                 create a new resume
+  new [options] [filename]       create a new resume
+  samples                        manage sample resumes
   templates                      manage resume templates
   validate <resume-path>         validate a resume against the YAMLResume schema
   help [command]                 display help for command
@@ -65,7 +66,7 @@ Show YAMLResume CLI version:
 
 ```console
 $ yamlresume -V
-0.5.0
+0.15.0
 ```
 
 ## New
@@ -80,14 +81,93 @@ Usage: yamlresume new [options] [filename]
 create a new resume
 
 Arguments:
-  filename    output filename (default: "resume.yml")
+  filename               output filename (default: "resume.yml")
 
 Options:
-  -h, --help  display help for command
+  --sample <id>          create from a curated sample resume
+  --language <language>  locale language for the sample (default: "en")
+  -h, --help             display help for command
 
 $ yamlresume new my-resume.yml
 ✔ Created my-resume.yml successfully.
 ```
+
+Since v0.15.0, `yamlresume new` creates your resume from a curated sample
+resume (the default is the `software-engineer` sample in English). The
+generated file comes with helpful YAML comments for editor/IDE schema
+validation and a set of default layouts, so you can build it right away.
+
+### `--sample`
+
+If you want to start from a specific curated sample resume, use the
+`--sample` option. Run [`yamlresume samples list`](#samples) to see all
+available samples:
+
+```console
+$ yamlresume new ux-designer.yml --sample ux-designer
+✔ Created ux-designer.yml from sample "ux-designer" successfully.
+```
+
+If an unknown sample id is given, the CLI prints all available samples to
+help you choose:
+
+```console
+$ yamlresume new my-resume.yml --sample no-such-sample
+
+ ERROR  Sample resume not found: no-such-sample
+
+ℹ Available samples:
+  - data-analyst: Data Analyst
+  - data-scientist: Data Scientist
+  - product-manager: Product Manager
+  - software-engineer: Software Engineer
+  - ux-designer: UX Designer
+```
+
+### `--language`
+
+All sample resumes are translated in 12 locale languages. You can use the
+`--language` option to create a resume from a localized sample, which is
+quite handy for writing non-English resumes:
+
+```console
+$ yamlresume new my-resume.yml --sample software-engineer --language zh-hans
+✔ Created my-resume.yml successfully.
+```
+
+## Samples
+
+YAMLResume ships with a set of curated sample resumes for common positions,
+translated in 12 locale languages (`de`, `en`, `es`, `fr`, `id`, `ja`, `nl`,
+`no`, `pt-br`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`). List them all with the
+`samples list` subcommand:
+
+```console
+$ yamlresume samples --help
+Usage: yamlresume samples [options] [command]
+
+manage sample resumes
+
+Options:
+  -h, --help      display help for command
+
+Commands:
+  list            list all sample resumes
+  help [command]  display help for command
+
+$ yamlresume samples list
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+```
+
+Use [`yamlresume new --sample <id>`](#new) to create a new resume file from a
+sample.
 
 ## Build
 

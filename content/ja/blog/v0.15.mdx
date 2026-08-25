@@ -1,0 +1,146 @@
+---
+title: "YAMLResume v0.15: 厳選サンプル履歴書"
+description:
+  "YAMLResume v0.15 では、12 言語の厳選サンプル履歴書と新しい `yamlresume samples`
+  コマンド、`yamlresume new` の `--sample`/`--language` フラグに加え、
+  `yamlresume ai generate` の新しい `--retry` オプションを導入します。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-21
+---
+
+[YAMLResume
+v0.15](https://github.com/yamlresume/yamlresume/releases/tag/v0.15.0)のリリースを
+お知らせいたします。このバージョンでは、12 のロケール言語で一般的な職種向けの厳選
+サンプル履歴書を含む、まったく新しい
+[`@yamlresume/samples`](/ja/docs/ecosystem/samples)
+パッケージをリリースし、これらのサンプルから履歴書を作成するように `yamlresume new`
+コマンドを改良し、[`yamlresume ai generate`](/ja/docs/ai/generate)
+に `--retry` オプションを追加するとともに、いつものバグ修正と改善も含まれています。
+
+## 新パッケージ: @yamlresume/samples
+
+このリリースの中心となるのは、新しい
+[`@yamlresume/samples`](https://www.npmjs.com/package/@yamlresume/samples)
+パッケージです。5 つの一般的な職種向けの厳選サンプル履歴書カタログを提供します：
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+
+すべてのサンプル履歴書は 12 のロケール言語（`de`、`en`、`es`、`fr`、`id`、`ja`、
+`nl`、`no`、`pt-br`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`）に翻訳されているため、
+どの言語で履歴書を書いても、その言語に自然な履歴書から始められます。
+
+このパッケージは一連のクエリ API も公開しており、カタログをプログラムから閲覧・
+フィルタリングできます：
+
+```ts
+import {
+  getSampleResume,
+  listSampleResumes,
+  listSampleResumesByCategory,
+  listSampleResumesByLanguage,
+} from '@yamlresume/samples'
+
+const samples = listSampleResumes()
+const chineseSamples = listSampleResumesByLanguage('zh-hans')
+const engineering = listSampleResumesByCategory('Engineering')
+const yaml = getSampleResume('software-engineer', 'en')
+```
+
+完全な API リファレンスについては[ドキュメント](/ja/docs/ecosystem/samples)
+をご覧ください。
+
+## 新コマンド: yamlresume samples
+
+利用可能なサンプルを閲覧するために、新しい `yamlresume samples` コマンドが追加されました：
+
+```console
+$ yamlresume samples list
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+```
+
+## 改良: yamlresume new
+
+`yamlresume new` コマンドは、2 つの新しいフラグにより、デフォルトで厳選サンプルから
+履歴書を作成するようになりました：
+
+```console
+$ yamlresume new --help
+Usage: yamlresume new [options] [filename]
+
+create a new resume
+
+Arguments:
+  filename               output filename (default: "resume.yml")
+
+Options:
+  --sample <id>          create from a curated sample resume
+  --language <language>  locale language for the sample (default: "en")
+  -h, --help             display help for command
+```
+
+フラグなしで `yamlresume new my-resume.yml` を実行すると、デフォルトで英語の
+`software-engineer` サンプルから履歴書が作成されます。生成されるファイルには、
+エディター/IDE でのスキーマ検証に役立つ YAML コメントが保持されており、デフォルトの
+レイアウトも付属しているため、すぐにビルドできます。
+
+別の職種や言語が必要ですか？組み合わせて使うだけです：
+
+```console
+$ yamlresume new ux-designer.yml --sample ux-designer
+✔ Created ux-designer.yml from sample "ux-designer" successfully.
+
+$ yamlresume new my-resume.yml --language zh-hans
+✔ Created my-resume.yml successfully.
+```
+
+## 新オプション: ai generate --retry
+
+[`yamlresume ai generate`](/ja/docs/ai/generate) は、試行ごとに出力を
+[YAMLResume スキーマ](/ja/docs/compiler/schema) に対して検証し、検証に失敗した場合は
+エラーをモデルにフィードバックして再試行します。以前は再試行上限は固定でしたが、新しい
+`-r, --retry` オプション（デフォルト：2）で制御できるようになりました：
+
+```console
+$ yamlresume ai generate \
+    --position "Software Engineer" \
+    --language en \
+    --retry 5 \
+    resume.yml
+```
+
+`--retry 0` を使用すると再試行を完全に無効にでき、最初の検証エラーで即座に失敗します。
+
+## 今すぐアップグレード
+
+最新バージョンを取得：
+
+```console
+$ npm install -g yamlresume@latest
+# または
+$ brew upgrade yamlresume
+```
+
+次に、サンプルから最初の履歴書を作成します：
+
+```console
+$ yamlresume new --sample software-engineer --language en my-resume.yml
+```
+
+## クレジット
+
+いつものように、[GitHub](https://github.com/yamlresume/yamlresume)でのフィードバックと
+貢献をお待ちしています。Happy building!

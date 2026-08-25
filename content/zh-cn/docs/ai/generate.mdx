@@ -18,6 +18,7 @@ Options:
   -l, --language <language>  target locale language
   -m, --model <model>        AI provider model to use
   -b, --base-url <url>       AI provider base URL
+  -r, --retry <count>        maximum retries when validation fails (default: 2)
   -h, --help                 display help for command
 
 Environment variables:
@@ -71,6 +72,22 @@ $ export YAMLRESUME_AI_MODEL=gpt-5
 $ export YAMLRESUME_AI_BASE_URL=https://custom.openai.endpoint/v1
 $ yamlresume ai generate --position "Registered Nurse" --language en resume.yml
 ```
+
+### `--retry`
+
+每次生成后会根据 [YAMLResume schema](/docs/compiler/schema) 进行验证。如果验证失败，错误信息会被反馈给模型并重试生成。默认最多重试 2 次。
+
+您可以使用 `-r, --retry` 选项自定义重试次数，它接受一个非负整数。例如，对于难以生成的职位，允许最多重试 5 次：
+
+```console
+$ yamlresume ai generate \
+    --position "Software Engineer" \
+    --language en \
+    --retry 5 \
+    resume.yml
+```
+
+使用 `--retry 0` 可以完全禁用重试，在第一次验证出错时立即失败。
 
 ## 工作原理
 

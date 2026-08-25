@@ -1,0 +1,150 @@
+---
+title: "YAMLResume v0.15: Contoh Resume Terkurasi"
+description:
+  "YAMLResume v0.15 memperkenalkan contoh resume terkurasi dalam 12 bahasa dengan
+  perintah `yamlresume samples` yang baru serta flag `--sample`/`--language`
+  untuk `yamlresume new`, ditambah opsi `--retry` yang baru untuk
+  `yamlresume ai generate`."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-21
+---
+
+Kami dengan senang mengumumkan [YAMLResume
+v0.15](https://github.com/yamlresume/yamlresume/releases/tag/v0.15.0). Rilis ini
+membawa paket [`@yamlresume/samples`](/id/docs/ecosystem/samples) yang sepenuhnya
+baru dengan contoh resume terkurasi untuk posisi-posisi umum dalam 12 bahasa
+lokal, menata ulang perintah `yamlresume new` untuk membuat resume dari contoh
+tersebut, menambahkan opsi `--retry` ke
+[`yamlresume ai generate`](/id/docs/ai/generate), dan menyertakan perbaikan bug
+serta peningkatan seperti biasa.
+
+## Paket Baru: @yamlresume/samples
+
+Inti dari rilis ini adalah paket baru
+[`@yamlresume/samples`](https://www.npmjs.com/package/@yamlresume/samples).
+Paket ini menyediakan katalog contoh resume terkurasi untuk lima posisi umum:
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+
+Setiap contoh resume diterjemahkan ke dalam 12 bahasa lokal (`de`, `en`, `es`,
+`fr`, `id`, `ja`, `nl`, `no`, `pt-br`, `zh-hans`, `zh-hant-hk`,
+`zh-hant-tw`), sehingga Anda dapat memulai dari resume yang idiomatis apa pun
+bahasa yang Anda gunakan untuk menulis resume Anda.
+
+Paket ini juga mengekspos serangkaian API kueri sehingga Anda dapat menjelajahi
+dan memfilter katalog secara programatis:
+
+```ts
+import {
+  getSampleResume,
+  listSampleResumes,
+  listSampleResumesByCategory,
+  listSampleResumesByLanguage,
+} from '@yamlresume/samples'
+
+const samples = listSampleResumes()
+const chineseSamples = listSampleResumesByLanguage('zh-hans')
+const engineering = listSampleResumesByCategory('Engineering')
+const yaml = getSampleResume('software-engineer', 'en')
+```
+
+Lihat [dokumentasi](/id/docs/ecosystem/samples) untuk referensi API lengkap.
+
+## Perintah Baru: yamlresume samples
+
+Untuk melihat apa saja yang tersedia, ada perintah baru `yamlresume samples`:
+
+```console
+$ yamlresume samples list
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+```
+
+## Peningkatan: yamlresume new
+
+Perintah `yamlresume new` sekarang membuat resume dari contoh terkurasi secara
+default, didukung oleh dua flag baru:
+
+```console
+$ yamlresume new --help
+Usage: yamlresume new [options] [filename]
+
+create a new resume
+
+Arguments:
+  filename               output filename (default: "resume.yml")
+
+Options:
+  --sample <id>          create from a curated sample resume
+  --language <language>  locale language for the sample (default: "en")
+  -h, --help             display help for command
+```
+
+Menjalankan `yamlresume new my-resume.yml` tanpa flag apa pun sekarang membuat
+resume Anda dari contoh `software-engineer` default dalam bahasa Inggris. File
+yang dihasilkan tetap menyertakan komentar YAML yang membantu untuk validasi
+skema di editor/IDE dan dilengkapi layout default, sehingga Anda dapat langsung
+membangunnya.
+
+Ingin posisi atau bahasa yang berbeda? Tinggal kombinasikan:
+
+```console
+$ yamlresume new ux-designer.yml --sample ux-designer
+✔ Created ux-designer.yml from sample "ux-designer" successfully.
+
+$ yamlresume new my-resume.yml --language zh-hans
+✔ Created my-resume.yml successfully.
+```
+
+## Opsi Baru: ai generate --retry
+
+[`yamlresume ai generate`](/id/docs/ai/generate) memvalidasi output-nya terhadap
+[skema YAMLResume](/id/docs/compiler/schema) setelah setiap percobaan dan mencoba
+ulang dengan kesalahan yang diberikan kembali ke model ketika validasi gagal.
+Sebelumnya batas percobaan ulang bersifat tetap; sekarang Anda dapat
+mengendalikannya dengan opsi baru `-r, --retry` (default: 2):
+
+```console
+$ yamlresume ai generate \
+    --position "Software Engineer" \
+    --language en \
+    --retry 5 \
+    resume.yml
+```
+
+Gunakan `--retry 0` untuk menonaktifkan percobaan ulang sepenuhnya dan langsung
+gagal pada kesalahan validasi pertama.
+
+## Tingkatkan Hari Ini
+
+Dapatkan versi terbaru:
+
+```console
+$ npm install -g yamlresume@latest
+# or
+$ brew upgrade yamlresume
+```
+
+Kemudian buat resume pertamamu dari sebuah contoh:
+
+```console
+$ yamlresume new --sample software-engineer --language en my-resume.yml
+```
+
+## Kredit
+
+Seperti biasa, kami menyambut umpan balik dan kontribusi Anda di
+[GitHub](https://github.com/yamlresume/yamlresume). Selamat membangun!

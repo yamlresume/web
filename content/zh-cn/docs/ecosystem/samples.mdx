@@ -1,0 +1,79 @@
+---
+title: "@yamlresume/samples"
+---
+
+[`@yamlresume/samples`](https://www.npmjs.com/package/@yamlresume/samples) 是为 YAMLResume 提供精选示例简历的包。它内置了针对常见职位的示例简历目录——例如软件工程师、数据分析师、数据科学家、产品经理和 UX 设计师——每种示例都翻译成了 12 种区域语言。
+
+它也被 [`yamlresume new --sample`](/zh-cn/docs/cli#new) 命令和 [`yamlresume samples list`](/zh-cn/docs/cli#samples) 子命令所使用。
+
+## 用法
+
+安装该包：
+
+```console
+$ npm install @yamlresume/samples
+```
+
+然后以编程方式查询示例简历目录：
+
+```ts
+import {
+  getSampleResume,
+  listSampleResumeCategories,
+  listSampleResumeTags,
+  listSampleResumes,
+  listSampleResumesByCategory,
+  listSampleResumesByLanguage,
+  listSampleResumesByTag,
+} from '@yamlresume/samples'
+
+// List all sample resumes
+const samples = listSampleResumes()
+
+// List sample resumes that support a given locale language
+const chineseSamples = listSampleResumesByLanguage('zh-hans')
+
+// Filter by category or tag (case-insensitive)
+const engineering = listSampleResumesByCategory('Engineering')
+const pythonSamples = listSampleResumesByTag('python')
+
+// List all unique categories and tags, sorted alphabetically
+const categories = listSampleResumeCategories()
+const tags = listSampleResumeTags()
+
+// Load the raw YAML content of a sample resume
+const yaml = getSampleResume('software-engineer', 'en')
+```
+
+每个示例简历条目都包含丰富的元数据：
+
+```ts
+{
+  id: 'software-engineer',
+  title: 'Software Engineer',
+  position: 'software engineer',
+  category: 'Engineering',
+  tags: ['full-stack', 'web-development', ...],
+  description: '...',
+  languages: ['de', 'en', 'es', ...],
+  contents: {
+    en: '# yaml-language-server: $schema=...',
+    'zh-hans': '# yaml-language-server: $schema=...',
+    ...
+  }
+}
+```
+
+## 查询 API
+
+| 函数 | 描述 |
+| --- | --- |
+| `listSampleResumes()` | 列出所有可用的示例简历 |
+| `listSampleResumesByLanguage(language)` | 列出支持某种区域语言的示例简历 |
+| `listSampleResumesByCategory(category)` | 列出某一类别下的示例简历（不区分大小写） |
+| `listSampleResumesByTag(tag)` | 列出带有某个标签的示例简历（不区分大小写） |
+| `listSampleResumeCategories()` | 列出所有唯一的类别，已排序 |
+| `listSampleResumeTags()` | 列出所有唯一的标签，已排序 |
+| `getSampleResume(id, language)` | 获取示例简历的原始 YAML 字符串 |
+
+当示例 id 不存在或该示例不支持所请求的语言时，`getSampleResume` 会抛出错误。

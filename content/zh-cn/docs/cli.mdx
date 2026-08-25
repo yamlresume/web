@@ -51,7 +51,8 @@ Commands:
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
-  new [filename]                 create a new resume
+  new [options] [filename]       create a new resume
+  samples                        manage sample resumes
   templates                      manage resume templates
   validate <resume-path>         validate a resume against the YAMLResume schema
   help [command]                 display help for command
@@ -61,7 +62,7 @@ Commands:
 
 ```console
 $ yamlresume -V
-0.5.0
+0.15.0
 ```
 
 ## New
@@ -75,14 +76,81 @@ Usage: yamlresume new [options] [filename]
 create a new resume
 
 Arguments:
-  filename    output filename (default: "resume.yml")
+  filename               output filename (default: "resume.yml")
 
 Options:
-  -h, --help  display help for command
+  --sample <id>          create from a curated sample resume
+  --language <language>  locale language for the sample (default: "en")
+  -h, --help             display help for command
 
 $ yamlresume new my-resume.yml
 ✔ Created my-resume.yml successfully.
 ```
+
+从 v0.15.0 开始，`yamlresume new` 会基于一份精选的示例简历来创建您的简历（默认是英文的 `software-engineer` 示例）。生成的文件带有便于编辑器/IDE 进行 schema 验证的有用 YAML 注释，以及一组默认布局，因此您可以立即构建它。
+
+### `--sample`
+
+如果您想从特定的精选示例简历开始，可以使用 `--sample` 选项。运行 [`yamlresume samples list`](#示例简历) 查看所有可用的示例：
+
+```console
+$ yamlresume new ux-designer.yml --sample ux-designer
+✔ Created ux-designer.yml from sample "ux-designer" successfully.
+```
+
+如果给定的示例 id 不存在，CLI 会打印所有可用的示例以帮助您选择：
+
+```console
+$ yamlresume new my-resume.yml --sample no-such-sample
+
+ ERROR  Sample resume not found: no-such-sample
+
+ℹ Available samples:
+  - data-analyst: Data Analyst
+  - data-scientist: Data Scientist
+  - product-manager: Product Manager
+  - software-engineer: Software Engineer
+  - ux-designer: UX Designer
+```
+
+### `--language`
+
+所有示例简历都翻译成了 12 种区域语言。您可以使用 `--language` 选项从本地化的示例创建简历，这对于编写非英语简历非常方便：
+
+```console
+$ yamlresume new my-resume.yml --sample software-engineer --language zh-hans
+✔ Created my-resume.yml successfully.
+```
+
+## 示例简历
+
+YAMLResume 为常见职位提供了一套精选的示例简历，并翻译成 12 种区域语言（`de`、`en`、`es`、`fr`、`id`、`ja`、`nl`、`no`、`pt-br`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`）。使用 `samples list` 子命令列出全部示例：
+
+```console
+$ yamlresume samples --help
+Usage: yamlresume samples [options] [command]
+
+manage sample resumes
+
+Options:
+  -h, --help      display help for command
+
+Commands:
+  list            list all sample resumes
+  help [command]  display help for command
+
+$ yamlresume samples list
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+```
+
+使用 [`yamlresume new --sample <id>`](#new) 从示例创建新的简历文件。
 
 ## Build
 

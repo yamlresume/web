@@ -55,7 +55,8 @@ Commands:
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
-  new [filename]                 create a new resume
+  new [options] [filename]       create a new resume
+  samples                        manage sample resumes
   templates                      manage resume templates
   validate <resume-path>         validate a resume against the YAMLResume schema
   help [command]                 display help for command
@@ -65,7 +66,7 @@ Afficher la version du CLI YAMLResume :
 
 ```console
 $ yamlresume -V
-0.5.0
+0.15.0
 ```
 
 ## New
@@ -80,14 +81,94 @@ Usage: yamlresume new [options] [filename]
 create a new resume
 
 Arguments:
-  filename    output filename (default: "resume.yml")
+  filename               output filename (default: "resume.yml")
 
 Options:
-  -h, --help  display help for command
+  --sample <id>          create from a curated sample resume
+  --language <language>  locale language for the sample (default: "en")
+  -h, --help             display help for command
 
 $ yamlresume new my-resume.yml
 ✔ Created my-resume.yml successfully.
 ```
+
+Depuis la v0.15.0, `yamlresume new` crée votre CV à partir d'un exemple de CV
+sélectionné avec soin (par défaut, l'exemple `software-engineer` en anglais).
+Le fichier généré est fourni avec des commentaires YAML utiles pour la validation
+du schéma dans l'éditeur/l'IDE et un ensemble de layouts par défaut, afin que vous
+puissiez le compiler immédiatement.
+
+### `--sample`
+
+Si vous voulez démarrer à partir d'un exemple de CV spécifique, utilisez l'option
+`--sample`. Exécutez [`yamlresume samples list`](#samples) pour voir tous les
+exemples disponibles :
+
+```console
+$ yamlresume new ux-designer.yml --sample ux-designer
+✔ Created ux-designer.yml from sample "ux-designer" successfully.
+```
+
+Si un identifiant d'exemple inconnu est fourni, le CLI affiche tous les exemples
+disponibles pour vous aider à choisir :
+
+```console
+$ yamlresume new my-resume.yml --sample no-such-sample
+
+ ERROR  Sample resume not found: no-such-sample
+
+ℹ Available samples:
+  - data-analyst: Data Analyst
+  - data-scientist: Data Scientist
+  - product-manager: Product Manager
+  - software-engineer: Software Engineer
+  - ux-designer: UX Designer
+```
+
+### `--language`
+
+Tous les exemples de CV sont traduits en 12 langues locales. Vous pouvez utiliser
+l'option `--language` pour créer un CV à partir d'un exemple localisé, ce qui est
+très pratique pour rédiger des CV dans une autre langue que l'anglais :
+
+```console
+$ yamlresume new my-resume.yml --sample software-engineer --language zh-hans
+✔ Created my-resume.yml successfully.
+```
+
+## Samples
+
+YAMLResume est livré avec un ensemble d'exemples de CV sélectionnés avec soin
+pour des postes courants, traduits en 12 langues locales (`de`, `en`, `es`,
+`fr`, `id`, `ja`, `nl`, `no`, `pt-br`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`).
+Listez-les tous avec la sous-commande `samples list` :
+
+```console
+$ yamlresume samples --help
+Usage: yamlresume samples [options] [command]
+
+manage sample resumes
+
+Options:
+  -h, --help      display help for command
+
+Commands:
+  list            list all sample resumes
+  help [command]  display help for command
+
+$ yamlresume samples list
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+```
+
+Utilisez [`yamlresume new --sample <id>`](#new) pour créer un nouveau fichier de
+CV à partir d'un exemple.
 
 ## Build
 

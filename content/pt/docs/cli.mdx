@@ -52,7 +52,8 @@ Commands:
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
-  new [filename]                 create a new resume
+  new [options] [filename]       create a new resume
+  samples                        manage sample resumes
   templates                      manage resume templates
   validate <resume-path>         validate a resume against the YAMLResume schema
   help [command]                 display help for command
@@ -62,13 +63,13 @@ Mostrar versão do CLI do YAMLResume:
 
 ```console
 $ yamlresume -V
-0.5.0
+0.15.0
 ```
 
 ## New
 
-Criar um novo currículo. O nome de ficheiro predefinido do currículo é
-`resume.yml`, mas pode especificar um nome de ficheiro personalizado:
+Criar um novo currículo. O nome de arquivo padrão do currículo é
+`resume.yml`, mas você pode especificar um nome de arquivo personalizado:
 
 ```console
 $ yamlresume new --help
@@ -77,14 +78,95 @@ Usage: yamlresume new [options] [filename]
 create a new resume
 
 Arguments:
-  filename    output filename (default: "resume.yml")
+  filename               output filename (default: "resume.yml")
 
 Options:
-  -h, --help  display help for command
+  --sample <id>          create from a curated sample resume
+  --language <language>  locale language for the sample (default: "en")
+  -h, --help             display help for command
 
 $ yamlresume new my-resume.yml
 ✔ Created my-resume.yml successfully.
 ```
+
+Desde a v0.15.0, o `yamlresume new` cria o seu currículo a partir de um
+currículo de exemplo curado (o padrão é o exemplo `software-engineer` em
+inglês). O arquivo gerado vem com comentários YAML úteis para validação de
+esquema no editor/IDE e um conjunto de layouts padrão, para que você possa
+compilá-lo imediatamente.
+
+### `--sample`
+
+Se você quiser começar a partir de um currículo de exemplo curado específico,
+use a opção `--sample`. Execute [`yamlresume samples list`](#samples) para ver
+todos os exemplos disponíveis:
+
+```console
+$ yamlresume new ux-designer.yml --sample ux-designer
+✔ Created ux-designer.yml from sample "ux-designer" successfully.
+```
+
+Se for informado um id de exemplo desconhecido, a CLI imprime todos os
+exemplos disponíveis para ajudá-lo a escolher:
+
+```console
+$ yamlresume new my-resume.yml --sample no-such-sample
+
+ ERROR  Sample resume not found: no-such-sample
+
+ℹ Available samples:
+  - data-analyst: Data Analyst
+  - data-scientist: Data Scientist
+  - product-manager: Product Manager
+  - software-engineer: Software Engineer
+  - ux-designer: UX Designer
+```
+
+### `--language`
+
+Todos os currículos de exemplo são traduzidos em 12 idiomas locais. Você pode
+usar a opção `--language` para criar um currículo a partir de um exemplo
+localizado, o que é bastante útil para escrever currículos em idiomas que não
+sejam o inglês:
+
+```console
+$ yamlresume new my-resume.yml --sample software-engineer --language zh-hans
+✔ Created my-resume.yml successfully.
+```
+
+## Samples
+
+O YAMLResume acompanha um conjunto de currículos de exemplo curados para
+posições comuns, traduzidos em 12 idiomas locais (`de`, `en`, `es`, `fr`, `id`,
+`ja`, `nl`, `no`, `pt-br`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`). Liste todos
+eles com o subcomando `samples list`:
+
+```console
+$ yamlresume samples --help
+Usage: yamlresume samples [options] [command]
+
+manage sample resumes
+
+Options:
+  -h, --help      display help for command
+
+Commands:
+  list            list all sample resumes
+  help [command]  display help for command
+
+$ yamlresume samples list
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+```
+
+Use [`yamlresume new --sample <id>`](#new) para criar um novo arquivo de
+currículo a partir de um exemplo.
 
 ## Build
 

@@ -1,0 +1,85 @@
+---
+title: "@yamlresume/samples"
+---
+
+[`@yamlresume/samples`](https://www.npmjs.com/package/@yamlresume/samples) adalah
+paket yang mendukung contoh resume terkurasi di YAMLResume. Paket ini menyediakan
+katalog contoh resume untuk posisi-posisi umum — seperti software engineer,
+data analyst, data scientist, product manager, dan UX designer — masing-masing
+diterjemahkan ke dalam 12 bahasa lokal.
+
+Paket ini juga digunakan oleh perintah [`yamlresume new --sample`](/docs/cli#new)
+dan sub-command [`yamlresume samples list`](/docs/cli#samples).
+
+## Penggunaan
+
+Instal paketnya:
+
+```console
+$ npm install @yamlresume/samples
+```
+
+Kemudian kueri katalog contoh resume secara programatis:
+
+```ts
+import {
+  getSampleResume,
+  listSampleResumeCategories,
+  listSampleResumeTags,
+  listSampleResumes,
+  listSampleResumesByCategory,
+  listSampleResumesByLanguage,
+  listSampleResumesByTag,
+} from '@yamlresume/samples'
+
+// List all sample resumes
+const samples = listSampleResumes()
+
+// List sample resumes that support a given locale language
+const chineseSamples = listSampleResumesByLanguage('zh-hans')
+
+// Filter by category or tag (case-insensitive)
+const engineering = listSampleResumesByCategory('Engineering')
+const pythonSamples = listSampleResumesByTag('python')
+
+// List all unique categories and tags, sorted alphabetically
+const categories = listSampleResumeCategories()
+const tags = listSampleResumeTags()
+
+// Load the raw YAML content of a sample resume
+const yaml = getSampleResume('software-engineer', 'en')
+```
+
+Setiap entri contoh resume berisi metadata yang kaya:
+
+```ts
+{
+  id: 'software-engineer',
+  title: 'Software Engineer',
+  position: 'software engineer',
+  category: 'Engineering',
+  tags: ['full-stack', 'web-development', ...],
+  description: '...',
+  languages: ['de', 'en', 'es', ...],
+  contents: {
+    en: '# yaml-language-server: $schema=...',
+    'zh-hans': '# yaml-language-server: $schema=...',
+    ...
+  }
+}
+```
+
+## API Kueri
+
+| Fungsi | Deskripsi |
+| --- | --- |
+| `listSampleResumes()` | Menampilkan semua contoh resume yang tersedia |
+| `listSampleResumesByLanguage(language)` | Menampilkan contoh resume yang mendukung sebuah bahasa lokal |
+| `listSampleResumesByCategory(category)` | Menampilkan contoh resume dalam sebuah kategori (tidak peka huruf besar/kecil) |
+| `listSampleResumesByTag(tag)` | Menampilkan contoh resume dengan sebuah tag (tidak peka huruf besar/kecil) |
+| `listSampleResumeCategories()` | Menampilkan semua kategori unik, terurut |
+| `listSampleResumeTags()` | Menampilkan semua tag unik, terurut |
+| `getSampleResume(id, language)` | Mendapatkan string YAML mentah dari sebuah contoh resume |
+
+`getSampleResume` akan melemparkan kesalahan jika id contoh tidak ada atau jika
+bahasa yang diminta tidak tersedia untuk contoh tersebut.

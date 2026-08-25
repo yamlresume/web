@@ -1,0 +1,85 @@
+---
+title: "@yamlresume/samples"
+---
+
+[`@yamlresume/samples`](https://www.npmjs.com/package/@yamlresume/samples) es
+el paquete que impulsa los currículums de ejemplo seleccionados en YAMLResume.
+Incluye un catálogo de currículums de ejemplo para puestos comunes — como
+ingeniero de software, analista de datos, científico de datos, gestor de
+producto y diseñador UX — cada uno traducido a 12 idiomas.
+
+También lo utilizan el comando [`yamlresume new --sample`](/docs/cli#new) y el
+subcomando [`yamlresume samples list`](/docs/cli#samples).
+
+## Uso
+
+Instala el paquete:
+
+```console
+$ npm install @yamlresume/samples
+```
+
+Luego consulta el catálogo de currículums de ejemplo de forma programática:
+
+```ts
+import {
+  getSampleResume,
+  listSampleResumeCategories,
+  listSampleResumeTags,
+  listSampleResumes,
+  listSampleResumesByCategory,
+  listSampleResumesByLanguage,
+  listSampleResumesByTag,
+} from '@yamlresume/samples'
+
+// List all sample resumes
+const samples = listSampleResumes()
+
+// List sample resumes that support a given locale language
+const chineseSamples = listSampleResumesByLanguage('zh-hans')
+
+// Filter by category or tag (case-insensitive)
+const engineering = listSampleResumesByCategory('Engineering')
+const pythonSamples = listSampleResumesByTag('python')
+
+// List all unique categories and tags, sorted alphabetically
+const categories = listSampleResumeCategories()
+const tags = listSampleResumeTags()
+
+// Load the raw YAML content of a sample resume
+const yaml = getSampleResume('software-engineer', 'en')
+```
+
+Cada entrada de currículum de ejemplo contiene metadatos completos:
+
+```ts
+{
+  id: 'software-engineer',
+  title: 'Software Engineer',
+  position: 'software engineer',
+  category: 'Engineering',
+  tags: ['full-stack', 'web-development', ...],
+  description: '...',
+  languages: ['de', 'en', 'es', ...],
+  contents: {
+    en: '# yaml-language-server: $schema=...',
+    'zh-hans': '# yaml-language-server: $schema=...',
+    ...
+  }
+}
+```
+
+## Query APIs
+
+| Function | Description |
+| --- | --- |
+| `listSampleResumes()` | List all available sample resumes |
+| `listSampleResumesByLanguage(language)` | List sample resumes supporting a locale language |
+| `listSampleResumesByCategory(category)` | List sample resumes in a category (case-insensitive) |
+| `listSampleResumesByTag(tag)` | List sample resumes having a tag (case-insensitive) |
+| `listSampleResumeCategories()` | List all unique categories, sorted |
+| `listSampleResumeTags()` | List all unique tags, sorted |
+| `getSampleResume(id, language)` | Get the raw YAML string of a sample resume |
+
+`getSampleResume` lanza un error cuando el id del ejemplo no existe o cuando el
+idioma solicitado no está disponible para ese ejemplo.

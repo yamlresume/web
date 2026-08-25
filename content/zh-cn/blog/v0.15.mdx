@@ -1,0 +1,141 @@
+---
+title: "YAMLResume v0.15：精选示例简历"
+description:
+  "YAMLResume v0.15 引入了 12 种语言的精选示例简历，包括全新的 `yamlresume samples`
+  指令以及 `yamlresume new` 的 `--sample`/`--language` 标志，还为
+  `yamlresume ai generate` 新增了 `--retry` 选项。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-21
+---
+
+我们很高兴地宣布 [YAMLResume
+v0.15](https://github.com/yamlresume/yamlresume/releases/tag/v0.15.0) 正式发布。
+此版本带来了全新的 [`@yamlresume/samples`](/zh-cn/docs/ecosystem/samples)
+包，内置针对常见职位、翻译成 12 种区域语言的精选示例简历；重构了 `yamlresume new`
+指令以基于这些示例创建简历；为
+[`yamlresume ai generate`](/zh-cn/docs/ai/generate) 新增了 `--retry`
+选项，还包含惯例的错误修复和改进。
+
+## 新包：@yamlresume/samples
+
+此版本的核心是全新的
+[`@yamlresume/samples`](https://www.npmjs.com/package/@yamlresume/samples)
+包。它提供了针对五个常见职位的精选示例简历目录：
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+
+每个示例简历都翻译成了 12 种区域语言（`de`、`en`、`es`、`fr`、`id`、`ja`、`nl`、`no`、
+`pt-br`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`），因此无论您用哪种语言撰写简历，
+都可以从一份地道的简历开始。
+
+该包还暴露了一组查询 API，方便您以编程方式浏览和筛选目录：
+
+```ts
+import {
+  getSampleResume,
+  listSampleResumes,
+  listSampleResumesByCategory,
+  listSampleResumesByLanguage,
+} from '@yamlresume/samples'
+
+const samples = listSampleResumes()
+const chineseSamples = listSampleResumesByLanguage('zh-hans')
+const engineering = listSampleResumesByCategory('Engineering')
+const yaml = getSampleResume('software-engineer', 'en')
+```
+
+完整的 API 参考请查看[文档](/zh-cn/docs/ecosystem/samples)。
+
+## 新指令：yamlresume samples
+
+要浏览可用的示例简历，我们新增了 `yamlresume samples` 指令：
+
+```console
+$ yamlresume samples list
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+```
+
+## 改进：yamlresume new
+
+`yamlresume new` 指令现在默认基于精选示例创建简历，由两个新标志提供支持：
+
+```console
+$ yamlresume new --help
+Usage: yamlresume new [options] [filename]
+
+create a new resume
+
+Arguments:
+  filename               output filename (default: "resume.yml")
+
+Options:
+  --sample <id>          create from a curated sample resume
+  --language <language>  locale language for the sample (default: "en")
+  -h, --help             display help for command
+```
+
+现在运行不带任何标志的 `yamlresume new my-resume.yml` 会基于默认的英文
+`software-engineer` 示例创建您的简历。生成的文件保留了便于编辑器/IDE 进行 schema
+验证的有用 YAML 注释，并带有默认布局，因此您可以立即构建它。
+
+想要不同的职位或语言？随意组合即可：
+
+```console
+$ yamlresume new ux-designer.yml --sample ux-designer
+✔ Created ux-designer.yml from sample "ux-designer" successfully.
+
+$ yamlresume new my-resume.yml --language zh-hans
+✔ Created my-resume.yml successfully.
+```
+
+## 新选项：ai generate --retry
+
+[`yamlresume ai generate`](/zh-cn/docs/ai/generate)
+会在每次生成后根据 [YAMLResume schema](/zh-cn/docs/compiler/schema)
+验证其输出，并在验证失败时将错误反馈给模型进行重试。之前重试次数是固定的；现在您可以使用新的
+`-r, --retry` 选项（默认：2）来控制它：
+
+```console
+$ yamlresume ai generate \
+    --position "Software Engineer" \
+    --language en \
+    --retry 5 \
+    resume.yml
+```
+
+使用 `--retry 0` 可以完全禁用重试，在第一次验证出错时立即失败。
+
+## 立即升级
+
+获取最新版本：
+
+```console
+$ npm install -g yamlresume@latest
+# 或
+$ brew upgrade yamlresume
+```
+
+然后从示例创建你的第一份简历：
+
+```console
+$ yamlresume new --sample software-engineer --language en my-resume.yml
+```
+
+## 致谢
+
+一如既往，我们欢迎你在 [GitHub](https://github.com/yamlresume/yamlresume) 上
+提供反馈和贡献。祝构建愉快！

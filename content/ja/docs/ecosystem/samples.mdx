@@ -1,0 +1,79 @@
+---
+title: "@yamlresume/samples"
+---
+
+[`@yamlresume/samples`](https://www.npmjs.com/package/@yamlresume/samples) は、YAMLResume のサンプル履歴書機能を支えるパッケージです。ソフトウェアエンジニア、データアナリスト、データサイエンティスト、プロダクトマネージャー、UX デザイナーなど、一般的な職種向けのサンプル履歴書カタログを提供し、それぞれが 12 のロケール言語に翻訳されています。
+
+このパッケージは、[`yamlresume new --sample`](/ja/docs/cli#new) コマンドや [`yamlresume samples list`](/ja/docs/cli#samples) サブコマンドでも使用されています。
+
+## 使用方法
+
+パッケージをインストールします：
+
+```console
+$ npm install @yamlresume/samples
+```
+
+次に、サンプル履歴書カタログをプログラムからクエリできます：
+
+```ts
+import {
+  getSampleResume,
+  listSampleResumeCategories,
+  listSampleResumeTags,
+  listSampleResumes,
+  listSampleResumesByCategory,
+  listSampleResumesByLanguage,
+  listSampleResumesByTag,
+} from '@yamlresume/samples'
+
+// List all sample resumes
+const samples = listSampleResumes()
+
+// List sample resumes that support a given locale language
+const chineseSamples = listSampleResumesByLanguage('zh-hans')
+
+// Filter by category or tag (case-insensitive)
+const engineering = listSampleResumesByCategory('Engineering')
+const pythonSamples = listSampleResumesByTag('python')
+
+// List all unique categories and tags, sorted alphabetically
+const categories = listSampleResumeCategories()
+const tags = listSampleResumeTags()
+
+// Load the raw YAML content of a sample resume
+const yaml = getSampleResume('software-engineer', 'en')
+```
+
+各サンプル履歴書エントリには、リッチなメタデータが含まれています：
+
+```ts
+{
+  id: 'software-engineer',
+  title: 'Software Engineer',
+  position: 'software engineer',
+  category: 'Engineering',
+  tags: ['full-stack', 'web-development', ...],
+  description: '...',
+  languages: ['de', 'en', 'es', ...],
+  contents: {
+    en: '# yaml-language-server: $schema=...',
+    'zh-hans': '# yaml-language-server: $schema=...',
+    ...
+  }
+}
+```
+
+## クエリ API
+
+| Function | Description |
+| --- | --- |
+| `listSampleResumes()` | List all available sample resumes |
+| `listSampleResumesByLanguage(language)` | List sample resumes supporting a locale language |
+| `listSampleResumesByCategory(category)` | List sample resumes in a category (case-insensitive) |
+| `listSampleResumesByTag(tag)` | List sample resumes having a tag (case-insensitive) |
+| `listSampleResumeCategories()` | List all unique categories, sorted |
+| `listSampleResumeTags()` | List all unique tags, sorted |
+| `getSampleResume(id, language)` | Get the raw YAML string of a sample resume |
+
+`getSampleResume` は、サンプル ID が存在しない場合や、サンプルに対して要求された言語が利用できない場合にエラーをスローします。

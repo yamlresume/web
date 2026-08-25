@@ -1,0 +1,152 @@
+---
+title: "YAMLResume v0.15 : Exemples de CV sélectionnés"
+description:
+  "YAMLResume v0.15 introduit des exemples de CV sélectionnés en 12 langues avec
+  la nouvelle commande `yamlresume samples` et les options `--sample`/`--language`
+  pour `yamlresume new`, ainsi qu'une nouvelle option `--retry` pour
+  `yamlresume ai generate`."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-21
+---
+
+Nous sommes ravis d'annoncer [YAMLResume
+v0.15](https://github.com/yamlresume/yamlresume/releases/tag/v0.15.0). Cette
+version livre un tout nouveau package
+[`@yamlresume/samples`](/fr/docs/ecosystem/samples) avec des exemples de CV
+sélectionnés pour des postes courants en 12 langues locales, retravaille la
+commande `yamlresume new` pour créer des CV à partir de ces exemples, ajoute une
+option `--retry` à [`yamlresume ai generate`](/fr/docs/ai/generate), et inclut
+les habituelles corrections de bugs et améliorations.
+
+## Nouveau Package : @yamlresume/samples
+
+Au cœur de cette version se trouve le nouveau package
+[`@yamlresume/samples`](https://www.npmjs.com/package/@yamlresume/samples). Il
+fournit un catalogue d'exemples de CV sélectionnés pour cinq postes courants :
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+
+Chaque exemple de CV est traduit en 12 langues locales (`de`, `en`, `es`,
+`fr`, `id`, `ja`, `nl`, `no`, `pt-br`, `zh-hans`, `zh-hant-hk`,
+`zh-hant-tw`), afin que vous puissiez partir d'un CV idiomatique quelle que
+soit la langue dans laquelle vous rédigez votre CV.
+
+Le package expose également un ensemble d'API de requête afin que vous puissiez
+parcourir et filtrer le catalogue par programmation :
+
+```ts
+import {
+  getSampleResume,
+  listSampleResumes,
+  listSampleResumesByCategory,
+  listSampleResumesByLanguage,
+} from '@yamlresume/samples'
+
+const samples = listSampleResumes()
+const chineseSamples = listSampleResumesByLanguage('zh-hans')
+const engineering = listSampleResumesByCategory('Engineering')
+const yaml = getSampleResume('software-engineer', 'en')
+```
+
+Consultez la [documentation](/fr/docs/ecosystem/samples) pour la référence
+complète de l'API.
+
+## Nouvelle Commande : yamlresume samples
+
+Pour parcourir ce qui est disponible, il y a une nouvelle commande
+`yamlresume samples` :
+
+```console
+$ yamlresume samples list
+
+| ID                | Position          | Title             | Category       |
+| ----------------- | ----------------- | ----------------- | -------------- |
+| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
+| data-scientist    | data scientist    | Data Scientist    | Data Science   |
+| product-manager   | product manager   | Product Manager   | Product        |
+| software-engineer | software engineer | Software Engineer | Engineering    |
+| ux-designer       | ux designer       | UX Designer       | Design         |
+```
+
+## Amélioré : yamlresume new
+
+La commande `yamlresume new` crée désormais des CV à partir d'exemples
+sélectionnés par défaut, grâce à deux nouvelles options :
+
+```console
+$ yamlresume new --help
+Usage: yamlresume new [options] [filename]
+
+create a new resume
+
+Arguments:
+  filename               output filename (default: "resume.yml")
+
+Options:
+  --sample <id>          create from a curated sample resume
+  --language <language>  locale language for the sample (default: "en")
+  -h, --help             display help for command
+```
+
+L'exécution de `yamlresume new my-resume.yml` sans aucune option crée
+désormais votre CV à partir de l'exemple `software-engineer` par défaut en
+anglais. Le fichier généré conserve des commentaires YAML utiles pour la
+validation du schéma dans l'éditeur/l'IDE et est fourni avec des layouts par
+défaut, afin que vous puissiez le compiler immédiatement.
+
+Vous voulez un autre poste ou une autre langue ? Mélangez simplement :
+
+```console
+$ yamlresume new ux-designer.yml --sample ux-designer
+✔ Created ux-designer.yml from sample "ux-designer" successfully.
+
+$ yamlresume new my-resume.yml --language zh-hans
+✔ Created my-resume.yml successfully.
+```
+
+## Nouvelle Option : ai generate --retry
+
+[`yamlresume ai generate`](/fr/docs/ai/generate) valide sa sortie par rapport au
+[schéma YAMLResume](/fr/docs/compiler/schema) après chaque tentative et relance
+la génération avec les erreurs réinjectées au modèle lorsque la validation
+échoue. Auparavant, la limite de tentatives était fixe ; vous pouvez maintenant
+la contrôler avec la nouvelle option `-r, --retry` (par défaut : 2) :
+
+```console
+$ yamlresume ai generate \
+    --position "Software Engineer" \
+    --language en \
+    --retry 5 \
+    resume.yml
+```
+
+Utilisez `--retry 0` pour désactiver complètement les nouvelles tentatives et
+échouer immédiatement à la première erreur de validation.
+
+## Mettez à Jour Aujourd'hui
+
+Obtenez la dernière version :
+
+```console
+$ npm install -g yamlresume@latest
+# ou
+$ brew upgrade yamlresume
+```
+
+Puis créez votre premier CV à partir d'un exemple :
+
+```console
+$ yamlresume new --sample software-engineer --language en my-resume.yml
+```
+
+## Crédit
+
+Comme toujours, nous accueillons vos retours et contributions sur
+[GitHub](https://github.com/yamlresume/yamlresume). Bonne construction !
