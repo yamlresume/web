@@ -112,6 +112,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: url('/developer/ai/index.html'),
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: url('/developer/cli/index.html'),
       lastModified: now,
       changeFrequency: 'monthly',
@@ -136,7 +142,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: url('/developer/node/index.html'),
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: url('/developer/playground/index.html'),
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: url('/developer/samples/index.html'),
       lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,

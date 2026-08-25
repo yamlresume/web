@@ -6,6 +6,7 @@ const YAMLRESUME_ROOT = path.resolve(import.meta.dirname, '../../yamlresume')
 const WEB_PUBLIC_ROOT = path.resolve(import.meta.dirname, '../public/developer')
 
 const PACKAGES = [
+  'ai',
   'cli',
   'core',
   'create-yamlresume',

@@ -33,7 +33,13 @@ describe('DeveloperDropdown', () => {
     await user.click(screen.getByRole('button', { name: defaultProps.label }))
 
     const expectedItems = [
+      { text: '@yamlresume/ai', href: '/en/developer/ai/index.html' },
       { text: '@yamlresume/core', href: '/en/developer/core/index.html' },
+      { text: '@yamlresume/node', href: '/en/developer/node/index.html' },
+      {
+        text: '@yamlresume/samples',
+        href: '/en/developer/samples/index.html',
+      },
       { text: 'CLI', href: '/en/developer/cli/index.html' },
       {
         text: 'create-yamlresume',
