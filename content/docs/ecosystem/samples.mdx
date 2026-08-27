@@ -47,7 +47,10 @@ const categories = listSampleResumeCategories()
 const tags = listSampleResumeTags()
 
 // Load the raw YAML content of a sample resume
-const yaml = getSampleResume('software-engineer', 'en')
+const yaml = getSampleResume('software-engineer', 'en', {
+  withLayouts: true,
+  withComments: true,
+})
 ```
 
 Each sample resume entry contains rich metadata:
@@ -79,7 +82,12 @@ Each sample resume entry contains rich metadata:
 | `listSampleResumesByTag(tag)` | List sample resumes having a tag (case-insensitive) |
 | `listSampleResumeCategories()` | List all unique categories, sorted |
 | `listSampleResumeTags()` | List all unique tags, sorted |
-| `getSampleResume(id, language)` | Get the raw YAML string of a sample resume |
+| `getSampleResume(id, language, options?)` | Get the raw YAML string of a sample resume (optionally with layouts and comments) |
+
+`getSampleResume` accepts an optional third `options` argument of type
+`{ withLayouts?: boolean; withComments?: boolean }` (both default to `false`).
+Set `withLayouts: true` to append the default layouts block, and
+`withComments: true` to inject editor-friendly YAML comments into the output.
 
 `getSampleResume` throws an error when the sample id does not exist or when
 the requested language is not available for the sample.
