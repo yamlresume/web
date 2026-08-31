@@ -16,6 +16,11 @@ and can be integrated into other applications.</p>
 <h2 id="features" class="tsd-anchor-link">Features<a href="#features" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <ul>
 <li>📝 <strong>Live YAML Editor</strong>: Monaco-based editor with syntax highlighting for AML.</li>
+<li>✨ <strong>YAML Language Support</strong>: Schema-driven completion, validation, and hover
+documentation powered by
+<a href="https://github.com/remcohaszing/monaco-yaml"><code>monaco-yaml</code></a> running the YAML
+language server in a Web Worker against the
+<a href="https://yamlresume.dev/docs/compiler/schema/json">YAMLResume JSON schema</a>.</li>
 <li>👁️ <strong>Real-time Preview</strong>: Instant preview of your resume in HTML, Markdown, or
 LaTeX.</li>
 <li>📱 <strong>Responsive Design</strong>: Split-pane layout on desktop, tabbed interface on
@@ -165,6 +170,31 @@ the editor and the previewer.</p>
 <p>Gets the basename from a filepath.</p>
 <h3 id="_-10" class="tsd-anchor-link"><code>getExtension(engine: LayoutEngine): string</code><a href="#_-10" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <p>Gets the file extension for a given rendering engine.</p>
+<h2 id="local-development" class="tsd-anchor-link">Local Development<a href="#local-development" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>A Vite-based web harness lives in <a href="https://github.com/yamlresume/yamlresume/tree/15f5e7cce562a623eba519f4320c3ce25337e447/packages/playground/web"><code>web/</code></a>. It mounts the
+<code>&lt;Playground /&gt;</code> component directly from the TypeScript sources (no build step
+required) with Tailwind CSS configured.</p>
+<pre><code class="bash"><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-2">playground</span><span class="hl-1"> </span><span class="hl-2">web:dev</span><br/><span class="hl-3"># or</span><br/><span class="hl-0">pnpm</span><span class="hl-1"> </span><span class="hl-6">-C</span><span class="hl-1"> </span><span class="hl-2">packages/playground/web</span><span class="hl-1"> </span><span class="hl-2">dev</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Then open <a href="http://localhost:5173">http://localhost:5173</a>.</p>
+<h3 id="yaml-language-support" class="tsd-anchor-link">YAML language support<a href="#yaml-language-support" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>The resume editor provides completion, validation, and hover documentation via
+<code>monaco-yaml</code>, which runs the YAML language server in a Web Worker bundled from
+<code>src/monaco/workers/</code>. The worker wiring uses the standard
+<code>new Worker(new URL(...), import.meta.url)</code> pattern, which Vite and webpack
+understand natively when building from source.</p>
+<p>If you consume the pre-built <code>dist</code> bundle in an app whose bundler cannot emit
+workers from it, install your own <code>globalThis.MonacoEnvironment.getWorker</code>
+<strong>before</strong> importing this package (a host-provided <code>getWorker</code> takes
+precedence), pointing the <code>yaml</code> label at <code>monaco-yaml/yaml.worker</code> and
+<code>editorWorkerService</code> at Monaco's editor worker:</p>
+<pre><code class="js"><span class="hl-4">import</span><span class="hl-1"> </span><span class="hl-5">EditorWorker</span><span class="hl-1"> </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;monaco-editor/esm/vs/editor/editor.worker?worker&#39;</span><br/><span class="hl-4">import</span><span class="hl-1"> </span><span class="hl-5">YamlWorker</span><span class="hl-1"> </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;monaco-yaml/yaml.worker?worker&#39;</span><br/><br/><span class="hl-5">globalThis</span><span class="hl-1">.</span><span class="hl-5">MonacoEnvironment</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-0">getWorker</span><span class="hl-1">(</span><span class="hl-5">moduleId</span><span class="hl-1">, </span><span class="hl-5">label</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-4">if</span><span class="hl-1"> (</span><span class="hl-5">label</span><span class="hl-1"> === </span><span class="hl-2">&#39;yaml&#39;</span><span class="hl-1">) </span><span class="hl-4">return</span><span class="hl-1"> </span><span class="hl-6">new</span><span class="hl-1"> </span><span class="hl-0">YamlWorker</span><span class="hl-1">()</span><br/><span class="hl-1">    </span><span class="hl-4">return</span><span class="hl-1"> </span><span class="hl-6">new</span><span class="hl-1"> </span><span class="hl-0">EditorWorker</span><span class="hl-1">()</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Note that <code>monaco-yaml</code> currently requires <code>monaco-editor</code> &lt;= 0.54.x (support
+for the 0.55 worker API is pending upstream, see
+<a href="https://github.com/remcohaszing/monaco-yaml/pull/282">remcohaszing/monaco-yaml#282</a>).</p>
 <h2 id="license" class="tsd-anchor-link">License<a href="#license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
 <p>MIT © <a href="https://ppresume.com">PPResume</a></p>
 </div></div>
@@ -218,6 +248,10 @@ the editor and the previewer.</p>
 <li><a href="#_-8"><span></span></a></li>
 <li><a href="#_-9"><span></span></a></li>
 <li><a href="#_-10"><span></span></a></li></ul></li>
+<li><a href="#local-development"><span>Local <wbr/>Development</span></a></li>
+<li>
+<ul>
+<li><a href="#yaml-language-support"><span>YAML language support</span></a></li></ul></li>
 <li><a href="#license"><span>License</span></a></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="modules.html">@yamlresume/playground</a>
