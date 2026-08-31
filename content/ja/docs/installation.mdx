@@ -6,7 +6,7 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
 YAMLResume は Node.js ツールで、内部では YAML 形式の履歴書を LaTeX コードに変換し、LaTeX タイプセッティングエンジンを呼び出して生成された LaTeX コードを PDF にコンパイルします。また、最適な PDF 出力を得るために、いくつかのフォントのインストールも推奨しています。要するに、YAMLResume を始めるには以下をインストールする必要があります：
 
-- Node.js
+- Node.js 22 または更新バージョン
 - [yamlresume パッケージ](https://www.npmjs.com/package/yamlresume)
 - タイプセッティングエンジン
 - [オプション] いくつかのフォント
@@ -93,13 +93,11 @@ Docker ユーザーでない場合は、以下の適切な説明に従って、�
 
 ### Node.js
 
-Node.js 20.x または更新バージョンが必要です。
+Node.js 22.x または更新バージョンが必要です。
 
-<Callout title="なぜ Node.js 20.x または更新バージョンが必要なのですか？">
-  理論的には `yamlresume` は Node.js 18 で動作するはずですが、Node.js 18 LTS が
-  [2025 年 4 月 30 日](https://nodejs.org/en/blog/release/v18.20.8)
-  にライフサイクル終了を迎える予定のため、Node.js 20
-  または更新バージョンの使用を強く推奨します。
+<Callout title="なぜ Node.js 22.x または更新バージョンが必要なのですか？">
+  YAMLResume パッケージがサポートする最小ランタイムは Node.js 22 です。
+  それ以前の Node.js バージョンはサポートされていません。
 </Callout>
 
 異なるオペレーティングシステムで Node.js をインストールする方法は 100 以上あります。開始するには、公式の [Node.js ダウンロード](https://nodejs.org/en/download) をご確認ください。
@@ -128,21 +126,25 @@ choco install nodejs.install
 <Tab value="Linux">
 <Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
 <Tab value="Ubuntu">
-Ubuntu 24.10 または更新バージョン向け：
+Ubuntu のディストリビューションによってバージョンが異なる `nodejs` パッケージではなく、
+[NodeSource](https://github.com/nodesource/distributions) の Node.js 22
+リポジトリを使用してください：
 
 ```sh
-sudo apt install nodejs
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt install -y nodejs
 ```
-
-Ubuntu 24.04 またはそれより古いバージョンの場合は、[NodeSource](https://downloads.nodesource.com/#debian) を確認して Node.js 20 または更新バージョンを取得してください。
 
 </Tab>
 
 <Tab value="RHEL">
-Fedora、AlmaLinux、Rocky Linux などの RHEL ベースの Linux 向け：
+Fedora、AlmaLinux、Rocky Linux などの RHEL ベースの Linux では、
+[NodeSource](https://github.com/nodesource/distributions) の Node.js 22
+リポジトリを使用してください：
 
 ```sh
-sudo dnf install nodejs
+curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo bash -
+sudo dnf install -y nodejs
 ```
 
 </Tab>

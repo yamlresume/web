@@ -6,7 +6,7 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
 YAMLResume adalah alat Node.js, di baliknya, ini mengubah resume Anda dari format YAML ke kode LaTeX dan kemudian memanggil mesin typesetting LaTeX untuk mengompilasi kode LaTeX yang dihasilkan ke PDF. Selain itu, untuk mendapatkan output PDF yang optimal, kami juga menyarankan untuk menginstal beberapa font. Singkatnya, Anda perlu menginstal hal-hal berikut untuk memulai dengan YAMLResume:
 
-- Node.js
+- Node.js 22 atau yang lebih baru
 - [paket yamlresume](https://www.npmjs.com/package/yamlresume)
 - mesin typesetting
 - [opsional] beberapa font
@@ -93,10 +93,11 @@ Jika Anda bukan pengguna docker, silakan ikuti petunjuk yang sesuai di bawah ini
 
 ### Node.js
 
-Node.js 20.x atau yang lebih baru diperlukan.
+Node.js 22.x atau yang lebih baru diperlukan.
 
-<Callout title="Mengapa Node.js 20.x atau yang lebih baru?">
-Secara teori `yamlresume` seharusnya bekerja dengan Node.js 18, namun sangat disarankan untuk menggunakan Node.js 20 atau yang lebih baru karena Node.js 18 LTS dijadwalkan mencapai End-of-Life pada [30 April 2025](https://nodejs.org/en/blog/release/v18.20.8).
+<Callout title="Mengapa Node.js 22.x atau yang lebih baru?">
+  Paket YAMLResume menetapkan Node.js 22 sebagai runtime minimum yang didukung.
+  Versi Node.js sebelumnya tidak didukung.
 </Callout>
 
 Mungkin ada lebih dari 100+ metode untuk menginstal Node.js pada OS yang berbeda, Anda dapat melihat [Unduhan Node.js resmi](https://nodejs.org/en/download) untuk memulai.
@@ -125,21 +126,25 @@ choco install nodejs.install
 <Tab value="Linux">
 <Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
 <Tab value="Ubuntu">
-Untuk Ubuntu 24.10 atau yang lebih baru:
+Gunakan repositori Node.js 22 dari
+[NodeSource](https://github.com/nodesource/distributions), bukan paket `nodejs`
+Ubuntu yang versinya bergantung pada distribusi:
 
 ```sh
-sudo apt install nodejs
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt install -y nodejs
 ```
-
-Untuk Ubuntu 24.04 atau yang lebih lama, silakan lihat [NodeSource](https://downloads.nodesource.com/#debian) untuk mendapatkan Node.js 20 atau yang lebih baru.
 
 </Tab>
 
 <Tab value="RHEL">
-Untuk linux berbasis RHEL seperti Fedora, AlmaLinux, Rocky Linux, dll:
+Untuk Linux berbasis RHEL seperti Fedora, AlmaLinux, dan Rocky Linux, gunakan
+repositori Node.js 22 dari
+[NodeSource](https://github.com/nodesource/distributions):
 
 ```sh
-sudo dnf install nodejs
+curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo bash -
+sudo dnf install -y nodejs
 ```
 
 </Tab>

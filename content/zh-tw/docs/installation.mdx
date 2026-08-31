@@ -6,7 +6,7 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
 YAMLResume 是一個 Node.js 工具，在底層，它將您的履歷從 YAML 格式轉換為 LaTeX 代碼，然後調用 LaTeX 排版引擎來編譯生成的 LaTeX 代碼為 PDF。此外，為了獲得最佳的 PDF 輸出，我們還建議安裝一些字型。簡而言之，您需要安裝以下內容才能開始使用 YAMLResume：
 
-- Node.js
+- Node.js 22 或更新版本
 - [yamlresume 套件](https://www.npmjs.com/package/yamlresume)
 - 排版引擎
 - [可選] 一些字型
@@ -93,12 +93,11 @@ docker run --rm -v $(pwd):/home/yamlresume -u root yamlresume/yamlresume new my-
 
 ### Node.js
 
-需要 Node.js 20.x 或更新版本。
+需要 Node.js 22.x 或更新版本。
 
-<Callout title="為什麼需要 Node.js 20.x 或更新版本？">
-  理論上 `yamlresume` 應該可以與 Node.js 18 一起工作，但是強烈建議使用 Node.js
-  20 或更新版本，因為 Node.js 18 LTS 計劃在 [2025 年 4 月 30
-  日](https://nodejs.org/en/blog/release/v18.20.8) 到達生命週期結束。
+<Callout title="為什麼需要 Node.js 22.x 或更新版本？">
+  YAMLResume 套件宣告支援的最低執行環境版本為 Node.js 22。
+  不支援更早的 Node.js 版本。
 </Callout>
 
 在不同的作業系統上可能有 100 多種安裝 Node.js 的方法，您可以查看官方的 [Node.js 下載](https://nodejs.org/en/download) 來開始。
@@ -127,21 +126,23 @@ choco install nodejs.install
 <Tab value="Linux">
 <Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
 <Tab value="Ubuntu">
-對於 Ubuntu 24.10 或更新版本：
+請使用 [NodeSource](https://github.com/nodesource/distributions) 的 Node.js 22
+套件庫，而不是版本隨 Ubuntu 發行版變化的 `nodejs` 套件：
 
 ```sh
-sudo apt install nodejs
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt install -y nodejs
 ```
-
-對於 Ubuntu 24.04 或更舊版本，請查看 [NodeSource](https://downloads.nodesource.com/#debian) 來獲取 Node.js 20 或更新版本。
 
 </Tab>
 
 <Tab value="RHEL">
-對於基於 RHEL 的 linux，如 Fedora、AlmaLinux、Rocky Linux 等：
+對於 Fedora、AlmaLinux 和 Rocky Linux 等基於 RHEL 的 Linux，請使用
+[NodeSource](https://github.com/nodesource/distributions) 的 Node.js 22 套件庫：
 
 ```sh
-sudo dnf install nodejs
+curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo bash -
+sudo dnf install -y nodejs
 ```
 
 </Tab>

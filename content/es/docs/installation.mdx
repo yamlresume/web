@@ -6,7 +6,7 @@ import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
 YAMLResume es una herramienta de Node.js, bajo el capó, transforma tus currículums del formato YAML a código LaTeX y luego llama a un motor de composición tipográfica LaTeX para compilar el código LaTeX generado a PDF. Además, para obtener una salida PDF óptima, también sugerimos instalar algunas fuentes. En resumen, necesitas instalar lo siguiente para comenzar con YAMLResume:
 
-- Node.js
+- Node.js 22 o posterior
 - [paquete yamlresume](https://www.npmjs.com/package/yamlresume)
 - un motor de composición tipográfica
 - [opcional] algunas fuentes
@@ -93,10 +93,11 @@ Si no eres un usuario de docker, sigue las instrucciones apropiadas a continuaci
 
 ### Node.js
 
-Se requiere Node.js 20.x o posterior.
+Se requiere Node.js 22.x o posterior.
 
-<Callout title="¿Por qué Node.js 20.x o posterior?">
-  Teóricamente `yamlresume` debería funcionar con Node.js 18, sin embargo, se recomienda encarecidamente usar Node.js 20 o posterior porque Node.js 18 LTS está programado para llegar al final de su vida útil el [30 de abril de 2025](https://nodejs.org/en/blog/release/v18.20.8).
+<Callout title="¿Por qué Node.js 22.x o posterior?">
+  Los paquetes de YAMLResume declaran Node.js 22 como la versión mínima
+  compatible. Las versiones anteriores de Node.js no son compatibles.
 </Callout>
 
 Puede haber más de 100 métodos para instalar Node.js en diferentes sistemas operativos, puedes consultar la [Descarga oficial de Node.js](https://nodejs.org/en/download) para comenzar.
@@ -125,23 +126,25 @@ choco install nodejs.install
 <Tab value="Linux">
 <Tabs groupId='linux' items={['Ubuntu', 'RHEL']}>
 <Tab value="Ubuntu">
-Para Ubuntu 24.10 o posterior:
+Usa el repositorio de Node.js 22 de
+[NodeSource](https://github.com/nodesource/distributions) en lugar del paquete
+`nodejs` de Ubuntu, cuya versión depende de la distribución:
 
 ```sh
-sudo apt install nodejs
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt install -y nodejs
 ```
-
-Para Ubuntu 24.04 o anterior, por favor echa un vistazo a
-[NodeSource](https://downloads.nodesource.com/#debian) para obtener Node.js 20 o
-posterior.
 
 </Tab>
 
 <Tab value="RHEL">
-Para linux basado en RHEL como Fedora, AlmaLinux, Rocky Linux, etc.:
+Para Linux basado en RHEL como Fedora, AlmaLinux y Rocky Linux, usa el
+repositorio de Node.js 22 de
+[NodeSource](https://github.com/nodesource/distributions):
 
 ```sh
-sudo dnf install nodejs
+curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo bash -
+sudo dnf install -y nodejs
 ```
 
 </Tab>
