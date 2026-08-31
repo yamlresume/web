@@ -1,0 +1,128 @@
+---
+title: Translate
+---
+
+The `yamlresume ai translate` command translates an existing resume from its
+current locale language to another supported language while preserving its
+YAMLResume structure.
+
+```console
+$ yamlresume ai translate --help
+Usage: yamlresume ai translate [options] <input> <output>
+
+translate a resume from one locale language to another with AI
+
+Arguments:
+  input                 source resume filename
+  output                output resume filename
+
+Options:
+  -t, --to <language>   target locale language
+  -m, --model <model>   AI provider model to use
+  -b, --base-url <url>  AI provider base URL
+  -r, --retry <count>   maximum retries when validation fails (default: 2)
+  -h, --help            display help for command
+
+Environment variables:
+
+  Required (one API key for the selected cloud provider):
+    DEEPSEEK_API_KEY          DeepSeek API key
+    OPENAI_API_KEY            OpenAI API key
+    MOONSHOT_API_KEY          Kimi (Moonshot AI) API key
+
+  Optional:
+    OLLAMA_HOST               Ollama host for local models
+    YAMLRESUME_AI_MODEL       model override (overridden by --model)
+    YAMLRESUME_AI_BASE_URL    API base URL override (overridden by --base-url)
+```
+
+## Example
+
+Set a provider API key, then translate a resume to Simplified Chinese:
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai translate \
+    --to zh-hans \
+    resume.en.yml \
+    resume.zh-hans.yml
+```
+
+The source language is read from the input resume's `locale.language` field.
+The command updates this field to the target language and writes the translated
+resume to the output path. It does not overwrite an existing output file.
+
+Both the source and target must use a [supported locale language](/docs/locale):
+`de`, `en`, `es`, `fr`, `id`, `ja`, `nl`, `no`, `pt-br`, `zh-hans`,
+`zh-hant-hk`, or `zh-hant-tw`.
+
+Override the model and base URL with CLI flags:
+
+```console
+$ yamlresume ai translate \
+    --to fr \
+    --model gpt-5 \
+    --base-url https://custom.openai.endpoint/v1 \
+    resume.en.yml \
+    resume.fr.yml
+```
+
+You can also use the `YAMLRESUME_AI_MODEL` and `YAMLRESUME_AI_BASE_URL`
+environment variables. See [Generate: Supported providers](./generate#supported-providers)
+for the available providers and their default models.
+
+### `--retry`
+
+The translated output is validated against the [YAMLResume
+schema](/docs/compiler/schema) after each attempt. If validation fails, the
+errors are sent back to the model and translation is retried. The maximum
+number of retries is 2 by default.
+
+Use `-r, --retry` with a non-negative integer to change the limit:
+
+```console
+$ yamlresume ai translate \
+    --to ja \
+    --retry 5 \
+    resume.en.yml \
+    resume.ja.yml
+```
+
+Use `--retry 0` to fail on the first validation error without retrying.
+
+## What is translated
+
+The command translates natural-language resume content while preserving the
+source document's structure. In particular, it:
+
+- Keeps YAML keys, list order, section order, comments, and the `layouts` block.
+- Updates `locale.language` to the target language.
+- Keeps URLs, email addresses, phone numbers, dates, and location fields
+  unchanged.
+- Keeps schema enum values such as degree, fluency, language, skill level,
+  profile network, and country in English so they remain valid.
+- Preserves multi-paragraph summaries as YAML literal block scalars.
+- Does not add or remove sections, items, or fields.
+
+The result is parsed and validated before it is written to disk.
+
+## Programmatic API
+
+The [`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai) package
+also exposes the underlying translation API:
+
+```ts
+import { translateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+const sourceYaml = "...";
+
+const yaml = await translateResume(sourceYaml, "en", "zh-hans", {
+  model,
+});
+```
+
+When working with files in Node.js, `@yamlresume/node` exposes
+`translateResumeFile`, which reads the source language from `locale.language`
+and writes the validated translation to a new file.

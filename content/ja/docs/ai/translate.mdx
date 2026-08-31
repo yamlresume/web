@@ -1,0 +1,83 @@
+---
+title: 翻訳
+---
+
+`yamlresume ai translate` コマンドは、既存の履歴書を現在のロケール言語から別の対応言語へ、YAMLResume の構造を維持したまま翻訳します。
+
+```console
+$ yamlresume ai translate --help
+Usage: yamlresume ai translate [options] <input> <output>
+
+translate a resume from one locale language to another with AI
+
+Arguments:
+  input                 source resume filename
+  output                output resume filename
+
+Options:
+  -t, --to <language>   target locale language
+  -m, --model <model>   AI provider model to use
+  -b, --base-url <url>  AI provider base URL
+  -r, --retry <count>   maximum retries when validation fails (default: 2)
+  -h, --help            display help for command
+```
+
+## 使用例
+
+プロバイダーの API キーを設定し、履歴書を簡体字中国語へ翻訳します。
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai translate \
+    --to zh-hans \
+    resume.en.yml \
+    resume.zh-hans.yml
+```
+
+翻訳元の言語は、入力履歴書の `locale.language` フィールドから読み取られます。コマンドはこのフィールドを翻訳先の言語に更新し、翻訳結果を出力先へ書き込みます。既存の出力ファイルは上書きしません。
+
+翻訳元と翻訳先には、[対応しているロケール言語](/ja/docs/locale)を指定してください：`de`、`en`、`es`、`fr`、`id`、`ja`、`nl`、`no`、`pt-br`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`。
+
+モデルとベース URL は `--model` と `--base-url`、または `YAMLRESUME_AI_MODEL` と `YAMLRESUME_AI_BASE_URL` で指定できます。対応プロバイダーと環境変数については、[Generate](./generate) を参照してください。
+
+### `--retry`
+
+翻訳結果は、試行ごとに [YAMLResume スキーマ](/ja/docs/compiler/schema) に対して検証されます。検証に失敗すると、エラーがモデルへ返され、翻訳が再試行されます。デフォルトの最大再試行回数は 2 回です。
+
+```console
+$ yamlresume ai translate \
+    --to ja \
+    --retry 5 \
+    resume.en.yml \
+    resume.ja.yml
+```
+
+再試行せず、最初の検証エラーで終了するには `--retry 0` を指定します。
+
+## 翻訳される内容
+
+このコマンドは自然言語のコンテンツを翻訳し、元の文書構造を維持します。具体的には：
+
+- YAML キー、リストとセクションの順序、コメント、`layouts` ブロックを維持します。
+- `locale.language` を翻訳先の言語に更新します。
+- URL、メールアドレス、電話番号、日付、所在地フィールドは変更しません。
+- 学位、言語レベル、言語、スキルレベル、プロフィールのネットワーク、国など、スキーマの列挙値は英語のまま維持します。
+- セクション、項目、フィールドを追加または削除しません。
+
+結果はディスクへ書き込まれる前に解析・検証されます。
+
+## プログラム API
+
+[`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai) パッケージから翻訳 API も利用できます。
+
+```ts
+import { translateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+const sourceYaml = "...";
+
+const yaml = await translateResume(sourceYaml, "en", "zh-hans", {
+  model,
+});
+```

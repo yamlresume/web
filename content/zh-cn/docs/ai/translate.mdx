@@ -1,0 +1,83 @@
+---
+title: 翻译
+---
+
+`yamlresume ai translate` 命令可将现有简历从当前区域语言翻译为另一种支持的语言，同时保留 YAMLResume 结构。
+
+```console
+$ yamlresume ai translate --help
+Usage: yamlresume ai translate [options] <input> <output>
+
+translate a resume from one locale language to another with AI
+
+Arguments:
+  input                 source resume filename
+  output                output resume filename
+
+Options:
+  -t, --to <language>   target locale language
+  -m, --model <model>   AI provider model to use
+  -b, --base-url <url>  AI provider base URL
+  -r, --retry <count>   maximum retries when validation fails (default: 2)
+  -h, --help            display help for command
+```
+
+## 示例
+
+设置服务提供商的 API 密钥，然后将简历翻译为简体中文：
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai translate \
+    --to zh-hans \
+    resume.en.yml \
+    resume.zh-hans.yml
+```
+
+源语言从输入简历的 `locale.language` 字段中读取。命令会将该字段更新为目标语言，并将翻译结果写入输出路径。命令不会覆盖已有的输出文件。
+
+源语言和目标语言必须是[支持的区域语言](/zh-cn/docs/locale)：`de`、`en`、`es`、`fr`、`id`、`ja`、`nl`、`no`、`pt-br`、`zh-hans`、`zh-hant-hk` 或 `zh-hant-tw`。
+
+你可以通过 `--model` 和 `--base-url` 指定模型和基础 URL，也可以使用 `YAMLRESUME_AI_MODEL` 和 `YAMLRESUME_AI_BASE_URL` 环境变量。支持的服务提供商及其环境变量请参阅 [Generate](./generate)。
+
+### `--retry`
+
+每次尝试后，翻译结果都会根据 [YAMLResume schema](/zh-cn/docs/compiler/schema) 进行验证。如果验证失败，错误会反馈给模型并重新翻译。默认最多重试 2 次。
+
+```console
+$ yamlresume ai translate \
+    --to ja \
+    --retry 5 \
+    resume.en.yml \
+    resume.ja.yml
+```
+
+使用 `--retry 0` 可禁用重试，在首次验证失败时直接退出。
+
+## 翻译范围
+
+该命令会翻译自然语言内容，同时保留源文档的结构。具体包括：
+
+- 保留 YAML 键、列表和章节顺序、注释以及 `layouts` 块。
+- 将 `locale.language` 更新为目标语言。
+- 不修改 URL、电子邮箱、电话号码、日期和地址字段。
+- 学位、语言熟练度、语言、技能等级、社交网络和国家等 schema 枚举值保持英文，以确保验证通过。
+- 不添加或删除章节、条目或字段。
+
+结果在写入磁盘前会进行解析和验证。
+
+## 编程 API
+
+[`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai) 包也提供底层翻译 API：
+
+```ts
+import { translateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+const sourceYaml = "...";
+
+const yaml = await translateResume(sourceYaml, "en", "zh-hans", {
+  model,
+});
+```

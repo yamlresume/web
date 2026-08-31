@@ -1,0 +1,96 @@
+---
+title: "YAMLResume v0.16 : Traduisez vos CV avec l'IA"
+description:
+  "YAMLResume v0.16 introduit `yamlresume ai translate`, qui traduit un CV
+  existant vers une autre langue régionale prise en charge tout en conservant
+  sa structure YAMLResume."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-28
+---
+
+Nous sommes ravis d'annoncer [YAMLResume
+v0.16](https://github.com/yamlresume/yamlresume/releases/tag/v0.16.0). Cette
+version apporte la traduction de CV par IA avec la nouvelle commande
+[`yamlresume ai translate`](/fr/docs/ai/translate) et l'API `translateResume`
+de [`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai).
+
+## Nouvelle commande : yamlresume ai translate
+
+Indiquez le fichier d'entrée, le fichier de sortie et la langue régionale
+cible :
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai translate \
+    --to zh-hans \
+    resume.en.yml \
+    resume.zh-hans.yml
+```
+
+La langue source est lue dans `locale.language`. La traduction met à jour ce
+champ et est enregistrée dans un nouveau fichier sans écraser une sortie
+existante.
+
+Les 12 langues régionales YAMLResume sont prises en charge : `de`, `en`, `es`,
+`fr`, `id`, `ja`, `nl`, `no`, `pt-br`, `zh-hans`, `zh-hant-hk` et
+`zh-hant-tw`.
+
+## Une traduction qui conserve la structure
+
+La commande traduit le contenu en langue naturelle tout en conservant les clés
+YAML, l'ordre des listes et sections, les commentaires et le bloc `layouts`.
+Les URL, e-mails, téléphones, dates, localisations et valeurs d'énumération du
+schéma restent inchangés.
+
+Le résultat est analysé et validé selon le [schéma
+YAMLResume](/fr/docs/compiler/schema) avant d'être écrit sur le disque.
+
+## Validation et réessais automatiques
+
+En cas d'échec de validation, les erreurs sont renvoyées au modèle et la
+traduction est réessayée. Le maximum par défaut est 2 et peut être modifié avec
+`--retry` :
+
+```console
+$ yamlresume ai translate \
+    --to ja \
+    --retry 5 \
+    resume.en.yml \
+    resume.ja.yml
+```
+
+Utilisez `--retry 0` pour ne pas réessayer. La commande partage la configuration
+des fournisseurs, modèles et URL de base avec [`yamlresume ai
+generate`](/fr/docs/ai/generate).
+
+## API programmatique
+
+```ts
+import { translateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+const sourceYaml = "...";
+
+const yaml = await translateResume(sourceYaml, "en", "zh-hans", {
+  model,
+});
+```
+
+`@yamlresume/node` expose également `translateResumeFile` pour les workflows
+basés sur des fichiers.
+
+## Mettez à niveau dès aujourd'hui
+
+```console
+$ npm install -g yamlresume@latest
+# ou
+$ brew upgrade yamlresume
+```
+
+Consultez le [guide complet de traduction par
+IA](/fr/docs/ai/translate) pour toutes les options.
+
+Comme toujours, vos retours et contributions sont les bienvenus sur
+[GitHub](https://github.com/yamlresume/yamlresume). Bonne traduction !

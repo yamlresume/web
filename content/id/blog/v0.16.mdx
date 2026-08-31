@@ -1,0 +1,91 @@
+---
+title: "YAMLResume v0.16: Terjemahkan Resume dengan AI"
+description:
+  "YAMLResume v0.16 memperkenalkan `yamlresume ai translate`, yang menerjemahkan
+  resume ke bahasa lokal lain yang didukung tanpa mengubah struktur
+  YAMLResume."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-28
+---
+
+Kami dengan senang mengumumkan [YAMLResume
+v0.16](https://github.com/yamlresume/yamlresume/releases/tag/v0.16.0). Rilis ini
+menghadirkan penerjemahan resume berbasis AI melalui perintah baru
+[`yamlresume ai translate`](/id/docs/ai/translate) dan API `translateResume`
+dari [`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai).
+
+## Perintah baru: yamlresume ai translate
+
+Tentukan berkas masukan, berkas keluaran, dan bahasa lokal tujuan:
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai translate \
+    --to zh-hans \
+    resume.en.yml \
+    resume.zh-hans.yml
+```
+
+Bahasa sumber dibaca dari `locale.language`. Hasil terjemahan memperbarui kolom
+tersebut dan disimpan ke berkas baru tanpa menimpa keluaran yang sudah ada.
+
+Semua 12 bahasa lokal YAMLResume didukung: `de`, `en`, `es`, `fr`, `id`, `ja`,
+`nl`, `no`, `pt-br`, `zh-hans`, `zh-hant-hk`, dan `zh-hant-tw`.
+
+## Terjemahan yang mempertahankan struktur
+
+Perintah ini menerjemahkan konten bahasa alami sambil mempertahankan kunci YAML,
+urutan daftar dan bagian, komentar, serta blok `layouts`. URL, email, telepon,
+tanggal, lokasi, dan nilai enum skema tidak diubah.
+
+Hasil diparsing dan divalidasi terhadap [skema
+YAMLResume](/id/docs/compiler/schema) sebelum ditulis ke disk.
+
+## Validasi dan percobaan ulang otomatis
+
+Jika validasi gagal, kesalahan dikirim kembali ke model dan penerjemahan dicoba
+ulang. Batas bawaan adalah 2 dan dapat diubah dengan `--retry`:
+
+```console
+$ yamlresume ai translate \
+    --to ja \
+    --retry 5 \
+    resume.en.yml \
+    resume.ja.yml
+```
+
+Gunakan `--retry 0` untuk menonaktifkan percobaan ulang. Konfigurasi penyedia,
+model, dan URL dasar sama dengan [`yamlresume ai
+generate`](/id/docs/ai/generate).
+
+## API terprogram
+
+```ts
+import { translateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+const sourceYaml = "...";
+
+const yaml = await translateResume(sourceYaml, "en", "zh-hans", {
+  model,
+});
+```
+
+`@yamlresume/node` juga menyediakan `translateResumeFile` untuk alur kerja
+berbasis berkas.
+
+## Tingkatkan sekarang
+
+```console
+$ npm install -g yamlresume@latest
+# atau
+$ brew upgrade yamlresume
+```
+
+Lihat [panduan lengkap penerjemahan AI](/id/docs/ai/translate) untuk semua
+opsi.
+
+Seperti biasa, kami menantikan masukan dan kontribusi Anda di
+[GitHub](https://github.com/yamlresume/yamlresume). Selamat menerjemahkan!

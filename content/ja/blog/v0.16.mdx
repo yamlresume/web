@@ -1,0 +1,74 @@
+---
+title: "YAMLResume v0.16: AI で履歴書を翻訳"
+description:
+  "YAMLResume v0.16 では、YAMLResume の構造を維持したまま既存の履歴書を別の対応ロケール言語へ翻訳する `yamlresume ai translate` を導入します。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-28
+---
+
+[YAMLResume v0.16](https://github.com/yamlresume/yamlresume/releases/tag/v0.16.0) のリリースをお知らせします。このリリースでは、新しい [`yamlresume ai translate`](/ja/docs/ai/translate) コマンドと [`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai) の `translateResume` API により、AI を使った履歴書翻訳が可能になりました。
+
+## 新しいコマンド：yamlresume ai translate
+
+入力ファイル、出力ファイル、翻訳先のロケール言語を指定します。
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai translate \
+    --to zh-hans \
+    resume.en.yml \
+    resume.zh-hans.yml
+```
+
+翻訳元の言語は `locale.language` から読み取られます。翻訳結果ではこのフィールドが更新され、既存の出力を上書きせずに新しいファイルへ保存されます。
+
+YAMLResume の 12 のロケール言語（`de`、`en`、`es`、`fr`、`id`、`ja`、`nl`、`no`、`pt-br`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`）に対応しています。
+
+## 構造を維持する翻訳
+
+自然言語のコンテンツを翻訳しながら、YAML キー、リストとセクションの順序、コメント、`layouts` ブロックを維持します。URL、メール、電話番号、日付、所在地、スキーマの列挙値も変更しません。
+
+結果はディスクへ書き込まれる前に解析され、[YAMLResume スキーマ](/ja/docs/compiler/schema)に対して検証されます。
+
+## 自動検証と再試行
+
+検証に失敗すると、エラーがモデルへ返され、翻訳が再試行されます。デフォルトの最大回数は 2 回で、`--retry` で変更できます。
+
+```console
+$ yamlresume ai translate \
+    --to ja \
+    --retry 5 \
+    resume.en.yml \
+    resume.ja.yml
+```
+
+再試行しない場合は `--retry 0` を指定します。プロバイダー、モデル、ベース URL の設定は [`yamlresume ai generate`](/ja/docs/ai/generate) と共通です。
+
+## プログラム API
+
+```ts
+import { translateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+const sourceYaml = "...";
+
+const yaml = await translateResume(sourceYaml, "en", "zh-hans", {
+  model,
+});
+```
+
+ファイルベースの処理には、`@yamlresume/node` の `translateResumeFile` も利用できます。
+
+## 今すぐアップグレード
+
+```console
+$ npm install -g yamlresume@latest
+# または
+$ brew upgrade yamlresume
+```
+
+すべてのオプションについては、[AI 翻訳ガイド](/ja/docs/ai/translate)をご覧ください。
+
+ご意見やコントリビューションは [GitHub](https://github.com/yamlresume/yamlresume) でお待ちしています。翻訳をお楽しみください！

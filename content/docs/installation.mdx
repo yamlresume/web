@@ -4,18 +4,21 @@ title: Installation
 
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
-YAMLResume is a Node.js tool, under the hood, it transform your resumes from the
-YAML format to LaTeX code and then call a LaTeX typesetting engine to compile
-the generated LaTeX code to PDF. Besides, to get optimal PDF output, we also
-suggest to install some fonts. In a nutshell, you need to install the followings
-to get started with YAMLResume:
+YAMLResume is distributed as a Node.js CLI and a set of reusable packages. For
+DOCX, HTML, and Markdown output, you only need Node.js and the `yamlresume` CLI.
+Generating a PDF from a LaTeX layout additionally requires a supported
+[typesetting engine](#typesetting-engine), and installing the recommended fonts
+improves the final typography.
 
-- Node.js
-- [yamlresume package](https://www.npmjs.com/package/yamlresume)
-- a typesetting engine
-- [optional] some fonts
+In short, a local CLI installation needs:
 
-This sounds a bit complicated, but don't worry, we have your back.
+- Node.js 20 or newer
+- the [`yamlresume` CLI package](https://www.npmjs.com/package/yamlresume)
+- [optional] XeTeX or Tectonic for LaTeX/PDF output
+- [optional] recommended fonts for optimal PDF output
+
+If you prefer an environment with the CLI, XeTeX, and fonts already installed,
+use the official Docker image below.
 
 ## Docker Users
 
@@ -241,13 +244,14 @@ Options:
   -h, --help                     display help for command
 
 Commands:
-  ai                             AI-powered resume generation
+  ai                             AI-powered resume commands
   build [options] <resume-path>  build a resume to Docx, HTML, Markdown or
                                  LaTeX/PDF
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
-  new [filename]                 create a new resume
+  new [options] [filename]       create a new resume
+  samples                        manage sample resumes
   templates                      manage resume templates
   validate <resume-path>         validate a resume against the YAMLResume schema
   help [command]                 display help for command
@@ -273,6 +277,23 @@ bun exec yamlresume help
 ```
 
 </Tabs>
+
+### Node.js Library
+
+If you are integrating YAMLResume into a Node.js application rather than using
+the command line, install the runtime package locally:
+
+```console
+$ npm install @yamlresume/node
+```
+
+`@yamlresume/node` provides file-oriented APIs for reading, validating,
+building, watching, generating, and translating resumes. It uses the same
+runtime implementation as the CLI. See the [Node.js API
+reference](/developer/node/index.html) for details.
+
+For model-level AI APIs that operate on strings rather than files, install
+[`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai).
 
 ### Typesetting Engine
 

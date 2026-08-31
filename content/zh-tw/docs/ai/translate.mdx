@@ -1,0 +1,83 @@
+---
+title: 翻譯
+---
+
+`yamlresume ai translate` 指令可將現有履歷從目前的區域語言翻譯成另一種支援的語言，同時保留 YAMLResume 結構。
+
+```console
+$ yamlresume ai translate --help
+Usage: yamlresume ai translate [options] <input> <output>
+
+translate a resume from one locale language to another with AI
+
+Arguments:
+  input                 source resume filename
+  output                output resume filename
+
+Options:
+  -t, --to <language>   target locale language
+  -m, --model <model>   AI provider model to use
+  -b, --base-url <url>  AI provider base URL
+  -r, --retry <count>   maximum retries when validation fails (default: 2)
+  -h, --help            display help for command
+```
+
+## 範例
+
+設定服務提供者的 API 金鑰，然後將履歷翻譯成簡體中文：
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai translate \
+    --to zh-hans \
+    resume.en.yml \
+    resume.zh-hans.yml
+```
+
+來源語言會從輸入履歷的 `locale.language` 欄位讀取。指令會將此欄位更新為目標語言，並將翻譯結果寫入輸出路徑。指令不會覆寫現有的輸出檔案。
+
+來源語言與目標語言必須是[支援的區域語言](/zh-tw/docs/locale)：`de`、`en`、`es`、`fr`、`id`、`ja`、`nl`、`no`、`pt-br`、`zh-hans`、`zh-hant-hk` 或 `zh-hant-tw`。
+
+你可以透過 `--model` 和 `--base-url` 指定模型與基礎 URL，也可以使用 `YAMLRESUME_AI_MODEL` 和 `YAMLRESUME_AI_BASE_URL` 環境變數。支援的服務提供者及其環境變數請參閱 [Generate](./generate)。
+
+### `--retry`
+
+每次嘗試後，翻譯結果都會根據 [YAMLResume schema](/zh-tw/docs/compiler/schema) 進行驗證。若驗證失敗，錯誤會回傳給模型並重新翻譯。預設最多重試 2 次。
+
+```console
+$ yamlresume ai translate \
+    --to ja \
+    --retry 5 \
+    resume.en.yml \
+    resume.ja.yml
+```
+
+使用 `--retry 0` 可停用重試，在第一次驗證失敗時直接結束。
+
+## 翻譯範圍
+
+此指令會翻譯自然語言內容，同時保留來源文件的結構。具體包括：
+
+- 保留 YAML 鍵、清單與章節順序、註解及 `layouts` 區塊。
+- 將 `locale.language` 更新為目標語言。
+- 不修改 URL、電子郵件、電話號碼、日期及地址欄位。
+- 學位、語言熟練度、語言、技能等級、社群網路及國家等 schema 列舉值維持英文，以確保驗證通過。
+- 不新增或刪除章節、項目或欄位。
+
+結果會在寫入磁碟前進行解析與驗證。
+
+## 程式 API
+
+[`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai) 套件也提供底層翻譯 API：
+
+```ts
+import { translateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+const sourceYaml = "...";
+
+const yaml = await translateResume(sourceYaml, "en", "zh-hans", {
+  model,
+});
+```

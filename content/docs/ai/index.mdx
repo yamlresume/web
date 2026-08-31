@@ -2,16 +2,30 @@
 title: AI
 ---
 
-YAMLResume provides AI-powered resume generation through the
+YAMLResume provides AI-powered resume generation and translation through the
 [`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai) package and the
 `yamlresume ai` CLI command.
 
 ## Overview
 
 The AI capabilities are built on top of the
-[Vercel AI SDK](https://sdk.vercel.ai/) and support multiple LLM providers. The
-generated resume is parsed and validated against the [YAMLResume
-schema](/docs/compiler/schema), with automatic retries if validation fails.
+[Vercel AI SDK](https://sdk.vercel.ai/) and support OpenAI, DeepSeek, Kimi
+(Moonshot AI), local Ollama models, and other OpenAI-compatible endpoints.
+Generated and translated resumes are parsed and validated against the
+[YAMLResume schema](/docs/compiler/schema), with automatic retries if validation
+fails.
+
+The CLI provides two workflows:
+
+- **Generate** a new resume from a target position and locale language.
+- **Translate** an existing resume into another supported locale language while
+  preserving its structure, comments, layout configuration, and schema enum
+  values.
+
+For programmatic use, `@yamlresume/ai` exposes the model-level `generateResume`
+and `translateResume` APIs. Node.js applications that work with files can use
+`generateResumeFile` and `translateResumeFile` from
+[`@yamlresume/node`](/developer/node/index.html).
 
 ## Subcommands
 
@@ -19,14 +33,16 @@ schema](/docs/compiler/schema), with automatic retries if validation fails.
 $ yamlresume ai --help
 Usage: yamlresume ai [options] [command]
 
-AI-powered resume generation
+AI-powered resume commands
 
 Options:
-  -h, --help                     display help for command
+  -h, --help                            display help for command
 
 Commands:
-  generate [options] <filename>  generate a new resume with AI
-  help [command]                 display help for command
+  generate [options] <filename>         generate a new resume with AI
+  translate [options] <input> <output>  translate a resume from one locale
+                                        language to another with AI
+  help [command]                        display help for command
 ```
 
 ## Learn More
@@ -35,6 +51,11 @@ Commands:
   <Card
     href="./ai/generate"
     title="Generate"
-    description="Generate a new resume with AI"
+    description="Generate a new resume for a position and language with AI"
+  />
+  <Card
+    href="./ai/translate"
+    title="Translate"
+    description="Translate an existing resume while preserving its YAMLResume structure"
   />
 </Cards>

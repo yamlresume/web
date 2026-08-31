@@ -1,0 +1,191 @@
+---
+title: "YAMLResume v0.16: AI Translation, a Smarter Playground, and Node.js APIs"
+description:
+  "YAMLResume v0.16 adds AI-powered resume translation, schema-aware editing in
+  the playground, the new @yamlresume/node package, and more reliable LaTeX PDF
+  builds."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-28
+---
+
+We're excited to announce [YAMLResume
+v0.16](https://github.com/yamlresume/yamlresume/releases/tag/v0.16.0). The new
+[`yamlresume ai translate`](/docs/ai/translate) command is the headline feature,
+but the work between v0.15 and v0.16 goes much further: the playground now
+provides schema-aware YAML editing, Node.js applications get a reusable runtime
+through `@yamlresume/node`, and LaTeX builds correctly resolve page numbers and
+cross-references that need multiple compiler passes.
+
+## Translate Resumes with AI
+
+The new command translates an existing resume into any YAMLResume locale
+language:
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai translate \
+    --to zh-hans \
+    resume.en.yml \
+    resume.zh-hans.yml
+```
+
+The source language is read from `locale.language`. The translated resume
+updates that field and is written to a new file without overwriting an existing
+output.
+
+Translation supports all 12 YAMLResume locale languages: `de`, `en`, `es`,
+`fr`, `id`, `ja`, `nl`, `no`, `pt-br`, `zh-hans`, `zh-hant-hk`, and
+`zh-hant-tw`.
+
+### Structure-preserving translation
+
+The command translates natural-language content without turning the result into
+an unstructured approximation of the source. It preserves:
+
+- YAML keys, list and section order, comments, and the `layouts` block
+- URLs, email addresses, phone numbers, dates, and location fields
+- Schema enum values such as degree, fluency, language, skill level, profile
+  network, and country
+- Multi-paragraph summaries and the existing set of sections, items, and fields
+
+The result is parsed and validated against the [YAMLResume
+schema](/docs/compiler/schema) before it is written. If validation fails, the
+errors are sent back to the model and translation is retried. The default
+maximum is two retries, configurable with `-r, --retry`:
+
+```console
+$ yamlresume ai translate \
+    --to ja \
+    --retry 5 \
+    resume.en.yml \
+    resume.ja.yml
+```
+
+The command shares the provider, model, base URL, and environment-variable
+configuration used by [`yamlresume ai generate`](/docs/ai/generate).
+
+The underlying capability is also available from `@yamlresume/ai`:
+
+```ts
+import { openai } from '@ai-sdk/openai'
+import { translateResume } from '@yamlresume/ai'
+
+const yaml = await translateResume(sourceYaml, 'en', 'zh-hans', {
+  model: openai('gpt-5'),
+})
+```
+
+See the complete [AI translation guide](/docs/ai/translate) for all options and
+behavior details.
+
+## A Smarter Playground
+
+The [`@yamlresume/playground`](https://www.npmjs.com/package/@yamlresume/playground)
+editor now understands the YAMLResume schema instead of treating a resume as
+plain YAML. Powered by `monaco-yaml` and the official [JSON
+Schema](/docs/compiler/schema/json), it provides:
+
+- Schema-driven completion for keys and predefined values
+- Real-time validation while you edit
+- Hover documentation for YAMLResume fields
+- A locally bundled YAML language server running in a Web Worker
+
+The package now loads Monaco in an SSR-safe way and ships the required editor
+and YAML workers, making it more reliable in frameworks such as Next.js. It
+also handles resumes without a `layouts` block gracefully and keeps the preview
+tab list horizontally scrollable without showing a distracting scrollbar.
+
+For contributors to the component, a new Vite web harness mounts the playground
+directly from its TypeScript source. Run it without first producing a package
+bundle:
+
+```console
+$ pnpm playground web:dev
+```
+
+These changes make both the official [playground](/playground) and embedded
+uses of `@yamlresume/playground` much better editing environments.
+
+## New Package: @yamlresume/node
+
+The new [`@yamlresume/node`](https://www.npmjs.com/package/@yamlresume/node)
+package extracts the Node.js-specific runtime from the CLI. `@yamlresume/core`
+remains platform-independent, while `@yamlresume/node` adds filesystem access,
+watching, AI file workflows, and LaTeX compilation.
+
+Install it in a Node.js application:
+
+```console
+$ npm install @yamlresume/node
+```
+
+Then read, validate, and build resume files programmatically:
+
+```ts
+import { buildResumeFile, readResumeFile } from '@yamlresume/node'
+
+const { resume, validated, errors } = readResumeFile('resume.yml')
+const { outputs } = await buildResumeFile('resume.yml', {
+  output: 'dist',
+})
+```
+
+Its file-oriented APIs include:
+
+- `readResumeFile` and `validateResume`
+- `buildResumeFile` and `watchResumeFile`
+- `newResumeFile`
+- `generateResumeFile` and `translateResumeFile`
+
+The `yamlresume` CLI now acts as a thin wrapper around these reusable APIs. This
+makes it easier to build gallery generators, editor integrations, web services,
+and other Node.js tools without spawning a CLI process. Browse the complete
+[Node.js API reference](/developer/node/index.html) for types and options.
+
+## More Reliable LaTeX Builds
+
+LaTeX sometimes needs more than one compiler pass to settle page numbers,
+references, and other data stored in its auxiliary file. Previously, a single
+`yamlresume build` could leave page numbering stale for a long resume; rebuilding
+it manually happened to hide the problem.
+
+The Node runtime now watches the generated `.aux` file and runs the LaTeX
+compiler again when it changes, up to two passes. As a result, one build command
+produces the same correct pagination that previously could require repeated
+manual builds.
+
+This fix applies to both direct `@yamlresume/node` usage and the CLI because
+they share the same compilation path.
+
+## Other Improvements
+
+The v0.15 patch releases and v0.16 also include several smaller improvements:
+
+- The optional HTML footer configuration is now truly optional in the schema.
+- `getSampleResume` accepts omitted `withComments` and `withLayouts` options.
+- CLI and `create-yamlresume` error handling is more consistent for unknown
+  errors.
+- The AI command hierarchy is restored under the single `yamlresume ai`
+  umbrella, with both `generate` and `translate` subcommands.
+- Internal generation and validation logic is shared between AI workflows,
+  reducing duplication and keeping retry behavior consistent.
+
+## Upgrade Today
+
+Install the latest version:
+
+```console
+$ npm install -g yamlresume@latest
+# or
+$ brew upgrade yamlresume
+```
+
+Then try the improved [playground](/playground), explore the
+[`@yamlresume/node` API](/developer/node/index.html), or translate an existing
+resume with [`yamlresume ai translate`](/docs/ai/translate).
+
+## Credit
+
+As always, we welcome your feedback and contributions on
+[GitHub](https://github.com/yamlresume/yamlresume). Happy building!

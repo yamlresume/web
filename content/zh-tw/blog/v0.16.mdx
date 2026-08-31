@@ -1,0 +1,74 @@
+---
+title: "YAMLResume v0.16：使用 AI 翻譯履歷"
+description:
+  "YAMLResume v0.16 新增 `yamlresume ai translate`，可在保留 YAMLResume 結構的同時，將現有履歷翻譯成另一種支援的區域語言。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-08-28
+---
+
+我們很高興地宣布 [YAMLResume v0.16](https://github.com/yamlresume/yamlresume/releases/tag/v0.16.0) 正式發布。此版本透過新的 [`yamlresume ai translate`](/zh-tw/docs/ai/translate) 指令和 [`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai) 中的 `translateResume` API，帶來 AI 履歷翻譯功能。
+
+## 新指令：yamlresume ai translate
+
+指定輸入檔案、輸出檔案和目標區域語言：
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai translate \
+    --to zh-hans \
+    resume.en.yml \
+    resume.zh-hans.yml
+```
+
+來源語言會從 `locale.language` 讀取。翻譯結果會更新此欄位並儲存到新檔案，不會覆寫現有的輸出檔案。
+
+此指令支援 YAMLResume 的全部 12 種區域語言：`de`、`en`、`es`、`fr`、`id`、`ja`、`nl`、`no`、`pt-br`、`zh-hans`、`zh-hant-hk` 和 `zh-hant-tw`。
+
+## 保留結構的翻譯
+
+指令會翻譯自然語言內容，同時保留 YAML 鍵、清單與章節順序、註解及 `layouts` 區塊。URL、電子郵件、電話號碼、日期、地址和 schema 列舉值也不會被修改。
+
+結果會在寫入磁碟前進行解析，並根據 [YAMLResume schema](/zh-tw/docs/compiler/schema) 進行驗證。
+
+## 自動驗證與重試
+
+若驗證失敗，錯誤會回傳給模型並重新翻譯。預設最多重試 2 次，可透過 `--retry` 修改：
+
+```console
+$ yamlresume ai translate \
+    --to ja \
+    --retry 5 \
+    resume.en.yml \
+    resume.ja.yml
+```
+
+使用 `--retry 0` 可停用重試。服務提供者、模型和基礎 URL 設定與 [`yamlresume ai generate`](/zh-tw/docs/ai/generate) 相同。
+
+## 程式 API
+
+```ts
+import { translateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+const sourceYaml = "...";
+
+const yaml = await translateResume(sourceYaml, "en", "zh-hans", {
+  model,
+});
+```
+
+對於以檔案為基礎的 Node.js 工作流程，`@yamlresume/node` 也提供 `translateResumeFile`。
+
+## 立即升級
+
+```console
+$ npm install -g yamlresume@latest
+# 或
+$ brew upgrade yamlresume
+```
+
+完整選項請參閱 [AI 翻譯指南](/zh-tw/docs/ai/translate)。
+
+一如往常，歡迎在 [GitHub](https://github.com/yamlresume/yamlresume) 提供意見並參與貢獻。祝翻譯愉快！

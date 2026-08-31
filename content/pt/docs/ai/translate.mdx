@@ -1,0 +1,100 @@
+---
+title: Traduzir
+---
+
+O comando `yamlresume ai translate` traduz um currículo existente do idioma
+regional atual para outro idioma compatível, preservando a estrutura do
+YAMLResume.
+
+```console
+$ yamlresume ai translate --help
+Usage: yamlresume ai translate [options] <input> <output>
+
+translate a resume from one locale language to another with AI
+
+Arguments:
+  input                 source resume filename
+  output                output resume filename
+
+Options:
+  -t, --to <language>   target locale language
+  -m, --model <model>   AI provider model to use
+  -b, --base-url <url>  AI provider base URL
+  -r, --retry <count>   maximum retries when validation fails (default: 2)
+  -h, --help            display help for command
+```
+
+## Exemplo
+
+Defina a chave de API de um provedor e traduza um currículo para chinês
+simplificado:
+
+```console
+$ export OPENAI_API_KEY=sk-...
+$ yamlresume ai translate \
+    --to zh-hans \
+    resume.en.yml \
+    resume.zh-hans.yml
+```
+
+O idioma de origem é lido do campo `locale.language` do currículo de entrada. O
+comando atualiza esse campo para o idioma de destino e grava o resultado no
+caminho de saída. Um arquivo de saída existente não é sobrescrito.
+
+Os idiomas de origem e destino devem ser [idiomas regionais
+compatíveis](/pt/docs/locale): `de`, `en`, `es`, `fr`, `id`, `ja`, `nl`, `no`,
+`pt-br`, `zh-hans`, `zh-hant-hk` ou `zh-hant-tw`.
+
+O modelo e a URL base podem ser definidos com `--model` e `--base-url`, ou com
+`YAMLRESUME_AI_MODEL` e `YAMLRESUME_AI_BASE_URL`. Consulte [Gerar](./generate)
+para ver os provedores compatíveis e suas variáveis de ambiente.
+
+### `--retry`
+
+A saída traduzida é validada contra o [esquema do
+YAMLResume](/pt/docs/compiler/schema) após cada tentativa. Se a validação falhar,
+os erros são enviados de volta ao modelo e a tradução é repetida. O máximo
+padrão é de 2 novas tentativas.
+
+```console
+$ yamlresume ai translate \
+    --to ja \
+    --retry 5 \
+    resume.en.yml \
+    resume.ja.yml
+```
+
+Use `--retry 0` para falhar no primeiro erro de validação sem tentar novamente.
+
+## O que é traduzido
+
+O comando traduz o conteúdo em linguagem natural enquanto preserva a estrutura
+do documento de origem. Ele:
+
+- Mantém as chaves YAML, a ordem de listas e seções, os comentários e o bloco
+  `layouts`.
+- Atualiza `locale.language` para o idioma de destino.
+- Não altera URLs, endereços de e-mail, telefones, datas nem campos de
+  localização.
+- Mantém em inglês os valores enumerados do esquema, como formação, fluência,
+  idioma, nível de habilidade, rede do perfil e país.
+- Não adiciona nem remove seções, itens ou campos.
+
+O resultado é analisado e validado antes de ser gravado no disco.
+
+## API programática
+
+O pacote [`@yamlresume/ai`](https://www.npmjs.com/package/@yamlresume/ai)
+também expõe a API de tradução:
+
+```ts
+import { translateResume } from "@yamlresume/ai";
+import { openai } from "@ai-sdk/openai";
+
+const model = openai("gpt-5");
+const sourceYaml = "...";
+
+const yaml = await translateResume(sourceYaml, "en", "zh-hans", {
+  model,
+});
+```

@@ -12,15 +12,19 @@ functioning as expected.
 You can run unit tests using the following command:
 
 ```bash
-# run tests for yamlresume/cli package
+# run tests for selected packages
 pnpm cli test
-
-# run tests for yamlresume/core package
 pnpm core test
+pnpm node test
+pnpm playground test
 
 # run tests for all packages
 pnpm test
 ```
+
+The same root shortcuts are available for `ai`, `samples`,
+`create-yamlresume`, and `json2yamlresume`. You can also target any package with
+pnpm directly, for example `pnpm --filter @yamlresume/node test`.
 
 If you're working on a new feature, you can run tests on file changes:
 
@@ -36,9 +40,10 @@ pnpm test:watch
 ```
 
 <Callout>
-  Don't forget to [build](./contributing/cli#yamlresumecore-build)
-  `yamlresume/core` package if you are working on a CLI feature that depends on
-  `yamlresume/core` package.
+  The CLI is a thin wrapper around `@yamlresume/node`, which in turn uses
+  `@yamlresume/core`, `@yamlresume/samples`, and `@yamlresume/ai`. If you change
+  one of those dependencies, build it before exercising the CLI, or run
+  `pnpm build:watch` from the repository root.
 </Callout>
 
 ## Test Coverage

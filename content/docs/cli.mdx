@@ -49,7 +49,7 @@ Options:
   -h, --help                     display help for command
 
 Commands:
-  ai                             AI-powered resume generation
+  ai                             AI-powered resume commands
   build [options] <resume-path>  build a resume to Docx, HTML, Markdown or
                                  LaTeX/PDF
   dev [options] <resume-path>    build a resume on file changes (watch mode)
@@ -66,8 +66,31 @@ Show YAMLResume CLI version:
 
 ```console
 $ yamlresume -V
-0.15.3
+0.16.0
 ```
+
+## AI
+
+Generate a new resume or translate an existing one with an LLM:
+
+```console
+$ yamlresume ai --help
+Usage: yamlresume ai [options] [command]
+
+AI-powered resume commands
+
+Options:
+  -h, --help                            display help for command
+
+Commands:
+  generate [options] <filename>         generate a new resume with AI
+  translate [options] <input> <output>  translate a resume from one locale
+                                        language to another with AI
+  help [command]                        display help for command
+```
+
+See the [AI overview](/docs/ai), [generation guide](/docs/ai/generate), and
+[translation guide](/docs/ai/translate) for provider setup and command options.
 
 ## New
 
@@ -171,15 +194,16 @@ sample.
 
 ## Build
 
-Build a resume from YAML to PDF. It will generate the latex code and PDF at the
-same time, with some intermediate files `.aux`, `.log` etc, if you use
-[XeTeX](/docs/installation#xetex) as the typesetting engine.
+Build every layout configured in a YAML resume. A single command can generate
+DOCX, HTML, Markdown, and LaTeX/PDF outputs. LaTeX layouts also produce the
+`.tex` source and may leave intermediate files such as `.aux` and `.log` when
+using [XeTeX](/docs/installation#xetex).
 
 ```console
 $ yamlresume build --help
 Usage: yamlresume build [options] <resume-path>
 
-build a resume to LaTeX, PDF, Markdown, or HTML
+build a resume to Docx, HTML, Markdown or LaTeX/PDF
 
 Arguments:
   resume-path              the resume file path
@@ -235,10 +259,9 @@ $ yamlresume build --timeout 60 my-resume.yml
 
 ## Dev
 
-Build a resume from YAML to PDF on file changes. It accepts the same options as
-[`build`](#build) however it will automatically rebuild the resume when the YAML
-file is changed (aka, watch mode). This would be very convenient for you to
-preview your resume changes in real time.
+Watch a YAML resume and rebuild all configured layouts whenever the file
+changes. This is convenient for previewing edits in real time. `dev` supports
+the PDF, validation, and output-directory options from [`build`](#build).
 
 ```console
 $ yamlresume dev --help
@@ -247,12 +270,13 @@ Usage: yamlresume dev [options] <resume-path>
 build a resume on file changes (watch mode)
 
 Arguments:
-  resume-path    the resume file path
+  resume-path         the resume file path
 
 Options:
-  --no-pdf       only generate TeX file without PDF
-  --no-validate  skip resume schema validation
-  -h, --help     display help for command
+  --no-pdf            only generate TeX file without PDF
+  --no-validate       skip resume schema validation
+  -o, --output <dir>  output directory for generated files
+  -h, --help          display help for command
 ```
 
 ## Validate
