@@ -1,0 +1,270 @@
+---
+title: "@yamlresume/playground"
+description: React アプリケーションに YAMLResume のスキーマ対応エディタとライブマルチレイアウトプレビューを埋め込む。
+---
+
+[`@yamlresume/playground`](https://www.npmjs.com/package/@yamlresume/playground) は、公式の YAMLResume [プレイグラウンド](/ja/playground)を支える React コンポーネントです。Monaco YAML エディタとライブプレビュー、レスポンシブなデスクトップ・モバイルレイアウト、エクスポート操作を 1 つにまとめています。
+
+ポートフォリオサイト、社内履歴書ツール、コンテンツ管理システム、その他の React アプリケーションに YAMLResume 編集機能を追加するために使用できます。
+
+## 機能
+
+- シンタックスハイライト付きの Monaco ベースの YAML 編集
+- スキーマ駆動の補完、検証、ホバードキュメント
+- DOCX と HTML のライブレンダリングプレビュー、Markdown・LaTeX・Typst のソースプレビュー
+- ダウンロード・コピー操作に加え、HTML レイアウト向けの印刷・新規タブで開く操作
+- デスクトップではリサイズ可能な分割パネル、モバイルではエディタ/プレビュータブ
+- 制御された YAML ステートとカスタマイズ可能なツールチップラベル
+- Monaco エディタと YAML 言語サーバーの Web Worker をバンドル
+- Next.js などのフレームワーク向けの SSR セーフな Monaco ローディング
+
+## インストール
+
+パッケージと React・Tailwind CSS のピア依存関係をインストールします：
+
+```console
+$ npm install @yamlresume/playground react react-dom tailwindcss
+```
+
+`@yamlresume/core` と `@yamlresume/samples` はパッケージの依存関係であり、アプリケーションから直接インポートしない限り、個別にインストールする必要はありません。
+
+このパッケージは React 18 以降と Tailwind CSS 3 以降をサポートします。
+
+## Tailwind CSS の設定
+
+このコンポーネントは Tailwind ユーティリティクラスを使用します。公開パッケージを Tailwind の設定でスキャンしないと、そのクラスが生成されるスタイルシートから欠落する可能性があります。
+
+### Tailwind CSS 4
+
+Tailwind の import の隣に `@source` ディレクティブを追加します：
+
+```css title="src/app.css"
+@import "tailwindcss";
+@source "../node_modules/@yamlresume/playground";
+```
+
+スタイルシートの場所に応じて相対パスを調整してください。pnpm ワークスペースでは、パッケージの解決された場所を指定するか、ワークスペース相対のソースパスを使用する必要がある場合があります。
+
+### Tailwind CSS 3
+
+`content` にパッケージを含めます：
+
+```js title="tailwind.config.js"
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@yamlresume/playground/dist/**/*.js',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+## 基本的な使い方
+
+コンポーネントは親要素を満たすため、コンテナに明示的な高さを指定してください。YAML を React のステートに保持すれば、エディタの変更がライブプレビューに反映されます：
+
+```tsx
+import { Playground } from '@yamlresume/playground'
+import { useState } from 'react'
+
+const initialYaml = `
+content:
+  basics:
+    name: Andy Dufresne
+layouts:
+  - engine: html
+    template: calm
+`
+
+export function ResumePage() {
+  const [yaml, setYaml] = useState(initialYaml)
+
+  return (
+    <main style={{ height: '100vh' }}>
+      <Playground yaml={yaml} onChange={setYaml} />
+    </main>
+  )
+}
+```
+
+props なしで `<Playground />` をレンダリングすると、コメント完備の英語のソフトウェアエンジニアサンプルとそのデフォルトレイアウトが表示されます。この形式は静的なデモに便利です。編集可能な統合には、`yaml` と `onChange` の両方を指定してください。
+
+## 制御された YAML ステート
+
+同じ制御パターンを使って、アプリケーションから YAML を読み込み、エディタとプレビュータブのラベルにファイル名を提供できます：
+
+```tsx
+import { Playground } from '@yamlresume/playground'
+import { useState } from 'react'
+
+export function ResumeEditorPage({
+  initialYaml,
+}: {
+  initialYaml: string
+}) {
+  const [yaml, setYaml] = useState(initialYaml)
+
+  return (
+    <div className="h-screen">
+      <Playground
+        yaml={yaml}
+        onChange={setYaml}
+        filename="resume.yml"
+      />
+    </div>
+  )
+}
+```
+
+<Callout>
+  `yaml` を渡す場合は、`onChange` 内でそれを更新してください。プレイグラウンドはこの prop からパース済みの履歴書とプレビューを導出します。制御されたコンテンツのコピーを別途保持することはありません。
+</Callout>
+
+## Playground の Props
+
+| Prop | 型 | デフォルト | 説明 |
+| --- | --- | --- | --- |
+| `yaml` | `string` | 収録サンプル | エディタに表示される YAML |
+| `onChange` | `(value: string) => void` | `undefined` | YAML が変更されるたびに呼び出される |
+| `filename` | `string` | `resume.yaml` | エディタとプレビュータブのラベルに表示されるファイル名 |
+| `messages` | `PlaygroundMessageOverrides` | 英語ラベル | ツールチップラベルの部分上書き |
+
+プレビュータブは履歴書の `layouts` 配列から生成されます。無効な YAML ではパース済みの履歴書が `null` になり、レイアウトのない有効な履歴書ではクラッシュする代わりにレイアウトなしの状態が表示されます。
+
+## UI メッセージのカスタマイズ
+
+他の部分は英語のデフォルトを保ったまま、任意のツールバーツールチップを上書きできます：
+
+```tsx
+<Playground
+  yaml={yaml}
+  onChange={setYaml}
+  messages={{
+    tooltips: {
+      copy: 'Copy YAML',
+      download: 'Download resume',
+      openInNewTab: 'Open preview',
+    },
+  }}
+/>
+```
+
+利用可能なキーは `copy`、`undo`、`redo`、`clear`、`print`、`openInNewTab`、`download` です。
+
+## フレームワーク統合
+
+### Next.js
+
+`Playground` はクライアントコンポーネントです。クライアント境界からレンダリングしてください：
+
+```tsx title="components/ResumePlayground.tsx"
+'use client'
+
+import { Playground } from '@yamlresume/playground'
+import { useState } from 'react'
+
+export function ResumePlayground({ initialYaml }: { initialYaml: string }) {
+  const [yaml, setYaml] = useState(initialYaml)
+
+  return (
+    <div className="h-[calc(100vh-4rem)]">
+      <Playground yaml={yaml} onChange={setYaml} />
+    </div>
+  )
+}
+```
+
+Monaco はブラウザで動的に読み込まれるため、サーバーレンダリングや静的生成の間にこのパッケージをインポートしても安全です。公開パッケージには、`dist/workers` の下にエディタと YAML のワーカーも同梱されています。
+
+### Vite
+
+通常、特別な JavaScript の設定は必要ありません。パッケージが Tailwind のコンテンツスキャンに含まれていることを確認し、基本的な例と同じようにコンポーネントをマウントしてください。
+
+## Monaco と YAML スキーマのサポート
+
+エディタは、公式の [YAMLResume JSON Schema](/ja/docs/compiler/schema/json) を使って `monaco-yaml` を設定します。YAML 言語サーバーは Web Worker で動作し、以下を提供します：
+
+- YAML キーとスキーマの列挙値の候補表示
+- インラインのスキーマ診断
+- ホバー時のフィールドドキュメント
+
+このパッケージは `monaco-editor` 0.54 をバンドルしています。これは、現在の `monaco-yaml` リリースが Monaco の 0.55 未満のワーカー API を使用しているためです。
+
+### カスタム Worker のセットアップ
+
+ほとんどの Vite・webpack アプリケーションは、バンドルされたワーカーをそのまま使用できます。バンドラがプリビルドパッケージが参照するワーカーを出力・読み込みできない場合は、プレイグラウンドをインポートする前に `globalThis.MonacoEnvironment.getWorker` を定義してください：
+
+```ts
+import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+import YamlWorker from 'monaco-yaml/yaml.worker?worker'
+
+globalThis.MonacoEnvironment = {
+  getWorker(_moduleId, label) {
+    if (label === 'yaml') return new YamlWorker()
+    return new EditorWorker()
+  },
+}
+```
+
+ホストが提供した `getWorker` は、パッケージのデフォルトより優先されます。
+
+## 低レベルのコンポーネントとフック
+
+カスタム UI のために、このパッケージは `Playground` に加えて構成要素もエクスポートしています：
+
+```tsx
+import {
+  ResumeEditor,
+  ResumeViewer,
+  useResumeRenderer,
+  useResumeState,
+} from '@yamlresume/playground'
+```
+
+| エクスポート | 目的 |
+| --- | --- |
+| `ResumeEditor` | YAML 向けに事前設定された Monaco エディタ |
+| `ResumeViewer` | パース済みの `Resume` オブジェクトから 1 つのレイアウトをレンダリング |
+| `useResumeState` | YAML をパースし、アクティブなレイアウトインデックスを管理 |
+| `useResumeRenderer` | 選択された履歴書レイアウトをレンダリング |
+| `configureYamlSupport` | Monaco の YAML 言語サポートを手動で設定 |
+
+カスタムツールバー用のユーティリティもエクスポートされています：
+
+- `downloadResume`
+- `copyResumeToClipboard`
+- `printResume`
+- `openResumeInNewTab`
+- `getBasename`
+- `getExtension`
+
+## クライアントサイドレンダリングの境界
+
+プレイグラウンドはブラウザで履歴書レイアウトをレンダリングします。DOCX と HTML のレイアウトはビジュアルプレビューが得られ、Markdown・LaTeX・Typst のレイアウトは生成されたソースが表示されます。このコンポーネントはこれらのブラウザ生成の出力をプレビュー・エクスポートできますが、XeTeX、Tectonic、Typst などのネイティブ PDF コンパイラを実行することはありません。サーバーサイドの PDF コンパイルが必要な場合は、[`@yamlresume/node`](./node) または [`yamlresume build`](/ja/docs/cli#build) コマンドを使用してください。
+
+## トラブルシューティング
+
+### コンポーネントにスタイルが適用されない
+
+Tailwind が `@yamlresume/playground` をスキャンしているか確認してください。Tailwind CSS 4 では `@source` を、Tailwind CSS 3 ではパッケージの `dist` ファイルを `content` に追加してください。
+
+### エディタまたは YAML 検証が読み込まれない
+
+ブラウザのコンソールとネットワークパネルでワーカーの読み込みエラーを確認してください。バンドラがバンドルされたワーカーを解決できない場合は、上記のようにカスタムの `MonacoEnvironment.getWorker` 実装を提供してください。
+
+### プレイグラウンドの高さがゼロになる
+
+このコンポーネントは `h-full` を使用します。`100vh`、`h-screen`、計算されたアプリシェルの高さなど、親要素に明示的な高さを指定してください。
+
+### 編集してもプレビューが更新されない
+
+制御されたステートを使用している場合は、`onChange` から渡された新しい値を `yaml` prop 経由で返してください。
+
+## API リファレンス
+
+エクスポートされるすべてのコンポーネント、フック、ユーティリティ、props、メッセージ型については、完全な [`@yamlresume/playground` API リファレンス](/developer/playground/index.html)を参照してください。

@@ -1,0 +1,270 @@
+---
+title: "@yamlresume/playground"
+description: 在 React 应用中嵌入 YAMLResume 的架构感知编辑器和实时多布局预览。
+---
+
+[`@yamlresume/playground`](https://www.npmjs.com/package/@yamlresume/playground) 是驱动官方 YAMLResume [游乐场](/zh-cn/playground)的 React 组件。它将 Monaco YAML 编辑器与实时预览、响应式的桌面和移动端布局以及导出操作结合在一起。
+
+可以使用它为作品集网站、内部简历工具、内容管理系统或其他 React 应用程序添加 YAMLResume 编辑功能。
+
+## 功能特性
+
+- 基于 Monaco 的 YAML 编辑，带语法高亮
+- 架构驱动的自动补全、验证和悬停文档
+- DOCX 和 HTML 的实时渲染预览，以及 Markdown、LaTeX、Typst 的源码预览
+- 下载和复制操作，HTML 布局还支持打印和新标签页打开
+- 桌面端可调整大小的分栏面板，移动端编辑器/预览标签页
+- 受控 YAML 状态和可自定义的提示标签
+- 内置 Monaco 编辑器和 YAML 语言服务器 Web Worker
+- 面向 Next.js 等框架的 SSR 安全 Monaco 加载
+
+## 安装
+
+安装该包及其 React 和 Tailwind CSS 对等依赖：
+
+```console
+$ npm install @yamlresume/playground react react-dom tailwindcss
+```
+
+`@yamlresume/core` 和 `@yamlresume/samples` 是普通的包依赖，除非您的应用程序直接从它们导入内容，否则无需单独安装。
+
+该包支持 React 18 或更高版本，以及 Tailwind CSS 3 或更高版本。
+
+## 配置 Tailwind CSS
+
+该组件使用 Tailwind 工具类。您的 Tailwind 设置必须扫描已发布的包，否则其中的类可能会从生成的样式表中丢失。
+
+### Tailwind CSS 4
+
+在 Tailwind 导入语句旁边添加一条 `@source` 指令：
+
+```css title="src/app.css"
+@import "tailwindcss";
+@source "../node_modules/@yamlresume/playground";
+```
+
+请根据样式表所在位置调整相对路径。在 pnpm workspace 中，您可能需要将其指向该包的解析位置，或使用相对于 workspace 的源路径。
+
+### Tailwind CSS 3
+
+将该包加入 `content`：
+
+```js title="tailwind.config.js"
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@yamlresume/playground/dist/**/*.js',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+## 基本用法
+
+组件会填满其父容器，因此请为容器指定明确的高度。将 YAML 保存在 React 状态中，编辑器的更改即可实时更新预览：
+
+```tsx
+import { Playground } from '@yamlresume/playground'
+import { useState } from 'react'
+
+const initialYaml = `
+content:
+  basics:
+    name: Andy Dufresne
+layouts:
+  - engine: html
+    template: calm
+`
+
+export function ResumePage() {
+  const [yaml, setYaml] = useState(initialYaml)
+
+  return (
+    <main style={{ height: '100vh' }}>
+      <Playground yaml={yaml} onChange={setYaml} />
+    </main>
+  )
+}
+```
+
+不带 props 渲染 `<Playground />` 时，会显示带完整注释的英文软件工程师示例及其默认布局。这种形式适用于静态演示；若要构建可编辑的集成，请同时提供 `yaml` 和 `onChange`。
+
+## 受控 YAML 状态
+
+使用相同的受控模式从您的应用程序加载 YAML，并为编辑器和预览标签页标签提供文件名：
+
+```tsx
+import { Playground } from '@yamlresume/playground'
+import { useState } from 'react'
+
+export function ResumeEditorPage({
+  initialYaml,
+}: {
+  initialYaml: string
+}) {
+  const [yaml, setYaml] = useState(initialYaml)
+
+  return (
+    <div className="h-screen">
+      <Playground
+        yaml={yaml}
+        onChange={setYaml}
+        filename="resume.yml"
+      />
+    </div>
+  )
+}
+```
+
+<Callout>
+  传入 `yaml` 时，请在 `onChange` 中更新它。Playground 会根据该 prop 派生解析后的简历和预览，它不会为受控内容保留单独的副本。
+</Callout>
+
+## Playground 属性
+
+| 属性 | 类型 | 默认值 | 描述 |
+| --- | --- | --- | --- |
+| `yaml` | `string` | 精选示例 | 编辑器中显示的 YAML |
+| `onChange` | `(value: string) => void` | `undefined` | YAML 变化时被调用 |
+| `filename` | `string` | `resume.yaml` | 编辑器和预览标签页标签中显示的文件名 |
+| `messages` | `PlaygroundMessageOverrides` | 英文标签 | 部分提示标签覆盖 |
+
+预览标签页根据简历的 `layouts` 数组生成。无效的 YAML 会将解析后的简历置为 `null`，而有效但没有布局的简历会显示无布局状态，而不是崩溃。
+
+## 自定义 UI 消息
+
+可以覆盖任意工具栏提示，同时其余部分保留英文默认值：
+
+```tsx
+<Playground
+  yaml={yaml}
+  onChange={setYaml}
+  messages={{
+    tooltips: {
+      copy: 'Copy YAML',
+      download: 'Download resume',
+      openInNewTab: 'Open preview',
+    },
+  }}
+/>
+```
+
+可用的键包括 `copy`、`undo`、`redo`、`clear`、`print`、`openInNewTab` 和 `download`。
+
+## 框架集成
+
+### Next.js
+
+`Playground` 是一个客户端组件。请从客户端边界渲染它：
+
+```tsx title="components/ResumePlayground.tsx"
+'use client'
+
+import { Playground } from '@yamlresume/playground'
+import { useState } from 'react'
+
+export function ResumePlayground({ initialYaml }: { initialYaml: string }) {
+  const [yaml, setYaml] = useState(initialYaml)
+
+  return (
+    <div className="h-[calc(100vh-4rem)]">
+      <Playground yaml={yaml} onChange={setYaml} />
+    </div>
+  )
+}
+```
+
+Monaco 会在浏览器中动态加载，因此在服务器渲染和静态生成期间导入该包是安全的。已发布的包还在 `dist/workers` 下附带了其编辑器和 YAML worker。
+
+### Vite
+
+通常不需要特殊的 JavaScript 配置。确保该包已包含在 Tailwind 的内容扫描中，然后按照基本示例挂载组件即可。
+
+## Monaco 与 YAML 架构支持
+
+编辑器使用官方的 [YAMLResume JSON Schema](/zh-cn/docs/compiler/schema/json) 配置 `monaco-yaml`。YAML 语言服务器运行在 Web Worker 中，提供：
+
+- 建议的 YAML 键和架构枚举值
+- 内联架构诊断
+- 悬停时显示字段文档
+
+该包内置了 `monaco-editor` 0.54，因为当前版本的 `monaco-yaml` 使用的是 Monaco 0.55 之前的 worker API。
+
+### 自定义 Worker 设置
+
+大多数 Vite 和 webpack 应用程序可以直接使用内置的 worker。如果您的打包工具无法生成或加载预构建包所引用的 worker，请在导入 playground 之前定义 `globalThis.MonacoEnvironment.getWorker`：
+
+```ts
+import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+import YamlWorker from 'monaco-yaml/yaml.worker?worker'
+
+globalThis.MonacoEnvironment = {
+  getWorker(_moduleId, label) {
+    if (label === 'yaml') return new YamlWorker()
+    return new EditorWorker()
+  },
+}
+```
+
+宿主提供的 `getWorker` 优先于包的默认实现。
+
+## 更底层的组件与 Hooks
+
+除了 `Playground` 之外，该包还导出了用于自定义界面的构建模块：
+
+```tsx
+import {
+  ResumeEditor,
+  ResumeViewer,
+  useResumeRenderer,
+  useResumeState,
+} from '@yamlresume/playground'
+```
+
+| 导出 | 用途 |
+| --- | --- |
+| `ResumeEditor` | 为 YAML 预配置的 Monaco 编辑器 |
+| `ResumeViewer` | 从解析后的 `Resume` 对象渲染一个布局 |
+| `useResumeState` | 解析 YAML 并管理当前布局索引 |
+| `useResumeRenderer` | 渲染所选的简历布局 |
+| `configureYamlSupport` | 手动配置 Monaco 的 YAML 语言支持 |
+
+该包还导出了用于自定义工具栏的工具函数：
+
+- `downloadResume`
+- `copyResumeToClipboard`
+- `printResume`
+- `openResumeInNewTab`
+- `getBasename`
+- `getExtension`
+
+## 客户端渲染边界
+
+Playground 在浏览器中渲染简历布局。DOCX 和 HTML 布局会获得可视化预览，而 Markdown、LaTeX 和 Typst 布局则显示其生成的源码。该组件可以预览和导出这些由浏览器生成的输出，但它不会运行 XeTeX、Tectonic 或 Typst 等原生 PDF 编译器。当您需要服务器端 PDF 编译时，请使用 [`@yamlresume/node`](./node) 或 [`yamlresume build`](/zh-cn/docs/cli#build) 命令。
+
+## 故障排除
+
+### 组件没有样式
+
+请确认 Tailwind 正在扫描 `@yamlresume/playground`。使用 Tailwind CSS 4 时使用 `@source`；使用 Tailwind CSS 3 时，将该包的 `dist` 文件加入 `content`。
+
+### 编辑器或 YAML 验证未加载
+
+检查浏览器控制台和网络面板中是否有 worker 加载错误。如果您的打包工具无法解析内置的 worker，请按照上文提供自定义的 `MonacoEnvironment.getWorker` 实现。
+
+### Playground 高度为零
+
+该组件使用 `h-full`；请为其父容器指定明确的高度，例如 `100vh`、`h-screen` 或计算得出的应用外壳高度。
+
+### 编辑未更新预览
+
+使用受控状态时，请将 `onChange` 返回的新值通过 `yaml` prop 传回。
+
+## API 参考
+
+所有导出的组件、Hooks、工具函数、属性和消息类型的完整说明，请参阅 [`@yamlresume/playground` API 参考](/developer/playground/index.html)。

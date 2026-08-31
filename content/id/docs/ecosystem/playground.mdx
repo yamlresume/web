@@ -1,0 +1,321 @@
+---
+title: "@yamlresume/playground"
+description: Sematkan editor YAMLResume yang sadar skema dan pratinjau multi-tata letak langsung di aplikasi React.
+---
+
+[`@yamlresume/playground`](https://www.npmjs.com/package/@yamlresume/playground)
+adalah komponen React yang menggerakkan [playground](/id/playground) resmi
+YAMLResume. Komponen ini menggabungkan editor Monaco YAML dengan pratinjau
+langsung, tata letak desktop dan seluler yang responsif, serta aksi ekspor.
+
+Gunakan untuk menambahkan pengeditan YAMLResume ke situs portofolio, alat
+resume internal, sistem manajemen konten, atau aplikasi React lainnya.
+
+## Fitur
+
+- Pengeditan YAML berbasis Monaco dengan penyorotan sintaks
+- Penyelesaian, validasi, dan dokumentasi hover yang digerakkan oleh skema
+- Pratinjau hasil render langsung untuk DOCX dan HTML, dengan pratinjau kode
+  sumber untuk Markdown, LaTeX, dan Typst
+- Aksi unduh dan salin, ditambah aksi cetak dan buka di tab baru untuk tata
+  letak HTML
+- Panel terpisah yang dapat diubah ukurannya di desktop dan tab editor/pratinjau
+  di perangkat seluler
+- Status YAML terkontrol dan label tooltip yang dapat dikustomisasi
+- Editor Monaco dan Web Worker language-server YAML yang dibundel
+- Pemuatan Monaco yang aman untuk SSR untuk framework seperti Next.js
+
+## Instalasi
+
+Instal paket ini beserta dependensi peer React dan Tailwind CSS:
+
+```console
+$ npm install @yamlresume/playground react react-dom tailwindcss
+```
+
+`@yamlresume/core` dan `@yamlresume/samples` adalah dependensi paket dan tidak
+perlu diinstal terpisah kecuali aplikasi Anda mengimpornya secara langsung.
+
+Paket ini mendukung React 18 atau lebih baru dan Tailwind CSS 3 atau lebih
+baru.
+
+## Mengonfigurasi Tailwind CSS
+
+Komponen ini menggunakan kelas utilitas Tailwind. Pengaturan Tailwind Anda
+harus memindai paket yang dipublikasikan, jika tidak, kelasnya bisa hilang dari
+stylesheet yang dihasilkan.
+
+### Tailwind CSS 4
+
+Tambahkan direktif `@source` di samping impor Tailwind Anda:
+
+```css title="src/app.css"
+@import "tailwindcss";
+@source "../node_modules/@yamlresume/playground";
+```
+
+Sesuaikan jalur relatifnya dengan lokasi stylesheet Anda. Dalam workspace pnpm,
+Anda mungkin perlu mengarahkannya ke lokasi paket yang diselesaikan atau
+menggunakan jalur sumber relatif terhadap workspace.
+
+### Tailwind CSS 3
+
+Sertakan paket ini dalam `content`:
+
+```js title="tailwind.config.js"
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@yamlresume/playground/dist/**/*.js',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+## Penggunaan Dasar
+
+Komponen ini mengisi elemen induknya, jadi berikan tinggi eksplisit pada
+wadahnya. Simpan YAML dalam state React agar perubahan editor memperbarui
+pratinjau langsung:
+
+```tsx
+import { Playground } from '@yamlresume/playground'
+import { useState } from 'react'
+
+const initialYaml = `
+content:
+  basics:
+    name: Andy Dufresne
+layouts:
+  - engine: html
+    template: calm
+`
+
+export function ResumePage() {
+  const [yaml, setYaml] = useState(initialYaml)
+
+  return (
+    <main style={{ height: '100vh' }}>
+      <Playground yaml={yaml} onChange={setYaml} />
+    </main>
+  )
+}
+```
+
+Me-render `<Playground />` tanpa props akan menampilkan contoh insinyur
+perangkat lunak berbahasa Inggris yang dikomentari secara lengkap beserta tata
+letak default-nya. Bentuk ini berguna untuk demo statis; berikan `yaml` dan
+`onChange` untuk integrasi yang dapat diedit.
+
+## Status YAML Terkontrol
+
+Gunakan pola terkontrol yang sama untuk memuat YAML dari aplikasi Anda dan
+menyediakan nama file untuk label editor dan tab pratinjau:
+
+```tsx
+import { Playground } from '@yamlresume/playground'
+import { useState } from 'react'
+
+export function ResumeEditorPage({
+  initialYaml,
+}: {
+  initialYaml: string
+}) {
+  const [yaml, setYaml] = useState(initialYaml)
+
+  return (
+    <div className="h-screen">
+      <Playground
+        yaml={yaml}
+        onChange={setYaml}
+        filename="resume.yml"
+      />
+    </div>
+  )
+}
+```
+
+<Callout>
+  Ketika Anda meneruskan `yaml`, perbarui nilainya di `onChange`. Playground
+  menurunkan resume hasil parse dan pratinjau dari prop tersebut; ia tidak
+  menyimpan salinan terpisah dari konten terkontrol.
+</Callout>
+
+## Props Playground
+
+| Prop | Tipe | Default | Deskripsi |
+| --- | --- | --- | --- |
+| `yaml` | `string` | Contoh terkurasi | YAML yang ditampilkan di editor |
+| `onChange` | `(value: string) => void` | `undefined` | Dipanggil setiap kali YAML berubah |
+| `filename` | `string` | `resume.yaml` | Nama file yang ditampilkan di editor dan label tab pratinjau |
+| `messages` | `PlaygroundMessageOverrides` | Label bahasa Inggris | Penimpaan sebagian label tooltip |
+
+Tab pratinjau dihasilkan dari array `layouts` resume. YAML yang tidak valid
+mengatur resume hasil parse menjadi `null`, sedangkan resume yang valid tanpa
+tata letak menampilkan status tanpa tata letak alih-alih crash.
+
+## Menyesuaikan Pesan UI
+
+Timpa tooltip toolbar apa pun sambil mempertahankan default bahasa Inggris untuk
+sisanya:
+
+```tsx
+<Playground
+  yaml={yaml}
+  onChange={setYaml}
+  messages={{
+    tooltips: {
+      copy: 'Copy YAML',
+      download: 'Download resume',
+      openInNewTab: 'Open preview',
+    },
+  }}
+/>
+```
+
+Kunci yang tersedia adalah `copy`, `undo`, `redo`, `clear`, `print`,
+`openInNewTab`, dan `download`.
+
+## Integrasi Framework
+
+### Next.js
+
+`Playground` adalah Client Component. Render dari client boundary:
+
+```tsx title="components/ResumePlayground.tsx"
+'use client'
+
+import { Playground } from '@yamlresume/playground'
+import { useState } from 'react'
+
+export function ResumePlayground({ initialYaml }: { initialYaml: string }) {
+  const [yaml, setYaml] = useState(initialYaml)
+
+  return (
+    <div className="h-[calc(100vh-4rem)]">
+      <Playground yaml={yaml} onChange={setYaml} />
+    </div>
+  )
+}
+```
+
+Monaco dimuat secara dinamis di browser, jadi mengimpor paket ini aman selama
+server rendering dan static generation. Paket yang dipublikasikan juga
+menyertakan worker editor dan YAML-nya di `dist/workers`.
+
+### Vite
+
+Normalnya tidak diperlukan konfigurasi JavaScript khusus. Pastikan paket ini
+termasuk dalam pemindaian konten Tailwind, lalu pasang komponennya seperti pada
+contoh dasar.
+
+## Dukungan Monaco dan Skema YAML
+
+Editor mengonfigurasi `monaco-yaml` dengan [JSON Schema](/id/docs/compiler/schema/json)
+resmi YAMLResume. Language server YAML berjalan dalam Web Worker dan
+menyediakan:
+
+- Saran kunci YAML dan nilai enum skema
+- Diagnostik skema sebaris
+- Dokumentasi field saat hover
+
+Paket ini membundel `monaco-editor` 0.54 karena rilis `monaco-yaml` saat ini
+menggunakan API worker Monaco pra-0.55.
+
+### Penyiapan Worker Kustom
+
+Sebagian besar aplikasi Vite dan webpack dapat menggunakan worker bawaan. Jika
+bundler Anda tidak dapat menghasilkan atau memuat worker yang dirujuk oleh
+paket pra-build, definisikan `globalThis.MonacoEnvironment.getWorker` sebelum
+mengimpor playground:
+
+```ts
+import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+import YamlWorker from 'monaco-yaml/yaml.worker?worker'
+
+globalThis.MonacoEnvironment = {
+  getWorker(_moduleId, label) {
+    if (label === 'yaml') return new YamlWorker()
+    return new EditorWorker()
+  },
+}
+```
+
+`getWorker` yang disediakan host lebih diutamakan daripada default paket.
+
+## Komponen dan Hook Tingkat Lebih Rendah
+
+Untuk antarmuka kustom, paket ini mengekspor building block-nya selain
+`Playground`:
+
+```tsx
+import {
+  ResumeEditor,
+  ResumeViewer,
+  useResumeRenderer,
+  useResumeState,
+} from '@yamlresume/playground'
+```
+
+| Ekspor | Tujuan |
+| --- | --- |
+| `ResumeEditor` | Editor Monaco yang telah dikonfigurasi untuk YAML |
+| `ResumeViewer` | Merender satu tata letak dari objek `Resume` hasil parse |
+| `useResumeState` | Mem-parse YAML dan mengelola indeks tata letak aktif |
+| `useResumeRenderer` | Merender tata letak resume yang dipilih |
+| `configureYamlSupport` | Mengonfigurasi dukungan bahasa YAML Monaco secara manual |
+
+Paket ini juga mengekspor utilitas untuk toolbar kustom:
+
+- `downloadResume`
+- `copyResumeToClipboard`
+- `printResume`
+- `openResumeInNewTab`
+- `getBasename`
+- `getExtension`
+
+## Batas Rendering Sisi Klien
+
+Playground merender tata letak resume di browser. Tata letak DOCX dan HTML
+mendapatkan pratinjau visual, sedangkan tata letak Markdown, LaTeX, dan Typst
+menampilkan kode sumber yang dihasilkan. Komponen ini dapat mempratinjau dan
+mengekspor output yang dihasilkan browser ini, tetapi tidak menjalankan
+kompiler PDF native seperti XeTeX, Tectonic, atau Typst. Gunakan
+[`@yamlresume/node`](./node) atau perintah
+[`yamlresume build`](/id/docs/cli#build) ketika Anda membutuhkan kompilasi PDF
+sisi server.
+
+## Pemecahan Masalah
+
+### Komponen tidak memiliki gaya
+
+Pastikan Tailwind memindai `@yamlresume/playground`. Gunakan `@source` dengan
+Tailwind CSS 4 atau tambahkan file `dist` paket ke `content` dengan Tailwind
+CSS 3.
+
+### Editor atau validasi YAML tidak dimuat
+
+Periksa konsol browser dan panel jaringan untuk error pemuatan worker. Jika
+bundler Anda tidak dapat menyelesaikan worker bawaan, sediakan implementasi
+kustom `MonacoEnvironment.getWorker` seperti ditunjukkan di atas.
+
+### Playground memiliki tinggi nol
+
+Komponen ini menggunakan `h-full`; berikan elemen induknya tinggi eksplisit
+seperti `100vh`, `h-screen`, atau tinggi shell aplikasi yang dihitung.
+
+### Pengeditan tidak memperbarui pratinjau
+
+Saat menggunakan state terkontrol, teruskan nilai baru dari `onChange` kembali
+melalui prop `yaml`.
+
+## Referensi API
+
+Lihat referensi API [`@yamlresume/playground`](/developer/playground/index.html)
+yang lengkap untuk semua komponen, hook, utilitas, props, dan tipe pesan yang
+diekspor.

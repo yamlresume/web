@@ -1,0 +1,253 @@
+---
+title: "@yamlresume/node"
+description: Node.js から YAMLResume ファイルの読み取り、検証、ビルド、監視、生成、翻訳を行う。
+---
+
+[`@yamlresume/node`](https://www.npmjs.com/package/@yamlresume/node) は、[`yamlresume` CLI](/ja/docs/cli) が使用する Node.js ランタイム API を提供します。YAMLResume のプラットフォーム非依存のコンパイラに、ファイルシステムアクセス、ファイル監視、AI ファイルワークフロー、PDF コンパイルを組み合わせたパッケージです。
+
+CLI プロセスを起動せずに、Node.js スクリプト、Web サービス、エディタ拡張、ビルドパイプライン、その他のアプリケーションに YAMLResume を統合したい場合に、このパッケージを使用してください。
+
+<Callout>
+  `@yamlresume/node` には Node.js 20 以降が必要です。ブラウザのみでのレンダリングには、[`@yamlresume/core`](/developer/core/index.html) または [`@yamlresume/playground`](./playground) React コンポーネントを使用してください。
+</Callout>
+
+## インストール
+
+```console
+$ npm install @yamlresume/node
+```
+
+このパッケージは ES モジュールで、TypeScript 宣言が付属しています。
+
+## クイックスタート
+
+履歴書を読み込んで検証し、設定されたすべてのレイアウトをビルドします：
+
+```ts
+import { buildResumeFile, readResumeFile } from '@yamlresume/node'
+
+const result = readResumeFile('resume.yml')
+
+if (result.validated === 'failed') {
+  for (const error of result.errors ?? []) {
+    console.error(
+      `${error.path.join('.')}: ${error.message} ` +
+        `(${error.line}:${error.column})`
+    )
+  }
+  process.exit(1)
+}
+
+const { outputs } = await buildResumeFile('resume.yml', {
+  output: 'dist',
+})
+
+console.log(outputs)
+```
+
+`buildResumeFile` は履歴書の `layouts` 配列を走査し、生成されたすべてのファイルのパスを返します。設定されたエンジンに応じて、DOCX、HTML、Markdown、LaTeX、Typst、PDF ファイルなどが含まれます。ビルド中のスキーマ検証はアドバイザリです：無効な履歴書でもロガーの警告が出力されるだけで、ビルドは続行されます。検証エラーでワークフローを停止したい場合は、上の例のように先に `readResumeFile` を使用してください。
+
+## ファイルの読み取りと検証
+
+### `readResumeFile`
+
+`readResumeFile` は `.yml`、`.yaml`、`.json` ファイルを受け付けます。検証はデフォルトで有効です：
+
+```ts
+import { readResumeFile } from '@yamlresume/node'
+
+const { resume, validated, errors } = readResumeFile('resume.yml')
+```
+
+`validated` フィールドは次のいずれかの値を取ります：
+
+| ステータス | 意味 |
+| --- | --- |
+| `success` | パースとスキーマ検証が成功 |
+| `failed` | パースは成功したが、スキーマ検証でエラーが返された |
+| `unknown` | 検証が無効 |
+
+検証エラーにはスキーマパスと、1 始まりの行番号・列番号が含まれます。ファイルのパースだけが必要な場合は、スキーマ検証を無効にできます：
+
+```ts
+const { resume, validated } = readResumeFile('resume.yml', {
+  validate: false,
+})
+
+// validated === 'unknown'
+```
+
+無効な YAML やファイルシステムの障害は、[`YAMLResumeError`](#エラー処理) をスローします。
+
+### `validateResume`
+
+YAML コンテンツがすでにメモリ上にある場合は、`validateResume` を使用します：
+
+```ts
+import { ResumeSchema } from '@yamlresume/core'
+import { validateResume } from '@yamlresume/node'
+
+const source = `
+content:
+  basics:
+    name: Andy Dufresne
+layouts:
+  - engine: html
+`
+
+const errors = validateResume(source, ResumeSchema)
+```
+
+行番号順にソートされた位置情報付きエラーを返します。ソースがスキーマに一致する場合は空の配列を返します。
+
+## 履歴出力のビルド
+
+```ts
+import { buildResumeFile } from '@yamlresume/node'
+
+const { outputs } = await buildResumeFile('resume.yml', {
+  pdf: true,
+  validate: true,
+  output: 'dist',
+  timeout: 60,
+})
+```
+
+### ビルドオプション
+
+| オプション | 型 | デフォルト | 説明 |
+| --- | --- | --- | --- |
+| `pdf` | `boolean` | `true` | LaTeX および Typst のソースレイアウトを PDF にコンパイル |
+| `validate` | `boolean` | `true` | ビルド前に履歴書を検証 |
+| `output` | `string` | ソースディレクトリ | 生成ファイルの出力ディレクトリ |
+| `timeout` | `number` | `30` | PDF コンパイラのタイムアウト（秒）。`0` で無効化 |
+| `logger` | `Logger` | `undefined` | 進行状況、警告、エラーメッセージを受け取る |
+
+履歴書に `layouts` ブロックがない場合、YAMLResume はデフォルトのレイアウトを使用します。複数のレイアウトが同じエンジンを使用する場合、出力ファイル名には `resume.0.html` や `resume.1.html` のようなインデックスが付きます。
+
+<Callout title="PDF の依存関係">
+  LaTeX や Typst のソースをビルドするのに外部コンパイラは不要ですが、PDF の生成には必要です：LaTeX レイアウトには [XeTeX または Tectonic](/ja/docs/installation#typesetting-engine) を、Typst レイアウトには Typst CLI をインストールしてください。ソースファイルだけが必要な場合は `pdf: false` を設定してください。
+</Callout>
+
+### ロギング
+
+`@yamlresume/core` の `Logger` インターフェースを実装したロガーを渡さない限り、これらの API はサイレントです：
+
+```ts
+import type { Logger } from '@yamlresume/core'
+import { buildResumeFile } from '@yamlresume/node'
+
+const logger: Logger = {
+  start: console.log,
+  success: console.log,
+  debug: console.debug,
+  info: console.info,
+  log: console.log,
+  warn: console.warn,
+  error: console.error,
+}
+
+await buildResumeFile('resume.yml', { logger })
+```
+
+## 履歴書の監視
+
+`watchResumeFile` は初回ビルドを実行し、ソースファイルが変更されると再ビルドします：
+
+```ts
+import { watchResumeFile } from '@yamlresume/node'
+
+const watcher = watchResumeFile('resume.yml', {
+  output: 'dist',
+  pdf: false,
+})
+
+process.on('SIGINT', async () => {
+  await watcher.close()
+  process.exit(0)
+})
+```
+
+このウォッチャーは Chokidar を使用しており、エディタのアトミック保存の処理、ビルドの重複防止、短期間の変更の 1 回の後続ビルドへの統合を行います。
+
+## サンプルから履歴書を作成
+
+`newResumeFile` は、[`@yamlresume/samples`](./samples) カタログから、コメントが完備したデフォルトレイアウト付きの履歴書を作成します：
+
+```ts
+import { newResumeFile } from '@yamlresume/node'
+
+newResumeFile('resume.yml', 'software-engineer', 'en')
+```
+
+既存のファイルを上書きすることはありません。成功メッセージに選択したサンプル ID を含めたい場合は、ロガーと一緒に `showSampleSource: true` を使用してください。
+
+## AI ファイルワークフロー
+
+Node パッケージは、[`@yamlresume/ai`](/ja/docs/ai) にファイルの読み書き、ロケールチェック、競合保護を加えてラップします。
+
+### 履歴書の生成
+
+```ts
+import { generateResumeFile } from '@yamlresume/node'
+
+await generateResumeFile('resume.yml', 'Backend Engineer', 'en', {
+  model: 'gpt-5',
+  maxRetries: 3,
+  onChunk: (chunk) => process.stdout.write(chunk),
+})
+```
+
+### 履歴書の翻訳
+
+```ts
+import { translateResumeFile } from '@yamlresume/node'
+
+await translateResumeFile(
+  'resume.en.yml',
+  'resume.fr.yml',
+  'fr',
+  {
+    model: 'gpt-5',
+    maxRetries: 3,
+  }
+)
+```
+
+ソース言語は `locale.language` から読み込まれます。生成と翻訳はロケールコードを検証し、既存の出力ファイルの上書きを拒否します。プロバイダの API キーとモデルのデフォルト値は、[`yamlresume ai` コマンド](/ja/docs/ai)と同じ環境変数を使用します。
+
+## エラー処理
+
+Node API は、読み取れないファイル、無効な YAML、出力の競合、サポートされていない言語、利用できない PDF コンパイラ、コンパイルのタイムアウトなどの予期された失敗に対して `YAMLResumeError` をスローします：
+
+```ts
+import { YAMLResumeError } from '@yamlresume/core'
+import { buildResumeFile } from '@yamlresume/node'
+
+try {
+  await buildResumeFile('resume.yml')
+} catch (error) {
+  if (error instanceof YAMLResumeError) {
+    console.error(error.code, error.message)
+    process.exitCode = error.errno
+  } else {
+    throw error
+  }
+}
+```
+
+## API の概要
+
+| エクスポート | 目的 |
+| --- | --- |
+| `readResumeFile` | YAML、YML、JSON の履歴書を読み込み、必要に応じて検証 |
+| `validateResume` | メモリ上の YAML 文字列を位置情報付きエラーで検証 |
+| `buildResumeFile` | 設定されたすべてのレイアウトとオプションの PDF を生成 |
+| `watchResumeFile` | 初回ビルドを行い、ファイル変更時に再ビルド |
+| `newResumeFile` | 厳選されたローカライズされたサンプルから履歴書を作成 |
+| `generateResumeFile` | AI で履歴書を生成して書き込む |
+| `translateResumeFile` | AI で既存の履歴書を翻訳して書き込む |
+| `LATEX_COMPILE_TIMEOUT` | LaTeX コンパイルのデフォルトタイムアウト |
+| `TYPST_COMPILE_TIMEOUT` | Typst コンパイルのデフォルトタイムアウト |
+
+すべてのオプションと戻り値の型については、完全な [`@yamlresume/node` API リファレンス](/developer/node/index.html)を参照してください。

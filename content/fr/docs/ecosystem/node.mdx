@@ -1,0 +1,297 @@
+---
+title: "@yamlresume/node"
+description: Lisez, validez, construisez, surveillez, générez et traduisez des fichiers YAMLResume depuis Node.js.
+---
+
+[`@yamlresume/node`](https://www.npmjs.com/package/@yamlresume/node) fournit
+les API runtime Node.js utilisées par le [CLI `yamlresume`](/fr/docs/cli). Il
+combine le compilateur de YAMLResume, indépendant de la plateforme, avec
+l'accès au système de fichiers, la surveillance de fichiers, les workflows de
+fichiers IA et la compilation PDF.
+
+Utilisez ce paquet lorsque vous devez intégrer YAMLResume dans un script
+Node.js, un service web, une extension d'éditeur, un pipeline de construction
+ou une autre application sans lancer le CLI.
+
+<Callout>
+  `@yamlresume/node` nécessite Node.js 20 ou supérieur. Pour un rendu
+  uniquement côté navigateur, utilisez plutôt
+  [`@yamlresume/core`](/developer/core/index.html) ou le composant React
+  [`@yamlresume/playground`](./playground).
+</Callout>
+
+## Installation
+
+```console
+$ npm install @yamlresume/node
+```
+
+Le paquet est un module ES et inclut des déclarations TypeScript.
+
+## Démarrage rapide
+
+Lisez et validez un CV, puis construisez toutes les mises en page configurées :
+
+```ts
+import { buildResumeFile, readResumeFile } from '@yamlresume/node'
+
+const result = readResumeFile('resume.yml')
+
+if (result.validated === 'failed') {
+  for (const error of result.errors ?? []) {
+    console.error(
+      `${error.path.join('.')}: ${error.message} ` +
+        `(${error.line}:${error.column})`
+    )
+  }
+  process.exit(1)
+}
+
+const { outputs } = await buildResumeFile('resume.yml', {
+  output: 'dist',
+})
+
+console.log(outputs)
+```
+
+`buildResumeFile` parcourt le tableau `layouts` du CV et renvoie les chemins
+de tous les fichiers générés. Selon les moteurs configurés, il peut s'agir de
+fichiers DOCX, HTML, Markdown, LaTeX, Typst et PDF. La validation de schéma
+est indicative pendant les constructions : les CV invalides produisent des
+avertissements dans le logger et la construction continue. Utilisez d'abord
+`readResumeFile`, comme dans l'exemple ci-dessus, lorsque les erreurs de
+validation doivent interrompre votre workflow.
+
+## Lire et valider des fichiers
+
+### `readResumeFile`
+
+`readResumeFile` accepte les fichiers `.yml`, `.yaml` et `.json`. La
+validation est activée par défaut :
+
+```ts
+import { readResumeFile } from '@yamlresume/node'
+
+const { resume, validated, errors } = readResumeFile('resume.yml')
+```
+
+Le champ `validated` prend l'une des valeurs suivantes :
+
+| Statut | Signification |
+| --- | --- |
+| `success` | L'analyse et la validation du schéma ont réussi |
+| `failed` | L'analyse a réussi, mais la validation du schéma a renvoyé des erreurs |
+| `unknown` | La validation était désactivée |
+
+Les erreurs de validation incluent le chemin du schéma ainsi que les numéros
+de ligne et de colonne à partir de un. Désactivez la validation de schéma
+lorsque vous n'avez besoin que d'analyser le fichier :
+
+```ts
+const { resume, validated } = readResumeFile('resume.yml', {
+  validate: false,
+})
+
+// validated === 'unknown'
+```
+
+Un YAML invalide et les échecs du système de fichiers lèvent une
+[`YAMLResumeError`](#gestion-des-erreurs).
+
+### `validateResume`
+
+Utilisez `validateResume` lorsque le contenu YAML est déjà en mémoire :
+
+```ts
+import { ResumeSchema } from '@yamlresume/core'
+import { validateResume } from '@yamlresume/node'
+
+const source = `
+content:
+  basics:
+    name: Andy Dufresne
+layouts:
+  - engine: html
+`
+
+const errors = validateResume(source, ResumeSchema)
+```
+
+Il renvoie des erreurs positionnelles triées par numéro de ligne, ou un
+tableau vide lorsque la source respecte le schéma.
+
+## Construire les sorties du CV
+
+```ts
+import { buildResumeFile } from '@yamlresume/node'
+
+const { outputs } = await buildResumeFile('resume.yml', {
+  pdf: true,
+  validate: true,
+  output: 'dist',
+  timeout: 60,
+})
+```
+
+### Options de construction
+
+| Option | Type | Par défaut | Description |
+| --- | --- | --- | --- |
+| `pdf` | `boolean` | `true` | Compiler les mises en page sources LaTeX et Typst en PDF |
+| `validate` | `boolean` | `true` | Valider le CV avant la construction |
+| `output` | `string` | Répertoire source | Répertoire des fichiers générés |
+| `timeout` | `number` | `30` | Délai du compilateur PDF en secondes ; utilisez `0` pour le désactiver |
+| `logger` | `Logger` | `undefined` | Recevoir les messages de progression, d'avertissement et d'erreur |
+
+Si le CV n'a pas de bloc `layouts`, YAMLResume utilise ses mises en page par
+défaut. Lorsque plusieurs mises en page utilisent le même moteur, leurs noms
+de fichiers de sortie reçoivent un index, comme `resume.0.html` et
+`resume.1.html`.
+
+<Callout title="Dépendances PDF">
+  Construire des sources LaTeX ou Typst ne nécessite pas de compilateur
+  externe. La génération PDF, si : installez
+  [XeTeX ou Tectonic](/fr/docs/installation#typesetting-engine) pour les mises
+  en page LaTeX, ou le CLI Typst pour les mises en page Typst. Définissez
+  `pdf: false` lorsque vous n'avez besoin que des fichiers sources.
+</Callout>
+
+### Journalisation
+
+Les API sont silencieuses sauf si vous passez un logger implémentant
+l'interface `Logger` de `@yamlresume/core` :
+
+```ts
+import type { Logger } from '@yamlresume/core'
+import { buildResumeFile } from '@yamlresume/node'
+
+const logger: Logger = {
+  start: console.log,
+  success: console.log,
+  debug: console.debug,
+  info: console.info,
+  log: console.log,
+  warn: console.warn,
+  error: console.error,
+}
+
+await buildResumeFile('resume.yml', { logger })
+```
+
+## Surveiller un CV
+
+`watchResumeFile` effectue une construction initiale et reconstruit lorsque le
+fichier source change :
+
+```ts
+import { watchResumeFile } from '@yamlresume/node'
+
+const watcher = watchResumeFile('resume.yml', {
+  output: 'dist',
+  pdf: false,
+})
+
+process.on('SIGINT', async () => {
+  await watcher.close()
+  process.exit(0)
+})
+```
+
+Le surveillant utilise Chokidar, gère les sauvegardes atomiques des éditeurs,
+empêche les constructions qui se chevauchent et regroupe une salve de
+modifications en une seule construction ultérieure.
+
+## Créer un CV à partir d'un exemple
+
+`newResumeFile` crée un CV entièrement commenté avec les mises en page par
+défaut à partir du catalogue [`@yamlresume/samples`](./samples) :
+
+```ts
+import { newResumeFile } from '@yamlresume/node'
+
+newResumeFile('resume.yml', 'software-engineer', 'en')
+```
+
+Il n'écrase pas un fichier existant. Utilisez `showSampleSource: true` avec un
+logger lorsque vous souhaitez que le message de succès inclue l'identifiant de
+l'exemple sélectionné.
+
+## Workflows de fichiers IA
+
+Le paquet Node enveloppe [`@yamlresume/ai`](/fr/docs/ai) avec la lecture et
+l'écriture de fichiers, les vérifications de locale et la protection contre
+les conflits.
+
+### Générer un CV
+
+```ts
+import { generateResumeFile } from '@yamlresume/node'
+
+await generateResumeFile('resume.yml', 'Backend Engineer', 'en', {
+  model: 'gpt-5',
+  maxRetries: 3,
+  onChunk: (chunk) => process.stdout.write(chunk),
+})
+```
+
+### Traduire un CV
+
+```ts
+import { translateResumeFile } from '@yamlresume/node'
+
+await translateResumeFile(
+  'resume.en.yml',
+  'resume.fr.yml',
+  'fr',
+  {
+    model: 'gpt-5',
+    maxRetries: 3,
+  }
+)
+```
+
+La langue source est lue depuis `locale.language`. La génération et la
+traduction valident les codes de locale et refusent d'écraser un fichier de
+sortie existant. Les clés API des fournisseurs et les modèles par défaut
+utilisent les mêmes variables d'environnement que les
+[commandes `yamlresume ai`](/fr/docs/ai).
+
+## Gestion des erreurs
+
+Les API Node lèvent `YAMLResumeError` pour les échecs attendus tels que les
+fichiers illisibles, un YAML invalide, les conflits de sortie, les langues non
+prises en charge, les compilateurs PDF indisponibles et les délais de
+compilation dépassés :
+
+```ts
+import { YAMLResumeError } from '@yamlresume/core'
+import { buildResumeFile } from '@yamlresume/node'
+
+try {
+  await buildResumeFile('resume.yml')
+} catch (error) {
+  if (error instanceof YAMLResumeError) {
+    console.error(error.code, error.message)
+    process.exitCode = error.errno
+  } else {
+    throw error
+  }
+}
+```
+
+## Résumé de l'API
+
+| Export | Objectif |
+| --- | --- |
+| `readResumeFile` | Lire et éventuellement valider un CV YAML, YML ou JSON |
+| `validateResume` | Valider une chaîne YAML en mémoire avec des erreurs positionnelles |
+| `buildResumeFile` | Générer toutes les mises en page configurées et les PDF optionnels |
+| `watchResumeFile` | Construire initialement et reconstruire à chaque modification |
+| `newResumeFile` | Créer un CV à partir d'un exemple localisé soigneusement choisi |
+| `generateResumeFile` | Générer et écrire un CV avec l'IA |
+| `translateResumeFile` | Traduire et écrire un CV existant avec l'IA |
+| `LATEX_COMPILE_TIMEOUT` | Délai par défaut de compilation LaTeX |
+| `TYPST_COMPILE_TIMEOUT` | Délai par défaut de compilation Typst |
+
+Pour toutes les options et tous les types de retour, consultez la référence
+complète de l'API [`@yamlresume/node`](/developer/node/index.html).

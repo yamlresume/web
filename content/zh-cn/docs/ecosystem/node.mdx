@@ -1,0 +1,253 @@
+---
+title: "@yamlresume/node"
+description: 在 Node.js 中读取、验证、构建、监视、生成和翻译 YAMLResume 文件。
+---
+
+[`@yamlresume/node`](https://www.npmjs.com/package/@yamlresume/node) 提供 [`yamlresume` CLI](/zh-cn/docs/cli) 所使用的 Node.js 运行时 API。它将 YAMLResume 的平台无关编译器与文件系统访问、文件监视、AI 文件工作流以及 PDF 编译结合在一起。
+
+当您需要将 YAMLResume 集成到 Node.js 脚本、Web 服务、编辑器扩展、构建流水线或其他应用程序中，而不必启动 CLI 进程时，请使用此包。
+
+<Callout>
+  `@yamlresume/node` 要求 Node.js 20 或更高版本。如果只需要浏览器端渲染，请改用 [`@yamlresume/core`](/developer/core/index.html) 或 [`@yamlresume/playground`](./playground) React 组件。
+</Callout>
+
+## 安装
+
+```console
+$ npm install @yamlresume/node
+```
+
+该包是一个 ES 模块，并附带 TypeScript 类型声明。
+
+## 快速上手
+
+读取并验证一份简历，然后构建所有已配置的布局：
+
+```ts
+import { buildResumeFile, readResumeFile } from '@yamlresume/node'
+
+const result = readResumeFile('resume.yml')
+
+if (result.validated === 'failed') {
+  for (const error of result.errors ?? []) {
+    console.error(
+      `${error.path.join('.')}: ${error.message} ` +
+        `(${error.line}:${error.column})`
+    )
+  }
+  process.exit(1)
+}
+
+const { outputs } = await buildResumeFile('resume.yml', {
+  output: 'dist',
+})
+
+console.log(outputs)
+```
+
+`buildResumeFile` 会遍历简历的 `layouts` 数组，并返回所有生成文件的路径。根据所配置的引擎，这些文件可以包括 DOCX、HTML、Markdown、LaTeX、Typst 和 PDF 文件。在构建过程中，架构验证是建议性的：无效的简历只会产生日志警告，构建仍会继续。当验证错误应当中断工作流时，请先使用 `readResumeFile`，如上例所示。
+
+## 读取并验证文件
+
+### `readResumeFile`
+
+`readResumeFile` 接受 `.yml`、`.yaml` 和 `.json` 文件。架构验证默认启用：
+
+```ts
+import { readResumeFile } from '@yamlresume/node'
+
+const { resume, validated, errors } = readResumeFile('resume.yml')
+```
+
+`validated` 字段的取值如下：
+
+| 状态 | 含义 |
+| --- | --- |
+| `success` | 解析和架构验证均成功 |
+| `failed` | 解析成功，但架构验证返回了错误 |
+| `unknown` | 验证已禁用 |
+
+验证错误包含架构路径以及从 1 开始计数的行号和列号。如果只需要解析文件，可以禁用架构验证：
+
+```ts
+const { resume, validated } = readResumeFile('resume.yml', {
+  validate: false,
+})
+
+// validated === 'unknown'
+```
+
+无效的 YAML 和文件系统错误会抛出 [`YAMLResumeError`](#错误处理)。
+
+### `validateResume`
+
+当 YAML 内容已在内存中时，可以使用 `validateResume`：
+
+```ts
+import { ResumeSchema } from '@yamlresume/core'
+import { validateResume } from '@yamlresume/node'
+
+const source = `
+content:
+  basics:
+    name: Andy Dufresne
+layouts:
+  - engine: html
+`
+
+const errors = validateResume(source, ResumeSchema)
+```
+
+它返回按行号排序的带位置错误；当源内容符合架构时，返回空数组。
+
+## 构建简历输出
+
+```ts
+import { buildResumeFile } from '@yamlresume/node'
+
+const { outputs } = await buildResumeFile('resume.yml', {
+  pdf: true,
+  validate: true,
+  output: 'dist',
+  timeout: 60,
+})
+```
+
+### 构建选项
+
+| 选项 | 类型 | 默认值 | 描述 |
+| --- | --- | --- | --- |
+| `pdf` | `boolean` | `true` | 将 LaTeX 和 Typst 源布局编译为 PDF |
+| `validate` | `boolean` | `true` | 在构建前验证简历 |
+| `output` | `string` | 源文件目录 | 生成文件的输出目录 |
+| `timeout` | `number` | `30` | PDF 编译器超时时间（秒）；设为 `0` 表示禁用 |
+| `logger` | `Logger` | `undefined` | 接收进度、警告和错误消息 |
+
+如果简历没有 `layouts` 块，YAMLResume 会使用默认布局。当多个布局使用同一引擎时，它们的输出文件名会带上索引，例如 `resume.0.html` 和 `resume.1.html`。
+
+<Callout title="PDF 依赖">
+  构建 LaTeX 或 Typst 源文件不需要外部编译器，但生成 PDF 需要：LaTeX 布局需要安装 [XeTeX 或 Tectonic](/zh-cn/docs/installation#typesetting-engine)，Typst 布局需要安装 Typst CLI。如果只需要源文件，请设置 `pdf: false`。
+</Callout>
+
+### 日志记录
+
+这些 API 默认是静默的，除非传入一个实现 `@yamlresume/core` 中 `Logger` 接口的日志器：
+
+```ts
+import type { Logger } from '@yamlresume/core'
+import { buildResumeFile } from '@yamlresume/node'
+
+const logger: Logger = {
+  start: console.log,
+  success: console.log,
+  debug: console.debug,
+  info: console.info,
+  log: console.log,
+  warn: console.warn,
+  error: console.error,
+}
+
+await buildResumeFile('resume.yml', { logger })
+```
+
+## 监视简历文件
+
+`watchResumeFile` 会执行一次初始构建，并在源文件发生变化时重新构建：
+
+```ts
+import { watchResumeFile } from '@yamlresume/node'
+
+const watcher = watchResumeFile('resume.yml', {
+  output: 'dist',
+  pdf: false,
+})
+
+process.on('SIGINT', async () => {
+  await watcher.close()
+  process.exit(0)
+})
+```
+
+该监视器基于 Chokidar，能够处理编辑器的原子保存，防止构建重叠，并将短时间内的连续变更合并为一次后续构建。
+
+## 从示例创建简历
+
+`newResumeFile` 会根据 [`@yamlresume/samples`](./samples) 目录创建一份带有完整注释和默认布局的简历：
+
+```ts
+import { newResumeFile } from '@yamlresume/node'
+
+newResumeFile('resume.yml', 'software-engineer', 'en')
+```
+
+它不会覆盖已存在的文件。如果希望成功消息中包含所选示例的 ID，可以配合日志器使用 `showSampleSource: true`。
+
+## AI 文件工作流
+
+Node 包在 [`@yamlresume/ai`](/zh-cn/docs/ai) 之上封装了文件读取、写入、区域设置检查和冲突保护。
+
+### 生成简历
+
+```ts
+import { generateResumeFile } from '@yamlresume/node'
+
+await generateResumeFile('resume.yml', 'Backend Engineer', 'en', {
+  model: 'gpt-5',
+  maxRetries: 3,
+  onChunk: (chunk) => process.stdout.write(chunk),
+})
+```
+
+### 翻译简历
+
+```ts
+import { translateResumeFile } from '@yamlresume/node'
+
+await translateResumeFile(
+  'resume.en.yml',
+  'resume.fr.yml',
+  'fr',
+  {
+    model: 'gpt-5',
+    maxRetries: 3,
+  }
+)
+```
+
+源语言从 `locale.language` 中读取。生成和翻译会验证区域设置代码，并拒绝覆盖已存在的输出文件。提供商 API 密钥和模型默认值使用与 [`yamlresume ai` 命令](/zh-cn/docs/ai)相同的环境变量。
+
+## 错误处理
+
+对于预期的失败，例如文件不可读、YAML 无效、输出冲突、不支持的语言、PDF 编译器不可用以及编译超时，Node API 会抛出 `YAMLResumeError`：
+
+```ts
+import { YAMLResumeError } from '@yamlresume/core'
+import { buildResumeFile } from '@yamlresume/node'
+
+try {
+  await buildResumeFile('resume.yml')
+} catch (error) {
+  if (error instanceof YAMLResumeError) {
+    console.error(error.code, error.message)
+    process.exitCode = error.errno
+  } else {
+    throw error
+  }
+}
+```
+
+## API 摘要
+
+| 导出 | 用途 |
+| --- | --- |
+| `readResumeFile` | 读取并可选验证 YAML、YML 或 JSON 简历 |
+| `validateResume` | 验证内存中的 YAML 字符串并返回带位置的错误 |
+| `buildResumeFile` | 生成所有已配置的布局和可选的 PDF |
+| `watchResumeFile` | 先构建一次，并在文件变化时重新构建 |
+| `newResumeFile` | 从精选的本地化示例创建简历 |
+| `generateResumeFile` | 使用 AI 生成并写入简历 |
+| `translateResumeFile` | 使用 AI 翻译并写入现有简历 |
+| `LATEX_COMPILE_TIMEOUT` | 默认的 LaTeX 编译超时时间 |
+| `TYPST_COMPILE_TIMEOUT` | 默认的 Typst 编译超时时间 |
+
+所有选项和返回类型的完整说明，请参阅 [`@yamlresume/node` API 参考](/developer/node/index.html)。

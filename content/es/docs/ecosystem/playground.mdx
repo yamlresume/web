@@ -1,0 +1,330 @@
+---
+title: "@yamlresume/playground"
+description: Incrusta el editor con soporte de esquema de YAMLResume y la vista previa multi-diseño en vivo en una aplicación React.
+---
+
+[`@yamlresume/playground`](https://www.npmjs.com/package/@yamlresume/playground)
+es el componente React que impulsa la [zona de pruebas](/es/playground) oficial
+de YAMLResume. Combina un editor Monaco YAML con vistas previas en vivo,
+diseños responsivos de escritorio y móvil, y acciones de exportación.
+
+Úsalo para añadir edición de YAMLResume a un sitio de portafolio, una
+herramienta interna de currículums, un sistema de gestión de contenidos u otra
+aplicación React.
+
+## Características
+
+- Edición YAML basada en Monaco con resaltado de sintaxis
+- Autocompletado, validación y documentación al pasar el cursor basadas en esquema
+- Vistas previas renderizadas en vivo para DOCX y HTML, y vistas previas de
+  código fuente para Markdown, LaTeX y Typst
+- Acciones de descarga y copia, además de acciones de impresión y apertura en
+  nueva pestaña para diseños HTML
+- Paneles divisibles redimensionables en escritorio y pestañas de
+  editor/vista previa en móvil
+- Estado YAML controlado y etiquetas de información personalizables
+- Monaco editor y Web Workers del servidor de lenguaje YAML incluidos
+- Carga de Monaco segura para SSR en frameworks como Next.js
+
+## Instalación
+
+Instala el paquete y sus dependencias pares de React y Tailwind CSS:
+
+```console
+$ npm install @yamlresume/playground react react-dom tailwindcss
+```
+
+`@yamlresume/core` y `@yamlresume/samples` son dependencias del paquete y no
+necesitan instalarse por separado, a menos que tu aplicación importe
+directamente de ellas.
+
+El paquete soporta React 18 o superior y Tailwind CSS 3 o superior.
+
+## Configurar Tailwind CSS
+
+El componente usa clases de utilidad de Tailwind. Tu configuración de Tailwind
+debe escanear el paquete publicado; de lo contrario, sus clases podrían
+omitirse en la hoja de estilos generada.
+
+### Tailwind CSS 4
+
+Añade una directiva `@source` junto a tu importación de Tailwind:
+
+```css title="src/app.css"
+@import "tailwindcss";
+@source "../node_modules/@yamlresume/playground";
+```
+
+Ajusta la ruta relativa según la ubicación de tu hoja de estilos. En un
+workspace de pnpm, es posible que debas apuntar a la ubicación resuelta del
+paquete o usar una ruta de origen relativa al workspace.
+
+### Tailwind CSS 3
+
+Incluye el paquete en `content`:
+
+```js title="tailwind.config.js"
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './index.html',
+    './src/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@yamlresume/playground/dist/**/*.js',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+## Uso básico
+
+El componente llena su contenedor padre, así que dale una altura explícita.
+Mantén el YAML en el estado de React para que los cambios del editor
+actualicen la vista previa en vivo:
+
+```tsx
+import { Playground } from '@yamlresume/playground'
+import { useState } from 'react'
+
+const initialYaml = `
+content:
+  basics:
+    name: Andy Dufresne
+layouts:
+  - engine: html
+    template: calm
+`
+
+export function ResumePage() {
+  const [yaml, setYaml] = useState(initialYaml)
+
+  return (
+    <main style={{ height: '100vh' }}>
+      <Playground yaml={yaml} onChange={setYaml} />
+    </main>
+  )
+}
+```
+
+Renderizar `<Playground />` sin props muestra el ejemplo comentado del
+ingeniero de software en inglés y sus diseños predeterminados. Esta forma es
+útil para una demo estática; proporciona tanto `yaml` como `onChange` para una
+integración editable.
+
+## Estado YAML controlado
+
+Usa el mismo patrón controlado para cargar YAML desde tu aplicación y
+proporcionar un nombre de archivo para las etiquetas del editor y de la
+pestaña de vista previa:
+
+```tsx
+import { Playground } from '@yamlresume/playground'
+import { useState } from 'react'
+
+export function ResumeEditorPage({
+  initialYaml,
+}: {
+  initialYaml: string
+}) {
+  const [yaml, setYaml] = useState(initialYaml)
+
+  return (
+    <div className="h-screen">
+      <Playground
+        yaml={yaml}
+        onChange={setYaml}
+        filename="resume.yml"
+      />
+    </div>
+  )
+}
+```
+
+<Callout>
+  Cuando pases `yaml`, actualízalo en `onChange`. La zona de pruebas deriva el
+  currículum analizado y las vistas previas del prop; no mantiene una copia
+  separada del contenido controlado.
+</Callout>
+
+## Props del Playground
+
+| Prop | Tipo | Predeterminado | Descripción |
+| --- | --- | --- | --- |
+| `yaml` | `string` | Ejemplo curado | YAML mostrado en el editor |
+| `onChange` | `(value: string) => void` | `undefined` | Se llama cada vez que cambia el YAML |
+| `filename` | `string` | `resume.yaml` | Nombre de archivo mostrado en el editor y en las etiquetas de vista previa |
+| `messages` | `PlaygroundMessageOverrides` | Etiquetas en inglés | Sobrescritura parcial de etiquetas de información |
+
+Las pestañas de vista previa se generan a partir del array `layouts` del
+currículum. Un YAML inválido establece el currículum analizado en `null`,
+mientras que un currículum válido sin diseños muestra un estado sin diseños en
+lugar de fallar.
+
+## Personalizar mensajes de la UI
+
+Sobrescribe cualquier información sobre herramientas de la barra de
+herramientas manteniendo los valores predeterminados en inglés para el resto:
+
+```tsx
+<Playground
+  yaml={yaml}
+  onChange={setYaml}
+  messages={{
+    tooltips: {
+      copy: 'Copy YAML',
+      download: 'Download resume',
+      openInNewTab: 'Open preview',
+    },
+  }}
+/>
+```
+
+Las claves disponibles son `copy`, `undo`, `redo`, `clear`, `print`,
+`openInNewTab` y `download`.
+
+## Integración con frameworks
+
+### Next.js
+
+`Playground` es un componente de cliente. Renderízalo desde un límite de
+cliente:
+
+```tsx title="components/ResumePlayground.tsx"
+'use client'
+
+import { Playground } from '@yamlresume/playground'
+import { useState } from 'react'
+
+export function ResumePlayground({ initialYaml }: { initialYaml: string }) {
+  const [yaml, setYaml] = useState(initialYaml)
+
+  return (
+    <div className="h-[calc(100vh-4rem)]">
+      <Playground yaml={yaml} onChange={setYaml} />
+    </div>
+  )
+}
+```
+
+Monaco se carga dinámicamente en el navegador, por lo que importar el paquete
+es seguro durante el renderizado del servidor y la generación estática. El
+paquete publicado también incluye sus workers de editor y YAML en
+`dist/workers`.
+
+### Vite
+
+Normalmente no se requiere una configuración especial de JavaScript. Asegúrate
+de que el paquete esté incluido en el escaneo de contenido de Tailwind y luego
+monta el componente como en el ejemplo básico.
+
+## Soporte de Monaco y esquema YAML
+
+El editor configura `monaco-yaml` con el [JSON Schema](/es/docs/compiler/schema/json)
+oficial de YAMLResume. El servidor de lenguaje YAML se ejecuta en un Web
+Worker y proporciona:
+
+- Sugerencias de claves YAML y valores de enumeración del esquema
+- Diagnósticos de esquema en línea
+- Documentación de campos al pasar el cursor
+
+El paquete incluye `monaco-editor` 0.54 porque las versiones actuales de
+`monaco-yaml` usan la API de workers de Monaco anterior a 0.55.
+
+### Configuración personalizada de workers
+
+La mayoría de las aplicaciones Vite y webpack pueden usar los workers
+incluidos. Si tu bundler no puede emitir o cargar los workers referenciados
+por el paquete preconstruido, define
+`globalThis.MonacoEnvironment.getWorker` antes de importar la zona de
+pruebas:
+
+```ts
+import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+import YamlWorker from 'monaco-yaml/yaml.worker?worker'
+
+globalThis.MonacoEnvironment = {
+  getWorker(_moduleId, label) {
+    if (label === 'yaml') return new YamlWorker()
+    return new EditorWorker()
+  },
+}
+```
+
+Un `getWorker` proporcionado por el host tiene prioridad sobre los valores
+predeterminados del paquete.
+
+## Componentes y hooks de nivel inferior
+
+Para interfaces personalizadas, el paquete exporta sus bloques de
+construcción además de `Playground`:
+
+```tsx
+import {
+  ResumeEditor,
+  ResumeViewer,
+  useResumeRenderer,
+  useResumeState,
+} from '@yamlresume/playground'
+```
+
+| Exportación | Propósito |
+| --- | --- |
+| `ResumeEditor` | Editor Monaco preconfigurado para YAML |
+| `ResumeViewer` | Renderiza un diseño a partir de un objeto `Resume` analizado |
+| `useResumeState` | Analiza el YAML y gestiona el índice del diseño activo |
+| `useResumeRenderer` | Renderiza el diseño del currículum seleccionado |
+| `configureYamlSupport` | Configura manualmente el soporte del lenguaje YAML de Monaco |
+
+El paquete también exporta utilidades para barras de herramientas
+personalizadas:
+
+- `downloadResume`
+- `copyResumeToClipboard`
+- `printResume`
+- `openResumeInNewTab`
+- `getBasename`
+- `getExtension`
+
+## Límites del renderizado en el cliente
+
+La zona de pruebas renderiza los diseños del currículum en el navegador. Los
+diseños DOCX y HTML obtienen vistas previas visuales, mientras que los
+diseños Markdown, LaTeX y Typst muestran su código fuente generado. El
+componente puede previsualizar y exportar estas salidas generadas en el
+navegador, pero no ejecuta compiladores de PDF nativos como XeTeX, Tectonic o
+Typst. Usa [`@yamlresume/node`](./node) o el comando
+[`yamlresume build`](/es/docs/cli#build) cuando necesites compilación de PDF
+en el servidor.
+
+## Solución de problemas
+
+### El componente no tiene estilos
+
+Verifica que Tailwind escanee `@yamlresume/playground`. Usa `@source` con
+Tailwind CSS 4 o añade los archivos `dist` del paquete a `content` con
+Tailwind CSS 3.
+
+### El editor o la validación YAML no cargan
+
+Revisa la consola del navegador y el panel de red en busca de errores de carga
+de workers. Si tu bundler no puede resolver los workers incluidos, proporciona
+una implementación personalizada de `MonacoEnvironment.getWorker` como se
+mostró anteriormente.
+
+### La zona de pruebas tiene altura cero
+
+El componente usa `h-full`; dale a su contenedor padre una altura explícita
+como `100vh`, `h-screen` o una altura calculada del shell de la aplicación.
+
+### La edición no actualiza la vista previa
+
+Cuando uses estado controlado, pasa el nuevo valor de `onChange` de vuelta a
+través del prop `yaml`.
+
+## Referencia de la API
+
+Consulta la referencia completa de la API de
+[`@yamlresume/playground`](/developer/playground/index.html) para todos los
+componentes, hooks, utilidades, props y tipos de mensaje exportados.

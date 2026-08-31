@@ -1,0 +1,286 @@
+---
+title: "@yamlresume/node"
+description: Read, validate, build, watch, generate, and translate YAMLResume files from Node.js.
+---
+
+[`@yamlresume/node`](https://www.npmjs.com/package/@yamlresume/node) provides
+the Node.js runtime APIs used by the [`yamlresume` CLI](/docs/cli). It combines
+YAMLResume's platform-independent compiler with filesystem access, file
+watching, AI file workflows, and PDF compilation.
+
+Use this package when you need to integrate YAMLResume into a Node.js script,
+web service, editor extension, build pipeline, or another application without
+spawning the CLI.
+
+<Callout>
+  `@yamlresume/node` requires Node.js 20 or newer. For browser-only rendering,
+  use [`@yamlresume/core`](/developer/core/index.html) or the
+  [`@yamlresume/playground`](./playground) React component instead.
+</Callout>
+
+## Installation
+
+```console
+$ npm install @yamlresume/node
+```
+
+The package is an ES module and includes TypeScript declarations.
+
+## Quick Start
+
+Read and validate a resume, then build every configured layout:
+
+```ts
+import { buildResumeFile, readResumeFile } from '@yamlresume/node'
+
+const result = readResumeFile('resume.yml')
+
+if (result.validated === 'failed') {
+  for (const error of result.errors ?? []) {
+    console.error(
+      `${error.path.join('.')}: ${error.message} ` +
+        `(${error.line}:${error.column})`
+    )
+  }
+  process.exit(1)
+}
+
+const { outputs } = await buildResumeFile('resume.yml', {
+  output: 'dist',
+})
+
+console.log(outputs)
+```
+
+`buildResumeFile` iterates over the resume's `layouts` array and returns the
+paths of all generated files. Depending on the configured engines, these can
+include DOCX, HTML, Markdown, LaTeX, Typst, and PDF files. Schema validation is
+advisory during builds: invalid resumes produce logger warnings and the build
+continues. Use `readResumeFile` first, as in the example above, when validation
+errors should stop your workflow.
+
+## Read and Validate Files
+
+### `readResumeFile`
+
+`readResumeFile` accepts `.yml`, `.yaml`, and `.json` files. Validation is
+enabled by default:
+
+```ts
+import { readResumeFile } from '@yamlresume/node'
+
+const { resume, validated, errors } = readResumeFile('resume.yml')
+```
+
+The `validated` field is one of:
+
+| Status | Meaning |
+| --- | --- |
+| `success` | Parsing and schema validation succeeded |
+| `failed` | Parsing succeeded, but schema validation returned errors |
+| `unknown` | Validation was disabled |
+
+Validation errors include the schema path and one-based line and column
+numbers. Disable schema validation when you only need to parse the file:
+
+```ts
+const { resume, validated } = readResumeFile('resume.yml', {
+  validate: false,
+})
+
+// validated === 'unknown'
+```
+
+Invalid YAML and filesystem failures throw a
+[`YAMLResumeError`](#error-handling).
+
+### `validateResume`
+
+Use `validateResume` when the YAML content is already in memory:
+
+```ts
+import { ResumeSchema } from '@yamlresume/core'
+import { validateResume } from '@yamlresume/node'
+
+const source = `
+content:
+  basics:
+    name: Andy Dufresne
+layouts:
+  - engine: html
+`
+
+const errors = validateResume(source, ResumeSchema)
+```
+
+It returns positional errors sorted by line number, or an empty array when the
+source matches the schema.
+
+## Build Resume Outputs
+
+```ts
+import { buildResumeFile } from '@yamlresume/node'
+
+const { outputs } = await buildResumeFile('resume.yml', {
+  pdf: true,
+  validate: true,
+  output: 'dist',
+  timeout: 60,
+})
+```
+
+### Build options
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `pdf` | `boolean` | `true` | Compile LaTeX and Typst source layouts to PDF |
+| `validate` | `boolean` | `true` | Validate the resume before building |
+| `output` | `string` | Source directory | Directory for generated files |
+| `timeout` | `number` | `30` | PDF compiler timeout in seconds; use `0` to disable it |
+| `logger` | `Logger` | `undefined` | Receive progress, warning, and error messages |
+
+If the resume has no `layouts` block, YAMLResume uses its default layouts.
+When several layouts use the same engine, their output filenames receive an
+index such as `resume.0.html` and `resume.1.html`.
+
+<Callout title="PDF dependencies">
+  Building LaTeX or Typst source does not require an external compiler. PDF
+  generation does: install [XeTeX or Tectonic](/docs/installation#typesetting-engine)
+  for LaTeX layouts, or the Typst CLI for Typst layouts. Set `pdf: false` when
+  you only need the source files.
+</Callout>
+
+### Logging
+
+The APIs are silent unless you pass a logger implementing the
+`Logger` interface from `@yamlresume/core`:
+
+```ts
+import type { Logger } from '@yamlresume/core'
+import { buildResumeFile } from '@yamlresume/node'
+
+const logger: Logger = {
+  start: console.log,
+  success: console.log,
+  debug: console.debug,
+  info: console.info,
+  log: console.log,
+  warn: console.warn,
+  error: console.error,
+}
+
+await buildResumeFile('resume.yml', { logger })
+```
+
+## Watch a Resume
+
+`watchResumeFile` performs an initial build and rebuilds when the source file
+changes:
+
+```ts
+import { watchResumeFile } from '@yamlresume/node'
+
+const watcher = watchResumeFile('resume.yml', {
+  output: 'dist',
+  pdf: false,
+})
+
+process.on('SIGINT', async () => {
+  await watcher.close()
+  process.exit(0)
+})
+```
+
+The watcher uses Chokidar, handles atomic editor saves, prevents overlapping
+builds, and coalesces a burst of changes into one follow-up build.
+
+## Create a Resume from a Sample
+
+`newResumeFile` creates a fully commented resume with default layouts from the
+[`@yamlresume/samples`](./samples) catalog:
+
+```ts
+import { newResumeFile } from '@yamlresume/node'
+
+newResumeFile('resume.yml', 'software-engineer', 'en')
+```
+
+It does not overwrite an existing file. Use `showSampleSource: true` with a
+logger when you want the success message to include the selected sample ID.
+
+## AI File Workflows
+
+The Node package wraps [`@yamlresume/ai`](/docs/ai) with file reading, writing,
+locale checks, and conflict protection.
+
+### Generate a resume
+
+```ts
+import { generateResumeFile } from '@yamlresume/node'
+
+await generateResumeFile('resume.yml', 'Backend Engineer', 'en', {
+  model: 'gpt-5',
+  maxRetries: 3,
+  onChunk: (chunk) => process.stdout.write(chunk),
+})
+```
+
+### Translate a resume
+
+```ts
+import { translateResumeFile } from '@yamlresume/node'
+
+await translateResumeFile(
+  'resume.en.yml',
+  'resume.fr.yml',
+  'fr',
+  {
+    model: 'gpt-5',
+    maxRetries: 3,
+  }
+)
+```
+
+The source language is read from `locale.language`. Generation and translation
+validate locale codes and refuse to overwrite an existing output file. Provider
+API keys and model defaults use the same environment variables as the
+[`yamlresume ai` commands](/docs/ai).
+
+## Error Handling
+
+Node APIs throw `YAMLResumeError` for expected failures such as unreadable
+files, invalid YAML, output conflicts, unsupported languages, unavailable PDF
+compilers, and compilation timeouts:
+
+```ts
+import { YAMLResumeError } from '@yamlresume/core'
+import { buildResumeFile } from '@yamlresume/node'
+
+try {
+  await buildResumeFile('resume.yml')
+} catch (error) {
+  if (error instanceof YAMLResumeError) {
+    console.error(error.code, error.message)
+    process.exitCode = error.errno
+  } else {
+    throw error
+  }
+}
+```
+
+## API Summary
+
+| Export | Purpose |
+| --- | --- |
+| `readResumeFile` | Read and optionally validate a YAML, YML, or JSON resume |
+| `validateResume` | Validate an in-memory YAML string with positional errors |
+| `buildResumeFile` | Generate all configured layouts and optional PDFs |
+| `watchResumeFile` | Build initially and rebuild on file changes |
+| `newResumeFile` | Create a resume from a curated localized sample |
+| `generateResumeFile` | Generate and write a resume with AI |
+| `translateResumeFile` | Translate and write an existing resume with AI |
+| `LATEX_COMPILE_TIMEOUT` | Default LaTeX compilation timeout |
+| `TYPST_COMPILE_TIMEOUT` | Default Typst compilation timeout |
+
+For every option and return type, see the complete
+[`@yamlresume/node` API reference](/developer/node/index.html).

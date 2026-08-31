@@ -1,0 +1,289 @@
+---
+title: "@yamlresume/node"
+description: Baca, validasi, bangun, pantau, hasilkan, dan terjemahkan file YAMLResume dari Node.js.
+---
+
+[`@yamlresume/node`](https://www.npmjs.com/package/@yamlresume/node) menyediakan
+API runtime Node.js yang digunakan oleh [CLI `yamlresume`](/id/docs/cli). Paket
+ini menggabungkan kompiler YAMLResume yang independen platform dengan akses
+sistem file, pemantauan file, alur kerja file AI, dan kompilasi PDF.
+
+Gunakan paket ini ketika Anda perlu mengintegrasikan YAMLResume ke dalam skrip
+Node.js, layanan web, ekstensi editor, pipeline build, atau aplikasi lain tanpa
+menjalankan proses CLI.
+
+<Callout>
+  `@yamlresume/node` membutuhkan Node.js 20 atau yang lebih baru. Untuk
+  rendering khusus browser, gunakan
+  [`@yamlresume/core`](/developer/core/index.html) atau komponen React
+  [`@yamlresume/playground`](./playground).
+</Callout>
+
+## Instalasi
+
+```console
+$ npm install @yamlresume/node
+```
+
+Paket ini adalah modul ES dan menyertakan deklarasi TypeScript.
+
+## Memulai Cepat
+
+Baca dan validasi resume, lalu bangun semua tata letak yang dikonfigurasi:
+
+```ts
+import { buildResumeFile, readResumeFile } from '@yamlresume/node'
+
+const result = readResumeFile('resume.yml')
+
+if (result.validated === 'failed') {
+  for (const error of result.errors ?? []) {
+    console.error(
+      `${error.path.join('.')}: ${error.message} ` +
+        `(${error.line}:${error.column})`
+    )
+  }
+  process.exit(1)
+}
+
+const { outputs } = await buildResumeFile('resume.yml', {
+  output: 'dist',
+})
+
+console.log(outputs)
+```
+
+`buildResumeFile` melakukan iterasi atas array `layouts` resume dan mengembalikan
+jalur semua file yang dihasilkan. Tergantung pada mesin yang dikonfigurasi, file
+tersebut dapat mencakup file DOCX, HTML, Markdown, LaTeX, Typst, dan PDF.
+Validasi skema bersifat advisori selama build: resume yang tidak valid hanya
+menghasilkan peringatan logger dan build tetap berlanjut. Gunakan
+`readResumeFile` terlebih dahulu, seperti pada contoh di atas, ketika error
+validasi harus menghentikan alur kerja Anda.
+
+## Membaca dan Memvalidasi File
+
+### `readResumeFile`
+
+`readResumeFile` menerima file `.yml`, `.yaml`, dan `.json`. Validasi diaktifkan
+secara default:
+
+```ts
+import { readResumeFile } from '@yamlresume/node'
+
+const { resume, validated, errors } = readResumeFile('resume.yml')
+```
+
+Field `validated` bernilai salah satu dari:
+
+| Status | Arti |
+| --- | --- |
+| `success` | Parsing dan validasi skema berhasil |
+| `failed` | Parsing berhasil, tetapi validasi skema mengembalikan error |
+| `unknown` | Validasi dinonaktifkan |
+
+Error validasi mencakup jalur skema serta nomor baris dan kolom yang dimulai
+dari satu. Nonaktifkan validasi skema jika Anda hanya perlu mem-parse file:
+
+```ts
+const { resume, validated } = readResumeFile('resume.yml', {
+  validate: false,
+})
+
+// validated === 'unknown'
+```
+
+YAML yang tidak valid dan kegagalan sistem file akan melemparkan
+[`YAMLResumeError`](#penanganan-kesalahan).
+
+### `validateResume`
+
+Gunakan `validateResume` ketika konten YAML sudah ada di memori:
+
+```ts
+import { ResumeSchema } from '@yamlresume/core'
+import { validateResume } from '@yamlresume/node'
+
+const source = `
+content:
+  basics:
+    name: Andy Dufresne
+layouts:
+  - engine: html
+`
+
+const errors = validateResume(source, ResumeSchema)
+```
+
+Fungsi ini mengembalikan error posisi yang diurutkan berdasarkan nomor baris,
+atau array kosong ketika sumber sesuai dengan skema.
+
+## Membangun Output Resume
+
+```ts
+import { buildResumeFile } from '@yamlresume/node'
+
+const { outputs } = await buildResumeFile('resume.yml', {
+  pdf: true,
+  validate: true,
+  output: 'dist',
+  timeout: 60,
+})
+```
+
+### Opsi build
+
+| Opsi | Tipe | Default | Deskripsi |
+| --- | --- | --- | --- |
+| `pdf` | `boolean` | `true` | Mengompilasi tata letak sumber LaTeX dan Typst menjadi PDF |
+| `validate` | `boolean` | `true` | Memvalidasi resume sebelum build |
+| `output` | `string` | Direktori sumber | Direktori untuk file yang dihasilkan |
+| `timeout` | `number` | `30` | Batas waktu kompiler PDF dalam detik; gunakan `0` untuk menonaktifkan |
+| `logger` | `Logger` | `undefined` | Menerima pesan progres, peringatan, dan error |
+
+Jika resume tidak memiliki blok `layouts`, YAMLResume menggunakan tata letak
+default-nya. Ketika beberapa tata letak menggunakan mesin yang sama, nama file
+output-nya diberi indeks, seperti `resume.0.html` dan `resume.1.html`.
+
+<Callout title="Dependensi PDF">
+  Membangun sumber LaTeX atau Typst tidak memerlukan kompiler eksternal.
+  Pembuatan PDF ya: instal [XeTeX atau Tectonic](/id/docs/installation#typesetting-engine)
+  untuk tata letak LaTeX, atau CLI Typst untuk tata letak Typst. Atur
+  `pdf: false` ketika Anda hanya membutuhkan file sumber.
+</Callout>
+
+### Logging
+
+API ini senyap kecuali Anda meneruskan logger yang mengimplementasikan antarmuka
+`Logger` dari `@yamlresume/core`:
+
+```ts
+import type { Logger } from '@yamlresume/core'
+import { buildResumeFile } from '@yamlresume/node'
+
+const logger: Logger = {
+  start: console.log,
+  success: console.log,
+  debug: console.debug,
+  info: console.info,
+  log: console.log,
+  warn: console.warn,
+  error: console.error,
+}
+
+await buildResumeFile('resume.yml', { logger })
+```
+
+## Memantau Resume
+
+`watchResumeFile` melakukan build awal dan membangun kembali ketika file sumber
+berubah:
+
+```ts
+import { watchResumeFile } from '@yamlresume/node'
+
+const watcher = watchResumeFile('resume.yml', {
+  output: 'dist',
+  pdf: false,
+})
+
+process.on('SIGINT', async () => {
+  await watcher.close()
+  process.exit(0)
+})
+```
+
+Pemantau ini menggunakan Chokidar, menangani penyimpanan atomik editor,
+mencegah build yang tumpang tindih, dan menggabungkan sejumlah perubahan yang
+terjadi beruntun menjadi satu build lanjutan.
+
+## Membuat Resume dari Contoh
+
+`newResumeFile` membuat resume yang sepenuhnya dikomentari dengan tata letak
+default dari katalog [`@yamlresume/samples`](./samples):
+
+```ts
+import { newResumeFile } from '@yamlresume/node'
+
+newResumeFile('resume.yml', 'software-engineer', 'en')
+```
+
+Fungsi ini tidak menimpa file yang sudah ada. Gunakan `showSampleSource: true`
+dengan logger jika Anda ingin pesan sukses menyertakan ID contoh yang dipilih.
+
+## Alur Kerja File AI
+
+Paket Node membungkus [`@yamlresume/ai`](/id/docs/ai) dengan pembacaan dan
+penulisan file, pemeriksaan locale, serta perlindungan terhadap konflik.
+
+### Menghasilkan resume
+
+```ts
+import { generateResumeFile } from '@yamlresume/node'
+
+await generateResumeFile('resume.yml', 'Backend Engineer', 'en', {
+  model: 'gpt-5',
+  maxRetries: 3,
+  onChunk: (chunk) => process.stdout.write(chunk),
+})
+```
+
+### Menerjemahkan resume
+
+```ts
+import { translateResumeFile } from '@yamlresume/node'
+
+await translateResumeFile(
+  'resume.en.yml',
+  'resume.fr.yml',
+  'fr',
+  {
+    model: 'gpt-5',
+    maxRetries: 3,
+  }
+)
+```
+
+Bahasa sumber dibaca dari `locale.language`. Pembuatan dan penerjemahan
+memvalidasi kode locale dan menolak menimpa file output yang sudah ada. Kunci
+API penyedia dan default model menggunakan variabel lingkungan yang sama dengan
+[perintah `yamlresume ai`](/id/docs/ai).
+
+## Penanganan Kesalahan
+
+API Node melemparkan `YAMLResumeError` untuk kegagalan yang diharapkan seperti
+file yang tidak dapat dibaca, YAML tidak valid, konflik output, bahasa yang
+tidak didukung, kompiler PDF yang tidak tersedia, dan batas waktu kompilasi:
+
+```ts
+import { YAMLResumeError } from '@yamlresume/core'
+import { buildResumeFile } from '@yamlresume/node'
+
+try {
+  await buildResumeFile('resume.yml')
+} catch (error) {
+  if (error instanceof YAMLResumeError) {
+    console.error(error.code, error.message)
+    process.exitCode = error.errno
+  } else {
+    throw error
+  }
+}
+```
+
+## Ringkasan API
+
+| Ekspor | Tujuan |
+| --- | --- |
+| `readResumeFile` | Membaca dan secara opsional memvalidasi resume YAML, YML, atau JSON |
+| `validateResume` | Memvalidasi string YAML di memori dengan error posisi |
+| `buildResumeFile` | Menghasilkan semua tata letak yang dikonfigurasi dan PDF opsional |
+| `watchResumeFile` | Build awal dan build ulang saat file berubah |
+| `newResumeFile` | Membuat resume dari contoh terlokalisasi yang terkurasi |
+| `generateResumeFile` | Menghasilkan dan menulis resume dengan AI |
+| `translateResumeFile` | Menerjemahkan dan menulis resume yang sudah ada dengan AI |
+| `LATEX_COMPILE_TIMEOUT` | Batas waktu default kompilasi LaTeX |
+| `TYPST_COMPILE_TIMEOUT` | Batas waktu default kompilasi Typst |
+
+Untuk setiap opsi dan tipe kembalian, lihat referensi API
+[`@yamlresume/node`](/developer/node/index.html) yang lengkap.
