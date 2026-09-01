@@ -20,7 +20,7 @@ export default async function Layout({
   return (
     <HomeLayout {...options}>
       {children}
-      <Footer />
+      <Footer language={currentLanguage} />
     </HomeLayout>
   )
 }

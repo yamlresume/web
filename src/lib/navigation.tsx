@@ -1,4 +1,4 @@
-import { DeveloperDropdown, Logo } from '@/components'
+import { Logo } from '@/components'
 import { getLocalizedUrl, getTranslations, type Language } from '@/i18n'
 
 // Shared navigation options function
@@ -33,23 +33,6 @@ export function getNavigationOptions(currentLanguage: Language) {
         text: t('blog'),
         url: getLocalizedUrl('/blog', currentLanguage),
         active: 'nested-url' as const,
-      },
-      {
-        type: 'custom' as const,
-        children: (
-          <DeveloperDropdown
-            language={currentLanguage}
-            label={t('developer')}
-          />
-        ),
-      },
-      {
-        text: t('chat'),
-        url: 'https://discord.gg/9SyT7mVV4K',
-      },
-      {
-        text: t('discussions'),
-        url: 'https://github.com/yamlresume/yamlresume/discussions',
       },
     ],
     githubUrl: 'https://github.com/yamlresume/yamlresume',

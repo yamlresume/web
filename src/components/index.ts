@@ -1,6 +1,5 @@
 export { LLMCopyButton, ViewOptions } from './ai'
 export { Analytics } from './analytics'
-export { DeveloperDropdown } from './DeveloperDropdown'
 export { HtmlLang } from './HtmlLang'
 export { Logo } from './logo'
 export { getMDXComponents, Mermaid } from './mdx'
