@@ -37,7 +37,11 @@ export function Card({
     'transition-all',
     'duration-300',
     'hover:border-fd-foreground/20',
-    'hover:shadow-sm',
+    'shadow-[6px_6px_0px_0px_rgba(0,0,0,0.08)]',
+    'dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.08)]',
+    'hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,0.12)]',
+    'dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.12)]',
+    'hover:-translate-x-0.5 hover:-translate-y-0.5',
     className
   )
 

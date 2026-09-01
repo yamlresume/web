@@ -80,7 +80,7 @@ export function HeroSection() {
   return (
     <section className="container mx-auto pt-4 pb-16">
       <div className="flex flex-col items-start gap-8">
-        <div className="flex flex-col items-start gap-4">
+        <div className="flex flex-col items-start gap-4 max-w-3xl">
           <p className="text-sm text-fd-muted-foreground2">
             {t.rich('tagline', {
               ppresume: (chunks) => (
