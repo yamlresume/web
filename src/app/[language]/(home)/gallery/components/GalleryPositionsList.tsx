@@ -8,6 +8,7 @@ import { getPositionGalleryPath } from '@/lib/galleryRoutes'
 import { getPositionShowcases } from '@/lib/templates'
 import { GalleryEmptyState } from './GalleryEmptyState'
 import { GalleryFilterBar } from './GalleryFilterBar'
+import { GalleryIndexBreadcrumb } from './GalleryIndexBreadcrumb'
 import { GalleryPositionCard } from './GalleryPositionCard'
 import { GallerySection } from './GallerySection'
 import {
@@ -51,6 +52,7 @@ export function GalleryPositionsList({
 
   return (
     <main className="min-h-[900px] pb-24">
+      <GalleryIndexBreadcrumb category="positions" language={language} />
       <header className="border-b bg-fd-muted/30">
         <div className="fd-container px-6 py-16 md:py-24">
           <div className="max-w-3xl">

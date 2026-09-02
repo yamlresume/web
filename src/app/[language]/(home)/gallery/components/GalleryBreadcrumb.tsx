@@ -36,20 +36,35 @@ export function GalleryBreadcrumb({
   currentTemplate,
 }: GalleryBreadcrumbProps) {
   const messages = getGalleryDetailMessages(language)
-  let segments: string[]
+  let segments: { label: string; href?: string }[]
 
   if (!target) {
-    segments = [item.title]
+    segments = [{ label: item.title }]
   } else if (target.type === 'template') {
     segments = [
-      messages.breadcrumb.templates,
-      getEngineLabel(target.engine),
-      currentTemplate?.name ?? target.templateId,
+      {
+        label: messages.breadcrumb.templates,
+        href: getLocalizedUrl('/gallery/templates', language),
+      },
+      { label: getEngineLabel(target.engine) },
+      { label: currentTemplate?.name ?? target.templateId },
     ]
   } else if (target.type === 'language') {
-    segments = [messages.breadcrumb.languages, item.languageLabel]
+    segments = [
+      {
+        label: messages.breadcrumb.languages,
+        href: getLocalizedUrl('/gallery/languages', language),
+      },
+      { label: item.languageLabel },
+    ]
   } else {
-    segments = [messages.breadcrumb.positions, item.title]
+    segments = [
+      {
+        label: messages.breadcrumb.positions,
+        href: getLocalizedUrl('/gallery/positions', language),
+      },
+      { label: item.title },
+    ]
   }
 
   return (
@@ -71,7 +86,7 @@ export function GalleryBreadcrumb({
 
           return (
             <li
-              key={`${segment}-${isCurrent ? 'current' : 'ancestor'}`}
+              key={`${segment.label}-${isCurrent ? 'current' : 'ancestor'}`}
               className="flex items-center gap-2"
             >
               <IconChevronRight
@@ -79,16 +94,25 @@ export function GalleryBreadcrumb({
                 size={14}
                 className="text-fd-muted-foreground/60"
               />
-              <span
-                aria-current={isCurrent ? 'page' : undefined}
-                className={
-                  isCurrent
-                    ? 'font-medium text-fd-foreground'
-                    : 'text-fd-muted-foreground'
-                }
-              >
-                {segment}
-              </span>
+              {segment.href ? (
+                <Link
+                  href={segment.href}
+                  className="text-fd-muted-foreground hover:text-fd-foreground"
+                >
+                  {segment.label}
+                </Link>
+              ) : (
+                <span
+                  aria-current={isCurrent ? 'page' : undefined}
+                  className={
+                    isCurrent
+                      ? 'font-medium text-fd-foreground'
+                      : 'text-fd-muted-foreground'
+                  }
+                >
+                  {segment.label}
+                </span>
+              )}
             </li>
           )
         })}

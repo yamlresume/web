@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { getLocalizedUrl, getTranslations, type Language } from '@/i18n'
 import { getLanguageGalleryPath } from '@/lib/galleryRoutes'
 import { getLanguageShowcases } from '@/lib/templates'
+import { GalleryIndexBreadcrumb } from './GalleryIndexBreadcrumb'
 import { GalleryLanguageCard } from './GalleryLanguageCard'
 import { GallerySection } from './GallerySection'
 
@@ -15,6 +16,7 @@ export function GalleryLanguagesList({ language }: GalleryLanguagesListProps) {
 
   return (
     <main className="min-h-[900px] pb-24">
+      <GalleryIndexBreadcrumb category="languages" language={language} />
       <header className="border-b bg-fd-muted/30">
         <div className="fd-container px-6 py-16 md:py-24">
           <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">

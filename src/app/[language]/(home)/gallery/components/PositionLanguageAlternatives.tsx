@@ -43,7 +43,6 @@ export function PositionLanguageAlternatives({
               getPositionGalleryPath(alternative.id, alternative.language),
               language
             )}
-            hrefLang={alternative.language}
             className="inline-flex items-center gap-2 border border-fd-border bg-fd-card px-4 py-3 font-medium transition-colors hover:border-fd-primary hover:text-fd-primary"
           >
             <IconLanguage aria-hidden="true" size={18} />

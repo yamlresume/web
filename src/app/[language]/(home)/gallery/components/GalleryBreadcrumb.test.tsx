@@ -26,7 +26,9 @@ describe('GalleryBreadcrumb', () => {
     expect(
       within(breadcrumb).getByRole('link', { name: 'Gallery' })
     ).toHaveAttribute('href', '/gallery')
-    expect(breadcrumb).toHaveTextContent('Positions')
+    expect(
+      within(breadcrumb).getByRole('link', { name: 'Positions' })
+    ).toHaveAttribute('href', '/gallery/positions')
     expect(breadcrumb).toHaveTextContent('Software Engineer')
   })
 
@@ -67,7 +69,9 @@ describe('GalleryBreadcrumb', () => {
     )
 
     const breadcrumb = screen.getByRole('navigation')
-    expect(breadcrumb).toHaveTextContent('Templates')
+    expect(
+      within(breadcrumb).getByRole('link', { name: 'Templates' })
+    ).toHaveAttribute('href', '/gallery/templates')
     expect(breadcrumb).toHaveTextContent('HTML')
     expect(breadcrumb).toHaveTextContent('Calm')
   })
