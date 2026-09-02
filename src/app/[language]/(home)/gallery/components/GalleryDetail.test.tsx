@@ -253,6 +253,23 @@ describe('GalleryDetail', () => {
     ).toBeVisible()
   })
 
+  it('links every detail page back to all gallery catalogs', () => {
+    render(<GalleryDetail item={item} language="fr" />)
+
+    expect(screen.getByRole('link', { name: /Modèles/ })).toHaveAttribute(
+      'href',
+      '/fr/gallery/templates'
+    )
+    expect(screen.getByRole('link', { name: /Langues/ })).toHaveAttribute(
+      'href',
+      '/fr/gallery/languages'
+    )
+    expect(screen.getByRole('link', { name: /Postes/ })).toHaveAttribute(
+      'href',
+      '/fr/gallery/positions'
+    )
+  })
+
   it('shows other available languages for position resumes', () => {
     render(<GalleryDetail item={item} language="en" target={positionTarget} />)
 

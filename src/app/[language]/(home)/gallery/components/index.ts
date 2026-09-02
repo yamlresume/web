@@ -1,5 +1,6 @@
 export { GalleryCard } from './GalleryCard'
 export { GalleryDetail } from './GalleryDetail'
+export { GalleryExploreMore } from './GalleryExploreMore'
 export { GalleryFilterBar } from './GalleryFilterBar'
 export { GalleryHero } from './GalleryHero'
 export { GalleryIndexBreadcrumb } from './GalleryIndexBreadcrumb'
