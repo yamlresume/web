@@ -5,6 +5,7 @@ const translations = {
     navbar: {
       documentation: 'Documentation',
       blog: 'Blog',
+      gallery: 'Gallery',
       chat: 'Chat',
       discussions: 'Discussions',
       developer: 'Developer',
@@ -171,6 +172,64 @@ const translations = {
     blog: {
       title: 'YAMLResume Blog',
     },
+    gallery: {
+      title: 'Resume Gallery',
+      description:
+        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
+      searchPlaceholder: 'Search resumes...',
+      filterCategory: 'Category',
+      filterTag: 'Tag',
+      filterLanguage: 'Language',
+      clearFilters: 'Clear filters',
+      downloadPdf: 'PDF',
+      downloadDocx: 'DOCX',
+      downloadHtml: 'HTML',
+      noResults: 'No resumes match your filters.',
+      resultsCount: 'resumes',
+      activeFilters: 'Active',
+      previewTitle: 'Preview',
+      card: {
+        useButton: 'Use',
+      },
+      hero: {
+        title: 'Pick a template. Choose a language. Land the role.',
+        description:
+          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+        stats: {
+          templates:
+            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+          languages: 'Languages with full locale, typesetting & idiom support',
+          positions: 'Position-specific examples and ready-to-use content',
+        },
+      },
+      sections: {
+        templates: 'Templates',
+        templatesDescription: 'Battle-tested templates for every engine.',
+        languages: 'Languages',
+        languagesDescription: 'Resumes localized for 12+ locales.',
+        positions: 'Positions',
+        positionsDescription: 'Sample resumes for real-world roles.',
+      },
+      actions: {
+        downloadYaml: 'YAML',
+        openInPlayground: 'Open in Playground',
+        openInNewTab: 'Open in new tab',
+      },
+      backToGallery: '← Resume Gallery',
+      templateDetails: 'Template details',
+      sourceSnippet: 'Source snippet',
+      copy: 'Copy',
+      copied: 'Copied',
+      relatedTemplates: 'More like this',
+      relatedTemplatesDescription:
+        'Other templates for this position and language.',
+      browseAll: 'Browse all',
+      seeInAnotherLanguage: 'See this resume in another language',
+      sameSourceLocalized:
+        'The same YAML source, localized for different markets.',
+      downloadRendered: 'Download rendered:',
+      renderedFor: 'Rendered for {position} in {language}.',
+    },
     footer: {
       copyright: '© 2023–Present, ',
     },
@@ -179,6 +238,7 @@ const translations = {
     navbar: {
       documentation: 'Documentación',
       blog: 'Blog',
+      gallery: 'Galería',
       chat: 'Chat',
       discussions: 'Discusiones',
       developer: 'Desarrollador',
@@ -350,6 +410,64 @@ const translations = {
     blog: {
       title: 'Blog de YAMLResume',
     },
+    gallery: {
+      title: 'Galería de Currículums',
+      description:
+        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
+      searchPlaceholder: 'Buscar currículums...',
+      filterCategory: 'Categoría',
+      filterTag: 'Etiqueta',
+      filterLanguage: 'Idioma',
+      clearFilters: 'Borrar filtros',
+      downloadPdf: 'PDF',
+      downloadDocx: 'DOCX',
+      downloadHtml: 'HTML',
+      noResults: 'Ningún currículum coincide con tus filtros.',
+      resultsCount: 'currículums',
+      activeFilters: 'Active',
+      previewTitle: 'Preview',
+      card: {
+        useButton: 'Use',
+      },
+      hero: {
+        title: 'Pick a template. Choose a language. Land the role.',
+        description:
+          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+        stats: {
+          templates:
+            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+          languages: 'Languages with full locale, typesetting & idiom support',
+          positions: 'Position-specific examples and ready-to-use content',
+        },
+      },
+      sections: {
+        templates: 'Templates',
+        templatesDescription: 'Battle-tested templates for every engine.',
+        languages: 'Languages',
+        languagesDescription: 'Resumes localized for 12+ locales.',
+        positions: 'Positions',
+        positionsDescription: 'Sample resumes for real-world roles.',
+      },
+      actions: {
+        downloadYaml: 'YAML',
+        openInPlayground: 'Open in Playground',
+        openInNewTab: 'Open in new tab',
+      },
+      backToGallery: '← Resume Gallery',
+      templateDetails: 'Template details',
+      sourceSnippet: 'Source snippet',
+      copy: 'Copy',
+      copied: 'Copied',
+      relatedTemplates: 'More like this',
+      relatedTemplatesDescription:
+        'Other templates for this position and language.',
+      browseAll: 'Browse all',
+      seeInAnotherLanguage: 'See this resume in another language',
+      sameSourceLocalized:
+        'The same YAML source, localized for different markets.',
+      downloadRendered: 'Download rendered:',
+      renderedFor: 'Rendered for {position} in {language}.',
+    },
     footer: {
       copyright: '© 2023–Presente, ',
     },
@@ -358,6 +476,7 @@ const translations = {
     navbar: {
       documentation: 'Documentation',
       blog: 'Blog',
+      gallery: 'Galerie',
       chat: 'Chat',
       discussions: 'Discussions',
       developer: 'Développeur',
@@ -529,6 +648,64 @@ const translations = {
     blog: {
       title: 'Blog YAMLResume',
     },
+    gallery: {
+      title: 'Galerie de CV',
+      description:
+        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
+      searchPlaceholder: 'Rechercher des CV...',
+      filterCategory: 'Catégorie',
+      filterTag: 'Étiquette',
+      filterLanguage: 'Langue',
+      clearFilters: 'Effacer les filtres',
+      downloadPdf: 'PDF',
+      downloadDocx: 'DOCX',
+      downloadHtml: 'HTML',
+      noResults: 'Aucun CV ne correspond à vos filtres.',
+      resultsCount: 'CV',
+      activeFilters: 'Active',
+      previewTitle: 'Preview',
+      card: {
+        useButton: 'Use',
+      },
+      hero: {
+        title: 'Pick a template. Choose a language. Land the role.',
+        description:
+          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+        stats: {
+          templates:
+            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+          languages: 'Languages with full locale, typesetting & idiom support',
+          positions: 'Position-specific examples and ready-to-use content',
+        },
+      },
+      sections: {
+        templates: 'Templates',
+        templatesDescription: 'Battle-tested templates for every engine.',
+        languages: 'Languages',
+        languagesDescription: 'Resumes localized for 12+ locales.',
+        positions: 'Positions',
+        positionsDescription: 'Sample resumes for real-world roles.',
+      },
+      actions: {
+        downloadYaml: 'YAML',
+        openInPlayground: 'Open in Playground',
+        openInNewTab: 'Open in new tab',
+      },
+      backToGallery: '← Resume Gallery',
+      templateDetails: 'Template details',
+      sourceSnippet: 'Source snippet',
+      copy: 'Copy',
+      copied: 'Copied',
+      relatedTemplates: 'More like this',
+      relatedTemplatesDescription:
+        'Other templates for this position and language.',
+      browseAll: 'Browse all',
+      seeInAnotherLanguage: 'See this resume in another language',
+      sameSourceLocalized:
+        'The same YAML source, localized for different markets.',
+      downloadRendered: 'Download rendered:',
+      renderedFor: 'Rendered for {position} in {language}.',
+    },
     footer: {
       copyright: '© 2023–Présent, ',
     },
@@ -537,6 +714,7 @@ const translations = {
     navbar: {
       documentation: '文档',
       blog: '博客',
+      gallery: '作品集',
       chat: '聊天',
       discussions: '讨论',
       developer: '开发者',
@@ -695,6 +873,64 @@ const translations = {
     blog: {
       title: 'YAMLResume 博客',
     },
+    gallery: {
+      title: '简历作品集',
+      description:
+        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
+      searchPlaceholder: '搜索简历...',
+      filterCategory: '类别',
+      filterTag: '标签',
+      filterLanguage: '语言',
+      clearFilters: '清除筛选',
+      downloadPdf: 'PDF',
+      downloadDocx: 'DOCX',
+      downloadHtml: 'HTML',
+      noResults: '没有符合筛选条件的简历。',
+      resultsCount: '份简历',
+      activeFilters: 'Active',
+      previewTitle: 'Preview',
+      card: {
+        useButton: 'Use',
+      },
+      hero: {
+        title: 'Pick a template. Choose a language. Land the role.',
+        description:
+          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+        stats: {
+          templates:
+            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+          languages: 'Languages with full locale, typesetting & idiom support',
+          positions: 'Position-specific examples and ready-to-use content',
+        },
+      },
+      sections: {
+        templates: 'Templates',
+        templatesDescription: 'Battle-tested templates for every engine.',
+        languages: 'Languages',
+        languagesDescription: 'Resumes localized for 12+ locales.',
+        positions: 'Positions',
+        positionsDescription: 'Sample resumes for real-world roles.',
+      },
+      actions: {
+        downloadYaml: 'YAML',
+        openInPlayground: 'Open in Playground',
+        openInNewTab: 'Open in new tab',
+      },
+      backToGallery: '← Resume Gallery',
+      templateDetails: 'Template details',
+      sourceSnippet: 'Source snippet',
+      copy: 'Copy',
+      copied: 'Copied',
+      relatedTemplates: 'More like this',
+      relatedTemplatesDescription:
+        'Other templates for this position and language.',
+      browseAll: 'Browse all',
+      seeInAnotherLanguage: 'See this resume in another language',
+      sameSourceLocalized:
+        'The same YAML source, localized for different markets.',
+      downloadRendered: 'Download rendered:',
+      renderedFor: 'Rendered for {position} in {language}.',
+    },
     footer: {
       copyright: '© 2023 至今，',
     },
@@ -703,6 +939,7 @@ const translations = {
     navbar: {
       documentation: '文檔',
       blog: '部落格',
+      gallery: '作品集',
       chat: '聊天',
       discussions: '討論',
       developer: '開發者',
@@ -861,6 +1098,64 @@ const translations = {
     blog: {
       title: 'YAMLResume 部落格',
     },
+    gallery: {
+      title: '履歷作品集',
+      description:
+        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
+      searchPlaceholder: '搜尋履歷...',
+      filterCategory: '類別',
+      filterTag: '標籤',
+      filterLanguage: '語言',
+      clearFilters: '清除篩選',
+      downloadPdf: 'PDF',
+      downloadDocx: 'DOCX',
+      downloadHtml: 'HTML',
+      noResults: '沒有符合篩選條件的履歷。',
+      resultsCount: '份履歷',
+      activeFilters: 'Active',
+      previewTitle: 'Preview',
+      card: {
+        useButton: 'Use',
+      },
+      hero: {
+        title: 'Pick a template. Choose a language. Land the role.',
+        description:
+          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+        stats: {
+          templates:
+            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+          languages: 'Languages with full locale, typesetting & idiom support',
+          positions: 'Position-specific examples and ready-to-use content',
+        },
+      },
+      sections: {
+        templates: 'Templates',
+        templatesDescription: 'Battle-tested templates for every engine.',
+        languages: 'Languages',
+        languagesDescription: 'Resumes localized for 12+ locales.',
+        positions: 'Positions',
+        positionsDescription: 'Sample resumes for real-world roles.',
+      },
+      actions: {
+        downloadYaml: 'YAML',
+        openInPlayground: 'Open in Playground',
+        openInNewTab: 'Open in new tab',
+      },
+      backToGallery: '← Resume Gallery',
+      templateDetails: 'Template details',
+      sourceSnippet: 'Source snippet',
+      copy: 'Copy',
+      copied: 'Copied',
+      relatedTemplates: 'More like this',
+      relatedTemplatesDescription:
+        'Other templates for this position and language.',
+      browseAll: 'Browse all',
+      seeInAnotherLanguage: 'See this resume in another language',
+      sameSourceLocalized:
+        'The same YAML source, localized for different markets.',
+      downloadRendered: 'Download rendered:',
+      renderedFor: 'Rendered for {position} in {language}.',
+    },
     footer: {
       copyright: '© 2023 至今，',
     },
@@ -869,6 +1164,7 @@ const translations = {
     navbar: {
       documentation: 'ドキュメント',
       blog: 'ブログ',
+      gallery: 'ギャラリー',
       chat: 'チャット',
       discussions: 'ディスカッション',
       developer: '開発者',
@@ -1037,6 +1333,64 @@ const translations = {
     blog: {
       title: 'YAMLResume ブログ',
     },
+    gallery: {
+      title: '履歴書ギャラリー',
+      description:
+        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
+      searchPlaceholder: '履歴書を検索...',
+      filterCategory: 'カテゴリー',
+      filterTag: 'タグ',
+      filterLanguage: '言語',
+      clearFilters: 'フィルターをクリア',
+      downloadPdf: 'PDF',
+      downloadDocx: 'DOCX',
+      downloadHtml: 'HTML',
+      noResults: '条件に一致する履歴書がありません。',
+      resultsCount: '件の履歴書',
+      activeFilters: 'Active',
+      previewTitle: 'Preview',
+      card: {
+        useButton: 'Use',
+      },
+      hero: {
+        title: 'Pick a template. Choose a language. Land the role.',
+        description:
+          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+        stats: {
+          templates:
+            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+          languages: 'Languages with full locale, typesetting & idiom support',
+          positions: 'Position-specific examples and ready-to-use content',
+        },
+      },
+      sections: {
+        templates: 'Templates',
+        templatesDescription: 'Battle-tested templates for every engine.',
+        languages: 'Languages',
+        languagesDescription: 'Resumes localized for 12+ locales.',
+        positions: 'Positions',
+        positionsDescription: 'Sample resumes for real-world roles.',
+      },
+      actions: {
+        downloadYaml: 'YAML',
+        openInPlayground: 'Open in Playground',
+        openInNewTab: 'Open in new tab',
+      },
+      backToGallery: '← Resume Gallery',
+      templateDetails: 'Template details',
+      sourceSnippet: 'Source snippet',
+      copy: 'Copy',
+      copied: 'Copied',
+      relatedTemplates: 'More like this',
+      relatedTemplatesDescription:
+        'Other templates for this position and language.',
+      browseAll: 'Browse all',
+      seeInAnotherLanguage: 'See this resume in another language',
+      sameSourceLocalized:
+        'The same YAML source, localized for different markets.',
+      downloadRendered: 'Download rendered:',
+      renderedFor: 'Rendered for {position} in {language}.',
+    },
 
     footer: {
       copyright: '© 2023年〜現在、',
@@ -1046,6 +1400,7 @@ const translations = {
     navbar: {
       documentation: 'Documentação',
       blog: 'Blog',
+      gallery: 'Galeria',
       chat: 'Chat',
       discussions: 'Discussões',
       developer: 'Programador',
@@ -1217,6 +1572,64 @@ const translations = {
     blog: {
       title: 'Blog YAMLResume',
     },
+    gallery: {
+      title: 'Galeria de Currículos',
+      description:
+        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
+      searchPlaceholder: 'Pesquisar currículos...',
+      filterCategory: 'Categoria',
+      filterTag: 'Etiqueta',
+      filterLanguage: 'Idioma',
+      clearFilters: 'Limpar filtros',
+      downloadPdf: 'PDF',
+      downloadDocx: 'DOCX',
+      downloadHtml: 'HTML',
+      noResults: 'Nenhum currículo corresponde aos seus filtros.',
+      resultsCount: 'currículos',
+      activeFilters: 'Active',
+      previewTitle: 'Preview',
+      card: {
+        useButton: 'Use',
+      },
+      hero: {
+        title: 'Pick a template. Choose a language. Land the role.',
+        description:
+          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+        stats: {
+          templates:
+            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+          languages: 'Languages with full locale, typesetting & idiom support',
+          positions: 'Position-specific examples and ready-to-use content',
+        },
+      },
+      sections: {
+        templates: 'Templates',
+        templatesDescription: 'Battle-tested templates for every engine.',
+        languages: 'Languages',
+        languagesDescription: 'Resumes localized for 12+ locales.',
+        positions: 'Positions',
+        positionsDescription: 'Sample resumes for real-world roles.',
+      },
+      actions: {
+        downloadYaml: 'YAML',
+        openInPlayground: 'Open in Playground',
+        openInNewTab: 'Open in new tab',
+      },
+      backToGallery: '← Resume Gallery',
+      templateDetails: 'Template details',
+      sourceSnippet: 'Source snippet',
+      copy: 'Copy',
+      copied: 'Copied',
+      relatedTemplates: 'More like this',
+      relatedTemplatesDescription:
+        'Other templates for this position and language.',
+      browseAll: 'Browse all',
+      seeInAnotherLanguage: 'See this resume in another language',
+      sameSourceLocalized:
+        'The same YAML source, localized for different markets.',
+      downloadRendered: 'Download rendered:',
+      renderedFor: 'Rendered for {position} in {language}.',
+    },
     footer: {
       copyright: '© 2023–Presente, ',
     },
@@ -1225,6 +1638,7 @@ const translations = {
     navbar: {
       documentation: 'Dokumentasi',
       blog: 'Blog',
+      gallery: 'Galeri',
       chat: 'Obrolan',
       discussions: 'Diskusi',
       developer: 'Pengembang',
@@ -1393,6 +1807,64 @@ const translations = {
     },
     blog: {
       title: 'Blog YAMLResume',
+    },
+    gallery: {
+      title: 'Galeri Resume',
+      description:
+        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
+      searchPlaceholder: 'Cari resume...',
+      filterCategory: 'Kategori',
+      filterTag: 'Tag',
+      filterLanguage: 'Bahasa',
+      clearFilters: 'Hapus filter',
+      downloadPdf: 'PDF',
+      downloadDocx: 'DOCX',
+      downloadHtml: 'HTML',
+      noResults: 'Tidak ada resume yang cocok dengan filter Anda.',
+      resultsCount: 'resume',
+      activeFilters: 'Active',
+      previewTitle: 'Preview',
+      card: {
+        useButton: 'Use',
+      },
+      hero: {
+        title: 'Pick a template. Choose a language. Land the role.',
+        description:
+          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+        stats: {
+          templates:
+            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+          languages: 'Languages with full locale, typesetting & idiom support',
+          positions: 'Position-specific examples and ready-to-use content',
+        },
+      },
+      sections: {
+        templates: 'Templates',
+        templatesDescription: 'Battle-tested templates for every engine.',
+        languages: 'Languages',
+        languagesDescription: 'Resumes localized for 12+ locales.',
+        positions: 'Positions',
+        positionsDescription: 'Sample resumes for real-world roles.',
+      },
+      actions: {
+        downloadYaml: 'YAML',
+        openInPlayground: 'Open in Playground',
+        openInNewTab: 'Open in new tab',
+      },
+      backToGallery: '← Resume Gallery',
+      templateDetails: 'Template details',
+      sourceSnippet: 'Source snippet',
+      copy: 'Copy',
+      copied: 'Copied',
+      relatedTemplates: 'More like this',
+      relatedTemplatesDescription:
+        'Other templates for this position and language.',
+      browseAll: 'Browse all',
+      seeInAnotherLanguage: 'See this resume in another language',
+      sameSourceLocalized:
+        'The same YAML source, localized for different markets.',
+      downloadRendered: 'Download rendered:',
+      renderedFor: 'Rendered for {position} in {language}.',
     },
     footer: {
       copyright: '© 2023–Sekarang, ',

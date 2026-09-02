@@ -8,6 +8,6 @@ export const config = {
   // Matcher ignoring `/_next/` and `/api/`
   // You may need to adjust it to ignore static assets in `/public` folder
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.webmanifest|static|schema.json|schemas|developer).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.webmanifest|static|schema.json|schemas|developer|gallery|en/gallery/|es/gallery/|fr/gallery/|pt/gallery/|ja/gallery/|zh-cn/gallery/|zh-tw/gallery/|id/gallery/).*)',
   ],
 }

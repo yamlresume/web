@@ -25,6 +25,11 @@ export function getNavigationOptions(currentLanguage: Language) {
         active: 'nested-url' as const,
       },
       {
+        text: t('gallery'),
+        url: getLocalizedUrl('/gallery', currentLanguage),
+        active: 'nested-url' as const,
+      },
+      {
         text: t('documentation'),
         url: getLocalizedUrl('/docs', currentLanguage),
         active: 'nested-url' as const,

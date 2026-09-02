@@ -48,13 +48,13 @@ describe('Footer', () => {
   it('renders product, developer and community columns', () => {
     render(<Footer language="en" />)
 
-    expect(screen.getByRole('link', { name: 'Playground' })).toHaveAttribute(
-      'href',
-      '/playground'
-    )
     expect(screen.getByRole('link', { name: 'Documentation' })).toHaveAttribute(
       'href',
       '/docs'
+    )
+    expect(screen.getByRole('link', { name: 'Gallery' })).toHaveAttribute(
+      'href',
+      '/gallery'
     )
     expect(screen.getByRole('link', { name: 'Blog' })).toHaveAttribute(
       'href',
