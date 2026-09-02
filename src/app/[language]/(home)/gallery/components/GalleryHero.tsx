@@ -1,7 +1,7 @@
 'use client'
 
 import { IconBriefcase, IconLanguage, IconTemplate } from '@tabler/icons-react'
-import { getLocalizedUrl, type Language, useTranslations } from '@/i18n'
+import { getGalleryMessages, getLocalizedUrl, type Language } from '@/i18n'
 import { GalleryStatCard } from './GalleryStatCard'
 
 interface GalleryHeroProps {
@@ -17,26 +17,26 @@ export function GalleryHero({
   positionCount,
   language,
 }: GalleryHeroProps) {
-  const t = useTranslations('gallery')
+  const copy = getGalleryMessages(language)
 
   const stats = [
     {
       value: `${templateCount}+`,
-      label: t('hero.stats.templates'),
+      label: copy.hero.templates,
       href: getLocalizedUrl('/docs/cli#templates', language),
       command: 'yamlresume templates list',
       icon: IconTemplate,
     },
     {
       value: `${languageCount}+`,
-      label: t('hero.stats.languages'),
+      label: copy.hero.languages,
       href: getLocalizedUrl('/docs/locale', language),
       command: 'yamlresume languages list',
       icon: IconLanguage,
     },
     {
       value: `${positionCount}+`,
-      label: t('hero.stats.positions'),
+      label: copy.hero.positions,
       href: getLocalizedUrl('/docs/ecosystem/samples', language),
       command: 'yamlresume samples list',
       icon: IconBriefcase,
@@ -48,10 +48,10 @@ export function GalleryHero({
       <div className="fd-container px-6 py-16 md:py-24">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-            {t('hero.title')}
+            {copy.hero.title}
           </h1>
           <p className="text-lg md:text-xl text-fd-muted-foreground mb-10">
-            {t('hero.description')}
+            {copy.hero.description}
           </p>
         </div>
 

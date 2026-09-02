@@ -1,5 +1,10 @@
 import type { Metadata } from 'next'
-import { defaultLanguage, type Language, languages } from '@/i18n'
+import {
+  getGalleryMessages,
+  getLocalizedUrl,
+  type Language,
+  languages,
+} from '@/i18n'
 import { GalleryTemplatesList } from '../components/GalleryTemplatesList'
 
 export const revalidate = false
@@ -19,19 +24,17 @@ export async function generateMetadata({
   params,
 }: GalleryTemplatesPageProps): Promise<Metadata> {
   const { language } = await params
+  const locale = language as Language
+  const copy = getGalleryMessages(locale).metadata.templates
   const path = '/gallery/templates'
 
   return {
-    title: 'Resume Templates',
-    description:
-      'Browse professional resume templates for LaTeX, HTML, DOCX, and Markdown.',
+    title: copy.title,
+    description: copy.description,
     alternates: {
-      canonical: language === defaultLanguage ? path : `/${language}${path}`,
+      canonical: getLocalizedUrl(path, locale),
       languages: Object.fromEntries(
-        languages.map((locale) => [
-          locale,
-          locale === defaultLanguage ? path : `/${locale}${path}`,
-        ])
+        languages.map((language) => [language, getLocalizedUrl(path, language)])
       ),
     },
   }

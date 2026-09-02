@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { getLocalizedUrl, getTranslations, type Language } from '@/i18n'
+import { getGalleryMessages, getLocalizedUrl, type Language } from '@/i18n'
 import { getLanguageGalleryPath } from '@/lib/galleryRoutes'
 import { getLanguageShowcases } from '@/lib/templates'
 import { GalleryIndexBreadcrumb } from './GalleryIndexBreadcrumb'
@@ -11,7 +11,7 @@ interface GalleryLanguagesListProps {
 }
 
 export function GalleryLanguagesList({ language }: GalleryLanguagesListProps) {
-  const t = getTranslations(language, 'gallery')
+  const copy = getGalleryMessages(language).categories.languages
   const languages = getLanguageShowcases()
 
   return (
@@ -20,14 +20,14 @@ export function GalleryLanguagesList({ language }: GalleryLanguagesListProps) {
       <header className="border-b bg-fd-muted/30">
         <div className="fd-container px-6 py-16 md:py-24">
           <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
-            {t('sections.languages')}
+            {copy.title}
           </h1>
           <p className="max-w-3xl text-lg text-fd-muted-foreground md:text-xl">
-            {t('sections.languagesDescription')}
+            {copy.description}
           </p>
         </div>
       </header>
-      <GallerySection title={t('sections.languages')}>
+      <GallerySection title={copy.title}>
         <div
           className={clsx([
             'grid grid-cols-1 gap-6',

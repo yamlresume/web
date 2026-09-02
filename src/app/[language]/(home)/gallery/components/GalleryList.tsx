@@ -3,7 +3,7 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import { useMemo } from 'react'
-import { getLocalizedUrl, type Language, useTranslations } from '@/i18n'
+import { getGalleryMessages, getLocalizedUrl, type Language } from '@/i18n'
 import {
   getLanguageGalleryPath,
   getPositionGalleryPath,
@@ -26,7 +26,7 @@ interface GalleryListProps {
 }
 
 export function GalleryList({ language }: GalleryListProps) {
-  const t = useTranslations('gallery')
+  const copy = getGalleryMessages(language)
   const positionItems = useMemo(
     () => getPositionShowcases(language),
     [language]
@@ -53,15 +53,15 @@ export function GalleryList({ language }: GalleryListProps) {
       />
 
       <GallerySection
-        title={t('sections.templates')}
-        description={t('sections.templatesDescription')}
+        title={copy.categories.templates.title}
+        description={copy.categories.templates.description}
       >
         <div className="mb-6 flex justify-end">
           <Link
             href={getLocalizedUrl('/gallery/templates', language)}
             className="font-medium text-fd-primary hover:underline"
           >
-            {t('browseAll')} →
+            {copy.browseAll} →
           </Link>
         </div>
         <div className={gridClasses}>
@@ -82,15 +82,15 @@ export function GalleryList({ language }: GalleryListProps) {
       </GallerySection>
 
       <GallerySection
-        title={t('sections.languages')}
-        description={t('sections.languagesDescription')}
+        title={copy.categories.languages.title}
+        description={copy.categories.languages.description}
       >
         <div className="mb-6 flex justify-end">
           <Link
             href={getLocalizedUrl('/gallery/languages', language)}
             className="font-medium text-fd-primary hover:underline"
           >
-            {t('browseAll')} →
+            {copy.browseAll} →
           </Link>
         </div>
         <div className={gridClasses}>
@@ -108,15 +108,15 @@ export function GalleryList({ language }: GalleryListProps) {
       </GallerySection>
 
       <GallerySection
-        title={t('sections.positions')}
-        description={t('sections.positionsDescription')}
+        title={copy.categories.positions.title}
+        description={copy.categories.positions.description}
       >
         <div className="mb-6 flex justify-end">
           <Link
             href={getLocalizedUrl('/gallery/positions', language)}
             className="font-medium text-fd-primary hover:underline"
           >
-            {t('browseAll')} →
+            {copy.browseAll} →
           </Link>
         </div>
         <div className={gridClasses}>

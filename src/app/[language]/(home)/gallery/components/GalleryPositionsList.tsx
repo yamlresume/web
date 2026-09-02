@@ -2,7 +2,12 @@
 
 import clsx from 'clsx'
 import { useMemo, useState } from 'react'
-import { getLocalizedUrl, type Language, useTranslations } from '@/i18n'
+import {
+  getGalleryMessages,
+  getLocalizedUrl,
+  type Language,
+  useTranslations,
+} from '@/i18n'
 import type { GalleryItem } from '@/lib/gallery'
 import { getPositionGalleryPath } from '@/lib/galleryRoutes'
 import { getPositionShowcases } from '@/lib/templates'
@@ -28,6 +33,7 @@ export function GalleryPositionsList({
   language,
 }: GalleryPositionsListProps) {
   const t = useTranslations('gallery')
+  const copy = getGalleryMessages(language).categories.positions
   const [filters, setFilters] = useState(emptyFilters)
   const facets = useMemo(() => getFacets(items), [items])
   const positionItems = useMemo(
@@ -57,10 +63,10 @@ export function GalleryPositionsList({
         <div className="fd-container px-6 py-16 md:py-24">
           <div className="max-w-3xl">
             <h1 className="mb-6 text-4xl font-bold leading-tight md:text-6xl">
-              {t('sections.positions')}
+              {copy.title}
             </h1>
             <p className="text-lg text-fd-muted-foreground md:text-xl">
-              {t('sections.positionsDescription')}
+              {copy.description}
             </p>
           </div>
         </div>
@@ -80,10 +86,7 @@ export function GalleryPositionsList({
         onClear={clearFilters}
       />
 
-      <GallerySection
-        title={t('sections.positions')}
-        description={t('sections.positionsDescription')}
-      >
+      <GallerySection title={copy.title} description={copy.description}>
         {filteredPositions.length === 0 ? (
           <GalleryEmptyState onClear={clearFilters} />
         ) : (

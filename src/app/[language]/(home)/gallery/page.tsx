@@ -1,5 +1,11 @@
 import type { Metadata } from 'next'
-import { defaultLanguage, type Language, languages } from '@/i18n'
+import {
+  defaultLanguage,
+  getGalleryMessages,
+  getLocalizedUrl,
+  type Language,
+  languages,
+} from '@/i18n'
 import { GalleryList } from './components'
 
 export const revalidate = false
@@ -20,8 +26,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { language } = await params
 
-  const canonicalPath =
-    language === defaultLanguage ? '/gallery' : `/${language}/gallery`
+  const copy = getGalleryMessages(language as Language).metadata.gallery
+  const canonicalPath = getLocalizedUrl('/gallery', language as Language)
 
   const languagesAlternates: Record<string, string> = {}
   for (const lang of languages) {
@@ -30,9 +36,8 @@ export async function generateMetadata({
   }
 
   return {
-    title: 'Gallery',
-    description:
-      'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
+    title: copy.title,
+    description: copy.description,
     alternates: {
       canonical: canonicalPath,
       languages: languagesAlternates,
