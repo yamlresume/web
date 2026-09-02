@@ -253,12 +253,26 @@ describe('GalleryDetail', () => {
     ).toBeVisible()
   })
 
-  it('does not render supplementary detail sections', () => {
+  it('shows other available languages for position resumes', () => {
+    render(<GalleryDetail item={item} language="en" target={positionTarget} />)
+
+    expect(
+      screen.getByRole('heading', { name: 'Available in other languages' })
+    ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: '日本語' })).toHaveAttribute(
+      'href',
+      '/gallery/positions/software-engineer/ja'
+    )
+    expect(
+      screen.queryByRole('link', { name: 'English' })
+    ).not.toBeInTheDocument()
+  })
+
+  it('does not show language alternatives for non-position details', () => {
     render(<GalleryDetail item={item} language="en" />)
 
-    expect(screen.queryByText('More like this')).not.toBeInTheDocument()
     expect(
-      screen.queryByText('See this resume in another language')
+      screen.queryByText('Available in other languages')
     ).not.toBeInTheDocument()
   })
 })

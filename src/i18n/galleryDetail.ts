@@ -39,6 +39,10 @@ export interface GalleryDetailMessages {
     exitFullscreen: string
   }
   renderedFor: string
+  otherLanguages: {
+    title: string
+    description: string
+  }
 }
 
 const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
@@ -81,6 +85,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: 'Exit fullscreen',
     },
     renderedFor: 'Rendered for {position} in {language}.',
+    otherLanguages: {
+      title: 'Available in other languages',
+      description: 'View this position resume localized for other markets.',
+    },
   },
   es: {
     breadcrumb: {
@@ -121,6 +129,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: 'Salir de pantalla completa',
     },
     renderedFor: 'Generado para {position} en {language}.',
+    otherLanguages: {
+      title: 'Disponible en otros idiomas',
+      description: 'Consulta este currículum adaptado a otros mercados.',
+    },
   },
   fr: {
     breadcrumb: {
@@ -161,6 +173,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: 'Quitter le plein écran',
     },
     renderedFor: 'Généré pour {position} en {language}.',
+    otherLanguages: {
+      title: 'Disponible dans d’autres langues',
+      description: 'Consultez ce CV adapté à d’autres marchés.',
+    },
   },
   pt: {
     breadcrumb: {
@@ -201,6 +217,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: 'Sair do ecrã inteiro',
     },
     renderedFor: 'Gerado para {position} em {language}.',
+    otherLanguages: {
+      title: 'Disponível noutros idiomas',
+      description: 'Veja este currículo adaptado a outros mercados.',
+    },
   },
   ja: {
     breadcrumb: {
@@ -241,6 +261,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: '全画面表示を終了',
     },
     renderedFor: '{position}（{language}）向けに生成。',
+    otherLanguages: {
+      title: '他の言語でも利用できます',
+      description: '他の市場向けにローカライズされた履歴書を表示します。',
+    },
   },
   'zh-cn': {
     breadcrumb: {
@@ -281,6 +305,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: '退出全屏',
     },
     renderedFor: '为 {language} 的 {position} 生成。',
+    otherLanguages: {
+      title: '其他语言版本',
+      description: '查看针对其他市场本地化的职位简历。',
+    },
   },
   'zh-tw': {
     breadcrumb: {
@@ -321,6 +349,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: '離開全螢幕',
     },
     renderedFor: '為 {language} 的 {position} 產生。',
+    otherLanguages: {
+      title: '其他語言版本',
+      description: '查看針對其他市場在地化的職位履歷。',
+    },
   },
   id: {
     breadcrumb: {
@@ -361,6 +393,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: 'Keluar dari layar penuh',
     },
     renderedFor: 'Dibuat untuk {position} dalam {language}.',
+    otherLanguages: {
+      title: 'Tersedia dalam bahasa lain',
+      description: 'Lihat resume posisi ini yang dilokalkan untuk pasar lain.',
+    },
   },
 }
 
