@@ -23,14 +23,9 @@ describe('GalleryList', () => {
   it('links cards to category-specific routes', () => {
     render(<GalleryList language="en" />)
 
-    const calmTemplateLink = screen
-      .getAllByRole('link', { name: /Calm/ })
-      .find(
-        (link) => link.getAttribute('href') === '/gallery/templates/html/calm'
-      )
-    expect(calmTemplateLink).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Jake/ })).toHaveAttribute(
       'href',
-      '/gallery/templates/html/calm'
+      '/gallery/templates/latex/jake'
     )
     expect(
       screen.getByRole('heading', { name: 'English' }).closest('a')
@@ -43,10 +38,12 @@ describe('GalleryList', () => {
   it('links the positions showcase to the full catalog', () => {
     render(<GalleryList language="en" />)
 
-    expect(screen.getByRole('link', { name: /Browse all/ })).toHaveAttribute(
-      'href',
-      '/gallery/positions'
-    )
+    const browseLinks = screen.getAllByRole('link', { name: /Browse all/ })
+    expect(browseLinks.map((link) => link.getAttribute('href'))).toEqual([
+      '/gallery/templates',
+      '/gallery/languages',
+      '/gallery/positions',
+    ])
     expect(screen.queryByLabelText('Search resumes...')).not.toBeInTheDocument()
   })
 })

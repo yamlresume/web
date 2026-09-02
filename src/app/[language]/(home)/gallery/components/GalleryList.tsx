@@ -56,8 +56,16 @@ export function GalleryList({ language }: GalleryListProps) {
         title={t('sections.templates')}
         description={t('sections.templatesDescription')}
       >
+        <div className="mb-6 flex justify-end">
+          <Link
+            href={getLocalizedUrl('/gallery/templates', language)}
+            className="font-medium text-fd-primary hover:underline"
+          >
+            {t('browseAll')} →
+          </Link>
+        </div>
         <div className={gridClasses}>
-          {templates.map((showcase) => (
+          {templates.slice(0, 4).map((showcase) => (
             <GalleryTemplateCard
               key={`${showcase.engine}-${getTemplateRouteId(showcase)}`}
               showcase={showcase}
@@ -77,8 +85,16 @@ export function GalleryList({ language }: GalleryListProps) {
         title={t('sections.languages')}
         description={t('sections.languagesDescription')}
       >
+        <div className="mb-6 flex justify-end">
+          <Link
+            href={getLocalizedUrl('/gallery/languages', language)}
+            className="font-medium text-fd-primary hover:underline"
+          >
+            {t('browseAll')} →
+          </Link>
+        </div>
         <div className={gridClasses}>
-          {languages.map((showcase) => (
+          {languages.slice(0, 4).map((showcase) => (
             <GalleryLanguageCard
               key={showcase.locale}
               showcase={showcase}
