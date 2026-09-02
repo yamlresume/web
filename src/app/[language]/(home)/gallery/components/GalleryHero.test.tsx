@@ -18,15 +18,15 @@ describe('GalleryHero', () => {
     ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /8\+/ })).toHaveAttribute(
       'href',
-      '/docs/cli#templates'
+      '/gallery/templates'
     )
     expect(screen.getByRole('link', { name: /12\+/ })).toHaveAttribute(
       'href',
-      '/docs/locale'
+      '/gallery/languages'
     )
     expect(screen.getByRole('link', { name: /5\+/ })).toHaveAttribute(
       'href',
-      '/docs/ecosystem/samples'
+      '/gallery/positions'
     )
     expect(
       screen.getByRole('button', {
@@ -45,7 +45,7 @@ describe('GalleryHero', () => {
     ).toBeInTheDocument()
   })
 
-  it('localizes documentation destinations', () => {
+  it('localizes gallery destinations', () => {
     render(
       <GalleryHero
         templateCount={8}
@@ -57,15 +57,15 @@ describe('GalleryHero', () => {
 
     expect(screen.getByRole('link', { name: /8\+/ })).toHaveAttribute(
       'href',
-      '/fr/docs/cli#templates'
+      '/fr/gallery/templates'
     )
     expect(screen.getByRole('link', { name: /12\+/ })).toHaveAttribute(
       'href',
-      '/fr/docs/locale'
+      '/fr/gallery/languages'
     )
     expect(screen.getByRole('link', { name: /5\+/ })).toHaveAttribute(
       'href',
-      '/fr/docs/ecosystem/samples'
+      '/fr/gallery/positions'
     )
   })
 })
