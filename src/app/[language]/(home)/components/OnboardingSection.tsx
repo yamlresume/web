@@ -1,80 +1,23 @@
 'use client'
 
 import {
-  IconArrowUpRight,
   IconBrandDocker,
   IconBrandGithub,
   IconBrandNpm,
-  IconCheck,
-  IconCopy,
   IconRocket,
   IconSwitchHorizontal,
   IconTerminal2,
   type Icon as TablerIcon,
 } from '@tabler/icons-react'
 import clsx from 'clsx'
-import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
 import {
   defaultLanguage,
   getLocalizedUrl,
   type Language,
   useTranslations,
 } from '@/i18n'
-import { Card, Icon, Section } from './common'
-
-// --- Constants & Styles ---
-
-const CARD_STYLES = clsx('p-6')
-
-const CODE_BLOCK_CONTAINER_STYLES = clsx(
-  'group',
-  'relative',
-  'z-10',
-  'w-full',
-  'flex',
-  'items-center',
-  'gap-2',
-  'border',
-  'border-fd-foreground/10',
-  'bg-fd-muted/50',
-  'px-4',
-  'py-3',
-  'transition-all',
-  'duration-300',
-  'hover:border-fd-foreground/20',
-  'hover:shadow-lg',
-  'hover:-translate-y-0.5'
-)
-
-const COPY_BUTTON_STYLES = clsx(
-  'flex',
-  'h-8',
-  'items-center',
-  'justify-center',
-  'transition-all',
-  'duration-200',
-  'hover:bg-fd-foreground/5',
-  'focus:outline-none',
-  'cursor-pointer'
-)
-
-const ICON_CONTAINER_STYLES = clsx(
-  'flex',
-  'h-12',
-  'w-12',
-  'shrink-0',
-  'items-center',
-  'justify-center',
-  'bg-fd-background',
-  'text-fd-foreground',
-  'shadow-sm'
-)
-
-const HIGHLIGHT_REGEX = /("[^"]*"|'[^']*'|-[^\s]+|\$[^\s]+|[^\s]+)/g
-
-// --- Types ---
+import { CommandLinkCard, Section } from './common'
 
 interface InstallMethod {
   id: string
@@ -82,182 +25,6 @@ interface InstallMethod {
   command: string
   href: string
 }
-
-interface OnboardingCardProps {
-  method: InstallMethod
-  t: (key: string) => string
-  lang: Language
-  className?: string
-}
-
-interface OnboardingCodeBlockProps {
-  command: string
-  href?: string
-  lang: Language
-  className?: string
-}
-
-// --- Sub-components ---
-
-function OnboardingIcon({ icon }: { icon: React.ReactNode }) {
-  return <div className={ICON_CONTAINER_STYLES}>{icon}</div>
-}
-
-function OnboardingTitle({ title }: { title: string }) {
-  return (
-    <h3 className={clsx('text-lg', 'font-semibold', 'text-fd-foreground')}>
-      <span
-        className={clsx(
-          'inline-flex',
-          'items-center',
-          'gap-1.5',
-          'transition-colors',
-          'hover:text-fd-accent-foreground'
-        )}
-      >
-        {title}
-        <Icon
-          icon={IconArrowUpRight}
-          size={18}
-          className={clsx(
-            'text-fd-foreground',
-            'transition-all',
-            'duration-300',
-            'group-hover:-translate-y-0.5',
-            'group-hover:translate-x-0.5',
-            'opacity-70',
-            'group-hover:opacity-100'
-          )}
-        />
-      </span>
-    </h3>
-  )
-}
-
-function ShellCommandHighlighter({ command }: { command: string }) {
-  const matches = command.match(HIGHLIGHT_REGEX) || []
-
-  return (
-    <>
-      {matches.map((part, index) => {
-        let colorClass = 'text-fd-foreground'
-
-        if (
-          ['npx', 'npm', 'brew', 'docker', 'curl', 'git', 'ls'].includes(part)
-        ) {
-          colorClass = 'text-blue-500'
-        } else if (part.startsWith('-')) {
-          colorClass = 'text-emerald-500'
-        } else if (part.startsWith('"') || part.startsWith("'")) {
-          colorClass = 'text-emerald-500'
-        } else if (
-          ['install', 'run', 'create-yamlresume', 'new', 'build'].includes(part)
-        ) {
-          colorClass = 'text-fd-foreground'
-        }
-
-        return (
-          // biome-ignore lint/suspicious/noArrayIndexKey: command tokens are static and order-stable
-          <span key={`${index}-${part}`} className={colorClass}>
-            {part}
-            {index < matches.length - 1 ? ' ' : ''}
-          </span>
-        )
-      })}
-    </>
-  )
-}
-
-function OnboardingCodeBlock({
-  command,
-  href,
-  lang,
-  className,
-}: OnboardingCodeBlockProps) {
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = async (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    await navigator.clipboard.writeText(command)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  const content = (
-    <>
-      <div className={clsx('flex-1', 'font-mono', 'text-sm')}>
-        <span className="select-none text-red-500">$&nbsp;</span>
-        <ShellCommandHighlighter command={command} />
-      </div>
-
-      <button
-        type="button"
-        onClick={handleCopy}
-        className={COPY_BUTTON_STYLES}
-        aria-label="Copy command"
-      >
-        {copied ? (
-          <Icon icon={IconCheck} size={16} className="text-green-500" />
-        ) : (
-          <Icon
-            icon={IconCopy}
-            size={16}
-            className="text-fd-muted-foreground"
-          />
-        )}
-      </button>
-    </>
-  )
-
-  return (
-    <div className={clsx('flex justify-center', className)}>
-      {href ? (
-        <Link
-          href={getLocalizedUrl(href, lang)}
-          className={clsx(CODE_BLOCK_CONTAINER_STYLES, 'cursor-pointer')}
-        >
-          {content}
-        </Link>
-      ) : (
-        <div className={CODE_BLOCK_CONTAINER_STYLES}>{content}</div>
-      )}
-    </div>
-  )
-}
-
-function OnboardingCard({ method, t, lang, className }: OnboardingCardProps) {
-  return (
-    <Card
-      href={getLocalizedUrl(method.href, lang)}
-      className={clsx(CARD_STYLES, className)}
-      external={false}
-      ariaLabel={t(`${method.id}.title`)}
-    >
-      <div className="flex flex-col gap-4">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <OnboardingIcon icon={<Icon icon={method.icon} size={24} />} />
-            <div>
-              <OnboardingTitle title={t(`${method.id}.title`)} />
-              <p className="text-sm text-fd-muted-foreground">
-                {t(`${method.id}.description`)}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <OnboardingCodeBlock
-          command={method.command}
-          lang={lang}
-          className="mb-0"
-        />
-      </div>
-    </Card>
-  )
-}
-
-// --- Main Component ---
 
 export function OnboardingSection() {
   const t = useTranslations('onboarding')
@@ -316,9 +83,18 @@ export function OnboardingSection() {
         )}
       >
         {installMethods.map((method) => {
+          const title = t(`${method.id}.title`)
+
           return (
             <div key={method.id}>
-              <OnboardingCard method={method} t={t} lang={lang} />
+              <CommandLinkCard
+                title={title}
+                description={t(`${method.id}.description`)}
+                icon={method.icon}
+                command={method.command}
+                href={getLocalizedUrl(method.href, lang)}
+                ariaLabel={title}
+              />
             </div>
           )
         })}
