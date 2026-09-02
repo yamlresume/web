@@ -4,7 +4,7 @@ import { IconBook, IconDeviceDesktop } from '@tabler/icons-react'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useId, useState } from 'react'
+import { Suspense, useId, useState } from 'react'
 
 import { WindowFrame } from '@/app/[language]/(home)/components/features/WindowFrame'
 import { PlaygroundBody } from '@/app/[language]/playground/components'
@@ -128,7 +128,9 @@ export function HeroSection() {
           )}
         >
           <WindowFrame contentClassName="h-[760px]" className="rounded-xl">
-            <PlaygroundBody />
+            <Suspense fallback={<div className="h-full w-full" />}>
+              <PlaygroundBody />
+            </Suspense>
           </WindowFrame>
         </div>
       </div>

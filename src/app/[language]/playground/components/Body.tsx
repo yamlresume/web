@@ -2,6 +2,8 @@
 
 import { Playground } from '@yamlresume/playground'
 import { getSampleResume } from '@yamlresume/samples'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { useLocalStorage } from 'usehooks-ts'
 import { useTranslations } from '@/i18n'
 
@@ -17,6 +19,50 @@ export function PlaygroundBody() {
     'yamlresume:playground',
     DEFAULT_RESUME
   )
+  const searchParams = useSearchParams()
+  const [hasLoadedSample, setHasLoadedSample] = useState(false)
+
+  useEffect(() => {
+    if (hasLoadedSample) {
+      return
+    }
+
+    const sample = searchParams.get('sample')
+    const locale = searchParams.get('locale')
+
+    if (!sample || !locale) {
+      setHasLoadedSample(true)
+      return
+    }
+
+    const templateParams = new URLSearchParams()
+    const engine = searchParams.get('engine')
+    const template = searchParams.get('template')
+
+    if (engine) {
+      templateParams.set('engine', engine)
+    }
+    if (template) {
+      templateParams.set('template', template)
+    }
+
+    const query = templateParams.size > 0 ? `?${templateParams}` : ''
+
+    fetch(`/api/gallery/${sample}/${locale}${query}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to load sample')
+        }
+        return response.text()
+      })
+      .then((yaml) => {
+        setResume(yaml)
+        setHasLoadedSample(true)
+      })
+      .catch(() => {
+        setHasLoadedSample(true)
+      })
+  }, [searchParams, hasLoadedSample, setResume])
 
   return (
     <div className="flex-1 h-full">

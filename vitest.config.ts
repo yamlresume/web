@@ -68,7 +68,10 @@ export default defineConfig({
   plugins: [aliasResolver()],
   test: {
     name: 'unit',
-    dir: './tests/unit',
+    include: [
+      'tests/unit/**/*.{test,spec}.{ts,tsx}',
+      'src/**/*.{test,spec}.{ts,tsx}',
+    ],
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./tests/unit/setup.tsx'],
@@ -77,6 +80,7 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       include: ['src/**/*.{ts,tsx}'],
       exclude: [
+        'src/**/*.{test,spec}.{ts,tsx}',
         'src/app/layout.tsx',
         'src/app/**/page.tsx',
         'src/app/**/page.ts',

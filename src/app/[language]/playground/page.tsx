@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import type { Language } from '@/i18n'
 import { PlaygroundBody, PlaygroundHeader } from './components'
 
@@ -12,7 +13,9 @@ export default async function PlaygroundPage(props: {
   return (
     <div className="h-screen w-screen flex flex-col bg-neutral-900 text-neutral-100 overflow-hidden">
       <PlaygroundHeader language={language as Language} />
-      <PlaygroundBody />
+      <Suspense fallback={<div className="flex-1" />}>
+        <PlaygroundBody />
+      </Suspense>
     </div>
   )
 }
