@@ -17,6 +17,28 @@ describe('GalleryPositionsList', () => {
     ).toHaveAttribute('href', '/gallery/positions/software-engineer/en')
   })
 
+  it('loads filters from props and persists them in the URL', () => {
+    window.history.replaceState(null, '', '/gallery/positions')
+    render(
+      <GalleryPositionsList
+        items={getGalleryItems()}
+        language="en"
+        initialFilters={{
+          search: 'designer',
+          category: '',
+          tag: '',
+          language: 'en',
+        }}
+      />
+    )
+
+    expect(screen.getByLabelText('Search resumes...')).toHaveValue('designer')
+    expect(window.location.search).toBe('?search=designer&language=en')
+    expect(
+      screen.queryByRole('link', { name: /Software Engineer/ })
+    ).not.toBeInTheDocument()
+  })
+
   it('filters positions by search query', async () => {
     const user = userEvent.setup()
     render(<GalleryPositionsList items={getGalleryItems()} language="en" />)

@@ -1,7 +1,7 @@
 'use client'
 
 import clsx from 'clsx'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   getGalleryMessages,
   getLocalizedUrl,
@@ -10,7 +10,6 @@ import {
 } from '@/i18n'
 import type { GalleryItem } from '@/lib/gallery'
 import { getPositionGalleryPath } from '@/lib/galleryRoutes'
-import { getPositionShowcases } from '@/lib/templates'
 import { GalleryEmptyState } from './GalleryEmptyState'
 import { GalleryFilterBar } from './GalleryFilterBar'
 import { GalleryIndexBreadcrumb } from './GalleryIndexBreadcrumb'
@@ -24,31 +23,52 @@ import {
   countActiveFilters,
   emptyFilters,
   filterItems,
+  type GalleryFilters,
   getFacets,
 } from './gallery-utils'
 
 interface GalleryPositionsListProps {
   items: GalleryItem[]
   language: Language
+  initialFilters?: GalleryFilters
 }
 
 export function GalleryPositionsList({
   items,
   language,
+  initialFilters = emptyFilters,
 }: GalleryPositionsListProps) {
   const t = useTranslations('gallery')
   const copy = getGalleryMessages(language).categories.positions
-  const [filters, setFilters] = useState(emptyFilters)
+  const [filters, setFilters] = useState(initialFilters)
   const facets = useMemo(() => getFacets(items), [items])
-  const positionItems = useMemo(
-    () => getPositionShowcases(language),
-    [language]
-  )
+  const positionItems = items
   const filteredPositions = useMemo(
     () => filterItems(positionItems, filters),
     [positionItems, filters]
   )
   const activeFiltersCount = countActiveFilters(filters)
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const queryFilters: (keyof GalleryFilters)[] = [
+      'search',
+      'category',
+      'tag',
+      'language',
+    ]
+
+    for (const key of queryFilters) {
+      if (filters[key]) {
+        url.searchParams.set(key, filters[key])
+      } else {
+        url.searchParams.delete(key)
+      }
+    }
+
+    window.history.replaceState(null, '', `${url.pathname}${url.search}`)
+  }, [filters])
+
   const clearFilters = () => setFilters(emptyFilters)
 
   const gridClasses = clsx([

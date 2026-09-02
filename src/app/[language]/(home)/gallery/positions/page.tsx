@@ -7,22 +7,40 @@ import {
 } from '@/i18n'
 import { getGalleryItems } from '@/lib/gallery'
 import { GalleryPositionsList } from '../components/GalleryPositionsList'
+import type { GalleryFilters } from '../components/gallery-utils'
 
 export const revalidate = false
 
 interface GalleryPositionsPageProps {
   params: Promise<{ language: string }>
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}
+
+function getFilterValue(
+  searchParams: Record<string, string | string[] | undefined>,
+  key: keyof GalleryFilters
+): string {
+  const value = searchParams[key]
+  return typeof value === 'string' ? value : ''
 }
 
 export default async function GalleryPositionsPage({
   params,
+  searchParams,
 }: GalleryPositionsPageProps) {
-  const { language } = await params
+  const [{ language }, query] = await Promise.all([params, searchParams])
+  const initialFilters: GalleryFilters = {
+    search: getFilterValue(query, 'search'),
+    category: getFilterValue(query, 'category'),
+    tag: getFilterValue(query, 'tag'),
+    language: getFilterValue(query, 'language'),
+  }
 
   return (
     <GalleryPositionsList
       items={getGalleryItems()}
       language={language as Language}
+      initialFilters={initialFilters}
     />
   )
 }
