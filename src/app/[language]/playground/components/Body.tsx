@@ -14,7 +14,7 @@ const DEFAULT_RESUME = getSampleResume('software-engineer', 'en', {
 export function PlaygroundBody() {
   const t = useTranslations('playground')
   const [resume, setResume] = useLocalStorage(
-    'yamlresume-resume',
+    'yamlresume:playground',
     DEFAULT_RESUME
   )
 
