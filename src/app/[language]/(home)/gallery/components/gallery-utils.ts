@@ -22,7 +22,7 @@ export interface GalleryFacets {
   languages: string[]
 }
 
-export function getPositionItems(
+export function getExampleItems(
   items: GalleryItem[],
   siteLanguage: Language,
   resumeLanguage: string

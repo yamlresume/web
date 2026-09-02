@@ -60,8 +60,8 @@ export function GalleryBreadcrumb({
   } else {
     segments = [
       {
-        label: messages.breadcrumb.positions,
-        href: getLocalizedUrl('/gallery/positions', language),
+        label: messages.breadcrumb.examples,
+        href: getLocalizedUrl('/gallery/examples', language),
       },
       { label: item.title },
     ]

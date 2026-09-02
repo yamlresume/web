@@ -7,14 +7,14 @@ import { GalleryStatCard } from './GalleryStatCard'
 interface GalleryHeroProps {
   templateCount: number
   languageCount: number
-  positionCount: number
+  exampleCount: number
   language: Language
 }
 
 export function GalleryHero({
   templateCount,
   languageCount,
-  positionCount,
+  exampleCount,
   language,
 }: GalleryHeroProps) {
   const copy = getGalleryMessages(language)
@@ -35,9 +35,9 @@ export function GalleryHero({
       icon: IconLanguage,
     },
     {
-      value: `${positionCount}+`,
-      label: copy.hero.positions,
-      href: getLocalizedUrl('/gallery/positions', language),
+      value: `${exampleCount}+`,
+      label: copy.hero.examples,
+      href: getLocalizedUrl('/gallery/examples', language),
       command: 'yamlresume samples list',
       icon: IconBriefcase,
     },

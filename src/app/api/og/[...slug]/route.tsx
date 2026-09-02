@@ -48,7 +48,7 @@ export async function GET(
     const category =
       slug[1] === 'templates' ||
       slug[1] === 'languages' ||
-      slug[1] === 'positions'
+      slug[1] === 'examples'
         ? slug[1]
         : 'gallery'
     const title = getGalleryMessages(locale).metadata[category].title
@@ -153,7 +153,7 @@ export function generateStaticParams() {
     { slug: ['gallery', 'open-graph.png'] },
     { slug: ['gallery', 'templates', 'open-graph.png'] },
     { slug: ['gallery', 'languages', 'open-graph.png'] },
-    { slug: ['gallery', 'positions', 'open-graph.png'] },
+    { slug: ['gallery', 'examples', 'open-graph.png'] },
   ]
 
   // Generate params for blog (English only)

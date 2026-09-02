@@ -6,17 +6,17 @@ import {
   type Language,
 } from '@/i18n'
 import { type GalleryItem, getGalleryItems } from '@/lib/gallery'
-import { getPositionGalleryPath } from '@/lib/galleryRoutes'
+import { getExampleGalleryPath } from '@/lib/galleryRoutes'
 
-interface PositionLanguageAlternativesProps {
+interface ExampleLanguageAlternativesProps {
   item: GalleryItem
   language: Language
 }
 
-export function PositionLanguageAlternatives({
+export function ExampleLanguageAlternatives({
   item,
   language,
-}: PositionLanguageAlternativesProps) {
+}: ExampleLanguageAlternativesProps) {
   const messages = getGalleryDetailMessages(language)
   const alternatives = getGalleryItems().filter(
     (candidate) =>
@@ -40,7 +40,7 @@ export function PositionLanguageAlternatives({
           <Link
             key={alternative.language}
             href={getLocalizedUrl(
-              getPositionGalleryPath(alternative.id, alternative.language),
+              getExampleGalleryPath(alternative.id, alternative.language),
               language
             )}
             className="inline-flex items-center gap-2 border border-fd-border bg-fd-card px-4 py-3 font-medium transition-colors hover:border-fd-primary hover:text-fd-primary"

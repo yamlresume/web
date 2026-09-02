@@ -4,11 +4,11 @@ import {
   countActiveFilters,
   emptyFilters,
   filterItems,
+  getExampleItems,
   getFacets,
-  getPositionItems,
 } from './gallery-utils'
 
-describe('getPositionItems', () => {
+describe('getExampleItems', () => {
   const english = makeGalleryItem({ language: 'en', languageLabel: 'English' })
   const japanese = makeGalleryItem({
     language: 'ja',
@@ -21,17 +21,17 @@ describe('getPositionItems', () => {
     language: 'en',
   })
 
-  it('returns one preferred locale per position', () => {
-    expect(getPositionItems([english, japanese, designer], 'ja', '')).toEqual([
+  it('returns one preferred locale per example', () => {
+    expect(getExampleItems([english, japanese, designer], 'ja', '')).toEqual([
       designer,
       japanese,
     ])
   })
 
-  it('returns only positions available in the selected resume language', () => {
-    expect(getPositionItems([english, japanese, designer], 'en', 'ja')).toEqual(
-      [japanese]
-    )
+  it('returns only examples available in the selected resume language', () => {
+    expect(getExampleItems([english, japanese, designer], 'en', 'ja')).toEqual([
+      japanese,
+    ])
   })
 })
 

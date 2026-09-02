@@ -16,7 +16,7 @@ describe('GalleryList', () => {
       screen.getByRole('heading', { name: 'Languages' })
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { name: 'Positions' })
+      screen.getByRole('heading', { name: 'Examples' })
     ).toBeInTheDocument()
   })
 
@@ -32,17 +32,17 @@ describe('GalleryList', () => {
     ).toHaveAttribute('href', '/gallery/languages/en')
     expect(
       screen.getByRole('link', { name: /Software Engineer/ })
-    ).toHaveAttribute('href', '/gallery/positions/software-engineer/en')
+    ).toHaveAttribute('href', '/gallery/examples/software-engineer/en')
   })
 
-  it('links the positions showcase to the full catalog', () => {
+  it('links the examples showcase to the full catalog', () => {
     render(<GalleryList language="en" />)
 
     const browseLinks = screen.getAllByRole('link', { name: /Browse all/ })
     expect(browseLinks.map((link) => link.getAttribute('href'))).toEqual([
       '/gallery/templates',
       '/gallery/languages',
-      '/gallery/positions',
+      '/gallery/examples',
     ])
     expect(screen.queryByLabelText('Search resumes...')).not.toBeInTheDocument()
   })

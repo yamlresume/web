@@ -18,9 +18,9 @@ export function GalleryExploreMore({ language }: { language: Language }) {
       icon: IconLanguage,
     },
     {
-      path: '/gallery/positions',
-      label: copy.categories.positions.title,
-      description: copy.categories.positions.description,
+      path: '/gallery/examples',
+      label: copy.categories.examples.title,
+      description: copy.categories.examples.description,
       icon: IconBriefcase,
     },
   ]

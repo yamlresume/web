@@ -9,14 +9,14 @@ const item = makeGalleryItem({
 })
 
 describe('GalleryBreadcrumb', () => {
-  it('renders the position hierarchy', () => {
+  it('renders the example hierarchy', () => {
     render(
       <GalleryBreadcrumb
         item={item}
         language="en"
         target={{
-          type: 'position',
-          positionId: 'software-engineer',
+          type: 'example',
+          sampleId: 'software-engineer',
           resumeLanguage: 'en',
         }}
       />
@@ -27,8 +27,8 @@ describe('GalleryBreadcrumb', () => {
       within(breadcrumb).getByRole('link', { name: 'Gallery' })
     ).toHaveAttribute('href', '/gallery')
     expect(
-      within(breadcrumb).getByRole('link', { name: 'Positions' })
-    ).toHaveAttribute('href', '/gallery/positions')
+      within(breadcrumb).getByRole('link', { name: 'Examples' })
+    ).toHaveAttribute('href', '/gallery/examples')
     expect(breadcrumb).toHaveTextContent('Software Engineer')
   })
 

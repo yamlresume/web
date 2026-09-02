@@ -199,7 +199,7 @@ const translations = {
           templates:
             'Professional templates across LaTeX, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
-          positions: 'Position-specific examples and ready-to-use content',
+          examples: 'Realistic resume examples with ready-to-use content',
         },
       },
       sections: {
@@ -207,8 +207,9 @@ const translations = {
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
         languagesDescription: 'Resumes localized for 12+ locales.',
-        positions: 'Positions',
-        positionsDescription: 'Sample resumes for real-world roles.',
+        examples: 'Examples',
+        examplesDescription:
+          'Realistic resume examples for roles and career goals.',
       },
       actions: {
         downloadYaml: 'YAML',
@@ -437,7 +438,7 @@ const translations = {
           templates:
             'Professional templates across LaTeX, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
-          positions: 'Position-specific examples and ready-to-use content',
+          examples: 'Realistic resume examples with ready-to-use content',
         },
       },
       sections: {
@@ -445,8 +446,9 @@ const translations = {
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
         languagesDescription: 'Resumes localized for 12+ locales.',
-        positions: 'Positions',
-        positionsDescription: 'Sample resumes for real-world roles.',
+        examples: 'Examples',
+        examplesDescription:
+          'Realistic resume examples for roles and career goals.',
       },
       actions: {
         downloadYaml: 'YAML',
@@ -675,7 +677,7 @@ const translations = {
           templates:
             'Professional templates across LaTeX, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
-          positions: 'Position-specific examples and ready-to-use content',
+          examples: 'Realistic resume examples with ready-to-use content',
         },
       },
       sections: {
@@ -683,8 +685,9 @@ const translations = {
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
         languagesDescription: 'Resumes localized for 12+ locales.',
-        positions: 'Positions',
-        positionsDescription: 'Sample resumes for real-world roles.',
+        examples: 'Examples',
+        examplesDescription:
+          'Realistic resume examples for roles and career goals.',
       },
       actions: {
         downloadYaml: 'YAML',
@@ -900,7 +903,7 @@ const translations = {
           templates:
             'Professional templates across LaTeX, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
-          positions: 'Position-specific examples and ready-to-use content',
+          examples: 'Realistic resume examples with ready-to-use content',
         },
       },
       sections: {
@@ -908,8 +911,9 @@ const translations = {
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
         languagesDescription: 'Resumes localized for 12+ locales.',
-        positions: 'Positions',
-        positionsDescription: 'Sample resumes for real-world roles.',
+        examples: 'Examples',
+        examplesDescription:
+          'Realistic resume examples for roles and career goals.',
       },
       actions: {
         downloadYaml: 'YAML',
@@ -1125,7 +1129,7 @@ const translations = {
           templates:
             'Professional templates across LaTeX, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
-          positions: 'Position-specific examples and ready-to-use content',
+          examples: 'Realistic resume examples with ready-to-use content',
         },
       },
       sections: {
@@ -1133,8 +1137,9 @@ const translations = {
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
         languagesDescription: 'Resumes localized for 12+ locales.',
-        positions: 'Positions',
-        positionsDescription: 'Sample resumes for real-world roles.',
+        examples: 'Examples',
+        examplesDescription:
+          'Realistic resume examples for roles and career goals.',
       },
       actions: {
         downloadYaml: 'YAML',
@@ -1360,7 +1365,7 @@ const translations = {
           templates:
             'Professional templates across LaTeX, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
-          positions: 'Position-specific examples and ready-to-use content',
+          examples: 'Realistic resume examples with ready-to-use content',
         },
       },
       sections: {
@@ -1368,8 +1373,9 @@ const translations = {
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
         languagesDescription: 'Resumes localized for 12+ locales.',
-        positions: 'Positions',
-        positionsDescription: 'Sample resumes for real-world roles.',
+        examples: 'Examples',
+        examplesDescription:
+          'Realistic resume examples for roles and career goals.',
       },
       actions: {
         downloadYaml: 'YAML',
@@ -1599,7 +1605,7 @@ const translations = {
           templates:
             'Professional templates across LaTeX, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
-          positions: 'Position-specific examples and ready-to-use content',
+          examples: 'Realistic resume examples with ready-to-use content',
         },
       },
       sections: {
@@ -1607,8 +1613,9 @@ const translations = {
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
         languagesDescription: 'Resumes localized for 12+ locales.',
-        positions: 'Positions',
-        positionsDescription: 'Sample resumes for real-world roles.',
+        examples: 'Examples',
+        examplesDescription:
+          'Realistic resume examples for roles and career goals.',
       },
       actions: {
         downloadYaml: 'YAML',
@@ -1835,7 +1842,7 @@ const translations = {
           templates:
             'Professional templates across LaTeX, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
-          positions: 'Position-specific examples and ready-to-use content',
+          examples: 'Realistic resume examples with ready-to-use content',
         },
       },
       sections: {
@@ -1843,8 +1850,9 @@ const translations = {
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
         languagesDescription: 'Resumes localized for 12+ locales.',
-        positions: 'Positions',
-        positionsDescription: 'Sample resumes for real-world roles.',
+        examples: 'Examples',
+        examplesDescription:
+          'Realistic resume examples for roles and career goals.',
       },
       actions: {
         downloadYaml: 'YAML',

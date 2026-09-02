@@ -1,10 +1,6 @@
 import type { Language } from './config'
 
-export type GalleryCategory =
-  | 'gallery'
-  | 'templates'
-  | 'languages'
-  | 'positions'
+export type GalleryCategory = 'gallery' | 'templates' | 'languages' | 'examples'
 
 interface GalleryCategoryCopy {
   title: string
@@ -17,7 +13,7 @@ export interface GalleryMessages {
     description: string
     templates: string
     languages: string
-    positions: string
+    examples: string
   }
   categories: Record<Exclude<GalleryCategory, 'gallery'>, GalleryCategoryCopy>
   metadata: Record<GalleryCategory, GalleryCategoryCopy>
@@ -32,7 +28,7 @@ const messages: Record<Language, GalleryMessages> = {
         'Explore resume templates for any position, rendered in 12 languages and 4 output engines—all from a single YAML source.',
       templates: 'Professional templates across LaTeX, HTML, DOCX & Markdown',
       languages: 'Languages with full locale, typesetting & idiom support',
-      positions: 'Position-specific examples and ready-to-use content',
+      examples: 'Realistic resume examples with ready-to-use content',
     },
     categories: {
       templates: {
@@ -43,9 +39,9 @@ const messages: Record<Language, GalleryMessages> = {
         title: 'Languages',
         description: 'Resume examples localized for 12+ locales.',
       },
-      positions: {
-        title: 'Positions',
-        description: 'Sample resumes for real-world roles.',
+      examples: {
+        title: 'Examples',
+        description: 'Realistic resume examples for roles and career goals.',
       },
     },
     metadata: {
@@ -64,10 +60,10 @@ const messages: Record<Language, GalleryMessages> = {
         description:
           'Browse localized resume examples with language-aware typography and content.',
       },
-      positions: {
-        title: 'Resume Examples by Position',
+      examples: {
+        title: 'Examples',
         description:
-          'Browse position-specific resume examples by category, skill, and language.',
+          'Browse realistic resume examples by category, skill, and language.',
       },
     },
     browseAll: 'Browse all',
@@ -79,7 +75,7 @@ const messages: Record<Language, GalleryMessages> = {
         'Explora currículums para cualquier puesto en 12 idiomas y 4 formatos, todos desde un único archivo YAML.',
       templates: 'Plantillas profesionales en LaTeX, HTML, DOCX y Markdown',
       languages: 'Idiomas con tipografía, expresiones y formatos locales',
-      positions: 'Ejemplos por puesto con contenido listo para usar',
+      examples: 'Ejemplos de currículum realistas y listos para usar',
     },
     categories: {
       templates: {
@@ -90,9 +86,9 @@ const messages: Record<Language, GalleryMessages> = {
         title: 'Idiomas',
         description: 'Currículums adaptados a más de 12 regiones.',
       },
-      positions: {
-        title: 'Puestos',
-        description: 'Currículums de ejemplo para puestos reales.',
+      examples: {
+        title: 'Ejemplos',
+        description: 'Ejemplos realistas para distintos puestos y objetivos.',
       },
     },
     metadata: {
@@ -111,10 +107,9 @@ const messages: Record<Language, GalleryMessages> = {
         description:
           'Explora currículums localizados con tipografía y contenido adaptados.',
       },
-      positions: {
-        title: 'Currículums por puesto',
-        description:
-          'Explora currículums por puesto, categoría, habilidad e idioma.',
+      examples: {
+        title: 'Ejemplos',
+        description: 'Explora ejemplos por categoría, habilidad e idioma.',
       },
     },
     browseAll: 'Ver todos',
@@ -126,7 +121,7 @@ const messages: Record<Language, GalleryMessages> = {
         'Explorez des CV pour chaque poste, disponibles en 12 langues et 4 formats à partir d’une seule source YAML.',
       templates: 'Modèles professionnels en LaTeX, HTML, DOCX et Markdown',
       languages: 'Langues avec typographie et expressions adaptées',
-      positions: 'Exemples par poste avec du contenu prêt à l’emploi',
+      examples: 'Exemples de CV réalistes et prêts à l’emploi',
     },
     categories: {
       templates: {
@@ -137,9 +132,10 @@ const messages: Record<Language, GalleryMessages> = {
         title: 'Langues',
         description: 'Des CV adaptés à plus de 12 régions.',
       },
-      positions: {
-        title: 'Postes',
-        description: 'Des exemples de CV pour des postes réels.',
+      examples: {
+        title: 'Exemples',
+        description:
+          'Des exemples réalistes pour différents postes et objectifs.',
       },
     },
     metadata: {
@@ -158,10 +154,10 @@ const messages: Record<Language, GalleryMessages> = {
         description:
           'Explorez des CV localisés avec une typographie et un contenu adaptés.',
       },
-      positions: {
-        title: 'Exemples de CV par poste',
+      examples: {
+        title: 'Exemples',
         description:
-          'Explorez des CV par poste, catégorie, compétence et langue.',
+          'Explorez des exemples par catégorie, compétence et langue.',
       },
     },
     browseAll: 'Tout afficher',
@@ -173,7 +169,7 @@ const messages: Record<Language, GalleryMessages> = {
         'Explore currículos para qualquer cargo em 12 idiomas e 4 formatos, todos a partir de uma única fonte YAML.',
       templates: 'Modelos profissionais em LaTeX, HTML, DOCX e Markdown',
       languages: 'Idiomas com tipografia, expressões e formatos locais',
-      positions: 'Exemplos por cargo com conteúdo pronto para usar',
+      examples: 'Exemplos de currículo realistas e prontos para usar',
     },
     categories: {
       templates: {
@@ -184,9 +180,9 @@ const messages: Record<Language, GalleryMessages> = {
         title: 'Idiomas',
         description: 'Currículos adaptados para mais de 12 regiões.',
       },
-      positions: {
-        title: 'Cargos',
-        description: 'Currículos de exemplo para cargos reais.',
+      examples: {
+        title: 'Exemplos',
+        description: 'Exemplos realistas para diferentes cargos e objetivos.',
       },
     },
     metadata: {
@@ -205,10 +201,9 @@ const messages: Record<Language, GalleryMessages> = {
         description:
           'Explore currículos localizados com tipografia e conteúdo adaptados.',
       },
-      positions: {
-        title: 'Currículos por cargo',
-        description:
-          'Explore currículos por cargo, categoria, competência e idioma.',
+      examples: {
+        title: 'Exemplos',
+        description: 'Explore exemplos por categoria, competência e idioma.',
       },
     },
     browseAll: 'Ver todos',
@@ -220,7 +215,7 @@ const messages: Record<Language, GalleryMessages> = {
         '1つのYAMLソースから、12言語・4形式で生成された職種別の履歴書を探せます。',
       templates: 'LaTeX、HTML、DOCX、Markdown対応のテンプレート',
       languages: '地域ごとの組版と表現に対応した言語',
-      positions: 'すぐに使える職種別の履歴書例',
+      examples: 'すぐに使える実践的な履歴書例',
     },
     categories: {
       templates: {
@@ -231,9 +226,9 @@ const messages: Record<Language, GalleryMessages> = {
         title: '言語',
         description: '12以上の地域向けに最適化された履歴書。',
       },
-      positions: {
-        title: '職種',
-        description: '実際の職種に合わせた履歴書例。',
+      examples: {
+        title: '例',
+        description: '職種や目的に合わせた実践的な履歴書例。',
       },
     },
     metadata: {
@@ -251,9 +246,9 @@ const messages: Record<Language, GalleryMessages> = {
         title: '言語別の履歴書例',
         description: '言語ごとの組版と内容に最適化された履歴書例を探せます。',
       },
-      positions: {
-        title: '職種別の履歴書例',
-        description: '職種、カテゴリー、スキル、言語から履歴書例を探せます。',
+      examples: {
+        title: '例',
+        description: 'カテゴリー、スキル、言語から履歴書例を探せます。',
       },
     },
     browseAll: 'すべて見る',
@@ -265,7 +260,7 @@ const messages: Record<Language, GalleryMessages> = {
         '探索适用于不同职位的简历：一个 YAML 源文件即可生成 12 种语言和 4 种格式。',
       templates: '覆盖 LaTeX、HTML、DOCX 和 Markdown 的专业模板',
       languages: '完整支持本地排版与表达习惯的语言',
-      positions: '按职位制作、开箱即用的简历示例',
+      examples: '真实实用、开箱即用的简历示例',
     },
     categories: {
       templates: {
@@ -276,7 +271,10 @@ const messages: Record<Language, GalleryMessages> = {
         title: '语言',
         description: '针对 12 种以上地区语言本地化的简历。',
       },
-      positions: { title: '职位', description: '面向真实职位的简历示例。' },
+      examples: {
+        title: '示例',
+        description: '适用于不同职位和职业目标的真实简历示例。',
+      },
     },
     metadata: {
       gallery: {
@@ -293,9 +291,9 @@ const messages: Record<Language, GalleryMessages> = {
         title: '多语言简历示例',
         description: '浏览在排版和内容上经过本地化的多语言简历示例。',
       },
-      positions: {
-        title: '按职位浏览简历示例',
-        description: '按职位、类别、技能和语言浏览简历示例。',
+      examples: {
+        title: '示例',
+        description: '按类别、技能和语言浏览简历示例。',
       },
     },
     browseAll: '查看全部',
@@ -307,7 +305,7 @@ const messages: Record<Language, GalleryMessages> = {
         '探索適用於不同職位的履歷：一個 YAML 來源即可產生 12 種語言和 4 種格式。',
       templates: '涵蓋 LaTeX、HTML、DOCX 和 Markdown 的專業範本',
       languages: '完整支援在地排版與表達習慣的語言',
-      positions: '依職位製作、可直接使用的履歷範例',
+      examples: '真實實用、可直接使用的履歷範例',
     },
     categories: {
       templates: {
@@ -318,7 +316,10 @@ const messages: Record<Language, GalleryMessages> = {
         title: '語言',
         description: '針對 12 種以上地區語言在地化的履歷。',
       },
-      positions: { title: '職位', description: '面向真實職位的履歷範例。' },
+      examples: {
+        title: '範例',
+        description: '適用於不同職位和職涯目標的真實履歷範例。',
+      },
     },
     metadata: {
       gallery: {
@@ -335,9 +336,9 @@ const messages: Record<Language, GalleryMessages> = {
         title: '多語言履歷範例',
         description: '瀏覽在排版和內容上經過在地化的多語言履歷範例。',
       },
-      positions: {
-        title: '依職位瀏覽履歷範例',
-        description: '依職位、類別、技能和語言瀏覽履歷範例。',
+      examples: {
+        title: '範例',
+        description: '依類別、技能和語言瀏覽履歷範例。',
       },
     },
     browseAll: '查看全部',
@@ -349,7 +350,7 @@ const messages: Record<Language, GalleryMessages> = {
         'Jelajahi resume untuk berbagai posisi dalam 12 bahasa dan 4 format dari satu sumber YAML.',
       templates: 'Templat profesional untuk LaTeX, HTML, DOCX, dan Markdown',
       languages: 'Bahasa dengan tipografi dan ungkapan lokal',
-      positions: 'Contoh khusus posisi dengan konten siap pakai',
+      examples: 'Contoh resume realistis dengan konten siap pakai',
     },
     categories: {
       templates: {
@@ -360,9 +361,10 @@ const messages: Record<Language, GalleryMessages> = {
         title: 'Bahasa',
         description: 'Resume yang dilokalkan untuk lebih dari 12 wilayah.',
       },
-      positions: {
-        title: 'Posisi',
-        description: 'Contoh resume untuk posisi nyata.',
+      examples: {
+        title: 'Contoh',
+        description:
+          'Contoh realistis untuk berbagai posisi dan tujuan karier.',
       },
     },
     metadata: {
@@ -381,10 +383,10 @@ const messages: Record<Language, GalleryMessages> = {
         description:
           'Jelajahi resume lokal dengan tipografi dan konten yang sesuai.',
       },
-      positions: {
-        title: 'Contoh resume berdasarkan posisi',
+      examples: {
+        title: 'Contoh',
         description:
-          'Jelajahi resume berdasarkan posisi, kategori, keahlian, dan bahasa.',
+          'Jelajahi contoh berdasarkan kategori, keahlian, dan bahasa.',
       },
     },
     browseAll: 'Lihat semua',

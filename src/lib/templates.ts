@@ -52,6 +52,6 @@ export function getLanguageShowcases(): LanguageShowcase[] {
     .filter((showcase): showcase is LanguageShowcase => showcase !== null)
 }
 
-export function getPositionShowcases(language: Language): GalleryItem[] {
+export function getExampleShowcases(language: Language): GalleryItem[] {
   return getGalleryItemsByLanguage(language)
 }

@@ -22,7 +22,7 @@ function getPageHref(
   }
   if (page > 1) query.set('page', String(page))
 
-  const path = getLocalizedUrl('/gallery/positions', language)
+  const path = getLocalizedUrl('/gallery/examples', language)
   return query.size > 0 ? `${path}?${query}` : path
 }
 

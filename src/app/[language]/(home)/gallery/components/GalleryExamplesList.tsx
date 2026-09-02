@@ -9,12 +9,12 @@ import {
   useTranslations,
 } from '@/i18n'
 import type { GalleryItem } from '@/lib/gallery'
-import { getPositionGalleryPath } from '@/lib/galleryRoutes'
+import { getExampleGalleryPath } from '@/lib/galleryRoutes'
 import { GalleryEmptyState } from './GalleryEmptyState'
+import { GalleryExampleCard } from './GalleryExampleCard'
 import { GalleryFilterBar } from './GalleryFilterBar'
 import { GalleryIndexBreadcrumb } from './GalleryIndexBreadcrumb'
 import { GalleryPagination } from './GalleryPagination'
-import { GalleryPositionCard } from './GalleryPositionCard'
 import { GallerySection } from './GallerySection'
 import {
   GalleryBreadcrumbJsonLd,
@@ -25,11 +25,11 @@ import {
   emptyFilters,
   filterItems,
   type GalleryFilters,
+  getExampleItems,
   getFacets,
-  getPositionItems,
 } from './gallery-utils'
 
-interface GalleryPositionsListProps {
+interface GalleryExamplesListProps {
   items: GalleryItem[]
   language: Language
   initialFilters?: GalleryFilters
@@ -38,32 +38,29 @@ interface GalleryPositionsListProps {
 
 const PAGE_SIZE = 24
 
-export function GalleryPositionsList({
+export function GalleryExamplesList({
   items,
   language,
   initialFilters = emptyFilters,
   initialPage = 1,
-}: GalleryPositionsListProps) {
+}: GalleryExamplesListProps) {
   const t = useTranslations('gallery')
-  const copy = getGalleryMessages(language).categories.positions
+  const copy = getGalleryMessages(language).categories.examples
   const [filters, setFilters] = useState(initialFilters)
   const [page, setPage] = useState(initialPage)
   const facets = useMemo(() => getFacets(items), [items])
-  const positionItems = useMemo(
-    () => getPositionItems(items, language, filters.language),
+  const exampleItems = useMemo(
+    () => getExampleItems(items, language, filters.language),
     [items, language, filters.language]
   )
-  const filteredPositions = useMemo(
-    () => filterItems(positionItems, filters),
-    [positionItems, filters]
+  const filteredExamples = useMemo(
+    () => filterItems(exampleItems, filters),
+    [exampleItems, filters]
   )
   const activeFiltersCount = countActiveFilters(filters)
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredPositions.length / PAGE_SIZE)
-  )
+  const totalPages = Math.max(1, Math.ceil(filteredExamples.length / PAGE_SIZE))
   const currentPage = Math.min(page, totalPages)
-  const visiblePositions = filteredPositions.slice(
+  const visibleExamples = filteredExamples.slice(
     (currentPage - 1) * PAGE_SIZE,
     currentPage * PAGE_SIZE
   )
@@ -116,18 +113,18 @@ export function GalleryPositionsList({
     <>
       <GalleryBreadcrumbJsonLd
         language={language}
-        category={{ name: copy.title, path: '/gallery/positions' }}
+        category={{ name: copy.title, path: '/gallery/examples' }}
       />
       <GalleryItemListJsonLd
         name={copy.title}
         language={language}
-        items={visiblePositions.map((item) => ({
+        items={visibleExamples.map((item) => ({
           name: item.title,
-          path: getPositionGalleryPath(item.id, item.language),
+          path: getExampleGalleryPath(item.id, item.language),
         }))}
       />
       <main className="min-h-[900px] pb-24">
-        <GalleryIndexBreadcrumb category="positions" language={language} />
+        <GalleryIndexBreadcrumb category="examples" language={language} />
         <header className="border-b bg-fd-muted/30">
           <div className="fd-container px-6 py-16 md:py-24">
             <div className="max-w-3xl">
@@ -152,20 +149,20 @@ export function GalleryPositionsList({
         />
 
         <GallerySection title={copy.title} description={copy.description}>
-          {filteredPositions.length === 0 ? (
+          {filteredExamples.length === 0 ? (
             <GalleryEmptyState onClear={clearFilters} />
           ) : (
             <>
               <p className="mb-4 text-sm text-fd-muted-foreground">
-                {filteredPositions.length} {t('resultsCount')}
+                {filteredExamples.length} {t('resultsCount')}
               </p>
               <div className={gridClasses}>
-                {visiblePositions.map((item) => (
-                  <GalleryPositionCard
+                {visibleExamples.map((item) => (
+                  <GalleryExampleCard
                     key={`${item.language}-${item.id}`}
                     item={item}
                     href={getLocalizedUrl(
-                      getPositionGalleryPath(item.id, item.language),
+                      getExampleGalleryPath(item.id, item.language),
                       language
                     )}
                   />

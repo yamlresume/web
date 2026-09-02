@@ -5,19 +5,19 @@ import Link from 'next/link'
 import { useMemo } from 'react'
 import { getGalleryMessages, getLocalizedUrl, type Language } from '@/i18n'
 import {
+  getExampleGalleryPath,
   getLanguageGalleryPath,
-  getPositionGalleryPath,
   getTemplateGalleryPath,
   getTemplateRouteId,
 } from '@/lib/galleryRoutes'
 import {
+  getExampleShowcases,
   getLanguageShowcases,
-  getPositionShowcases,
   getTemplateShowcases,
 } from '@/lib/templates'
+import { GalleryExampleCard } from './GalleryExampleCard'
 import { GalleryHero } from './GalleryHero'
 import { GalleryLanguageCard } from './GalleryLanguageCard'
-import { GalleryPositionCard } from './GalleryPositionCard'
 import { GallerySection } from './GallerySection'
 import { GalleryItemListJsonLd } from './GalleryStructuredData'
 import { GalleryTemplateCard } from './GalleryTemplateCard'
@@ -28,16 +28,13 @@ interface GalleryListProps {
 
 export function GalleryList({ language }: GalleryListProps) {
   const copy = getGalleryMessages(language)
-  const positionItems = useMemo(
-    () => getPositionShowcases(language),
-    [language]
-  )
+  const exampleItems = useMemo(() => getExampleShowcases(language), [language])
   const templates = useMemo(() => getTemplateShowcases(), [])
   const languages = useMemo(() => getLanguageShowcases(), [])
 
   const featuredTemplates = templates.slice(0, 4)
   const featuredLanguages = languages.slice(0, 4)
-  const featuredPositions = positionItems.slice(0, 4)
+  const featuredExamples = exampleItems.slice(0, 4)
 
   const gridClasses = clsx([
     'grid',
@@ -65,9 +62,9 @@ export function GalleryList({ language }: GalleryListProps) {
             name: showcase.label,
             path: getLanguageGalleryPath(showcase.locale),
           })),
-          ...featuredPositions.map((item) => ({
+          ...featuredExamples.map((item) => ({
             name: item.title,
-            path: getPositionGalleryPath(item.id, item.language),
+            path: getExampleGalleryPath(item.id, item.language),
           })),
         ]}
       />
@@ -75,7 +72,7 @@ export function GalleryList({ language }: GalleryListProps) {
         <GalleryHero
           templateCount={templates.length}
           languageCount={languages.length}
-          positionCount={positionItems.length}
+          exampleCount={exampleItems.length}
           language={language}
         />
 
@@ -135,24 +132,24 @@ export function GalleryList({ language }: GalleryListProps) {
         </GallerySection>
 
         <GallerySection
-          title={copy.categories.positions.title}
-          description={copy.categories.positions.description}
+          title={copy.categories.examples.title}
+          description={copy.categories.examples.description}
         >
           <div className="mb-6 flex justify-end">
             <Link
-              href={getLocalizedUrl('/gallery/positions', language)}
+              href={getLocalizedUrl('/gallery/examples', language)}
               className="font-medium text-fd-primary hover:underline"
             >
               {copy.browseAll} →
             </Link>
           </div>
           <div className={gridClasses}>
-            {featuredPositions.map((item) => (
-              <GalleryPositionCard
+            {featuredExamples.map((item) => (
+              <GalleryExampleCard
                 key={`${item.language}-${item.id}`}
                 item={item}
                 href={getLocalizedUrl(
-                  getPositionGalleryPath(item.id, item.language),
+                  getExampleGalleryPath(item.id, item.language),
                   language
                 )}
               />

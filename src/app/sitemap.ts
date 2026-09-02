@@ -19,10 +19,10 @@ import {
   docsSourceZhTW,
 } from '@/lib'
 import {
+  getExampleGalleryParams,
+  getExampleGalleryPath,
   getLanguageGalleryParams,
   getLanguageGalleryPath,
-  getPositionGalleryParams,
-  getPositionGalleryPath,
   getTemplateGalleryParams,
   getTemplateGalleryPath,
 } from '@/lib/galleryRoutes'
@@ -61,15 +61,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/gallery',
     '/gallery/templates',
     '/gallery/languages',
-    '/gallery/positions',
+    '/gallery/examples',
     ...getTemplateGalleryParams().map(({ engine, templateId }) =>
       getTemplateGalleryPath(engine, templateId)
     ),
     ...getLanguageGalleryParams().map(({ resumeLanguage }) =>
       getLanguageGalleryPath(resumeLanguage)
     ),
-    ...getPositionGalleryParams().map(({ positionId, resumeLanguage }) =>
-      getPositionGalleryPath(positionId, resumeLanguage)
+    ...getExampleGalleryParams().map(({ sampleId, resumeLanguage }) =>
+      getExampleGalleryPath(sampleId, resumeLanguage)
     ),
   ]
   const galleryPages: MetadataRoute.Sitemap = galleryPaths.flatMap((path) =>

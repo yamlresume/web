@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import {
+  getExampleGalleryPath,
   getGalleryDetailMetadata,
   getLanguageGalleryPath,
-  getPositionGalleryPath,
   getTemplateGalleryPath,
+  resolveExampleGalleryDetail,
   resolveLanguageGalleryDetail,
-  resolvePositionGalleryDetail,
   resolveTemplateGalleryDetail,
 } from './galleryRoutes'
 
@@ -15,8 +15,8 @@ describe('galleryRoutes', () => {
       '/gallery/templates/html/calm'
     )
     expect(getLanguageGalleryPath('zh-hans')).toBe('/gallery/languages/zh-hans')
-    expect(getPositionGalleryPath('software-engineer', 'ja')).toBe(
-      '/gallery/positions/software-engineer/ja'
+    expect(getExampleGalleryPath('software-engineer', 'ja')).toBe(
+      '/gallery/examples/software-engineer/ja'
     )
   })
 
@@ -105,7 +105,7 @@ describe('galleryRoutes', () => {
     })
     expect(detail?.item.language).toBe('ja')
     expect(detail?.item.thumbnailUrl).toMatch(
-      /^\/gallery\/positions\/[^/]+\/ja\/resume\.webp$/
+      /^\/gallery\/examples\/[^/]+\/ja\/resume\.webp$/
     )
     expect(detail?.preview).toEqual({
       type: 'image',
@@ -115,27 +115,25 @@ describe('galleryRoutes', () => {
     expect(detail?.canonicalPath).toBe('/gallery/languages/ja')
   })
 
-  it('resolves only valid position and resume-language combinations', () => {
-    const detail = resolvePositionGalleryDetail('software-engineer', 'ja')
+  it('resolves only valid example and resume-language combinations', () => {
+    const detail = resolveExampleGalleryDetail('software-engineer', 'ja')
 
     expect(detail?.target).toEqual({
-      type: 'position',
-      positionId: 'software-engineer',
+      type: 'example',
+      sampleId: 'software-engineer',
       resumeLanguage: 'ja',
     })
     expect(detail?.item.htmlUrl).toBe(
-      '/gallery/positions/software-engineer/ja/resume.html'
+      '/gallery/examples/software-engineer/ja/resume.html'
     )
     expect(detail?.yamlContent).toContain('\nlayouts:\n')
     expect(detail?.item.thumbnailUrl).toBe(
-      '/gallery/positions/software-engineer/ja/resume.webp'
+      '/gallery/examples/software-engineer/ja/resume.webp'
     )
-    expect(detail?.canonicalPath).toBe(
-      '/gallery/positions/software-engineer/ja'
-    )
-    expect(resolvePositionGalleryDetail('not-a-position', 'ja')).toBeUndefined()
+    expect(detail?.canonicalPath).toBe('/gallery/examples/software-engineer/ja')
+    expect(resolveExampleGalleryDetail('not-an-example', 'ja')).toBeUndefined()
     expect(
-      resolvePositionGalleryDetail('software-engineer', 'not-a-language')
+      resolveExampleGalleryDetail('software-engineer', 'not-a-language')
     ).toBeUndefined()
   })
 

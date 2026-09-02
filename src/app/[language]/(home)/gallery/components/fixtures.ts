@@ -12,12 +12,12 @@ export function makeGalleryItem(
     tags: ['tech', 'remote'],
     language: 'en',
     languageLabel: 'EN',
-    thumbnailUrl: '/gallery/positions/software-engineer/en/resume.webp',
-    htmlUrl: '/gallery/positions/software-engineer/en/resume.html',
-    pdfUrl: '/gallery/positions/software-engineer/en/resume.pdf',
-    docxUrl: '/gallery/positions/software-engineer/en/resume.docx',
-    markdownUrl: '/gallery/positions/software-engineer/en/resume.md',
-    texUrl: '/gallery/positions/software-engineer/en/resume.tex',
+    thumbnailUrl: '/gallery/examples/software-engineer/en/resume.webp',
+    htmlUrl: '/gallery/examples/software-engineer/en/resume.html',
+    pdfUrl: '/gallery/examples/software-engineer/en/resume.pdf',
+    docxUrl: '/gallery/examples/software-engineer/en/resume.docx',
+    markdownUrl: '/gallery/examples/software-engineer/en/resume.md',
+    texUrl: '/gallery/examples/software-engineer/en/resume.tex',
     ...overrides,
   }
 }

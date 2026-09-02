@@ -37,7 +37,7 @@ describe('sitemap', () => {
     expect(urls).toContain('https://yamlresume.dev/ja/gallery/templates')
     expect(urls).toContain('https://yamlresume.dev/fr/gallery/languages/ja')
     expect(urls).toContain(
-      'https://yamlresume.dev/gallery/positions/software-engineer/en'
+      'https://yamlresume.dev/gallery/examples/software-engineer/en'
     )
 
     const gallery = entries.find(

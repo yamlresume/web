@@ -8,7 +8,7 @@ describe('GalleryHero', () => {
       <GalleryHero
         templateCount={8}
         languageCount={12}
-        positionCount={5}
+        exampleCount={5}
         language="en"
       />
     )
@@ -26,7 +26,7 @@ describe('GalleryHero', () => {
     )
     expect(screen.getByRole('link', { name: /5\+/ })).toHaveAttribute(
       'href',
-      '/gallery/positions'
+      '/gallery/examples'
     )
     expect(
       screen.getByRole('button', {
@@ -50,7 +50,7 @@ describe('GalleryHero', () => {
       <GalleryHero
         templateCount={8}
         languageCount={12}
-        positionCount={5}
+        exampleCount={5}
         language="fr"
       />
     )
@@ -65,7 +65,7 @@ describe('GalleryHero', () => {
     )
     expect(screen.getByRole('link', { name: /5\+/ })).toHaveAttribute(
       'href',
-      '/fr/gallery/positions'
+      '/fr/gallery/examples'
     )
   })
 })

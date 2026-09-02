@@ -4,11 +4,11 @@
  * @yamlresume/samples.
  *
  * Outputs are written to public/gallery/:
- *   - positions/{id}/{locale}/resume.html
- *   - positions/{id}/{locale}/resume.pdf
- *   - positions/{id}/{locale}/resume.tex
- *   - positions/{id}/{locale}/resume.md
- *   - positions/{id}/{locale}/resume.webp
+ *   - examples/{id}/{locale}/resume.html
+ *   - examples/{id}/{locale}/resume.pdf
+ *   - examples/{id}/{locale}/resume.tex
+ *   - examples/{id}/{locale}/resume.md
+ *   - examples/{id}/{locale}/resume.webp
  *   - templates/html/{template}/resume.{html,webp}
  *   - templates/latex/{template}/resume.{pdf,tex,webp}
  *   - templates/docx/{template}/resume.docx
@@ -187,14 +187,14 @@ function outputsExist(htmlPath, docxPath, pdfPath, markdownPath, texPath) {
 }
 
 /**
- * Remove the obsolete top-level asset directory after every nested position
+ * Remove the obsolete top-level asset directory after every nested example
  * asset has been verified.
  *
  * @param {import('@yamlresume/samples').SampleResumeEntry} entry
  */
 function removeLegacySampleDirectory(entry) {
   const hasCompleteReplacement = entry.languages.every((locale) => {
-    const directory = path.join(OUTPUT_DIR, 'positions', entry.id, locale)
+    const directory = path.join(OUTPUT_DIR, 'examples', entry.id, locale)
     return ['html', 'docx', 'pdf', 'tex', 'md', 'webp'].every((extension) =>
       fs.existsSync(path.join(directory, `resume.${extension}`))
     )
@@ -243,12 +243,12 @@ async function buildWithYamlresume(resumePath, outputDir) {
  * @param {Record<string, string>} hashes
  */
 async function buildSampleLocale(entry, locale, hashes) {
-  const sampleDir = path.join(OUTPUT_DIR, 'positions', entry.id, locale)
+  const sampleDir = path.join(OUTPUT_DIR, 'examples', entry.id, locale)
   fs.mkdirSync(sampleDir, { recursive: true })
 
   const yamlCode = getSampleResume(entry.id, locale)
   const yamlHash = hashYaml(yamlCode)
-  const cacheKey = `positions/${entry.id}/${locale}`
+  const cacheKey = `examples/${entry.id}/${locale}`
   const thumbnailCacheKey = `${cacheKey}:thumbnail`
   const thumbnailHash = hashThumbnail(yamlHash)
 

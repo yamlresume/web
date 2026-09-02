@@ -1,4 +1,4 @@
-import type { Language } from '@/i18n'
+import { getGalleryMessages, type Language } from '@/i18n'
 import type { ResolvedGalleryDetail as ResolvedGalleryDetailModel } from '@/lib/galleryRoutes'
 import { highlightYaml } from '@/lib/highlightYaml'
 import { GalleryDetail } from './GalleryDetail'
@@ -23,7 +23,10 @@ export async function ResolvedGalleryDetail({
       ? { name: 'Templates', path: '/gallery/templates' }
       : detail.target.type === 'language'
         ? { name: 'Languages', path: '/gallery/languages' }
-        : { name: 'Positions', path: '/gallery/positions' }
+        : {
+            name: getGalleryMessages(language).categories.examples.title,
+            path: '/gallery/examples',
+          }
 
   return (
     <>

@@ -4,12 +4,12 @@ import type { GalleryItem } from '@/lib/gallery'
 import { GalleryBadge } from './GalleryBadge'
 import { GalleryCard } from './GalleryCard'
 
-interface GalleryPositionCardProps {
+interface GalleryExampleCardProps {
   item: GalleryItem
   href: string
 }
 
-export function GalleryPositionCard({ item, href }: GalleryPositionCardProps) {
+export function GalleryExampleCard({ item, href }: GalleryExampleCardProps) {
   const footer = (
     <div className="flex flex-wrap gap-1">
       {item.tags.slice(0, 3).map((tag) => (

@@ -6,12 +6,12 @@ import {
   languages,
 } from '@/i18n'
 import { getGalleryItems } from '@/lib/gallery'
-import { GalleryPositionsList } from '../components/GalleryPositionsList'
+import { GalleryExamplesList } from '../components/GalleryExamplesList'
 import type { GalleryFilters } from '../components/gallery-utils'
 
 export const revalidate = false
 
-interface GalleryPositionsPageProps {
+interface GalleryExamplesPageProps {
   params: Promise<{ language: string }>
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }
@@ -34,10 +34,10 @@ function getPageValue(
   return Number.isSafeInteger(page) && page > 0 ? page : 1
 }
 
-export default async function GalleryPositionsPage({
+export default async function GalleryExamplesPage({
   params,
   searchParams,
-}: GalleryPositionsPageProps) {
+}: GalleryExamplesPageProps) {
   const [{ language }, query] = await Promise.all([params, searchParams])
   const initialFilters: GalleryFilters = {
     search: getFilterValue(query, 'search'),
@@ -47,7 +47,7 @@ export default async function GalleryPositionsPage({
   }
 
   return (
-    <GalleryPositionsList
+    <GalleryExamplesList
       items={getGalleryItems()}
       language={language as Language}
       initialFilters={initialFilters}
@@ -59,11 +59,11 @@ export default async function GalleryPositionsPage({
 export async function generateMetadata({
   params,
   searchParams,
-}: GalleryPositionsPageProps): Promise<Metadata> {
+}: GalleryExamplesPageProps): Promise<Metadata> {
   const [{ language }, query] = await Promise.all([params, searchParams])
   const locale = language as Language
-  const copy = getGalleryMessages(locale).metadata.positions
-  const basePath = getLocalizedUrl('/gallery/positions', locale)
+  const copy = getGalleryMessages(locale).metadata.examples
+  const basePath = getLocalizedUrl('/gallery/examples', locale)
   const page = getPageValue(query)
   const hasFilters = ['search', 'category', 'tag', 'language'].some((key) =>
     Boolean(query[key])
@@ -73,7 +73,7 @@ export async function generateMetadata({
   const languageAlternates = Object.fromEntries(
     languages.map((language) => [
       language,
-      getLocalizedUrl('/gallery/positions', language),
+      getLocalizedUrl('/gallery/examples', language),
     ])
   )
 
@@ -87,13 +87,13 @@ export async function generateMetadata({
     openGraph: {
       title: copy.title,
       description: copy.description,
-      images: `/api/og/gallery/positions/open-graph.png?language=${locale}`,
+      images: `/api/og/gallery/examples/open-graph.png?language=${locale}`,
     },
     twitter: {
       card: 'summary_large_image',
       title: copy.title,
       description: copy.description,
-      images: `/api/og/gallery/positions/open-graph.png?language=${locale}`,
+      images: `/api/og/gallery/examples/open-graph.png?language=${locale}`,
     },
   }
 }

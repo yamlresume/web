@@ -79,7 +79,7 @@ function getAssetUrl(
   locale: LocaleLanguage,
   extension: string
 ): string {
-  return `/gallery/positions/${sampleId}/${locale}/resume.${extension}`
+  return `/gallery/examples/${sampleId}/${locale}/resume.${extension}`
 }
 
 /**

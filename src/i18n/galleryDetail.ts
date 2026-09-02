@@ -6,7 +6,7 @@ export interface GalleryDetailMessages {
     gallery: string
     templates: string
     languages: string
-    positions: string
+    examples: string
   }
   regionLabel: string
   previewTab: string
@@ -52,7 +52,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       gallery: 'Gallery',
       templates: 'Templates',
       languages: 'Languages',
-      positions: 'Positions',
+      examples: 'Examples',
     },
     regionLabel: 'Resume preview and downloads',
     previewTab: 'Preview',
@@ -87,7 +87,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     renderedFor: 'Rendered for {position} in {language}.',
     otherLanguages: {
       title: 'Available in other languages',
-      description: 'View this position resume localized for other markets.',
+      description: 'View this resume example localized for other markets.',
     },
   },
   es: {
@@ -96,7 +96,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       gallery: 'Galería',
       templates: 'Plantillas',
       languages: 'Idiomas',
-      positions: 'Puestos',
+      examples: 'Ejemplos',
     },
     regionLabel: 'Vista previa y descargas del currículum',
     previewTab: 'Vista previa',
@@ -140,7 +140,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       gallery: 'Galerie',
       templates: 'Modèles',
       languages: 'Langues',
-      positions: 'Postes',
+      examples: 'Exemples',
     },
     regionLabel: 'Aperçu et téléchargements du CV',
     previewTab: 'Aperçu',
@@ -184,7 +184,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       gallery: 'Galeria',
       templates: 'Modelos',
       languages: 'Idiomas',
-      positions: 'Cargos',
+      examples: 'Exemplos',
     },
     regionLabel: 'Pré-visualização e downloads do currículo',
     previewTab: 'Pré-visualização',
@@ -228,7 +228,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       gallery: 'ギャラリー',
       templates: 'テンプレート',
       languages: '言語',
-      positions: '職種',
+      examples: '例',
     },
     regionLabel: '履歴書のプレビューとダウンロード',
     previewTab: 'プレビュー',
@@ -272,7 +272,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       gallery: '作品集',
       templates: '模板',
       languages: '语言',
-      positions: '职位',
+      examples: '示例',
     },
     regionLabel: '简历预览与下载',
     previewTab: '预览',
@@ -316,7 +316,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       gallery: '作品集',
       templates: '範本',
       languages: '語言',
-      positions: '職位',
+      examples: '範例',
     },
     regionLabel: '履歷預覽與下載',
     previewTab: '預覽',
@@ -360,7 +360,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       gallery: 'Galeri',
       templates: 'Templat',
       languages: 'Bahasa',
-      positions: 'Posisi',
+      examples: 'Contoh',
     },
     regionLabel: 'Pratinjau dan unduhan resume',
     previewTab: 'Pratinjau',

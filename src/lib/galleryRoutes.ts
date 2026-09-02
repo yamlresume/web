@@ -26,8 +26,8 @@ export type GalleryDetailTarget =
       resumeLanguage: LocaleLanguage
     }
   | {
-      type: 'position'
-      positionId: string
+      type: 'example'
+      sampleId: string
       resumeLanguage: LocaleLanguage
     }
 
@@ -122,11 +122,11 @@ export function getLanguageGalleryPath(resumeLanguage: LocaleLanguage): string {
   return `/gallery/languages/${resumeLanguage}`
 }
 
-export function getPositionGalleryPath(
-  positionId: string,
+export function getExampleGalleryPath(
+  sampleId: string,
   resumeLanguage: LocaleLanguage
 ): string {
-  return `/gallery/positions/${positionId}/${resumeLanguage}`
+  return `/gallery/examples/${sampleId}/${resumeLanguage}`
 }
 
 export function resolveTemplateGalleryDetail(
@@ -197,29 +197,29 @@ export function resolveLanguageGalleryDetail(
   }
 }
 
-export function resolvePositionGalleryDetail(
-  positionId: string,
+export function resolveExampleGalleryDetail(
+  sampleId: string,
   resumeLanguage: string
 ): ResolvedGalleryDetail | undefined {
   if (!isLocaleLanguage(resumeLanguage)) {
     return undefined
   }
 
-  const item = getGalleryItemByIdAndLocale(positionId, resumeLanguage)
+  const item = getGalleryItemByIdAndLocale(sampleId, resumeLanguage)
 
   if (!item) {
     return undefined
   }
 
   return {
-    target: { type: 'position', positionId, resumeLanguage },
+    target: { type: 'example', sampleId, resumeLanguage },
     item,
-    yamlContent: getSampleYamlContent(positionId, resumeLanguage, {
+    yamlContent: getSampleYamlContent(sampleId, resumeLanguage, {
       withLayouts: true,
     }),
     preview: { type: 'image', src: item.thumbnailUrl },
     downloads: getItemDownloads(item),
-    canonicalPath: getPositionGalleryPath(positionId, resumeLanguage),
+    canonicalPath: getExampleGalleryPath(sampleId, resumeLanguage),
   }
 }
 
@@ -241,12 +241,12 @@ export function getLanguageGalleryParams(): {
   }))
 }
 
-export function getPositionGalleryParams(): {
-  positionId: string
+export function getExampleGalleryParams(): {
+  sampleId: string
   resumeLanguage: LocaleLanguage
 }[] {
   return getGalleryItems().map((item) => ({
-    positionId: item.id,
+    sampleId: item.id,
     resumeLanguage: item.language,
   }))
 }

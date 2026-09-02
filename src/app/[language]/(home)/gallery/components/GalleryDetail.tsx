@@ -9,9 +9,9 @@ import type {
 import type { HighlightedYaml } from '@/lib/highlightYaml'
 import type { TemplateShowcase } from '@/lib/templates'
 import { DownloadFormatsCard } from './DownloadFormatsCard'
+import { ExampleLanguageAlternatives } from './ExampleLanguageAlternatives'
 import { GalleryBreadcrumb } from './GalleryBreadcrumb'
 import { GalleryExploreMore } from './GalleryExploreMore'
-import { PositionLanguageAlternatives } from './PositionLanguageAlternatives'
 import { PreviewTabs } from './PreviewTabs'
 import { ResumeActions } from './ResumeActions'
 import { ResumeMeta } from './ResumeMeta'
@@ -110,8 +110,8 @@ export function GalleryDetail({
         />
       </div>
 
-      {target?.type === 'position' && (
-        <PositionLanguageAlternatives item={item} language={language} />
+      {target?.type === 'example' && (
+        <ExampleLanguageAlternatives item={item} language={language} />
       )}
 
       <GalleryExploreMore language={language} />

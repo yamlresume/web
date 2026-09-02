@@ -4,9 +4,9 @@ import { describe, expect, it } from 'vitest'
 import { makeGalleryItem } from './fixtures'
 import { GalleryDetail } from './GalleryDetail'
 
-const positionTarget = {
-  type: 'position' as const,
-  positionId: 'software-engineer',
+const exampleTarget = {
+  type: 'example' as const,
+  sampleId: 'software-engineer',
   resumeLanguage: 'en' as const,
 }
 
@@ -14,14 +14,14 @@ describe('GalleryDetail', () => {
   const item = makeGalleryItem({ id: 'software-engineer' })
 
   it('renders a route-aware breadcrumb, title and description', () => {
-    render(<GalleryDetail item={item} language="en" target={positionTarget} />)
+    render(<GalleryDetail item={item} language="en" target={exampleTarget} />)
 
     const breadcrumb = screen.getByRole('navigation', { name: 'Breadcrumb' })
     expect(screen.getByRole('link', { name: 'Gallery' })).toHaveAttribute(
       'href',
       '/gallery'
     )
-    expect(breadcrumb).toHaveTextContent('Positions')
+    expect(breadcrumb).toHaveTextContent('Examples')
     expect(breadcrumb).toHaveTextContent('Software Engineer')
     expect(
       screen.getByRole('heading', { name: 'Software Engineer', level: 1 })
@@ -50,27 +50,27 @@ describe('GalleryDetail', () => {
     expect(screen.getByRole('heading', { name: 'Download as' })).toBeVisible()
     expect(screen.getByRole('link', { name: 'PDF' })).toHaveAttribute(
       'href',
-      '/gallery/positions/software-engineer/en/resume.pdf'
+      '/gallery/examples/software-engineer/en/resume.pdf'
     )
     expect(screen.getByRole('link', { name: 'TeX' })).toHaveAttribute(
       'href',
-      '/gallery/positions/software-engineer/en/resume.tex'
+      '/gallery/examples/software-engineer/en/resume.tex'
     )
     expect(screen.getByRole('link', { name: 'DOCX' })).toHaveAttribute(
       'href',
-      '/gallery/positions/software-engineer/en/resume.docx'
+      '/gallery/examples/software-engineer/en/resume.docx'
     )
     expect(screen.getByRole('link', { name: 'HTML' })).toHaveAttribute(
       'href',
-      '/gallery/positions/software-engineer/en/resume.html'
+      '/gallery/examples/software-engineer/en/resume.html'
     )
     expect(screen.getByRole('link', { name: 'Markdown' })).toHaveAttribute(
       'href',
-      '/gallery/positions/software-engineer/en/resume.md'
+      '/gallery/examples/software-engineer/en/resume.md'
     )
     expect(screen.getByRole('link', { name: 'WebP' })).toHaveAttribute(
       'href',
-      '/gallery/positions/software-engineer/en/resume.webp'
+      '/gallery/examples/software-engineer/en/resume.webp'
     )
     expect(screen.queryByText('Download rendered:')).not.toBeInTheDocument()
   })
@@ -83,7 +83,7 @@ describe('GalleryDetail', () => {
     })
     expect(preview).toHaveAttribute(
       'src',
-      '/gallery/positions/software-engineer/en/resume.webp'
+      '/gallery/examples/software-engineer/en/resume.webp'
     )
   })
 
@@ -226,14 +226,14 @@ describe('GalleryDetail', () => {
       <GalleryDetail
         item={item}
         language="es"
-        target={positionTarget}
+        target={exampleTarget}
         yamlContent="locale: es"
       />
     )
 
     expect(
       screen.getByRole('navigation', { name: 'Ruta de navegación' })
-    ).toHaveTextContent('GaleríaPuestosSoftware Engineer')
+    ).toHaveTextContent('GaleríaEjemplosSoftware Engineer')
     expect(
       screen.getByRole('region', {
         name: 'Vista previa y descargas del currículum',
@@ -264,28 +264,28 @@ describe('GalleryDetail', () => {
       'href',
       '/fr/gallery/languages'
     )
-    expect(screen.getByRole('link', { name: /Postes/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Exemples/ })).toHaveAttribute(
       'href',
-      '/fr/gallery/positions'
+      '/fr/gallery/examples'
     )
   })
 
-  it('shows other available languages for position resumes', () => {
-    render(<GalleryDetail item={item} language="en" target={positionTarget} />)
+  it('shows other available languages for resume examples', () => {
+    render(<GalleryDetail item={item} language="en" target={exampleTarget} />)
 
     expect(
       screen.getByRole('heading', { name: 'Available in other languages' })
     ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: '日本語' })).toHaveAttribute(
       'href',
-      '/gallery/positions/software-engineer/ja'
+      '/gallery/examples/software-engineer/ja'
     )
     expect(
       screen.queryByRole('link', { name: 'English' })
     ).not.toBeInTheDocument()
   })
 
-  it('does not show language alternatives for non-position details', () => {
+  it('does not show language alternatives for non-example details', () => {
     render(<GalleryDetail item={item} language="en" />)
 
     expect(

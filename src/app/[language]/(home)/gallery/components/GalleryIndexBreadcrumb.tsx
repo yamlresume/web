@@ -7,7 +7,7 @@ import {
 } from '@/i18n'
 
 interface GalleryIndexBreadcrumbProps {
-  category: 'templates' | 'languages' | 'positions'
+  category: 'templates' | 'languages' | 'examples'
   language: Language
 }
 
