@@ -224,7 +224,7 @@ export function resolvePositionGalleryDetail(
 }
 
 export function getTemplateGalleryParams(): {
-  engine: string
+  engine: LayoutEngine
   templateId: string
 }[] {
   return getTemplateShowcases().map((showcase) => ({
@@ -233,7 +233,9 @@ export function getTemplateGalleryParams(): {
   }))
 }
 
-export function getLanguageGalleryParams(): { resumeLanguage: string }[] {
+export function getLanguageGalleryParams(): {
+  resumeLanguage: LocaleLanguage
+}[] {
   return getLanguageShowcases().map((showcase) => ({
     resumeLanguage: showcase.locale,
   }))
@@ -241,7 +243,7 @@ export function getLanguageGalleryParams(): { resumeLanguage: string }[] {
 
 export function getPositionGalleryParams(): {
   positionId: string
-  resumeLanguage: string
+  resumeLanguage: LocaleLanguage
 }[] {
   return getGalleryItems().map((item) => ({
     positionId: item.id,
