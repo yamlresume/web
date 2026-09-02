@@ -8,6 +8,7 @@ export {
   type GalleryDetailMessages,
   getGalleryDetailMessages,
 } from './galleryDetail'
+export { getHomeGalleryMessages } from './homeGallery'
 export { useTranslations } from './hooks'
 export { getTranslations } from './translations'
 export { getLocalizedUrl } from './url'

@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import 'react-medium-image-zoom/dist/styles.css'
-import { defaultLanguage, languages } from '@/i18n'
+import { defaultLanguage, type Language, languages } from '@/i18n'
 import {
   BuyMeACoffeeSection,
   ComparisonSection,
   FaqSection,
   FeaturesSection,
   HeroSection,
+  HomeGallerySection,
   NewsChannel,
   OnboardingSection,
   StatsSection,
@@ -16,7 +17,13 @@ import { TypographyBackground } from './components/common'
 
 export const revalidate = false
 
-export default function HomePage() {
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ language: string }>
+}) {
+  const { language } = await params
+
   return (
     <main>
       <NewsChannel />
@@ -24,6 +31,7 @@ export default function HomePage() {
       <div className="fd-container mt-20 space-y-36">
         <HeroSection />
         <FeaturesSection />
+        <HomeGallerySection language={language as Language} />
         <OnboardingSection />
         <ComparisonSection />
         <StatsSection />
