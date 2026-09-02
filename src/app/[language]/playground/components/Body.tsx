@@ -4,7 +4,6 @@ import { Playground } from '@yamlresume/playground'
 import { getSampleResume } from '@yamlresume/samples'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useLocalStorage } from 'usehooks-ts'
 import { useTranslations } from '@/i18n'
 
 const DEFAULT_RESUME = getSampleResume('software-engineer', 'en', {
@@ -15,10 +14,7 @@ const DEFAULT_RESUME = getSampleResume('software-engineer', 'en', {
 // TODO: write test cases
 export function PlaygroundBody() {
   const t = useTranslations('playground')
-  const [resume, setResume] = useLocalStorage(
-    'yamlresume:playground',
-    DEFAULT_RESUME
-  )
+  const [resume, setResume] = useState(DEFAULT_RESUME)
   const searchParams = useSearchParams()
   const [hasLoadedSample, setHasLoadedSample] = useState(false)
 
@@ -62,7 +58,7 @@ export function PlaygroundBody() {
       .catch(() => {
         setHasLoadedSample(true)
       })
-  }, [searchParams, hasLoadedSample, setResume])
+  }, [searchParams, hasLoadedSample])
 
   return (
     <div className="flex-1 h-full">

@@ -110,15 +110,6 @@ vi.mock('@yamlresume/playground', () => ({
   },
 }))
 
-vi.mock('usehooks-ts', async () => {
-  const actual =
-    await vi.importActual<typeof import('usehooks-ts')>('usehooks-ts')
-  return {
-    ...actual,
-    useLocalStorage: vi.fn((_, initialValue) => [initialValue, vi.fn()]),
-  }
-})
-
 vi.mock('next-themes', () => ({
   useTheme: () => ({
     theme: 'light',

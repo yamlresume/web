@@ -1,3 +1,4 @@
+import userEvent from '@testing-library/user-event'
 import { render, screen, setMockParams } from '@tests/test-utils'
 import * as PlaygroundModule from '@yamlresume/playground'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
@@ -22,9 +23,12 @@ interface PlaygroundProps {
 
 beforeAll(() => {
   vi.spyOn(PlaygroundModule, 'Playground').mockImplementation(
-    ({ yaml, messages }: PlaygroundProps) => (
+    ({ yaml, onChange, messages }: PlaygroundProps) => (
       <div data-testid="playground-mock">
         <pre data-testid="playground-yaml">{yaml}</pre>
+        <button type="button" onClick={() => onChange('updated: true')}>
+          Update YAML
+        </button>
         <span data-testid="copy-tooltip">{messages.tooltips.copy}</span>
         <span data-testid="undo-tooltip">{messages.tooltips.undo}</span>
         <span data-testid="redo-tooltip">{messages.tooltips.redo}</span>
@@ -46,6 +50,17 @@ describe('PlaygroundBody', () => {
     expect(yaml).toHaveTextContent('Andy Dufresne')
     expect(yaml).toHaveTextContent('yaml-language-server:')
     expect(yaml).toHaveTextContent('locale:')
+  })
+
+  it('keeps editor changes in memory for the current session', async () => {
+    const user = userEvent.setup()
+    render(<PlaygroundBody />)
+
+    await user.click(screen.getByRole('button', { name: 'Update YAML' }))
+
+    expect(screen.getByTestId('playground-yaml')).toHaveTextContent(
+      'updated: true'
+    )
   })
 
   it('renders English tooltip messages by default', () => {
