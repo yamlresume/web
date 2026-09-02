@@ -47,7 +47,7 @@ describe('GalleryDetail', () => {
     expect(
       screen.getByRole('link', { name: 'Open in Playground' })
     ).toHaveAttribute('href', '/playground?sample=software-engineer&locale=en')
-    expect(screen.getByRole('heading', { name: 'Download as' })).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'Download' })).toBeVisible()
     expect(screen.getByRole('link', { name: 'PDF' })).toHaveAttribute(
       'href',
       '/gallery/examples/software-engineer/en/resume.pdf'
@@ -107,7 +107,7 @@ describe('GalleryDetail', () => {
     )
 
     const initializer = screen.getByRole('heading', {
-      name: 'Start with this example',
+      name: 'Use this example',
     })
     const sidebar = initializer.closest('aside')
     const headings = sidebar?.querySelectorAll('h2') ?? []
@@ -116,9 +116,14 @@ describe('GalleryDetail', () => {
     expect(headings[2]).toBe(initializer)
     expect(
       screen.getByText(
-        'Initialize the same resume locally with the YAMLResume CLI.'
+        'Create a local editable resume from this example with the YAMLResume CLI.'
       )
     ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', {
+        name: 'Need the CLI? Installation guide →',
+      })
+    ).toHaveAttribute('href', '/docs/installation#yamlresume-cli')
     const code = container.querySelector('code')
     const prompt = code?.querySelector('.select-none')
     const highlightedToken = prompt?.nextElementSibling
@@ -138,7 +143,7 @@ describe('GalleryDetail', () => {
     render(<GalleryDetail item={item} language="en" />)
 
     expect(
-      screen.queryByRole('heading', { name: 'Start with this example' })
+      screen.queryByRole('heading', { name: 'Use this example' })
     ).not.toBeInTheDocument()
   })
 
@@ -162,7 +167,7 @@ describe('GalleryDetail', () => {
     expect(screen.getByText('jake')).toBeInTheDocument()
   })
 
-  it('keeps Template Info and Download as visible in both tabs', async () => {
+  it('keeps Details and Download visible in both tabs', async () => {
     const user = userEvent.setup()
     render(
       <GalleryDetail
@@ -177,10 +182,10 @@ describe('GalleryDetail', () => {
     })
 
     expect(
-      within(tabsCard).getByRole('heading', { name: 'Template Info' })
+      within(tabsCard).getByRole('heading', { name: 'Details' })
     ).toBeVisible()
     expect(
-      within(tabsCard).getByRole('heading', { name: 'Download as' })
+      within(tabsCard).getByRole('heading', { name: 'Download' })
     ).toBeVisible()
 
     await user.click(
@@ -200,10 +205,10 @@ describe('GalleryDetail', () => {
       })
     ).not.toBeInTheDocument()
     expect(
-      within(tabsCard).getByRole('heading', { name: 'Template Info' })
+      within(tabsCard).getByRole('heading', { name: 'Details' })
     ).toBeVisible()
     expect(
-      within(tabsCard).getByRole('heading', { name: 'Download as' })
+      within(tabsCard).getByRole('heading', { name: 'Download' })
     ).toBeVisible()
 
     await user.click(within(tabsCard).getByRole('tab', { name: 'Preview' }))
@@ -312,12 +317,8 @@ describe('GalleryDetail', () => {
     expect(
       screen.getByRole('link', { name: 'Abrir en Playground' })
     ).toBeVisible()
-    expect(
-      screen.getByRole('heading', { name: 'Información de la plantilla' })
-    ).toBeVisible()
-    expect(
-      screen.getByRole('heading', { name: 'Descargar como' })
-    ).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'Detalles' })).toBeVisible()
+    expect(screen.getByRole('heading', { name: 'Descargar' })).toBeVisible()
   })
 
   it('links every detail page back to all gallery catalogs', () => {

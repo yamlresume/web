@@ -42,6 +42,7 @@ export interface GalleryDetailMessages {
   initializeExample: {
     title: string
     description: string
+    installationLink: string
   }
   otherLanguages: {
     title: string
@@ -62,8 +63,8 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     previewTab: 'Preview',
     sourceTab: 'Source',
     previewAlt: '{title} resume preview',
-    templateInfo: 'Template Info',
-    downloadAs: 'Download as',
+    templateInfo: 'Details',
+    downloadAs: 'Download',
     fields: {
       engine: 'Engine',
       template: 'Template',
@@ -90,9 +91,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     },
     renderedFor: 'Rendered for {position} in {language}.',
     initializeExample: {
-      title: 'Start with this example',
+      title: 'Use this example',
       description:
-        'Initialize the same resume locally with the YAMLResume CLI.',
+        'Create a local editable resume from this example with the YAMLResume CLI.',
+      installationLink: 'Need the CLI? Installation guide →',
     },
     otherLanguages: {
       title: 'Available in other languages',
@@ -111,8 +113,8 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     previewTab: 'Vista previa',
     sourceTab: 'Código fuente',
     previewAlt: 'Vista previa del currículum {title}',
-    templateInfo: 'Información de la plantilla',
-    downloadAs: 'Descargar como',
+    templateInfo: 'Detalles',
+    downloadAs: 'Descargar',
     fields: {
       engine: 'Motor',
       template: 'Plantilla',
@@ -139,8 +141,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     },
     renderedFor: 'Generado para {position} en {language}.',
     initializeExample: {
-      title: 'Empieza con este ejemplo',
-      description: 'Inicializa el mismo currículum con la CLI de YAMLResume.',
+      title: 'Usar este ejemplo',
+      description:
+        'Crea un currículum local y editable desde este ejemplo con la CLI de YAMLResume.',
+      installationLink: '¿Necesitas la CLI? Guía de instalación →',
     },
     otherLanguages: {
       title: 'Disponible en otros idiomas',
@@ -159,8 +163,8 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     previewTab: 'Aperçu',
     sourceTab: 'Code source',
     previewAlt: 'Aperçu du CV {title}',
-    templateInfo: 'Informations du modèle',
-    downloadAs: 'Télécharger en',
+    templateInfo: 'Détails',
+    downloadAs: 'Télécharger',
     fields: {
       engine: 'Moteur',
       template: 'Modèle',
@@ -187,8 +191,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     },
     renderedFor: 'Généré pour {position} en {language}.',
     initializeExample: {
-      title: 'Commencer avec cet exemple',
-      description: 'Initialisez le même CV avec la CLI YAMLResume.',
+      title: 'Utiliser cet exemple',
+      description:
+        'Créez un CV local et modifiable depuis cet exemple avec la CLI YAMLResume.',
+      installationLink: 'Besoin de la CLI ? Guide d’installation →',
     },
     otherLanguages: {
       title: 'Disponible dans d’autres langues',
@@ -207,8 +213,8 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     previewTab: 'Pré-visualização',
     sourceTab: 'Código-fonte',
     previewAlt: 'Pré-visualização do currículo {title}',
-    templateInfo: 'Informações do modelo',
-    downloadAs: 'Transferir como',
+    templateInfo: 'Detalhes',
+    downloadAs: 'Transferir',
     fields: {
       engine: 'Motor',
       template: 'Modelo',
@@ -235,8 +241,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     },
     renderedFor: 'Gerado para {position} em {language}.',
     initializeExample: {
-      title: 'Comece com este exemplo',
-      description: 'Inicialize o mesmo currículo com a CLI do YAMLResume.',
+      title: 'Usar este exemplo',
+      description:
+        'Crie um currículo local e editável a partir deste exemplo com a CLI do YAMLResume.',
+      installationLink: 'Precisa da CLI? Guia de instalação →',
     },
     otherLanguages: {
       title: 'Disponível noutros idiomas',
@@ -255,8 +263,8 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     previewTab: 'プレビュー',
     sourceTab: 'ソース',
     previewAlt: '{title} 履歴書のプレビュー',
-    templateInfo: 'テンプレート情報',
-    downloadAs: '形式を選んでダウンロード',
+    templateInfo: '詳細',
+    downloadAs: 'ダウンロード',
     fields: {
       engine: 'エンジン',
       template: 'テンプレート',
@@ -283,8 +291,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     },
     renderedFor: '{position}（{language}）向けに生成。',
     initializeExample: {
-      title: 'この例から始める',
-      description: 'YAMLResume CLIで同じ履歴書をローカルに作成します。',
+      title: 'この例を使う',
+      description:
+        'YAMLResume CLIで、この例からローカルで編集可能な履歴書を作成します。',
+      installationLink: 'CLIが必要ですか？ インストールガイド →',
     },
     otherLanguages: {
       title: '他の言語でも利用できます',
@@ -303,8 +313,8 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     previewTab: '预览',
     sourceTab: '源代码',
     previewAlt: '{title} 简历预览',
-    templateInfo: '模板信息',
-    downloadAs: '下载格式',
+    templateInfo: '详情',
+    downloadAs: '下载',
     fields: {
       engine: '引擎',
       template: '模板',
@@ -331,8 +341,9 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     },
     renderedFor: '为 {language} 的 {position} 生成。',
     initializeExample: {
-      title: '从此示例开始',
-      description: '使用 YAMLResume CLI 在本地初始化同一份简历。',
+      title: '使用此示例',
+      description: '使用 YAMLResume CLI 从此示例创建可在本地编辑的简历。',
+      installationLink: '需要 CLI？查看安装指南 →',
     },
     otherLanguages: {
       title: '其他语言版本',
@@ -351,8 +362,8 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     previewTab: '預覽',
     sourceTab: '原始碼',
     previewAlt: '{title} 履歷預覽',
-    templateInfo: '範本資訊',
-    downloadAs: '下載格式',
+    templateInfo: '詳細資料',
+    downloadAs: '下載',
     fields: {
       engine: '引擎',
       template: '範本',
@@ -379,8 +390,9 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     },
     renderedFor: '為 {language} 的 {position} 產生。',
     initializeExample: {
-      title: '從此範例開始',
-      description: '使用 YAMLResume CLI 在本機初始化同一份履歷。',
+      title: '使用此範例',
+      description: '使用 YAMLResume CLI 從此範例建立可在本機編輯的履歷。',
+      installationLink: '需要 CLI？查看安裝指南 →',
     },
     otherLanguages: {
       title: '其他語言版本',
@@ -399,8 +411,8 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     previewTab: 'Pratinjau',
     sourceTab: 'Kode sumber',
     previewAlt: 'Pratinjau resume {title}',
-    templateInfo: 'Informasi templat',
-    downloadAs: 'Unduh sebagai',
+    templateInfo: 'Detail',
+    downloadAs: 'Unduh',
     fields: {
       engine: 'Mesin',
       template: 'Templat',
@@ -427,8 +439,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     },
     renderedFor: 'Dibuat untuk {position} dalam {language}.',
     initializeExample: {
-      title: 'Mulai dengan contoh ini',
-      description: 'Inisialisasi resume yang sama dengan CLI YAMLResume.',
+      title: 'Gunakan contoh ini',
+      description:
+        'Buat resume lokal yang dapat diedit dari contoh ini dengan CLI YAMLResume.',
+      installationLink: 'Perlu CLI? Panduan instalasi →',
     },
     otherLanguages: {
       title: 'Tersedia dalam bahasa lain',

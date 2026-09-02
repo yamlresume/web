@@ -1,5 +1,6 @@
 import { IconTerminal2 } from '@tabler/icons-react'
 import clsx from 'clsx'
+import Link from 'next/link'
 import { CommandBlock } from '@/app/[language]/(home)/components/common'
 import type { GalleryDetailMessages } from '@/i18n'
 import type { HighlightedYaml } from '@/lib/highlightYaml'
@@ -9,6 +10,7 @@ interface InitializeExampleCardProps {
   highlightedCommand: HighlightedYaml
   messages: GalleryDetailMessages['initializeExample']
   copyLabel: string
+  installationHref: string
 }
 
 export function InitializeExampleCard({
@@ -16,6 +18,7 @@ export function InitializeExampleCard({
   highlightedCommand,
   messages,
   copyLabel,
+  installationHref,
 }: InitializeExampleCardProps) {
   return (
     <section
@@ -48,6 +51,12 @@ export function InitializeExampleCard({
           lineIndex < highlightedCommand.length - 1 ? '\n' : null,
         ])}
       </CommandBlock>
+      <Link
+        href={installationHref}
+        className="mt-4 text-sm font-medium text-fd-primary hover:underline"
+      >
+        {messages.installationLink}
+      </Link>
     </section>
   )
 }

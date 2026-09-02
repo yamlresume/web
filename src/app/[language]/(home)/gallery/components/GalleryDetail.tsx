@@ -1,5 +1,9 @@
 import clsx from 'clsx'
-import { getGalleryDetailMessages, type Language } from '@/i18n'
+import {
+  getGalleryDetailMessages,
+  getLocalizedUrl,
+  type Language,
+} from '@/i18n'
 import type { GalleryItem } from '@/lib/gallery'
 import type {
   GalleryDetailTarget,
@@ -116,6 +120,10 @@ export function GalleryDetail({
                   highlightedCommand={highlightedCommand}
                   messages={messages.initializeExample}
                   copyLabel={messages.actions.copy}
+                  installationHref={getLocalizedUrl(
+                    '/docs/installation#yamlresume-cli',
+                    language
+                  )}
                 />
               )}
             </>
