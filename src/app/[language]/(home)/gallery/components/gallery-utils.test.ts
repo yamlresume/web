@@ -5,7 +5,35 @@ import {
   emptyFilters,
   filterItems,
   getFacets,
+  getPositionItems,
 } from './gallery-utils'
+
+describe('getPositionItems', () => {
+  const english = makeGalleryItem({ language: 'en', languageLabel: 'English' })
+  const japanese = makeGalleryItem({
+    language: 'ja',
+    languageLabel: '日本語',
+    title: 'ソフトウェアエンジニア',
+  })
+  const designer = makeGalleryItem({
+    id: 'designer',
+    title: 'Designer',
+    language: 'en',
+  })
+
+  it('returns one preferred locale per position', () => {
+    expect(getPositionItems([english, japanese, designer], 'ja', '')).toEqual([
+      designer,
+      japanese,
+    ])
+  })
+
+  it('returns only positions available in the selected resume language', () => {
+    expect(getPositionItems([english, japanese, designer], 'en', 'ja')).toEqual(
+      [japanese]
+    )
+  })
+})
 
 describe('getFacets', () => {
   it('returns sorted unique facets', () => {

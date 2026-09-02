@@ -24,6 +24,16 @@ function getFilterValue(
   return typeof value === 'string' ? value : ''
 }
 
+function getPageValue(
+  searchParams: Record<string, string | string[] | undefined>
+): number {
+  const value = searchParams.page
+  if (typeof value !== 'string') return 1
+
+  const page = Number.parseInt(value, 10)
+  return Number.isSafeInteger(page) && page > 0 ? page : 1
+}
+
 export default async function GalleryPositionsPage({
   params,
   searchParams,
@@ -41,17 +51,25 @@ export default async function GalleryPositionsPage({
       items={getGalleryItems()}
       language={language as Language}
       initialFilters={initialFilters}
+      initialPage={getPageValue(query)}
     />
   )
 }
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: GalleryPositionsPageProps): Promise<Metadata> {
-  const { language } = await params
+  const [{ language }, query] = await Promise.all([params, searchParams])
   const locale = language as Language
   const copy = getGalleryMessages(locale).metadata.positions
-  const canonicalPath = getLocalizedUrl('/gallery/positions', locale)
+  const basePath = getLocalizedUrl('/gallery/positions', locale)
+  const page = getPageValue(query)
+  const hasFilters = ['search', 'category', 'tag', 'language'].some((key) =>
+    Boolean(query[key])
+  )
+  const canonicalPath =
+    page > 1 && !hasFilters ? `${basePath}?page=${page}` : basePath
   const languageAlternates = Object.fromEntries(
     languages.map((language) => [
       language,

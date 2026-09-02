@@ -13,6 +13,7 @@ import { getPositionGalleryPath } from '@/lib/galleryRoutes'
 import { GalleryEmptyState } from './GalleryEmptyState'
 import { GalleryFilterBar } from './GalleryFilterBar'
 import { GalleryIndexBreadcrumb } from './GalleryIndexBreadcrumb'
+import { GalleryPagination } from './GalleryPagination'
 import { GalleryPositionCard } from './GalleryPositionCard'
 import { GallerySection } from './GallerySection'
 import {
@@ -25,29 +26,47 @@ import {
   filterItems,
   type GalleryFilters,
   getFacets,
+  getPositionItems,
 } from './gallery-utils'
 
 interface GalleryPositionsListProps {
   items: GalleryItem[]
   language: Language
   initialFilters?: GalleryFilters
+  initialPage?: number
 }
+
+const PAGE_SIZE = 24
 
 export function GalleryPositionsList({
   items,
   language,
   initialFilters = emptyFilters,
+  initialPage = 1,
 }: GalleryPositionsListProps) {
   const t = useTranslations('gallery')
   const copy = getGalleryMessages(language).categories.positions
   const [filters, setFilters] = useState(initialFilters)
+  const [page, setPage] = useState(initialPage)
   const facets = useMemo(() => getFacets(items), [items])
-  const positionItems = items
+  const positionItems = useMemo(
+    () => getPositionItems(items, language, filters.language),
+    [items, language, filters.language]
+  )
   const filteredPositions = useMemo(
     () => filterItems(positionItems, filters),
     [positionItems, filters]
   )
   const activeFiltersCount = countActiveFilters(filters)
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredPositions.length / PAGE_SIZE)
+  )
+  const currentPage = Math.min(page, totalPages)
+  const visiblePositions = filteredPositions.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  )
 
   useEffect(() => {
     const url = new URL(window.location.href)
@@ -66,10 +85,23 @@ export function GalleryPositionsList({
       }
     }
 
-    window.history.replaceState(null, '', `${url.pathname}${url.search}`)
-  }, [filters])
+    if (currentPage > 1) {
+      url.searchParams.set('page', String(currentPage))
+    } else {
+      url.searchParams.delete('page')
+    }
 
-  const clearFilters = () => setFilters(emptyFilters)
+    window.history.replaceState(null, '', `${url.pathname}${url.search}`)
+  }, [filters, currentPage])
+
+  const updateFilters = (patch: Partial<GalleryFilters>) => {
+    setFilters((current) => ({ ...current, ...patch }))
+    setPage(1)
+  }
+  const clearFilters = () => {
+    setFilters(emptyFilters)
+    setPage(1)
+  }
 
   const gridClasses = clsx([
     'grid',
@@ -89,7 +121,7 @@ export function GalleryPositionsList({
       <GalleryItemListJsonLd
         name={copy.title}
         language={language}
-        items={positionItems.map((item) => ({
+        items={visiblePositions.map((item) => ({
           name: item.title,
           path: getPositionGalleryPath(item.id, item.language),
         }))}
@@ -114,12 +146,8 @@ export function GalleryPositionsList({
           filters={filters}
           facets={facets}
           activeFiltersCount={activeFiltersCount}
-          onSearchChange={(search) =>
-            setFilters((current) => ({ ...current, search }))
-          }
-          onFilterChange={(patch) =>
-            setFilters((current) => ({ ...current, ...patch }))
-          }
+          onSearchChange={(search) => updateFilters({ search })}
+          onFilterChange={updateFilters}
           onClear={clearFilters}
         />
 
@@ -132,7 +160,7 @@ export function GalleryPositionsList({
                 {filteredPositions.length} {t('resultsCount')}
               </p>
               <div className={gridClasses}>
-                {filteredPositions.map((item) => (
+                {visiblePositions.map((item) => (
                   <GalleryPositionCard
                     key={`${item.language}-${item.id}`}
                     item={item}
@@ -143,6 +171,13 @@ export function GalleryPositionsList({
                   />
                 ))}
               </div>
+              <GalleryPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                filters={filters}
+                language={language}
+                onPageChange={setPage}
+              />
             </>
           )}
         </GallerySection>

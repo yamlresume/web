@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import { getGalleryItems } from '@/lib/gallery'
+import { makeGalleryItem } from './fixtures'
 import { GalleryPositionsList } from './GalleryPositionsList'
 
 describe('GalleryPositionsList', () => {
@@ -11,10 +12,60 @@ describe('GalleryPositionsList', () => {
     expect(screen.getAllByRole('heading', { name: 'Positions' })).toHaveLength(
       2
     )
-    expect(screen.getByText(/^\d+ resumes$/)).toBeInTheDocument()
+    expect(screen.getByText(/^5 resumes$/)).toBeInTheDocument()
+    expect(
+      screen.getAllByRole('link', { name: /Software Engineer/ })
+    ).toHaveLength(1)
     expect(
       screen.getByRole('link', { name: /Software Engineer/ })
     ).toHaveAttribute('href', '/gallery/positions/software-engineer/en')
+  })
+
+  it('uses the selected language without duplicating positions', () => {
+    render(
+      <GalleryPositionsList
+        items={getGalleryItems()}
+        language="en"
+        initialFilters={{
+          search: '',
+          category: '',
+          tag: '',
+          language: 'ja',
+        }}
+      />
+    )
+
+    expect(screen.getByText(/^5 resumes$/)).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: /ソフトウェアエンジニア/ })
+    ).toHaveAttribute('href', '/gallery/positions/software-engineer/ja')
+    expect(
+      screen.queryByRole('link', { name: /Software Engineer/ })
+    ).not.toBeInTheDocument()
+  })
+
+  it('paginates unique positions with crawlable links', async () => {
+    const user = userEvent.setup()
+    const items = Array.from({ length: 25 }, (_, index) =>
+      makeGalleryItem({
+        id: `position-${index + 1}`,
+        title: `Position ${String(index + 1).padStart(2, '0')}`,
+      })
+    )
+    render(<GalleryPositionsList items={items} language="en" />)
+
+    expect(screen.getAllByRole('link', { name: /Position \d+/ })).toHaveLength(
+      24
+    )
+    const nextPage = screen.getByRole('link', { name: 'Next page' })
+    expect(nextPage).toHaveAttribute('href', '/gallery/positions?page=2')
+
+    await user.click(nextPage)
+
+    expect(window.location.search).toBe('?page=2')
+    expect(
+      screen.getByRole('link', { name: /Position 25/ })
+    ).toBeInTheDocument()
   })
 
   it('loads filters from props and persists them in the URL', () => {

@@ -1,4 +1,6 @@
+import type { Language } from '@/i18n'
 import type { GalleryItem } from '@/lib/gallery'
+import { webLanguageToSampleLocale } from '@/lib/gallery'
 
 export interface GalleryFilters {
   search: string
@@ -18,6 +20,35 @@ export interface GalleryFacets {
   categories: string[]
   tags: string[]
   languages: string[]
+}
+
+export function getPositionItems(
+  items: GalleryItem[],
+  siteLanguage: Language,
+  resumeLanguage: string
+): GalleryItem[] {
+  const groupedItems = new Map<string, GalleryItem[]>()
+  for (const item of items) {
+    const variants = groupedItems.get(item.id) ?? []
+    variants.push(item)
+    groupedItems.set(item.id, variants)
+  }
+  const preferredLanguage = webLanguageToSampleLocale[siteLanguage]
+
+  return [...groupedItems.values()]
+    .map((variants) => {
+      if (resumeLanguage) {
+        return variants.find((item) => item.language === resumeLanguage)
+      }
+
+      return (
+        variants.find((item) => item.language === preferredLanguage) ??
+        variants.find((item) => item.language === 'en') ??
+        variants[0]
+      )
+    })
+    .filter((item): item is GalleryItem => item !== undefined)
+    .sort((a, b) => a.title.localeCompare(b.title))
 }
 
 export function getFacets(items: GalleryItem[]): GalleryFacets {
