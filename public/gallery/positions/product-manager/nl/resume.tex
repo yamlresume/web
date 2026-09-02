@@ -1,0 +1,265 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Dutch language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-dutch.html
+\usepackage[dutch]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Sanne van den Berg}{}
+\title{Senior productmanager voor B2B SaaS en datagedreven productontwikkeling}
+\phone[mobile]{+31 6 12345678}
+\email{sanne.vandenberg@outlook.com}
+\homepage{https://sannevandenberg.nl}
+
+\address{Keizersgracht 123, Amsterdam, Noord-Holland, Nederland, 1015 CJ}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/sannevandenberg}{@sannevandenberg} {} {} {} • {} {} {}
+{\small \faTwitter}\ \href{https://twitter.com/sanne\_pm}{@sanne\_pm}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basis Informatie}
+
+\cvline{}{\begin{itemize}
+\item Senior productmanager met 7+ jaar ervaring in B2B SaaS en datagedreven productontwikkeling.
+\item Bewezen track record in het opstellen en uitvoeren van productroadmaps die commerciële groei en gebruikerswaarde realiseren.
+\item Sterk in het vertalen van klantinzichten naar duidelijke productvereisten en het begeleiden van cross-functionele teams.
+\item Ervaren met Agile/Scrum, A/B-testen, data-analyse en stakeholdermanagement.
+\end{itemize}}
+\section{Opleidingen}
+
+\cventry{sep 2012–jul 2014}
+        {Master, Strategisch Management, Score: 8.2}
+        {Erasmus Universiteit Rotterdam}
+        {\url{https://www.eur.nl/}}
+        {}
+        {\begin{itemize}
+\item Afstudeeronderzoek naar de adoptie van SaaS-producten binnen het MKB.
+\item Specialisatie in productstrategie en innovatiemanagement.
+\end{itemize}
+\textbf{Cursussen}: Productontwikkeling en Innovatiemanagement, Strategisch Marketingmanagement, Datagedreven Besluitvorming, Leiderschap en Organisatiegedrag}
+
+\cventry{sep 2008–jul 2012}
+        {Bachelor, Communicatie- en Informatiewetenschappen}
+        {Hogeschool van Amsterdam}
+        {}
+        {}
+        {\begin{itemize}
+\item Minor in Digitale Productontwikkeling.
+\item Afstudeerproject: ontwerp van een mobiele studiegids-app.
+\end{itemize}
+\textbf{Cursussen}: Digitale Media, User Experience Design, Statistiek en Onderzoeksmethoden}
+\section{Werkervaring}
+
+\cventry{mrt 2021–Heden}
+        {Senior Productmanager}
+        {BrightAnalytics}
+        {\url{https://www.brightanalytics.nl}}
+        {}
+        {\begin{itemize}
+\item Verantwoordelijk voor de productstrategie en roadmap van het analytics-platform met meer dan 500 B2B-klanten.
+\item Leidde een cross-functioneel team van 7 engineers, 2 designers en 1 data scientist in een Agile/Scrum-omgeving.
+\item Introductie van een selfservice-onboarding-flow, resulterend in 30\% hogere activatiegraad.
+\item Opzetten van continu klantonderzoek en een A/B-testprogramma, bijdragend aan een 15\% stijging in NPS.
+\item Samen met sales en marketing gewerkt aan positionering en go-to-marketstrategie voor nieuwe modules.
+\end{itemize}
+\textbf{Trefwoorden}: Productstrategie, Roadmap, SaaS, Agile, A/B-testen, NPS}
+
+\cventry{jan 2018–feb 2021}
+        {Productmanager}
+        {HealthHub}
+        {}
+        {}
+        {\begin{itemize}
+\item Beheerde het volledige productlevenscyclus van een webportaal voor zorgverleners, van concept tot lancering en opschaling.
+\item Initieerde en implementeerde een gebruikersfeedbackcyclus met interviews, surveys en usabilitytests.
+\item Realiseerde een stijging van 40\% in maandelijkse actieve gebruikers door gerichte productverbeteringen.
+\item Werkte nauw samen met engineers, compliance en klantsupport om aan wet- en regelgeving te voldoen.
+\end{itemize}
+\textbf{Trefwoorden}: Productlevenscyclus, Klantonderzoek, Gebruikersgericht ontwerp, Compliance, Stakeholdermanagement}
+
+\cventry{aug 2016–dec 2017}
+        {Junior Productmanager}
+        {DigiWorks}
+        {}
+        {}
+        {\begin{itemize}
+\item Ondersteunde senior productmanagers bij het specificeren van requirements en het prioriteren van backlogitems.
+\item Analyseerde gebruikersdata en maandelijkse productmetrics om inzichten te verschaffen voor het productteam.
+\item Coördineerde usabilitytestsessies en verwerkte resultaten in productverbeteringen.
+\end{itemize}
+\textbf{Trefwoorden}: Backlog, Requirements, Data-analyse}
+
+\cventry{sep 2014–jul 2016}
+        {Product Owner}
+        {StartUp365}
+        {}
+        {}
+        {\begin{itemize}
+\item Startte als projectmedewerker en groeide door naar product owner voor een nieuw e-commerceplatform.
+\item Verantwoordelijk voor het schrijven van user stories en het accepteren van opgeleverde features.
+\item Vertaalde samen met de CTO de technische roadmap naar een haalbare sprintplanning.
+\end{itemize}
+\textbf{Trefwoorden}: Product Owner, User Stories, Sprint Planning}
+\section{Talen}
+
+\cvline{Nederlands}{Moedertaal of tweetalige vaardigheid}
+\cvline{Engels}{Volledige professionele vaardigheid \hfill \textbf{Trefwoorden}: Cambridge C1}
+\cvline{Duits}{Beperkte werkvaardigheid}
+\section{Vaardigheden}
+
+\cvline{Productmanagement}{Expert \hfill \textbf{Trefwoorden}: Roadmapping, Requirements, Prioritering, Stakeholdermanagement, Productlevenscyclus}
+\cvline{Agile \& Scrum}{Expert \hfill \textbf{Trefwoorden}: Scrum, Kanban, Sprint planning, User stories}
+\cvline{Data-analyse}{Geavanceerd \hfill \textbf{Trefwoorden}: SQL, Google Analytics, Amplitude, A/B-testen, Datagedreven werken}
+\cvline{UX \& User Research}{Geavanceerd \hfill \textbf{Trefwoorden}: User interviews, Usability testing, Persona's, Customer journey}
+\cvline{Producttools}{Geavanceerd \hfill \textbf{Trefwoorden}: Jira, Confluence, Figma, Miro, Productboard}
+\section{Onderscheidingen}
+
+\cventry{nov 2023}
+        {Dutch SaaS Awards}
+        {Productmanager van het Jaar - Dutch SaaS Awards}
+        {}
+        {}
+        {Uitgereikt voor excellente productstrategie en aantoonbare impact op gebruikersgroei binnen het B2B SaaS-domein.}
+\section{Certificaten}
+
+\cventry{jun 2019}
+        {Scrum.org}
+        {Professional Scrum Product Owner (PSPO I)}
+        {\url{https://www.scrum.org/}}
+        {}
+        {}
+
+\cventry{apr 2020}
+        {Product School}
+        {Datagedreven Productmanagement}
+        {\url{https://productschool.com/}}
+        {}
+        {}
+\section{Publicaties}
+
+\cventry{jan 2023}
+        {Van idee tot impact - datagedreven productmanagement}
+        {Productize Magazine}
+        {\url{https://www.productizemagazine.nl/van-idee-tot-impact}}
+        {}
+        {Artikel over het toepassen van datagedreven methodieken bij het prioriteren van productinvesteringen. Deelt concrete praktijkvoorbeelden uit de B2B SaaS-sector en een stappenplan voor productteams.}
+\section{Referenties}
+
+\cventry{\emaillink[ingrid.bakker@brightanalytics.nl]{ingrid.bakker@brightanalytics.nl}}
+        {Directeur Product \& Technologie bij BrightAnalytics}
+        {Dr. Ingrid Bakker}
+        {+31 20 123 4567}
+        {}
+        {Sanne is een strategische en gedreven productmanager met een uitzonderlijk vermogen om klantbehoeften te vertalen naar een duidelijke productstrategie. Haar datagedreven aanpak en leiderschap hebben een grote bijdrage geleverd aan de groei van ons product.}
+\section{Projecten}
+
+\cventry{jun 2022–dec 2022}
+        {Het project richtte zich op het reduceren van time-to-value voor nieuwe klanten. Door middel van een stapsgewijze onboarding, interactieve product tours en slimme datakoppelingen werd de activatiegraad significant verhoogd en de supportdruk verlaagd.
+}
+        {Selfservice-onboarding voor het analytics-platform}
+        {\url{https://www.brightanalytics.nl/product/onboarding}}
+        {}
+        {\begin{itemize}
+\item Leidde het ontwerp en de implementatie van een nieuwe selfservice-onboarding om de time-to-value voor nieuwe klanten te verkorten.
+\item Zette een experimenteel framework op om impact op activatie en retentie te meten.
+\end{itemize}
+\textbf{Trefwoorden}: Onboarding, Selfservice, Activering, Experimentatie}
+\section{Interesses}
+
+\cvline{Innovatie}{AI, Startups, Tech trends}
+\cvline{Duurzaamheid}{Circulaire economie, Duurzame mobiliteit}
+\cvline{Sport}{Hardlopen, Yoga}
+\section{Vrijwilligerswerk}
+
+\cventry{jan 2022–Heden}
+        {Mede-organisator}
+        {Amsterdam Product Management Meetup}
+        {\url{https://www.meetup.com/amsterdam-product-management/}}
+        {}
+        {\begin{itemize}
+\item Organiseer maandelijkse meetups voor 100+ productprofessionals.
+\item Verzorg workshops en panels over actuele thema's zoals AI in productontwikkeling.
+\end{itemize}}
+
+\end{document}

@@ -1,0 +1,229 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Indonesian (Bahasa Indonesia) language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-indonesian.html
+\usepackage[indonesian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Sari Wulandari}{}
+\title{UX Designer Berfokus pada Riset Pengguna dan Desain Inklusif}
+\phone[mobile]{+62 812-3456-7890}
+\email{sari.wulandari@email.com}
+\homepage{https://sariwulandari.design}
+
+\address{Jl. Jenderal Sudirman No. 12, Jakarta Selatan, DKI Jakarta, Indonesia, 12190}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/sariwulandari}{@sariwulandari} {} {} {} • {} {} {}
+{\small \faBehance}\ \href{https://www.behance.net/sariwulandari}{@sariwulandari}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informasi Dasar}
+
+\cvline{}{\begin{itemize}
+\item UX Designer dengan lebih dari 6 tahun pengalaman merancang produk digital yang berpusat pada pengguna untuk industri fintech, kesehatan, dan e-commerce.
+\item Terampil dalam menjalankan riset pengguna, usability testing, wireframing, prototyping, dan membangun design system yang konsisten.
+\item Berpengalaman berkolaborasi dengan product manager, engineer, dan stakeholder untuk menghadirkan solusi yang memenuhi kebutuhan bisnis dan pengguna.
+\item Memiliki pemahaman kuat tentang prinsip aksesibilitas dan desain inklusif, serta terbiasa menggunakan Figma, Sketch, dan tools riset seperti Maze dan Hotjar.
+\end{itemize}}
+\section{Pendidikan}
+
+\cventry{Agu 2012–Jul 2016}
+        {Sarjana, Desain Produk, Nilai: 3.78/4.00}
+        {Institut Teknologi Bandung}
+        {\url{https://www.itb.ac.id}}
+        {}
+        {\begin{itemize}
+\item Mempelajari dasar-dasar desain produk, termasuk ergonomi, estetika, dan pengalaman pengguna.
+\item Menyelesaikan proyek akhir tentang aplikasi mobile untuk lansia, yang menjadi fondasi minat pada desain inklusif.
+\item Aktif dalam organisasi mahasiswa desain dan menjadi asisten laboratorium untuk mata kuliah interaksi manusia dan komputer.
+\end{itemize}
+\textbf{Mata Kuliah}: Interaksi Manusia dan Komputer, Psikologi Desain, Desain Antarmuka Digital, Metode Riset Desain, Desain Berbasis Bukti, Manajemen Proyek Desain}
+\section{Pengalaman Kerja}
+
+\cventry{Jan 2022–Sekarang}
+        {Senior UX Designer}
+        {PT Finansial Nusantara}
+        {\url{https://www.finansialnusantara.co.id}}
+        {}
+        {\begin{itemize}
+\item Memimpin proses desain end-to-end untuk aplikasi mobile perbankan dengan 5 juta pengguna aktif.
+\item Membangun dan mengelola design system bernama "Aksara" yang digunakan oleh 12 tim produk, meningkatkan konsistensi desain hingga 40\%.
+\item Melakukan riset pengguna secara berkala, termasuk depth interview dan usability testing dengan responden dari berbagai segmen.
+\item Berkolaborasi dengan product manager dan engineer untuk memprioritaskan perbaikan UX berdasarkan data analitik dan feedback pengguna.
+\item Mentoring tiga desainer junior dan mengadakan workshop desain internal setiap bulan.
+\end{itemize}
+\textbf{Kata Kunci}: Riset Pengguna, Sistem Desain, Pengujian Kegunaan, Perbankan Mobile, Mentoring Desain, Figma}
+
+\cventry{Mar 2019–Des 2021}
+        {Product Designer}
+        {PT Kesehatan Digital Indonesia}
+        {\url{https://www.kesehatandigital.id}}
+        {}
+        {\begin{itemize}
+\item Merancang pengalaman pengguna untuk aplikasi telemedicine dan platform manajemen rekam medis.
+\item Menyusun user journey map dan service blueprint untuk mengidentifikasi titik perbaikan layanan.
+\item Mengembangkan prototipe interaktif menggunakan Figma dan menjalankan usability testing dengan 100+ partisipan.
+\item Meningkatkan tingkat penyelesaian alur pendaftaran pasien dari 58\% menjadi 82\% melalui penyederhanaan form dan microcopy.
+\item Menjalin komunikasi erat dengan tim klinis dan engineering untuk memastikan kepatuhan terhadap regulasi kesehatan.
+\end{itemize}
+\textbf{Kata Kunci}: Telemedicine, Peta Perjalanan Pengguna, Pembuatan Prototipe, Tulisan Antarmuka, Regulasi Kesehatan}
+
+\cventry{Sep 2016–Feb 2019}
+        {Junior UX Designer}
+        {PT Media Kreasi Nusantara}
+        {\url{https://www.mediakreasi.co.id}}
+        {}
+        {\begin{itemize}
+\item Mendukung desain antarmuka untuk portal berita dan aplikasi media sosial internal.
+\item Membantu pelaksanaan user testing dan menyusun laporan temuan untuk tim produk.
+\item Membuat wireframe dan mockup untuk fitur-fitur baru dengan pendekatan mobile-first.
+\item Berpartisipasi dalam sprint planning dan daily stand-up untuk memastikan kelancaran iterasi desain.
+\end{itemize}
+\textbf{Kata Kunci}: Wireframe, Pengujian Pengguna, Mobile-First, Agile, Sketch}
+\section{Bahasa}
+
+\cvline{Indonesia}{Bahasa Ibu / Bilingual \hfill \textbf{Kata Kunci}: Bahasa sehari-hari dan formal}
+\cvline{Inggris}{Tingkat Profesional Penuh \hfill \textbf{Kata Kunci}: TOEFL ITP 620, IELTS 7.0}
+\section{Keahlian}
+
+\cvline{Riset Pengguna}{Ahli \hfill \textbf{Kata Kunci}: Wawancara Mendalam, Survei, Analisis Kompetitor, Persona, Peta Perjalanan Pengguna}
+\cvline{Desain Interaksi}{Ahli \hfill \textbf{Kata Kunci}: Wireframe, Pembuatan Prototipe, Desain Interaksi, Interaksi Mikro, Aksesibilitas}
+\cvline{Sistem Desain}{Mahir \hfill \textbf{Kata Kunci}: Token Desain, Komponen UI, Dokumentasi, Pustaka Figma}
+\cvline{Pengujian dan Analitik}{Mahir \hfill \textbf{Kata Kunci}: Pengujian Kegunaan, Pengujian A/B, Hotjar, Maze, Google Analytics}
+\section{Penghargaan}
+
+\cventry{Nov 2023}
+        {Asosiasi UX Indonesia}
+        {Penghargaan Desain Inklusif 2023}
+        {}
+        {}
+        {Diberikan kepada perancang yang berhasil menghadirkan solusi digital yang dapat diakses oleh pengguna dengan berbagai kemampuan, termasuk lansia dan penyandang disabilitas.}
+\section{Sertifikat}
+
+\cventry{Agu 2021}
+        {Google}
+        {Google UX Design Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-ux-design}}
+        {}
+        {}
+\section{Publikasi}
+
+\cventry{Jun 2023}
+        {Meningkatkan Kepercayaan Pengguna melalui Desain Transparan pada Aplikasi Finansial}
+        {Medium}
+        {\url{https://medium.com/@sariwulandari/meningkatkan-kepercayaan-pengguna}}
+        {}
+        {Artikel ini membahas pentingnya transparansi informasi dan kontrol pengguna dalam aplikasi finansial, dilengkapi studi kasus dan rekomendasi praktis untuk desainer produk.}
+\section{Proyek}
+
+\cventry{Apr 2020–Nov 2021}
+        {Aplikasi mobile untuk konsultasi dokter dan pemantauan kesehatan pasien.}
+        {SehatKu}
+        {\url{https://www.sehatku.id}}
+        {}
+        {\begin{itemize}
+\item Merancang alur konsultasi online yang intuitif, termasuk pemilihan dokter, jadwal, dan pembayaran dalam satu aplikasi.
+\item Membangun komponen desain yang dapat digunakan ulang untuk mempercepat pengembangan fitur baru.
+\item Berkolaborasi dengan tim medis untuk memastikan informasi kesehatan disajikan secara jelas dan tidak menyesatkan.
+\end{itemize}
+\textbf{Kata Kunci}: Kesehatan, Aplikasi Mobile, Telemedicine, Desain Inklusif}
+\section{Minat}
+
+\cvline{Membaca}{Buku desain, Fiksi sains, Jurnal UX}
+\cvline{Fotografi}{Street photography, Komposisi visual, Pengeditan foto}
+\cvline{Komunitas}{UX Indonesia, Mentoring, Workshop desain}
+\section{Kegiatan Sukarela}
+
+\cventry{Jan 2022–Des 2023}
+        {Mentor Desain}
+        {Komunitas UX Indonesia}
+        {\url{https://www.uxindo.id}}
+        {}
+        {\begin{itemize}
+\item Menjadi mentor untuk desainer muda dan profesional yang ingin beralih ke bidang UX.
+\item Menyusun materi lokakarya tentang riset pengguna, design thinking, dan penyusunan portofolio.
+\item Membantu menyelenggarakan acara tahunan "UX Fair" yang dihadiri lebih dari 500 peserta.
+\end{itemize}}
+
+\end{document}

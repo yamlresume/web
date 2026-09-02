@@ -1,0 +1,245 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Ingrid Eriksen}{}
+\title{Dataanalytiker med fokus på innsikt og visualisering}
+\phone[mobile]{+47 412 34 567}
+\email{ingrid.eriksen@gmail.com}
+\homepage{https://ingrid-eriksen.no}
+
+\address{Kirkegata 12, Oslo, Oslo, Norge, 0153}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/ingrid-eriksen}{@ingrid-eriksen} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/ingeriksen}{@ingeriksen}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{\begin{itemize}
+\item Analytisk og nysgjerrig dataanalytiker med erfaring fra offentlig sektor og konsulentbransjen
+\item Sterk kompetanse innen dataanalyse, statistikk og maskinlæring, med verktøy som Python, SQL, R og Power BI
+\item God til å formidle komplekse sammenhenger til ulike målgrupper og skape beslutningsgrunnlag
+\item Erfaring med datavask, visualisering og utvikling av automatiserte analyser
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2016–juni 2021}
+        {Master, Samfunnsøkonomi, Poeng: A / 5,0}
+        {Universitetet i Oslo}
+        {\url{https://www.uio.no/}}
+        {}
+        {\begin{itemize}
+\item Fordypet meg i kvantitative metoder, statistikk og programmering
+\item Skrev masteroppgave om sammenhengen mellom kollektivtilbud og boligpriser i Oslo
+\item Erfaring med analyse av store datasett i R, Python og Stata
+\end{itemize}
+\textbf{Kurs}: Statistikk for samfunnsvitere, Økonometri med Python, Maskinlæring for samfunnsvitere, Datavask og datahåndtering, Avansert kvantitativ metode, Samfunnsvitenskapelig dataanalyse}
+\section{Arbeidserfaring}
+
+\cventry{sep. 2022–Nå}
+        {Dataanalytiker}
+        {Statistisk sentralbyrå}
+        {\url{https://www.ssb.no}}
+        {}
+        {\begin{itemize}
+\item Utvikler og vedlikeholder analyser av norsk økonomi og befolkning
+\item Bygger dashbord og rapporter for interne og eksterne brukere med Power BI og R Markdown
+\item Bearbeider og validerer store datasett fra ulike kilder med Python og SQL
+\item Presenterer resultater for ledergruppen og bidrar til datadrevne beslutninger
+\end{itemize}
+\textbf{Nøkkelord}: SQL, Python, Power BI, Statistisk analyse, Datavask}
+
+\cventry{sep. 2021–aug. 2022}
+        {Analysekonsulent}
+        {Tietoevry}
+        {\url{https://www.tietoevry.com}}
+        {}
+        {\begin{itemize}
+\item Gjennomførte kundeanalyser og ad-hoc-rapporter for privat og offentlig sektor
+\item Automatiserte gjentakende analyser med Python, noe som reduserte manuelt arbeid med om lag 40 prosent
+\item Samarbeidet med prosjektteam for å avklare kundens behov og levere skreddersydde analyseløsninger
+\end{itemize}
+\textbf{Nøkkelord}: Python, SQL, Excel, Kunderapporter, Automatisering}
+
+\cventry{aug. 2018–juni 2020}
+        {Studentassistent i statistikk}
+        {Universitetet i Oslo}
+        {\url{https://www.uio.no}}
+        {}
+        {\begin{itemize}
+\item Holdt øvingstimer i statistikk og veiledet studenter i bruk av R
+\item Bidro til utvikling av oppgaver og eksamenssett i samarbeid med faglærer
+\end{itemize}
+\textbf{Nøkkelord}: R, Undervisning, Statistikk}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: IELTS 7.5, Akademisk og profesjonell}
+\section{Ferdigheter}
+
+\cvline{Dataanalyse}{Ekspert \hfill \textbf{Nøkkelord}: Python, SQL, R, Excel, Stata, Pandas, NumPy}
+\cvline{Datavisualisering}{Avansert \hfill \textbf{Nøkkelord}: Power BI, Tableau, R Markdown, ggplot2, Matplotlib}
+\cvline{Maskinlæring}{Viderekommen \hfill \textbf{Nøkkelord}: scikit-learn, TensorFlow, Keras, NLP, Klassifisering}
+\cvline{Statistiske metoder}{Ekspert \hfill \textbf{Nøkkelord}: Regresjonsanalyse, Hypotesetesting, Tidsserieanalyse, Bayesiansk statistikk, Signifikanstesting}
+\section{Utmerkelser}
+
+\cventry{sep. 2021}
+        {Norsk statistisk forening}
+        {Masteroppgaveprisen}
+        {}
+        {}
+        {Fikk pris for masteroppgaven 'Kollektivtilbud og boligpriser i Oslo' – en empirisk analyse med fokus på kausale sammenhenger.}
+\section{Sertifikater}
+
+\cventry{mars 2023}
+        {Microsoft}
+        {Microsoft Certified: Data Analyst Associate}
+        {\url{https://learn.microsoft.com/en-us/certifications/data-analyst-associate/}}
+        {}
+        {}
+
+\cventry{juni 2021}
+        {Google}
+        {Google Data Analytics Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-data-analytics}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{mars 2022}
+        {Sammenhengen mellom kollektivtilbud og boligpriser: En kvantitativ analyse av Oslo}
+        {Samfunnsøkonomen}
+        {\url{https://www.samfunnsokonomen.no/}}
+        {}
+        {\begin{itemize}
+\item Analyserer hvordan økt frekvens i kollektivtransporten påvirker boligprisene i Oslo
+\item Bruker faste effekter og instrumentvariabler for å identifisere kausale sammenhenger
+\item Funnene viser en signifikant, men moderat, positiv effekt på boligpriser i nærheten av holdeplasser
+\end{itemize}}
+\section{Prosjekter}
+
+\cventry{jan. 2023–apr. 2023}
+        {Analyseprosjekt som kombinerer åpne data fra Ruter og SSB for å utforske bruksmønstre og tilgjengelighet.}
+        {Oslos kollektivsystem – åpen data-analyse}
+        {\url{https://github.com/ingeriksen/kollektiv-analyse}}
+        {}
+        {\begin{itemize}
+\item Utviklet en interaktiv rapport som visualiserer hvordan kollektivtilbudet varierer mellom bydeler
+\item Benyttet Python for datavask og geografisk analyse, og bygget dashbord i Plotly Dash
+\item Publisert på GitHub med åpen kildekode for gjenbruk
+\end{itemize}
+\textbf{Nøkkelord}: Python, Plotly, API, Dataanalyse}
+
+\cventry{mai 2021–aug. 2021}
+        {En modell for å predikere valgdeltakelse i norske kommuner basert på demografi og tidligere valg.}
+        {Valgresultater – prediksjonsmodell}
+        {\url{https://github.com/ingeriksen/valgresultater}}
+        {}
+        {\begin{itemize}
+\item Bygget en regresjonsmodell med scikit-learn basert på data fra 356 kommuner
+\item Identifiserte utdanningsnivå og alderssammensetning som viktigste prediktorer
+\item Dokumenterte prosessen i en Jupyter Notebook med tilhørende forklaringer
+\end{itemize}
+\textbf{Nøkkelord}: scikit-learn, Jupyter, Regresjon, Valg}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fjellturer, Ski, Kajakk}
+\cvline{Teknologi}{Datavisualisering, Åpne data, Kunstig intelligens}
+\section{Frivillig arbeid}
+
+\cventry{jan. 2023–Nå}
+        {Frivillig datahjelper}
+        {Røde Kors Oslo}
+        {\url{https://www.rodekors.no}}
+        {}
+        {\begin{itemize}
+\item Hjelper frivillige med å strukturere og analysere medlemsdata
+\item Utvikler en enkel oversikt over aktivitetsnivå og rekruttering i Excel og Power BI
+\end{itemize}}
+
+\end{document}

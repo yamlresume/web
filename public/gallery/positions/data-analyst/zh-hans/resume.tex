@@ -1,0 +1,265 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{林晓雨}{}
+\title{资深数据分析师 | 商业智能与数据驱动决策专家}
+\phone[mobile]{+86 138 1234 5678}
+\email{xiaoyu.lin@dataview.cn}
+\homepage{https://dataview.cn/xiaoyu}
+
+\address{中国，北京市，北京，北京市朝阳区建国路88号，100022}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/linxiaoyu}{@linxiaoyu} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/linxiaoyu}{@linxiaoyu}}
+
+\begin{document}
+
+\maketitle
+
+\section{简介}
+
+\cvline{}{拥有 7 年数据分析与商业智能经验，擅长将海量数据转化为可落地的业务洞察。
+%
+\begin{itemize}
+\item 精通 SQL、Python 和 R，熟悉数据仓库建模、ETL 流程与 A/B 测试设计
+\item 熟练使用 Tableau、Power BI 等可视化工具，主导多个经营分析看板体系建设
+\item 善于与产品、运营、技术团队协作，推动数据驱动文化落地
+\item 曾通过用户画像与行为分析项目为业务带来 18\% 的转化率提升
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2015年9月–2018年7月}
+        {硕士，统计学，成绩：3.9}
+        {北京大学}
+        {\url{https://www.pku.edu.cn}}
+        {}
+        {\begin{itemize}
+\item 研究方向为统计学习与商业数据分析，毕业论文《基于机器学习的用户流失预测模型研究》获评优秀
+\item 参与导师课题“消费者行为建模”，负责数据清洗、特征工程与模型评估
+\end{itemize}
+\textbf{课程}：高等数理统计、回归分析、时间序列分析、数据挖掘、机器学习、抽样调查、多元统计分析、数据库系统原理}
+
+\cventry{2011年9月–2015年7月}
+        {学士，应用数学，成绩：3.7}
+        {武汉大学}
+        {\url{https://www.whu.edu.cn}}
+        {}
+        {\begin{itemize}
+\item 打下扎实的数学与统计基础，多次获得校级奖学金
+\item 担任数学建模社团负责人，组织校内建模比赛与培训
+\end{itemize}
+\textbf{课程}：数学分析、高等代数、概率论、数理统计、常微分方程、编程语言基础}
+\section{工作经历}
+
+\cventry{2021年9月至今}
+        {高级数据分析师}
+        {上海云图信息科技有限公司}
+        {\url{https://www.cloudmap.example.com}}
+        {}
+        {\begin{itemize}
+\item 负责公司核心业务指标体系搭建，设计并落地用户增长、留存与转化分析框架
+\item 搭建自动化报表平台，将周报、月报产出时间从 6 小时缩短至 40 分钟
+\item 主导商品推荐策略 A/B 实验，结合用户行为序列建模，使推荐点击率提升 15\%
+\item 与数据工程团队协作优化数据仓库分层架构，提升核心表查询效率近 50\%
+\item 定期向管理层输出经营分析报告，支持年度业务目标制定与资源分配决策
+\end{itemize}
+\textbf{关键字}：指标体系、用户增长、A/B测试、数据仓库、Tableau、经营分析}
+
+\cventry{2018年7月–2021年8月}
+        {数据分析师}
+        {北京启明互联网有限公司}
+        {\url{https://www.qiming.example.com}}
+        {}
+        {\begin{itemize}
+\item 负责资讯类 App 的用户行为分析，完成埋点方案梳理与核心事件定义
+\item 基于漏斗分析定位用户流失关键节点，协同产品优化注册流程，转化率提升 12\%
+\item 使用 Python 构建自动化数据质量检查脚本，减少人工核对工作量 70\%
+\item 独立完成多份专题分析报告，覆盖推送策略、内容消费偏好与用户画像
+\end{itemize}
+\textbf{关键字}：漏斗分析、埋点方案、Python、用户画像、SQL、数据质量}
+\section{语言}
+
+\cvline{中文}{母语或双语水平 \hfill \textbf{关键字}：母语}
+\cvline{英语}{完全专业水平 \hfill \textbf{关键字}：CET-6、技术文档阅读、商务沟通}
+\section{专业技能}
+
+\cvline{数据分析}{专家 \hfill \textbf{关键字}：Python、SQL、R、Pandas、NumPy}
+\cvline{数据可视化}{高级 \hfill \textbf{关键字}：Tableau、Power BI、Matplotlib、ECharts}
+\cvline{机器学习}{中级 \hfill \textbf{关键字}：Scikit-learn、XGBoost、特征工程、模型评估}
+\cvline{数据库与数据仓库}{高级 \hfill \textbf{关键字}：MySQL、PostgreSQL、Hive、数据建模}
+\cvline{商业智能}{高级 \hfill \textbf{关键字}：指标体系设计、经营分析、A/B测试、数据产品}
+\section{荣誉}
+
+\cventry{2023年1月}
+        {上海云图信息科技有限公司}
+        {年度数据创新奖}
+        {}
+        {}
+        {因主导搭建自动化经营分析平台并显著提升数据使用效率，获评公司年度数据创新奖。}
+
+\cventry{2018年6月}
+        {北京大学}
+        {优秀毕业论文}
+        {}
+        {}
+        {毕业论文《基于机器学习的用户流失预测模型研究》被评为北京大学统计学系优秀毕业论文。}
+\section{证书}
+
+\cventry{2020年6月}
+        {CDA 数据分析研究院}
+        {CDA 数据分析师认证}
+        {\url{https://www.cda.cn/verification}}
+        {}
+        {}
+
+\cventry{2019年12月}
+        {Google}
+        {Google Data Analytics Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-data-analytics}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2021年3月}
+        {基于用户行为序列的电商购买意向预测}
+        {数据分析与知识发现}
+        {\url{https://www.example.com/publication}}
+        {}
+        {提出融合时间注意力机制的用户行为序列模型，并在真实电商数据集上验证了模型在购买意向预测任务中的有效性。}
+\section{项目}
+
+\cventry{2022年3月–2022年12月}
+        {支撑市场、运营、产品团队的日常数据查询与增长实验分析}
+        {全渠道用户增长分析平台}
+        {\url{https://www.cloudmap.example.com/growth}}
+        {}
+        {\begin{itemize}
+\item 负责需求梳理、指标口径定义与前端看板原型设计
+\item 搭建数据中间层，统一用户、订单、商品等核心实体
+\item 设计“对比分析—下钻—归因”的自助分析流程，赋能 30+ 业务人员
+\end{itemize}
+\textbf{关键字}：数据产品、看板设计、数据中台、用户增长}
+
+\cventry{2020年5月–2020年12月}
+        {基于用户行为与交易数据构建流失风险模型}
+        {电商用户流失预警系统}
+        {}
+        {}
+        {\begin{itemize}
+\item 清洗并整合 3 亿条用户行为日志，完成 60+ 特征衍生
+\item 使用 XGBoost 与 LightGBM 构建流失预测模型，AUC 达到 0.87
+\item 输出高风险用户名单与挽回建议，支撑运营制定精准触达策略
+\end{itemize}
+\textbf{关键字}：用户流失、机器学习、XGBoost、特征工程}
+\section{兴趣爱好}
+
+\cvline{阅读}{商业分析、数据科学}
+\cvline{篮球}{团队运动}
+\cvline{围棋}{策略思考}
+\section{志愿服务}
+
+\cventry{2022年1月至今}
+        {志愿者讲师}
+        {数据科学公益社区}
+        {\url{https://www.datacommunity.example.com}}
+        {}
+        {\begin{itemize}
+\item 面向非营利组织与职场新人开展数据分析公益讲座
+\item 设计并讲授“Excel 到 Python 的数据分析入门”系列课程，累计服务 500+ 人次
+\end{itemize}}
+
+\end{document}

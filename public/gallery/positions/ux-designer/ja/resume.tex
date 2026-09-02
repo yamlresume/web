@@ -1,0 +1,234 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{佐藤 美咲}{}
+\title{ヒト中心の体験を創造するUXデザイナー}
+\phone[mobile]{+81 90 1234 5678}
+\email{misaki.sato@example.jp}
+\homepage{https://misakidesign.example.jp}
+
+\address{日本、渋谷区、東京都、東京都渋谷区神宮前1-2-3、150-0001}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/misaki-sato}{@misaki-sato} {} {} {} • {} {} {}
+{\small \faMedium}\ \href{https://medium.com/@misakisato}{@misakisato}}
+
+\begin{document}
+
+\maketitle
+
+\section{基本情報}
+
+\cvline{}{\begin{itemize}
+\item ユーザーリサーチからUIデザイン、プロトタイピング、ユーザビリティテストまでを一貫して担当し、Web・モバイルアプリの体験改善に貢献
+\item アクセシビリティとデザインシステムを重視し、エンジニアやプロダクトマネージャーと協働しながら高品質なデザインを提供
+\item 定性・定量データを基にした人間中心設計プロセスを実践し、ビジネス目標とユーザー満足度の両立を目指す
+\end{itemize}}
+\section{学歴}
+
+\cventry{2015年4月～2019年3月}
+        {学士、情報デザイン、成績：3.7}
+        {多摩美術大学}
+        {\url{https://www.tamabi.ac.jp/}}
+        {}
+        {\begin{itemize}
+\item デザイン思考と人間中心設計を学び、ユーザビリティ評価やプロトタイピングの基礎を修得
+\item 卒業制作では「視覚障がい者向けナビゲーションアプリ」をデザインし、学内優秀賞を受賞
+\end{itemize}
+\textbf{コース}：ヒューマンインターフェース、インタラクションデザイン、情報デザイン演習、デザインリサーチ、メディアアート、ユニバーサルデザイン}
+\section{職歴}
+
+\cventry{2021年4月～現在}
+        {シニアUXデザイナー}
+        {株式会社インサイト・デザイン}
+        {\url{https://www.insight-design.example.jp}}
+        {}
+        {\begin{itemize}
+\item 大手金融機関のモバイルバンキングアプリのUX改善プロジェクトをリード
+\item ユーザーインタビュー、アンケート調査、ヒューリスティック評価を設計・実施し、サービス全体の改善提案に反映
+\item デザインシステムの構築と運用を推進し、デザイン品質の一貫性と開発効率を向上
+\item クロスファンクショナルチームのファシリテーションを担当し、ステークホルダーとの合意形成を支援
+\end{itemize}
+\textbf{キーワード}：UXリサーチ、デザインシステム、Figma、ファシリテーション}
+
+\cventry{2019年4月～2021年3月}
+        {UXデザイナー}
+        {株式会社ウェーブテクノロジー}
+        {\url{https://www.wave-tech.example.jp}}
+        {}
+        {\begin{itemize}
+\item ECアプリや社内業務システムのユーザーインターフェース設計に従事
+\item ペルソナ設定やカスタマージャーニーマップを作成し、新機能のコンセプト設計を主導
+\item プロトタイプを用いたユーザーテストを毎月実施し、改善効果を数値で報告
+\end{itemize}
+\textbf{キーワード}：ユーザーテスト、プロトタイピング、Adobe XD、情報アーキテクチャ}
+\section{言語}
+
+\cvline{日本語}{ネイティブ・母国語レベル \hfill \textbf{キーワード}：母国語}
+\cvline{英語}{完全な実務レベル \hfill \textbf{キーワード}：TOEIC 930、ビジネス英会話}
+\section{スキル}
+
+\cvline{UXリサーチ}{エキスパート \hfill \textbf{キーワード}：ユーザーインタビュー、ペルソナ設計、カスタマージャーニーマップ、A/Bテスト、アクセシビリティ}
+\cvline{UIデザイン}{エキスパート \hfill \textbf{キーワード}：Figma、Adobe XD、Sketch、プロトタイピング、デザインシステム}
+\cvline{プロトタイピング・評価}{上級 \hfill \textbf{キーワード}：ユーザビリティテスト、ヒューリスティック評価、リモートユーザーテスト、インサイト分析}
+\section{受賞・表彰}
+
+\cventry{2022年10月}
+        {公益財団法人日本デザイン振興会}
+        {グッドデザイン賞}
+        {}
+        {}
+        {視覚障がい者向けナビゲーションアプリ「まちナビ」のUXデザインが評価され、グッドデザイン賞を受賞。}
+
+\cventry{2019年3月}
+        {多摩美術大学}
+        {学内優秀賞}
+        {}
+        {}
+        {卒業制作「視覚障がい者向けナビゲーションアプリ」に対して、学内優秀賞を授与。}
+\section{資格・免状}
+
+\cventry{2020年11月}
+        {一般社団法人人間中心設計推進機構}
+        {人間中心設計 基礎認定}
+        {\url{https://www.hcdnet.org/}}
+        {}
+        {}
+
+\cventry{2021年6月}
+        {Google}
+        {Google UXデザイン プロフェッショナル認定}
+        {\url{https://www.coursera.org/professional-certificates/google-ux-design}}
+        {}
+        {}
+\section{出版・著作}
+
+\cventry{2023年3月}
+        {ユーザーリサーチを組織に根付かせるための実践ガイド}
+        {UXデザイン協会 会誌}
+        {\url{https://www.example.jp/articles/ux-research-guide}}
+        {}
+        {企業におけるユーザーリサーチの定着プロセスを実例に基づき解説。リサーチ結果をプロダクト開発へ活かすためのフレームワークを提案。}
+\section{プロジェクト}
+
+\cventry{2022年4月～2022年12月}
+        {視覚障がい者向け音声ナビゲーションアプリのUXデザイン}
+        {まちナビ}
+        {\url{https://www.machinavi.example.jp/}}
+        {}
+        {\begin{itemize}
+\item 視覚障がい者へのインタビューとフィールド調査を実施し、移動中の情報ニーズを明確化
+\item 画面読み上げ機能との親和性を考慮した情報設計と音声UIを設計
+\item 実機を用いたユーザーテストを繰り返し、操作性と安心感を向上
+\end{itemize}
+\textbf{キーワード}：音声UI、アクセシビリティ、フィールド調査、ユーザーテスト}
+\section{興味・関心}
+
+\cvline{写真撮影}{フィルムカメラ、風景写真}
+\cvline{旅行}{温泉めぐり、地域文化}
+\section{ボランティア活動}
+
+\cventry{2022年4月～現在}
+        {オーガナイザー}
+        {UXデザインコミュニティ東京}
+        {\url{https://www.ux-tokyo.example.jp}}
+        {}
+        {\begin{itemize}
+\item 若手デザイナー向けの勉強会やポートフォリオレビュー会を企画・運営
+\item デザイナー同士の交流を促進し、コミュニティの活性化に貢献
+\end{itemize}}
+
+\end{document}

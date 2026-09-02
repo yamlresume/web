@@ -1,0 +1,234 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Ingrid Solberg}{}
+\title{Dataforsker med fokus på maskinlæring og prediktiv analyse}
+\phone[mobile]{+47 912 34 567}
+\email{ingrid.solberg@example.no}
+\homepage{https://ingridsolberg.no}
+
+\address{Karl Johans gate 1, Oslo, Oslo, Norge, 0150}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/ingridsolberg}{@ingridsolberg} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/ingridsolberg}{@ingridsolberg}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{Dataforsker med master i informatikk og sterk bakgrunn innen maskinlæring,
+statistikk og programvareutvikling. Har arbeidet med prediktive modeller,
+kundeanalyse og stordata i finans- og telekombransjen.
+%
+Erfaring med hele datavitenskapens verdikjede – fra problemforståelse og
+dataforberedelse til modellering, evaluering og drift i produksjon. Opptatt
+av å formidle komplekse resultater på en tydelig måte og skape verdi gjennom
+datadrevne beslutninger.}
+\section{Utdanning}
+
+\cventry{aug. 2017–juni 2019}
+        {Master, Informatikk og data science, Poeng: A (ECTS)}
+        {Universitetet i Oslo}
+        {\url{https://www.uio.no/}}
+        {}
+        {\begin{itemize}
+\item Fordypet meg i maskinlæring, statistisk læring og dyp læring med praktiske prosjekter innen tekst- og tidsserieanalyse.
+\item Skrev masteroppgave om prediktive modeller for energiforbruk i bygg med gradient boosting og random forest.
+\item Fikk erfaring med vitenskapelig metode, eksperimentdesign og formidling av komplekse resultater.
+\item Relevant verktøykasse: Python, scikit-learn, TensorFlow, SQL og Git.
+\end{itemize}
+\textbf{Kurs}: Maskinlæring, Statistisk læring, Dyp læring, Datavarehus og Big Data, Tekstanalyse og NLP, Bayesiansk statistikk}
+
+\cventry{aug. 2014–juni 2017}
+        {Bachelor, Matematikk og informatikk, Poeng: A/B (ECTS)}
+        {Universitetet i Bergen}
+        {\url{https://www.uib.no/}}
+        {}
+        {\begin{itemize}
+\item Ga et solid grunnlag i matematikk, statistikk og programmering med vekt på algoritmer og datastrukturer.
+\item Gjennomførte bacheloroppgave i samarbeid med en lokal bedrift om visualisering av offentlige data.
+\item Utviklet ferdigheter i Python, R og databasemodellering.
+\end{itemize}
+\textbf{Kurs}: Matematisk analyse, Lineær algebra, Algoritmer og datastrukturer, Statistikk, Databaser, Objektorientert programmering}
+\section{Arbeidserfaring}
+
+\cventry{mars 2022–Nå}
+        {Dataforsker}
+        {DNB}
+        {\url{https://www.dnb.no/}}
+        {}
+        {\begin{itemize}
+\item Utvikler og drifter prediktive modeller for kredittrisiko og kundeadferd i samarbeid med forretningsområder.
+\item Bygger MLOps-pipeline i Google Cloud, fra datahenting til automatisk retrening og modellovervåkning.
+\item Gjennomfører A/B-tester og kausale analyser for å evaluere effekten av nye produkter og kampanjer.
+\item Presenterer resultater for ledelsen og bidrar til strategiske beslutninger om risiko og kundeopplevelse.
+\end{itemize}
+\textbf{Nøkkelord}: Prediktiv analyse, Risikomodellering, MLOps, Python, Google Cloud, A/B-testing}
+
+\cventry{sep. 2019–feb. 2022}
+        {Data Scientist}
+        {Telenor}
+        {\url{https://www.telenor.no/}}
+        {}
+        {\begin{itemize}
+\item Utviklet churn-modeller og kundesegmenteringsverktøy for å redusere kundeavgang i mobil- og bredbåndsmarkedet.
+\item Bearbeidet store datamengder med Apache Spark og SQL for å bygge features og analysere kundedata.
+\item Samarbeidet med produkt- og markedsavdelinger for å integrere modellresultater i kampanjestrategier.
+\item Etablerte rutiner for modellovervåkning og dokumentasjon, noe som forbedret teamets leveranseevne.
+\end{itemize}
+\textbf{Nøkkelord}: Churn-modeller, Kundesegmentering, Apache Spark, SQL, Power BI, A/B-testing}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål, Bokmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: IELTS 8.0, Akademisk skriving}
+\section{Ferdigheter}
+
+\cvline{Maskinlæring}{Ekspert \hfill \textbf{Nøkkelord}: Python, TensorFlow, PyTorch, scikit-learn, XGBoost}
+\cvline{Dataanalyse og statistikk}{Ekspert \hfill \textbf{Nøkkelord}: Statistisk testing, Regresjon, Tidsserieanalyse, Bayesiansk statistikk, Pandas}
+\cvline{Big Data}{Avansert \hfill \textbf{Nøkkelord}: Apache Spark, Databricks, SQL, Kafka, Airflow}
+\cvline{Datavisualisering}{Avansert \hfill \textbf{Nøkkelord}: Matplotlib, Plotly, Power BI, Tableau, Seaborn}
+\cvline{Programmering}{Ekspert \hfill \textbf{Nøkkelord}: Python, R, SQL, Git, FastAPI}
+\section{Utmerkelser}
+
+\cventry{nov. 2021}
+        {Telenor}
+        {Telenor Data Science Award}
+        {}
+        {}
+        {Fikk pris for arbeidet med prediktive churn-modeller som bidro til bedre kundebevaring og økt lønnsomhet.}
+\section{Sertifikater}
+
+\cventry{apr. 2023}
+        {Google Cloud}
+        {Professional Machine Learning Engineer}
+        {\url{https://cloud.google.com/learn/certification/machine-learning-engineer}}
+        {}
+        {}
+
+\cventry{mai 2020}
+        {Coursera / DeepLearning.AI}
+        {Deep Learning Specialization}
+        {\url{https://www.coursera.org/specializations/deep-learning}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{juni 2019}
+        {Prediktive modeller for energiforbruk i norske bygg}
+        {Masteroppgave, Universitetet i Oslo}
+        {\url{https://www.duo.uio.no/}}
+        {}
+        {Undersøkte hvordan gradient boosting og random forest kan forutsi timebasert energiforbruk og bidra til energieffektivisering.}
+\section{Prosjekter}
+
+\cventry{jan. 2023–juni 2023}
+        {Åpen kildekode-prosjekt for prediksjon av energiforbruk basert på værdata og historiske målinger.
+}
+        {Energiprediksjon}
+        {\url{https://github.com/ingridsolberg/energiprediksjon}}
+        {}
+        {\begin{itemize}
+\item Utviklet en Python-pakke for tidsserieanalyse og prediksjon av strømforbruk.
+\item Inneholder moduler for datahenting, feature engineering og modelltrening.
+\item Dokumentert med eksempler og satt opp som FastAPI-tjeneste med Docker.
+\end{itemize}
+\textbf{Nøkkelord}: Python, FastAPI, XGBoost, Docker, Open source}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fjellturer, Langrenn, Kajakk}
+\cvline{Teknologi}{Kunstig intelligens, Etisk AI, Datavitenskap}
+\section{Frivillig arbeid}
+
+\cventry{aug. 2021–Nå}
+        {Frivillig arrangementansvarlig}
+        {Oslo Data Science Meetup}
+        {\url{https://www.meetup.com/Oslo-Data-Science-Meetup/}}
+        {}
+        {Bidrar til å arrangere faglige møter og workshops for datascience-miljøet i Oslo.
+Holder introduksjonsforedrag om maskinlæring og etisk AI for nye medlemmer.}
+
+\end{document}

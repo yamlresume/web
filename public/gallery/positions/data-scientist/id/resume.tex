@@ -1,0 +1,238 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Indonesian (Bahasa Indonesia) language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-indonesian.html
+\usepackage[indonesian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Raka Mahendra}{}
+\title{Data Scientist | Machine Learning \& Data Analytics}
+\phone[mobile]{+62 812-3456-7890}
+\email{raka.mahendra@example.com}
+\homepage{https://rakamahendra.dev}
+
+\address{Jl. Senopati No. 12, Kebayoran Baru, Jakarta Selatan, DKI Jakarta, Indonesia, 12190}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/rakamahendra}{@rakamahendra} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/rakamahendra}{@rakamahendra} {} {} {} • {} {} {}
+{\small \faMedium}\ \href{https://medium.com/@rakamahendra}{@rakamahendra}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informasi Dasar}
+
+\cvline{}{Data Scientist dengan pengalaman lebih dari 5 tahun dalam merancang dan
+mengimplementasikan solusi machine learning untuk perusahaan e-commerce dan
+fintech. Berpengalaman dalam membangun model prediktif, menyusun kerangka
+eksperimen A/B, serta menerjemahkan kebutuhan bisnis menjadi analisis data
+yang actionable. Mahir menggunakan Python, SQL, dan platform cloud untuk
+mengembangkan pipeline data end-to-end. Memiliki kemampuan komunikasi
+lintas tim yang baik dan terbiasa bekerja dalam lingkungan Agile.}
+\section{Pendidikan}
+
+\cventry{Agu 2013–Jun 2017}
+        {Sarjana, Matematika dan Statistika, Nilai: 3.78}
+        {Institut Teknologi Bandung}
+        {\url{https://www.itb.ac.id}}
+        {}
+        {\begin{itemize}
+\item Mempelajari fondasi statistika, matematika, dan pemrograman untuk analisis data
+\item Menyelesaikan tugas akhir tentang pemodelan prediktif risiko kredit menggunakan regresi logistik
+\item Aktif sebagai asisten praktikum Statistika selama dua semester
+\end{itemize}
+\textbf{Mata Kuliah}: Statistika Matematika, Analisis Data Eksploratif, Pemodelan Statistika, Machine Learning, Riset Operasi, Basis Data, Aljabar Linear Terapan, Pengantar Ilmu Komputer}
+\section{Pengalaman Kerja}
+
+\cventry{Mar 2022–Sekarang}
+        {Data Scientist}
+        {PT Digital Nusantara}
+        {\url{https://www.digitalnusantara.co.id}}
+        {}
+        {\begin{itemize}
+\item Memimpin pengembangan model machine learning untuk sistem rekomendasi produk, meningkatkan konversi sebesar 18\%
+\item Merancang dan mengevaluasi eksperimen A/B untuk menguji strategi personalisasi dan promosi
+\item Mengembangkan pipeline data otomatis menggunakan Apache Airflow dan dbt untuk mendukung kebutuhan analitik real-time
+\item Berkolaborasi dengan tim produk dan engineering dalam mengidentifikasi peluang bisnis berbasis data
+\item Menerapkan model monitoring untuk memantau kualitas prediksi dan mendeteksi data drift
+\end{itemize}
+\textbf{Kata Kunci}: Machine Learning, Python, SQL, A/B Testing, Apache Airflow, Model Monitoring, BigQuery}
+
+\cventry{Jul 2019–Feb 2022}
+        {Data Analyst}
+        {PT Finansial Cerdas}
+        {\url{https://www.finansialcerdas.id}}
+        {}
+        {\begin{itemize}
+\item Menyusun dashboard analitik dan laporan berkala untuk memantau performa bisnis
+\item Melakukan analisis kohort dan segmentasi pelanggan untuk mendukung strategi retensi
+\item Menggunakan SQL untuk mengekstrak, membersihkan, dan mengolah data dari berbagai sumber
+\item Memberikan rekomendasi berbasis data kepada tim manajemen terkait keputusan produk dan operasional
+\end{itemize}
+\textbf{Kata Kunci}: Data Visualization, SQL, Tableau, Cohort Analysis, Segmentasi Pelanggan, Excel}
+\section{Bahasa}
+
+\cvline{Indonesia}{Bahasa Ibu / Bilingual}
+\cvline{Inggris}{Tingkat Profesional Penuh \hfill \textbf{Kata Kunci}: TOEFL iBT 95}
+\section{Keahlian}
+
+\cvline{Machine Learning}{Ahli \hfill \textbf{Kata Kunci}: Python, Scikit-learn, XGBoost, TensorFlow, Time Series, Model Interpretability}
+\cvline{Data Analytics}{Ahli \hfill \textbf{Kata Kunci}: SQL, Pandas, NumPy, Statistics, A/B Testing, Feature Engineering}
+\cvline{Data Engineering \& Cloud}{Menengah \hfill \textbf{Kata Kunci}: Apache Airflow, dbt, Google BigQuery, Cloud Composer, Docker}
+\cvline{Data Visualization}{Mahir \hfill \textbf{Kata Kunci}: Tableau, Looker Studio, Matplotlib, Seaborn, Streamlit}
+\section{Penghargaan}
+
+\cventry{Okt 2021}
+        {PT Finansial Cerdas}
+        {Finalis Kompetisi Data Science Fintech}
+        {}
+        {}
+        {Menjadi salah satu finalis dalam kompetisi prediksi risiko kredit dengan pendekatan ensemble learning.}
+\section{Sertifikat}
+
+\cventry{Mar 2023}
+        {TensorFlow}
+        {TensorFlow Developer Certificate}
+        {\url{https://www.tensorflow.org/certificate}}
+        {}
+        {}
+
+\cventry{Agu 2022}
+        {Google Cloud}
+        {Google Cloud Professional Data Engineer}
+        {\url{https://cloud.google.com/certification/data-engineer}}
+        {}
+        {}
+\section{Publikasi}
+
+\cventry{Jul 2023}
+        {Penerapan Gradient Boosting untuk Prediksi Churn Pelanggan pada Platform E-Commerce}
+        {Jurnal Teknologi Informasi dan Ilmu Komputer}
+        {\url{https://jtiik.ub.ac.id/index.php/jtiik}}
+        {}
+        {Publikasi penelitian tentang perbandingan performa beberapa algoritma machine learning dalam memprediksi churn pelanggan pada data transaksi e-commerce.}
+\section{Proyek}
+
+\cventry{Jan 2023–Jun 2023}
+        {Mengembangkan sistem rekomendasi berbasis collaborative filtering dan content-based filtering untuk platform e-commerce.
+}
+        {Sistem Rekomendasi Produk}
+        {\url{https://github.com/rakamahendra/recommendation-system}}
+        {}
+        {\begin{itemize}
+\item Mengolah data interaksi pengguna dan metadata produk untuk membangun fitur rekomendasi
+\item Mengevaluasi model dengan metrik precision@k dan recall@k
+\item Mengimplementasikan model sebagai REST API menggunakan FastAPI
+\end{itemize}
+\textbf{Kata Kunci}: Recommendation System, Python, Collaborative Filtering, FastAPI}
+
+\cventry{Feb 2022–Mei 2022}
+        {Membangun dashboard interaktif untuk memantau performa penjualan dan inventaris.
+}
+        {Dashboard Analisis Penjualan}
+        {\url{https://github.com/rakamahendra/sales-dashboard}}
+        {}
+        {\begin{itemize}
+\item Menggunakan SQL untuk transformasi data dari database transaksional ke skema star
+\item Menyusun visualisasi KPI utama seperti revenue, conversion rate, dan retensi
+\item Menyajikan dashboard melalui Looker Studio untuk tim manajemen
+\end{itemize}
+\textbf{Kata Kunci}: SQL, Looker Studio, Data Visualization, Dashboard}
+\section{Minat}
+
+\cvline{Data dan Teknologi}{Machine Learning, Open Source, Data Journalism}
+\cvline{Olahraga}{Lari, Sepak Bola, Badminton}
+\cvline{Membaca}{Fiksi Sains, Biografi}
+\section{Kegiatan Sukarela}
+
+\cventry{Jan 2023–Sekarang}
+        {Mentor Data Science}
+        {Indonesia Data Science Society}
+        {\url{https://www.idsc.io}}
+        {}
+        {\begin{itemize}
+\item Membimbing peserta bootcamp dalam memahami konsep dasar machine learning dan statistika
+\item Menyusun materi pelatihan dan studi kasus untuk peserta tingkat pemula
+\item Memberikan umpan balik yang konstruktif pada proyek akhir peserta
+\end{itemize}}
+
+\end{document}

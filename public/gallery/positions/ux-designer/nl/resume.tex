@@ -1,0 +1,252 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Dutch language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-dutch.html
+\usepackage[dutch]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Sanne van den Berg}{}
+\title{Senior UX-designer met focus op toegankelijk en inclusief ontwerp}
+\phone[mobile]{+31 6 12345678}
+\email{sanne@vandenberg.design}
+\homepage{https://sannevandenberg.design}
+
+\address{Keizersgracht 123, Amsterdam, Noord-Holland, Nederland, 1015 CJ}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/sannevandenberg}{@sannevandenberg} {} {} {} • {} {} {}
+{\small \faBehance}\ \href{https://www.behance.net/sannevandenberg}{@sannevandenberg} {} {} {} • {} {} {}
+{\small \faDribbble}\ \href{https://dribbble.com/sannevandenberg}{@sannevandenberg}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basis Informatie}
+
+\cvline{}{Ontwerper met ruim 8 jaar ervaring in het creëren van gebruiksvriendelijke
+digitale producten voor webshops, SaaS-toepassingen en publieke diensten.
+Ik vertaal gebruikersbehoeften naar heldere interacties en inclusieve
+ontwerpen, met oog voor zowel businessdoelen als menselijke waarden.
+%
+\begin{itemize}
+\item Methodisch en onderzoekend: van contextanalyse tot usabilitytest
+\item Ervaren met design systems, rapid prototyping en service design
+\item Gedreven om digitale toegankelijkheid (WCAG 2.2) standaard te maken
+\end{itemize}}
+\section{Opleidingen}
+
+\cventry{sep 2010–jul 2014}
+        {Bachelor, Communicatie en Multimedia Design, Score: 8.2}
+        {Hogeschool van Amsterdam}
+        {\url{https://www.hva.nl}}
+        {}
+        {\begin{itemize}
+\item Afstudeerrichting Interaction Design, afgestudeerd met een 8,2
+\item Afstudeerproject: toegankelijke tabletapp voor senioren
+\item Minor: Design for Social Change
+\end{itemize}
+\textbf{Cursussen}: Onderzoeksmethoden voor Design, Interactieontwerp, Visual Interface Design, Mens-computerinteractie, Digitale Productie, Concepting en Creativiteit, Bedrijfskunde voor Creatieve Industrie, Afstudeerproject Apps voor Ouderen}
+\section{Werkervaring}
+
+\cventry{mrt 2021–Heden}
+        {Senior UX Designer}
+        {Bluebird Digital}
+        {\url{https://www.bluebird-digital.nl}}
+        {}
+        {\begin{itemize}
+\item Verantwoordelijk voor de UX-strategie van een B2B SaaS-platform met ruim 40.000 gebruikers.
+\item Opgezet en doorontwikkeld design system met toegankelijke, herbruikbare componenten in Figma.
+\item Begeleidde junior designers en gaf UX-workshops aan developers en productmanagers.
+\end{itemize}
+\textbf{Trefwoorden}: Design system, SaaS, WCAG 2.2, Agile/Scrum, Mentorschap}
+
+\cventry{mei 2017–feb 2021}
+        {Product Designer}
+        {Startup Studio Amsterdam}
+        {\url{https://www.startupstudio.amsterdam}}
+        {}
+        {\begin{itemize}
+\item Ontwikkelde UX-ontwerpen voor 12 startups in fintech, health en mobility.
+\item Leidde wekelijks usabilitytesten en vertaalde inzichten naar prototypes.
+\item Creëerde customer journeys en service blueprints voor complexe processen.
+\end{itemize}
+\textbf{Trefwoorden}: Fintech, Mobility, Usabilitytesten, Customer journey, Prototyping}
+
+\cventry{aug 2014–apr 2017}
+        {Junior UX Designer}
+        {Glow Online}
+        {\url{https://www.glowonline.nl}}
+        {}
+        {\begin{itemize}
+\item Ontwierp wireframes en interactieve prototypes voor e-commerce websites.
+\item Voerde A/B-tests uit om conversie en gebruiksvriendelijkheid te verbeteren.
+\item Werkte nauw samen met developers bij de implementatie van responsive designs.
+\end{itemize}
+\textbf{Trefwoorden}: E-commerce, Wireframes, A/B-testen, Responsive design, Conversie}
+\section{Talen}
+
+\cvline{Nederlands}{Moedertaal of tweetalige vaardigheid \hfill \textbf{Trefwoorden}: Moedertaal}
+\cvline{Engels}{Volledige professionele vaardigheid \hfill \textbf{Trefwoorden}: Professioneel C1}
+\cvline{Duits}{Beperkte werkvaardigheid \hfill \textbf{Trefwoorden}: Basisvaardigheden}
+\section{Vaardigheden}
+
+\cvline{User Research}{Expert \hfill \textbf{Trefwoorden}: Diepte-interviews, Usabilitytesten, A/B-testen, Contextanalyse, Persona's}
+\cvline{Prototyping}{Expert \hfill \textbf{Trefwoorden}: Figma, Interactieve prototypes, Wireframes, Design tokens, Clickdummy's}
+\cvline{Interaction Design}{Geavanceerd \hfill \textbf{Trefwoorden}: Customer journeys, Service blueprints, Micro-interacties, Toegankelijk ontwerp}
+\cvline{Visual Design}{Geavanceerd \hfill \textbf{Trefwoorden}: Design systems, Typografie, Kleurtoegankelijkheid, WCAG 2.2}
+\cvline{Front-end Basics}{Intermediair \hfill \textbf{Trefwoorden}: HTML, CSS, JavaScript, Storybook}
+\section{Onderscheidingen}
+
+\cventry{nov 2022}
+        {Dutch UX Association}
+        {Publieksprijs Nederlandse UX Awards}
+        {}
+        {}
+        {Bekroond voor het toegankelijk herontwerpen van een overheidsportaal voor
+mensen met een visuele beperking.}
+\section{Certificaten}
+
+\cventry{jun 2023}
+        {IAAP}
+        {Certified Professional in Accessibility Core Competencies (CPACC)}
+        {\url{https://www.accessibilityassociation.org/}}
+        {}
+        {}
+
+\cventry{apr 2021}
+        {Coursera}
+        {Google UX Design Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-ux-design}}
+        {}
+        {}
+\section{Publicaties}
+
+\cventry{mei 2023}
+        {Inclusief ontwerpen is geen trend, het is een vak}
+        {UX Magazine Nederland}
+        {\url{https://www.uxmagazine.nl/artikel/inclusief-ontwerpen}}
+        {}
+        {Praktijkartikel over hoe je toegankelijkheid vanaf de start van het
+ontwerpproces meeneemt, met concrete voorbeelden uit de financiële sector.}
+\section{Referenties}
+
+\cventry{\emaillink[liesbeth.jansen@bluebird-digital.nl]{liesbeth.jansen@bluebird-digital.nl}}
+        {Design lead bij Bluebird Digital}
+        {Dr. Liesbeth Jansen}
+        {+31 20 555 0199}
+        {}
+        {Sanne is een van de meest zorgvuldige en empathische designers met wie ik
+heb gewerkt. Haar aanpak combineert onderzoek, creativiteit en oog voor
+detail met een sterke drive om digitale producten voor iedereen bruikbaar te maken.}
+\section{Projecten}
+
+\cventry{jan 2023–jun 2023}
+        {Volledig herontwerp van de mobiele bankapp voor een grote Nederlandse
+bank, gericht op begrijpelijke taal, donkere modus en volledige
+ondersteuning van schermlezers.
+}
+        {OmniBank App Herontwerp}
+        {\url{https://sannevandenberg.design/projecten/omnibank}}
+        {}
+        {\begin{itemize}
+\item Uitgebreid gebruikersonderzoek met 18 deelnemers, inclusief mensen met een visuele beperking.
+\item Iteratieve prototypes getest in vijf rondes op toegankelijkheid.
+\item Opgeleverd design package met componenten, tokens en richtlijnen voor developers.
+\end{itemize}
+\textbf{Trefwoorden}: Fintech, Toegankelijkheid, Figma, Co-creatie, Design system}
+\section{Interesses}
+
+\cvline{Duurzaamheid}{Circulair design, Tweedehands meubels, Stadsmoestuin}
+\cvline{Fotografie}{Straatfotografie, Analoog, Zwart-wit}
+\cvline{Muziek}{Gitaar, Indie, Vinyl}
+\section{Vrijwilligerswerk}
+
+\cventry{jan 2019–Heden}
+        {Vrijwillig UX-adviseur}
+        {Inclusive Design Collectief}
+        {\url{https://www.inclusiefdesigncollectief.nl}}
+        {}
+        {\begin{itemize}
+\item Help non-profitorganisaties met het toegankelijk maken van hun digitale kanalen.
+\item Organiseer jaarlijkse toegankelijkheidssessies tijdens de Dutch Design Week.
+\end{itemize}}
+
+\end{document}

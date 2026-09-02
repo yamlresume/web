@@ -1,0 +1,241 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Dutch language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-dutch.html
+\usepackage[dutch]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Sanne van den Berg}{}
+\title{Data-analist met passie voor datagedreven besluitvorming}
+\phone[mobile]{+31 6 12345678}
+\email{sanne.vandenberg@voorbeeld.nl}
+\homepage{https://www.linkedin.com/in/sannevandenberg}
+
+\address{Keizersgracht 123, Amsterdam, Noord-Holland, Nederland, 1016 CJ}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/sannevandenberg}{@sannevandenberg} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/sannevandenberg}{@sannevandenberg}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basis Informatie}
+
+\cvline{}{Data-analist met ruim 9 jaar ervaring in het omzetten van ruwe data naar
+concrete inzichten voor financiële en commerciële teams. Ik combineer
+sterke technische vaardigheden in SQL, Python en Power BI met een
+gestructureerde, adviserende werkwijze.
+%
+\begin{itemize}
+\item Ontwikkel en beheer dashboards en datapijplijnen voor diverse stakeholders
+\item Ervaren in A/B-testen, statistische analyses en datamodellering
+\item Sterke focus op datakwaliteit, reproduceerbaarheid en heldere rapportage
+\item Werk graag op het snijvlak van data, business en technologie
+\end{itemize}}
+\section{Opleidingen}
+
+\cventry{sep 2011–jul 2014}
+        {Bachelor, Econometrie en Operationele Research, Score: 7.8}
+        {Vrije Universiteit Amsterdam}
+        {\url{https://www.vu.nl}}
+        {}
+        {\begin{itemize}
+\item Afstudeerrichting toegepaste econometrie met nadruk op data-analyse en modellering
+\item Scriptie over de voorspellende waarde van consumentenvertrouwen voor de detailhandel
+\end{itemize}
+\textbf{Cursussen}: Statistiek, Wiskundige economie, Operationele research, Econometrie}
+
+\cventry{sep 2014–jul 2016}
+        {Master, Data Science and Business Analytics, Score: 8.2}
+        {Universiteit van Amsterdam}
+        {\url{https://www.uva.nl}}
+        {}
+        {\begin{itemize}
+\item Afgestudeerd met een 8,2 voor de scriptie over churnvoorspelling in de telecomsector
+\item Specialisatie in voorspellende modellen en datagedreven besluitvorming
+\end{itemize}
+\textbf{Cursussen}: Machine Learning, Big Data Analytics, Datavisualisatie, Statistisch leren}
+\section{Werkervaring}
+
+\cventry{jan 2020–Heden}
+        {Data-analist}
+        {Finlytics B.V.}
+        {\url{https://www.finlytics.nl}}
+        {}
+        {\begin{itemize}
+\item Ontwikkel en beheer financiële dashboards in Power BI voor directie en businesscontrollers
+\item Automatiseer data-extracties en transformaties met Python en dbt, waardoor rapportagetijd met 40\% afnam
+\item Voer ad-hocanalyses uit en adviseer over kostenbesparende maatregelen
+\item Begeleid junior analisten en stel richtlijnen op voor datakwaliteit en visualisaties
+\end{itemize}
+\textbf{Trefwoorden}: Power BI, SQL, Python, dbt, Financiële rapportages}
+
+\cventry{okt 2017–dec 2019}
+        {Data-analist}
+        {RetailIQ}
+        {\url{https://www.retailiq.nl}}
+        {}
+        {\begin{itemize}
+\item Droeg bij aan de ontwikkeling van een klantsegmentatiemodel op basis van RFM-analyse
+\item Analyseerde klantgedrag en conversiepaden in Google Analytics en BigQuery
+\item Voerde A/B-tests uit op de webshop en rapporteerde over statistische significantie
+\item Bouwde automatische datapijplijnen in Python voor dagelijkse verkooprapportages
+\end{itemize}
+\textbf{Trefwoorden}: BigQuery, Google Analytics, Klantsegmentatie, A/B-testen}
+
+\cventry{sep 2016–sep 2017}
+        {Junior data-analist}
+        {Zorgdata Nederland}
+        {\url{https://www.zorgdata.nl}}
+        {}
+        {\begin{itemize}
+\item Verwerkte en controleerde zorgdatasets met SQL en SPSS
+\item Maakte rapportages en grafieken voor interne en externe stakeholders
+\item Ondersteunde senior onderzoekers bij datakwaliteitscontroles
+\end{itemize}
+\textbf{Trefwoorden}: SQL, SPSS, Datakwaliteit, Rapportage}
+\section{Talen}
+
+\cvline{Nederlands}{Moedertaal of tweetalige vaardigheid \hfill \textbf{Trefwoorden}: Professioneel schrijven, Presenteren}
+\cvline{Engels}{Volledige professionele vaardigheid \hfill \textbf{Trefwoorden}: Dagelijkse samenwerking, Rapporteren}
+\cvline{Duits}{Beperkte werkvaardigheid \hfill \textbf{Trefwoorden}: Leesvaardigheid, Basisgesprekken}
+\section{Vaardigheden}
+
+\cvline{Data-analyse}{Expert \hfill \textbf{Trefwoorden}: SQL, Python, Excel, A/B-testen, Statistiek}
+\cvline{Datavisualisatie}{Geavanceerd \hfill \textbf{Trefwoorden}: Power BI, Tableau, Looker Studio, Dashboarding}
+\cvline{Data-engineering}{Intermediair \hfill \textbf{Trefwoorden}: dbt, BigQuery, Airflow, Git}
+\cvline{Machine Learning}{Intermediair \hfill \textbf{Trefwoorden}: scikit-learn, Regressieanalyse, Beslissingsbomen, Clustering}
+\section{Onderscheidingen}
+
+\cventry{dec 2023}
+        {Finlytics B.V.}
+        {Topscoorder Klanttevredenheid}
+        {}
+        {}
+        {Uitgeroepen tot medewerker met de hoogste stakeholderscore vanwege heldere communicatie en bruikbare analyses.}
+\section{Certificaten}
+
+\cventry{jun 2022}
+        {Microsoft}
+        {Microsoft Certified Power BI Data Analyst Associate}
+        {\url{https://learn.microsoft.com/certifications/power-bi-data-analyst-associate}}
+        {}
+        {}
+
+\cventry{mei 2020}
+        {Google via Coursera}
+        {Google Data Analytics Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-data-analytics}}
+        {}
+        {}
+\section{Projecten}
+
+\cventry{jan 2023–apr 2023}
+        {Machine learning-model om klantverloop in de telecomsector te voorspellen en de belangrijkste risicofactoren te identificeren.}
+        {Churnvoorspelling telecomklanten}
+        {\url{https://github.com/sannevandenberg/churn-voorspelling}}
+        {}
+        {\begin{itemize}
+\item Bouwde een Random Forest-classificatiemodel in Python met scikit-learn
+\item Verbeterde de voorspellingskracht met 18 procent ten opzichte van het bestaande model
+\item Leverde een interactief Power BI-dashboard op met de belangrijkste KPI's en risicofactoren
+\end{itemize}
+\textbf{Trefwoorden}: Python, scikit-learn, Churn, Power BI}
+\section{Interesses}
+
+\cvline{Hardlopen}{Halve marathon, Intervaltraining}
+\cvline{Koken}{Vegetarisch, Wereldkeuken}
+\cvline{Duurzaamheid}{Energietransitie, Circulaire economie}
+\section{Vrijwilligerswerk}
+
+\cventry{mrt 2021–Heden}
+        {Vrijwillige data-analist}
+        {Stichting Data voor Goed}
+        {\url{https://www.datavoorgoed.nl}}
+        {}
+        {\begin{itemize}
+\item Help non-profitorganisaties met datagedreven besluitvorming
+\item Bouw laagdrempelige dashboards in Power BI
+\item Geef workshops over datakwaliteit en privacyvriendelijk datagebruik
+\end{itemize}}
+
+\end{document}

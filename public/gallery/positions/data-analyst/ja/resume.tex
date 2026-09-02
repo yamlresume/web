@@ -1,0 +1,238 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{佐藤美咲}{}
+\title{データアナリスト | データ可視化・ビジネスインサイト}
+\phone[mobile]{080-1234-5678}
+\email{misaki.sato@example.com}
+\homepage{https://misaki-sato.dev}
+
+\address{日本、渋谷区、東京都、東京都渋谷区神南1-2-3、150-0001}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/misaki-sato}{@misaki-sato} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/misaki-sato}{@misaki-sato}}
+
+\begin{document}
+
+\maketitle
+
+\section{基本情報}
+
+\cvline{}{データに基づく意思決定を支援するデータアナリスト。小売・EC業界でSQL・Python・Tableauを駆使し、売上分析、顧客セグメンテーション、予測モデル構築などに従事。ビジネス課題を数値で可視化し、チームのKPI改善に貢献。統計・機械学習の知識を活かした実践的な分析に強みを持つ。}
+\section{学歴}
+
+\cventry{2017年4月～2021年3月}
+        {学士、経済学部 経済学科、成績：3.7}
+        {東京大学}
+        {\url{https://www.u-tokyo.ac.jp/}}
+        {}
+        {\begin{itemize}
+\item 統計学・計量経済学を中心に、データ分析の基礎を学ぶ
+\item 卒業論文では、POSデータを用いた購買行動分析を実施
+\item 学外のデータ分析コンテストに参加し、可視化とプレゼンテーションを経験
+\end{itemize}
+\textbf{コース}：統計学、計量経済学、データ解析基礎、プログラミング入門 (Python)、マーケティングリサーチ}
+\section{職歴}
+
+\cventry{2021年4月～現在}
+        {データアナリスト}
+        {株式会社インサイト}
+        {\url{https://www.insight-example.co.jp}}
+        {}
+        {\begin{itemize}
+\item 小売・EC事業の売上・在庫・顧客データを統合し、ダッシュボードを構築
+\item SQL・Pythonによるデータ抽出・加工・分析を行い、週次・月次レポートを自動作成
+\item 顧客セグメンテーション分析を実施し、マーケティング施策の効果検証を支援
+\item Tableauを用いて経営陣向けのKPIダッシュボードを開発し、意思決定を支援
+\end{itemize}
+\textbf{キーワード}：SQL、Python、Tableau、KPI分析、ダッシュボード}
+
+\cventry{2020年7月～2021年3月}
+        {リサーチアシスタント}
+        {株式会社ブライトリサーチ}
+        {\url{https://www.bright-research-example.co.jp}}
+        {}
+        {\begin{itemize}
+\item 市場調査データのクリーニング・集計を担当
+\item Excel・Rを用いた統計解析と結果の可視化を支援
+\item 調査レポートの作成に協力し、クライアントへの提案を補助
+\end{itemize}
+\textbf{キーワード}：Excel、R、統計解析、市場調査}
+\section{言語}
+
+\cvline{日本語}{ネイティブ・母国語レベル \hfill \textbf{キーワード}：母国語}
+\cvline{英語}{完全な実務レベル \hfill \textbf{キーワード}：TOEIC 920、ビジネス文書作成}
+\section{スキル}
+
+\cvline{データ分析}{エキスパート \hfill \textbf{キーワード}：Python、R、SQL、統計解析、予測モデル}
+\cvline{データ可視化}{上級 \hfill \textbf{キーワード}：Tableau、Power BI、Looker Studio、matplotlib、ggplot2}
+\cvline{ビジネスインテリジェンス}{上級 \hfill \textbf{キーワード}：KPI管理、マーケティング分析、顧客セグメンテーション、A/Bテスト}
+\cvline{機械学習}{中級 \hfill \textbf{キーワード}：scikit-learn、回帰分析、クラスタリング、意思決定木}
+\section{受賞・表彰}
+
+\cventry{2022年12月}
+        {株式会社インサイト}
+        {社内データ分析コンテスト 最優秀賞}
+        {}
+        {}
+        {購買データを用いた顧客離反予測モデルを提案し、社内のビジネスコンテストで最優秀賞を受賞。}
+\section{資格・免状}
+
+\cventry{2022年6月}
+        {日本統計学会}
+        {統計検定2級}
+        {\url{https://www.toukei-kentei.jp/}}
+        {}
+        {}
+
+\cventry{2021年3月}
+        {Google}
+        {Google Data Analytics Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-data-analytics}}
+        {}
+        {}
+\section{出版・著作}
+
+\cventry{2023年11月}
+        {データドリブンマーケティングの実践: 小売業における顧客セグメント分析}
+        {社内テクニカルレポート}
+        {\url{https://misaki-sato.dev/articles/data-driven-marketing}}
+        {}
+        {小売業の購買データを活用した顧客セグメンテーションの実践手法をまとめた。RFM分析とクラスタリングを組み合わせたアプローチを紹介。}
+\section{プロジェクト}
+
+\cventry{2023年1月～2023年6月}
+        {ECサイトの売上予測モデルと可視化ダッシュボードを開発。}
+        {EC売上予測ダッシュボード}
+        {\url{https://misaki-sato.dev/projects/ec-sales-forecast}}
+        {}
+        {\begin{itemize}
+\item 過去3年分の売上データを基に、季節性を考慮した予測モデルを構築
+\item StreamlitとPlotlyを用いて、担当者が簡単に予測を確認できるダッシュボードを提供
+\item 在庫計画やプロモーション効果の事前検証に貢献
+\end{itemize}
+\textbf{キーワード}：Python、Streamlit、Plotly、時系列分析}
+
+\cventry{2022年4月～2022年9月}
+        {購買履歴を基にした顧客セグメンテーションの分析プロジェクト。}
+        {顧客セグメンテーション分析}
+        {\url{https://misaki-sato.dev/projects/segmentation}}
+        {}
+        {\begin{itemize}
+\item RFM分析とk-meansクラスタリングを組み合わせて顧客を分類
+\item セグメントごとの特徴を分析し、マーケティング施策の提案につなげた
+\item リピート率向上に向けた施策の優先順位付けを支援
+\end{itemize}
+\textbf{キーワード}：RFM分析、k-means、Tableau、マーケティング}
+\section{興味・関心}
+
+\cvline{ランニング}{マラソン、トレーニング}
+\cvline{読書}{データサイエンス、ビジネス書}
+\cvline{データ可視化コミュニティ}{勉強会、ハンズオン}
+\section{ボランティア活動}
+
+\cventry{2022年4月～現在}
+        {データ分析ボランティア}
+        {NPO法人 データ支援ネット}
+        {\url{https://www.data-support-npo.example.org}}
+        {}
+        {\begin{itemize}
+\item 非営利団体向けに、アンケート集計や業務改善のためのデータ分析を支援
+\item 事務局メンバー向けにExcelや可視化ツールの使い方研修を実施
+\end{itemize}}
+
+\end{document}

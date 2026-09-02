@@ -1,0 +1,272 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Ingrid Sørensen}{}
+\title{UX-designer med lidenskap for brukervennlige digitale løsninger}
+\phone[mobile]{+47 912 34 567}
+\email{ingrid@ingridsorensen.no}
+\homepage{https://ingridsorensen.no}
+
+\address{Storgata 23, Oslo, Oslo, Norge, 0180}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/ingridsorensen}{@ingridsorensen} {} {} {} • {} {} {}
+{\small \faBehance}\ \href{https://www.behance.net/ingridsorensen}{@ingridsorensen} {} {} {} • {} {} {}
+{\small \faDribbble}\ \href{https://dribbble.com/ingridsorensen}{@ingridsorensen}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{\begin{itemize}
+\item UX-designer med 6 års erfaring fra produktutvikling og digitale tjenester
+\item Sterk kompetanse innen brukerresearch, prototyping, og brukertesting
+\item Erfaring med å lede designprosesser fra idé til ferdig produkt
+\item Tverrfaglig samarbeid med utviklere, produktledere og forretningssiden
+\item Gode ferdigheter i Figma, Sketch og designsystemer
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2014–juni 2017}
+        {Bachelor, Interaksjonsdesign, Poeng: A / 5}
+        {OsloMet – storbyuniversitetet}
+        {\url{https://www.oslomet.no/}}
+        {}
+        {\begin{itemize}
+\item Fordypet meg i brukersentrerte designprosesser og metodikk
+\item Praksisprosjekt med oppdragsgiver fra offentlig sektor
+\item Utvekslingssemester ved Københavns Universitet
+\end{itemize}
+\textbf{Kurs}: Brukersentrert design, Webutvikling og universell utforming, Informasjonsarkitektur, Designmetodikk, Kognitiv psykologi, Multimodal kommunikasjon}
+\section{Arbeidserfaring}
+
+\cventry{jan. 2021–Nå}
+        {Senior UX-designer}
+        {Nordlys Digital}
+        {\url{https://www.nordlysdigital.no}}
+        {}
+        {\begin{itemize}
+\item Leder designprosesser for kunder innen bank, helse og offentlig sektor
+\item Utvikler designsystemer og gjenbrukbare UI-komponenter i Figma
+\item Gjennomfører brukertester og dybdeintervjuer for å validere designbeslutninger
+\item Samarbeider tett med utviklingsteam i Scrum-metodikk
+\item Mentor for juniordesignere og holder interne workshops
+\end{itemize}
+\textbf{Nøkkelord}: Designsystem, Brukertesting, Figma, Scrum}
+
+\cventry{feb. 2018–des. 2020}
+        {UX/UI-designer}
+        {Apphuset AS}
+        {\url{https://www.apphuset.no}}
+        {}
+        {\begin{itemize}
+\item Designet brukervennlige mobilapper og web-løsninger for startups og etablerte selskaper
+\item Utførte brukerresearch, brukerreiser, wireframes og interaktive prototyper
+\item Etablerte og vedlikeholdt designbibliotek i Figma og Sketch
+\item Bidro i kundeoppfølging og presentasjon av designløsninger
+\end{itemize}
+\textbf{Nøkkelord}: Mobilapp, UI-design, Prototyping, Sketch}
+
+\cventry{juli 2017–des. 2017}
+        {UX-designpraktikant}
+        {Kommunal IT}
+        {\url{https://www.kommunal-it.no}}
+        {}
+        {\begin{itemize}
+\item Assisterte senior designere i kartlegging av brukerbehov og utforming av innsynsløsninger
+\item Produserte wireframes og klikkbare prototyper i Adobe XD
+\item Deltok i arbeidsmøter med innbyggere og saksbehandlere
+\end{itemize}
+\textbf{Nøkkelord}: Adobe XD, Innsyn, Brukerbehov}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: IELTS 8.0}
+\cvline{Spansk}{Begrenset arbeidskunnskap \hfill \textbf{Nøkkelord}: Selvstudium}
+\section{Ferdigheter}
+
+\cvline{UX-design}{Ekspert \hfill \textbf{Nøkkelord}: Brukerresearch, Brukerreiser, Informasjonsarkitektur, Brukertesting, Interaksjonsdesign}
+\cvline{UI-design}{Avansert \hfill \textbf{Nøkkelord}: Figma, Sketch, Adobe XD, Designsystem, Prototyping}
+\cvline{Nettutvikling}{Begynner \hfill \textbf{Nøkkelord}: HTML, CSS, JavaScript}
+\cvline{Prosjektledelse}{Viderekommen \hfill \textbf{Nøkkelord}: Scrum, Kanban, JIRA, Miro}
+\section{Utmerkelser}
+
+\cventry{nov. 2022}
+        {Nasjonal UX-forening}
+        {UX-prisen for inkluderende design}
+        {}
+        {}
+        {\begin{itemize}
+\item Mottatt for arbeidet med et inkluderende innloggingssystem for offentlige tjenester.
+\end{itemize}}
+
+\cventry{juni 2017}
+        {OsloMet}
+        {Årets studentprosjekt}
+        {}
+        {}
+        {\begin{itemize}
+\item Vant med bacheloroppgaven "Universell utforming av smarte hjem-løsninger".
+\end{itemize}}
+\section{Sertifikater}
+
+\cventry{mars 2023}
+        {Google}
+        {Google UX Design Professional Certificate}
+        {\url{https://coursera.org/verify/ux-design}}
+        {}
+        {}
+
+\cventry{sep. 2021}
+        {Nielsen Norman Group}
+        {NN/g UX Certification}
+        {\url{https://www.nngroup.com}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{aug. 2022}
+        {Brukerinvolvering i praksis: En håndbok for team}
+        {Fagbokforlaget}
+        {\url{https://www.fagbokforlaget.no}}
+        {}
+        {\begin{itemize}
+\item Praktisk guide for hvordan team kan involvere brukere i hele produktutviklingsprosessen.
+\item Medforfatter med eksempler fra offentlig sektor.
+\end{itemize}}
+\section{Prosjekter}
+
+\cventry{jan. 2022–des. 2022}
+        {Digital veiviser som hjelper innbyggere med å finne riktige offentlige tjenester.}
+        {Innbyggerlos}
+        {\url{https://www.innbyggerlos.no}}
+        {}
+        {\begin{itemize}
+\item Initierte og ledet designarbeidet for en ny digital veiviser for offentlige tjenester.
+\item Gjennomførte dybdeintervjuer og brukertester med 30+ innbyggere.
+\item Endte opp med en løsning som reduserte henvendelser til kundesenteret med 25 \%.
+\end{itemize}
+\textbf{Nøkkelord}: Offentlig sektor, Tjenestedesign, Inkluderende design}
+
+\cventry{feb. 2020–juni 2020}
+        {Mobilapp for klimavennlige forbruksvalg.}
+        {Klimasmart hverdag}
+        {\url{https://www.klimasmart.no}}
+        {}
+        {\begin{itemize}
+\item Designet konseptet for en app som gir forbrukere konkrete klimatips.
+\item Bygde interaktive prototyper og utførte brukertester.
+\item Vant intern innovasjonskonkurranse og ble videreutviklet av produktselskap.
+\end{itemize}
+\textbf{Nøkkelord}: Bærekraft, Mobilapp, Konseptutvikling}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fottur, Ski, Kajakk}
+\cvline{Kreativitet}{Digital tegning, Keramikk, Fotografi}
+\section{Frivillig arbeid}
+
+\cventry{jan. 2020–juni 2023}
+        {Designmentor}
+        {Jentetech}
+        {\url{https://www.jentetech.no}}
+        {}
+        {\begin{itemize}
+\item Veileder unge jenter som vil lære seg UX-design.
+\item Holder workshops i Figma og porteføljeutvikling.
+\end{itemize}}
+
+
+\cventry{aug. 2018–des. 2019}
+        {Nettsidedesigner}
+        {Frivilligsentralen}
+        {\url{https://www.frivillig.no}}
+        {}
+        {\begin{itemize}
+\item Redesignet nettsiden for en lokal frivilligsentral.
+\item Sørget for universell utforming og forbedret innholdspresentasjon.
+\end{itemize}}
+
+\end{document}

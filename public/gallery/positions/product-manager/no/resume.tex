@@ -1,0 +1,247 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Ingrid Solstad}{}
+\title{Produktleder med strategisk og kommersiell erfaring}
+\phone[mobile]{+47 912 34 567}
+\email{ingrid.solstad@produktleder.no}
+\homepage{https://www.ingridsolstad.no}
+
+\address{Munchs gate 7, Oslo, Oslo, Norge, 0165}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/ingridsolstad}{@ingridsolstad} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/ingridsolstad}{@ingridsolstad}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{Produktleder med 8 års erfaring fra digitale tjenester i finans- og teknologibransjen. Jeg jobber tett på brukere, data og forretning for å utvikle produkter som skaper reell verdi.
+%
+\begin{itemize}
+\item Sterk på produktstrategi, veikart og prioritering
+\item God til å lede tverrfaglige team og involvere interessenter
+\item Erfaring med hele produktlivssyklusen – fra idé til lansering og videreutvikling
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2014–juni 2016}
+        {Master, Informatikk – design, bruk og interaksjon, Poeng: A (5.0)}
+        {Universitetet i Oslo}
+        {\url{https://www.uio.no}}
+        {}
+        {\begin{itemize}
+\item Spesialisering i hvordan teknologi kan utformes for menneskelige behov
+\item Skrev masteroppgave om brukeropplevelse i digitale selvbetjeningsløsninger
+\item Gjennomførte flere prosjekter i samarbeid med norske virksomheter
+\end{itemize}
+\textbf{Kurs}: Interaksjonsdesign, Brukersentrert design, Prosjektledelse, Informasjonsarkitektur, Kvalitative forskningsmetoder, Datasystemer og menneskelige aktiviteter}
+\section{Arbeidserfaring}
+
+\cventry{mars 2021–Nå}
+        {Senior produktleder}
+        {Nordvik Bank}
+        {\url{https://www.nordvikbank.no}}
+        {}
+        {\begin{itemize}
+\item Ansvarlig for mobilbank og digitale sparingstjenester med 1,2 millioner brukere
+\item Ledet produktstrategi og veikart i tett samarbeid med design, utvikling og forretning
+\item Etablerte løpende brukerinnsikt og datadrevne prioriteringsprosesser
+\item Økte NPS fra 48 til 66 over to år
+\item Mentorerte og videreutviklet to produktmedarbeidere
+\end{itemize}
+\textbf{Nøkkelord}: Produktstrategi, Mobilbank, Brukerinnsikt, NPS}
+
+\cventry{jan. 2018–feb. 2021}
+        {Produktleder}
+        {Aktiv Digital AS}
+        {\url{https://www.aktivdigital.no}}
+        {}
+        {\begin{itemize}
+\item Produktleder for en selvbetjeningsportal for pensjon og spareøkonomi
+\item Gjennomførte brukerintervjuer, konsepttester og A/B-tester
+\item Reduserte henvendelser til kundesenter med 22 prosent
+\item Innførte Scrum og forbedret teamets leveransehastighet
+\end{itemize}
+\textbf{Nøkkelord}: Pensjon, Selvbetjening, A/B-testing, Scrum}
+
+\cventry{aug. 2016–des. 2017}
+        {Produktanalytiker}
+        {Kompetansepartner AS}
+        {\url{https://www.kompetansepartner.no}}
+        {}
+        {\begin{itemize}
+\item Støttet produktleder med markedsanalyser, kundeinnsikt og konkurransescreening
+\item Bidro til å definere MVP-prosjekter og forretningskrav
+\item Bygget dashbord med metrikker for aktive brukere og konvertering
+\end{itemize}
+\textbf{Nøkkelord}: Markedsanalyse, MVP, Metrikker, Power BI}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: Forretningsflytende}
+\cvline{Svensk}{Begrenset arbeidskunnskap \hfill \textbf{Nøkkelord}: Nordisk samarbeid}
+\section{Ferdigheter}
+
+\cvline{Produktledelse}{Ekspert \hfill \textbf{Nøkkelord}: Produktstrategi, Veikart, Prioritering, OKR}
+\cvline{Agile og Scrum}{Ekspert \hfill \textbf{Nøkkelord}: Scrum, Kanban, Lean Startup, Retrospektiver}
+\cvline{Brukerinnsikt}{Avansert \hfill \textbf{Nøkkelord}: Intervjuer, Brukertesting, Personas, Innsiktskartlegging}
+\cvline{Dataanalyse}{Viderekommen \hfill \textbf{Nøkkelord}: SQL, Google Analytics, Amplitude, A/B-testing}
+\section{Utmerkelser}
+
+\cventry{mars 2023}
+        {Digital Ledelse Norge}
+        {Årets produktleder 2023}
+        {}
+        {}
+        {Hederspris for fremragende produktledelse og utviklingen av en mobilbank med tydelig brukerfokus.}
+\section{Sertifikater}
+
+\cventry{nov. 2017}
+        {Scrum Alliance}
+        {Certified Scrum Product Owner (CSPO)}
+        {\url{https://www.scrumalliance.org/}}
+        {}
+        {}
+
+\cventry{feb. 2022}
+        {Google}
+        {Google Analytics Individual Qualification}
+        {\url{https://skillshop.exceedlms.com/}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{sep. 2022}
+        {Fra innsikt til handling – slik bygger du produkter folk vil bruke}
+        {Produktledelse.no}
+        {\url{https://www.produktledelse.no/artikler/fra-innsikt-til-handling}}
+        {}
+        {Praktisk artikkel om hvordan kvalitative og kvantitative innsikter kombineres for å forbedre produktbeslutninger.}
+\section{Prosjekter}
+
+\cventry{mars 2021–nov. 2022}
+        {Ny mobilbank med økt selvbetjening og personlig økonomioversikt.}
+        {Nordvik Mobil}
+        {\url{https://www.nordvikbank.no/mobil}}
+        {}
+        {\begin{itemize}
+\item Ledet produktutviklingen fra konsept til lansering
+\item Etablerte tett samarbeid mellom design, utvikling og forretning
+\item Økte brukertilfredsheten (NPS) med 18 poeng
+\item Leverte appen i tråd med personvern- og sikkerhetskrav
+\end{itemize}
+\textbf{Nøkkelord}: Mobilbank, NPS, Produktlansering, Fintech}
+
+\cventry{jan. 2018–des. 2019}
+        {Selvbetjeningsportal for pensjonsinnsikt og sparing.}
+        {Pensjonsportalen}
+        {\url{https://www.aktivdigital.no/pensjon}}
+        {}
+        {\begin{itemize}
+\item Gjennomførte brukerintervjuer og konsepttester
+\item Utviklet enklere språk og tydeligere informasjonsarkitektur
+\item Reduserte henvendelser til kundesenter med 22 prosent
+\end{itemize}
+\textbf{Nøkkelord}: Selvbetjening, Pensjon, Brukerinnsikt, UX}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fjellturer, Ski, Kajakk}
+\cvline{Litteratur}{Faglitteratur, Teknologinytt, Podkaster}
+\section{Frivillig arbeid}
+
+\cventry{sep. 2022–Nå}
+        {Karrierementor}
+        {Tekna Student Oslo}
+        {\url{https://www.tekna.no}}
+        {}
+        {\begin{itemize}
+\item Veileder studenter innen teknologi og produktledelse
+\item Holder workshops om veikart, prioritering og porteføljeintervjuer
+\end{itemize}}
+
+\end{document}

@@ -1,0 +1,251 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Claire Moreau}{}
+\title{Analyste de données — Data Visualisation \& Business Intelligence}
+\phone[mobile]{+33 6 12 34 56 78}
+\email{claire.moreau@email.fr}
+\homepage{https://clairemoreau.fr}
+
+\address{Paris, Île-de-France, France, 75011}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/claire-moreau-analytics}{@claire-moreau-analytics} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/clairemoreau}{@clairemoreau}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{\begin{itemize}
+\item Plus de 4 ans d'expérience en tant qu'analyste de données dans les secteurs SaaS, retail et banque-assurance
+\item Expertise en requêtage SQL, analyse statistique avec Python/R et conception de tableaux de bord interactifs
+\item Capacité à traduire les besoins métiers en indicateurs clés et à formuler des recommandations actionnables
+\item Rigueur méthodologique, sens du détail et forte appétence pour la datavisualisation
+\item Habituée à collaborer avec les équipes produit, marketing, finance et direction générale
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2017–juil. 2019}
+        {Master, Data Science \& Marketing, Score : 16/20}
+        {Toulouse School of Management}
+        {\url{https://www.tsm-education.fr/}}
+        {}
+        {\begin{itemize}
+\item Spécialisation en analyse de données, méthodes quantitatives et outils décisionnels
+\item Réalisation d'un mémoire sur la prévision du comportement client à l'aide de modèles de régression
+\item Obtention d'une certification universitaire en data mining et scoring prédictif
+\end{itemize}
+\textbf{Cours} : Data Mining, Statistiques inférentielles, Économétrie appliquée, Base de données avancée, Machine Learning, Stratégie digitale}
+
+\cventry{sept. 2014–juin 2017}
+        {Licence, Économie-Gestion, Score : 14/20}
+        {Université de Bordeaux}
+        {\url{https://www.u-bordeaux.fr/}}
+        {}
+        {\begin{itemize}
+\item Formation pluridisciplinaire alliant économie, gestion et outils quantitatifs
+\item Acquisition des fondamentaux en statistiques et en analyse de données économiques
+\end{itemize}
+\textbf{Cours} : Statistiques, Microéconomie, Comptabilité de gestion, Informatique appliquée}
+\section{Expérience professionnelle}
+
+\cventry{janv. 2023–Present}
+        {Data Analyst Senior}
+        {DataSquad Conseil}
+        {\url{https://www.datasquad.fr}}
+        {}
+        {\begin{itemize}
+\item Pilotage de projets d'analyse de données pour des clients grands comptes dans les secteurs retail et banque-assurance
+\item Conception et automatisation de tableaux de bord Power BI utilisés par plus de 200 utilisateurs métiers
+\item Développement de modèles de segmentation client et de prédiction d'attrition en Python
+\item Animation d'ateliers de formation à la datavisualisation et accompagnement des équipes dans l'adoption des outils décisionnels
+\item Mise en place de référentiels d'indicateurs et de procédures de validation de la qualité des données
+\end{itemize}
+\textbf{Mots-clés} : Power BI, Python, SQL, Segmentation, Tableau de bord}
+
+\cventry{oct. 2020–déc. 2022}
+        {Data Analyst}
+        {Novabank}
+        {\url{https://www.novabank.fr}}
+        {}
+        {\begin{itemize}
+\item Production d'analyses de performance commerciale pour la direction des risques et les équipes marketing
+\item Consolidation et requêtage de bases relationnelles de plus de 5 millions de lignes en SQL
+\item Automatisation de rapports hebdomadaires avec Python et Excel VBA, réduisant le temps de traitement de 60 \%
+\item Participation à la refonte du datamart clients et à l'amélioration de la fiabilité des indicateurs de reporting
+\end{itemize}
+\textbf{Mots-clés} : SQL, Python, Datamart, Reporting, VBA}
+
+\cventry{sept. 2019–août 2020}
+        {Data Analyst Junior}
+        {Ecomedia}
+        {\url{https://www.ecomedia.fr}}
+        {}
+        {\begin{itemize}
+\item Analyse des campagnes d'acquisition web et mesure de la performance des canaux SEO, SEA et réseaux sociaux
+\item Création de rapports hebdomadaires Google Analytics et amélioration du suivi des conversions
+\item Contribution à l'identification de leviers de croissance grâce aux analyses de cohortes et aux tests A/B
+\item Collaboration avec les équipes produit pour fiabiliser la collecte des données utilisateur
+\end{itemize}
+\textbf{Mots-clés} : Google Analytics, SEO, SEA, Tests A/B, Cohorte}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue \hfill \textbf{Mots-clés} : Langue maternelle}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEFL 105, Anglais professionnel}
+\section{Compétences}
+
+\cvline{Data Visualisation}{Expert \hfill \textbf{Mots-clés} : Power BI, Tableau, Looker Studio, D3.js}
+\cvline{Langages et requêtage}{Expert \hfill \textbf{Mots-clés} : SQL, Python, Pandas, R, DAX}
+\cvline{Statistiques et analyse}{Avancé \hfill \textbf{Mots-clés} : Analyse exploratoire, Tests statistiques, Régression, Segmentation, Prévision}
+\cvline{Outils et collaboration}{Avancé \hfill \textbf{Mots-clés} : Excel, Google Sheets, Git, Jira, Confluence}
+\section{Récompenses}
+
+\cventry{déc. 2023}
+        {DataSquad Conseil}
+        {Prix de l'innovation data}
+        {}
+        {}
+        {\begin{itemize}
+\item Récompensée pour la conception d'un outil interne de suivi automatisé de la qualité des données clients.
+\end{itemize}}
+\section{Certificats}
+
+\cventry{mars 2023}
+        {Microsoft}
+        {Microsoft PL-300 : Power BI Data Analyst}
+        {\url{https://learn.microsoft.com/fr-fr/credentials/}}
+        {}
+        {}
+
+\cventry{nov. 2021}
+        {Google}
+        {Google Data Analytics}
+        {\url{https://grow.google/intl/fr\_fr/products/certificates/data-analytics/}}
+        {}
+        {}
+\section{Projets}
+
+\cventry{janv. 2024–mai 2024}
+        {Projet personnel de création d'un tableau de bord interactif à partir de données e-commerce publiques.}
+        {Tableau de bord des performances e-commerce}
+        {\url{https://github.com/clairemoreau/ecommerce-dashboard}}
+        {}
+        {\begin{itemize}
+\item Récupération et nettoyage de données de ventes avec Python et Pandas
+\item Modélisation d'un schéma en étoile et chargement dans une base SQLite
+\item Développement d'un rapport Power BI avec indicateurs de ventes, panier moyen et rétention client
+\end{itemize}
+\textbf{Mots-clés} : Power BI, Pandas, SQLite, E-commerce}
+
+\cventry{sept. 2023–déc. 2023}
+        {Analyse de sentiments appliquée aux avis consommateurs pour identifier les facteurs de satisfaction.}
+        {Analyse des avis consommateurs}
+        {\url{https://github.com/clairemoreau/sentiment-analysis}}
+        {}
+        {\begin{itemize}
+\item Collecte et prétraitement de plus de 50 000 avis en français
+\item Utilisation de modèles de traitement du langage naturel : TF-IDF et régression logistique
+\item Visualisation des thèmes émergents et formulation de recommandations d'amélioration produit
+\end{itemize}
+\textbf{Mots-clés} : NLP, Python, Scikit-learn, Avis clients}
+\section{Centres d'intérêt}
+
+\cvline{Data visualisation}{Dataviz, Infographie, Open data}
+\cvline{Sports}{Course à pied, Yoga}
+\section{Bénévolat}
+
+\cventry{mars 2021–déc. 2022}
+        {Data Analyst Bénévole}
+        {Datacitoyens}
+        {\url{https://datacitoyens.fr}}
+        {}
+        {\begin{itemize}
+\item Accompagnement d'associations dans l'exploitation et la visualisation de leurs données d'activité
+\item Création de rapports et de tableaux de bord simplifiés pour faciliter la prise de décision des équipes
+\end{itemize}}
+
+\end{document}

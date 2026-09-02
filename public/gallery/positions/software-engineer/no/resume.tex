@@ -1,0 +1,224 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Ingrid Solberg}{}
+\title{Senior programvareutvikler}
+\phone[mobile]{+47 900 00 000}
+\email{ingrid.solberg@example.no}
+\homepage{https://www.ingridsolberg.no}
+
+\address{Karl Johans gate 1, Oslo, Oslo, Norge, 0150}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/ingridsolberg}{@ingridsolberg} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/ingridsolberg}{@ingridsolberg}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{Erfaren programvareutvikler med over 8 års erfaring innen utvikling av skalerbare webapplikasjoner og mikrotjenester. Spesialisert på backend-utvikling med Java, Python og Node.js, samt frontend med React. Opptatt av god kodekvalitet, testing og automatisering. Har erfaring med skyplattformer som AWS og Azure, og trives i tverrfaglige team med stort fokus på leveranse og samarbeid.
+%
+\begin{itemize}
+\item Sterk kompetanse innen systemarkitektur og API-design
+\item Erfaring med kontinuerlig leveranse (CI/CD) og DevOps-praksiser
+\item God kommunikasjonsevne på norsk og engelsk
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2010–juni 2015}
+        {Master, Informatikk, Poeng: A (5.0)}
+        {Universitetet i Oslo}
+        {\url{https://www.uio.no}}
+        {}
+        {\begin{itemize}
+\item Masteroppgave om skalerbare mikrotjenestearkitekturer i skyen
+\item Fordypning i distribuerte systemer og algoritmer
+\item Gjennomført med karakter A
+\end{itemize}
+\textbf{Kurs}: Algoritmer og datastrukturer, Programvaresystemer, Distribuerte systemer, Maskinlæring, Databasesystemer, Sikkerhet og sårbarheter}
+\section{Arbeidserfaring}
+
+\cventry{mars 2021–Nå}
+        {Senior programvareutvikler}
+        {Fjord Analytics AS}
+        {\url{https://www.fjordanalytics.no}}
+        {}
+        {\begin{itemize}
+\item Utvikler og vedlikeholder databehandlingsplattform basert på Java og Kubernetes
+\item Ledet migrering fra monolittisk arkitektur til mikrotjenester, noe som reduserte deploy-tiden med 60 \%
+\item Veileder utviklere i beste praksis innen testing, kodegjennomgang og arkitektur
+\item Sentral i arbeidet med å forbedre observability med OpenTelemetry og Grafana
+\end{itemize}
+\textbf{Nøkkelord}: Mikrotjenester, Kubernetes, Java, Observability}
+
+\cventry{jan. 2018–feb. 2021}
+        {Programvareutvikler}
+        {Oslo Digital AS}
+        {\url{https://www.oslodigital.no}}
+        {}
+        {\begin{itemize}
+\item Bygget REST-APIer med Node.js, TypeScript og PostgreSQL
+\item Innførte automatiserte tester med Jest og Cypress; økte testdekningen fra 35 \% til 80 \%
+\item Samarbeidet tett med produktteam for å spesifisere krav og levere nye funksjoner hver sprint
+\end{itemize}
+\textbf{Nøkkelord}: Node.js, React, Testing, CI/CD}
+
+\cventry{juli 2015–des. 2017}
+        {Systemutvikler}
+        {Bergen IT Consulting}
+        {\url{https://www.biit.no}}
+        {}
+        {\begin{itemize}
+\item Utviklet kundeportaler med React og Python (Django)
+\item Driftet og videreutviklet interne verktøy for saksbehandling
+\item Deltok i kodegjennomganger og bidro til bedre utviklingsprosesser
+\end{itemize}
+\textbf{Nøkkelord}: Python, Django, React, Drift}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: IELTS 8.0}
+\cvline{Tysk}{Begrenset arbeidskunnskap \hfill \textbf{Nøkkelord}: Grunnleggende samtale}
+\section{Ferdigheter}
+
+\cvline{Programmeringsspråk}{Ekspert \hfill \textbf{Nøkkelord}: Java, Python, TypeScript, JavaScript, Node.js}
+\cvline{Web-utvikling}{Avansert \hfill \textbf{Nøkkelord}: React, HTML, CSS, REST, GraphQL}
+\cvline{DevOps}{Avansert \hfill \textbf{Nøkkelord}: Docker, Kubernetes, AWS, Azure, GitHub Actions}
+\cvline{Databaser}{Avansert \hfill \textbf{Nøkkelord}: PostgreSQL, MySQL, MongoDB, Redis}
+\section{Utmerkelser}
+
+\cventry{des. 2023}
+        {Fjord Analytics AS}
+        {Årets teknologibragd}
+        {}
+        {}
+        {Tildelt for arbeidet med migrering til mikrotjenester som forbedret systemets pålitelighet og reduserte kostnader.}
+\section{Sertifikater}
+
+\cventry{mars 2021}
+        {Amazon Web Services}
+        {AWS Certified Developer – Associate}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{nov. 2023}
+        {Skalerbare mikrotjenester med event-drevet arkitektur}
+        {Norsk informatikkonferanse}
+        {\url{https://www.nik.no}}
+        {}
+        {Artikkelen beskriver erfaringer og resultater fra migrering av en databehandlingsplattform til en event-drevet mikrotjenestearkitektur.}
+\section{Prosjekter}
+
+\cventry{jan. 2020–Nå}
+        {Personlig nettside med utvalgte prosjekter og tekniske skriverier.}
+        {Portefølje: Ingrid Solberg}
+        {\url{https://www.ingridsolberg.no}}
+        {}
+        {\begin{itemize}
+\item Bygget med Astro og Tailwind CSS
+\item Inneholder blogginnlegg om systemarkitektur og beste praksis
+\end{itemize}
+\textbf{Nøkkelord}: Astro, Tailwind CSS, Blogg}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Ski, Fottur, Kajakk}
+\cvline{Brettspill}{Sjakk, Catan, Strategispill}
+\section{Frivillig arbeid}
+
+\cventry{jan. 2022–Nå}
+        {Arrangør og foredragsholder}
+        {Oslo Coding Meetup}
+        {\url{https://www.meetup.com/Oslo-Coding/}}
+        {}
+        {\begin{itemize}
+\item Arrangerer månedlige møter for utviklere i Oslo
+\item Holder foredrag om mikrotjenester, testing og skyplattformer
+\end{itemize}}
+
+\end{document}

@@ -1,0 +1,261 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Dutch language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-dutch.html
+\usepackage[dutch]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Lars van den Berg}{}
+\title{Software Engineer met passie voor schaalbare cloud-native systemen}
+\phone[mobile]{+31 6 12345678}
+\email{lars@vandenberg.dev}
+\homepage{https://www.larsvandenberg.dev}
+
+\address{Oudegracht 123, Utrecht, Utrecht, Nederland, 3511 AB}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/larsvandenberg}{@larsvandenberg} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/larsvandenberg}{@larsvandenberg}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basis Informatie}
+
+\cvline{}{Software Engineer met ruim 8 jaar ervaring in het ontwerpen en bouwen van
+schaalbare, cloud-native applicaties. Specialist in backend-ontwikkeling met
+Python, Java en Go, en uitgebreide ervaring met AWS en Kubernetes.
+%
+\begin{itemize}
+\item Ontwerpen van event-gedreven microservices met hoge beschikbaarheid
+\item Automatiseren van deployment pipelines met CI/CD en Infrastructure as Code
+\item Sterke focus op codekwaliteit, testbaarheid en maintainability
+\item Ervaren in het begeleiden van junior ontwikkelaars en agile samenwerking
+\end{itemize}}
+\section{Opleidingen}
+
+\cventry{sep 2013–aug 2015}
+        {Master, Informatica, Score: 8.0}
+        {Technische Universiteit Delft}
+        {\url{https://www.tudelft.nl}}
+        {}
+        {Afstudeeronderzoek gericht op schaalbare, event-gebaseerde architecturen.
+Ontwikkelde een prototype voor een event-sourcing platform dat gebruikt
+werd door meerdere onderzoeksgroepen.
+\textbf{Cursussen}: Distributed Systems, Machine Learning, Software Architecture, Big Data Processing}
+
+\cventry{sep 2010–aug 2013}
+        {Bachelor, Informatica, Score: 7.8}
+        {Hogeschool Utrecht}
+        {\url{https://www.hu.nl}}
+        {}
+        {Bachelorstage uitgevoerd bij een fintech-bedrijf, waar ik een
+realtime-transactiemonitor bouwde met Java en WebSocket.
+\textbf{Cursussen}: Objectgeoriënteerd programmeren, Databases, Software Engineering, Webtechnologie}
+\section{Werkervaring}
+
+\cventry{feb 2022–Heden}
+        {Senior Backend Engineer}
+        {CloudNimbus B.V.}
+        {\url{https://www.cloudnimbus.nl}}
+        {}
+        {\begin{itemize}
+\item Verantwoordelijk voor de architectuur en ontwikkeling van meerdere event-gedreven microservices
+\item Migreerde een monolithische applicatie naar Kubernetes en AWS EKS
+\item Introduceerde Infrastructure as Code met Terraform, wat de deploymenttijd met 70\% verminderde
+\item Begeleidde een team van vijf ontwikkelaars middels code reviews en technische workshops
+\item Werkt nauw samen met productowners om technische roadmap en sprints te bepalen
+\end{itemize}
+\textbf{Trefwoorden}: Microservices, Kubernetes, AWS, Terraform, Java, Mentoring}
+
+\cventry{jun 2018–jan 2022}
+        {Software Engineer}
+        {DataVault Solutions}
+        {\url{https://www.datavault.nl}}
+        {}
+        {\begin{itemize}
+\item Ontwikkelde en onderhield een API-platform voor veilige data-uitwisseling
+\item Implementeerde OAuth2 en JWT-authenticatie voor meerdere externe partijen
+\item Optimaliseerde databasequery's, wat leidde tot een significante verlaging van de responstijden
+\item Droeg bij aan de inrichting van CI/CD-pipelines met GitLab CI
+\item Werkte in een multidisciplinair team volgens de Scrum-methodiek
+\end{itemize}
+\textbf{Trefwoorden}: Python, FastAPI, PostgreSQL, OAuth2, GitLab CI}
+
+\cventry{jul 2016–mei 2018}
+        {Junior Software Engineer}
+        {BrightCode}
+        {\url{https://www.brightcode.nl}}
+        {}
+        {\begin{itemize}
+\item Ontwikkelde webapplicaties met Java Spring Boot en Angular
+\item Vulde user stories aan met technische ontwerpen en testplannen
+\item Schreef unit- en integratietests om de kwaliteit van de software te waarborgen
+\item Participeerde in dagelijkse stand-ups en sprint retrospectives
+\end{itemize}
+\textbf{Trefwoorden}: Java, Spring Boot, Angular, JUnit, Scrum}
+\section{Talen}
+
+\cvline{Nederlands}{Moedertaal of tweetalige vaardigheid \hfill \textbf{Trefwoorden}: Moedertaal}
+\cvline{Engels}{Volledige professionele vaardigheid \hfill \textbf{Trefwoorden}: Cambridge C2, Zakelijk Engels}
+\cvline{Duits}{Beperkte werkvaardigheid \hfill \textbf{Trefwoorden}: Conversational}
+\section{Vaardigheden}
+
+\cvline{Backend-ontwikkeling}{Expert \hfill \textbf{Trefwoorden}: Python, Java, Go, Node.js, Spring Boot, FastAPI}
+\cvline{Cloud \& DevOps}{Geavanceerd \hfill \textbf{Trefwoorden}: AWS, Kubernetes, Docker, Terraform, GitHub Actions, ArgoCD}
+\cvline{Databases}{Geavanceerd \hfill \textbf{Trefwoorden}: PostgreSQL, MySQL, MongoDB, Redis, DynamoDB}
+\cvline{Frontend-ontwikkeling}{Intermediair \hfill \textbf{Trefwoorden}: React, TypeScript, Tailwind CSS, Next.js}
+\section{Onderscheidingen}
+
+\cventry{aug 2015}
+        {Technische Universiteit Delft}
+        {Afstudeerprijs Informatica}
+        {}
+        {}
+        {Ontvangen voor het afstudeeronderzoek naar schaalbare event-gebaseerde
+systemen, inclusief de publicatie van een bijbehorend prototype als
+open-source project.}
+\section{Certificaten}
+
+\cventry{mrt 2021}
+        {Amazon Web Services}
+        {AWS Certified Solutions Architect – Associate}
+        {\url{https://www.credly.com/badges/aws-solutions-architect}}
+        {}
+        {}
+
+\cventry{jun 2022}
+        {Cloud Native Computing Foundation}
+        {Certified Kubernetes Application Developer}
+        {\url{https://www.cncf.io/certification/ckad/}}
+        {}
+        {}
+\section{Publicaties}
+
+\cventry{apr 2020}
+        {Event-driven microservices in de praktijk}
+        {Java Magazine NL}
+        {\url{https://www.java-magazine.nl/publicaties/event-driven-microservices}}
+        {}
+        {Praktijkartikel over het ontwerpen van event-driven microservices, inclusief
+lessons learned bij de migratie van een legacy-systeem naar een
+cloud-native architectuur.}
+\section{Projecten}
+
+\cventry{jan 2023–Heden}
+        {Open-source command-line tool voor het beheren van Docker-containers.
+Voorziet in overzicht van actieve containers, logweergave en healthchecks.
+}
+        {ContainerCLI}
+        {\url{https://github.com/larsvandenberg/containercli}}
+        {}
+        {Gebouwd in Go met behulp van Cobra en de Docker Engine API. Het project
+heeft inmiddels meer dan 200 GitHub-sterren en wordt actief gebruikt door
+ontwikkelaars wereldwijd.
+\textbf{Trefwoorden}: Go, Docker, CLI, Cobra}
+
+\cventry{sep 2021–dec 2021}
+        {Persoonlijke portfolio-website met projectenoverzicht, blog en
+contactformulier.
+}
+        {Portfolio-website}
+        {\url{https://www.larsvandenberg.dev}}
+        {}
+        {Ontworpen en geïmplementeerd met Next.js, TypeScript en Tailwind CSS.
+De website scoort 100 op Lighthouse voor prestaties, toegankelijkheid en
+SEO.
+\textbf{Trefwoorden}: Next.js, TypeScript, Tailwind CSS, Vercel}
+\section{Interesses}
+
+\cvline{Duurzaamheid}{Fietsen, Klimaattechnologie, Zonne-energie}
+\cvline{Technologie}{Open source, Self-hosting, Retrocomputing}
+\section{Vrijwilligerswerk}
+
+\cventry{jan 2023–Heden}
+        {Open-source bijdrager}
+        {NL Design System}
+        {\url{https://www.nldesignsystem.nl}}
+        {}
+        {Draag bij aan toegankelijke, herbruikbare UI-componenten voor Nederlandse
+overheidswebsites. Geef feedback op code, schrijf documentatie en lever
+verbeteringen aan op het gebied van toegankelijkheid.}
+
+\end{document}

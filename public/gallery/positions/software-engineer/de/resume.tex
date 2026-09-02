@@ -1,0 +1,219 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for German language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-german.html
+\usepackage[ngerman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Jonas Weber}{}
+\title{Senior Softwareentwickler für cloud-native Anwendungen}
+\phone[mobile]{+49 30 12345678}
+\email{jonas.weber@example.de}
+\homepage{https://jonas-weber.dev}
+
+\address{Hauptstraße 12, Berlin, Berlin, Deutschland, 10115}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/jweber-dev}{@jweber-dev} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/jonasweber-dev}{@jonasweber-dev}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basisinformationen}
+
+\cvline{}{\begin{itemize}
+\item Senior Softwareentwickler mit über 6 Jahren Erfahrung in der Konzeption und Umsetzung skalierbarer Backend-Systeme
+\item Spezialisiert auf Cloud-native Architekturen mit Kubernetes, Docker und AWS
+\item Erfahrung in der Zusammenarbeit in agilen Teams sowie in der Einführung von CI/CD-Pipelines
+\item Leidenschaft für Clean Code, automatisiertes Testen und Wissensaustausch im Team
+\item Bachelor-Abschluss in Informatik von der Technischen Universität Berlin
+\end{itemize}}
+\section{Ausbildung}
+
+\cventry{Okt. 2014–Sept. 2018}
+        {Bachelor, Informatik, Punkte: 1.7}
+        {Technische Universität Berlin}
+        {\url{https://www.tu.berlin/}}
+        {}
+        {\begin{itemize}
+\item Schwerpunkt Softwaretechnik und verteilte Systeme
+\item Bachelorarbeit „Entwicklung einer containerisierten Microservice-Anwendung zur automatisierten Auswertung von Sensordaten“ mit Note 1,0
+\item Studentische Hilfskraft am Fachgebiet Datenbanksysteme und Informationsmanagement
+\end{itemize}
+\textbf{Kurse}: Algorithmen und Datenstrukturen, Softwaretechnik, Datenbanksysteme, Betriebssysteme, Rechnernetze, Verteilte Systeme, IT-Sicherheit, Theoretische Informatik}
+\section{Berufserfahrung}
+
+\cventry{Apr. 2022–Heute}
+        {Senior Softwareentwickler}
+        {CloudNative Solutions GmbH}
+        {\url{https://cloudnative-solutions.de}}
+        {}
+        {\begin{itemize}
+\item Architektur und Entwicklung einer Event-basierten Microservice-Plattform für Industriekunden
+\item Einführung von GitOps-Praktiken sowie Aufbau einer Kubernetes-basierten Plattform auf AWS
+\item Verbesserung der Deployment-Frequenz um 60 \% durch Automatisierung von CI/CD-Pipelines
+\item Fachliche Führung eines dreiköpfigen Entwicklungsteams und Durchführung von Code-Reviews
+\item Enge Zusammenarbeit mit Product Management zur Ableitung technischer Lösungen aus Anforderungen
+\end{itemize}
+\textbf{Schlüsselwörter}: Kubernetes, Go, Microservices, AWS, GitOps, Mentoring}
+
+\cventry{Jan. 2019–März 2022}
+        {Softwareentwickler}
+        {DataMinds AG}
+        {\url{https://dataminds.de}}
+        {}
+        {\begin{itemize}
+\item Entwicklung von REST-APIs und Backend-Diensten mit Java, Spring Boot und PostgreSQL
+\item Migrierung einer monolithischen Anwendung in eine serviceorientierte Architektur
+\item Implementierung von Frontend-Features mit React und TypeScript im Team
+\item Mitwirkung beim Aufbau einer automatisierten Teststrategie mit JUnit und Testcontainers
+\end{itemize}
+\textbf{Schlüsselwörter}: Java, Spring Boot, React, PostgreSQL, Docker}
+
+\cventry{Apr. 2017–Dez. 2018}
+        {Werkstudent Softwareentwicklung}
+        {IT-Labs GmbH}
+        {\url{https://it-labs.de}}
+        {}
+        {\begin{itemize}
+\item Unterstützung des Teams bei der Entwicklung eines Webportals für Bildungsträger
+\item Implementierung von UI-Komponenten mit Angular und Sass
+\item Pflege von SQL-Datenbanken und Erstellung von Reports
+\end{itemize}
+\textbf{Schlüsselwörter}: Angular, SQL, Sass}
+\section{Sprachen}
+
+\cvline{Deutsch}{Muttersprache oder zweisprachig \hfill \textbf{Schlüsselwörter}: Muttersprache}
+\cvline{Englisch}{Verhandlungssichere Kenntnisse \hfill \textbf{Schlüsselwörter}: Verhandlungssicher, TOEFL 105}
+\section{Fähigkeiten}
+
+\cvline{Backend-Entwicklung}{Experte \hfill \textbf{Schlüsselwörter}: Go, Java, Spring Boot, REST APIs, Microservices}
+\cvline{Cloud \& DevOps}{Erfahren \hfill \textbf{Schlüsselwörter}: AWS, Kubernetes, Docker, Terraform, CI/CD}
+\cvline{Frontend-Entwicklung}{Fortgeschritten \hfill \textbf{Schlüsselwörter}: TypeScript, React, Next.js, Tailwind CSS}
+\cvline{Datenbanken}{Erfahren \hfill \textbf{Schlüsselwörter}: PostgreSQL, MongoDB, Redis, Datenmodellierung}
+\section{Auszeichnungen}
+
+\cventry{Nov. 2018}
+        {Technische Universität Berlin}
+        {Fakultätspreis für herausragende Bachelorarbeit}
+        {}
+        {}
+        {Auszeichnung für die Bachelorarbeit „Entwicklung einer containerisierten Microservice-Anwendung zur automatisierten Auswertung von Sensordaten“.}
+\section{Zertifikate}
+
+\cventry{Juni 2023}
+        {Amazon Web Services (AWS)}
+        {AWS Certified Solutions Architect – Associate}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+\section{Projekte}
+
+\cventry{Jan. 2023–Dez. 2023}
+        {Open-Source-Kommandozeilentool zur Verwaltung von Cloud-Ressourcen}
+        {GoCloud CLI}
+        {\url{https://github.com/jweber-dev/gocloud}}
+        {}
+        {\begin{itemize}
+\item Entwicklung eines plattformunabhängigen CLI zur Steuerung von AWS- und Kubernetes-Ressourcen
+\item Automatisierung wiederkehrender Aufgaben wie Deployment und Log-Analyse
+\item Mehr als 500 GitHub-Sterne und aktive Community-Beiträge
+\end{itemize}
+\textbf{Schlüsselwörter}: Go, CLI, Open Source, AWS}
+\section{Interessen}
+
+\cvline{Sport}{Laufen, Bouldern, Radfahren}
+\cvline{Technologie}{Open Source, Künstliche Intelligenz, Smart Home}
+\section{Ehrenamtliche Tätigkeiten}
+
+\cventry{Jan. 2020–Dez. 2023}
+        {Ehrenamtlicher Entwickler}
+        {Code for Germany}
+        {\url{https://codefor.de}}
+        {}
+        {\begin{itemize}
+\item Mitentwicklung einer Open-Source-Plattform zur Visualisierung von kommunalen Haushaltsdaten
+\item Unterstützung von lokalen OK-Lab-Gruppen bei technischen Fragen und Workshops
+\item Durchführung von Vorträgen zu Open Data und digitaler Teilhabe
+\end{itemize}}
+
+\end{document}

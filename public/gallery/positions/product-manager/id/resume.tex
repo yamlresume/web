@@ -1,0 +1,247 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Indonesian (Bahasa Indonesia) language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-indonesian.html
+\usepackage[indonesian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Rina Kartika}{}
+\title{Product Manager dengan 6+ tahun pengalaman di produk digital \& fintech}
+\phone[mobile]{+62 812-3456-7890}
+\email{rina.kartika@email.com}
+\homepage{https://www.linkedin.com/in/rinakartika}
+
+\address{Jakarta Selatan, DKI Jakarta, Indonesia, 12950}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/rinakartika}{@rinakartika} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/rinakartika}{@rinakartika} {} {} {} • {} {} {}
+{\small \faMedium}\ \href{https://medium.com/@rinakartika}{@rinakartika}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informasi Dasar}
+
+\cvline{}{\begin{itemize}
+\item Product Manager berpengalaman dalam membangun dan mengembangkan produk digital terutama di bidang fintech
+\item Terbiasa memimpin siklus hidup produk dari riset pengguna, perencanaan roadmap, hingga peluncuran dan iterasi
+\item Memiliki kemampuan kuat dalam analisis data, pengambilan keputusan berbasis metrik, dan kolaborasi lintas fungsi
+\item Berpengalaman bekerja dengan tim engineering, desain, pemasaran, dan pemangku kepentingan bisnis
+\item Fokus pada peningkatan pengalaman pengguna, pertumbuhan produk, dan pencapaian tujuan bisnis
+\end{itemize}}
+\section{Pendidikan}
+
+\cventry{Agu 2014–Jul 2018}
+        {Sarjana, Manajemen, Nilai: 3.78}
+        {Universitas Indonesia}
+        {\url{https://www.ui.ac.id/}}
+        {}
+        {\begin{itemize}
+\item Fokus pada strategi bisnis dan manajemen produk digital
+\item Aktif dalam organisasi kemahasiswaan dan berbagai studi kasus bisnis
+\item Mengembangkan kemampuan analitis dan kepemimpinan melalui proyek kelompok
+\end{itemize}
+\textbf{Mata Kuliah}: Manajemen Pemasaran, Manajemen Operasi, Sistem Informasi Manajemen, Perilaku Konsumen, Statistika Bisnis, Manajemen Keuangan}
+\section{Pengalaman Kerja}
+
+\cventry{Mar 2021–Sekarang}
+        {Senior Product Manager}
+        {PT Nusantara Digital Solusi}
+        {\url{https://www.nusantaradigital.co.id}}
+        {}
+        {\begin{itemize}
+\item Memimpin pengembangan produk fintech dengan lebih dari 2 juta pengguna aktif
+\item Menyusun dan mengelola product roadmap serta prioritas fitur berdasarkan data dan kebutuhan pasar
+\item Berkolaborasi dengan tim engineering, desain, riset, dan bisnis untuk menghadirkan solusi yang tepat
+\item Meningkatkan retensi pengguna sebesar 35\% melalui optimalisasi alur onboarding dan personalisasi layanan
+\item Melakukan riset pengguna, A/B testing, dan analisis metrik produk secara berkala
+\item Menjadi penghubung antara kebutuhan bisnis dan kapabilitas teknis dalam pengembangan fitur
+\end{itemize}
+\textbf{Kata Kunci}: Product roadmap, Fintech, Data-driven, Agile, Stakeholder management}
+
+\cventry{Feb 2019–Des 2020}
+        {Product Manager}
+        {PT Fintek Sejahtera}
+        {}
+        {}
+        {\begin{itemize}
+\item Mengelola siklus hidup produk pembayaran digital dari konsep hingga peluncuran
+\item Berkoordinasi dengan tim teknik dalam implementasi fitur dan penyelesaian masalah teknis
+\item Menganalisis perilaku pengguna untuk mengidentifikasi peluang peningkatan produk
+\item Menyusun laporan performa produk dan mempresentasikannya kepada pemangku kepentingan
+\item Bekerja sama dengan tim pemasaran dalam menyusun strategi go-to-market
+\end{itemize}
+\textbf{Kata Kunci}: Pembayaran digital, Product lifecycle, Go-to-market, Analisis data}
+
+\cventry{Jul 2018–Jan 2019}
+        {Associate Product Manager}
+        {PT Ecommerce Cemerlang}
+        {}
+        {}
+        {\begin{itemize}
+\item Mendukung product manager dalam menyusun spesifikasi produk dan user stories
+\item Mengelola backlog dan memastikan kelancaran proses sprint bersama tim pengembang
+\item Melakukan pengujian produk serta mengumpulkan umpan balik dari pengguna internal
+\end{itemize}
+\textbf{Kata Kunci}: User stories, Sprint, Backlog, UAT}
+\section{Bahasa}
+
+\cvline{Indonesia}{Bahasa Ibu / Bilingual \hfill \textbf{Kata Kunci}: Bahasa Indonesia}
+\cvline{Inggris}{Tingkat Profesional Penuh \hfill \textbf{Kata Kunci}: TOEFL iBT 105, IELTS 7.5}
+\section{Keahlian}
+
+\cvline{Manajemen Produk}{Ahli \hfill \textbf{Kata Kunci}: Product roadmap, Prioritisasi fitur, Product discovery, Go-to-market strategy, Product lifecycle}
+\cvline{Analisis Data}{Mahir \hfill \textbf{Kata Kunci}: Metrik produk, A/B testing, Google Analytics, SQL, Excel}
+\cvline{Riset Pengguna}{Mahir \hfill \textbf{Kata Kunci}: Wawancara pengguna, Survei, Persona, Usability testing}
+\cvline{Alat dan Metodologi}{Ahli \hfill \textbf{Kata Kunci}: Agile, Scrum, Jira, Figma, Mixpanel}
+\section{Penghargaan}
+
+\cventry{Nov 2022}
+        {Asosiasi Fintech Indonesia}
+        {Penghargaan Inovasi Produk Digital}
+        {}
+        {}
+        {Produk yang dipimpin berhasil meraih penghargaan atas inovasi dalam layanan keuangan digital.}
+\section{Sertifikat}
+
+\cventry{Jun 2020}
+        {Scrum Alliance}
+        {Certified Scrum Product Owner (CSPO)}
+        {\url{https://www.scrumalliance.org/}}
+        {}
+        {}
+
+\cventry{Jul 2022}
+        {Product School}
+        {Product Management Professional}
+        {\url{https://productschool.com/}}
+        {}
+        {}
+\section{Publikasi}
+
+\cventry{Mar 2023}
+        {Meningkatkan Adopsi Produk Fintech melalui Pendekatan Berbasis Data}
+        {Medium}
+        {\url{https://medium.com/@rinakartika/meningkatkan-adopsi-produk-fintech}}
+        {}
+        {Artikel tentang bagaimana product manager dapat memanfaatkan data perilaku pengguna untuk mendorong pertumbuhan produk digital.}
+\section{Proyek}
+
+\cventry{Jan 2022–Des 2022}
+        {Aplikasi mobile untuk pengelolaan keuangan pribadi dengan fitur pembuatan anggaran dan pelacakan pengeluaran.}
+        {Aplikasi Keuangan DuitKita}
+        {\url{https://duitkita.id}}
+        {}
+        {\begin{itemize}
+\item Memimpin pengembangan produk dari riset pengguna hingga peluncuran
+\item Berhasil mencapai 100 ribu unduhan dalam enam bulan pertama
+\item Menyusun strategi monetisasi dan kolaborasi dengan mitra keuangan
+\end{itemize}
+\textbf{Kata Kunci}: Fintech, Mobile app, Product strategy}
+
+\cventry{Feb 2020–Okt 2020}
+        {Platform loyalitas yang menghubungkan merchant dan pelanggan melalui program poin terintegrasi.}
+        {Platform Loyalitas Pelanggan PoinPintar}
+        {\url{https://poinpintar.id}}
+        {}
+        {\begin{itemize}
+\item Mengelola kebutuhan produk dan koordinasi lintas tim
+\item Menghadirkan fitur redeem poin yang meningkatkan transaksi merchant sebesar 20\%
+\end{itemize}
+\textbf{Kata Kunci}: Loyalty, Platform, Merchant}
+\section{Minat}
+
+\cvline{Teknologi}{Kecerdasan buatan, Produk digital, Startup}
+\cvline{Literasi}{Membaca buku, Menulis blog, Podcast produk}
+\section{Kegiatan Sukarela}
+
+\cventry{Jan 2023–Sekarang}
+        {Mentor Produk}
+        {Yayasan Penggerak Ekonomi Digital}
+        {\url{https://yayasanpenggerak.id}}
+        {}
+        {\begin{itemize}
+\item Mendampingi startup tahap awal dalam menyusun strategi produk dan validasi pasar
+\item Menyampaikan workshop tentang product discovery dan pengukuran metrik produk
+\end{itemize}}
+
+\end{document}

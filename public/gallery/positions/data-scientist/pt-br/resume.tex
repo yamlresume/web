@@ -1,0 +1,291 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Brazilian Portuguese language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-portuguese.html
+\usepackage[brazilian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Ana Beatriz Carvalho}{}
+\title{Cientista de Dados Sênior com foco em Machine Learning e soluções analíticas}
+\phone[mobile]{+55 11 98765-4321}
+\email{ana.carvalho@datainsight.com.br}
+\homepage{https://anabeatrizcarvalho.com.br}
+
+\address{Av. Paulista, 1000, São Paulo, São Paulo, Brasil, 01310-100}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/anabeatrizcarvalho}{@anabeatrizcarvalho} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/anabeatriz-data}{@anabeatriz-data} {} {} {} • {} {} {}
+{\small \faMedium}\ \href{https://medium.com/@anabeatrizcarvalho}{@anabeatrizcarvalho}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informações Básicas}
+
+\cvline{}{\begin{itemize}
+\item Cientista de Dados com mais de 8 anos de experiência em modelagem preditiva, mineração de dados e inteligência de negócio.
+\item Especialista em desenvolver soluções de machine learning para os setores financeiro e de varejo, gerando redução de custos e aumento de receita.
+\item Sólida vivência em Python, SQL, computação em nuvem (AWS, GCP) e ferramentas de visualização de dados.
+\item Experiência na liderança de times ágeis, na definição de indicadores e na comunicação de resultados para públicos não técnicos.
+\end{itemize}}
+\section{Formação}
+
+\cventry{jan. de 2015–dez. de 2017}
+        {Mestrado, Ciência de Dados, Nota: 9.1}
+        {Universidade de São Paulo (USP)}
+        {\url{https://www.usp.br/}}
+        {}
+        {\begin{itemize}
+\item Dissertação sobre seleção de atributos e interpretabilidade de modelos preditivos.
+\item Atuação como monitora nas disciplinas de estatística e aprendizado de máquina.
+\end{itemize}
+\textbf{Cursos}: Aprendizado de Máquina Avançado, Estatística Computacional, Mineração de Dados, Modelagem Preditiva, Visualização de Dados}
+
+\cventry{fev. de 2010–dez. de 2014}
+        {Bacharelado, Estatística, Nota: 8.7}
+        {Universidade Estadual de Campinas (Unicamp)}
+        {\url{https://www.unicamp.br/}}
+        {}
+        {\begin{itemize}
+\item Iniciação científica em modelos de sobrevivência aplicados à saúde pública.
+\item Participação em projetos de consultoria estatística para empresas locais.
+\end{itemize}
+\textbf{Cursos}: Inferência Estatística, Modelos Lineares, Amostragem, Análise Multivariada}
+\section{Experiência Profissional}
+
+\cventry{mar. de 2021–Atual}
+        {Cientista de Dados Sênior}
+        {DataWise Soluções em Dados}
+        {\url{https://www.datawise.com.br}}
+        {}
+        {\begin{itemize}
+\item Lidero o desenvolvimento de modelos de previsão de churn e propensão de compra para clientes de varejo e finanças.
+\item Implementei um pipeline de MLOps que reduziu em 40\% o tempo de deploy dos modelos em produção.
+\item Criei um framework de testes A/B e de validação offline que melhorou a confiabilidade dos experimentos.
+\item Supervisiono cientistas de dados júnior e contribuo com a definição da arquitetura de dados.
+\end{itemize}
+\textbf{Palavras-chave}: Machine Learning, MLOps, Python, AWS, Airflow, Testes A/B}
+
+\cventry{jan. de 2018–fev. de 2021}
+        {Cientista de Dados}
+        {VarejoTech}
+        {\url{https://www.varejotech.com.br}}
+        {}
+        {\begin{itemize}
+\item Construí modelos de precificação e segmentação de clientes que elevaram a margem operacional em 12\%.
+\item Desenvolvi painéis analíticos em Power BI para acompanhamento de metas e detecção de anomalias.
+\item Automatizei a coleta, limpeza e integração de dados de vendas e estoque com Python e SQL.
+\end{itemize}
+\textbf{Palavras-chave}: Segmentação, Preços, Power BI, SQL, Python, Previsão de Demanda}
+
+\cventry{jan. de 2016–dez. de 2017}
+        {Analista de Dados}
+        {Grupo Financeiro Beta}
+        {\url{https://www.grupobeta.com.br}}
+        {}
+        {\begin{itemize}
+\item Atuei na construção de relatórios gerenciais de risco de crédito e inadimplência.
+\item Realizei análises exploratórias para apoiar a área de crédito na definição de políticas de concessão.
+\item Elaborei indicadores para comitês executivos e apresentações de resultados.
+\end{itemize}
+\textbf{Palavras-chave}: Risco de Crédito, Relatórios Gerenciais, SQL, Excel Avançado, Análise Exploratória}
+\section{Idiomas}
+
+\cvline{Português}{Nativo ou Bilíngue \hfill \textbf{Palavras-chave}: Português do Brasil}
+\cvline{Inglês}{Proficiência Profissional Fluente \hfill \textbf{Palavras-chave}: TOEFL iBT 110}
+\cvline{Espanhol}{Proficiência Profissional Limitada \hfill \textbf{Palavras-chave}: Leitura técnica}
+\section{Competências}
+
+\cvline{Machine Learning}{Especialista \hfill \textbf{Palavras-chave}: Python, Scikit-learn, TensorFlow, PyTorch, XGBoost, LightGBM, MLflow, Feature Store}
+\cvline{Estatística}{Especialista \hfill \textbf{Palavras-chave}: Inferência Bayesiana, Séries Temporais, Testes A/B, Modelos Lineares, Modelos de Sobrevivência}
+\cvline{Engenharia de Dados}{Avançado \hfill \textbf{Palavras-chave}: SQL, Apache Spark, Airflow, dbt, Docker, AWS, GCP}
+\cvline{Visualização de Dados}{Avançado \hfill \textbf{Palavras-chave}: Matplotlib, Seaborn, Plotly, Power BI, Looker}
+\section{Prêmios}
+
+\cventry{nov. de 2023}
+        {Associação Brasileira de Análise de Dados}
+        {Prêmio ABRADe de Inovação em Dados}
+        {}
+        {}
+        {Reconhecimento pelo projeto de MLOps aplicado à prevenção de churn em uma base com mais de 5 milhões de clientes.}
+
+\cventry{dez. de 2014}
+        {Universidade Estadual de Campinas}
+        {Destaque Acadêmico}
+        {}
+        {}
+        {Reconhecimento pela excelência no desempenho do curso de Estatística entre os concluintes daquele ano.}
+\section{Certificados}
+
+\cventry{jun. de 2022}
+        {Amazon Web Services}
+        {AWS Certified Machine Learning - Specialty}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{mar. de 2021}
+        {Google}
+        {TensorFlow Developer Certificate}
+        {\url{https://www.tensorflow.org/certificate}}
+        {}
+        {}
+\section{Publicações}
+
+\cventry{set. de 2020}
+        {Previsão de inadimplência em carteiras de crédito usando aprendizado de máquina}
+        {Revista Brasileira de Inteligência Computacional}
+        {\url{https://www.rbic.org.br}}
+        {}
+        {\begin{itemize}
+\item Apresenta uma comparação entre regressão logística, florestas aleatórias e redes neurais para predição de inadimplência.
+\item Discute estratégias de balanceamento de classes e interpretabilidade de modelos em cenários reais de crédito.
+\end{itemize}}
+\section{Referências}
+
+\cventry{\emaillink[ricardo.nogueira@datawise.com.br]{ricardo.nogueira@datawise.com.br}}
+        {Gerente de Dados na DataWise Soluções em Dados}
+        {Ricardo Nogueira}
+        {+55 11 99876-5432}
+        {}
+        {Ana Beatriz combina sólida formação estatística com capacidade de liderança e comunicação. Foi fundamental para a evolução dos nossos modelos de machine learning.}
+\section{Projetos}
+
+\cventry{mar. de 2022–Atual}
+        {Pipeline end-to-end que combina automação de treinamento, validação e deploy de modelos de churn.}
+        {Plataforma de MLOps para Previsão de Churn}
+        {\url{https://github.com/anabeatriz-data/churn-mlops}}
+        {}
+        {\begin{itemize}
+\item Utiliza Docker, Airflow e MLflow para orquestrar as etapas do ciclo de vida do modelo.
+\item Reduziu o tempo de atualização dos modelos de semanas para horas no ambiente de produção.
+\end{itemize}
+\textbf{Palavras-chave}: MLOps, Docker, Airflow, MLflow, Churn}
+
+\cventry{jan. de 2020–dez. de 2020}
+        {Projeto de estudo com modelos ARIMA, Prophet e redes LSTM aplicados a uma base pública de vendas.}
+        {Modelo de Séries Temporais para Previsão de Vendas}
+        {\url{https://github.com/anabeatriz-data/series-temporais-vendas}}
+        {}
+        {\begin{itemize}
+\item Análise comparativa de acurácia entre abordagens clássicas e neurais.
+\item Desenvolvimento de um dashboard interativo em Streamlit para exploração dos resultados.
+\end{itemize}
+\textbf{Palavras-chave}: Séries Temporais, ARIMA, Prophet, LSTM, Streamlit}
+
+\cventry{ago. de 2019–out. de 2019}
+        {Dashboard criado com Power BI para monitoramento de metas comerciais e qualidade dos dados.}
+        {Painel de Indicadores de Negócio}
+        {\url{https://github.com/anabeatriz-data/dashboard-indicadores}}
+        {}
+        {\begin{itemize}
+\item Consolidou mais de 15 fontes de dados em um único painel gerencial.
+\item Facilitou a tomada de decisão semanal dos times comerciais.
+\end{itemize}
+\textbf{Palavras-chave}: Power BI, Indicadores, DAX, SQL}
+\section{Interesses}
+
+\cvline{Leitura}{Ficção científica, Não ficção}
+\cvline{Esportes}{Corrida, Yoga}
+\section{Voluntariado}
+
+\cventry{jan. de 2020–Atual}
+        {Mentora voluntária}
+        {Mulheres em Dados}
+        {\url{https://www.mulheresemdados.org.br}}
+        {}
+        {\begin{itemize}
+\item Mentoria de carreira para mulheres que estão ingressando na área de dados.
+\item Criação de conteúdos sobre machine learning e estatística para a comunidade.
+\end{itemize}}
+
+
+\cventry{mar. de 2019–dez. de 2022}
+        {Voluntária em projetos sociais}
+        {Ciência de Dados para o Bem}
+        {\url{https://www.datascienceforgood.org.br}}
+        {}
+        {\begin{itemize}
+\item Atuação em projetos de análise de dados para organizações sem fins lucrativos nas áreas de educação e saúde.
+\end{itemize}}
+
+\end{document}

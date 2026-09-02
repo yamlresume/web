@@ -1,0 +1,275 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{林怡君}{}
+\title{資深使用者經驗設計師 ｜ 打造以人為本的數位體驗}
+\phone[mobile]{+886 912 345 678}
+\email{yichun.lin@example.com}
+\homepage{https://www.behance.net/yichunlin}
+
+\address{中國臺灣，大安區，台北市，信義路二段 100 號 8 樓，106}{}{}
+
+\extrainfo{{\small \faBehance}\ \href{https://www.behance.net/yichunlin}{@yichunlin} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/yichunlin}{@yichunlin} {} {} {} • {} {} {}
+{\small \faMedium}\ \href{https://medium.com/@yichunlin}{@yichunlin}}
+
+\begin{document}
+
+\maketitle
+
+\section{簡介}
+
+\cvline{}{擁有 8 年以上產品設計與使用者研究經驗，專精於 Web 與 App 的 UX 策略、互動設計與設計系統。
+%
+\begin{itemize}
+\item 主導超過 20 個跨國與本土專案，涵蓋金融科技、電商、SaaS 與醫療照護領域
+\item 擅長以質化與量化研究發掘使用者需求，並將研究洞見轉化為具體設計決策
+\item 熟悉 Design Sprint、雙鑽石流程與敏捷開發，能有效與產品、工程團隊協作
+\item 透過設計系統與反覆原型測試，協助團隊提升開發效率與產品易用性
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2012年9月–2014年7月}
+        {碩士，設計系 互動設計組，成績：3.9}
+        {國立臺灣科技大學}
+        {\url{https://www.ntust.edu.tw}}
+        {}
+        {\begin{itemize}
+\item 碩士論文以「高齡者行動支付應用程式之介面設計研究」獲選為系所優秀論文
+\item 協助教授執行科技部研究計畫，負責使用者訪談、數據整理與原型測試
+\end{itemize}
+\textbf{課程}：人機互動、認知心理學、使用者經驗研究、互動多媒體設計、服務設計}
+
+\cventry{2008年9月–2012年7月}
+        {學士，工業設計系，成績：3.7}
+        {國立臺北科技大學}
+        {\url{https://www.ntut.edu.tw}}
+        {}
+        {\begin{itemize}
+\item 畢業專題「城市公共座椅設計」入圍全國設計專題競賽前 10 名
+\item 在校期間參與跨系所合作案，學習將工程技術與設計思維整合
+\end{itemize}
+\textbf{課程}：產品設計、人因工程、色彩學、設計素描、材料與製造程序}
+\section{工作經歷}
+
+\cventry{2021年1月至今}
+        {資深 UX Designer}
+        {澄心設計顧問股份有限公司}
+        {\url{https://www.chengxin-design.example.com}}
+        {}
+        {\begin{itemize}
+\item 主導金融科技與醫療照護產品的 UX 策略，包含使用者研究、資訊架構、互動流程與設計系統建置
+\item 與產品經理、前後端工程師協作，透過設計衝刺與快速原型測試，將新功能上線時間縮短 30\%
+\item 建立以使用者為中心的設計流程，導入易用性測試與數據分析，提升產品滿意度與留存率
+\item 擔任設計導師，協助資淺設計師提升研究與視覺傳達能力
+\end{itemize}
+\textbf{關鍵字}：使用者研究、設計策略、設計系統、跨職能協作、敏捷開發}
+
+\cventry{2018年7月–2020年12月}
+        {UX Designer}
+        {FutureLab 科技股份有限公司}
+        {\url{https://www.futurelab.example.com}}
+        {}
+        {\begin{itemize}
+\item 負責 B2B SaaS 產品線的介面設計與使用流程優化，涵蓋資料儀表板、權限管理與報表系統
+\item 執行超過 15 場使用者訪談與遠端易用性測試，持續將研究發現轉化為設計迭代
+\item 與工程團隊共同建立元件庫與設計規範，降低跨團隊溝通成本並提升開發效率
+\item 參與產品需求定義與優先級排序，提出以數據驅動的設計方案，協助達成年度留存目標
+\end{itemize}
+\textbf{關鍵字}：B2B SaaS、易用性測試、設計系統、數據分析、使用者訪談}
+
+\cventry{2016年8月–2018年6月}
+        {UI/UX Designer}
+        {好點子數位設計有限公司}
+        {\url{https://www.goodidea.example.com}}
+        {}
+        {\begin{itemize}
+\item 負責電商品牌與行銷活動網頁的視覺設計、RWD 切版與 Prototype 製作
+\item 與設計總監合作建立設計規範，統一元件樣式與互動行為，提升品牌一致性
+\item 運用 Google Analytics 與 Hotjar 分析使用者行為，提出頁面優化建議並提升轉換率 15\%
+\end{itemize}
+\textbf{關鍵字}：響應式設計、視覺設計、Prototype、電商、數據分析}
+\section{語言}
+
+\cvline{中文}{母語或雙語水平 \hfill \textbf{關鍵字}：母語、繁體中文}
+\cvline{英語}{完全專業水平 \hfill \textbf{關鍵字}：TOEIC 900、產品簡報、跨國協作}
+\section{專業技能}
+
+\cvline{使用者研究}{專家 \hfill \textbf{關鍵字}：深度訪談、脈絡探查、易用性測試、問卷調查、Persona、顧客旅程地圖}
+\cvline{互動設計}{專家 \hfill \textbf{關鍵字}：線框圖、互動原型、資訊架構、使用者流程、微互動}
+\cvline{視覺設計}{高級 \hfill \textbf{關鍵字}：Figma、Adobe XD、Sketch、設計系統、排版與色彩}
+\cvline{原型開發}{中級 \hfill \textbf{關鍵字}：HTML/CSS、JavaScript、Framer、Principle、ProtoPie}
+\section{榮譽}
+
+\cventry{2022年11月}
+        {台灣設計研究院}
+        {金點設計獎}
+        {}
+        {}
+        {以「記憶守護者」失智症照護 App 榮獲年度最佳設計獎，肯定其在介面設計、服務流程與社會關懷上的創新。}
+
+\cventry{2014年7月}
+        {國立臺灣科技大學}
+        {設計系所優秀論文獎}
+        {}
+        {}
+        {碩士論文「高齡者行動支付應用程式之介面設計研究」獲選為當年度優秀論文。}
+\section{證書}
+
+\cventry{2023年1月}
+        {Google}
+        {Google UX Design Professional Certificate}
+        {\url{https://www.coursera.org/}}
+        {}
+        {}
+
+\cventry{2022年3月}
+        {Nielsen Norman Group}
+        {NN/g UX Certification}
+        {\url{https://www.nngroup.com/}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2023年7月}
+        {以服務設計觀點探討智慧健康照護平台之使用者經驗}
+        {設計學報}
+        {\url{https://www.jodesign.org.tw}}
+        {}
+        {探討智慧健康照護平台在使用者經驗上的挑戰，提出以服務藍圖與使用者旅程地圖整合的設計評估架構，並以實際案例驗證其可行性。}
+\section{項目}
+
+\cventry{2021年3月–2022年12月}
+        {為失智症患者與家屬設計的照護協作 App，整合用藥提醒、日常紀錄與緊急聯絡功能。}
+        {記憶守護者（Memory Keeper）}
+        {\url{https://www.memorykeeper.example.com}}
+        {}
+        {\begin{itemize}
+\item 主導田野調查與訪談，深入理解照顧者與患者的痛點，建立人物誌與使用情境
+\item 設計完整的服務流程與互動原型，並進行 3 輪易用性測試，任務完成率提升 42\%
+\item 與工程團隊密切協作，確保設計系統在 iOS 與 Android 平台上的一致體驗
+\end{itemize}
+\textbf{關鍵字}：服務設計、使用者研究、原型測試、失智症照護、設計系統}
+
+\cventry{2020年1月–2021年6月}
+        {重新設計醫療院所遠距掛號與視訊看診流程，降低患者的操作焦慮並提升預約成功率。}
+        {遠距醫療預約平台 Redesign}
+        {\url{https://www.telehealth.example.com}}
+        {}
+        {\begin{itemize}
+\item 分析既有使用者流程與客服數據，找出 10 個關鍵斷點並進行重新設計
+\item 建立符合無障礙規範的設計元件，確保高齡使用者也能順利操作
+\item 系統上線後，預約成功率提升 27\%，客服進線量減少 18\%
+\end{itemize}
+\textbf{關鍵字}：醫療設計、無障礙設計、使用者流程、數據分析}
+\section{興趣愛好}
+
+\cvline{設計寫作}{Medium、設計方法、個案研究}
+\cvline{戶外運動}{登山、單車、露營}
+\section{志願服務}
+
+\cventry{2019年1月–2022年12月}
+        {實體活動志工}
+        {台灣使用者經驗設計協會}
+        {\url{https://uxpataiwan.example.com}}
+        {}
+        {\begin{itemize}
+\item 協助籌辦年度使用者經驗研討會，負責講者邀請、工作坊規劃與現場活動執行
+\item 參與線上社群文章翻譯與推廣，促進台灣設計社群知識交流
+\end{itemize}}
+
+\end{document}

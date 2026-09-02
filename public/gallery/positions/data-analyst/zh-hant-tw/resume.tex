@@ -1,0 +1,230 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{林怡君}{}
+\title{數據分析師｜商業智慧與資料視覺化}
+\phone[mobile]{+886 912 345 678}
+\email{yichun.lin@datainsight.tw}
+\homepage{https://github.com/yichunlin-data}
+
+\address{中國臺灣，台北市，台北市，台北市中山區南京東路三段100號，104}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/yichunlin-data}{@yichunlin-data} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/yichunlin-data}{@yichunlin-data} {} {} {} • {} {} {}
+{\small \faMedium}\ \href{https://medium.com/@yichunlin-data}{@yichunlin-data}}
+
+\begin{document}
+
+\maketitle
+
+\section{簡介}
+
+\cvline{}{具 5 年資料分析實務經驗，擅長從龐雜數據中挖掘商業洞見，並以視覺化工具協助決策。熟悉 SQL、Python 與 Tableau，曾主導客戶分群、流失預測與行銷成效分析專案，為企業提升營收與營運效率。具備跨部門溝通能力，能將分析結果轉化為具體行動方案。}
+\section{教育背景}
+
+\cventry{2015年9月–2019年6月}
+        {學士，資訊管理學系，成績：3.9/4.0}
+        {國立台灣大學}
+        {\url{https://www.ntu.edu.tw/}}
+        {}
+        {\begin{itemize}
+\item 主修資訊管理，副修統計學，奠定資料分析與程式開發基礎
+\item 畢業專題以社群媒體文字探勘分析消費者情緒，獲得系上優良專題獎
+\item 修習多門資料科學相關課程，並以 Python 完成實作專案
+\end{itemize}
+\textbf{課程}：統計學（一）（二）、資料庫管理、資料探勘、作業研究、程式設計與演算法、資訊管理導論}
+\section{工作經歷}
+
+\cventry{2022年3月至今}
+        {數據分析師}
+        {台新國際商業銀行}
+        {\url{https://www.taishinbank.com.tw/}}
+        {}
+        {\begin{itemize}
+\item 主導信用卡顧客分群與行為預測模型，協助行銷團隊設計個人化優惠方案，提升點擊率 25\%
+\item 建立自動化 ETL 流程，整合跨部門交易與會員資料，縮短報表產出時間 40\%
+\item 使用 SQL 與 Python 進行 A/B 測試成效分析，提供產品迭代具體建議
+\item 開發 Tableau 經營儀表板，供高階主管即時掌握關鍵績效指標
+\end{itemize}
+\textbf{關鍵字}：SQL、Python、Tableau、A/B Testing、ETL、Data Modeling}
+
+\cventry{2020年7月–2022年2月}
+        {商業數據分析助理}
+        {台灣大哥大股份有限公司}
+        {\url{https://www.taiwanmobile.com/}}
+        {}
+        {\begin{itemize}
+\item 協助分析 4G/5G 用戶使用行為，定期產出月報與專題分析簡報
+\item 整理與清理客戶服務歷程資料，建立流失預警規則，降低客戶流失率 12\%
+\item 支援行銷活動成效評估，透過迴歸分析找出影響續約率的關鍵因素
+\end{itemize}
+\textbf{關鍵字}：Excel、SAS、資料清理、迴歸分析、簡報製作}
+\section{語言}
+
+\cvline{中文}{母語或雙語水平 \hfill \textbf{關鍵字}：母語}
+\cvline{英語}{完全專業水平 \hfill \textbf{關鍵字}：TOEIC 950、TOEFL iBT 105}
+\section{專業技能}
+
+\cvline{資料分析}{專家 \hfill \textbf{關鍵字}：SQL、Python、Pandas、NumPy、統計檢定}
+\cvline{資料視覺化}{高級 \hfill \textbf{關鍵字}：Tableau、Power BI、Google Data Studio、matplotlib}
+\cvline{程式語言}{高級 \hfill \textbf{關鍵字}：Python、R、SQL}
+\cvline{機器學習}{中級 \hfill \textbf{關鍵字}：Scikit-learn、XGBoost、分類模型、分群分析}
+\cvline{工具與平台}{高級 \hfill \textbf{關鍵字}：Git、Airflow、dbt、Snowflake、BigQuery}
+\section{榮譽}
+
+\cventry{2021年12月}
+        {台灣資料科學協會}
+        {第 10 屆台灣資料科學競賽 亞軍}
+        {}
+        {}
+        {與團隊以電商客戶流失預測模型參賽，在 200 餘隊中獲得第二名，並於成果發表會展示分析流程。}
+\section{證書}
+
+\cventry{2021年6月}
+        {Google}
+        {Google Data Analytics Professional Certificate}
+        {\url{https://coursera.org/verify/professional-cert/google-data-analytics}}
+        {}
+        {}
+
+\cventry{2022年8月}
+        {Tableau}
+        {Tableau Desktop Specialist}
+        {\url{https://www.tableau.com/learn/certification}}
+        {}
+        {}
+\section{項目}
+
+\cventry{2021年3月–2021年8月}
+        {以電商訂單與會員互動資料建立流失預測模型，提供行銷團隊精準名單}
+        {客戶流失預測模型}
+        {\url{https://github.com/yichunlin-data/churn-prediction}}
+        {}
+        {\begin{itemize}
+\item 清理並整合 50 萬筆會員交易資料，設計 30 餘個特徵
+\item 比較 Logistic Regression、Random Forest 與 XGBoost 模型，最終 AUC 達 0.87
+\item 以 SHAP 解釋模型重要變數，並轉換為行動建議供行銷團隊使用
+\end{itemize}
+\textbf{關鍵字}：Python、Scikit-learn、XGBoost、SHAP、Feature Engineering}
+
+\cventry{2022年10月–2023年1月}
+        {串接 POS 系統資料，建立零售銷售即時監控儀表板}
+        {即時銷售儀表板}
+        {\url{https://public.tableau.com/app/profile/yichunlin-data}}
+        {}
+        {\begin{itemize}
+\item 使用 Tableau Prep 清理每日銷售資料，並以 Tableau 建立互動式儀表板
+\item 提供店鋪、商品、時段等多維度分析視圖，協助營運團隊掌握銷售趨勢
+\end{itemize}
+\textbf{關鍵字}：Tableau、Tableau Prep、POS、即時監控}
+\section{興趣愛好}
+
+\cvline{資料科學社群}{Kaggle、資料松、讀書會}
+\cvline{戶外運動}{登山、瑜珈、自行車}
+\section{志願服務}
+
+\cventry{2022年2月–2023年12月}
+        {講師}
+        {Code for Tomorrow（資料科學教育志工）}
+        {\url{https://codefortomorrow.org/}}
+        {}
+        {\begin{itemize}
+\item 至偏鄉國中教授基礎程式設計與資料分析概念，啟發學生對科技的興趣
+\item 協助設計互動式教材與小型實作專案，累計服務超過 100 名學生
+\end{itemize}}
+
+\end{document}

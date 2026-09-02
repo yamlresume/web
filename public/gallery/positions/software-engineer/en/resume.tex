@@ -1,0 +1,228 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Andy Dufresne}{}
+\title{Headed for the Pacific}
+\phone[mobile]{(213) 555-9876}
+\email{hi@ppresume.com}
+\homepage{https://ppresume.com/gallery}
+
+\address{123 Main Street, Sacramento, California, United States, 95814}{}{}
+
+\extrainfo{{\small \faLine}\ \href{https://line.com/PPResumeX}{@PPResumeX} {} {} {} • {} {} {}
+{\small \faTwitter}\ \href{https://twitter.com/PPResumeX}{@PPResumeX}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{\begin{itemize}
+\item Computer Science major with strong foundation in data structures, algorithms, and software development
+\item Pixel perfect full stack web developer, specialised in creating high-quality, visually appealing websites
+\item Experiened in databases (SQL, NoSQL), familiar with server-side technologies (Node.js, Express, etc.)
+\item Team player, with detail-oriented mindset and a keen eye for design and user experiences
+\end{itemize}}
+\section{Education}
+
+\cventry{Sep 2016–Jul 2020}
+        {Bachelor, Computer Engineering and Computer Science, Score: 3.8}
+        {University of Southern California}
+        {\url{https://www.cs.usc.edu/}}
+        {}
+        {\begin{itemize}
+\item Developed proficiency in programming languages such as Java, C++, and Python
+\item Gained hands-on experience in software development through various projects and assignments
+\item Strong communication and teamwork skills acquired through group projects and presentations
+\end{itemize}
+\textbf{Courses}: Discrete Methods in Computer Science, Programming Language Concepts, Data Structures and Object-Oriented Design, Operating Systems, Computer Architecture, Database Systems, Computer Networking, Introduction to the Theory of Computing}
+\section{Work}
+
+\cventry{Dec 2022–Present}
+        {Senior Software Engineer}
+        {PPResume}
+        {\url{https://ppresume.com}}
+        {}
+        {\begin{itemize}
+\item Developed and implemented efficient and scalable code, ensuring high-quality and maintainable web applications
+\item Collaborated with cross-functional teams to gather project requirements and translate them into technical solutions
+\item Conducted thorough testing and debugging to identify and resolve any issues or bugs in the software
+\item Actively participated in code reviews, providing valuable feedback to improve code quality and adherence to best practices
+\item Mentored and guided junior developers, fostering a collaborative and growth-oriented team environment
+\end{itemize}
+\textbf{Keywords}: Scalability, Growth, Quality, Mentorship}
+
+\cventry{Sep 2020–Dec 2022}
+        {Software Engineer}
+        {PPResume}
+        {\url{https://ppresume.com}}
+        {}
+        {\begin{itemize}
+\item Created reusable React components to ensure code efficiency and maintainability
+\item Integrated with RESTful APIs to fetch and display dynamic data on the frontend
+\item Implemented client-side routing using React Router for smooth navigation between pages
+\item Actively participated in Agile development methodologies, attending daily stand-up meetings and sprint planning sessions
+\end{itemize}
+\textbf{Keywords}: RESTful, React, Agile}
+\section{Languages}
+
+\cvline{English}{Native or Bilingual Proficiency \hfill \textbf{Keywords}: TOEFL 110, IELTS 7.5}
+\cvline{Chinese}{Elementary Proficiency}
+\section{Skills}
+
+\cvline{Web Development}{Expert \hfill \textbf{Keywords}: Python, Ruby, CSS, React, JavaScript}
+\cvline{DevOps}{Intermediate \hfill \textbf{Keywords}: Python, Kubernetes, Docker, Shell, Ansible}
+\cvline{Design}{Intermediate \hfill \textbf{Keywords}: Sketch, Figma, Photoshop}
+\section{Awards}
+
+\cventry{Oct 2016}
+        {University of Southern California}
+        {Dean's List}
+        {}
+        {}
+        {Awarded to students who achieve a high academic standing by maintaining
+a specified grade point average (GPA) during a semester.}
+\section{Certificates}
+
+\cventry{Mar 2021}
+        {AWS}
+        {AWS Certified Developer - Associate}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Dec 2017}
+        {Enhancing Human-Computer Interaction through Augmented Reality}
+        {ACM Transactions on Interactive Intelligent Systems}
+        {\url{https://dl.acm.org/journal/tiis}}
+        {}
+        {\begin{itemize}
+\item Explores the potential of augmented reality (AR) in improving interaction between humans and computers
+\item Highlights benefits of AR in various areas such as gaming, education, healthcare, and design
+\item Discusses challenges and future directions of AR technology in enhancing user experience
+\end{itemize}}
+\section{References}
+
+\cventry{\emaillink[amanda.reynolds@usc.edu]{amanda.reynolds@usc.edu}}
+        {Computer Science Professor}
+        {Dr. Amanda Reynolds}
+        {(555) 123-4567}
+        {}
+        {Andy Dufresne shows exceptional problem-solving skills and a solid
+understanding of programming concepts, he would bring immense value to
+any team or organization he becomes a part of.}
+\section{Projects}
+
+\cventry{Sep 2016–Dec 2016}
+        {A web-based educational platform for interactive learning}
+        {EduWeb}
+        {\url{https://www.eduweb.xyz/}}
+        {}
+        {\begin{itemize}
+\item Designed to enhance online learning experiences
+\item Facilitates students' engagement and collaboration through interactive features and user-friendly interface
+\item Offers a wide range of courses across various subjects
+\item Aims to improve the way students learn through the power of the web
+\end{itemize}
+\textbf{Keywords}: Education, Online Learning, HCI}
+\section{Interests}
+
+\cvline{Sports}{Soccer, Swimming, Bicycling, Hiking}
+\cvline{Music}{Piano, Guitar}
+\section{Volunteer}
+
+\cventry{Sep 2015–Jul 2023}
+        {Tech Mentor}
+        {USC Computer Science and Engineering Society}
+        {\url{https://www.usccsesociety.org/}}
+        {}
+        {\begin{itemize}
+\item Volunteered as a Tech Mentor at USC Computer Science and Engineering Society
+\item Provided guidance and assistance to fellow students in their technical projects and coursework
+\item Assisted in organizing workshops, coding competitions, and networking events for the society members
+\item Contributed to fostering a collaborative and supportive environment within the student community
+\end{itemize}}
+
+\end{document}

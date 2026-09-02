@@ -1,0 +1,214 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Spanish language
+% \usepackage[spanish]{babel} has some conflicting issues with moderncv
+% so we have to use enable the following options to make it work
+%
+% ref:
+% - https://tex.stackexchange.com/a/140161/36007
+\usepackage[spanish,es-lcroman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Carlos Méndez}{}
+\title{Analista de datos con experiencia en business intelligence, SQL y visualización}
+\phone[mobile]{+34 612 345 678}
+\email{carlos.mendez@email.com}
+\homepage{https://carlosmendez.dev}
+
+\address{Calle de Alcalá 123, Madrid, Comunidad de Madrid, España, 28001}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/carlosmendez}{@carlosmendez} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/carlosmendez}{@carlosmendez}}
+
+\begin{document}
+
+\maketitle
+
+\section{Información básica}
+
+\cvline{}{Analista de datos con más de 5 años de experiencia ayudando a empresas del sector financiero y de telecomunicaciones a convertir datos en decisiones estratégicas.
+%
+Especializado en extracción, limpieza y modelado de datos con SQL y Python, así como en diseño de cuadros de mando interactivos con Power BI y Tableau. Apasionado por encontrar historias dentro de los datos y comunicarlas de forma clara a audiencias no técnicas.}
+\section{Educación}
+
+\cventry{sept 2015–jul 2019}
+        {Licenciatura, Ciencia de Datos e Inteligencia Artificial, Puntuación: 8.7}
+        {Universidad Carlos III de Madrid}
+        {\url{https://www.uc3m.es}}
+        {}
+        {\begin{itemize}
+\item Formación sólida en estadística, programación y análisis de datos.
+\item Desarrollo de proyectos académicos de machine learning y visualización.
+\item Trabajo en equipo y comunicación de resultados técnicos.
+\end{itemize}
+\textbf{Cursos}: Estadística avanzada, Análisis multivariante, Machine Learning, Visualización de datos, Bases de datos, Big Data}
+\section{Experiencia laboral}
+
+\cventry{mar 2022 hasta la fecha}
+        {Analista de datos}
+        {Banco Santander}
+        {\url{https://www.santander.com}}
+        {}
+        {\begin{itemize}
+\item Diseñé e implementé modelos de segmentación de clientes para campañas de marketing, mejorando la tasa de conversión en un 18 \%.
+\item Elaboré informes y cuadros de mando en Power BI para la dirección de banca minorista.
+\item Optimicé consultas SQL en bases de datos de más de 50 millones de registros, reduciendo el tiempo de ejecución en un 40 \%.
+\item Colaboré con equipos de riesgo para automatizar la detección de transacciones sospechosas.
+\end{itemize}
+\textbf{Palabras clave}: SQL, Python, Power BI, Segmentación, Detección de fraude}
+
+\cventry{jul 2019–feb 2022}
+        {Analista de inteligencia de negocio}
+        {Telefónica}
+        {\url{https://www.telefonica.com}}
+        {}
+        {\begin{itemize}
+\item Desarrollé el repositorio central de indicadores de negocio, unificando fuentes de datos heterogéneas.
+\item Automatizé la generación de informes semanales con Python y SQL, ahorrando más de 10 horas semanales al equipo.
+\item Presenté análisis de abandono y satisfacción de clientes ante comités de dirección.
+\item Formé a 15 personas del equipo en el uso de Tableau y buenas prácticas de analítica.
+\end{itemize}
+\textbf{Palabras clave}: Tableau, Análisis de abandono, Automatización, Python, Liderazgo}
+\section{Idiomas}
+
+\cvline{Español}{Competencia nativa o bilingüe}
+\cvline{Inglés}{Competencia profesional plena \hfill \textbf{Palabras clave}: IELTS 7.5}
+\cvline{Francés}{Competencia elemental}
+\section{Competencias}
+
+\cvline{Análisis de datos}{Experto \hfill \textbf{Palabras clave}: Excel, SQL, Python, Pandas, NumPy}
+\cvline{Visualización de datos}{Avanzado \hfill \textbf{Palabras clave}: Power BI, Tableau, Looker Studio, Matplotlib, ggplot2}
+\cvline{Bases de datos}{Avanzado \hfill \textbf{Palabras clave}: PostgreSQL, MySQL, BigQuery, MongoDB}
+\cvline{Machine Learning}{Intermedio \hfill \textbf{Palabras clave}: Scikit-learn, Regresión, Clasificación, Clustering}
+\section{Premios}
+
+\cventry{oct 2019}
+        {Universidad Carlos III de Madrid}
+        {Premio al mejor trabajo fin de grado en análisis de datos}
+        {}
+        {}
+        {Reconocimiento al TFG titulado "Predicción de abandono de clientes mediante técnicas de machine learning", galardonado por su aplicación práctica y rigor metodológico.}
+\section{Certificados}
+
+\cventry{mar 2022}
+        {Google}
+        {Google Data Analytics Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-data-analytics}}
+        {}
+        {}
+
+\cventry{sept 2023}
+        {Microsoft}
+        {Microsoft Certified: Power BI Data Analyst Associate}
+        {\url{https://learn.microsoft.com/en-us/certifications/data-analyst-associate/}}
+        {}
+        {}
+\section{Proyectos}
+
+\cventry{ene 2023–may 2023}
+        {Proyecto de machine learning para identificar transacciones fraudulentas en tiempo real utilizando datos sintéticos y técnicas de aprendizaje supervisado.}
+        {Modelo de detección de fraude en transacciones}
+        {\url{https://github.com/carlosmendez/fraud-detection}}
+        {}
+        {\begin{itemize}
+\item Implementé un pipeline completo de limpieza, ingeniería de características y entrenamiento con XGBoost.
+\item Alcancé una precisión del 96 \% y un AUC-ROC de 0,98 en el conjunto de prueba.
+\item Desarrollé una API sencilla con FastAPI para servir las predicciones.
+\end{itemize}
+\textbf{Palabras clave}: Python, XGBoost, FastAPI, Machine Learning, Fraude financiero}
+\section{Intereses}
+
+\cvline{Visualización de datos}{Storytelling con datos, Infografía}
+\cvline{Deportes}{Fútbol, Running, Ciclismo}
+\cvline{Lectura}{Ciencia ficción, Ensayos}
+\section{Voluntariado}
+
+\cventry{ene 2020–dic 2023}
+        {Analista de datos voluntario}
+        {Fundación Ayuda en Acción}
+        {\url{https://ayudaenaccion.org}}
+        {}
+        {\begin{itemize}
+\item Creé cuadros de mando para el seguimiento de proyectos educativos en zonas rurales.
+\item Analicé encuestas de satisfacción de beneficiarios para orientar la toma de decisiones.
+\item Formé a personal local en el uso básico de Excel y Google Sheets.
+\end{itemize}}
+
+\end{document}

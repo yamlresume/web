@@ -1,0 +1,268 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{陳柏宇}{}
+\title{軟體工程師｜全端開發・雲端架構・DevOps}
+\phone[mobile]{+886 912 345 678}
+\email{poyu.chen.dev@gmail.com}
+\homepage{https://poyuchen.dev}
+
+\address{中國臺灣，大安區，台北市，台北市大安區羅斯福路四段 100 號，10617}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/poyuchen}{@poyuchen} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/poyuchen-tw}{@poyuchen-tw}}
+
+\begin{document}
+
+\maketitle
+
+\section{簡介}
+
+\cvline{}{具 8 年經驗的軟體工程師，專注於全端應用開發、分散式系統與雲端架構設計。擅長從需求分析、系統設計到部署維運的完整開發流程，並致力於以簡潔、可維護的方式交付高品質軟體。
+%
+\begin{itemize}
+\item 熟悉 TypeScript、Node.js、Python 與 Go，具備 React/Next.js 前端開發經驗
+\item 設計與維運 Kubernetes 叢集、CI/CD 管線與雲端基礎設施，降低成本並提升穩定性
+\item 樂於技術分享與跨部門協作，曾帶領 3 人小組完成多項關鍵功能交付
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2016年9月–2018年7月}
+        {碩士，資訊工程學系，成績：3.92}
+        {國立臺灣大學}
+        {\url{https://www.ntu.edu.tw}}
+        {}
+        {研究主題為容器化應用程式之資源排程最佳化，畢業論文提出一套基於多目標最佳化的排程演算法，於模擬環境中降低 22\% 的平均回應時間。
+\textbf{課程}：分散式系統、雲端運算、機器學習、高等演算法、大數據分析、網路安全}
+
+\cventry{2012年9月–2016年6月}
+        {學士，資訊工程系，成績：3.85}
+        {國立臺灣科技大學}
+        {\url{https://www.ntust.edu.tw}}
+        {}
+        {以書卷獎畢業，修習多門軟硬體相關課程，並參與網頁開發專題。
+\textbf{課程}：程式設計（一）（二）、資料結構、作業系統、計算機網路、資料庫系統、軟體工程}
+\section{工作經歷}
+
+\cventry{2022年1月至今}
+        {資深軟體工程師}
+        {Appier}
+        {\url{https://www.appier.com}}
+        {}
+        {\begin{itemize}
+\item 負責廣告推薦與預測平台的後端服務開發，使用 Go 與 Python 建置高效能 API，日均處理數千萬請求
+\item 主導 Kubernetes 叢集遷移與資源調度優化，基礎設施成本下降 35\%
+\item 建立 CI/CD 流程與觀測系統（Prometheus、Grafana），提升部署頻率與服務可靠性
+\item 帶領 3 人小組開發即時資料處理管線，串接 Kafka 與 ClickHouse
+\end{itemize}
+\textbf{關鍵字}：Go、Kubernetes、Kafka、ClickHouse、CI/CD}
+
+\cventry{2018年7月–2021年12月}
+        {軟體工程師}
+        {趨勢科技（Trend Micro）}
+        {\url{https://www.trendmicro.com}}
+        {}
+        {\begin{itemize}
+\item 開發雲端資安產品之管理平台，使用 React、TypeScript 與 Node.js，支援多租戶架構
+\item 設計 RESTful API 與資料模型，並導入 GraphQL 以減少前端過度抓取問題
+\item 與威脅研究團隊合作，開發即時威脅儀表板，協助客戶快速掌握資安事件
+\item 參與 Scrum 開發流程，並定期進行程式碼審查與技術分享
+\end{itemize}
+\textbf{關鍵字}：React、TypeScript、Node.js、GraphQL、Scrum}
+\section{語言}
+
+\cvline{中文}{母語或雙語水平 \hfill \textbf{關鍵字}：母語}
+\cvline{英語}{完全專業水平 \hfill \textbf{關鍵字}：TOEIC 950、技術文件撰寫}
+\section{專業技能}
+
+\cvline{程式語言}{專家 \hfill \textbf{關鍵字}：TypeScript、Python、Go、SQL、Shell}
+\cvline{前端開發}{高級 \hfill \textbf{關鍵字}：React、Next.js、CSS Modules、Vite、Jest}
+\cvline{後端開發}{專家 \hfill \textbf{關鍵字}：Node.js、Express、gRPC、Redis、PostgreSQL}
+\cvline{雲端與 DevOps}{高級 \hfill \textbf{關鍵字}：Kubernetes、Docker、AWS、Terraform、GitHub Actions、Prometheus}
+\cvline{軟體工程}{專家 \hfill \textbf{關鍵字}：Domain-Driven Design、Microservices、System Design、Code Review、Agile}
+\section{榮譽}
+
+\cventry{2017年10月}
+        {國立臺灣大學}
+        {書卷獎}
+        {}
+        {}
+        {頒發給學業成績優異之碩士班學生，全學期 GPA 4.0 且排名系所前 5\%。}
+
+\cventry{2016年6月}
+        {國立臺灣科技大學資訊工程系}
+        {最佳專題獎}
+        {}
+        {}
+        {大學畢業專題「基於深度學習之即時手寫辨識系統」獲評審評選為最佳專題。}
+\section{證書}
+
+\cventry{2022年3月}
+        {Amazon Web Services}
+        {AWS Certified Solutions Architect – Associate}
+        {\url{https://aws.amazon.com/verification}}
+        {}
+        {}
+
+\cventry{2021年8月}
+        {Cloud Native Computing Foundation}
+        {Certified Kubernetes Application Developer (CKAD)}
+        {\url{https://www.cncf.io/certification/ckad/}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2021年7月}
+        {Multi-objective Scheduling for Containerized Applications in Edge-Cloud Continuum}
+        {IEEE International Conference on Cloud Computing}
+        {\url{https://doi.org/10.1109/CLOUD.2021.00045}}
+        {}
+        {提出一個多目標最佳化的容器排程演算法，同時考慮延遲、能耗與資源利用率，實驗結果顯示相較於既有方法可降低 22\% 平均回應時間並減少 15\% 能耗。}
+\section{項目}
+
+\cventry{2023年1月至今}
+        {Kubernetes 成本分析與資源建議工具}
+        {KubeCost Advisor}
+        {\url{https://github.com/poyuchen/kubecost-advisor}}
+        {}
+        {\begin{itemize}
+\item 串接 Kubernetes Metrics API 與 Prometheus，收集 Pod 資源使用歷史資料
+\item 以 React 與 TypeScript 建置互動式儀表板，呈現成本分佈與資源瓶頸
+\item 提供自動化資源 Request/Limit 建議，協助團隊平均節省 25\% 叢集成本
+\end{itemize}
+\textbf{關鍵字}：Kubernetes、React、Python、Prometheus}
+
+\cventry{2019年9月–2019年12月}
+        {用於辦公室午餐揪團的 LINE Bot 與 Web 管理後台}
+        {即時聊天服務 LunchBot}
+        {\url{https://github.com/poyuchen/lunchbot}}
+        {}
+        {\begin{itemize}
+\item 使用 Node.js 與 LINE Messaging API 開發聊天機器人，處理點餐與投票流程
+\item 建置 React 管理後台，讓餐廳業者管理菜單與訂單狀態
+\item 導入 PostgreSQL 儲存訂單與使用者資料，並部署至 AWS Elastic Beanstalk
+\end{itemize}
+\textbf{關鍵字}：Node.js、LINE Bot、React、PostgreSQL、AWS}
+\section{興趣愛好}
+
+\cvline{開源軟體}{Kubernetes、社群貢獻}
+\cvline{登山}{百岳、健行}
+\cvline{攝影}{底片相機、街拍}
+\section{志願服務}
+
+\cventry{2022年3月–2022年9月}
+        {議程組志工}
+        {PyCon Taiwan}
+        {\url{https://tw.pycon.org}}
+        {}
+        {\begin{itemize}
+\item 協助籌劃 PyCon Taiwan 2022 議程，審稿並聯絡國內外講者
+\item 在會議期間負責場控與直播協調，確保議程順利進行
+\end{itemize}}
+
+
+\cventry{2020年1月–2022年12月}
+        {開源貢獻者}
+        {g0v 零時政府}
+        {\url{https://g0v.tw}}
+        {}
+        {\begin{itemize}
+\item 參與「市民數位服務平台」開發，協助設計後端 API 與資料串接
+\item 透過黑客松活動與跨領域夥伴協作，促進開放資料與公民科技發展
+\end{itemize}}
+
+\end{document}

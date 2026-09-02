@@ -1,0 +1,265 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Brazilian Portuguese language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-portuguese.html
+\usepackage[brazilian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Beatriz Carvalho}{}
+\title{Analista de Dados | SQL, Python e Power BI}
+\phone[mobile]{+55 11 98888-7766}
+\email{beatriz.carvalho.dados@gmail.com}
+\homepage{https://www.beatrizcarvalho.dev.br}
+
+\address{São Paulo, SP, Brasil, 01310-100}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/beatriz-carvalho-dados}{@beatriz-carvalho-dados} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/beatrizcarvalho}{@beatrizcarvalho}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informações Básicas}
+
+\cvline{}{Analista de Dados com mais de 5 anos de experiência nos setores de varejo,
+finanças e tecnologia. Atuo na transformação de dados brutos em insights
+acionáveis, apoiando decisões estratégicas com análises descritivas,
+dashboards executivos e automação de relatórios.
+%
+\begin{itemize}
+\item Especialista em SQL, Python, Power BI e estatística descritiva.
+\item Experiência em ETL, modelagem dimensional e storytelling com dados.
+\item Histórico de redução de 30\% no tempo de elaboração de relatórios e
+aumento de 12\% na conversão de campanhas analisadas.
+\item Perfil colaborativo, com forte comunicação entre áreas de negócio e
+tecnologia.
+\end{itemize}}
+\section{Formação}
+
+\cventry{fev. de 2015–dez. de 2018}
+        {Bacharelado, Estatística e Ciência de Dados, Nota: 8.7}
+        {Universidade de São Paulo}
+        {\url{https://www.ime.usp.br}}
+        {}
+        {\begin{itemize}
+\item Formação sólida em estatística, probabilidade e análise de dados.
+\item Projetos acadêmicos com modelagem preditiva, testes de hipóteses e
+visualização de dados.
+\item Iniciação científica em análise de séries temporais aplicada a dados
+econômicos.
+\end{itemize}
+\textbf{Cursos}: Estatística Descritiva, Probabilidade I e II, Inferência Estatística, Modelos Lineares, Introdução à Programação, Banco de Dados, Aprendizado de Máquina, Séries Temporais}
+\section{Experiência Profissional}
+
+\cventry{jan. de 2023–Atual}
+        {Analista de Dados Pleno}
+        {TechRetail Brasil}
+        {\url{https://www.techretail.com.br}}
+        {}
+        {\begin{itemize}
+\item Lidero a construção de dashboards executivos em Power BI para as áreas
+de vendas, marketing e operações.
+\item Desenvolvo pipelines de ETL em Python e SQL integrando dados de ERP,
+CRM e Google Analytics.
+\item Realizo análises de desempenho de campanhas e comportamento de
+clientes, com recomendações que aumentaram a conversão em 12\% no
+último ano.
+\item Automatizo relatórios semanais e mensais, reduzindo em 30\% o tempo de
+elaboração.
+\item Atuo como ponte entre as áreas de negócio e tecnologia para definição
+de métricas e indicadores.
+\end{itemize}
+\textbf{Palavras-chave}: Power BI, SQL, Python, ETL, Storytelling}
+
+\cventry{mar. de 2021–dez. de 2022}
+        {Analista de Dados Júnior}
+        {CrediZap Financeira}
+        {\url{https://www.credizap.com.br}}
+        {}
+        {\begin{itemize}
+\item Criei relatórios gerenciais de crédito e inadimplência no Tableau e
+Excel.
+\item Modelei dados da carteira de clientes em SQL Server para subsidiar
+análises de risco.
+\item Automatizei extrações e tratamento de dados com Python, reduzindo
+retrabalho operacional.
+\item Colaborei com cientistas de dados em projetos de score de crédito e
+segmentação de clientes.
+\end{itemize}
+\textbf{Palavras-chave}: Tableau, SQL Server, Excel, Análise de Crédito, Python}
+
+\cventry{jun. de 2019–fev. de 2021}
+        {Estagiária de Inteligência de Mercado}
+        {DataSeg Consultoria}
+        {\url{https://www.dataseg.com.br}}
+        {}
+        {\begin{itemize}
+\item Suportei consultores em projetos de pesquisa de mercado e análise de
+concorrência.
+\item Estruturei bases de dados em Excel e Access para consolidação de
+indicadores.
+\item Produzi materiais de apoio com análises descritivas e gráficos para
+apresentações a clientes.
+\end{itemize}
+\textbf{Palavras-chave}: Pesquisa de Mercado, Excel, Análise Descritiva, Relatórios}
+\section{Idiomas}
+
+\cvline{Português}{Nativo ou Bilíngue \hfill \textbf{Palavras-chave}: Português do Brasil}
+\cvline{Inglês}{Proficiência Profissional Fluente \hfill \textbf{Palavras-chave}: TOEFL ITP 587, Leitura e conversação técnica}
+\cvline{Espanhol}{Proficiência Profissional Limitada \hfill \textbf{Palavras-chave}: Espanhol intermediário}
+\section{Competências}
+
+\cvline{Análise de Dados}{Especialista \hfill \textbf{Palavras-chave}: SQL, Python, Pandas, Estatística, Excel}
+\cvline{Visualização de Dados}{Avançado \hfill \textbf{Palavras-chave}: Power BI, Tableau, DAX, Looker Studio, Storytelling com Dados}
+\cvline{Bancos de Dados}{Avançado \hfill \textbf{Palavras-chave}: PostgreSQL, MySQL, SQL Server, BigQuery, NoSQL}
+\cvline{Estatística e Machine Learning}{Intermediário \hfill \textbf{Palavras-chave}: Regressão, Testes A/B, Séries Temporais, scikit-learn}
+\section{Prêmios}
+
+\cventry{dez. de 2023}
+        {TechRetail Brasil}
+        {Prêmio Excelência em Dados}
+        {}
+        {}
+        {Reconhecimento interno pela liderança no projeto de painel de
+indicadores estratégicos, que impactou positivamente as decisões da
+diretoria de varejo.}
+\section{Certificados}
+
+\cventry{mar. de 2023}
+        {Microsoft}
+        {Certificação Microsoft PL-300 - Power BI Data Analyst}
+        {\url{https://learn.microsoft.com/pt-br/credentials/certifications/data-analyst-associate/}}
+        {}
+        {}
+
+\cventry{jul. de 2021}
+        {Google}
+        {Google Data Analytics Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-data-analytics}}
+        {}
+        {}
+\section{Projetos}
+
+\cventry{fev. de 2023–mar. de 2023}
+        {Desenvolvimento de um dashboard em Power BI para acompanhamento de metas comerciais.}
+        {Dashboard de Vendas Interativo}
+        {\url{https://github.com/beatrizcarvalho/dashboard-vendas}}
+        {}
+        {\begin{itemize}
+\item Modelei dados de vendas no Power Query e DAX.
+\item Criei indicadores de receita, ticket médio e margem por região e
+categoria.
+\item Publiquei o dashboard como portfólio de análise de dados.
+\end{itemize}
+\textbf{Palavras-chave}: Power BI, DAX, SQL, Vendas}
+
+\cventry{nov. de 2022–dez. de 2022}
+        {Projeto de análise exploratória e predição de churn para uma base de clientes de telecomunicações.}
+        {Análise de Churn de Clientes}
+        {\url{https://github.com/beatrizcarvalho/churn-analysis}}
+        {}
+        {\begin{itemize}
+\item Apliquei técnicas de análise exploratória e testes de hipóteses.
+\item Construí modelo de regressão logística com scikit-learn.
+\item Apresentei os principais fatores associados ao cancelamento de clientes.
+\end{itemize}
+\textbf{Palavras-chave}: Python, Pandas, scikit-learn, Churn}
+\section{Interesses}
+
+\cvline{Tecnologia}{Ciência de Dados, Open Source, Visualização de Dados}
+\cvline{Esportes}{Corrida, Vôlei, Natação}
+\section{Voluntariado}
+
+\cventry{mar. de 2022–dez. de 2023}
+        {Mentora de Dados}
+        {Programa Meninas na Computação}
+        {\url{https://www.meninasnacomputacao.org.br}}
+        {}
+        {\begin{itemize}
+\item Atuei como mentora voluntária em oficinas de introdução à análise de
+dados.
+\item Auxiliei na elaboração de material didático em Python e Power BI.
+\item Incentivei a participação de mulheres em carreiras de tecnologia e
+dados.
+\end{itemize}}
+
+\end{document}

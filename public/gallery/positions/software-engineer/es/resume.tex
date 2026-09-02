@@ -1,0 +1,231 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Spanish language
+% \usepackage[spanish]{babel} has some conflicting issues with moderncv
+% so we have to use enable the following options to make it work
+%
+% ref:
+% - https://tex.stackexchange.com/a/140161/36007
+\usepackage[spanish,es-lcroman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Carlos Mendoza Ríos}{}
+\title{Ingeniero de Software Full Stack}
+\phone[mobile]{+34 612 345 678}
+\email{carlos.mendoza@example.com}
+\homepage{https://carlosmendoza.dev}
+
+\address{Madrid, Comunidad de Madrid, España, 28013}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/carlosmendoza-dev}{@carlosmendoza-dev} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/carlosmendoza-dev}{@carlosmendoza-dev}}
+
+\begin{document}
+
+\maketitle
+
+\section{Información básica}
+
+\cvline{}{\begin{itemize}
+\item Ingeniero de software full stack con más de 7 años de experiencia creando aplicaciones web escalables y servicios en la nube.
+\item Especialista en arquitectura de microservicios, APIs REST y diseño de interfaces con React.
+\item Amplia experiencia en DevOps: Docker, Kubernetes y pipelines de CI/CD sobre AWS.
+\item Orientado a la calidad, con buenas prácticas de testing, code review y documentación técnica.
+\item Acostumbrado a trabajar en equipos ágiles y a colaborar con perfiles técnicos y de negocio.
+\end{itemize}}
+\section{Educación}
+
+\cventry{sept 2012–jun 2017}
+        {Licenciatura, Ingeniería Informática, Puntuación: 8.7/10}
+        {Universidad Politécnica de Madrid}
+        {\url{https://www.upm.es/}}
+        {}
+        {\begin{itemize}
+\item Graduado con una media de 8.7/10, con especialización en ingeniería del software, bases de datos y sistemas distribuidos.
+\item Trabajo de fin de grado orientado al desarrollo de una plataforma web colaborativa, reconocido con el Premio Extraordinario.
+\end{itemize}
+\textbf{Cursos}: Estructuras de Datos y Algoritmos, Bases de Datos Avanzadas, Ingeniería del Software, Sistemas Operativos, Redes de Computadores, Arquitectura de Computadores, Sistemas Distribuidos, Programación Concurrente}
+\section{Experiencia laboral}
+
+\cventry{mar 2022 hasta la fecha}
+        {Ingeniero de Software Senior}
+        {CloudNova Technologies}
+        {\url{https://www.cloudnova.dev}}
+        {}
+        {\begin{itemize}
+\item Lidero el diseño e implementación de microservicios en Node.js y Python, reduciendo el tiempo de despliegue en un 40\%.
+\item Coordino un equipo de 5 desarrolladores aplicando metodologías ágiles y revisiones de código.
+\item Impulso la adopción de Kubernetes y Helm para la gestión de entornos cloud.
+\item Colaboro con arquitectura y producto para definir soluciones técnicas alineadas con los objetivos de negocio.
+\end{itemize}
+\textbf{Palabras clave}: Microservicios, Node.js, Kubernetes, AWS, Liderazgo}
+
+\cventry{jul 2019–feb 2022}
+        {Desarrollador Full Stack}
+        {InnoSoft Labs}
+        {\url{https://www.innosoft.es}}
+        {}
+        {\begin{itemize}
+\item Desarrollé aplicaciones web con React, TypeScript y Node.js para clientes del sector bancario.
+\item Diseñé e integré APIs REST y GraphQL con bases de datos PostgreSQL y MongoDB.
+\item Automatizé los flujos de prueba e integración continua con GitHub Actions y Jest.
+\item Participé en la migración de una aplicación monolítica a una arquitectura de microservicios.
+\end{itemize}
+\textbf{Palabras clave}: React, TypeScript, GraphQL, PostgreSQL, CI/CD}
+
+\cventry{jun 2017–jun 2019}
+        {Desarrollador de Software}
+        {TechPoint Solutions}
+        {\url{https://www.techpoint.es}}
+        {}
+        {\begin{itemize}
+\item Implementé funcionalidades frontend y backend en proyectos de comercio electrónico.
+\item Optimicé consultas SQL y el rendimiento general de la aplicación, reduciendo los tiempos de respuesta en un 30\%.
+\item Colaboré en la creación de un sistema interno de gestión documental.
+\end{itemize}
+\textbf{Palabras clave}: JavaScript, AngularJS, Java, SQL, Scrum}
+\section{Idiomas}
+
+\cvline{Español}{Competencia nativa o bilingüe \hfill \textbf{Palabras clave}: Nativo}
+\cvline{Inglés}{Competencia profesional plena \hfill \textbf{Palabras clave}: C1 Advanced, TOEIC 945}
+\section{Competencias}
+
+\cvline{Desarrollo web}{Experto \hfill \textbf{Palabras clave}: React, Node.js, TypeScript, HTML5, CSS3}
+\cvline{Lenguajes de programación}{Experto \hfill \textbf{Palabras clave}: JavaScript, Python, Java, C++}
+\cvline{DevOps}{Avanzado \hfill \textbf{Palabras clave}: Docker, Kubernetes, AWS, Terraform, CI/CD}
+\cvline{Bases de datos}{Avanzado \hfill \textbf{Palabras clave}: PostgreSQL, MongoDB, Redis, SQL}
+\section{Premios}
+
+\cventry{oct 2017}
+        {Universidad Politécnica de Madrid}
+        {Premio Extraordinario de Ingeniería Informática}
+        {}
+        {}
+        {Reconocimiento académico otorgado al mejor expediente de la promoción de Ingeniería Informática.}
+\section{Certificados}
+
+\cventry{mar 2023}
+        {Amazon Web Services}
+        {AWS Certified Developer - Associate}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+\section{Publicaciones}
+
+\cventry{may 2021}
+        {Guía práctica de observabilidad en microservicios}
+        {Revista Tecnología y Software}
+        {\url{https://www.tecnologiaysoftware.es/articulos/observabilidad-microservicios}}
+        {}
+        {\begin{itemize}
+\item Artículo técnico sobre la implementación de trazabilidad, métricas y logs en entornos de microservicios.
+\item Incluye ejemplos reales de instrumentación con OpenTelemetry y su integración en Kubernetes.
+\end{itemize}}
+\section{Proyectos}
+
+\cventry{sept 2020–dic 2020}
+        {Aplicación full stack para la gestión de incidencias de soporte técnico en tiempo real.}
+        {Plataforma de Gestión de Incidencias TI}
+        {\url{https://github.com/carlosmendoza-dev/incidentes-ti}}
+        {}
+        {\begin{itemize}
+\item Aplicación web con React, Redux y Node.js para la creación, asignación y seguimiento de incidencias.
+\item Autenticación mediante JWT y panel de administración con estadísticas en tiempo real.
+\item Despliegue automatizado en AWS mediante Docker y GitHub Actions.
+\end{itemize}
+\textbf{Palabras clave}: React, Node.js, JWT, AWS, Docker}
+\section{Intereses}
+
+\cvline{Deporte}{Running, Senderismo, Ciclismo}
+\cvline{Tecnología}{Open Source, Inteligencia Artificial, Domótica}
+\section{Voluntariado}
+
+\cventry{ene 2018–dic 2020}
+        {Voluntario y mentor}
+        {Asociación Informática Solidaria}
+        {\url{https://www.infosolidaria.org}}
+        {}
+        {\begin{itemize}
+\item Impartí talleres de introducción a la programación para estudiantes de secundaria.
+\item Colaboré en el desarrollo de una aplicación web para la gestión de donaciones de la asociación.
+\item Mentoricé a personas en riesgo de exclusión digital en competencias tecnológicas básicas.
+\end{itemize}}
+
+\end{document}

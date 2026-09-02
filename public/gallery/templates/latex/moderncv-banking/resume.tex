@@ -1,0 +1,249 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Maya Patel}{}
+\title{Product Manager with 7+ years of SaaS and AI product experience}
+\phone[mobile]{(415) 555-0193}
+\email{maya.patel@example.com}
+\homepage{https://mayapatel.dev}
+
+\address{San Francisco, California, United States, 94107}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/mayapatel}{@mayapatel} {} {} {} • {} {} {}
+{\small \faTwitter}\ \href{https://twitter.com/mayapatel\_pm}{@mayapatel\_pm}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{\begin{itemize}
+\item Product Manager with 7+ years of experience defining and launching data-driven SaaS products
+\item Proven track record of growing ARR by 3x through customer discovery, roadmap execution, and cross-functional leadership
+\item Skilled in merging qualitative user research with quantitative analytics to prioritize features that deliver measurable outcomes
+\item Experienced in leading agile teams and collaborating with engineering, design, GTM, and executive stakeholders
+\item Passionate about applying AI/ML capabilities to solve real customer problems in responsible and user-friendly ways
+\end{itemize}}
+\section{Education}
+
+\cventry{Aug 2014–May 2018}
+        {Bachelor, Business Administration and Computer Science, Score: 3.9}
+        {University of California, Berkeley}
+        {\url{https://www.berkeley.edu/}}
+        {}
+        {\begin{itemize}
+\item Graduated with highest honors and completed an interdisciplinary capstone that resulted in a working product prototype
+\item Served as president of the campus Product Club, organizing industry speaker series and product case competitions
+\item Developed foundational skills in software development, data analysis, and customer-centric business strategy
+\end{itemize}
+\textbf{Courses}: Product Management and Innovation, Data Structures and Algorithms, Consumer Behavior, Marketing Analytics, Finance, Machine Learning and Artificial Intelligence, Entrepreneurship, Design Thinking}
+\section{Work}
+
+\cventry{Jun 2022–Present}
+        {Senior Product Manager}
+        {Nimbus Cloud Technologies}
+        {\url{https://www.nimbus-cloud.io}}
+        {}
+        {\begin{itemize}
+\item Own the product strategy and roadmap for an AI-powered customer service platform used by 1,200+ enterprise teams
+\item Grew monthly active users by 45\% and increased paid conversion by 28\% through targeted onboarding improvements and a rebuilt pricing page
+\item Led discovery and delivery of an intelligent suggestions feature, reducing average first-response time by 22\%
+\item Partner with engineering, design, data science, and sales leaders to align quarterly OKRs and accelerate time-to-market
+\item Direct cross-functional squads of 12 with a mentorship focus on design and product analytics
+\end{itemize}
+\textbf{Keywords}: AI/ML, Roadmap Strategy, OKR Planning, Customer Discovery, Cross-functional Leadership}
+
+\cventry{Jun 2020–May 2022}
+        {Product Manager}
+        {Brightpath Analytics}
+        {\url{https://www.brightpath.ai}}
+        {}
+        {\begin{itemize}
+\item Managed the analytics suite for a mid-market B2B SaaS product, handling 30+ releases per year
+\item Introduced an experimentation framework that increased feature adoption by 20\% and reduced churn by 15\%
+\item Conducted 50+ user interviews and synthesized insights into prioritized product themes and acceptance criteria
+\item Launched a self-serve reporting module that drove a \$1.2M increase in annual recurring revenue
+\item Developed a product analytics maturity model to improve data quality and internal decision-making
+\end{itemize}
+\textbf{Keywords}: SaaS, A/B Testing, User Interviews, Experimentation, B2B Analytics}
+
+\cventry{Jul 2018–Jun 2020}
+        {Associate Product Manager}
+        {LeadGenix}
+        {\url{https://www.leadgenix.co}}
+        {}
+        {\begin{itemize}
+\item Supported the senior product team in building a marketing automation web application for SMBs
+\item Coordinated sprint planning, backlog grooming, and release communication across remote teams
+\item Automated weekly competitor analysis and usability review processes, saving 6 hours of manual work per week
+\item Collaborated with customer success on win/loss analysis that refined the qualification criteria for lead-scoring workflows
+\end{itemize}
+\textbf{Keywords}: Backlog Management, Agile, Customer Success, Sprint Planning, Competitor Analysis}
+\section{Languages}
+
+\cvline{English}{Native or Bilingual Proficiency \hfill \textbf{Keywords}: TOEFL 118}
+\cvline{Spanish}{Full Professional Proficiency \hfill \textbf{Keywords}: DELE C1}
+\cvline{Mandarin}{Elementary Proficiency \hfill \textbf{Keywords}: HSK 3}
+\section{Skills}
+
+\cvline{Product Management}{Expert \hfill \textbf{Keywords}: Roadmapping, User Research, Agile Development, Stakeholder Management, OKR Planning, Pricing Strategy}
+\cvline{Data Analytics}{Advanced \hfill \textbf{Keywords}: SQL, Amplitude, Google Analytics, A/B Testing, Metrics}
+\cvline{Design \& Prototyping}{Intermediate \hfill \textbf{Keywords}: Figma, Miro, Wireframing, User Journey Mapping}
+\cvline{Technical Fluency}{Intermediate \hfill \textbf{Keywords}: REST APIs, Python, JavaScript, AWS, Machine Learning Basics}
+\section{Awards}
+
+\cventry{Dec 2023}
+        {SFF Product Leadership Forum}
+        {Product Leader of the Year}
+        {}
+        {}
+        {Recognized for delivering an AI-native user experience that became a company flagship feature and significantly exceeded adoption targets.}
+
+\cventry{May 2016}
+        {University of California, Berkeley}
+        {Dean's List}
+        {}
+        {}
+        {Awarded for outstanding academic performance in business and computer science coursework.}
+\section{Certificates}
+
+\cventry{Apr 2022}
+        {Product Management Consortium}
+        {Certified Product Manager (CPM)}
+        {\url{https://www.productmanagementconsortium.org/certification}}
+        {}
+        {}
+
+\cventry{Sep 2021}
+        {Pragmatic Institute}
+        {Pragmatic Institute Certification}
+        {\url{https://www.pragmaticinstitute.com}}
+        {}
+        {}
+
+\cventry{Feb 2021}
+        {Amazon Web Services}
+        {AWS Cloud Practitioner}
+        {\url{https://aws.amazon.com/certification/certified-cloud-practitioner}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Feb 2023}
+        {Designing Responsible AI Product Features Customers Can Trust}
+        {Product Coalition}
+        {\url{https://medium.com/product-coalition/designing-responsible-ai-product-features-customers-can-trust}}
+        {}
+        {Explores how product managers can combine transparent AI model disclosures, user control, and ethical design principles to create products that earn long-term customer trust.}
+\section{Projects}
+
+\cventry{Jan 2021–Apr 2021}
+        {A self-served product analytics dashboard concept designed to help small teams understand feature adoption and user retention.}
+        {MarketPulse Analytics Dashboard}
+        {\url{https://github.com/mayapatel/marketpulse}}
+        {}
+        {\begin{itemize}
+\item Created end-to-end UX concept and interactive MVP in Figma
+\item Defined event taxonomy and sample SQL queries for core product metrics
+\item Ran usability tests with 10 potential users and iterated based on the findings
+\end{itemize}
+\textbf{Keywords}: Product Analytics, Figma, SQL, Information Architecture}
+\section{Interests}
+
+\cvline{Tech \& Design}{AI Ethics, Design Thinking, No-Code}
+\cvline{Outdoor Activities}{Hiking, Trail Running, Kayaking}
+\section{Volunteer}
+
+\cventry{Jan 2021–Present}
+        {Mentorship Lead}
+        {Women in Product}
+        {\url{https://www.womeninproduct.org}}
+        {}
+        {\begin{itemize}
+\item Mentored 12 early-career product managers and developed a structured onboarding guide for the mentorship program
+\item Organized monthly speaker events and cross-company product workshops with 200+ attendees
+\item Built a resource library of product templates and interview preparation material for the community
+\end{itemize}}
+
+\end{document}

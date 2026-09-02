@@ -1,0 +1,242 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Spanish language
+% \usepackage[spanish]{babel} has some conflicting issues with moderncv
+% so we have to use enable the following options to make it work
+%
+% ref:
+% - https://tex.stackexchange.com/a/140161/36007
+\usepackage[spanish,es-lcroman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Lucía Fernández}{}
+\title{Diseñadora UX/UI senior, especializada en investigación y diseño de servicios digitales}
+\phone[mobile]{+34 612 345 678}
+\email{lucia@fernandezux.com}
+\homepage{https://www.fernandezux.com}
+
+\address{Calle Gran Vía 28, 2º, Madrid, Comunidad de Madrid, España, 28013}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/luciafernandezux}{@luciafernandezux} {} {} {} • {} {} {}
+{\small \faBehance}\ \href{https://www.behance.net/luciafernandez}{@luciafernandez}}
+
+\begin{document}
+
+\maketitle
+
+\section{Información básica}
+
+\cvline{}{Diseñadora de producto con más de 7 años de experiencia en proyectos digitales para banca, salud y retail.
+Combino investigación cualitativa, análisis de datos y prototipado para crear experiencias usables y accesibles.
+%
+\begin{itemize}
+\item Lidero el diseño de extremo a extremo: research, ideación, prototipado, testing y traspaso a desarrollo.
+\item Defiendo la accesibilidad (WCAG 2.2) y el diseño inclusivo como parte esencial del proceso.
+\item Colaboro con equipos ágiles, producto y negocio para alinear objetivos y prioridades.
+\end{itemize}}
+\section{Educación}
+
+\cventry{sept 2016–jul 2018}
+        {Maestría, Diseño de Experiencia de Usuario}
+        {Universidad Politécnica de Madrid}
+        {\url{https://www.upm.es/}}
+        {}
+        {\begin{itemize}
+\item Proyecto final premiado: rediseño de una plataforma de teleasistencia para mayores.
+\item Colaboración con el Laboratorio de Accesibilidad para auditar apps públicas.
+\end{itemize}
+\textbf{Cursos}: Métodos de investigación con usuarios, Diseño de interacción, Arquitectura de la información, Evaluación de usabilidad, Visualización de datos}
+
+\cventry{sept 2011–jun 2015}
+        {Licenciatura, Ingeniería de Diseño Industrial}
+        {Universidad Carlos III de Madrid}
+        {\url{https://www.uc3m.es/}}
+        {}
+        {\textbf{Cursos}: Ergonomía y factores humanos, Diseño centrado en el usuario, Tecnologías multimedia}
+\section{Experiencia laboral}
+
+\cventry{mar 2021 hasta la fecha}
+        {Senior UX Designer}
+        {Nubika Digital}
+        {\url{https://www.nubikadigital.com}}
+        {}
+        {\begin{itemize}
+\item Lidero el área de UX dentro de una squad de banca digital, colaborando con PMs, analistas y desarrolladores.
+\item Rediseño integral de la app móvil de un banco europeo, logrando un aumento del 34 \% en finalización de onboarding.
+\item Creo y mantengo el design system junto a otros diseñadores, con más de 80 componentes en Figma.
+\item Planifico y facilito sesiones de co-creación y testeos con personas usuarias en distintos países.
+\end{itemize}
+\textbf{Palabras clave}: Design Systems, Banca digital, Figma, Agile, Accessibility}
+
+\cventry{jun 2018–feb 2021}
+        {UX/UI Designer}
+        {Pixel House Studio}
+        {\url{https://www.pixelhousestudio.com}}
+        {}
+        {\begin{itemize}
+\item Diseñé la experiencia de marca y producto para más de 20 clientes de los sectores salud, turismo y comercio electrónico.
+\item Implementé procesos de investigación dentro de la agencia: entrevistas, encuestas y pruebas de usabilidad.
+\item Trabajé junto a desarrolladores front-end para asegurar la viabilidad técnica de las propuestas.
+\item Ganamos dos premios Lovie por proyectos de e-commerce accesibles.
+\end{itemize}}
+\section{Idiomas}
+
+\cvline{Español}{Competencia nativa o bilingüe \hfill \textbf{Palabras clave}: Lengua materna}
+\cvline{Inglés}{Competencia profesional plena \hfill \textbf{Palabras clave}: TOEFL 105, Inglés técnico}
+\cvline{Francés}{Competencia limitada de trabajo}
+\section{Competencias}
+
+\cvline{Research}{Experto \hfill \textbf{Palabras clave}: Entrevistas con usuarios, Encuestas, Pruebas de usabilidad, Card sorting, Customer journeys}
+\cvline{Prototipado y diseño}{Experto \hfill \textbf{Palabras clave}: Figma, Sketch, Prototipado interactivo, Wireframes, Design systems}
+\cvline{Arquitectura de la información}{Avanzado \hfill \textbf{Palabras clave}: Sitemaps, Flujos de usuario, Navegación, Taxonomía}
+\cvline{Accesibilidad}{Avanzado \hfill \textbf{Palabras clave}: WCAG 2.2, Diseño inclusivo, ARIA, Auditorías de accesibilidad}
+\section{Premios}
+
+\cventry{nov 2022}
+        {Asociación de Diseño de Interacción (IxDA España)}
+        {Premio Nacional de Diseño de Experiencia}
+        {}
+        {}
+        {Reconocimiento al mejor proyecto de diseño de servicios digitales por la app de salud "Bienestar360".}
+\section{Certificados}
+
+\cventry{abr 2020}
+        {Coursera}
+        {Google UX Design Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-ux-design}}
+        {}
+        {}
+
+\cventry{oct 2019}
+        {Human Factors International}
+        {Certified Usability Analyst}
+        {\url{https://www.humanfactors.com}}
+        {}
+        {}
+\section{Publicaciones}
+
+\cventry{may 2023}
+        {El impacto del design system en la productividad de equipos ágiles}
+        {Revista Iberoamericana de Interacción Humano-Computadora}
+        {\url{https://www.revistaiahc.org/estudio-design-system}}
+        {}
+        {Estudio de caso sobre la implantación de un design system en una entidad financiera y su efecto en la velocidad de desarrollo y la consistencia del producto.}
+\section{Proyectos}
+
+\cventry{ene 2022–dic 2022}
+        {Rediseño completo de una plataforma de telemedicina para mejorar la adherencia al tratamiento.}
+        {Bienestar360}
+        {\url{https://www.bienestar360.example}}
+        {}
+        {\begin{itemize}
+\item Dirigí la investigación con pacientes y profesionales de la salud para identificar puntos de fricción.
+\item Testeé prototipos en alta fidelidad con 30 usuarios, iterando el flujo de gestión de citas y medicación.
+\item El rediseño redujo el abandono de la plataforma un 28 \% y las consultas de soporte un 47 \%.
+\end{itemize}
+\textbf{Palabras clave}: Salud digital, Telemedicina, User research, Prototipado}
+
+\cventry{mar 2021–jul 2023}
+        {Sistema de diseño de código abierto para aplicaciones de banca y seguros.}
+        {Design System "Atomika"}
+        {\url{https://www.designsystem.atomika.example}}
+        {}
+        {\begin{itemize}
+\item Definición de tokens, componentes y documentación para un sistema multiplataforma.
+\item Incluye pautas de accesibilidad y ejemplos de código para React Native.
+\item Adoptado por 5 equipos de producto, reduciendo el tiempo de diseño de nuevas funcionalidades.
+\end{itemize}
+\textbf{Palabras clave}: Design system, Tokens, React, Documentación}
+\section{Intereses}
+
+\cvline{Fotografía urbana}{Street photography, Composición, Luz natural}
+\cvline{Senderismo}{Rutas de montaña, Naturaleza, Bienestar}
+\section{Voluntariado}
+
+\cventry{ene 2020–mar 2023}
+        {Coordinadora de voluntarios}
+        {UXPA España}
+        {\url{https://www.uxpa.es}}
+        {}
+        {\begin{itemize}
+\item Organicé encuentros y talleres sobre metodologías UX para la comunidad local.
+\item Fui mentora en el programa de jóvenes diseñadores, asesorando a personas en sus primeros proyectos profesionales.
+\end{itemize}}
+
+\end{document}

@@ -1,0 +1,265 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Indonesian (Bahasa Indonesia) language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-indonesian.html
+\usepackage[indonesian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Rizky Aditya Pratama}{}
+\title{Software Engineer Berfokus pada Backend, Cloud, dan Arsitektur Skalabel}
+\phone[mobile]{+62 812-3456-7890}
+\email{rizky.aditya@example.com}
+\homepage{https://rizkyaditya.dev}
+
+\address{Jl. Senopati No. 45, Kebayoran Baru, Jakarta Selatan, DKI Jakarta, Indonesia, 12190}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/rizkyadityap}{@rizkyadityap} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/rizkyadityapratama}{@rizkyadityapratama}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informasi Dasar}
+
+\cvline{}{\begin{itemize}
+\item Software engineer dengan 5+ tahun pengalaman membangun layanan backend yang skalabel dan andal di lingkungan startup serta perusahaan teknologi.
+\item Mahir menggunakan Go, Java, dan Node.js, serta berpengalaman menerapkan arsitektur mikroservis, event-driven, dan RESTful API.
+\item Berpengalaman mengelola infrastruktur di AWS, Docker, dan Kubernetes, termasuk penerapan CI/CD dan observability.
+\item Terbiasa berkolaborasi dalam tim agile, melakukan code review, menulis dokumentasi teknis, dan menjadi mentor bagi engineer junior.
+\end{itemize}}
+\section{Pendidikan}
+
+\cventry{Agu 2016–Jul 2021}
+        {Sarjana, Ilmu Komputer, Nilai: 3.76}
+        {Universitas Indonesia}
+        {\url{https://www.ui.ac.id/}}
+        {}
+        {\begin{itemize}
+\item Lulus dengan predikat cum laude dan fokus pada mata kuliah rekayasa perangkat lunak, basis data, dan sistem terdistribusi.
+\item Menjadi asisten dosen untuk praktikum Pemrograman Dasar dan Struktur Data selama dua semester.
+\item Menyelesaikan skripsi berjudul 'Perancangan API Gateway untuk Layanan Mikroservis pada Aplikasi E-Commerce'.
+\end{itemize}
+\textbf{Mata Kuliah}: Struktur Data dan Algoritma, Basis Data, Sistem Operasi, Jaringan Komputer, Rekayasa Perangkat Lunak, Kecerdasan Buatan, Pemrograman Berorientasi Objek, Matematika Diskret}
+\section{Pengalaman Kerja}
+
+\cventry{Jan 2022–Sekarang}
+        {Software Engineer}
+        {PT Nusantara Digital Solusi}
+        {\url{https://www.nusantaradigital.co.id}}
+        {}
+        {\begin{itemize}
+\item Merancang dan mengembangkan RESTful API untuk platform logistik menggunakan Go dan PostgreSQL, melayani 2 juta permintaan per hari.
+\item Memigrasikan sistem monolitik menjadi arsitektur mikroservis dengan Kafka dan gRPC, mengurangi waktu deployment hingga 40\%.
+\item Menerapkan Circuit Breaker dan Retry Mechanism untuk meningkatkan ketahanan sistem terhadap kegagalan upstream.
+\item Berkolaborasi dengan tim DevOps membuat pipeline CI/CD menggunakan GitHub Actions dan Argo CD.
+\item Memimpin technical sharing dan menjadi mentor bagi onboarding engineer baru.
+\end{itemize}
+\textbf{Kata Kunci}: Go, Kubernetes, Kafka, gRPC, PostgreSQL, Microservices, CI/CD, REST API}
+
+\cventry{Agu 2020–Des 2021}
+        {Backend Developer}
+        {PT Kreatif Media Nusantara}
+        {\url{https://kreatifmedia.co.id}}
+        {}
+        {\begin{itemize}
+\item Mengembangkan layanan backend untuk aplikasi media streaming menggunakan Node.js, Express, dan MongoDB.
+\item Merancang skema database dan mengoptimalkan query sehingga response time turun dari 800 ms menjadi 200 ms.
+\item Mengintegrasikan penyedia pembayaran digital seperti Midtrans dan Xendit untuk fitur langganan premium.
+\item Menulis unit test dan integration test menggunakan Jest, meningkatkan code coverage dari 45\% menjadi 85\%.
+\item Berpartisipasi aktif dalam sprint planning, daily standup, dan retrospektif bersama tim produk.
+\end{itemize}
+\textbf{Kata Kunci}: Node.js, Express, MongoDB, Redis, Jest, Payment Gateway, REST API}
+
+\cventry{Jul 2019–Jul 2020}
+        {Junior Web Developer}
+        {PT Aplikasi Anak Negeri}
+        {\url{https://aplikasianaknegeri.co.id}}
+        {}
+        {\begin{itemize}
+\item Membangun fitur frontend dan backend pada sistem informasi desa menggunakan PHP Laravel dan MySQL.
+\item Membuat modul manajemen pengguna, inventaris aset, dan pelaporan pendapatan desa.
+\item Melakukan debugging serta pemeliharaan aplikasi produksi dan menyusun dokumentasi penggunaan untuk admin desa.
+\end{itemize}
+\textbf{Kata Kunci}: Laravel, PHP, MySQL, JavaScript, Bootstrap}
+\section{Bahasa}
+
+\cvline{Melayu}{Bahasa Ibu / Bilingual \hfill \textbf{Kata Kunci}: Bahasa Indonesia}
+\cvline{Inggris}{Tingkat Profesional Penuh \hfill \textbf{Kata Kunci}: TOEFL ITP 600, IELTS 7.0}
+\section{Keahlian}
+
+\cvline{Pengembangan Backend}{Ahli \hfill \textbf{Kata Kunci}: Go, Java, Node.js, REST API, gRPC, GraphQL}
+\cvline{Arsitektur \& Infrastruktur}{Mahir \hfill \textbf{Kata Kunci}: Docker, Kubernetes, AWS, Terraform, Kafka, Redis}
+\cvline{Database}{Mahir \hfill \textbf{Kata Kunci}: PostgreSQL, MySQL, MongoDB, Elasticsearch, Redis}
+\cvline{Frontend Web}{Menengah \hfill \textbf{Kata Kunci}: React, TypeScript, Tailwind CSS, Vite}
+\section{Penghargaan}
+
+\cventry{Nov 2020}
+        {Kementerian Komunikasi dan Informatika RI}
+        {Juara 2 Hackathon API Nasional 2020}
+        {}
+        {}
+        {Membangun API inovasi untuk layanan kesehatan berbasis komunitas bersama tim dan menang dari 150+ peserta.}
+\section{Sertifikat}
+
+\cventry{Mar 2023}
+        {Amazon Web Services}
+        {AWS Certified Solutions Architect - Associate}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{Agu 2022}
+        {Google Cloud}
+        {Professional Cloud Developer - Google Cloud}
+        {\url{https://cloud.google.com/certification}}
+        {}
+        {}
+\section{Publikasi}
+
+\cventry{Jun 2023}
+        {Implementasi Service Mesh menggunakan Istio pada Layanan Mikroservis}
+        {Jurnal Teknologi Informasi dan Ilmu Komputer}
+        {\url{https://jtiik.ub.ac.id/index.php/jtiik}}
+        {}
+        {Membahas pola penerapan service mesh Istio untuk observability, keamanan, dan traffic management pada layanan mikroservis di lingkungan Kubernetes.}
+\section{Referensi}
+
+\cventry{\emaillink[budi.santoso@nusantaradigital.co.id]{budi.santoso@nusantaradigital.co.id}}
+        {Engineering Manager di PT Nusantara Digital Solusi}
+        {Budi Santoso}
+        {+62 811-9876-5432}
+        {}
+        {Rizky adalah salah satu engineer paling andal di tim. Ia memiliki kemampuan analitis yang kuat dan selalu mengutamakan kualitas kode serta kolaborasi tim.}
+\section{Proyek}
+
+\cventry{Mar 2021–Agu 2021}
+        {Platform pelaporan keuangan dan aset desa berbasis web}
+        {Sirekap Desa}
+        {\url{https://github.com/rizkyadityap/sirekap-desa}}
+        {}
+        {\begin{itemize}
+\item Mengembangkan aplikasi berbasis Laravel dan MySQL untuk digitalisasi administrasi desa.
+\item Merancang sistem autentikasi multi-level untuk admin desa, camat, dan dinas pemberdayaan masyarakat.
+\item Menghasilkan dashboard visualisasi pendapatan dan belanja desa menggunakan Chart.js.
+\end{itemize}
+\textbf{Kata Kunci}: Laravel, MySQL, Chart.js, Bootstrap}
+
+\cventry{Jan 2022–Jun 2022}
+        {Backend microservices untuk aplikasi e-commerce sederhana}
+        {GoShop API}
+        {\url{https://github.com/rizkyadityap/goshop-api}}
+        {}
+        {\begin{itemize}
+\item Merancang service catalog, cart, order, dan payment menggunakan arsitektur microservices.
+\item Menggunakan komunikasi gRPC antar service dan REST API untuk klien.
+\item Menerapkan Saga Pattern untuk distributed transaction dan Kafka sebagai event bus.
+\end{itemize}
+\textbf{Kata Kunci}: Go, gRPC, Kafka, Docker, PostgreSQL}
+\section{Minat}
+
+\cvline{Sepak Bola}{Futsal, Premier League}
+\cvline{Teknologi Open Source}{Kubernetes, Golang, Linux}
+\cvline{Literasi}{Buku Teknologi, Jurnal Ilmiah}
+\section{Kegiatan Sukarela}
+
+\cventry{Feb 2022–Des 2023}
+        {Relawan Acara}
+        {Google Developer Groups Jakarta}
+        {\url{https://gdg.community.dev/gdg-jakarta/}}
+        {}
+        {\begin{itemize}
+\item Menjadi relawan untuk Google I/O Extended Jakarta dan Cloud Study Jam.
+\item Membantu koordinasi peserta, dokumentasi, serta moderasi sesi diskusi.
+\end{itemize}}
+
+
+\cventry{Jan 2021–Des 2021}
+        {Mentor Belajar Backend}
+        {Komunitas Programmer Indonesia}
+        {\url{https://komunitasprogrammer.id}}
+        {}
+        {\begin{itemize}
+\item Memberikan mentorship gratis bagi anggota komunitas yang ingin mendalami backend development.
+\item Membimbing lima mentee dalam menyelesaikan proyek capstone API sederhana.
+\end{itemize}}
+
+\end{document}

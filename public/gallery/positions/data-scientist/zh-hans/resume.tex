@@ -1,0 +1,250 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{林欣然}{}
+\title{资深数据科学家 | 机器学习与业务增长}
+\phone[mobile]{+86 138 1234 5678}
+\email{lin.xinran@example.com}
+\homepage{https://www.linxinran.dev}
+
+\address{中国，上海市，上海，上海市浦东新区世纪大道100号，200120}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/linxinran}{@linxinran} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/linxinran}{@linxinran}}
+
+\begin{document}
+
+\maketitle
+
+\section{简介}
+
+\cvline{}{\begin{itemize}
+\item 统计学与计算机科学背景，7 年数据科学与机器学习建模经验
+\item 精通 Python、SQL、Spark，熟悉端到端数据管道与 MLOps 实践
+\item 擅长利用机器学习与因果推断解决营销、风控与运营优化问题
+\item 有带领团队与跨部门协作经验，注重模型可解释性与业务落地
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2014年9月–2017年6月}
+        {硕士，统计学，成绩：3.9/4.0}
+        {复旦大学}
+        {\url{https://www.fudan.edu.cn}}
+        {}
+        {\begin{itemize}
+\item 主修统计学与数据科学方向，论文聚焦大规模数据下的因果推断方法
+\item 获国家奖学金和校级优秀毕业生荣誉
+\item 参与导师课题组客户价值分析项目，独立完成特征工程与建模
+\end{itemize}
+\textbf{课程}：高级计量经济学、统计学习理论、贝叶斯数据分析、机器学习、时间序列与预测、因果推断}
+
+\cventry{2010年9月–2014年6月}
+        {学士，数学与应用数学，成绩：3.7/4.0}
+        {南京大学}
+        {\url{https://www.nju.edu.cn}}
+        {}
+        {\begin{itemize}
+\item 打下扎实的数学与统计基础，辅修计算机科学课程
+\item 参与校级创新项目，使用回归模型分析学生成绩影响因素
+\end{itemize}
+\textbf{课程}：数学分析、高等代数、概率论与数理统计、常微分方程、数值计算、数据结构}
+\section{工作经历}
+
+\cventry{2021年1月至今}
+        {高级数据科学家}
+        {云启数智科技有限公司}
+        {\url{https://www.yunqitech.cn}}
+        {}
+        {\begin{itemize}
+\item 负责公司核心推荐系统的算法优化，提升 CTR 15\%，带动 GMV 增长 8\%
+\item 搭建因果推断中台，支撑产品端 30+ 次策略效果评估实验
+\item 主导组建 5 人数据科学小组，建立模型迭代与监控规范
+\item 与工程团队共建 MLOps 流程，实现模型每周自动重训与灰度发布
+\end{itemize}
+\textbf{关键字}：推荐系统、因果推断、MLOps、团队管理}
+
+\cventry{2018年7月–2020年12月}
+        {数据科学家}
+        {华信数据技术有限公司}
+        {\url{https://www.huaxindata.cn}}
+        {}
+        {\begin{itemize}
+\item 为金融风控场景开发客户违约预测模型，KS 值提升 0.12，坏账率下降 18\%
+\item 搭建自动化特征工程管道，特征上线周期从两周缩短至两天
+\item 设计并实施 A/B 测试框架，推动销售策略科学化决策
+\item 参与数据治理项目，制定统一指标口径与质量监控规则
+\end{itemize}
+\textbf{关键字}：风控建模、特征工程、A/B测试、数据治理}
+\section{语言}
+
+\cvline{中文}{母语或双语水平}
+\cvline{英语}{完全专业水平 \hfill \textbf{关键字}：CET-6、雅思 7.0}
+\section{专业技能}
+
+\cvline{数据分析与统计建模}{专家 \hfill \textbf{关键字}：Python、R、SQL、统计检验、回归分析}
+\cvline{机器学习与深度学习}{高级 \hfill \textbf{关键字}：Scikit-learn、XGBoost、TensorFlow、PyTorch、自然语言处理、计算机视觉}
+\cvline{大数据与工程化}{中级 \hfill \textbf{关键字}：Spark、Hive、Airflow、Docker、Kubernetes、MLflow}
+\cvline{数据可视化与商业分析}{高级 \hfill \textbf{关键字}：Tableau、Power BI、Matplotlib、Seaborn、A/B测试}
+\section{荣誉}
+
+\cventry{2022年12月}
+        {云启数智科技有限公司}
+        {年度最佳数据科学项目奖}
+        {}
+        {}
+        {因主导的智能推荐系统优化项目显著提升业务指标，获公司年度最佳项目奖。}
+
+\cventry{2019年6月}
+        {Kaggle}
+        {Kaggle 竞赛银牌}
+        {}
+        {}
+        {在“商店商品销量预测”竞赛中获银牌，排名前 3\%。}
+\section{证书}
+
+\cventry{2022年3月}
+        {亚马逊云科技}
+        {AWS 机器学习专项认证}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{2020年8月}
+        {阿里云}
+        {阿里云高级数据分析师认证}
+        {\url{https://www.aliyun.com/}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2021年4月}
+        {基于多任务学习的金融用户行为预测研究}
+        {计算机科学与应用}
+        {\url{https://www.example.com/journal}}
+        {}
+        {提出一种多任务学习框架，联合建模用户点击、转化与流失行为，在真实数据集上较单任务模型提升 12\% 的 AUC。}
+\section{项目}
+
+\cventry{2020年1月–2020年6月}
+        {基于机器学习的用户流失预测与干预系统}
+        {用户流失预警系统}
+        {\url{https://github.com/linxinran/churn-prediction}}
+        {}
+        {设计并实现用户流失实时预警系统，融合用户行为与交易数据，输出流失风险评分与挽留建议。模型精度 0.86，召回率 0.79。
+\textbf{关键字}：流失预测、分类模型、模型部署}
+
+\cventry{2021年3月–2021年12月}
+        {自动化营销人群圈选与效果评估平台}
+        {营销响应智能优化平台}
+        {}
+        {}
+        {开发营销活动响应预测与预算分配优化模块，通过 uplift modeling 识别高响应人群，实现单位成本 ROI 提升 25\%。
+\textbf{关键字}：Uplift Modeling、预算优化、营销分析}
+\section{兴趣爱好}
+
+\cvline{数据竞赛}{Kaggle、天池、DataFountain}
+\cvline{开源与分享}{GitHub、技术博客、社区分享}
+\section{志愿服务}
+
+\cventry{2022年9月至今}
+        {数据科学讲师}
+        {城市数据科学公益社}
+        {\url{https://www.datasci-volunteer.org}}
+        {}
+        {为大学生和转行人员讲授 Python 数据分析入门课程，累计服务 200+ 学员，设计实战案例与辅导材料。}
+
+\end{document}

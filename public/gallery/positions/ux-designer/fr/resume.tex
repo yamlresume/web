@@ -1,0 +1,256 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Camille Moreau}{}
+\title{Designer UX senior — conception de produits numériques centrés utilisateur}
+\phone[mobile]{+33 6 12 34 56 78}
+\email{camille.moreau@email.fr}
+\homepage{https://www.camillemoreau.fr}
+
+\address{12 Rue de la Paix, Paris, Île-de-France, France, 75002}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/camillemoreau}{@camillemoreau} {} {} {} • {} {} {}
+{\small \faBehance}\ \href{https://www.behance.net/camillemoreau}{@camillemoreau} {} {} {} • {} {} {}
+{\small \faDribbble}\ \href{https://dribbble.com/camillemoreau}{@camillemoreau}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{Designer UX senior avec plus de 7 ans d'expérience dans la conception de produits numériques pour les secteurs de la santé, du e-commerce et des services financiers. Je m'applique à comprendre les besoins réels des utilisateurs pour concevoir des interfaces intuitives, accessibles et désirables.
+%
+\begin{itemize}
+\item Expertise en recherche utilisateur, prototypage interactif et design system
+\item Approche centrée utilisateur, guidée par les données et les tests d'utilisabilité
+\item Collaboration étroite avec les développeurs, les product managers et les métiers
+\item Passionnée par l'accessibilité numérique et le design inclusif
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2014–juil. 2016}
+        {Master, Design d'interaction et expérience utilisateur, Score : 3.8}
+        {L'École de design Nantes Atlantique}
+        {\url{https://www.lecolededesign.com/}}
+        {}
+        {\begin{itemize}
+\item Formation centrée sur la conception d'interfaces et de services numériques innovants
+\item Projet de fin d'études sur la conception d'un parcours de soin connecté pour patients chroniques
+\item Stage de fin d'études en agence UX, avec création de tests utilisateurs et de wireframes
+\end{itemize}
+\textbf{Cours} : Ergonomie cognitive, Design thinking, Prototypage interactif, Recherche utilisateur, Design visuel, Méthodes agiles}
+
+\cventry{sept. 2011–juil. 2014}
+        {Licence, Arts plastiques — Design}
+        {Université de Rennes 2}
+        {\url{https://www.univ-rennes2.fr/}}
+        {}
+        {\begin{itemize}
+\item Acquisition des fondamentaux du design visuel, de l'histoire de l'art et de la sémiologie de l'image
+\item Réalisation de projets graphiques individuels et collectifs, alliant créativité et rigueur
+\end{itemize}}
+\section{Expérience professionnelle}
+
+\cventry{janv. 2022–Present}
+        {Designer UX senior}
+        {Cortex Design}
+        {\url{https://www.cortex-design.fr}}
+        {}
+        {\begin{itemize}
+\item Pilote la conception UX/UI de la plateforme de télémédecine pour un client du secteur de la santé
+\item Anime des ateliers de co-design avec les équipes produit, technique et médicale
+\item Développe et fait évoluer le design system multi-produits (Figma, Storybook)
+\item Planifie et réalise des tests d'utilisabilité, puis formalise des recommandations d'amélioration
+\item Accompagne l'équipe dans l'application des critères d'accessibilité RGAA et WCAG 2.1
+\end{itemize}
+\textbf{Mots-clés} : Recherche utilisateur, Tests d'utilisabilité, Design system, Accessibilité, Figma}
+
+\cventry{mars 2019–déc. 2021}
+        {Product Designer}
+        {Numen Studio}
+        {\url{https://www.numen-studio.fr}}
+        {}
+        {\begin{itemize}
+\item Conception de parcours utilisateurs et de wireframes pour des applications web et mobiles
+\item Réalisation de prototypes interactifs présentés lors de recettes avec les clients
+\item Mise en place d'un design system interne, réduisant de 30 \% le temps de production
+\item Participation à la refonte de l'application mobile d'une grande enseigne de distribution
+\item Contribution aux tests utilisateurs en laboratoire et à distance
+\end{itemize}
+\textbf{Mots-clés} : Wireframing, Prototypage, User journey, Design system, Sketch}
+
+\cventry{sept. 2016–févr. 2019}
+        {UI/UX Designer}
+        {Pixelea}
+        {\url{https://www.pixelea.fr}}
+        {}
+        {\begin{itemize}
+\item Conception d'interfaces responsives pour des sites vitrines et des outils intranet
+\item Création d'identités visuelles et de chartes graphiques pour des PME
+\item Collaboration avec les développeurs pour assurer la faisabilité technique des maquettes
+\item Réalisation de supports de présentation pour les réponses aux appels d'offres
+\end{itemize}
+\textbf{Mots-clés} : UI design, Intégration HTML/CSS, Identité visuelle, Responsive design}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEIC 950}
+\section{Compétences}
+
+\cvline{Recherche utilisateur}{Expert \hfill \textbf{Mots-clés} : Entretiens utilisateurs, Personas, Parcours utilisateur, Tests d'utilisabilité, Analyse de données}
+\cvline{Prototypage et design d'interface}{Expert \hfill \textbf{Mots-clés} : Figma, Sketch, Adobe XD, InVision, Principle}
+\cvline{Design system et accessibilité}{Avancé \hfill \textbf{Mots-clés} : Design tokens, Composants, WCAG 2.1, RGAA}
+\cvline{Collaboration et méthodes agiles}{Avancé \hfill \textbf{Mots-clés} : Scrum, Kanban, Lean UX, Ateliers de co-design}
+\section{Récompenses}
+
+\cventry{oct. 2021}
+        {UX Design Awards Europe}
+        {Prix UX Design – Mention accessibilité}
+        {}
+        {}
+        {Récompense le projet « Mon Suivi Santé » pour sa conception inclusive et son interface accessible aux utilisateurs seniors.}
+\section{Certificats}
+
+\cventry{mars 2020}
+        {Nielsen Norman Group}
+        {Certified User Experience Professional (CUP)}
+        {\url{https://www.nngroup.com/}}
+        {}
+        {}
+
+\cventry{août 2021}
+        {Coursera}
+        {Google UX Design Professional Certificate}
+        {\url{https://www.coursera.org/}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{juin 2022}
+        {Améliorer l'accessibilité des interfaces mobiles pour les seniors}
+        {Les Cahiers du Design}
+        {\url{https://www.lescahiersdudesign.fr/}}
+        {}
+        {Article de synthèse présentant les bonnes pratiques d'accessibilité numérique et les retours d'expérience de tests utilisateurs menés auprès de personnes âgées.}
+\section{Projets}
+
+\cventry{sept. 2021–Present}
+        {Conception UX/UI d'une application mobile de suivi médical pour patients chroniques.}
+        {Mon Suivi Santé}
+        {\url{https://www.monsuivisante.fr}}
+        {}
+        {\begin{itemize}
+\item Conduite d'entretiens utilisateurs et de tests d'utilisabilité
+\item Création de l'architecture de l'information et des parcours clés
+\item Conception d'une interface accessible conforme aux normes WCAG 2.1
+\end{itemize}
+\textbf{Mots-clés} : Mobile, Santé, Accessibilité, Figma, Tests utilisateurs}
+
+\cventry{janv. 2023–juin 2023}
+        {Refonte de l'expérience d'achat d'une marque de décoration éco-responsable.}
+        {Maison Verte}
+        {\url{https://www.maisonverte.fr}}
+        {}
+        {\begin{itemize}
+\item Audit UX et analyse des parcours d'achat existants
+\item Conception d'une interface épurée mettant en avant les engagements éco-responsables
+\item Mise en place d'un design system et de composants réutilisables
+\end{itemize}
+\textbf{Mots-clés} : E-commerce, UX/UI, Design system, Conversion}
+\section{Centres d'intérêt}
+
+\cvline{Design social}{Design inclusif, Accessibilité numérique, Éco-conception}
+\cvline{Arts et culture}{Photographie, Musées, Littérature}
+\section{Bénévolat}
+
+\cventry{sept. 2020–Present}
+        {Bénévole UX}
+        {Designers Éthiques}
+        {\url{https://www.designersethiques.org/}}
+        {}
+        {Accompagnement d'associations à but non lucratif dans l'amélioration de leurs outils numériques et la formation de leurs équipes aux bonnes pratiques d'accessibilité.}
+
+\end{document}

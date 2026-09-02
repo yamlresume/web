@@ -1,0 +1,255 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Camille Moreau}{}
+\title{Data Scientist spécialisée en machine learning et analyse prédictive}
+\phone[mobile]{+33 6 12 34 56 78}
+\email{camille.moreau@email.fr}
+\homepage{https://camillemoreau.fr}
+
+\address{12 rue de la Paix, Paris, Île-de-France, France, 75002}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/camille-moreau-data}{@camille-moreau-data} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/camillemoreau}{@camillemoreau} {} {} {} • {} {} {}
+{\small \faMedium}\ \href{https://medium.com/@camillemoreau}{@camillemoreau}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{Data Scientist avec plus de 6 ans d'expérience dans la conception, le déploiement et le suivi de modèles de machine learning en environnement production.
+%
+\begin{itemize}
+\item Expertise en Python, SQL et visualisation de données (Power BI, Tableau)
+\item Expérience en modélisation prédictive, traitement du langage naturel et détection de fraude
+\item Solide connaissance des environnements cloud (AWS, GCP) et des pratiques MLOps
+\item Esprit analytique, rigueur scientifique et capacité à vulgariser les résultats auprès des parties prenantes non techniques
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2017–juin 2019}
+        {Master, Data Science et Intelligence Artificielle, Score : Mention Bien}
+        {Sorbonne Université}
+        {\url{https://www.sorbonne-universite.fr/}}
+        {}
+        {\begin{itemize}
+\item Diplômée avec mention Bien, spécialisation en apprentissage automatique
+\item Mémoire de fin d'études sur l'utilisation du deep learning pour la détection de fraude financière
+\item Projet de fin d'études réalisé en collaboration avec un grand acteur bancaire
+\end{itemize}
+\textbf{Cours} : Apprentissage statistique, Deep Learning, Big Data Analytics, Visualisation de données, Optimisation et recherche opérationnelle, Systèmes de recommandation, Traitement automatique du langage naturel, Éthique des données}
+
+\cventry{sept. 2014–juin 2017}
+        {Licence, Mathématiques et Informatique}
+        {Université Claude Bernard Lyon 1}
+        {\url{https://www.univ-lyon1.fr/}}
+        {}
+        {\begin{itemize}
+\item Formation fondamentale en mathématiques, algorithmique et programmation
+\item Projets pratiques de statistiques et d'analyse de données
+\item Stage de fin de licence sur l'analyse exploratoire de données de consommation énergétique
+\end{itemize}}
+\section{Expérience professionnelle}
+
+\cventry{mars 2021–Present}
+        {Data Scientist Senior}
+        {Nova Analytics}
+        {\url{https://www.nova-analytics.fr/}}
+        {}
+        {\begin{itemize}
+\item Conception et déploiement de modèles de machine learning pour l'optimisation de la chaîne logistique
+\item Développement de pipelines de données automatisés en Python et Spark, réduisant de 30 \% le temps de préparation des données
+\item Mise en place de tableaux de bord interactifs avec Power BI pour suivre les indicateurs de performance
+\item Encadrement d'une équipe de trois data scientists juniors, avec revue de code et suivi des bonnes pratiques
+\item Collaboration avec les équipes produit et métier pour traduire les besoins en solutions analytiques
+\end{itemize}
+\textbf{Mots-clés} : Python, Spark, Power BI, Machine Learning, MLOps, AWS, Management}
+
+\cventry{juil. 2019–févr. 2021}
+        {Data Scientist}
+        {PayLogic}
+        {\url{https://www.paylogic.fr/}}
+        {}
+        {\begin{itemize}
+\item Développement de modèles de scoring pour la détection de fraude aux transactions bancaires
+\item Amélioration de la précision du modèle de détection de 15 \% grâce à l'ingénierie de caractéristiques
+\item Mise en œuvre d'algorithmes de traitement du langage naturel pour l'analyse des retours clients
+\item Rédaction de rapports d'analyse et présentation des résultats aux comités de direction
+\end{itemize}
+\textbf{Mots-clés} : Python, Scikit-learn, SQL, Détection de fraude, NLP}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue \hfill \textbf{Mots-clés} : Langue maternelle}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEIC 960, Lecture d'articles scientifiques, Présentations internationales}
+\section{Compétences}
+
+\cvline{Machine Learning}{Expert \hfill \textbf{Mots-clés} : Python, Scikit-learn, TensorFlow, PyTorch, XGBoost, LightGBM}
+\cvline{Analyse et Visualisation de Données}{Expert \hfill \textbf{Mots-clés} : Pandas, NumPy, Matplotlib, Seaborn, Power BI, Tableau, SQL}
+\cvline{Big Data et Cloud}{Avancé \hfill \textbf{Mots-clés} : Apache Spark, Hadoop, AWS, GCP, Docker, Airflow}
+\cvline{Statistiques}{Avancé \hfill \textbf{Mots-clés} : R, Régression, Séries temporelles, Statistiques inférentielles, Tests d'hypothèses}
+\section{Récompenses}
+
+\cventry{nov. 2023}
+        {Data Innovation Summit France}
+        {Prix de la meilleure innovation data}
+        {}
+        {}
+        {Récompense attribuée pour le développement d'un modèle prédictif de maintenance industrielle ayant réduit les coûts d'arrêt de production de 20 \%.}
+
+\cventry{oct. 2019}
+        {Sorbonne Université}
+        {Prix du meilleur mémoire de Master}
+        {}
+        {}
+        {Distinction décernée pour le mémoire portant sur la détection de fraude financière par réseaux de neurones profonds.}
+\section{Certificats}
+
+\cventry{sept. 2021}
+        {Amazon Web Services}
+        {AWS Certified Machine Learning – Specialty}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{avr. 2020}
+        {Coursera}
+        {Deep Learning Specialization}
+        {\url{https://www.coursera.org/specializations/deep-learning}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{févr. 2022}
+        {Détection de fraude financière par réseaux de neurones profonds}
+        {Revue Française de Data Science}
+        {\url{https://www.rfds.fr/articles/detection-fraude}}
+        {}
+        {Publication co-écrite présentant une approche de deep learning pour détecter des transactions frauduleuses en temps réel. L'article détaille les architectures comparées et les résultats sur un jeu de données bancaires anonymisé.}
+\section{Projets}
+
+\cventry{janv. 2023–juin 2023}
+        {Moteur de recommandation de contenus culturels basé sur le filtrage collaboratif et le deep learning.}
+        {Système de recommandation de contenus}
+        {\url{https://github.com/camillemoreau/reco-system}}
+        {}
+        {\begin{itemize}
+\item Conception d'un système de recommandation hybride combinant filtrage collaboratif et embeddings
+\item Amélioration de 12 \% du taux de clics sur une plateforme de streaming culturel
+\item APIs Dockerisées déployées sur AWS Elastic Beanstalk
+\end{itemize}
+\textbf{Mots-clés} : Recommandation, TensorFlow, AWS, API}
+
+\cventry{sept. 2022–déc. 2022}
+        {Outil d'analyse d'opinions en temps réel à partir de Twitter.}
+        {Analyse de sentiments des tweets}
+        {\url{https://github.com/camillemoreau/sentiment-twitter}}
+        {}
+        {\begin{itemize}
+\item Modèle de NLP basé sur BERT pour classer les tweets en sentiments positifs, négatifs ou neutres
+\item Pipeline de collecte de données avec Twitter API et Kafka
+\item Visualisation des tendances avec Grafana
+\end{itemize}
+\textbf{Mots-clés} : NLP, BERT, Kafka, Grafana}
+\section{Centres d'intérêt}
+
+\cvline{Randonnée}{Alpes, Mont Blanc}
+\cvline{Photographie}{Photo de rue, Voyages}
+\cvline{Lecture}{Science-fiction, Essais}
+\section{Bénévolat}
+
+\cventry{janv. 2022–Present}
+        {Data Scientist bénévole}
+        {Data for Good France}
+        {\url{https://dataforgood.fr/}}
+        {}
+        {\begin{itemize}
+\item Accompagnement d'associations à but non lucratif dans l'analyse de leurs données
+\item Développement d'un outil de suivi des bénéficiaires pour une association d'aide alimentaire
+\item Animation d'ateliers de sensibilisation aux enjeux éthiques de la donnée
+\end{itemize}}
+
+\end{document}

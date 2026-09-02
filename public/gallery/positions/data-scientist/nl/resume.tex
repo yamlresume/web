@@ -1,0 +1,261 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Dutch language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-dutch.html
+\usepackage[dutch]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Sophie Bakker}{}
+\title{Data Scientist met passie voor voorspellende modellen}
+\phone[mobile]{+31 6 12345678}
+\email{sophie.bakker@datavak.nl}
+\homepage{https://www.sophiebakker.nl}
+
+\address{Herengracht 123, Amsterdam, Noord-Holland, Nederland, 1011 AB}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/sophiebakker}{@sophiebakker} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/sophiebakker}{@sophiebakker}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basis Informatie}
+
+\cvline{}{Data Scientist met ruim 6 jaar ervaring in het ontwikkelen en implementeren van
+datagedreven oplossingen voor complexe vraagstukken.
+%
+\begin{itemize}
+\item Ontwerpt en implementeert voorspellende modellen voor klantverloop, vraagvoorspelling en fraudedetectie.
+\item Combineert sterke analytische vaardigheden met een pragmatische, bedrijfsgerichte aanpak.
+\item Ervaren met Python, R, SQL en cloudplatformen zoals AWS en Google Cloud.
+\item Begeleidt junior datascientists en draagt bij aan de datastrategie van de organisatie.
+\end{itemize}}
+\section{Opleidingen}
+
+\cventry{sep 2017–jul 2019}
+        {Master, Data Science, Score: 8.2}
+        {Universiteit van Amsterdam}
+        {\url{https://www.uva.nl}}
+        {}
+        {\begin{itemize}
+\item Afstudeeronderzoek naar causale inferentie in observationele studies, beoordeeld met een 9.
+\item Specialisatie in voorspellende modellen en datagedreven besluitvorming.
+\end{itemize}
+\textbf{Cursussen}: Machine Learning, Statistical Learning, Big Data Technologies, Deep Learning, Data Visualisatie, Ethiek en Databeleid}
+
+\cventry{sep 2014–jul 2017}
+        {Bachelor, Kunstmatige Intelligentie, Score: 7.6}
+        {Universiteit Utrecht}
+        {\url{https://www.uu.nl}}
+        {}
+        {\begin{itemize}
+\item Brede basis in AI-technieken, statistiek en softwareontwikkeling.
+\item Minor Ondernemerschap gevolgd aan de Universiteit Utrecht.
+\end{itemize}
+\textbf{Cursussen}: Logica en Redeneren, Algoritmiek, Datastructuren, Probabilistische Modellen, Mens-Machine Interactie, Cognitiewetenschap}
+\section{Werkervaring}
+
+\cventry{jan 2022–Heden}
+        {Senior Data Scientist}
+        {Nova Analytics B.V.}
+        {\url{https://www.nova-analytics.nl}}
+        {}
+        {\begin{itemize}
+\item Geeft leiding aan de ontwikkeling van schaalbare machine-learning-pipelines voor klanten in de financiële sector.
+\item Verbeterde het churnmodel met 15\% nauwkeurigheid door feature-engineering en modeloptimalisatie.
+\item Implementeerde MLOps-praktijken zoals CI/CD en modelmonitoring, wat de time-to-market van modellen met 40\% verkortte.
+\item Adviseert het management over datastrategie en bouwt aan een sterk data science-team.
+\end{itemize}
+\textbf{Trefwoorden}: Python, Machine Learning, MLOps, Strategie, Teamlead}
+
+\cventry{sep 2019–dec 2021}
+        {Data Scientist}
+        {Zicht Data BV}
+        {\url{https://www.zichtdata.nl}}
+        {}
+        {\begin{itemize}
+\item Analyseerde grote datasets om logistieke processen efficiënter te maken.
+\item Ontwikkelde realtime dashboards met Python, Streamlit en Tableau voor het monitoren van KPI's.
+\item Werkte nauw samen met productowners en domeinexperts om databehoeften te vertalen naar analyses.
+\item Voerde A/B-testen en statistische analyses uit ter ondersteuning van productbeslissingen.
+\end{itemize}
+\textbf{Trefwoorden}: Python, SQL, Data-analyse, Tableau, A/B-testen}
+
+\cventry{feb 2019–jul 2019}
+        {Data Analyst (stage)}
+        {Datazicht Labs}
+        {\url{https://www.datazichtlabs.nl}}
+        {}
+        {\begin{itemize}
+\item Ondersteunde het team bij het opschonen, samenvoegen en analyseren van data voor beleidsonderzoek.
+\item Realiseerde interactieve visualisaties met R en R Shiny.
+\item Droeg bij aan datakwaliteitsrapportages en verbeterde de metadata van datasets.
+\end{itemize}
+\textbf{Trefwoorden}: R, Data Cleaning, Visualisatie, Rapportage}
+\section{Talen}
+
+\cvline{Nederlands}{Moedertaal of tweetalige vaardigheid \hfill \textbf{Trefwoorden}: Moedertaal}
+\cvline{Engels}{Volledige professionele vaardigheid \hfill \textbf{Trefwoorden}: Cambridge C2, Zakelijk Engels}
+\cvline{Duits}{Beperkte werkvaardigheid \hfill \textbf{Trefwoorden}: Basisvaardigheden}
+\section{Vaardigheden}
+
+\cvline{Machine Learning}{Expert \hfill \textbf{Trefwoorden}: Python, scikit-learn, TensorFlow, PyTorch, XGBoost, LightGBM}
+\cvline{Statistiek}{Geavanceerd \hfill \textbf{Trefwoorden}: R, Hypothesetoetsing, Tijdreeksen, A/B-testen, Causale Inferentie}
+\cvline{Data Engineering}{Intermediair \hfill \textbf{Trefwoorden}: SQL, Apache Spark, Airflow, Docker, dbt, AWS}
+\cvline{Data Visualisatie}{Geavanceerd \hfill \textbf{Trefwoorden}: Tableau, Power BI, matplotlib, seaborn, ggplot2, Plotly, D3.js}
+\cvline{Datamanagement}{Intermediair \hfill \textbf{Trefwoorden}: Data governance, Datakwaliteit, Metadata, AVG/GDPR}
+\section{Onderscheidingen}
+
+\cventry{nov 2019}
+        {Nederlandse Vereniging voor Data Science}
+        {Master Scriptieprijs Data Science}
+        {}
+        {}
+        {Bekroond voor de beste afstudeerscriptie op het gebied van causale inferentie met observationele data.}
+
+\cventry{jun 2021}
+        {KLM}
+        {KLM Datathon - Best Model}
+        {}
+        {}
+        {Team behaalde de eerste plaats met een voorspellingsmodel voor bagageafhandelingsvertragingen.}
+\section{Certificaten}
+
+\cventry{mei 2022}
+        {Amazon Web Services}
+        {AWS Certified Machine Learning - Specialty}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{nov 2020}
+        {Google}
+        {Google Professional Data Engineer}
+        {\url{https://cloud.google.com/certification/data-engineer}}
+        {}
+        {}
+\section{Publicaties}
+
+\cventry{feb 2022}
+        {Een vergelijking van gradient boosting technieken voor vraagvoorspelling in de retailsector}
+        {Tijdschrift voor Toegepaste Data Science}
+        {\url{https://www.tijdschriftdata.nl/artikel/vergelijking-gradient-boosting}}
+        {}
+        {Onderzoekt de prestaties van XGBoost, LightGBM en CatBoost op retaildata en geeft praktische aanbevelingen voor het toepassen van deze technieken.}
+\section{Projecten}
+
+\cventry{mrt 2020–jul 2020}
+        {Het project combineert tijdreeksanalyse met deep learning-modellen (LSTM) en biedt een API voor het ontsluiten van de voorspellingen. De resultaten worden gevalideerd aan de hand van publieke data van het Centraal Bureau voor de Statistiek.
+}
+        {Energieprognose voor slimme wijken}
+        {\url{https://github.com/sophiebakker/energy-forecast}}
+        {}
+        {Open-source project dat energieverbruik op buurtniveau voorspelt op basis van historische data en weersvoorspellingen.
+\textbf{Trefwoorden}: Python, Tijdreeksen, LSTM, Energietransitie}
+
+\cventry{feb 2019–jun 2019}
+        {Implementeerde een realtime fraudedetectiepijplijn met Apache Kafka voor streaming en scikit-learn voor de detectiemodellen. Evalueerde het systeem op een gesimuleerde transactiedataset en behaalde een F1-score van 0,91.
+}
+        {Fraudedetectiesysteem voor betaalverkeer}
+        {\url{https://github.com/sophiebakker/fraud-detection}}
+        {}
+        {Eindproject van de masteropleiding: realtime fraudedetectiesysteem voor transacties.
+\textbf{Trefwoorden}: Fraudedetectie, Kafka, scikit-learn, Realtime}
+\section{Interesses}
+
+\cvline{Wielrennen}{Toertochten, Amstel Gold Race}
+\cvline{Schaken}{Clubcompetitie, Strategie}
+\cvline{Lezen}{Sciencefiction, Vakliteratuur}
+\cvline{Koken}{Vegetarisch, Wereldkeuken}
+\section{Vrijwilligerswerk}
+
+\cventry{jan 2020–Heden}
+        {Data Scientist (vrijwilliger)}
+        {Data for Good Nederland}
+        {\url{https://www.dataforgoodnl.nl}}
+        {}
+        {\begin{itemize}
+\item Verzorgt data-analyses voor non-profitorganisaties, waaronder de optimalisatie van voedselbankdistributie.
+\item Ondersteunt vrijwilligers met het uitvoeren van dataprojecten.
+\end{itemize}}
+
+\end{document}

@@ -1,0 +1,274 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{林晓慧}{}
+\title{高级产品经理 · 8 年互联网产品经验}
+\phone[mobile]{+86 138 1234 5678}
+\email{xiaohui.lin@linpm.cn}
+\homepage{https://www.linpm.cn}
+
+\address{中国，上海市，上海，上海市浦东新区祖冲之路 123 弄，200120}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/xiaohui-lin}{@xiaohui-lin} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/xiaohuilin}{@xiaohuilin}}
+
+\begin{document}
+
+\maketitle
+
+\section{简介}
+
+\cvline{}{拥有 8 年互联网产品设计与团队管理经验，擅长从 0 到 1 打造 SaaS 产品，并推动成熟产品持续增长。
+%
+\begin{itemize}
+\item 主导过多个企业级产品，覆盖数据洞察、协同办公、数字化营销等方向
+\item 注重用户需求与商业目标的结合，善于通过数据分析驱动产品决策
+\item 具备优秀的跨部门沟通能力和团队领导力，多次带领团队完成关键业务目标
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2011年9月–2015年6月}
+        {学士，计算机科学与技术，成绩：3.7/4.0}
+        {复旦大学}
+        {\url{https://www.fudan.edu.cn/}}
+        {}
+        {\begin{itemize}
+\item 系统学习计算机科学与技术，具备扎实的技术基础，为后续产品管理工作提供技术支撑
+\item 参加校内互联网创业团队，负责产品需求分析、原型设计与用户测试，初步建立产品思维
+\end{itemize}
+\textbf{课程}：数据结构与算法、操作系统、数据库系统、计算机网络、软件工程、人机交互}
+\section{工作经历}
+
+\cventry{2022年1月至今}
+        {高级产品经理}
+        {星云科技}
+        {\url{https://www.nebulatech.cn}}
+        {}
+        {\begin{itemize}
+\item 负责公司核心 SaaS 数据产品的整体规划与迭代，产品月活跃用户增长 80\%，年度营收同比增长 120\%
+\item 搭建产品数据指标体系，推动 A/B 测试常态化，关键转化率提升 35\%
+\item 带领 6 人产品团队，建立需求评审、版本发布和数据复盘流程，提升团队交付效率
+\item 与销售、客户成功团队紧密协作，梳理客户反馈并转化为产品需求，提升客户留存率
+\end{itemize}
+\textbf{关键字}：SaaS、数据分析、团队管理、用户增长、A/B 测试、商业化}
+
+\cventry{2019年3月–2021年12月}
+        {产品经理}
+        {上海蓝海信息技术有限公司}
+        {\url{https://www.blueocean-info.cn}}
+        {}
+        {\begin{itemize}
+\item 负责企业协同办公产品的用户调研、需求分析和功能设计，覆盖超过 200 家企业客户
+\item 设计全新任务协作模块，上线后周活跃用户提升 45\%，客户续费率提升 20\%
+\item 独立完成 20 余份 PRD，协调设计、研发、测试资源，保障产品按期高质量交付
+\item 建立用户反馈闭环，定期输出产品数据分析报告，为管理层决策提供依据
+\end{itemize}
+\textbf{关键字}：协同办公、需求分析、PRD、用户调研、数据分析}
+
+\cventry{2017年2月–2019年2月}
+        {产品经理}
+        {上海云帆网络科技有限公司}
+        {\url{https://www.yunfan-tech.cn}}
+        {}
+        {\begin{itemize}
+\item 负责移动端营销工具产品的功能规划与迭代，累计服务 50 万注册用户
+\item 通过用户分群与行为分析，优化核心转化流程，付费转化率提升 28\%
+\item 与运营团队合作策划增长活动，实现单季度新增用户 12 万
+\end{itemize}
+\textbf{关键字}：移动端、营销工具、增长、用户运营、数据分析}
+
+\cventry{2015年7月–2016年12月}
+        {产品助理}
+        {萌芽科技}
+        {\url{https://www.mengya-startup.cn}}
+        {}
+        {\begin{itemize}
+\item 协助产品经理完成需求收集、竞品分析和原型绘制，支持 3 条产品线的日常迭代
+\item 跟进开发进度并组织验收测试，保证功能上线质量
+\end{itemize}
+\textbf{关键字}：竞品分析、原型设计、项目跟进}
+\section{语言}
+
+\cvline{中文}{母语或双语水平 \hfill \textbf{关键字}：普通话母语}
+\cvline{英语}{完全专业水平 \hfill \textbf{关键字}：大学英语六级、商务邮件写作、英文需求文档}
+\section{专业技能}
+
+\cvline{产品规划与设计}{专家 \hfill \textbf{关键字}：需求分析、用户研究、竞品分析、产品路线图、PRD、原型设计}
+\cvline{数据分析}{高级 \hfill \textbf{关键字}：SQL、Excel、Tableau、A/B 测试、用户行为分析、指标体系建设}
+\cvline{项目管理}{高级 \hfill \textbf{关键字}：敏捷开发、Scrum、JIRA、跨部门协作、OKR、风险管理}
+\cvline{产品运营与增长}{中级 \hfill \textbf{关键字}：用户留存、转化率优化、增长实验、渠道分析}
+\cvline{工具与协作}{高级 \hfill \textbf{关键字}：Figma、Axure、Sketch、禅道、企业微信}
+\section{荣誉}
+
+\cventry{2023年12月}
+        {星云科技}
+        {年度优秀产品经理}
+        {}
+        {}
+        {因主导的 SaaS 数据产品实现年度营收翻倍增长，并推动产品团队形成高效迭代机制，获评公司年度优秀产品经理。}
+
+\cventry{2022年6月}
+        {华东 SaaS 创新峰会}
+        {最佳创新产品奖}
+        {}
+        {}
+        {负责设计的智能数据分析平台获评峰会“最佳创新产品奖”，评审组认可其在易用性和数据智能化方面的创新。}
+\section{证书}
+
+\cventry{2021年5月}
+        {PDMA}
+        {NPDP 产品经理国际资格认证}
+        {\url{https://www.pdma.org}}
+        {}
+        {}
+
+\cventry{2020年8月}
+        {Scrum Alliance}
+        {CSPO 认证 Scrum 产品负责人}
+        {\url{https://www.scrumalliance.org}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2022年8月}
+        {数据驱动的 SaaS 产品体验优化实践}
+        {产品经理社区}
+        {\url{https://www.pmcommunity.cn/articles/data-driven-saas-ux}}
+        {}
+        {结合团队实践经验，总结如何通过用户行为数据和 A/B 测试持续优化 SaaS 产品体验，并分享可复用的分析框架与关键指标。}
+\section{项目}
+
+\cventry{2022年1月–2023年12月}
+        {面向中小企业的自助式数据洞察 SaaS 产品}
+        {智能数据分析平台}
+        {\url{https://www.nebulatech.cn/products/analytics}}
+        {}
+        {\begin{itemize}
+\item 从市场调研、用户访谈、竞品分析到 MVP 上线，全程主导产品规划与落地
+\item 设计可视化报表与智能分析助手，降低用户使用门槛，上线一年付费客户超 300 家
+\item 与算法团队合作引入自动洞察功能，显著提升用户活跃度与留存
+\end{itemize}
+\textbf{关键字}：SaaS、数据可视化、智能分析、产品从 0 到 1}
+
+\cventry{2019年6月–2020年9月}
+        {面向中小企业的协同办公 App 体验升级项目}
+        {企业协同办公移动端改版}
+        {}
+        {}
+        {\begin{itemize}
+\item 负责移动端信息架构重构与核心任务流程优化
+\item 通过可用性测试和灰度发布，新版上线后 7 日留存率提升 25\%
+\end{itemize}
+\textbf{关键字}：移动端、体验优化、B 端产品、可用性测试}
+\section{兴趣爱好}
+
+\cvline{商业与科技阅读}{商业分析、设计心理学、AI 应用、数字化转型}
+\cvline{户外运动}{徒步、骑行、露营}
+\cvline{社区分享}{产品经理沙龙、创业辅导、写作}
+\section{志愿服务}
+
+\cventry{2020年3月–2023年12月}
+        {产品创业导师}
+        {上海青年创业者协会}
+        {\url{https://www.shyea.cn}}
+        {}
+        {\begin{itemize}
+\item 为早期创业者提供产品定位、用户研究、MVP 验证等公益咨询，累计服务 30 余个创业团队
+\item 参与组织行业沙龙，分享从 0 到 1 的产品方法论
+\end{itemize}}
+
+\end{document}

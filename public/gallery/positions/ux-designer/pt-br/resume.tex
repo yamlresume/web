@@ -1,0 +1,264 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Brazilian Portuguese language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-portuguese.html
+\usepackage[brazilian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Mariana Costa}{}
+\title{UX Designer Plena | Pesquisa, Prototipação e Design de Interfaces}
+\phone[mobile]{+55 11 98765-4321}
+\email{mariana.design@email.com}
+\homepage{https://marianacosta.design}
+
+\address{Av. Paulista, 1000, São Paulo, São Paulo, Brasil, 01310-100}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/marianacosta-ux}{@marianacosta-ux} {} {} {} • {} {} {}
+{\small \faBehance}\ \href{https://www.behance.net/marianacosta}{@marianacosta} {} {} {} • {} {} {}
+{\small \faMedium}\ \href{https://medium.com/@marianacosta}{@marianacosta}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informações Básicas}
+
+\cvline{}{UX Designer com 6+ anos de experiência em produtos digitais, atuando em todo o ciclo de discovery e delivery.
+%
+Especialista em pesquisa com usuários, arquitetura da informação, prototipação em alta fidelidade e design de interfaces para web e mobile. Facilita a criação e a evolução de design systems, colabora com times de produto e engenharia e conduz testes de usabilidade para embasar decisões com dados e evidências.}
+\section{Formação}
+
+\cventry{fev. de 2013–dez. de 2017}
+        {Bacharelado, Design, Nota: 8.2}
+        {Universidade de São Paulo (USP)}
+        {\url{https://www.usp.br/}}
+        {}
+        {\begin{itemize}
+\item Desenvolvimento de projetos práticos em design de produto e design digital
+\item Pesquisa e desenvolvimento de interfaces centradas no usuário
+\item Trabalhos em equipe com ênfase em metodologias ágeis e design thinking
+\end{itemize}
+\textbf{Cursos}: Ergonomia e Usabilidade, Design de Informação, Metodologia de Projeto em Design, Psicologia da Percepção, Tipografia, Design de Interfaces Digitais, Antropologia do Consumo, Processos de Criação em Mídias Digitais}
+\section{Experiência Profissional}
+
+\cventry{mar. de 2023–Atual}
+        {UX Designer Plena}
+        {Nexo Digital}
+        {\url{https://nexodigital.com.br}}
+        {}
+        {\begin{itemize}
+\item Lidera o discovery de novas funcionalidades para a plataforma de investimentos, conduzindo entrevistas, testes de usabilidade e sessões de cocriação com stakeholders
+\item Cria protótipos em alta fidelidade e colabora com product managers e desenvolvedores na evolução contínua do design system
+\item Implementou um processo de pesquisa contínua que reduziu em 35\% o retrabalho em especificações de produto
+\item Atua como referência em acessibilidade, garantindo conformidade com WCAG 2.1 nos fluxos principais do produto
+\end{itemize}
+\textbf{Palavras-chave}: Design System, Pesquisa com usuários, Testes de usabilidade, Acessibilidade, Descoberta de produto, Colaboração}
+
+\cventry{jan. de 2021–fev. de 2023}
+        {UX Designer}
+        {Grupo Vai}
+        {\url{https://grupovai.com.br}}
+        {}
+        {\begin{itemize}
+\item Responsável pelo redesign do aplicativo de mobilidade urbana, aumentando a taxa de conversão de cadastro em 22\%
+\item Conduziu mais de 40 entrevistas e testes de usabilidade com usuários de diferentes perfis
+\item Desenvolveu o design system do app, documentando padrões visuais e componentes para as plataformas Android, iOS e web
+\item Trabalhou em squads multidisciplinares, participando de rituais ágeis e revisões dos componentes de interface
+\end{itemize}
+\textbf{Palavras-chave}: Figma, Design System, Pesquisa contextual, Prototipação, Experimentação}
+
+\cventry{jan. de 2018–dez. de 2020}
+        {Designer de Produto}
+        {Up Design Studio}
+        {\url{https://updesign.example}}
+        {}
+        {\begin{itemize}
+\item Realizou projetos de branding e UI para startups dos setores de saúde, educação e fintech
+\item Criou wireframes, fluxos de navegação e protótipos funcionais para validação com clientes
+\item Aplicou métodos de design thinking em workshops de definição de produto
+\item Colaborou com desenvolvedores na implementação dos layouts, garantindo consistência visual
+\end{itemize}
+\textbf{Palavras-chave}: UI Design, Wireframes, Design Thinking, Branding, Front-end}
+\section{Idiomas}
+
+\cvline{Português}{Nativo ou Bilíngue \hfill \textbf{Palavras-chave}: Português do Brasil}
+\cvline{Inglês}{Proficiência Profissional Fluente \hfill \textbf{Palavras-chave}: TOEFL 102, Leitura e escrita técnicas}
+\cvline{Espanhol}{Proficiência Profissional Limitada \hfill \textbf{Palavras-chave}: Comunicação básica, Leitura técnica}
+\section{Competências}
+
+\cvline{Pesquisa com Usuários}{Avançado \hfill \textbf{Palavras-chave}: Entrevistas, Testes de usabilidade, Personas, Jornada do usuário, Métricas de UX, Desk research}
+\cvline{Design de Interfaces}{Especialista \hfill \textbf{Palavras-chave}: Figma, Design System, Design responsivo, Acessibilidade, Grid e espaçamento, Motion Design}
+\cvline{Prototipação}{Avançado \hfill \textbf{Palavras-chave}: Alta fidelidade, Interactive prototyping, Fluxos de navegação, Design tokens}
+\cvline{Colaboração em Produto}{Avançado \hfill \textbf{Palavras-chave}: Scrum, Kanban, Design critique, Documentação, Product discovery}
+\cvline{Front-end para Designers}{Intermediário \hfill \textbf{Palavras-chave}: HTML, CSS, JavaScript, Tailwind CSS}
+\section{Prêmios}
+
+\cventry{nov. de 2022}
+        {Associação Brasileira de Design}
+        {Prêmio Latino-Americano de Design de Interfaces}
+        {}
+        {}
+        {Reconhecimento pelo redesign do app de mobilidade urbana desenvolvido no Grupo Vai, com ênfase em usabilidade e inclusão.}
+
+\cventry{out. de 2019}
+        {Up Design Studio}
+        {Destaque em Inovação}
+        {}
+        {}
+        {Premiação interna pelo projeto de interface para uma plataforma de telemedicina, avaliado por sua navegação intuitiva e impacto positivo no tempo de atendimento.}
+\section{Certificados}
+
+\cventry{ago. de 2021}
+        {Google}
+        {Google UX Design Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-ux-design}}
+        {}
+        {}
+
+\cventry{mar. de 2022}
+        {Human Factors International}
+        {Certified Usability Analyst}
+        {\url{https://www.humanfactors.com/}}
+        {}
+        {}
+\section{Publicações}
+
+\cventry{jun. de 2023}
+        {Case: os bastidores do redesign do fluxo de pagamento}
+        {Medium}
+        {\url{https://medium.com/@marianacosta/case-redesign-fluxo-pagamento}}
+        {}
+        {Artigo com o processo de discovery, testes de usabilidade e os resultados obtidos após a reformulação do fluxo de pagamento de um aplicativo de serviços financeiros.}
+
+\cventry{set. de 2020}
+        {Padrões de acessibilidade para aplicações móveis}
+        {UXDicas}
+        {\url{https://uxdicas.com.br/artigos/padroes-de-acessibilidade}}
+        {}
+        {Guia prático com boas práticas de acessibilidade aplicadas a aplicações móveis, incluindo contraste, leitores de tela e alvos de toque.}
+\section{Referências}
+
+\cventry{\emaillink[fernanda.lima@nexodigital.com.br]{fernanda.lima@nexodigital.com.br}}
+        {Gerente de Produto na Nexo Digital}
+        {Dra. Fernanda Lima}
+        {+55 11 91234-1080}
+        {}
+        {Mariana é uma profissional extremamente empática e analítica. Sua capacidade de transformar dados de pesquisa em decisões de design elevou a qualidade do nosso produto.}
+\section{Projetos}
+
+\cventry{mar. de 2023–Atual}
+        {Design system para produtos digitais da Nexo Digital}
+        {Nebula Design System}
+        {\url{https://marianacosta.design/projetos/nebula}}
+        {}
+        {Desenvolveu tokens de design, componentes acessíveis e documentação interativa para acelerar a criação de novas telas.
+\textbf{Palavras-chave}: Design System, Design Tokens, Documentação, Acessibilidade}
+
+\cventry{ago. de 2022–jan. de 2023}
+        {Aplicativo de educação financeira para investidores iniciantes}
+        {Jornada Invest}
+        {\url{https://www.behance.net/gallery/jornada-invest}}
+        {}
+        {Projeto autoral de UX com pesquisa com usuários, ideação e prototipação de uma jornada gamificada para aprendizado em investimentos.
+\textbf{Palavras-chave}: UX Research, Gamificação, Prototipação}
+\section{Interesses}
+
+\cvline{Acessibilidade Digital}{Tecnologia assistiva, Inclusão, WCAG}
+\cvline{Fotografia}{Composição, Fotografia urbana, Edição de imagens}
+\cvline{Economia Comportamental}{Heurísticas, Decisão de compra, Experiência do usuário}
+\section{Voluntariado}
+
+\cventry{jan. de 2022–Atual}
+        {Mentora de Carreira}
+        {Mulheres de UX Brasil}
+        {\url{https://www.mulheresdeux.com.br/}}
+        {}
+        {Orienta mulheres em transição para a área de UX, revisa portfólios e oferece suporte em processos seletivos.}
+
+
+\cventry{fev. de 2019–dez. de 2021}
+        {Facilitadora de Oficinas de Design}
+        {ONG Rede Incluir}
+        {\url{https://www.redecincluir.org.br/}}
+        {}
+        {Ministrou oficinas de design participativo com jovens de escolas públicas, estimulando a criação de soluções para problemas locais.}
+
+\end{document}

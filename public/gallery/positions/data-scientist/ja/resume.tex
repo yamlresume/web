@@ -1,0 +1,225 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{佐藤 恵子}{}
+\title{データサイエンティスト / 機械学習エンジニア}
+\phone[mobile]{080-1234-5678}
+\email{keiko.sato@example.jp}
+\homepage{https://keiko-sato.dev}
+
+\address{日本、東京都、東京、東京都千代田区丸の内1-2-3、100-0001}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/keikosato}{@keikosato} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/keikosato}{@keiko-sato}}
+
+\begin{document}
+
+\maketitle
+
+\section{基本情報}
+
+\cvline{}{データサイエンティストとして、顧客分析・需要予測・レコメンドシステムの構築に5年以上従事。
+ビジネス課題を統計分析・機械学習で解決し、施策の意思決定を支援しています。
+%
+\begin{itemize}
+\item Python/Rを用いたデータ分析基盤の構築と運用
+\item 機械学習モデルの設計・実装・評価（分類、回帰、クラスタリング、レコメンド）
+\item ダッシュボード作成によるKPI可視化とインサイト共有
+\item ビジネス部門と連携し、PoCから本番適用まで一気通貫で推進
+\end{itemize}}
+\section{学歴}
+
+\cventry{2018年4月～2020年3月}
+        {修士、統計学、成績：4.0}
+        {東京大学大学院}
+        {\url{https://www.u-tokyo.ac.jp/}}
+        {}
+        {\begin{itemize}
+\item マーケティングデータのセグメンテーション手法に関する研究を行い、修士論文を執筆
+\item 統計モデリングとPythonによる実データ分析のスキルを習得
+\item 学会発表1回、論文投稿1件
+\end{itemize}
+\textbf{コース}：多変量解析、機械学習、ベイズ統計学、時系列解析、実験計画法、データ可視化}
+\section{職歴}
+
+\cventry{2021年4月～現在}
+        {データサイエンティスト}
+        {株式会社インサイトラボ}
+        {\url{https://insightlab.example.com}}
+        {}
+        {\begin{itemize}
+\item 小売業向け需要予測モデルを開発し、在庫削減と売上向上に貢献
+\item 顧客セグメンテーションとLTV予測モデルを構築し、マーケティング施策のROI改善を実現
+\item 各種分析ダッシュボードをLooker Studioで整備し、非エンジニアでもデータ活用できる環境を提供
+\item データ基盤（BigQuery・dbt）の設計・運用を担当し、分析工数を50\%削減
+\end{itemize}
+\textbf{キーワード}：Python、BigQuery、Looker Studio、需要予測、セグメンテーション}
+
+\cventry{2020年4月～2021年3月}
+        {データアナリスト}
+        {株式会社マーケットアナリティクス}
+        {\url{https://market-analytics.example.com}}
+        {}
+        {\begin{itemize}
+\item ウェブアクセスログと購買データを統合し、ユーザー行動分析を実施
+\item アンケートデータの統計解析（クロス集計・回帰分析）による顧客満足度要因の特定
+\item SQLやExcelを用いた定常レポートの自動作成により、レポート作成時間を短縮
+\end{itemize}
+\textbf{キーワード}：SQL、Excel、統計解析、レポーティング}
+\section{言語}
+
+\cvline{日本語}{ネイティブ・母国語レベル \hfill \textbf{キーワード}：母国語}
+\cvline{英語}{完全な実務レベル \hfill \textbf{キーワード}：TOEIC 920、技術文書読解、プレゼン}
+\section{スキル}
+
+\cvline{データ分析・統計}{エキスパート \hfill \textbf{キーワード}：Python、R、SQL、統計モデリング、A/Bテスト}
+\cvline{機械学習}{上級 \hfill \textbf{キーワード}：scikit-learn、LightGBM、TensorFlow、XGBoost、ハイパーパラメータ最適化}
+\cvline{データ基盤・クラウド}{中級 \hfill \textbf{キーワード}：BigQuery、dbt、Airflow、Docker、Google Cloud}
+\section{受賞・表彰}
+
+\cventry{2022年12月}
+        {株式会社インサイトラボ}
+        {社内データ活用コンペ 最優秀賞}
+        {}
+        {}
+        {小売需要予測の精度改善をテーマにした社内データコンペティションで最優秀賞を受賞。}
+\section{資格・免状}
+
+\cventry{2023年3月}
+        {Amazon Web Services}
+        {AWS Certified Machine Learning - Specialty}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+\section{出版・著作}
+
+\cventry{2020年9月}
+        {マーケティングデータに基づく顧客セグメンテーション手法の比較検討}
+        {データサイエンスジャーナル}
+        {\url{https://example.com/publications/segmentation}}
+        {}
+        {実データを用いたクラスタリング手法の比較分析を行い、ビジネス適用における有効性を考察。}
+\section{プロジェクト}
+
+\cventry{2021年6月～2021年9月}
+        {小売店舗向け需要予測および発注支援のためのWebダッシュボード}
+        {需要予測ダッシュボード}
+        {\url{https://github.com/keikosato/demand-forecast}}
+        {}
+        {\begin{itemize}
+\item LightGBMとProphetによるアンサンブル予測
+\item BigQueryでのデータ集計パイプライン構築
+\item 店舗ごとの特性を考慮した特徴量エンジニアリング
+\end{itemize}
+\textbf{キーワード}：Python、LightGBM、Prophet、BigQuery、Dash}
+\section{興味・関心}
+
+\cvline{データ活用コミュニティ}{勉強会、ハッカソン、データ可視化}
+\cvline{読書}{統計学、SF小説、技術書}
+\section{ボランティア活動}
+
+\cventry{2022年4月～現在}
+        {運営スタッフ兼講師}
+        {データ分析勉強会 Tokyo}
+        {\url{https://example.com/study-group}}
+        {}
+        {\begin{itemize}
+\item 初学者向けPythonデータ分析ハンズオンの講師を担当
+\item 参加者のコードレビューやLT会の企画運営を通じて、コミュニティの活性化に貢献
+\end{itemize}}
+
+\end{document}

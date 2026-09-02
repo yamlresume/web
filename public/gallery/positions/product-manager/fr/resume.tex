@@ -1,0 +1,246 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Camille Rousseau}{}
+\title{Product Manager Senior — SaaS \& Fintech}
+\phone[mobile]{+33 6 12 34 56 78}
+\email{camille.rousseau@protonmail.com}
+\homepage{https://www.camillerousseau.fr}
+
+\address{12 rue Oberkampf, Paris, Île-de-France, France, 75011}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/camille-rousseau}{@camille-rousseau} {} {} {} • {} {} {}
+{\small \faMedium}\ \href{https://medium.com/@camille.rousseau}{@camille.rousseau}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{Product Manager expérimentée avec \textbf{plus de 8 ans d'expérience} dans le développement de produits SaaS et fintech, de l'idéation au lancement à grande échelle.
+%
+\begin{itemize}
+\item Vision produit, feuille de route et priorisation fondées sur la data et les besoins utilisateurs
+\item Encadrement d'équipes pluridisciplinaires (design, ingénierie, marketing) en méthode Agile/Scrum
+\item Forte expertise en discovery, tests utilisateurs, OKR et analytics produit
+\item Passionnée par la création de solutions simples et impactantes pour résoudre des problèmes complexes
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2012–juin 2015}
+        {Master, Management de l'Innovation — Spécialisation Product Management, Score : 3.8}
+        {HEC Paris}
+        {\url{https://www.hec.edu}}
+        {}
+        {\begin{itemize}
+\item Développement d'une double compétence stratégie et digital
+\item Projet de fin d'études : création d'un prototype d'application mobile remarqué par un comité d'entrepreneurs
+\item Échange universitaire à l'Université de Montréal (HEC Montréal) orienté vers le commerce électronique
+\end{itemize}
+\textbf{Cours} : Stratégie marketing et innovation, Gestion de projet et méthodes agiles, Analyse de données pour la décision, Expérience client et design thinking, Entrepreneuriat et business model}
+\section{Expérience professionnelle}
+
+\cventry{janv. 2022–Present}
+        {Lead Product Manager}
+        {Alto}
+        {\url{https://www.alto.io}}
+        {}
+        {\begin{itemize}
+\item Définition et exécution de la feuille de route produit d'une plateforme SaaS B2B dédiée aux paiements internationaux
+\item Animation d'une équipe produit de 4 PM et coordination avec 6 équipes de développement
+\item Mise en place d'un cadre de priorisation basé sur l'impact business et la valeur client, réduisant les délais de mise sur le marché de 30 \%
+\item Conduite de plus de 50 entretiens utilisateurs et tests d'utilisabilité par trimestre pour éclairer les décisions produit
+\item Pilotage des OKR produit et présentation des résultats à la direction générale et au conseil d'administration
+\end{itemize}
+\textbf{Mots-clés} : SaaS, Fintech, Leadership, Feuille de route, OKR, Data driven}
+
+\cventry{janv. 2020–déc. 2021}
+        {Product Manager}
+        {Numera}
+        {\url{https://www.numera.fr}}
+        {}
+        {\begin{itemize}
+\item Gestion du cycle de vie complet de l'application mobile de gestion de finances personnelles (2,5 M d'utilisateurs)
+\item Collaboration étroite avec le design et l'ingénierie pour livrer des fonctionnalités majeures : agrégation bancaire, scores financiers, notifications prédictives
+\item Optimisation du parcours d'onboarding, avec une augmentation de +18 \% de l'activation à 7 jours
+\item Expérimentations A/B en continu et analyse des entonnoirs de conversion via Amplitude et SQL
+\end{itemize}
+\textbf{Mots-clés} : Mobile, Tests A/B, Amplitude, SQL, Recherche utilisateur}
+
+\cventry{mars 2018–déc. 2019}
+        {Product Owner}
+        {Lifya}
+        {\url{https://www.lifya.com}}
+        {}
+        {\begin{itemize}
+\item Conduite de la refonte du parcours d'achat du site e-commerce Lifya (CA annuel de 40 M€)
+\item Rédaction des user stories, priorisation du backlog et animation des cérémonies Agile pour 3 équipes de développement
+\item Coordination avec les équipes marketing, logistique et support pour améliorer la satisfaction client (NPS +24 points)
+\item Mise en place des premiers indicateurs produit et des tableaux de bord de suivi de performance
+\end{itemize}
+\textbf{Mots-clés} : E-commerce, Scrum, Backlog, NPS, KPIs}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue \hfill \textbf{Mots-clés} : Langue maternelle}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEIC 985, Travail quotidien en anglais}
+\cvline{Espagnol}{Niveau de travail limité \hfill \textbf{Mots-clés} : Niveau opérationnel}
+\section{Compétences}
+
+\cvline{Gestion de produit}{Expert \hfill \textbf{Mots-clés} : Découverte produit, Feuille de route, Priorisation, OKR, Spécifications fonctionnelles}
+\cvline{Méthodes agiles}{Expert \hfill \textbf{Mots-clés} : Scrum, Kanban, Lean Startup, Agilité à l'échelle}
+\cvline{Analyse de données}{Avancé \hfill \textbf{Mots-clés} : SQL, Amplitude, Mixpanel, Tableau de bord, Tests A/B}
+\cvline{Design et recherche utilisateur}{Avancé \hfill \textbf{Mots-clés} : Recherche utilisateur, Entretiens terrain, Personas, Figma, Tests utilisateurs}
+\section{Récompenses}
+
+\cventry{nov. 2023}
+        {Grand Prix Innovation - Bpifrance}
+        {Prix du meilleur produit SaaS}
+        {}
+        {}
+        {Récompense attribuée à la refonte de la plateforme Alto, saluée pour son expérience utilisateur et son impact sur la satisfaction client.}
+\section{Certificats}
+
+\cventry{mars 2021}
+        {Pragmatic Institute}
+        {Certificat Product Management - Niveau avancé}
+        {\url{https://www.pragmaticinstitute.com}}
+        {}
+        {}
+
+\cventry{août 2017}
+        {Scrum Alliance}
+        {Certified Scrum Product Owner (CSPO)}
+        {\url{https://www.scrumalliance.org/certifications/cspo}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{juin 2023}
+        {Priorisation produit : méthodes RICE et WSJF comparées}
+        {Le Product Blog}
+        {\url{https://www.productblog.fr/priorisation-rice-wsjf}}
+        {}
+        {Article de synthèse sur les méthodes de priorisation produit, illustré par des cas pratiques issus du secteur fintech. Partage des critères d'impact, d'effort et de confiance pour aider les équipes à arbitrer efficacement.}
+\section{Références}
+
+\cventry{\emaillink[claire.dubois@alto.io]{claire.dubois@alto.io}}
+        {Directrice produit chez Alto}
+        {Claire Dubois}
+        {+33 1 45 67 89 10}
+        {}
+        {Camille est une product manager exceptionnelle : elle sait combiner vision stratégique, rigueur d'exécution et intelligence relationnelle. Elle a considérablement élevé le niveau de notre organisation produit.}
+\section{Projets}
+
+\cventry{janv. 2023–déc. 2023}
+        {Application personnelle de gestion budgétaire utilisée par plus de 500 personnes.}
+        {BudgetFlow}
+        {\url{https://www.budgetflow.fr}}
+        {}
+        {\begin{itemize}
+\item Conception et développement d'un MVP de suivi budgétaire en no-code (Bubble, Airtable)
+\item Réalisation d'entretiens utilisateurs et de tests d'empathie pour définir les fonctionnalités clés
+\item Déploiement d'une première version publique et itérations basées sur les retours de la communauté
+\end{itemize}
+\textbf{Mots-clés} : No-code, MVP, Bubble, Airtable, Retours utilisateurs}
+\section{Centres d'intérêt}
+
+\cvline{Sport}{Course à pied, Yoga, Randonnée}
+\cvline{Technologie}{Intelligence artificielle, No-code, Veille technologique}
+\cvline{Lecture}{Essais économiques, Science-fiction}
+\section{Bénévolat}
+
+\cventry{janv. 2021–déc. 2023}
+        {Mentor produit}
+        {Paris Product Club}
+        {\url{https://www.parisproductclub.fr}}
+        {}
+        {\begin{itemize}
+\item Accompagnement de startups en phase d'amorçage sur leur stratégie produit
+\item Animation d'ateliers de découverte et de priorisation pour des équipes fondatrices
+\item Participation à des sessions de coaching collectif sur les méthodes Lean et Agile
+\end{itemize}}
+
+\end{document}

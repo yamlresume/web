@@ -1,0 +1,234 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Maya Rodriguez}{}
+\title{Data Analyst | Turning Raw Data into Strategic Decisions}
+\phone[mobile]{(512) 555-0147}
+\email{maya.rodriguez@datavista.io}
+\homepage{https://www.datavista.io}
+
+\address{Austin, Texas, United States, 78701}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/mayarodriguez}{@mayarodriguez} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/maya-r-data}{@maya-r-data}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{Data analyst with 5+ years of experience turning complex datasets into clear, actionable insights for healthcare and retail organizations. Strong command of SQL, Python, and BI tools such as Tableau and Power BI, with a proven record of building dashboards, automating reporting, and enabling data-driven decision-making.
+%
+\begin{itemize}
+\item Specialties include statistical analysis, A/B testing, data visualization, and predictive modeling.
+\item Experienced partnering with cross-functional stakeholders to define KPIs and translate business questions into analytical solutions.
+\item Recognized for improving reporting efficiency, reducing readmission rates, and mentoring peers in analytics best practices.
+\end{itemize}}
+\section{Education}
+
+\cventry{Aug 2015–May 2019}
+        {Bachelor, Statistics and Data Science, Score: 3.7}
+        {The University of Texas at Austin}
+        {\url{https://www.utexas.edu/}}
+        {}
+        {\begin{itemize}
+\item Developed a strong foundation in statistics, data modeling, and computing through project-based coursework.
+\item Senior capstone project used logistic regression and random forests to predict student retention with 80\% accuracy.
+\item Served as Vice President of the Data Science Society, organizing workshops, guest lectures, and hackathons.
+\end{itemize}
+\textbf{Courses}: Introduction to Data Science, Statistical Methods and Inference, Regression Analysis, Database Management Systems, Machine Learning Fundamentals, Data Visualization, Probability and Stochastic Processes, Time Series Analysis}
+\section{Work}
+
+\cventry{Aug 2021–Present}
+        {Data Analyst}
+        {Meridian Health Analytics}
+        {\url{https://www.meridianhealthanalytics.com}}
+        {}
+        {\begin{itemize}
+\item Partner with clinical and operations teams to define KPIs and design interactive Tableau dashboards, cutting monthly reporting time by 40\%.
+\item Write optimized SQL queries to extract, clean, and aggregate patient data from electronic health records and claims databases.
+\item Develop Python and Pandas pipelines to analyze readmission rates, supporting interventions that reduced hospital readmissions by 12\%.
+\item Design and evaluate A/B tests to measure the impact of care management changes, presenting findings to hospital leadership.
+\item Maintain reporting documentation and train analysts on self-service analytics tools.
+\end{itemize}
+\textbf{Keywords}: SQL, Python, Tableau, Healthcare Analytics, A/B Testing, Data Pipelines}
+
+\cventry{Jun 2019–Jul 2021}
+        {Junior Data Analyst}
+        {BluePeak Retail Group}
+        {\url{https://www.bluepeakretail.com}}
+        {}
+        {\begin{itemize}
+\item Built daily sales and inventory dashboards in Power BI, providing real-time performance visibility across 120 store locations.
+\item Automated recurring Excel reports using VBA and SQL stored procedures, saving an estimated 250 hours of manual work annually.
+\item Performed data cleaning and QA on CRM data to improve accuracy in customer segmentation and campaign targeting.
+\item Collaborated with the marketing team to analyze promotional campaigns and optimize spend by 15\%.
+\end{itemize}
+\textbf{Keywords}: Power BI, Excel, SQL, Retail Analytics, Data Cleaning}
+\section{Languages}
+
+\cvline{English}{Native or Bilingual Proficiency \hfill \textbf{Keywords}: Native Speaker, Technical Writing}
+\cvline{Spanish}{Limited Working Proficiency \hfill \textbf{Keywords}: DELE B1, Basic Business Spanish}
+\section{Skills}
+
+\cvline{Data Analysis \& Statistics}{Expert \hfill \textbf{Keywords}: SQL, Python, Pandas, NumPy, R, A/B Testing, Regression Analysis, Hypothesis Testing}
+\cvline{Data Visualization}{Advanced \hfill \textbf{Keywords}: Tableau, Power BI, Looker, Matplotlib, Seaborn, Dashboard Design}
+\cvline{Data Engineering \& Tools}{Intermediate \hfill \textbf{Keywords}: dbt, Airflow, AWS Redshift, Snowflake, Git, Spark}
+\section{Awards}
+
+\cventry{Jan 2024}
+        {Meridian Health Analytics}
+        {Excellence in Healthcare Analytics Award}
+        {}
+        {}
+        {Recognized for leading the design of a hospital-wide readmission risk dashboard adopted by care coordination teams to prioritize high-risk patients.}
+\section{Certificates}
+
+\cventry{Aug 2020}
+        {Google}
+        {Google Data Analytics Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-data-analytics}}
+        {}
+        {}
+
+\cventry{Feb 2022}
+        {Tableau}
+        {Tableau Desktop Specialist}
+        {\url{https://www.tableau.com/learn/certification}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Mar 2023}
+        {How Healthcare Organizations Can Leverage Predictive Analytics}
+        {Data \& Insights Quarterly}
+        {\url{https://www.datainsightsquarterly.org/articles/healthcare-predictive-analytics}}
+        {}
+        {Published article exploring practical applications of machine learning in reducing hospital readmissions and improving patient outcomes, based on case studies from my work in healthcare analytics.}
+\section{Projects}
+
+\cventry{Jan 2023–May 2023}
+        {This project applies supervised machine learning to identify customers likely to churn and recommend targeted retention strategies. It includes data preprocessing, feature engineering, model selection, and an interactive dashboard for stakeholders.
+}
+        {Customer Churn Prediction Engine}
+        {\url{https://github.com/maya-r-data/churn-prediction}}
+        {}
+        {\begin{itemize}
+\item Built an end-to-end churn prediction model for a subscription retail service using Python and scikit-learn.
+\item Engineered features from transactions, web sessions, and support tickets, achieving 85\% ROC-AUC.
+\item Deployed a Streamlit dashboard for business users to explore at-risk customer segments and retention levers.
+\end{itemize}
+\textbf{Keywords}: Python, scikit-learn, Tableau, Churn Prediction, Feature Engineering, Streamlit}
+
+\cventry{Sep 2022–Dec 2022}
+        {Interactive forecasting dashboard used by retail operations teams to monitor demand, adjust inventory, and plan promotions based on predicted sales.
+}
+        {Sales Forecasting Dashboard}
+        {\url{https://github.com/maya-r-data/sales-forecast}}
+        {}
+        {\begin{itemize}
+\item Created a real-time Tableau dashboard for sales forecasting using time series models and historical transaction data.
+\item Connected Snowflake data warehouse to Tableau to provide daily store-level predictions for regional managers.
+\item Improved inventory allocation and reduced stockouts by 10\% across pilot stores.
+\end{itemize}
+\textbf{Keywords}: Tableau, Snowflake, Time Series, Forecasting, Inventory Management}
+\section{Interests}
+
+\cvline{Data Storytelling}{Tableau Public, Technical Blogging, Visualization Design}
+\cvline{Hiking}{National Parks, Trail Running, Outdoor Photography}
+\cvline{Jazz Music}{Piano, Live Concerts}
+\section{Volunteer}
+
+\cventry{Jan 2022–Present}
+        {Data Mentor}
+        {Code for Austin}
+        {\url{https://www.codeforaustin.org}}
+        {}
+        {\begin{itemize}
+\item Mentor volunteer developers on data cleaning, analysis, and visualization for community-focused projects.
+\item Lead monthly workshops on Python, SQL, and storytelling with data.
+\item Support local nonprofits in building dashboards that communicate impact to funders.
+\end{itemize}}
+
+\end{document}

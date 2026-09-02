@@ -1,0 +1,245 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for German language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-german.html
+\usepackage[ngerman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Julia Brandt}{}
+\title{Senior Produktmanagerin für digitale B2B-Plattformen}
+\phone[mobile]{+49 151 23456789}
+\email{julia.brandt@example.de}
+\homepage{https://juliabrandt.de}
+
+\address{Torstraße 101, Berlin, Berlin, Deutschland, 10119}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/juliabrandt}{@juliabrandt} {} {} {} • {} {} {}
+{\small \faMedium}\ \href{https://medium.com/@juliabrandt}{@@juliabrandt}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basisinformationen}
+
+\cvline{}{\begin{itemize}
+\item Produktmanagerin mit über 8 Jahren Erfahrung in der Entwicklung und Skalierung digitaler B2B-Produkte
+\item Ausgewiesene Expertise in Produktstrategie, agiler Entwicklung und datengetriebener Entscheidungsfindung
+\item Erfolgreiche Führung cross-funktionaler Teams und enge Zusammenarbeit mit Vertrieb, Engineering und Design
+\item Leidenschaft für nutzerzentriertes Design und die Umsetzung messbarer Geschäftsziele
+\end{itemize}}
+\section{Ausbildung}
+
+\cventry{Okt. 2013–März 2016}
+        {Master, Management and Technology, Punkte: 1,7}
+        {Technische Universität München}
+        {\url{https://www.tum.de/}}
+        {}
+        {\begin{itemize}
+\item Vertiefung in Produkt- und Innovationsmanagement sowie quantitative Methoden
+\item Masterarbeit über Erfolgsfaktoren digitaler B2B-Plattformen
+\end{itemize}
+\textbf{Kurse}: Strategisches Management, Innovations- und Technologiemanagement, Empirische Forschungsmethoden, Produktentwicklung}
+
+\cventry{Okt. 2010–Sept. 2013}
+        {Bachelor, Wirtschaftsinformatik, Punkte: 2,1}
+        {Hochschule für Wirtschaft und Recht Berlin}
+        {\url{https://www.hwr-berlin.de/}}
+        {}
+        {\begin{itemize}
+\item Fundierte Kenntnisse in Softwareentwicklung, Datenmodellierung und Geschäftsprozessen
+\item Bachelorarbeit zur Einführung agiler Methoden in mittelständischen Unternehmen
+\end{itemize}
+\textbf{Kurse}: Softwaretechnik, Datenbanken, Business Process Management, Marketing}
+\section{Berufserfahrung}
+
+\cventry{Jan. 2022–Heute}
+        {Senior Produktmanagerin}
+        {FinTech Solutions GmbH}
+        {\url{https://www.fintech-solutions.de}}
+        {}
+        {\begin{itemize}
+\item Verantwortlich für Produktstrategie und Roadmap der B2B-Zahlungsplattform mit über 50.000 Nutzern
+\item Führung eines cross-funktionalen Teams aus acht Entwicklern, Designern und Data Scientists
+\item Steigerung der Aktivierungsrate um 25 \% durch Einführung eines personalisierten Onboardings
+\item Durchführung von über 100 Nutzerinterviews und kontinuierlichen A/B-Tests zur Verbesserung der User Experience
+\item Enge Abstimmung mit Vertrieb und Customer Success zur Identifikation von Kundenbedürfnissen
+\end{itemize}
+\textbf{Schlüsselwörter}: Produktstrategie, Roadmapping, Agile Methoden, Datenanalyse, B2B Plattform}
+
+\cventry{März 2019–Dez. 2021}
+        {Produktmanagerin}
+        {E-Commerce AG}
+        {\url{https://www.ecommerce.ag}}
+        {}
+        {\begin{itemize}
+\item Entwicklung und Skalierung der Mobile-Shopping-App von 10.000 auf 250.000 monatliche Nutzer
+\item Definition von Produktanforderungen und User Stories in Zusammenarbeit mit internen Stakeholdern
+\item Aufbau eines Feedback-Systems zur systematischen Auswertung von Nutzerbewertungen
+\item Einführung von SQL-basierten Dashboards zur Überwachung von KPIs und Conversion-Raten
+\end{itemize}
+\textbf{Schlüsselwörter}: Mobile App, User Stories, KPI-Analyse, Stakeholder-Management}
+
+\cventry{Juni 2016–Feb. 2019}
+        {Junior Produktmanagerin}
+        {DigitalAgentur GmbH}
+        {\url{https://www.digitalagentur.de}}
+        {}
+        {\begin{itemize}
+\item Unterstützung der Produktverantwortlichen bei der Konzeption und Umsetzung von Webprojekten
+\item Erstellung von Wireframes und Prototypen für kundenspezifische Lösungen
+\item Koordination von agilen Sprints und regelmäßiges Reporting an die Geschäftsleitung
+\end{itemize}
+\textbf{Schlüsselwörter}: Prototyping, Projektkoordination, Scrum}
+\section{Sprachen}
+
+\cvline{Deutsch}{Muttersprache oder zweisprachig \hfill \textbf{Schlüsselwörter}: Muttersprache}
+\cvline{Englisch}{Verhandlungssichere Kenntnisse \hfill \textbf{Schlüsselwörter}: Verhandlungssicher, TOEFL 110}
+\cvline{Französisch}{Gute Kenntnisse \hfill \textbf{Schlüsselwörter}: Grundkenntnisse}
+\section{Fähigkeiten}
+
+\cvline{Produktmanagement}{Experte \hfill \textbf{Schlüsselwörter}: Produktstrategie, Roadmapping, User Stories, Priorisierung, Stakeholder-Management}
+\cvline{Agile Methoden}{Experte \hfill \textbf{Schlüsselwörter}: Scrum, Kanban, OKRs, Design Sprint}
+\cvline{Datenanalyse}{Erfahren \hfill \textbf{Schlüsselwörter}: SQL, Google Analytics, Amplitude, A/B-Tests}
+\cvline{UX/UI Design}{Fortgeschritten \hfill \textbf{Schlüsselwörter}: Figma, Wireframes, Prototyping, Usability Tests}
+\section{Auszeichnungen}
+
+\cventry{Jan. 2024}
+        {FinTech Solutions GmbH}
+        {Award für beste Produktinnovation}
+        {}
+        {}
+        {Auszeichnung für die erfolgreiche Einführung einer KI-basierten Betrugserkennung in der Zahlungsplattform.}
+\section{Zertifikate}
+
+\cventry{Juni 2019}
+        {Scrum Alliance}
+        {Certified Scrum Product Owner (CSPO)}
+        {\url{https://www.scrumalliance.org/}}
+        {}
+        {}
+
+\cventry{Nov. 2020}
+        {Product School}
+        {Professional Product Discovery}
+        {\url{https://productschool.com/}}
+        {}
+        {}
+\section{Veröffentlichungen}
+
+\cventry{Apr. 2023}
+        {So gelingt die digitale Transformation im B2B-Vertrieb}
+        {Medium}
+        {\url{https://medium.com/@juliabrandt}}
+        {}
+        {\begin{itemize}
+\item Praxisbericht über agile Produktentwicklungsmethoden und Kundenorientierung
+\item Teilen von Learnings aus der Einführung einer B2B-Plattform
+\end{itemize}}
+\section{Projekte}
+
+\cventry{Jan. 2023–Jan. 2023}
+        {Prototyp eines KI-Modells zur dynamischen Preisgestaltung für E-Commerce-Produkte.}
+        {KI-gestützte Preisoptimierung}
+        {\url{https://github.com/juliabrandt/preisoptimierung}}
+        {}
+        {\begin{itemize}
+\item Entwicklung eines Machine-Learning-Modells mit Python zur Analyse von Preiselastizitäten
+\item Integration in ein Dashboard zur Entscheidungsunterstützung
+\end{itemize}
+\textbf{Schlüsselwörter}: Machine Learning, Python, Pricing, E-Commerce}
+\section{Interessen}
+
+\cvline{Digitale Bildung}{E-Learning, Mentoring, EdTech}
+\cvline{Sport}{Laufen, Yoga, Bouldern}
+\section{Ehrenamtliche Tätigkeiten}
+
+\cventry{Jan. 2021–Jan. 2023}
+        {Mentorin}
+        {Frauen in der Digitalwirtschaft e.V.}
+        {\url{https://www.fid-ev.de/}}
+        {}
+        {\begin{itemize}
+\item Begleitung von Studentinnen und Berufseinsteigerinnen in die Produktmanagement-Rolle
+\item Durchführung von monatlichen Workshops zu Karriereplanung und Verhandlungsstrategien
+\end{itemize}}
+
+\end{document}

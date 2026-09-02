@@ -1,0 +1,261 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{林晓彤}{}
+\title{资深用户体验设计师 / 设计思维践行者}
+\phone[mobile]{+86 138 5712 8899}
+\email{xiaotong.lin@example.com}
+\homepage{https://www.xiaotong.design}
+
+\address{中国，浙江省，杭州市，西湖区文三路 90 号，310012}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/xiaotong-lin}{@xiaotong-lin} {} {} {} • {} {} {}
+{\small \faDribbble}\ \href{https://dribbble.com/xiaotonglin}{@xiaotonglin}}
+
+\begin{document}
+
+\maketitle
+
+\section{简介}
+
+\cvline{}{拥有 6 年数字产品设计经验的用户体验设计师，擅长从用户研究到高保真交付的全流程设计。
+%
+\begin{itemize}
+\item 主导过 20+ 款移动应用与 Web 产品的体验设计，覆盖金融、教育、智能硬件等领域
+\item 熟悉用户研究、信息架构、交互与视觉设计，善于用数据驱动设计决策
+\item 注重无障碍设计，致力于打造包容、易用的数字产品
+\item 具备跨职能协作经验，能有效组织设计评审与需求对齐
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2015年9月–2019年6月}
+        {学士，工业设计，成绩：3.8/4.0}
+        {浙江大学}
+        {\url{https://www.zju.edu.cn/}}
+        {}
+        {\begin{itemize}
+\item 在校期间主修工业设计与交互设计方向，多次参与校企合作实践项目
+\item 毕业设计《面向老年人的智能健康管理应用设计》获学院优秀毕业设计
+\end{itemize}
+\textbf{课程}：设计心理学、人机交互、用户研究与设计调研、可视化设计、设计管理、产品设计与开发}
+\section{工作经历}
+
+\cventry{2021年7月至今}
+        {高级用户体验设计师}
+        {杭州云创智能科技有限公司}
+        {\url{https://www.yunchuang.example.com}}
+        {}
+        {\begin{itemize}
+\item 负责公司核心产品「云创健康」App 的体验设计，主导用户研究、信息架构和交互设计
+\item 搭建并维护团队设计系统，提升设计效率与多端一致性，组件复用率提升 40\%
+\item 与产品经理、工程师紧密协作，推动可用性测试与 A/B 实验落地，关键转化率提升 18\%
+\item 带领 2 名初级设计师，负责设计评审、培训与职业成长辅导
+\end{itemize}
+\textbf{关键字}：设计系统、用户研究、可用性测试、数据分析、团队管理}
+
+\cventry{2019年7月–2021年6月}
+        {用户体验设计师}
+        {上海数字视界信息技术有限公司}
+        {\url{https://www.digitalhorizon.example.com}}
+        {}
+        {\begin{itemize}
+\item 参与在线教育产品「乐学」的 Web 与移动端设计，独立负责课程详情页、学习路径等核心模块
+\item 通过用户访谈和竞品分析，重新设计课程筛选与推荐流程，用户平均学习时长提高 22\%
+\item 与开发团队协作输出设计标注与交互说明，确保设计还原度达 95\% 以上
+\end{itemize}
+\textbf{关键字}：交互设计、产品设计、设计交付、在线教育}
+
+\cventry{2018年6月–2019年5月}
+        {设计实习生}
+        {上海艾维设计咨询有限公司}
+        {\url{https://www.aiwei.example.com}}
+        {}
+        {\begin{itemize}
+\item 协助资深顾问完成多个品牌官网与移动端项目的视觉设计和原型制作
+\item 参与用户访谈、现场调研和可用性测试，整理并输出用户报告
+\end{itemize}
+\textbf{关键字}：视觉设计、原型制作、用户访谈}
+\section{语言}
+
+\cvline{中文}{母语或双语水平 \hfill \textbf{关键字}：普通话二级甲等}
+\cvline{英语}{完全专业水平 \hfill \textbf{关键字}：CET-6、可用英语进行用户访谈与设计评审}
+\section{专业技能}
+
+\cvline{用户研究}{专家 \hfill \textbf{关键字}：深度访谈、可用性测试、问卷调查、用户画像、竞品分析}
+\cvline{交互设计}{专家 \hfill \textbf{关键字}：信息架构、用户旅程地图、线框图、交互原型、微交互}
+\cvline{视觉设计}{高级 \hfill \textbf{关键字}：Figma、Sketch、设计系统、视觉规范、无障碍设计}
+\cvline{原型与工具}{专家 \hfill \textbf{关键字}：Figma、Framer、ProtoPie、Axure、Maze}
+\section{荣誉}
+
+\cventry{2020年12月}
+        {浙江省工业设计协会}
+        {浙江省优秀工业设计奖}
+        {}
+        {}
+        {作品「智护老年人健康终端」获得年度优秀工业设计奖，该奖项旨在表彰在功能、体验与美学方面表现突出的设计作品。}
+
+\cventry{2022年3月}
+        {杭州云创智能科技有限公司}
+        {公司季度创新之星}
+        {}
+        {}
+        {因主导设计系统重构并显著提升产研协作效率，被评选为当季创新之星。}
+\section{证书}
+
+\cventry{2021年5月}
+        {国际用户体验专业协会}
+        {认证用户体验设计师（CUXD）}
+        {\url{https://www.uxpa.org/certification}}
+        {}
+        {}
+
+\cventry{2020年8月}
+        {Google}
+        {Google UX Design Professional Certificate}
+        {\url{https://www.coursera.org/google-certificates/ux-design}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2022年3月}
+        {基于用户旅程地图的移动健康应用体验优化研究}
+        {《设计》}
+        {\url{https://www.designmag.example.com/article/123}}
+        {}
+        {本文结合用户旅程地图方法，分析了移动健康应用在用户留存、任务完成效率等方面存在的体验问题，并提出了以场景为导向的设计优化策略。}
+\section{项目}
+
+\cventry{2022年3月–2022年12月}
+        {面向中老年用户的健康管理应用，旨在帮助用户便捷记录健康数据、获取个性化建议。}
+        {云创健康 App 体验升级}
+        {\url{https://www.yunchuang.example.com/}}
+        {}
+        {\begin{itemize}
+\item 主导从用户研究到设计交付的全流程体验升级，覆盖健康档案、数据看板、用药提醒等核心模块
+\item 重构信息架构与视觉语言，建立适老化设计规范，提升产品可用性与用户满意度
+\item 与算法团队合作设计个性化健康建议的展示方式，用户日活提升 25\%
+\end{itemize}
+\textbf{关键字}：健康管理、适老化设计、设计系统、数据可视化}
+
+\cventry{2020年9月–2021年5月}
+        {为在线教育平台重构课程推荐与学习路径，以提升用户学习连续性与完课率。}
+        {乐学在线学习平台课程路径重构}
+        {\url{https://www.lexue.example.com/}}
+        {}
+        {\begin{itemize}
+\item 基于学习行为数据与用户访谈，梳理用户在选课、学习、复习阶段的核心痛点
+\item 设计新的课程卡片、筛选器与学习路径视图，降低用户认知负担
+\item 通过 A/B 测试验证方案效果，课程完课率提升 18\%
+\end{itemize}
+\textbf{关键字}：在线教育、行为数据、A/B 测试、信息架构}
+\section{兴趣爱好}
+
+\cvline{公益设计}{无障碍设计、乡村教育}
+\cvline{艺术与生活}{水彩、摄影、博物馆}
+\section{志愿服务}
+
+\cventry{2021年1月至今}
+        {设计志愿者}
+        {中国信息无障碍产品联盟}
+        {\url{https://www.capa11y.example.org/}}
+        {}
+        {\begin{itemize}
+\item 参与联盟组织的无障碍设计工作坊，为视障用户常用 App 提供体验优化建议
+\item 撰写并分享无障碍设计实践指南，推动更多人关注数字包容
+\end{itemize}}
+
+\end{document}

@@ -1,0 +1,246 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Camille Renard}{}
+\title{Ingénieure logicielle full-stack \& cloud}
+\phone[mobile]{+33 6 12 34 56 78}
+\email{contact@camille-renard.dev}
+\homepage{https://camille-renard.dev}
+
+\address{12 rue de la Paix, Paris, Île-de-France, France, 75002}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/camille-renard}{@camille-renard} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/camille-renard}{@camille-renard}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{Ingénieure logicielle passionnée par la conception d’applications web robustes et scalables.
+Forte de six ans d’expérience en développement full-stack et en architecture cloud, j’accompagne les équipes produit de la conception au déploiement continu.
+%
+Compétences clés :
+%
+\begin{itemize}
+\item Développement front-end avec React, TypeScript et Next.js
+\item Conception d’API REST et GraphQL, intégration de bases de données SQL/NoSQL
+\item Déploiement sur AWS avec conteneurisation Docker et orchestration Kubernetes
+\item Pratiques DevOps : CI/CD, automatisation, monitoring et observabilité
+\item Collaboration Agile, revues de code exigeantes et mentorat technique
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2015–juin 2018}
+        {Master, Ingénierie logicielle et systèmes informatiques, Score : 3.8/4.0}
+        {Télécom Paris}
+        {\url{https://www.telecom-paris.fr/}}
+        {}
+        {\begin{itemize}
+\item Formation d'ingénieur spécialisée en génie logiciel, systèmes distribués et informatique en nuage
+\item Projet de fin d’études sur la mise en place d’une plateforme de traitement de données en temps réel
+\item Engagement associatif actif au sein du laboratoire d’innovation numérique de l’école
+\end{itemize}
+\textbf{Cours} : Algorithmique et structures de données, Génie logiciel et méthodes Agiles, Systèmes distribués, Architectures cloud et virtualisation, Programmation concurrente et parallèle, Bases de données avancées, Sécurité des systèmes d'information, Interactions homme-machine}
+\section{Expérience professionnelle}
+
+\cventry{janv. 2022–Present}
+        {Ingénieure logicielle senior}
+        {Bluewave Technologies}
+        {\url{https://bluewave-tech.fr}}
+        {}
+        {\begin{itemize}
+\item Pilote la conception et le développement d’une plateforme SaaS de gestion documentaire utilisée par plus de 120 000 utilisateurs
+\item Encadre une équipe de cinq développeurs et développeuses, en favorisant les revues de code et la montée en compétence
+\item Modernise l’architecture monolithique vers une architecture microservices déployée sur Kubernetes
+\item Met en place une chaîne CI/CD complète avec GitHub Actions et Argo CD, réduisant les délais de livraison de 40 \%
+\item Collabore avec les équipes produit, design et infrastructure pour définir les feuilles de route techniques
+\end{itemize}
+\textbf{Mots-clés} : Architecture microservices, Kubernetes, React, Node.js, Mentorat, CI/CD}
+
+\cventry{mars 2019–déc. 2021}
+        {Ingénieure full-stack}
+        {Dataflow SAS}
+        {\url{https://dataflow-sas.fr}}
+        {}
+        {\begin{itemize}
+\item Développe des applications web de traitement et de visualisation de données pour des clients grands comptes
+\item Conçoit des API REST performantes avec Node.js, Express et PostgreSQL
+\item Réalise des interfaces riches en React et TypeScript, avec une attention particulière à l’accessibilité
+\item Participe à l’industrialisation des déploiements via Docker et AWS Elastic Beanstalk
+\item Rédige la documentation technique et organise des ateliers de partage de connaissances
+\end{itemize}
+\textbf{Mots-clés} : TypeScript, React, Node.js, PostgreSQL, Docker, AWS}
+
+\cventry{juil. 2018–févr. 2019}
+        {Développeuse web}
+        {Agence Pixely}
+        {\url{https://pixely.fr}}
+        {}
+        {\begin{itemize}
+\item Conçoit des sites vitrines et des applications e-commerce pour des clients PME et associations
+\item Intervient sur la partie front-end (HTML, CSS, JavaScript vanilla) et l’intégration de CMS
+\item Optimise les performances et l’accessibilité des sites, améliorant le score Lighthouse moyen de 65 à 92
+\item Assure la maintenance évolutive et corrective des projets livrés
+\end{itemize}
+\textbf{Mots-clés} : JavaScript, HTML/CSS, CMS, Performance, Accessibilité}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue \hfill \textbf{Mots-clés} : Langue maternelle}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEIC 960, Lecture technique, Réunions clients}
+\cvline{Allemand}{Niveau de travail limité \hfill \textbf{Mots-clés} : Bases de la conversation}
+\section{Compétences}
+
+\cvline{Développement front-end}{Expert \hfill \textbf{Mots-clés} : TypeScript, React, Next.js, Tailwind CSS, Vitest}
+\cvline{Développement back-end}{Expert \hfill \textbf{Mots-clés} : Node.js, Express, NestJS, GraphQL, REST API}
+\cvline{Cloud \& DevOps}{Avancé \hfill \textbf{Mots-clés} : AWS, Docker, Kubernetes, Terraform, GitHub Actions}
+\cvline{Bases de données}{Avancé \hfill \textbf{Mots-clés} : PostgreSQL, MongoDB, Redis, Elasticsearch, Prisma}
+\section{Récompenses}
+
+\cventry{juin 2023}
+        {Bluewave Technologies}
+        {Prix de l’innovation technique}
+        {}
+        {}
+        {Récompense décernée à l’issue du hackathon interne pour la conception d’un assistant de recherche documentaire basé sur l’IA générative.}
+\section{Certificats}
+
+\cventry{mars 2022}
+        {Amazon Web Services}
+        {AWS Certified Solutions Architect – Associate}
+        {\url{https://aws.amazon.com/fr/certification/}}
+        {}
+        {}
+
+\cventry{oct. 2023}
+        {Cloud Native Computing Foundation}
+        {Certified Kubernetes Application Developer}
+        {\url{https://www.cncf.io/certification/ckad/}}
+        {}
+        {}
+\section{Projets}
+
+\cventry{janv. 2023–mars 2023}
+        {Application open-source de suivi de temps et de gestion de projets pour les équipes distribuées.}
+        {OpenTrack}
+        {\url{https://github.com/camille-renard/opentrack}}
+        {}
+        {\begin{itemize}
+\item Conception complète d’une application full-stack avec Next.js, Prisma et PostgreSQL
+\item Authentification sécurisée avec NextAuth, déploiement sur Vercel et Supabase
+\item Intégration d’un tableau de bord temps réel à l’aide de WebSockets
+\end{itemize}
+\textbf{Mots-clés} : Next.js, Prisma, PostgreSQL, WebSockets, Open Source}
+
+\cventry{oct. 2020–févr. 2021}
+        {Visualisation interactive de la consommation énergétique de bâtiments publics à partir de données ouvertes.}
+        {DataViz – Tableau de bord énergie}
+        {\url{https://dataviz.camille-renard.dev}}
+        {}
+        {\begin{itemize}
+\item Création d’un pipeline de collecte et de transformation de données ouvertes avec Python et Pandas
+\item Développement d’une interface de visualisation avec D3.js et TypeScript
+\item Publication du projet en open source et présentation lors d’un meetup Data Paris
+\end{itemize}
+\textbf{Mots-clés} : D3.js, Python, Pandas, Open Data}
+\section{Centres d'intérêt}
+
+\cvline{Randonnée}{Alpes, Trail, Photographie, Nature}
+\cvline{Programmation créative}{Generative art, p5.js, Processing, Musique électronique}
+\section{Bénévolat}
+
+\cventry{sept. 2021–juin 2023}
+        {Bénévole développeuse}
+        {Les Codeurs de l’Espoir}
+        {\url{https://lescodeursdelespoir.org}}
+        {}
+        {\begin{itemize}
+\item Accompagne des associations caritatives dans la création de leurs sites web et outils internes
+\item Anime des ateliers d’initiation au code pour des publics éloignés du numérique
+\item Participe au développement d’une plateforme solidaire de mise en relation des bénévoles et des associations
+\end{itemize}}
+
+\end{document}

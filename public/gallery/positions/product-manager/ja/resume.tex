@@ -1,0 +1,234 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{鈴木 彩花}{}
+\title{顧客価値と事業成長を両立するプロダクトマネージャー}
+\phone[mobile]{+81 90-1234-5678}
+\email{ayaka.suzuki@example.jp}
+\homepage{https://ayakasuzuki.example.jp}
+
+\address{日本、東京都、千代田区、東京都千代田区丸の内1-2-3、100-0005}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/ayaka-suzuki}{@ayaka-suzuki} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/ayaka-suzuki}{@ayaka-suzuki}}
+
+\begin{document}
+
+\maketitle
+
+\section{基本情報}
+
+\cvline{}{ユーザー中心のプロダクトマネジメントを専門とし、SaaSプロダクトの企画から改善まで一貫してリードしてきたプロダクトマネージャーです。データに基づく仮説立案と定量・定性調査を組み合わせ、KPI改善と顧客満足度向上を両立させます。ステークホルダーとの合意形成やクロスファンクショナルなチーム推進を強みとし、グローバル展開を見据えたプロダクト戦略にも経験があります。}
+\section{学歴}
+
+\cventry{2014年4月～2018年3月}
+        {学士、経営工学、成績：3.7}
+        {早稲田大学}
+        {\url{https://www.waseda.jp}}
+        {}
+        {\begin{itemize}
+\item 経営工学を専攻し、データ分析・マーケティング・組織マネジメントを学ぶ
+\item チームでのプロジェクト演習を通じて、課題発見から解決策の提案までを経験
+\item 卒業研究では「顧客ロイヤルティ向上要因の分析」をテーマに調査・分析を実施
+\end{itemize}
+\textbf{コース}：マーケティングリサーチ、データサイエンス入門、プロジェクトマネジメント、組織行動論、サービスイノベーション}
+\section{職歴}
+
+\cventry{2021年4月～現在}
+        {シニアプロダクトマネージャー}
+        {株式会社ネクストソリューションズ}
+        {\url{https://www.next-sol.example.jp}}
+        {}
+        {\begin{itemize}
+\item B2B SaaSプロダクト「TeamFlow」のプロダクトマネージャーとして、ロードマップ策定から機能開発、ローンチまでを統括
+\item ユーザーインタビューや利用ログ分析に基づき、オンボーディング機能を再設計し、アクティベーション率を45\%から68\%に改善
+\item 営業・カスタマーサクセス・開発チームと連携し、顧客フィードバックを優先順位付けする仕組みを構築
+\item 四半期ごとのKPIレビューを主導し、プロダクト改善サイクルを定着させた
+\end{itemize}
+\textbf{キーワード}：プロダクト戦略、ロードマップ、ステークホルダー管理、KPI改善、データ分析}
+
+\cventry{2018年4月～2021年3月}
+        {プロダクトマネージャー}
+        {株式会社デジタルイノベーション}
+        {\url{https://www.digital-innovation.example.jp}}
+        {}
+        {\begin{itemize}
+\item 自社メディア向けCMSのリニューアルプロジェクトに参画し、要件定義からリリースまでを主導
+\item 編集者・営業チームへのヒアリングを実施し、業務効率化に貢献する編集ワークフロー機能を企画・実装
+\item A/Bテストを活用したUI改善を繰り返し、記事編集時間を平均30\%削減
+\item エンジニア・デザイナー約10名のチームをプロジェクトマネジメントとして支援
+\end{itemize}
+\textbf{キーワード}：要件定義、アジャイル開発、A/Bテスト、UI改善、プロジェクト推進}
+\section{言語}
+
+\cvline{日本語}{ネイティブ・母国語レベル \hfill \textbf{キーワード}：ビジネス文書作成、プレゼンテーション}
+\cvline{英語}{完全な実務レベル \hfill \textbf{キーワード}：TOEIC 905、海外チームとの会議}
+\section{スキル}
+
+\cvline{プロダクトマネジメント}{エキスパート \hfill \textbf{キーワード}：ロードマップ策定、要求分析、KPI設計、顧客インタビュー、プライオリティ管理}
+\cvline{データ分析}{上級 \hfill \textbf{キーワード}：SQL、Google Analytics、Tableau、A/Bテスト、コホート分析}
+\cvline{UI/UXデザイン}{中級 \hfill \textbf{キーワード}：Figma、プロトタイピング、ユーザビリティテスト、ワイヤーフレーム}
+\section{受賞・表彰}
+
+\cventry{2024年3月}
+        {株式会社ネクストソリューションズ}
+        {2023年度 ベストプロダクト賞}
+        {}
+        {}
+        {\begin{itemize}
+\item TeamFlowの大型リニューアルプロジェクトをリードし、顧客満足度の大幅向上と売上成長に貢献したことが評価され受賞
+\end{itemize}}
+\section{資格・免状}
+
+\cventry{2022年6月}
+        {PMI日本支部}
+        {PMP}
+        {\url{https://www.pmi.org/certifications/project-management-pmp}}
+        {}
+        {}
+\section{出版・著作}
+
+\cventry{2023年5月}
+        {データドリブンなプロダクト改善の実践}
+        {note}
+        {\url{https://note.example.jp/ayaka-suzuki/datadriven-pm}}
+        {}
+        {\begin{itemize}
+\item プロダクトマネージャー向けに、KPI設計やA/Bテストの進め方、ステークホルダーを巻き込む方法を事例付きで紹介
+\end{itemize}}
+\section{プロジェクト}
+
+\cventry{2022年7月～2023年2月}
+        {B2B SaaSプロダクトにおけるオンボーディング機能のリニューアルプロジェクト}
+        {TeamFlow オンボーディング改善}
+        {\url{https://www.next-sol.example.jp/teamflow}}
+        {}
+        {\begin{itemize}
+\item ユーザーインタビューと利用ログ分析を実施し、離脱要因を特定
+\item ステップ形式のガイドとテンプレート機能を新たに設計・実装
+\item アクティベーション率を45\%から68\%に改善し、解約率を削減
+\end{itemize}
+\textbf{キーワード}：オンボーディング、ユーザーリサーチ、プロダクト改善}
+
+\cventry{2019年9月～2020年3月}
+        {自社CMSに搭載する編集ワークフロー機能の企画・設計プロジェクト}
+        {メディア向けCMS編集ワークフロー設計}
+        {\url{https://www.digital-innovation.example.jp/cms}}
+        {}
+        {\begin{itemize}
+\item 編集者と営業チームの業務プロセスを可視化し、課題を整理
+\item 承認フローとタスク管理機能の要件定義を実施
+\item 編集時間を平均30\%削減し、業務効率化に貢献
+\end{itemize}
+\textbf{キーワード}：業務分析、要件定義、UX設計}
+\section{興味・関心}
+
+\cvline{旅行}{国内旅行、写真}
+\cvline{読書}{ビジネス書、デザイン}
+\section{ボランティア活動}
+
+\cventry{2022年6月～現在}
+        {メンター}
+        {PMラーニングコミュニティ}
+        {\url{https://www.pm-learning.example.jp}}
+        {}
+        {\begin{itemize}
+\item 若手プロダクトマネージャー向けの勉強会で講師を務め、ロードマップ策定やKPI設計の実践的なノウハウを共有
+\item 参加者からの相談に定期的に応じ、キャリア形成の支援を行った
+\end{itemize}}
+
+\end{document}

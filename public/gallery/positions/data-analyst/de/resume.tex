@@ -1,0 +1,240 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for German language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-german.html
+\usepackage[ngerman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Lena Hoffmann}{}
+\title{Data Analystin für Business Intelligence und Datenvisualisierung}
+\phone[mobile]{+49 30 12345678}
+\email{lena.hoffmann@posteo.de}
+\homepage{https://lena-hoffmann.dev}
+
+\address{Berlin, Berlin, Deutschland, 10115}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/lena-hoffmann}{@lena-hoffmann} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/lena-hoffmann}{@lena-hoffmann}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basisinformationen}
+
+\cvline{}{Data Analystin mit mehr als vier Jahren Erfahrung in der Analyse von Umsatz-, Kunden- und Produktdaten. Ich entwickle verständliche Dashboards, automatisiere Auswertungen und übersetze Ergebnisse in konkrete Handlungsempfehlungen für Fachbereiche und Management.
+%
+\begin{itemize}
+\item Schwerpunkt: Business Intelligence, Datenvisualisierung und statistische Analyse
+\item Werkzeuge: SQL, Python, Power BI, Tableau, dbt
+\item Methoden: A/B-Tests, Kohortenanalysen, Regressionsmodelle
+\item Stärken: strukturierte Arbeitsweise, Kommunikation auf Augenhöhe und hohe Zahlenaffinität
+\end{itemize}}
+\section{Ausbildung}
+
+\cventry{Okt. 2016–Sept. 2020}
+        {Bachelor, Statistik und Wirtschaftsinformatik, Punkte: 1.7}
+        {Humboldt-Universität zu Berlin}
+        {\url{https://www.hu-berlin.de}}
+        {}
+        {\begin{itemize}
+\item Schwerpunkt auf statistischer Datenanalyse und praktischer Anwendung von BI-Methoden
+\item Bachelorarbeit zum Thema „Prognosemodelle für Umsatzdaten im E-Commerce“ mit Note 1,3
+\item Wahlpflichtmodule in Data Mining und multivariater Statistik
+\end{itemize}
+\textbf{Kurse}: Einführung in die Statistik, Datenbankmanagementsysteme, Betriebswirtschaftslehre, Data Mining, Multivariate Verfahren, Informationsvisualisierung}
+\section{Berufserfahrung}
+
+\cventry{März 2022–Heute}
+        {Data Analystin}
+        {Nordlicht Analytics GmbH}
+        {\url{https://www.nordlicht-analytics.de}}
+        {}
+        {\begin{itemize}
+\item Entwicklung und Pflege interaktiver Dashboards und standardisierter Reportings in Power BI für Geschäftsführung und Fachabteilungen
+\item Aufbau und Optimierung eines relationalen Datenmodells in PostgreSQL sowie Automatisierung von ETL-Prozessen mit Python und dbt
+\item Durchführung von A/B-Tests und Kundensegmentanalysen zur Bewertung von Marketingkampagnen; Identifikation konkreter Optimierungspotenziale
+\item Reduzierung manueller Reporting-Tätigkeiten um rund 40 \% durch automatisierte Datenpipelines
+\item Enge Zusammenarbeit mit Produktmanagement, Vertrieb und Marketing zur Ableitung datenbasierter Handlungsempfehlungen
+\end{itemize}
+\textbf{Schlüsselwörter}: Power BI, SQL, Python, dbt, ETL, A/B-Tests}
+
+\cventry{Sept. 2020–Feb. 2022}
+        {Junior Data Analystin}
+        {Datenwerk Solutions AG}
+        {\url{https://www.datenwerk-solutions.de}}
+        {}
+        {\begin{itemize}
+\item Erstellung wöchentlicher Absatz-, Bestands- und Umsatzberichte für das Controlling
+\item Bereinigung und Konsolidierung von Stamm- und Bewegungsdaten in Excel und SQL
+\item Unterstützung bei der Einführung von Tableau und der Migration bestehender Reports
+\item Automatisierung von Routineauswertungen mit Python-Skripten
+\item Beantwortung von Ad-hoc-Analysen für Fachbereiche mit präzisen und nachvollziehbaren Ergebnissen
+\end{itemize}
+\textbf{Schlüsselwörter}: Excel, SQL, Tableau, Python, Berichtswesen}
+
+\cventry{Apr. 2019–Aug. 2020}
+        {Studentische Hilfskraft für Datenanalyse}
+        {Humboldt-Universität zu Berlin}
+        {\url{https://www.hu-berlin.de}}
+        {}
+        {\begin{itemize}
+\item Unterstützung von Forschungsprojekten bei Datenaufbereitung und statistischer Auswertung mit R
+\item Durchführung von Regressions- und Varianzanalysen inklusive Dokumentation der Ergebnisse
+\item Betreuung des Statistiklabors und Durchführung von Tutorien für Studierende
+\end{itemize}
+\textbf{Schlüsselwörter}: R, Statistik, SPSS}
+\section{Sprachen}
+
+\cvline{Deutsch}{Muttersprache oder zweisprachig \hfill \textbf{Schlüsselwörter}: Muttersprache}
+\cvline{Englisch}{Verhandlungssichere Kenntnisse \hfill \textbf{Schlüsselwörter}: TOEFL 105, Fachliche Kommunikation}
+\section{Fähigkeiten}
+
+\cvline{Datenanalyse und Statistik}{Experte \hfill \textbf{Schlüsselwörter}: Python, R, SQL, A/B-Tests, Regressionsanalyse, Statistik}
+\cvline{Business Intelligence}{Erfahren \hfill \textbf{Schlüsselwörter}: Power BI, Tableau, Looker Studio, ETL, KPI-Reporting}
+\cvline{Datenbanken und Data Engineering}{Erfahren \hfill \textbf{Schlüsselwörter}: PostgreSQL, dbt, Datenmodellierung, SQL, Data Warehousing}
+\cvline{Kommunikation und Präsentation}{Erfahren \hfill \textbf{Schlüsselwörter}: Stakeholder-Management, Storytelling, Workshops, Dokumentation}
+\section{Auszeichnungen}
+
+\cventry{Juni 2023}
+        {DataViz Berlin Meetup}
+        {Best Data Visualization Award}
+        {}
+        {}
+        {Auszeichnung für ein interaktives Dashboard zur Analyse von Kundenbindung im Einzelhandel, das auf dem jährlichen Community-Event präsentiert wurde.}
+\section{Zertifikate}
+
+\cventry{Jan. 2021}
+        {Google}
+        {Google Data Analytics Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-data-analytics}}
+        {}
+        {}
+
+\cventry{Aug. 2022}
+        {Microsoft}
+        {Microsoft Certified: Power BI Data Analyst Associate}
+        {\url{https://learn.microsoft.com/en-us/credentials/certifications/data-analyst-associate/}}
+        {}
+        {}
+\section{Projekte}
+
+\cventry{Jan. 2023–März 2023}
+        {Interaktives Dashboard zur automatisierten Kundensegmentierung auf Basis von RFM-Analysen.}
+        {Kundensegmentierungs-Dashboard}
+        {\url{https://github.com/lena-hoffmann/kundensegmentierung}}
+        {}
+        {\begin{itemize}
+\item Entwicklung eines Power-BI-Dashboards zur Visualisierung von Kundensegmenten und Kaufverhalten
+\item Automatisierte Datenaufbereitung mit Python und dbt für ein skalierbares Datenmodell
+\item Identifikation von vier profitablen Kundensegmenten, die direkt in Marketingkampagnen überführt wurden
+\end{itemize}
+\textbf{Schlüsselwörter}: Power BI, Python, RFM-Analyse, Segmentierung}
+
+\cventry{Apr. 2020–Juli 2020}
+        {Prognosemodell für wöchentliche Absatzzahlen eines Online-Shops.}
+        {Absatzprognose für E-Commerce}
+        {\url{https://github.com/lena-hoffmann/absatzprognose}}
+        {}
+        {\begin{itemize}
+\item Bachelorarbeit zur Erstellung von Zeitreihenprognosen mit ARIMA- und linearen Regressionsmodellen
+\item Datenbereinigung und Feature-Engineering mit Python und Pandas
+\item Vergleich der Modellgüte anhand von MAPE und Visualisierung der Ergebnisse in Tableau
+\end{itemize}
+\textbf{Schlüsselwörter}: Python, Pandas, Zeitreihenanalyse, ARIMA, Tableau}
+\section{Interessen}
+
+\cvline{Datenvisualisierung}{Dashboard-Design, Storytelling mit Daten, Tableau Public}
+\cvline{Sport}{Laufen, Bouldern, Radfahren}
+\section{Ehrenamtliche Tätigkeiten}
+
+\cventry{Jan. 2023–Heute}
+        {Ehrenamtliche Datenanalystin}
+        {Data for Good Berlin}
+        {\url{https://www.dataforgood.berlin}}
+        {}
+        {\begin{itemize}
+\item Unterstützung gemeinnütziger Organisationen bei der Auswertung von Umfragedaten
+\item Erstellung eines Excel-basierten Dashboards zur Ressourcenplanung für eine Beratungsstelle
+\item Durchführung von Workshops zu Datenqualität und einfacher Visualisierung
+\end{itemize}}
+
+\end{document}

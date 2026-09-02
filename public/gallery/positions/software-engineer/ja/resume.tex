@@ -1,0 +1,265 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{佐藤 健太}{}
+\title{Webアプリケーション開発とクラウド運用が得意なソフトウェアエンジニア}
+\phone[mobile]{080-1234-5678}
+\email{kenta.sato@example.jp}
+\homepage{https://kentasato.dev}
+
+\address{日本、東京都、渋谷区、東京都渋谷区神南1-2-3、150-0041}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/kentasato}{@kentasato} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/kentasato}{@kentasato}}
+
+\begin{document}
+
+\maketitle
+
+\section{基本情報}
+
+\cvline{}{\begin{itemize}
+\item バックエンドからフロントエンドまで一貫して開発できるソフトウェアエンジニア
+\item TypeScript / Node.js / React を用いたWebアプリケーション開発に6年の実務経験
+\item AWSでのクラウドインフラ設計・運用や、CI/CDパイプライン構築にも従事
+\item チーム開発を円滑に進めるため、コードレビューや技術共有を積極的に実施
+\item プロダクトの価値を最大化することを常に意識し、要件定義から運用保守まで幅広く対応
+\end{itemize}}
+\section{学歴}
+
+\cventry{2015年4月～2019年3月}
+        {学士、工学部 システム創成学科、成績：3.8/4.0}
+        {東京大学}
+        {\url{https://www.u-tokyo.ac.jp/}}
+        {}
+        {\begin{itemize}
+\item アルゴリズム、データ構造、ソフトウェア工学の基礎を中心に学ぶ
+\item 学部3年次からWebアプリケーション開発の研究プロジェクトに参加
+\item 卒業研究として「クラウド環境における機械学習パイプラインの効率化」をテーマに実装と検証を実施
+\end{itemize}
+\textbf{コース}：アルゴリズムとデータ構造、オペレーティングシステム、ソフトウェア工学、データベース設計、コンピュータネットワーク、機械学習基礎、ヒューマンコンピュータインタラクション、分散システム}
+\section{職歴}
+
+\cventry{2022年4月～現在}
+        {シニアソフトウェアエンジニア}
+        {株式会社テックイノベーション}
+        {\url{https://www.techinnovation.co.jp}}
+        {}
+        {\begin{itemize}
+\item 自社SaaSプロダクトのアーキテクチャ設計、実装、運用をリード
+\item TypeScript / React / Node.jsを中心としたモノレポ構成への移行を推進
+\item AWS上でのインフラ構築・運用を担当し、コスト最適化と可用性向上を実現
+\item チームの開発プロセス改善に取り組み、四半期ごとのデプロイ頻度を2倍に向上
+\item シニアエンジニアとしてメンタリングやコードレビューを担当し、チーム全体の品質向上に貢献
+\end{itemize}
+\textbf{キーワード}：アーキテクチャ設計、チームリーダー、アジャイル開発、AWS移行、技術メンタリング}
+
+\cventry{2019年4月～2022年3月}
+        {ソフトウェアエンジニア}
+        {株式会社デジタルソリューション}
+        {\url{https://www.digital-solution.co.jp}}
+        {}
+        {\begin{itemize}
+\item 金融業界向けの業務システム開発に従事し、フロントエンドからバックエンドまで幅広く担当
+\item Reactを用いた管理画面の刷新プロジェクトで、ユーザビリティと表示速度を大幅に改善
+\item REST APIの設計・実装・テストを担当し、第三者システムとの連携を安定化
+\item Docker導入による開発環境の統一を行い、新入メンバーのセットアップ時間を短縮
+\item スクラム開発におけるスプリント計画や振り返りを積極的にリード
+\end{itemize}
+\textbf{キーワード}：React、Node.js、REST API、Docker、スクラム開発}
+
+\cventry{2018年6月～2019年3月}
+        {Webエンジニア（インターン）}
+        {株式会社ウェブクラフト}
+        {\url{https://www.webcraft.co.jp}}
+        {}
+        {\begin{itemize}
+\item 店舗向け予約管理システムのフロントエンド実装を担当
+\item Vue.jsを用いたUIコンポーネントの開発を通じて、実務での開発フローを習得
+\item テストコード作成やドキュメント整備にも参加し、品質向上に寄与
+\end{itemize}
+\textbf{キーワード}：Vue.js、フロントエンド開発、テスト自動化}
+\section{言語}
+
+\cvline{日本語}{ネイティブ・母国語レベル \hfill \textbf{キーワード}：日本語能力試験N1}
+\cvline{英語}{完全な実務レベル \hfill \textbf{キーワード}：TOEIC 900、実務での英語コミュニケーション}
+\section{スキル}
+
+\cvline{フロントエンド開発}{エキスパート \hfill \textbf{キーワード}：TypeScript、React、Next.js、Vue.js、CSS、アクセシビリティ}
+\cvline{バックエンド開発}{上級 \hfill \textbf{キーワード}：Node.js、Python、Ruby、REST API、GraphQL、マイクロサービス}
+\cvline{クラウド / DevOps}{上級 \hfill \textbf{キーワード}：AWS、Docker、Kubernetes、Terraform、CI/CD}
+\cvline{データベース}{中級 \hfill \textbf{キーワード}：PostgreSQL、MySQL、Redis}
+\section{受賞・表彰}
+
+\cventry{2022年12月}
+        {株式会社テックイノベーション}
+        {社内MVP受賞}
+        {}
+        {}
+        {\begin{itemize}
+\item 大規模なレガシーシステムのクラウド移行をリードし、運用コストの削減とサービス品質向上に大きく貢献したことが評価され、社内MVPとして表彰された。
+\end{itemize}}
+\section{資格・免状}
+
+\cventry{2023年6月}
+        {Amazon Web Services}
+        {AWS認定ソリューションアーキテクト – アソシエイト}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{2020年10月}
+        {経済産業省}
+        {応用情報技術者試験}
+        {\url{https://www.jitec.ipa.go.jp/}}
+        {}
+        {}
+\section{出版・著作}
+
+\cventry{2023年3月}
+        {TypeScriptによる型安全なAPIクライアント設計}
+        {Zenn}
+        {\url{https://zenn.dev/kentasato/articles/typed-api-client}}
+        {}
+        {\begin{itemize}
+\item 実践的なTypeScriptの型設計パターンを整理
+\item REST APIのレスポンスを型安全に扱うための実装例を公開
+\item フロントエンド開発者向けに、保守性の高いデータフェッチ層の設計手法を解説
+\end{itemize}}
+\section{プロジェクト}
+
+\cventry{2023年4月～2023年9月}
+        {従業員の出退勤や在宅勤務スケジュールを可視化するWebアプリケーション}
+        {在宅勤務管理システム}
+        {\url{https://github.com/kentasato/work-from-home-manager}}
+        {}
+        {\begin{itemize}
+\item チームメンバーの在宅・出社予定を一元管理するためのダッシュボードを開発
+\item React + TypeScriptでフロントエンドを構築し、Node.js + PostgreSQLでバックエンドAPIを実装
+\item GitHub Actionsを活用した自動テスト・自動デプロイ体制を整備
+\end{itemize}
+\textbf{キーワード}：TypeScript、React、Node.js、PostgreSQL、GitHub Actions}
+
+\cventry{2022年1月～2022年6月}
+        {シンプルで拡張性の高いタスク管理ツール}
+        {オープンソースのタスク管理ツール}
+        {\url{https://github.com/kentasato/taskflow}}
+        {}
+        {\begin{itemize}
+\item コマンドラインとWeb UIの両方から操作できるタスク管理ツールを開発
+\item オープンソースとして公開し、国内外の開発者からフィードバックを受けて改善
+\item 外部サービスとの連携を可能にするプラグイン機構を設計
+\end{itemize}
+\textbf{キーワード}：OSS、Node.js、プラグイン設計、コマンドラインツール}
+\section{興味・関心}
+
+\cvline{技術書の読書}{ソフトウェア設計、クラウドアーキテクチャ、セキュリティ}
+\cvline{ランニング}{マラソン、トレイルラン、体力づくり}
+\cvline{旅行}{国内旅行、温泉、写真撮影}
+\section{ボランティア活動}
+
+\cventry{2022年4月～2022年11月}
+        {ボランティアスタッフ}
+        {PyCon JP 実行委員会}
+        {\url{https://pycon.jp/}}
+        {}
+        {\begin{itemize}
+\item PyCon JP 2022の運営スタッフとして、セッション運営や参加者サポートを担当
+\item Webサイト更新やSNSでの情報発信を支援し、イベントの成功に貢献
+\end{itemize}}
+
+\end{document}

@@ -1,0 +1,262 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{王强}{}
+\title{高级后端软件工程师 / 专注于大规模分布式系统}
+\phone[mobile]{+86 138 0013 8000}
+\email{wangqiang.dev@example.com}
+\homepage{https://github.com/wangqiang-dev}
+
+\address{中国，浙江省，杭州，西湖区文一西路 969 号，310000}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/wangqiang-dev}{@wangqiang-dev} {} {} {} • {} {} {}
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/wangqiang-dev}{@wangqiang-dev}}
+
+\begin{document}
+
+\maketitle
+
+\section{简介}
+
+\cvline{}{\begin{itemize}
+\item 拥有 8 年以上软件研发经验，擅长设计高并发、高可用的分布式系统
+\item 熟悉微服务架构、容器化部署与云原生技术，主导过多个从 0 到 1 的核心业务系统
+\item 具备优秀的团队协作与跨部门沟通能力，热衷于技术分享与开源社区贡献
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2014年9月–2017年6月}
+        {硕士，计算机科学与技术，成绩：3.8}
+        {浙江大学}
+        {\url{https://www.zju.edu.cn/}}
+        {}
+        {\begin{itemize}
+\item 研究方向为分布式一致性协议与高性能存储，硕士论文获校级优秀论文
+\item 以第一作者发表 CCF-B 类会议论文一篇
+\end{itemize}
+\textbf{课程}：分布式系统、高级操作系统、算法设计与分析、大数据处理技术}
+
+\cventry{2010年9月–2014年6月}
+        {学士，软件工程，成绩：3.7}
+        {南京大学}
+        {\url{https://www.nju.edu.cn/}}
+        {}
+        {\begin{itemize}
+\item 连续三年获得校级一等奖学金
+\item 参与开源项目开发，积累 Linux 环境下的工程实践能力
+\end{itemize}
+\textbf{课程}：数据结构、数据库原理、操作系统、计算机网络}
+\section{工作经历}
+
+\cventry{2020年7月至今}
+        {高级后端工程师}
+        {阿里巴巴集团}
+        {\url{https://www.alibaba.com/}}
+        {}
+        {\begin{itemize}
+\item 负责交易核心链路的稳定性和性能优化，支撑双 11 峰值每秒 50 万笔订单
+\item 主导订单中心微服务化改造，落地全链路压测与混沌工程体系
+\item 推进 Go 技术栈在业务线推广，提升研发效率 30\%
+\item 带领 5 人小组完成多个大促项目，培养 2 名新人成长为核心研发
+\end{itemize}
+\textbf{关键字}：高并发、微服务、全链路压测、团队管理}
+
+\cventry{2017年7月–2020年6月}
+        {后端软件开发工程师}
+        {蚂蚁集团}
+        {\url{https://www.antgroup.com/}}
+        {}
+        {\begin{itemize}
+\item 参与智能风控平台开发，使用 Flink 构建实时特征计算引擎
+\item 设计并实现规则引擎与模型推理服务，将决策延迟降低至 100ms 以内
+\item 负责日常需求迭代与线上问题排查，保障服务稳定性
+\end{itemize}
+\textbf{关键字}：Flink、风控、规则引擎、Java}
+
+\cventry{2016年9月–2017年6月}
+        {后端开发实习生}
+        {华为技术有限公司}
+        {\url{https://www.huawei.com/}}
+        {}
+        {\begin{itemize}
+\item 参与分布式存储系统的开发，完成文件分片与副本同步模块的编码工作
+\item 编写自动化测试脚本，提升模块测试覆盖率至 85\%
+\end{itemize}
+\textbf{关键字}：分布式存储、C++、自动化测试}
+\section{语言}
+
+\cvline{中文}{母语或双语水平 \hfill \textbf{关键字}：普通话}
+\cvline{英语}{完全专业水平 \hfill \textbf{关键字}：CET-6、技术文档阅读}
+\section{专业技能}
+
+\cvline{后端开发}{专家 \hfill \textbf{关键字}：Java、Go、Python、Spring Boot、gRPC}
+\cvline{分布式系统}{专家 \hfill \textbf{关键字}：Kafka、Redis、ZooKeeper、一致性算法}
+\cvline{云原生}{高级 \hfill \textbf{关键字}：Kubernetes、Docker、Istio、Prometheus}
+\cvline{数据库}{高级 \hfill \textbf{关键字}：MySQL、TiDB、PostgreSQL、索引优化}
+\section{荣誉}
+
+\cventry{2021年11月}
+        {阿里巴巴集团}
+        {阿里巴巴双 11 技术尖兵}
+        {}
+        {}
+        {在 2021 年双 11 大促中，因保障核心交易链路零故障并获得显著性能提升而获此奖项。}
+\section{证书}
+
+\cventry{2022年3月}
+        {Amazon Web Services}
+        {AWS Certified Solutions Architect - Associate}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{2019年11月}
+        {人力资源和社会保障部}
+        {软考系统架构设计师}
+        {\url{https://www.ruankao.org.cn/}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2016年10月}
+        {一种基于 Raft 优化的分布式存储共识机制}
+        {中国计算机学会(CCF) 分布式计算与系统会议}
+        {}
+        {}
+        {提出一种改进的 Raft 联合共识算法，减少了领导选举延迟，并在 100 节点模拟集群中验证吞吐量提升 23\%。}
+\section{项目}
+
+\cventry{2021年1月至今}
+        {一个基于 Go 实现的高性能分布式缓存中间件，支持 LRU/TTL 和多节点分片。}
+        {开源分布式缓存组件 OpenCache}
+        {\url{https://github.com/wangqiang-dev/opencache}}
+        {}
+        {\begin{itemize}
+\item 设计并实现了分布式缓存的核心读写链路，采用一致性哈希进行数据分片
+\item 使用 gRPC 进行节点间通信，集成 Prometheus 指标暴露与 Grafana 监控界面
+\item 项目累计获得 800+ Star，被多家创业公司用于生产环境
+\end{itemize}
+\textbf{关键字}：Go、分布式缓存、一致性哈希}
+
+\cventry{2019年1月–2019年6月}
+        {一个基于 Flink 和 Kafka 的日志实时聚合与分析平台。}
+        {实时日志分析平台 LogStream}
+        {\url{https://github.com/wangqiang-dev/logstream}}
+        {}
+        {\begin{itemize}
+\item 基于 Flink SQL 实现实时 ETL，支持毫秒级窗口聚合
+\item 设计消息回放与采样机制，保障数据准确性与系统吞吐
+\item 在蚂蚁内部上线后，处理日志量峰值达 200 万条/秒
+\end{itemize}
+\textbf{关键字}：Flink、Kafka、实时计算}
+\section{兴趣爱好}
+
+\cvline{开源社区}{Kubernetes、CNCF}
+\cvline{户外运动}{登山、马拉松}
+\section{志愿服务}
+
+\cventry{2021年1月至今}
+        {组织者}
+        {杭州开源技术社区}
+        {}
+        {}
+        {\begin{itemize}
+\item 定期组织线下技术分享会，邀请业内外专家交流云原生与后端架构实践
+\item 累计组织 20+ 场活动，参与人数超 2000 人次
+\end{itemize}}
+
+\end{document}

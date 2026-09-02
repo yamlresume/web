@@ -1,0 +1,223 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Elena Marsh}{}
+\title{UX Designer creating inclusive, human-centered digital experiences}
+\phone[mobile]{(415) 555-0139}
+\email{elena.marsh@example.com}
+\homepage{https://elenamarsh.design}
+
+\address{548 Market St, Suite 300, San Francisco, California, United States, 94104}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/elenamarshux}{@elenamarshux} {} {} {} • {} {} {}
+{\small \faDribbble}\ \href{https://dribbble.com/elenamarsh}{@elenamarsh} {} {} {} • {} {} {}
+{\small \faMedium}\ \href{https://medium.com/@elenamarsh.ux}{@elenamarsh.ux}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{\begin{itemize}
+\item UX designer with 7+ years of experience designing web and mobile products across health tech, fintech, and analytics
+\item Human-centered design advocate specializing in user research, prototyping, and design systems
+\item Collaborative team player skilled at partnering with product managers, engineers, and stakeholders to ship intuitive solutions
+\item Passionate about accessibility and inclusive design, ensuring every user can accomplish their goals with ease
+\end{itemize}}
+\section{Education}
+
+\cventry{Sep 2013–May 2017}
+        {Bachelor, Interaction Design, Score: 3.8}
+        {California College of the Arts}
+        {\url{https://www.cca.edu/}}
+        {}
+        {\begin{itemize}
+\item Developed a strong foundation in user-centered design principles and iterative design processes
+\item Completed hands-on projects in mobile app design, responsive web design, and interactive installations
+\item Recognized for outstanding work in the senior capstone project, a public transit navigation tool for elderly users
+\end{itemize}
+\textbf{Courses}: Human-Computer Interaction, Visual Communication, Design Research Methods, Prototyping for Digital Products, Psychology of User Experience, Design Ethics and Accessibility}
+\section{Work}
+
+\cventry{Mar 2021–Present}
+        {Senior Product Designer}
+        {Nimbus Analytics}
+        {\url{https://www.nimbusanalytics.com/}}
+        {}
+        {\begin{itemize}
+\item Led end-to-end design for a data visualization platform used by 50,000+ analysts, revamping the dashboard experience and reducing onboarding time by 35\%
+\item Built and maintained the company’s first design system, including 120+ accessible components and tokens, resulting in a 40\% faster handoff to engineering
+\item Drove user research initiatives, conducting 30+ contextual interviews and usability tests to shape the product roadmap
+\item Partnered with product and engineering leadership to define design strategy and quarterly OKRs for the analytics suite
+\item Mentored two junior designers, facilitating design critiques and skill-building workshops
+\end{itemize}
+\textbf{Keywords}: Product Strategy, Design Systems, User Research, Data Visualization, Figma, Mentorship}
+
+\cventry{Jun 2017–Feb 2021}
+        {Product Designer}
+        {Brightline Health}
+        {\url{https://www.brightlinehealth.com/}}
+        {}
+        {\begin{itemize}
+\item Designed patient-facing mobile app and web portal for a telehealth startup, improving task completion rate by 28\%
+\item Collaborated with clinical and engineering teams to translate complex healthcare workflows into simple, accessible experiences
+\item Planned and moderated remote usability testing sessions, synthesizing findings into actionable design recommendations
+\item Created high-fidelity prototypes in Figma and ran rapid iteration cycles to validate concepts with real patients
+\item Advocated for accessibility standards, partnering with engineers to meet WCAG 2.1 AA compliance across all products
+\end{itemize}
+\textbf{Keywords}: Healthcare, Mobile App Design, Accessibility, Prototyping, Usability Testing, User Flows}
+\section{Languages}
+
+\cvline{English}{Native or Bilingual Proficiency \hfill \textbf{Keywords}: Native speaker, Writing and documentation}
+\cvline{Spanish}{Limited Working Proficiency \hfill \textbf{Keywords}: Conversational, Basic reading comprehension}
+\section{Skills}
+
+\cvline{User Research}{Advanced \hfill \textbf{Keywords}: Interviews, Surveys, Personas, Journey Mapping, Usability Testing}
+\cvline{Prototyping}{Expert \hfill \textbf{Keywords}: Figma, Sketch, Adobe XD, Framer, Interactive Prototypes}
+\cvline{Visual Design}{Advanced \hfill \textbf{Keywords}: Typography, Color Theory, Layout, Design Systems, Accessibility (WCAG)}
+\cvline{UX Strategy}{Intermediate \hfill \textbf{Keywords}: Product Roadmapping, Stakeholder Management, Design Sprints, Metrics, A/B Testing}
+\section{Awards}
+
+\cventry{Oct 2022}
+        {Interaction Design Association}
+        {UX Design Award — Best Mobile App}
+        {}
+        {}
+        {Recognized for designing a mindful spending app that helps users understand their financial habits through visual data and gentle behavioral nudges.}
+\section{Certificates}
+
+\cventry{Jun 2022}
+        {Nielsen Norman Group}
+        {NN/g UX Certification}
+        {\url{https://www.nngroup.com/}}
+        {}
+        {}
+
+\cventry{Aug 2021}
+        {Google}
+        {Google UX Design Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-ux-design}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Jan 2021}
+        {Designing for Trust in Health Tech}
+        {UX Collective}
+        {\url{https://uxdesign.cc/designing-for-trust-in-health-tech}}
+        {}
+        {Explores how transparency, clear language, and coherent visual hierarchy can build trust in digital health products, sharing lessons learned from patient-facing design research.}
+\section{Projects}
+
+\cventry{Jan 2020–May 2020}
+        {A personal finance app concept that helps users build mindful spending habits through visual spending insights and gentle, non-judgmental nudges.}
+        {Mindful Spending App}
+        {\url{https://www.behance.net/gallery/mindful-spending-app}}
+        {}
+        {\begin{itemize}
+\item Conducted diary studies and interviews with 12 participants to understand emotional relationships with money
+\item Designed low-fidelity paper prototypes and iterated through high-fidelity Figma mockups based on feedback
+\item Developed an interactive prototype in Framer to test navigation and core-spending reflection features
+\item Awarded an honorable mention in the IxDA student design showcase
+\end{itemize}
+\textbf{Keywords}: Mobile App, Fintech, User Research, Prototyping, Accessibility}
+\section{Interests}
+
+\cvline{Photography}{Street photography, Portraits, Film photography}
+\cvline{Accessibility}{Inclusive design, Assistive technology, Web accessibility}
+\cvline{Hiking}{Bay Area trails, National parks, Nature photography}
+\section{Volunteer}
+
+\cventry{Sep 2018–Dec 2022}
+        {Design Mentor}
+        {Design4Good SF}
+        {\url{https://www.design4goodsf.org/}}
+        {}
+        {\begin{itemize}
+\item Mentored early-career designers from underrepresented backgrounds in portfolio development and interview preparation
+\item Facilitated monthly critique sessions to help mentees refine their design thinking and presentation skills
+\item Partnered with local nonprofits on pro-bono design projects, including a website refresh for a food bank and a donation flow redesign for a homeless shelter
+\end{itemize}}
+
+\end{document}

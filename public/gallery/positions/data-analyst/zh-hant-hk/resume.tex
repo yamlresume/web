@@ -1,0 +1,242 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{陳慧敏}{}
+\title{數據分析師 / 商業智能分析}
+\phone[mobile]{+852 9123 4567}
+\email{waimanch.chan@outlook.com}
+\homepage{https://wmchan-data.github.io}
+
+\address{中國香港，香港島，香港，香港中環金融街8號}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/wmchan-data}{@wmchan-data} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/wmchan-data}{@wmchan-data}}
+
+\begin{document}
+
+\maketitle
+
+\section{簡介}
+
+\cvline{}{\begin{itemize}
+\item 具 5 年商業數據分析經驗，擅長從龐大數據中發掘業務洞察，支援管理層決策
+\item 精通 SQL、Python 及 Power BI，熟悉 ETL 流程、數據倉庫及 A/B 測試設計
+\item 曾主導多個跨部門數據項目，包括客戶流失預測、銷售預測及風險監察儀表板
+\item 善於以視覺化方式向非技術持分者清晰傳遞分析結果，推動數據驅動文化
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2017年9月–2021年7月}
+        {學士，數據科學及商業智能，成績：3.6 / 4.0}
+        {香港科技大學}
+        {\url{https://www.hkust.edu.hk}}
+        {}
+        {\begin{itemize}
+\item 主修課程涵蓋統計模型、機器學習、數據庫管理及商業智能
+\item 畢業專題為「香港中小企客戶流失預測模型」，獲學系最佳專題獎
+\item 副修計算機科學，具備扎實的程式設計及數據處理基礎
+\end{itemize}
+\textbf{課程}：數據庫管理系統、統計推斷、機器學習、商業分析、資料視覺化、時間序列分析、風險管理與金融科技、大數據計算}
+\section{工作經歷}
+
+\cventry{2023年7月至今}
+        {數據分析師}
+        {香港金融管理局}
+        {\url{https://www.hkma.gov.hk}}
+        {}
+        {\begin{itemize}
+\item 為貨幣穩定及金融體系監察團隊建立自動化數據儀表板，每日處理超過 500 萬筆交易數據
+\item 利用 Python 及 SQL 整合內部數據倉庫，縮短報表編製時間約 40\%
+\item 與經濟研究部門合作，以時間序列模型分析銀行體系流動性風險
+\item 定期向高級管理層提交數據分析報告，協助制訂監管政策
+\end{itemize}
+\textbf{關鍵字}：Python、SQL、Tableau、時間序列分析、風險監察}
+
+\cventry{2021年8月–2023年6月}
+        {商業數據分析助理}
+        {恒生銀行}
+        {\url{https://www.hangseng.com}}
+        {}
+        {\begin{itemize}
+\item 協助零售銀行部門設計客戶消費行為分析框架，支援信用卡及貸款產品策略
+\item 建立 Power BI 儀表板追蹤客戶忠誠度及產品滲透率，每月節省約 20 工時
+\item 進行 A/B 測試評估數碼推廣活動成效，並提出具體優化建議
+\item 整理及清洗來自多個來源的客戶數據，確保數據品質及合規
+\end{itemize}
+\textbf{關鍵字}：Power BI、A/B 測試、數據清洗、客戶分析}
+\section{語言}
+
+\cvline{中文}{母語或雙語水平 \hfill \textbf{關鍵字}：粵語、普通話、繁體中文}
+\cvline{英語}{完全專業水平 \hfill \textbf{關鍵字}：IELTS 7.5、職場英語、技術簡報}
+\section{專業技能}
+
+\cvline{數據分析}{專家 \hfill \textbf{關鍵字}：Python、Pandas、NumPy、Jupyter Notebook、統計分析}
+\cvline{資料庫及 SQL}{專家 \hfill \textbf{關鍵字}：PostgreSQL、MySQL、BigQuery、SQL Server、資料倉庫}
+\cvline{商業智能及視覺化}{高級 \hfill \textbf{關鍵字}：Power BI、Tableau、Looker Studio、Excel、儀表板設計}
+\cvline{機器學習基礎}{中級 \hfill \textbf{關鍵字}：Scikit-learn、迴歸分析、分類模型、集群分析}
+\cvline{數據工程}{中級 \hfill \textbf{關鍵字}：ETL、Apache Airflow、dbt、資料建模}
+\section{榮譽}
+
+\cventry{2021年6月}
+        {香港科技大學}
+        {香港科技大學院長嘉許名單}
+        {}
+        {}
+        {連續三個學期入選院長嘉許名單，表揚學業成績優異及對大學社區的貢獻。}
+\section{證書}
+
+\cventry{2024年1月}
+        {Microsoft}
+        {Microsoft 認證：Power BI 數據分析師助理（PL-300）}
+        {\url{https://learn.microsoft.com/en-us/certifications/power-bi-data-analyst-associate/}}
+        {}
+        {}
+
+\cventry{2023年3月}
+        {Tableau}
+        {Tableau Desktop 專家認證}
+        {\url{https://www.tableau.com/learn/certification/desktop-specialist}}
+        {}
+        {}
+
+\cventry{2022年8月}
+        {Google}
+        {Google 數據分析專業證書}
+        {\url{https://www.coursera.org/professional-certificates/google-data-analytics}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2023年10月}
+        {香港虛擬銀行用戶行為研究報告}
+        {香港金融科技協會}
+        {\url{https://www.hkfta.org/research/virtual-bank-users-2023}}
+        {}
+        {\begin{itemize}
+\item 以 1,200 名受訪者數據分析虛擬銀行用戶的採用障礙及使用習慣
+\item 提出改善用戶體驗及數碼營銷策略的具體建議
+\end{itemize}}
+\section{項目}
+
+\cventry{2023年3月–2023年6月}
+        {一個以 Python 及 Power BI 開發的互動式零售銷售預測平台，整合公開數據與 API，為管理層提供決策支援。}
+        {香港零售銷售預測儀表板}
+        {\url{https://github.com/wmchan-data/retail-forecast-dashboard}}
+        {}
+        {\begin{itemize}
+\item 利用 Python 及 Prophet 建立月度銷售預測模型，平均絕對百分比誤差低於 12\%
+\item 以 Power BI 建立互動儀表板，讓管理層掌握不同店舖及產品類別的銷售趨勢
+\item 設計自動化數據更新流程，每日從 API 抽取數據並重新訓練模型
+\end{itemize}
+\textbf{關鍵字}：Python、Prophet、Power BI、時間序列、API}
+\section{興趣愛好}
+
+\cvline{開放資料}{香港政府資料一線通、資料新聞學、開放街圖}
+\cvline{運動}{跑步、行山、瑜伽}
+\section{志願服務}
+
+\cventry{2023年1月至今}
+        {數據分析義工}
+        {香港紅十字會}
+        {\url{https://www.redcross.org.hk}}
+        {}
+        {\begin{itemize}
+\item 為籌款活動整理及分析歷年捐贈者數據，識別高潛在捐款群組
+\item 建立活動成效儀表板，協助團隊更有效地分配宣傳資源
+\end{itemize}}
+
+\end{document}

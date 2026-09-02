@@ -1,0 +1,224 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Indonesian (Bahasa Indonesia) language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-indonesian.html
+\usepackage[indonesian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Rizky Pratama}{}
+\title{Data Analyst Berpengalaman dalam SQL, Python, dan Visualisasi Data}
+\phone[mobile]{+62 812-3456-7890}
+\email{rizky.pratama@email.com}
+\homepage{https://rizkypratama.id}
+
+\address{Jl. Senopati No. 45, Jakarta Selatan, DKI Jakarta, Indonesia, 12190}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/rizkypratama}{@rizkypratama} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/rizkypratama}{@rizkypratama}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informasi Dasar}
+
+\cvline{}{Data Analyst dengan lebih dari 4 tahun pengalaman mengolah data menjadi insight strategis untuk mendukung pengambilan keputusan bisnis.
+%
+\begin{itemize}
+\item Mahir menggunakan SQL, Python, dan Excel untuk ekstraksi, pembersihan, dan analisis data
+\item Berpengalaman membangun dashboard interaktif dengan Tableau dan Power BI untuk memantau performa bisnis secara real-time
+\item Mampu menerapkan metode statistik dan A/B testing untuk mengukur dampak inisiatif bisnis
+\item Berorientasi pada detail, komunikatif, dan terbiasa bekerja sama dengan tim lintas fungsi
+\end{itemize}}
+\section{Pendidikan}
+
+\cventry{Agu 2016–Jul 2020}
+        {Sarjana, Statistika, Nilai: 3.72}
+        {Universitas Indonesia}
+        {\url{https://www.ui.ac.id}}
+        {}
+        {\begin{itemize}
+\item Lulus dengan predikat cum laude dan IPK 3.72/4.00
+\item Menyelesaikan tugas akhir berjudul "Analisis Faktor yang Mempengaruhi Kepuasan Pelanggan E-commerce Menggunakan Regresi Logistik"
+\item Aktif sebagai asisten praktikum mata kuliah Statistika dan Analisis Data
+\end{itemize}
+\textbf{Mata Kuliah}: Statistika Matematika, Analisis Data Eksploratif, Regresi Linear, Desain Eksperimen, Basis Data dan SQL, Pengantar Machine Learning}
+\section{Pengalaman Kerja}
+
+\cventry{Mar 2022–Sekarang}
+        {Data Analyst}
+        {PT Data Nusantara}
+        {\url{https://www.datanusantara.co.id}}
+        {}
+        {\begin{itemize}
+\item Mengembangkan dan memelihara dashboard kinerja perusahaan menggunakan Tableau dan Power BI untuk 5 departemen
+\item Menganalisis data penjualan dan perilaku pelanggan dari database SQL dengan volume jutaan baris
+\item Menyusun laporan bulanan dan presentasi insight untuk manajemen, mendukung keputusan strategis
+\item Berkolaborasi dengan tim produk untuk merancang A/B testing yang meningkatkan konversi sebesar 12\%
+\end{itemize}
+\textbf{Kata Kunci}: SQL, Python, Tableau, Power BI, A/B Testing}
+
+\cventry{Agu 2020–Feb 2022}
+        {Junior Data Analyst}
+        {PT Karya Digital Solusi}
+        {\url{https://www.karyadigital.co.id}}
+        {}
+        {\begin{itemize}
+\item Membantu proses ETL data penjualan dan stok dari berbagai sumber menggunakan Python dan Google Sheets
+\item Membuat visualisasi data untuk kebutuhan laporan mingguan tim marketing dan operasional
+\item Melakukan validasi kualitas data serta mendokumentasikan standar pengolahan data
+\item Mendukung analisis campaign marketing dan menghitung ROI setiap kanal digital
+\end{itemize}
+\textbf{Kata Kunci}: Python, ETL, Google Sheets, Visualisasi Data, Marketing Analytics}
+\section{Bahasa}
+
+\cvline{Indonesia}{Bahasa Ibu / Bilingual}
+\cvline{Inggris}{Tingkat Profesional Penuh \hfill \textbf{Kata Kunci}: TOEFL ITP 600, IELTS 7.0}
+\section{Keahlian}
+
+\cvline{Analisis Data}{Ahli \hfill \textbf{Kata Kunci}: SQL, Python, Pandas, NumPy, Excel, Google Sheets}
+\cvline{Statistika}{Mahir \hfill \textbf{Kata Kunci}: Regresi, Uji Hipotesis, A/B Testing, Forecasting, R}
+\cvline{Visualisasi Data}{Mahir \hfill \textbf{Kata Kunci}: Tableau, Power BI, Looker Studio, Matplotlib, Seaborn}
+\section{Penghargaan}
+
+\cventry{Des 2023}
+        {PT Data Nusantara}
+        {Data Analyst Terbaik Tahun 2023}
+        {}
+        {}
+        {Penghargaan internal atas kontribusi dalam membangun sistem pelaporan data yang menghemat waktu analisis hingga 30\%.}
+\section{Sertifikat}
+
+\cventry{Mar 2021}
+        {Google}
+        {Google Data Analytics Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-data-analytics}}
+        {}
+        {}
+
+\cventry{Jun 2022}
+        {HackerRank}
+        {SQL Advanced Certificate}
+        {\url{https://www.hackerrank.com/certificates/sql-advanced}}
+        {}
+        {}
+\section{Proyek}
+
+\cventry{Mar 2023–Jun 2023}
+        {Dashboard interaktif untuk menganalisis tren penjualan dan perilaku pelanggan.}
+        {Dashboard Penjualan E-commerce}
+        {\url{https://public.tableau.com/app/profile/rizky.pratama}}
+        {}
+        {\begin{itemize}
+\item Dirancang menggunakan Tableau dengan koneksi langsung ke Google BigQuery
+\item Menampilkan metrik utama seperti GMV, conversion rate, dan retention rate secara real-time
+\item Memungkinkan manajemen memantau performa harian per kategori produk dan wilayah
+\end{itemize}
+\textbf{Kata Kunci}: Tableau, BigQuery, E-commerce, KPI}
+
+\cventry{Sep 2022–Des 2022}
+        {Proyek analisis sentimen ulasan pelanggan menggunakan Python dan machine learning.}
+        {Analisis Sentimen Ulasan Pelanggan}
+        {\url{https://github.com/rizkypratama/sentiment-analysis}}
+        {}
+        {\begin{itemize}
+\item Melakukan scraping data ulasan dari platform e-commerce dan membersihkan teks dengan Python
+\item Membangun model klasifikasi sentimen menggunakan scikit-learn dengan akurasi 87\%
+\item Menyajikan insight utama mengenai faktor kepuasan dan keluhan pelanggan
+\end{itemize}
+\textbf{Kata Kunci}: Python, Machine Learning, NLP, scikit-learn}
+\section{Minat}
+
+\cvline{Data Science}{Machine Learning, Statistika, Data Storytelling}
+\cvline{Olahraga}{Lari, Badminton, Hiking}
+\section{Kegiatan Sukarela}
+
+\cventry{Jan 2021–Des 2021}
+        {Relawan Analisis Data}
+        {Yayasan Pustaka Cerdas}
+        {\url{https://pustakacerdas.or.id}}
+        {}
+        {\begin{itemize}
+\item Membantu yayasan mengelola data donatur dan penerima bantuan menggunakan spreadsheet
+\item Menyusun laporan tahunan dengan visualisasi yang mudah dipahami oleh pengurus yayasan
+\end{itemize}}
+
+\end{document}

@@ -1,0 +1,279 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% style and color
+\moderncvstyle{banking}
+\moderncvcolor{black}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Spanish language
+% \usepackage[spanish]{babel} has some conflicting issues with moderncv
+% so we have to use enable the following options to make it work
+%
+% ref:
+% - https://tex.stackexchange.com/a/140161/36007
+\usepackage[spanish,es-lcroman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - fontset=none: disable builtin fontset but instead set the CJK font manually
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+% Auto-underline all links
+% Defer until \begin{document} so hyperref is already loaded
+\AtBeginDocument{%
+  \let\oldhref\href
+  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
+}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Carlos Mendoza}{}
+\title{Científico de Datos Senior | Machine Learning \& Analítica Predictiva}
+\phone[mobile]{+34 612 345 678}
+\email{carlos.mendoza@example.com}
+\homepage{https://www.carlosmendoza.dev}
+
+\address{Calle de Alcalá 123, Madrid, Comunidad de Madrid, España, 28001}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/carlosmendoza}{@carlosmendoza} {} {} {} • {} {} {}
+{\small \faGithub}\ \href{https://github.com/carlosmendoza}{@carlosmendoza}}
+
+\begin{document}
+
+\maketitle
+
+\section{Información básica}
+
+\cvline{}{Científico de datos con más de 8 años de experiencia en el desarrollo de soluciones analíticas y modelos predictivos para los sectores financiero, retail y telecomunicaciones.
+%
+Especializado en machine learning, procesamiento del lenguaje natural (NLP) y análisis de grandes volúmenes de datos con Python, Spark y cloud computing (AWS y GCP).
+%
+\begin{itemize}
+\item Diseño e implementación de modelos de clasificación y regresión con impacto directo en la reducción de costes y optimización de ingresos.
+\item Experiencia en la dirección de equipos multidisciplinares y en la comunicación de resultados a stakeholders no técnicos.
+\item Apasionado por el aprendizaje continuo y la aplicación de técnicas de IA responsable y explicable.
+\end{itemize}}
+\section{Educación}
+
+\cventry{sept 2014–jul 2016}
+        {Maestría, Ciencia de Datos e Inteligencia Artificial, Puntuación: 9,2}
+        {Universidad Politécnica de Madrid}
+        {\url{https://www.upm.es/}}
+        {}
+        {\begin{itemize}
+\item Graduado con matrícula de honor en el trabajo final: "Modelos híbridos para la predicción de series temporales financieras."
+\item Colaboré como investigador ayudante en el grupo de Sistemas Inteligentes, desarrollando algoritmos de clasificación para datos no balanceados.
+\end{itemize}
+\textbf{Cursos}: Aprendizaje Automático Avanzado, Big Data y Computación Distribuida, Visualización de Datos, Estadística Bayesiana, Deep Learning, Minería de Datos}
+
+\cventry{sept 2010–jun 2014}
+        {Licenciatura, Ingeniería Informática, Puntuación: 8,7}
+        {Universidad Carlos III de Madrid}
+        {\url{https://www.uc3m.es/}}
+        {}
+        {\begin{itemize}
+\item Formación integral en ingeniería del software, sistemas operativos y arquitectura de computadores.
+\item Realicé prácticas en empresa en el departamento de inteligencia de negocio de una consultora tecnológica.
+\end{itemize}
+\textbf{Cursos}: Estructuras de Datos y Algoritmos, Bases de Datos, Ingeniería del Software, Redes de Computadores}
+\section{Experiencia laboral}
+
+\cventry{mar 2020 hasta la fecha}
+        {Científico de Datos Senior}
+        {TechNova Analytics}
+        {\url{https://www.technova-analytics.es}}
+        {}
+        {\begin{itemize}
+\item Lidero el diseño y despliegue de modelos predictivos de fraude en tiempo real, logrando reducir las pérdidas por fraude en un 23 \% en el primer año.
+\item Desarrollo pipelines de datos escalables en AWS (S3, Glue, SageMaker) y orquestación con Apache Airflow.
+\item Impulso la adopción de MLOps y buenas prácticas de reproducibilidad, monitorización y gobernanza de modelos.
+\item Coordino un equipo de 4 científicos de datos y colaboro con ingenieros de software y analistas de negocio para priorizar casos de uso de alto impacto.
+\item Presento resultados ejecutivos periódicos al comité de dirección y asesoro en la definición de la estrategia de datos de la compañía.
+\end{itemize}
+\textbf{Palabras clave}: Machine Learning, AWS, MLOps, Fraude, Liderazgo}
+
+\cventry{sept 2016–feb 2020}
+        {Analista de Datos / Científico de Datos Junior}
+        {Grupo Financiero Íbero}
+        {\url{https://www.grupoibero.es}}
+        {}
+        {\begin{itemize}
+\item Construí modelos de segmentación de clientes mediante clustering (K-means, DBSCAN) para campañas de marketing personalizadas, incrementando la tasa de conversión en un 15 \%.
+\item Automatizé informes de negocio con Python y SQL, reduciendo el tiempo de generación de reportes de 3 días a 2 horas.
+\item Implementé sistemas de recomendación basados en filtrado colaborativo para la banca online.
+\item Participé en la migración de un data warehouse on-premise a Google BigQuery.
+\end{itemize}
+\textbf{Palabras clave}: Python, SQL, Clustering, BigQuery, Segmentación}
+
+\cventry{jul 2014–ago 2016}
+        {Ingeniero de Datos}
+        {Consultora Ábaco Digital}
+        {\url{https://www.abacodigital.es}}
+        {}
+        {\begin{itemize}
+\item Diseñé y mantuve procesos ETL para la integración de datos de múltiples fuentes en entornos Hadoop y Spark.
+\item Desarrollé dashboards en Tableau y Power BI para monitorizar KPIs de clientes del sector retail.
+\item Optimicé consultas SQL y modelos dimensionales para acelerar el acceso a datos analíticos.
+\end{itemize}
+\textbf{Palabras clave}: ETL, Hadoop, Spark, Tableau, SQL}
+\section{Idiomas}
+
+\cvline{Español}{Competencia nativa o bilingüe \hfill \textbf{Palabras clave}: Lengua materna}
+\cvline{Inglés}{Competencia profesional plena \hfill \textbf{Palabras clave}: TOEFL 110, Experiencia internacional}
+\section{Competencias}
+
+\cvline{Aprendizaje Automático}{Experto \hfill \textbf{Palabras clave}: Python, Scikit-learn, TensorFlow, PyTorch, XGBoost, NLP}
+\cvline{Ingeniería de Datos}{Avanzado \hfill \textbf{Palabras clave}: SQL, Apache Spark, Hadoop, Airflow, dbt}
+\cvline{Visualización de Datos}{Avanzado \hfill \textbf{Palabras clave}: Tableau, Power BI, Matplotlib, ggplot2, Looker}
+\section{Premios}
+
+\cventry{nov 2021}
+        {Asociación Española de Inteligencia Artificial (AEPIA)}
+        {Premio Nacional de Inteligencia Artificial Aplicada}
+        {}
+        {}
+        {Reconocimiento al proyecto "Detección temprana de enfermedades cardiovasculares mediante deep learning", desarrollado en colaboración con el Hospital Universitario de La Paz.}
+
+\cventry{jun 2016}
+        {Universidad Politécnica de Madrid}
+        {Mejor Comunicación en el Congreso de Ciencia de Datos}
+        {}
+        {}
+        {Premio al trabajo fin de máster por su contribución a la predicción de series temporales financieras con modelos híbridos.}
+\section{Certificados}
+
+\cventry{mar 2022}
+        {Amazon Web Services}
+        {AWS Certified Machine Learning - Specialty}
+        {\url{https://aws.amazon.com/es/certification/}}
+        {}
+        {}
+
+\cventry{oct 2020}
+        {Google Cloud}
+        {Professional Data Engineer}
+        {\url{https://cloud.google.com/certification}}
+        {}
+        {}
+\section{Publicaciones}
+
+\cventry{abr 2022}
+        {Técnicas de ensemble learning para la detección de fraude en seguros}
+        {Revista Iberoamericana de Inteligencia Artificial}
+        {\url{https://www.iberamia.org/revista}}
+        {}
+        {\begin{itemize}
+\item Propone un sistema híbrido basado en Random Forest, Gradient Boosting y redes neuronales para identificar patrones de fraude.
+\item El modelo alcanza una AUC-ROC de 0,97 sobre un conjunto de datos real del sector asegurador.
+\item Analiza la interpretabilidad de los modelos mediante SHAP para facilitar su adopción en entornos regulados.
+\end{itemize}}
+\section{Referencias}
+
+\cventry{\emaillink[lucia.fernandez@technova-analytics.es]{lucia.fernandez@technova-analytics.es}}
+        {Directora de Data Science en TechNova Analytics}
+        {Dra. Lucía Fernández}
+        {+34 655 123 987}
+        {}
+        {Carlos es un profesional excepcional, con una gran capacidad para traducir problemas de negocio en soluciones analíticas. Su liderazgo técnico y visión estratégica han sido clave para el éxito de nuestro equipo.}
+\section{Proyectos}
+
+\cventry{ene 2023–jun 2023}
+        {Sistema de PLN basado en Transformers para clasificar noticias en español como verdaderas o falsas.}
+        {Detección de noticias falsas en redes sociales}
+        {\url{https://github.com/carlosmendoza/fake-news-detector}}
+        {}
+        {\begin{itemize}
+\item Fine-tuning de modelos BERT y RoBERTa sobre un corpus de noticias etiquetadas en español.
+\item Desarrollo de una API REST con FastAPI y despliegue en un contenedor Docker en Google Cloud Run.
+\item Publicación de los notebooks y el dataset procesado en GitHub como recurso educativo.
+\end{itemize}
+\textbf{Palabras clave}: NLP, Transformers, FastAPI, Docker}
+
+\cventry{mar 2023–jul 2023}
+        {Dashboard interactivo construido con Streamlit para visualizar KPIs financieros y operativos de pequeñas empresas.}
+        {Cuadro de mando integral para pymes}
+        {\url{https://github.com/carlosmendoza/dashboard-pymes}}
+        {}
+        {\begin{itemize}
+\item Permite a los usuarios sin perfil técnico explorar sus datos de ventas, gastos y rentabilidad de forma intuitiva.
+\item Incluye módulos de predicción de tesorería mediante Prophet y análisis de desviaciones.
+\end{itemize}
+\textbf{Palabras clave}: Streamlit, Prophet, Dashboard, KPI}
+\section{Intereses}
+
+\cvline{Ajedrez}{Competiciones locales, Táctica}
+\cvline{Senderismo}{Sierra de Guadarrama, Fotografía de naturaleza}
+\cvline{Música}{Piano, Jazz}
+\section{Voluntariado}
+
+\cventry{may 2019–dic 2022}
+        {Voluntario Científico de Datos}
+        {Data Science for Social Good España}
+        {\url{https://www.datascienceforsocialgood.es}}
+        {}
+        {\begin{itemize}
+\item Colaboré con ONG en el análisis de datos socioeconómicos para optimizar la distribución de ayudas alimentarias.
+\item Desarrollé modelos de predicción de desempleo a nivel comarcal para orientar políticas públicas locales.
+\item Impartí talleres introductorios de Python y visualización de datos a estudiantes de secundaria en zonas rurales.
+\end{itemize}}
+
+\end{document}
