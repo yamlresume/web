@@ -1,11 +1,10 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import { GalleryList } from './GalleryList'
 
 describe('GalleryList', () => {
-  it('renders hero and the three showcase sections', () => {
-    render(<GalleryList items={[]} language="en" />)
+  it('renders the hero and three showcase sections', () => {
+    render(<GalleryList language="en" />)
 
     expect(
       screen.getByRole('heading', { name: /Pick a template/ })
@@ -21,10 +20,9 @@ describe('GalleryList', () => {
     ).toBeInTheDocument()
   })
 
-  it('links cards to category-specific detail routes', () => {
-    render(<GalleryList items={[]} language="en" />)
+  it('links cards to category-specific routes', () => {
+    render(<GalleryList language="en" />)
 
-    expect(screen.getByText(/^\d+ resumes$/)).toBeInTheDocument()
     const calmTemplateLink = screen
       .getAllByRole('link', { name: /Calm/ })
       .find(
@@ -42,37 +40,13 @@ describe('GalleryList', () => {
     ).toHaveAttribute('href', '/gallery/positions/software-engineer/en')
   })
 
-  it('filters positions by search query', async () => {
-    const user = userEvent.setup()
-    render(<GalleryList items={[]} language="en" />)
+  it('links the positions showcase to the full catalog', () => {
+    render(<GalleryList language="en" />)
 
-    await user.type(screen.getByLabelText('Search resumes...'), 'designer')
-
-    expect(
-      screen.queryByRole('link', { name: /Software Engineer/ })
-    ).not.toBeInTheDocument()
-    expect(
-      screen.getByRole('link', { name: /UX Designer/ })
-    ).toBeInTheDocument()
-  })
-
-  it('shows empty state with a working clear button when nothing matches', async () => {
-    const user = userEvent.setup()
-    render(<GalleryList items={[]} language="en" />)
-
-    await user.type(screen.getByLabelText('Search resumes...'), 'no-match')
-
-    expect(
-      screen.getByText('No resumes match your filters.')
-    ).toBeInTheDocument()
-
-    await user.click(screen.getByRole('button', { name: 'Clear filters' }))
-
-    expect(
-      screen.queryByText('No resumes match your filters.')
-    ).not.toBeInTheDocument()
-    expect(
-      screen.getByRole('link', { name: /Software Engineer/ })
-    ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Browse all/ })).toHaveAttribute(
+      'href',
+      '/gallery/positions'
+    )
+    expect(screen.queryByLabelText('Search resumes...')).not.toBeInTheDocument()
   })
 })

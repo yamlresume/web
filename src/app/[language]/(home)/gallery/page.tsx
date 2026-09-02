@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { defaultLanguage, type Language, languages } from '@/i18n'
-import { getGalleryItems } from '@/lib/gallery'
 import { GalleryList } from './components'
 
 export const revalidate = false
@@ -11,9 +10,7 @@ export default async function GalleryPage({
   params: Promise<{ language: string }>
 }) {
   const { language } = await params
-  const items = getGalleryItems()
-
-  return <GalleryList items={items} language={language as Language} />
+  return <GalleryList language={language as Language} />
 }
 
 export async function generateMetadata({
