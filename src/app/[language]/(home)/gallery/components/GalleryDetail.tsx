@@ -12,6 +12,7 @@ import { DownloadFormatsCard } from './DownloadFormatsCard'
 import { ExampleLanguageAlternatives } from './ExampleLanguageAlternatives'
 import { GalleryBreadcrumb } from './GalleryBreadcrumb'
 import { GalleryExploreMore } from './GalleryExploreMore'
+import { InitializeExampleCard } from './InitializeExampleCard'
 import { PreviewTabs } from './PreviewTabs'
 import { ResumeActions } from './ResumeActions'
 import { ResumeMeta } from './ResumeMeta'
@@ -27,6 +28,8 @@ interface GalleryDetailProps {
   downloads?: GalleryDownload[]
   highlightedTemplate?: string
   currentTemplate?: TemplateShowcase
+  initializeCommand?: string
+  highlightedCommand?: HighlightedYaml
 }
 
 export function GalleryDetail({
@@ -46,6 +49,8 @@ export function GalleryDetail({
   ],
   highlightedTemplate,
   currentTemplate,
+  initializeCommand,
+  highlightedCommand,
 }: GalleryDetailProps) {
   const messages = getGalleryDetailMessages(language)
 
@@ -105,6 +110,14 @@ export function GalleryDetail({
                 currentTemplate={currentTemplate}
               />
               <DownloadFormatsCard downloads={downloads} messages={messages} />
+              {initializeCommand && highlightedCommand && (
+                <InitializeExampleCard
+                  command={initializeCommand}
+                  highlightedCommand={highlightedCommand}
+                  messages={messages.initializeExample}
+                  copyLabel={messages.actions.copy}
+                />
+              )}
             </>
           }
         />

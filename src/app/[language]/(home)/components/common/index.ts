@@ -1,4 +1,5 @@
 export { Card } from './Card'
+export { CommandBlock } from './CommandBlock'
 export {
   CommandLinkCard,
   type CommandLinkCardProps,

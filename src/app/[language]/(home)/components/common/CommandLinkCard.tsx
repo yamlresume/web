@@ -1,63 +1,13 @@
 'use client'
 
-import {
-  IconArrowUpRight,
-  IconCheck,
-  IconCopy,
-  type Icon as TablerIcon,
-} from '@tabler/icons-react'
+import { IconArrowUpRight, type Icon as TablerIcon } from '@tabler/icons-react'
 import clsx from 'clsx'
-import { createElement, type MouseEvent, useState } from 'react'
+import { createElement } from 'react'
 import { Card } from './Card'
+import { CommandBlock } from './CommandBlock'
 import { Icon } from './Icon'
 
 const CARD_STYLES = clsx('p-6')
-
-const CODE_BLOCK_CONTAINER_STYLES = clsx(
-  'group',
-  'relative',
-  'z-10',
-  'w-full',
-  'flex',
-  'items-center',
-  'gap-2',
-  'border',
-  'border-fd-foreground/10',
-  'bg-fd-muted/50',
-  'px-4',
-  'py-3',
-  'transition-all',
-  'duration-300',
-  'hover:border-fd-foreground/20',
-  'hover:shadow-lg',
-  'hover:-translate-y-0.5'
-)
-
-const COPY_BUTTON_STYLES = clsx(
-  'flex',
-  'h-8',
-  'items-center',
-  'justify-center',
-  'transition-all',
-  'duration-200',
-  'hover:bg-fd-foreground/5',
-  'focus:outline-none',
-  'cursor-pointer'
-)
-
-const ICON_CONTAINER_STYLES = clsx(
-  'flex',
-  'h-12',
-  'w-12',
-  'shrink-0',
-  'items-center',
-  'justify-center',
-  'bg-fd-background',
-  'text-fd-foreground',
-  'shadow-sm'
-)
-
-const HIGHLIGHT_REGEX = /("[^"]*"|'[^']*'|-[^\s]+|\$[^\s]+|[^\s]+)/g
 
 export interface CommandLinkCardProps {
   title: string
@@ -70,89 +20,17 @@ export interface CommandLinkCardProps {
   className?: string
 }
 
-function CommandHighlighter({ command }: { command: string }) {
-  const matches = command.match(HIGHLIGHT_REGEX) || []
-
-  return (
-    <>
-      {matches.map((part, index) => {
-        let colorClass = 'text-fd-foreground'
-
-        if (
-          [
-            'yamlresume',
-            'npx',
-            'npm',
-            'brew',
-            'docker',
-            'curl',
-            'git',
-            'ls',
-          ].includes(part)
-        ) {
-          colorClass = 'text-blue-500'
-        } else if (part.startsWith('-')) {
-          colorClass = 'text-emerald-500'
-        } else if (part.startsWith('"') || part.startsWith("'")) {
-          colorClass = 'text-emerald-500'
-        }
-
-        return (
-          // biome-ignore lint/suspicious/noArrayIndexKey: command tokens are static and order-stable
-          <span key={`${index}-${part}`} className={colorClass}>
-            {part}
-            {index < matches.length - 1 ? ' ' : ''}
-          </span>
-        )
-      })}
-    </>
-  )
-}
-
-function CommandBlock({
-  command,
-  copyLabel,
-}: {
-  command: string
-  copyLabel: string
-}) {
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = async (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-    await navigator.clipboard.writeText(command)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  return (
-    <div className="flex justify-center mb-0">
-      <div className={CODE_BLOCK_CONTAINER_STYLES}>
-        <div className="flex-1 font-mono text-sm">
-          <span className="select-none text-red-500">$&nbsp;</span>
-          <CommandHighlighter command={command} />
-        </div>
-        <button
-          type="button"
-          onClick={handleCopy}
-          className={COPY_BUTTON_STYLES}
-          aria-label={copyLabel}
-        >
-          {copied ? (
-            <Icon icon={IconCheck} size={16} className="text-green-500" />
-          ) : (
-            <Icon
-              icon={IconCopy}
-              size={16}
-              className="text-fd-muted-foreground"
-            />
-          )}
-        </button>
-      </div>
-    </div>
-  )
-}
+const ICON_CONTAINER_STYLES = clsx(
+  'flex',
+  'h-12',
+  'w-12',
+  'shrink-0',
+  'items-center',
+  'justify-center',
+  'bg-fd-background',
+  'text-fd-foreground',
+  'shadow-sm'
+)
 
 export function CommandLinkCard({
   title,

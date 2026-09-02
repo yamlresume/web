@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import {
   getExampleGalleryPath,
+  getExampleInitializeCommand,
+  getExampleInitializeSnippet,
   getGalleryDetailMetadata,
   getLanguageGalleryPath,
   getTemplateGalleryPath,
@@ -17,6 +19,17 @@ describe('galleryRoutes', () => {
     expect(getLanguageGalleryPath('zh-hans')).toBe('/gallery/languages/zh-hans')
     expect(getExampleGalleryPath('software-engineer', 'ja')).toBe(
       '/gallery/examples/software-engineer/ja'
+    )
+    expect(getExampleInitializeCommand('software-engineer', 'ja')).toBe(
+      'yamlresume new --sample software-engineer --language ja my-resume.yml'
+    )
+    expect(getExampleInitializeSnippet('software-engineer', 'ja')).toBe(
+      [
+        'yamlresume new \\',
+        '  --sample software-engineer \\',
+        '  --language ja \\',
+        '  my-resume.yml',
+      ].join('\n')
     )
   })
 

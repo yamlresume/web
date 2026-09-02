@@ -39,6 +39,10 @@ export interface GalleryDetailMessages {
     exitFullscreen: string
   }
   renderedFor: string
+  initializeExample: {
+    title: string
+    description: string
+  }
   otherLanguages: {
     title: string
     description: string
@@ -85,6 +89,11 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: 'Exit fullscreen',
     },
     renderedFor: 'Rendered for {position} in {language}.',
+    initializeExample: {
+      title: 'Start with this example',
+      description:
+        'Initialize the same resume locally with the YAMLResume CLI.',
+    },
     otherLanguages: {
       title: 'Available in other languages',
       description: 'View this resume example localized for other markets.',
@@ -129,6 +138,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: 'Salir de pantalla completa',
     },
     renderedFor: 'Generado para {position} en {language}.',
+    initializeExample: {
+      title: 'Empieza con este ejemplo',
+      description: 'Inicializa el mismo currículum con la CLI de YAMLResume.',
+    },
     otherLanguages: {
       title: 'Disponible en otros idiomas',
       description: 'Consulta este currículum adaptado a otros mercados.',
@@ -173,6 +186,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: 'Quitter le plein écran',
     },
     renderedFor: 'Généré pour {position} en {language}.',
+    initializeExample: {
+      title: 'Commencer avec cet exemple',
+      description: 'Initialisez le même CV avec la CLI YAMLResume.',
+    },
     otherLanguages: {
       title: 'Disponible dans d’autres langues',
       description: 'Consultez ce CV adapté à d’autres marchés.',
@@ -217,6 +234,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: 'Sair do ecrã inteiro',
     },
     renderedFor: 'Gerado para {position} em {language}.',
+    initializeExample: {
+      title: 'Comece com este exemplo',
+      description: 'Inicialize o mesmo currículo com a CLI do YAMLResume.',
+    },
     otherLanguages: {
       title: 'Disponível noutros idiomas',
       description: 'Veja este currículo adaptado a outros mercados.',
@@ -261,6 +282,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: '全画面表示を終了',
     },
     renderedFor: '{position}（{language}）向けに生成。',
+    initializeExample: {
+      title: 'この例から始める',
+      description: 'YAMLResume CLIで同じ履歴書をローカルに作成します。',
+    },
     otherLanguages: {
       title: '他の言語でも利用できます',
       description: '他の市場向けにローカライズされた履歴書を表示します。',
@@ -305,6 +330,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: '退出全屏',
     },
     renderedFor: '为 {language} 的 {position} 生成。',
+    initializeExample: {
+      title: '从此示例开始',
+      description: '使用 YAMLResume CLI 在本地初始化同一份简历。',
+    },
     otherLanguages: {
       title: '其他语言版本',
       description: '查看针对其他市场本地化的职位简历。',
@@ -349,6 +378,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: '離開全螢幕',
     },
     renderedFor: '為 {language} 的 {position} 產生。',
+    initializeExample: {
+      title: '從此範例開始',
+      description: '使用 YAMLResume CLI 在本機初始化同一份履歷。',
+    },
     otherLanguages: {
       title: '其他語言版本',
       description: '查看針對其他市場在地化的職位履歷。',
@@ -393,6 +426,10 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
       exitFullscreen: 'Keluar dari layar penuh',
     },
     renderedFor: 'Dibuat untuk {position} dalam {language}.',
+    initializeExample: {
+      title: 'Mulai dengan contoh ini',
+      description: 'Inisialisasi resume yang sama dengan CLI YAMLResume.',
+    },
     otherLanguages: {
       title: 'Tersedia dalam bahasa lain',
       description: 'Lihat resume posisi ini yang dilokalkan untuk pasar lain.',

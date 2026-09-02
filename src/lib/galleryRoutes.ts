@@ -122,6 +122,25 @@ export function getLanguageGalleryPath(resumeLanguage: LocaleLanguage): string {
   return `/gallery/languages/${resumeLanguage}`
 }
 
+export function getExampleInitializeCommand(
+  sampleId: string,
+  resumeLanguage: LocaleLanguage
+): string {
+  return `yamlresume new --sample ${sampleId} --language ${resumeLanguage} my-resume.yml`
+}
+
+export function getExampleInitializeSnippet(
+  sampleId: string,
+  resumeLanguage: LocaleLanguage
+): string {
+  return [
+    'yamlresume new \\',
+    `  --sample ${sampleId} \\`,
+    `  --language ${resumeLanguage} \\`,
+    '  my-resume.yml',
+  ].join('\n')
+}
+
 export function getExampleGalleryPath(
   sampleId: string,
   resumeLanguage: LocaleLanguage

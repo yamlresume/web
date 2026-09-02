@@ -1,5 +1,10 @@
 import { getGalleryMessages, type Language } from '@/i18n'
-import type { ResolvedGalleryDetail as ResolvedGalleryDetailModel } from '@/lib/galleryRoutes'
+import {
+  getExampleInitializeCommand,
+  getExampleInitializeSnippet,
+  type ResolvedGalleryDetail as ResolvedGalleryDetailModel,
+} from '@/lib/galleryRoutes'
+import { highlightShell } from '@/lib/highlightShell'
 import { highlightYaml } from '@/lib/highlightYaml'
 import { GalleryDetail } from './GalleryDetail'
 import {
@@ -16,7 +21,24 @@ export async function ResolvedGalleryDetail({
   detail,
   language,
 }: ResolvedGalleryDetailProps) {
-  const highlightedYaml = await highlightYaml(detail.yamlContent)
+  const initializeCommand =
+    detail.target.type === 'example'
+      ? getExampleInitializeCommand(
+          detail.target.sampleId,
+          detail.target.resumeLanguage
+        )
+      : undefined
+  const initializeSnippet =
+    detail.target.type === 'example'
+      ? getExampleInitializeSnippet(
+          detail.target.sampleId,
+          detail.target.resumeLanguage
+        )
+      : undefined
+  const [highlightedYaml, highlightedCommand] = await Promise.all([
+    highlightYaml(detail.yamlContent),
+    initializeSnippet ? highlightShell(initializeSnippet) : undefined,
+  ])
 
   const category =
     detail.target.type === 'template'
@@ -49,6 +71,8 @@ export async function ResolvedGalleryDetail({
         downloads={detail.downloads}
         highlightedTemplate={detail.currentTemplate?.template}
         currentTemplate={detail.currentTemplate}
+        initializeCommand={initializeCommand}
+        highlightedCommand={highlightedCommand}
       />
     </>
   )

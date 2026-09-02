@@ -75,6 +75,73 @@ describe('GalleryDetail', () => {
     expect(screen.queryByText('Download rendered:')).not.toBeInTheDocument()
   })
 
+  it('renders the example initializer as the third sidebar card', async () => {
+    const user = userEvent.setup()
+    const command =
+      'yamlresume new --sample software-engineer --language en my-resume.yml'
+    const snippet = [
+      'yamlresume new \\',
+      '  --sample software-engineer \\',
+      '  --language en \\',
+      '  my-resume.yml',
+    ].join('\n')
+    const { container } = render(
+      <GalleryDetail
+        item={item}
+        language="en"
+        target={exampleTarget}
+        initializeCommand={command}
+        highlightedCommand={[
+          {
+            id: 'line-0',
+            tokens: [
+              {
+                id: 'token-0',
+                content: snippet,
+                color: '#79c0ff',
+              },
+            ],
+          },
+        ]}
+      />
+    )
+
+    const initializer = screen.getByRole('heading', {
+      name: 'Start with this example',
+    })
+    const sidebar = initializer.closest('aside')
+    const headings = sidebar?.querySelectorAll('h2') ?? []
+
+    expect(headings).toHaveLength(3)
+    expect(headings[2]).toBe(initializer)
+    expect(
+      screen.getByText(
+        'Initialize the same resume locally with the YAMLResume CLI.'
+      )
+    ).toBeInTheDocument()
+    const code = container.querySelector('code')
+    const prompt = code?.querySelector('.select-none')
+    const highlightedToken = prompt?.nextElementSibling
+    expect(code?.textContent).toContain(snippet)
+    expect(prompt).toHaveTextContent('$')
+    expect(prompt).toHaveClass('text-red-500')
+    expect(highlightedToken).toHaveStyle({ color: '#79c0ff' })
+
+    const copyButton = screen.getByRole('button', { name: 'Copy' })
+    await user.click(copyButton)
+    expect(await navigator.clipboard.readText()).toBe(command)
+    expect(await navigator.clipboard.readText()).not.toContain('$')
+    expect(copyButton.querySelector('svg')).toHaveClass('text-green-500')
+  })
+
+  it('does not render the initializer without an example command', () => {
+    render(<GalleryDetail item={item} language="en" />)
+
+    expect(
+      screen.queryByRole('heading', { name: 'Start with this example' })
+    ).not.toBeInTheDocument()
+  })
+
   it('renders the WebP preview image by default', () => {
     render(<GalleryDetail item={item} language="en" />)
 
