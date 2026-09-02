@@ -1,4 +1,8 @@
 export { defaultLanguage, i18nConfig, type Language, languages } from './config'
+export {
+  type GalleryDetailMessages,
+  getGalleryDetailMessages,
+} from './galleryDetail'
 export { useTranslations } from './hooks'
 export { getTranslations } from './translations'
 export { getLocalizedUrl } from './url'
