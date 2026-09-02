@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import yaml from 'yaml'
 import {
   getExampleGalleryPath,
   getExampleInitializeCommand,
@@ -6,10 +7,16 @@ import {
   getGalleryDetailMetadata,
   getLanguageGalleryPath,
   getTemplateGalleryPath,
+  type ResolvedGalleryDetail,
   resolveExampleGalleryDetail,
   resolveLanguageGalleryDetail,
   resolveTemplateGalleryDetail,
 } from './galleryRoutes'
+
+function getYamlContent(detail?: ResolvedGalleryDetail): string {
+  expect(detail?.yamlContent).toBeDefined()
+  return detail?.yamlContent ?? ''
+}
 
 describe('galleryRoutes', () => {
   it('builds category-specific gallery paths', () => {
@@ -42,7 +49,15 @@ describe('galleryRoutes', () => {
       templateId: 'calm',
     })
     expect(detail?.currentTemplate?.name).toBe('Calm')
-    expect(detail?.yamlContent).toContain('template: calm')
+    expect(detail?.yamlContent).toContain(
+      '# yaml-language-server: $schema=https://yamlresume.dev/schema.json'
+    )
+    const resume = yaml.parse(getYamlContent(detail))
+    expect(resume.layouts).toHaveLength(1)
+    expect(resume.layouts[0]).toMatchObject({
+      engine: 'html',
+      template: 'calm',
+    })
     expect(detail?.preview).toEqual({
       type: 'image',
       src: '/gallery/templates/html/calm/resume.webp',
@@ -124,6 +139,10 @@ describe('galleryRoutes', () => {
       type: 'image',
       src: detail?.item.thumbnailUrl,
     })
+    expect(detail?.yamlContent).toContain(
+      '# yaml-language-server: $schema=https://yamlresume.dev/schema.json'
+    )
+    expect(yaml.parse(getYamlContent(detail)).layouts).toHaveLength(4)
     expect(detail?.downloads).toHaveLength(6)
     expect(detail?.canonicalPath).toBe('/gallery/languages/ja')
   })
@@ -139,7 +158,10 @@ describe('galleryRoutes', () => {
     expect(detail?.item.htmlUrl).toBe(
       '/gallery/examples/software-engineer/ja/resume.html'
     )
-    expect(detail?.yamlContent).toContain('\nlayouts:\n')
+    expect(detail?.yamlContent).toContain(
+      '# yaml-language-server: $schema=https://yamlresume.dev/schema.json'
+    )
+    expect(yaml.parse(getYamlContent(detail)).layouts).toHaveLength(4)
     expect(detail?.item.thumbnailUrl).toBe(
       '/gallery/examples/software-engineer/ja/resume.webp'
     )

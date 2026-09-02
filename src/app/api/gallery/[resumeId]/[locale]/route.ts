@@ -46,9 +46,7 @@ export async function GET(request: Request, { params }: GalleryYamlRouteProps) {
       showcase.template
     )
   } else {
-    yamlContent = getSampleYamlContent(resumeId, locale, {
-      withLayouts: true,
-    })
+    yamlContent = getSampleYamlContent(resumeId, locale)
   }
 
   if (!yamlContent) {

@@ -1,5 +1,6 @@
 import {
   appendResumeLayouts,
+  injectResumeComments,
   type LayoutEngine,
   type LocaleLanguage,
 } from '@yamlresume/core'
@@ -187,42 +188,27 @@ export function getGalleryLanguages(): LocaleLanguage[] {
 }
 
 /**
- * Load the raw YAML resume content for a sample and locale.
+ * Load editable sample YAML with schema comments and all default layouts.
  *
  * Returns `undefined` if the sample or locale does not exist.
  */
 export function getSampleYamlContent(
   id: string,
-  locale: LocaleLanguage,
-  options: { withLayouts?: boolean } = {}
+  locale: LocaleLanguage
 ): string | undefined {
   try {
-    const content = getSampleResume(id, locale)
-
-    if (!options.withLayouts) {
-      return content
-    }
-
-    return injectResumeLayouts(content)
+    return getSampleResume(id, locale, {
+      withComments: true,
+      withLayouts: true,
+    })
   } catch {
     return undefined
   }
 }
 
 /**
- * Inject the default resume layouts into YAML source.
- *
- * `appendResumeLayouts` mutates the parsed document, so this helper keeps the
- * source returned to callers as a serialized YAML string.
- */
-function injectResumeLayouts(content: string): string {
-  const doc = yaml.parseDocument(content)
-  appendResumeLayouts(doc)
-  return doc.toString()
-}
-
-/**
- * Load sample YAML with a single, explicitly selected template layout.
+ * Load commented sample YAML with a single, explicitly selected template
+ * layout.
  */
 export function getTemplateYamlContent(
   id: string,
@@ -252,7 +238,7 @@ export function getTemplateYamlContent(
       },
     ])
 
-    return doc.toString()
+    return injectResumeComments(doc)
   } catch {
     return undefined
   }

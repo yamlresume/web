@@ -233,9 +233,7 @@ export function resolveExampleGalleryDetail(
   return {
     target: { type: 'example', sampleId, resumeLanguage },
     item,
-    yamlContent: getSampleYamlContent(sampleId, resumeLanguage, {
-      withLayouts: true,
-    }),
+    yamlContent: getSampleYamlContent(sampleId, resumeLanguage),
     preview: { type: 'image', src: item.thumbnailUrl },
     downloads: getItemDownloads(item),
     canonicalPath: getExampleGalleryPath(sampleId, resumeLanguage),

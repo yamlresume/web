@@ -7,7 +7,7 @@ function getContext(resumeId: string, locale: string) {
 }
 
 describe('gallery YAML API', () => {
-  it('returns the base sample YAML when no template is selected', async () => {
+  it('returns commented sample YAML with all layouts', async () => {
     const response = await GET(
       new Request('http://localhost/api/gallery/software-engineer/en'),
       getContext('software-engineer', 'en')
@@ -15,8 +15,12 @@ describe('gallery YAML API', () => {
 
     expect(response.status).toBe(200)
     const yamlContent = await response.text()
+    const resume = yaml.parse(yamlContent)
+    expect(yamlContent).toContain(
+      '# yaml-language-server: $schema=https://yamlresume.dev/schema.json'
+    )
     expect(yamlContent).toContain('Andy Dufresne')
-    expect(yamlContent).toContain('\nlayouts:\n')
+    expect(resume.layouts).toHaveLength(4)
   })
 
   it('returns YAML with only the selected template layout', async () => {
@@ -26,9 +30,13 @@ describe('gallery YAML API', () => {
       ),
       getContext('software-engineer', 'en')
     )
-    const resume = yaml.parse(await response.text())
+    const yamlContent = await response.text()
+    const resume = yaml.parse(yamlContent)
 
     expect(response.status).toBe(200)
+    expect(yamlContent).toContain(
+      '# yaml-language-server: $schema=https://yamlresume.dev/schema.json'
+    )
     expect(resume.layouts).toHaveLength(1)
     expect(resume.layouts[0]).toMatchObject({
       engine: 'latex',
