@@ -37,5 +37,16 @@ export async function generateMetadata({
         languages.map((language) => [language, getLocalizedUrl(path, language)])
       ),
     },
+    openGraph: {
+      title: copy.title,
+      description: copy.description,
+      images: `/api/og/gallery/languages/open-graph.png?language=${locale}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: copy.title,
+      description: copy.description,
+      images: `/api/og/gallery/languages/open-graph.png?language=${locale}`,
+    },
   }
 }

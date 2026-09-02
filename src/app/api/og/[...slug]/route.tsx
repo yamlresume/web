@@ -2,7 +2,12 @@ import { notFound } from 'next/navigation'
 import { ImageResponse } from 'next/og'
 
 import { OpenGraph } from '@/app/api/og/components'
-import { defaultLanguage } from '@/i18n'
+import {
+  defaultLanguage,
+  getGalleryMessages,
+  type Language,
+  languages,
+} from '@/i18n'
 import {
   blogSource,
   blogSourceFr,
@@ -34,6 +39,25 @@ export async function GET(
   // Determine if this is a blog or docs request
   const isBlog = slug[0] === 'blog'
   const isDocs = slug[0] === 'docs'
+  const isGallery = slug[0] === 'gallery'
+
+  if (isGallery) {
+    const locale = languages.includes(language as Language)
+      ? (language as Language)
+      : defaultLanguage
+    const category =
+      slug[1] === 'templates' ||
+      slug[1] === 'languages' ||
+      slug[1] === 'positions'
+        ? slug[1]
+        : 'gallery'
+    const title = getGalleryMessages(locale).metadata[category].title
+
+    return new ImageResponse(<OpenGraph title={title} />, {
+      width: 1200,
+      height: 630,
+    })
+  }
 
   if (!isBlog && !isDocs) {
     notFound()
@@ -125,7 +149,12 @@ export async function GET(
 }
 
 export function generateStaticParams() {
-  const params = []
+  const params = [
+    { slug: ['gallery', 'open-graph.png'] },
+    { slug: ['gallery', 'templates', 'open-graph.png'] },
+    { slug: ['gallery', 'languages', 'open-graph.png'] },
+    { slug: ['gallery', 'positions', 'open-graph.png'] },
+  ]
 
   // Generate params for blog (English only)
   const blogParams = blogSource.generateParams().map((page) => ({

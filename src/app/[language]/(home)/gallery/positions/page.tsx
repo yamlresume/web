@@ -66,5 +66,16 @@ export async function generateMetadata({
       canonical: canonicalPath,
       languages: languageAlternates,
     },
+    openGraph: {
+      title: copy.title,
+      description: copy.description,
+      images: `/api/og/gallery/positions/open-graph.png?language=${locale}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: copy.title,
+      description: copy.description,
+      images: `/api/og/gallery/positions/open-graph.png?language=${locale}`,
+    },
   }
 }

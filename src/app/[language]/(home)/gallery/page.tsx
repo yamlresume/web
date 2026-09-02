@@ -43,10 +43,14 @@ export async function generateMetadata({
       languages: languagesAlternates,
     },
     openGraph: {
+      title: copy.title,
+      description: copy.description,
       images: `/api/og/gallery/open-graph.png?language=${language}`,
     },
     twitter: {
       card: 'summary_large_image',
+      title: copy.title,
+      description: copy.description,
       images: `/api/og/gallery/open-graph.png?language=${language}`,
     },
   }
