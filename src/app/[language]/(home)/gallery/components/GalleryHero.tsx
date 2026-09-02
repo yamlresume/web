@@ -1,6 +1,10 @@
 'use client'
 
-import { IconBriefcase, IconLanguage, IconTemplate } from '@tabler/icons-react'
+import {
+  IconFileDescription,
+  IconLanguage,
+  IconTemplate,
+} from '@tabler/icons-react'
 import { getGalleryMessages, getLocalizedUrl, type Language } from '@/i18n'
 import { GalleryStatCard } from './GalleryStatCard'
 
@@ -39,7 +43,7 @@ export function GalleryHero({
       label: copy.hero.examples,
       href: getLocalizedUrl('/gallery/examples', language),
       command: 'yamlresume samples list',
-      icon: IconBriefcase,
+      icon: IconFileDescription,
     },
   ]
 

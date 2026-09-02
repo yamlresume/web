@@ -18,6 +18,9 @@ export interface GalleryMessages {
   categories: Record<Exclude<GalleryCategory, 'gallery'>, GalleryCategoryCopy>
   metadata: Record<GalleryCategory, GalleryCategoryCopy>
   browseAll: string
+  browseAllTemplates: string
+  browseAllLanguages: string
+  browseAllExamples: string
 }
 
 const messages: Record<Language, GalleryMessages> = {
@@ -67,6 +70,9 @@ const messages: Record<Language, GalleryMessages> = {
       },
     },
     browseAll: 'Browse all',
+    browseAllTemplates: 'Browse all templates',
+    browseAllLanguages: 'Browse all languages',
+    browseAllExamples: 'Browse all examples',
   },
   es: {
     hero: {
@@ -113,6 +119,9 @@ const messages: Record<Language, GalleryMessages> = {
       },
     },
     browseAll: 'Ver todos',
+    browseAllTemplates: 'Ver todas las plantillas',
+    browseAllLanguages: 'Ver todos los idiomas',
+    browseAllExamples: 'Ver todos los ejemplos',
   },
   fr: {
     hero: {
@@ -161,6 +170,9 @@ const messages: Record<Language, GalleryMessages> = {
       },
     },
     browseAll: 'Tout afficher',
+    browseAllTemplates: 'Voir tous les modèles',
+    browseAllLanguages: 'Voir toutes les langues',
+    browseAllExamples: 'Voir tous les exemples',
   },
   pt: {
     hero: {
@@ -207,6 +219,9 @@ const messages: Record<Language, GalleryMessages> = {
       },
     },
     browseAll: 'Ver todos',
+    browseAllTemplates: 'Ver todos os modelos',
+    browseAllLanguages: 'Ver todos os idiomas',
+    browseAllExamples: 'Ver todos os exemplos',
   },
   ja: {
     hero: {
@@ -252,6 +267,9 @@ const messages: Record<Language, GalleryMessages> = {
       },
     },
     browseAll: 'すべて見る',
+    browseAllTemplates: 'すべてのテンプレートを見る',
+    browseAllLanguages: 'すべての言語を見る',
+    browseAllExamples: 'すべての例を見る',
   },
   'zh-cn': {
     hero: {
@@ -297,6 +315,9 @@ const messages: Record<Language, GalleryMessages> = {
       },
     },
     browseAll: '查看全部',
+    browseAllTemplates: '查看全部模板',
+    browseAllLanguages: '查看全部语言',
+    browseAllExamples: '查看全部示例',
   },
   'zh-tw': {
     hero: {
@@ -342,6 +363,9 @@ const messages: Record<Language, GalleryMessages> = {
       },
     },
     browseAll: '查看全部',
+    browseAllTemplates: '查看全部範本',
+    browseAllLanguages: '查看全部語言',
+    browseAllExamples: '查看全部範例',
   },
   id: {
     hero: {
@@ -390,6 +414,9 @@ const messages: Record<Language, GalleryMessages> = {
       },
     },
     browseAll: 'Lihat semua',
+    browseAllTemplates: 'Lihat semua templat',
+    browseAllLanguages: 'Lihat semua bahasa',
+    browseAllExamples: 'Lihat semua contoh',
   },
 }
 

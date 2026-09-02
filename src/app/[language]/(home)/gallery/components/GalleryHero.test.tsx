@@ -24,10 +24,11 @@ describe('GalleryHero', () => {
       'href',
       '/gallery/languages'
     )
-    expect(screen.getByRole('link', { name: /5\+/ })).toHaveAttribute(
-      'href',
-      '/gallery/examples'
-    )
+    const examplesLink = screen.getByRole('link', { name: /5\+/ })
+    expect(examplesLink).toHaveAttribute('href', '/gallery/examples')
+    expect(
+      examplesLink.parentElement?.querySelector('.tabler-icon-file-description')
+    ).toBeInTheDocument()
     expect(
       screen.getByRole('button', {
         name: 'Copy yamlresume templates list',

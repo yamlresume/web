@@ -35,15 +35,44 @@ describe('GalleryList', () => {
     ).toHaveAttribute('href', '/gallery/examples/software-engineer/en')
   })
 
-  it('links the examples showcase to the full catalog', () => {
+  it('renders icon headings with dividers for all showcase sections', () => {
     render(<GalleryList language="en" />)
 
-    const browseLinks = screen.getAllByRole('link', { name: /Browse all/ })
-    expect(browseLinks.map((link) => link.getAttribute('href'))).toEqual([
-      '/gallery/templates',
-      '/gallery/languages',
-      '/gallery/examples',
-    ])
+    for (const title of ['Templates', 'Languages', 'Examples']) {
+      const heading = screen.getByRole('heading', { name: title })
+      const headingArea = heading.parentElement?.parentElement
+
+      expect(heading.parentElement?.querySelector('svg')).toBeInTheDocument()
+      expect(headingArea).toHaveClass('border-b')
+    }
+  })
+
+  it('places category-specific browse actions after the cards', () => {
+    render(<GalleryList language="en" />)
+
+    const actions = [
+      ['Browse all templates', '/gallery/templates'],
+      ['Browse all languages', '/gallery/languages'],
+      ['Browse all examples', '/gallery/examples'],
+    ] as const
+
+    for (const [label, href] of actions) {
+      const link = screen.getByRole('link', { name: label })
+      const section = link.closest('section')
+      const cards = section?.querySelectorAll('a.group.flex') ?? []
+
+      expect(link).toHaveAttribute('href', href)
+      expect(cards.length).toBeGreaterThan(0)
+      expect(
+        cards[cards.length - 1].compareDocumentPosition(link) &
+          Node.DOCUMENT_POSITION_FOLLOWING
+      ).toBeTruthy()
+    }
+  })
+
+  it('keeps filtering off the curated gallery overview', () => {
+    render(<GalleryList language="en" />)
+
     expect(screen.queryByLabelText('Search resumes...')).not.toBeInTheDocument()
   })
 })

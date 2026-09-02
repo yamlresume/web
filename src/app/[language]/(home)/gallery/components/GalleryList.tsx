@@ -1,7 +1,11 @@
 'use client'
 
+import {
+  IconFileDescription,
+  IconLanguage,
+  IconTemplate,
+} from '@tabler/icons-react'
 import clsx from 'clsx'
-import Link from 'next/link'
 import { useMemo } from 'react'
 import { getGalleryMessages, getLocalizedUrl, type Language } from '@/i18n'
 import {
@@ -79,15 +83,12 @@ export function GalleryList({ language }: GalleryListProps) {
         <GallerySection
           title={copy.categories.templates.title}
           description={copy.categories.templates.description}
+          icon={IconTemplate}
+          action={{
+            href: getLocalizedUrl('/gallery/templates', language),
+            label: copy.browseAllTemplates,
+          }}
         >
-          <div className="mb-6 flex justify-end">
-            <Link
-              href={getLocalizedUrl('/gallery/templates', language)}
-              className="font-medium text-fd-primary hover:underline"
-            >
-              {copy.browseAll} →
-            </Link>
-          </div>
           <div className={gridClasses}>
             {featuredTemplates.map((showcase) => (
               <GalleryTemplateCard
@@ -108,15 +109,12 @@ export function GalleryList({ language }: GalleryListProps) {
         <GallerySection
           title={copy.categories.languages.title}
           description={copy.categories.languages.description}
+          icon={IconLanguage}
+          action={{
+            href: getLocalizedUrl('/gallery/languages', language),
+            label: copy.browseAllLanguages,
+          }}
         >
-          <div className="mb-6 flex justify-end">
-            <Link
-              href={getLocalizedUrl('/gallery/languages', language)}
-              className="font-medium text-fd-primary hover:underline"
-            >
-              {copy.browseAll} →
-            </Link>
-          </div>
           <div className={gridClasses}>
             {featuredLanguages.map((showcase) => (
               <GalleryLanguageCard
@@ -134,15 +132,12 @@ export function GalleryList({ language }: GalleryListProps) {
         <GallerySection
           title={copy.categories.examples.title}
           description={copy.categories.examples.description}
+          icon={IconFileDescription}
+          action={{
+            href: getLocalizedUrl('/gallery/examples', language),
+            label: copy.browseAllExamples,
+          }}
         >
-          <div className="mb-6 flex justify-end">
-            <Link
-              href={getLocalizedUrl('/gallery/examples', language)}
-              className="font-medium text-fd-primary hover:underline"
-            >
-              {copy.browseAll} →
-            </Link>
-          </div>
           <div className={gridClasses}>
             {featuredExamples.map((item) => (
               <GalleryExampleCard
