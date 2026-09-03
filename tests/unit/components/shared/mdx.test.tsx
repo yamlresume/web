@@ -3,10 +3,11 @@ import { describe, expect, it } from 'vitest'
 import { getMDXComponents } from '@/components/mdx/mdx'
 
 describe('getMDXComponents', () => {
-  it('returns an object that includes Mermaid, img, and default components', () => {
+  it('returns an object that includes custom and default components', () => {
     const components = getMDXComponents()
 
     expect(components).toHaveProperty('Mermaid')
+    expect(components).toHaveProperty('YouTube')
     expect(components).toHaveProperty('img')
     expect(components).toHaveProperty('p')
   })
