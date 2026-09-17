@@ -8,7 +8,7 @@ export function Analytics() {
       <Script
         defer
         data-domain="yamlresume.dev"
-        src="https://plausible.ppresume.com/js/script.hash.outbound-links.js"
+        src="https://plausible.textlib.app/js/script.hash.outbound-links.js"
       />
       <Script id={id} strategy="afterInteractive">
         {

@@ -12,7 +12,7 @@ describe('Analytics', () => {
     const externalScript = scripts[0]
     expect(externalScript).toHaveAttribute(
       'src',
-      'https://plausible.ppresume.com/js/script.hash.outbound-links.js'
+      'https://plausible.textlib.app/js/script.hash.outbound-links.js'
     )
     expect(externalScript).toHaveAttribute('data-domain', 'yamlresume.dev')
     expect(externalScript).toHaveAttribute('defer')
