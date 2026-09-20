@@ -32,11 +32,17 @@ export interface LanguageShowcase {
   item: GalleryItem
 }
 
+let cachedLanguageShowcases: LanguageShowcase[] | undefined
+
 export function getLanguageShowcases(): LanguageShowcase[] {
+  if (cachedLanguageShowcases) {
+    return cachedLanguageShowcases
+  }
+
   const items = getGalleryItems()
   const locales = getGalleryLanguages()
 
-  return locales
+  cachedLanguageShowcases = locales
     .map((locale) => {
       const item = items.find((candidate) => candidate.language === locale)
       if (!item) {
@@ -50,6 +56,8 @@ export function getLanguageShowcases(): LanguageShowcase[] {
       }
     })
     .filter((showcase): showcase is LanguageShowcase => showcase !== null)
+
+  return cachedLanguageShowcases
 }
 
 export function getExampleShowcases(language: Language): GalleryItem[] {

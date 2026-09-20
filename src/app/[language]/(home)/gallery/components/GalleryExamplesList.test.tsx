@@ -10,7 +10,7 @@ describe('GalleryExamplesList', () => {
     render(<GalleryExamplesList items={getGalleryItems()} language="en" />)
 
     expect(screen.getAllByRole('heading', { name: 'Examples' })).toHaveLength(2)
-    expect(screen.getByText(/^5 resumes$/)).toBeInTheDocument()
+    expect(screen.getByText(/^10 resumes$/)).toBeInTheDocument()
     expect(
       screen.getAllByRole('link', { name: /Software Engineer/ })
     ).toHaveLength(1)
@@ -33,7 +33,7 @@ describe('GalleryExamplesList', () => {
       />
     )
 
-    expect(screen.getByText(/^5 resumes$/)).toBeInTheDocument()
+    expect(screen.getByText(/^10 resumes$/)).toBeInTheDocument()
     expect(
       screen.getByRole('link', { name: /ソフトウェアエンジニア/ })
     ).toHaveAttribute('href', '/gallery/examples/software-engineer/ja')

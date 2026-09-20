@@ -13,13 +13,25 @@ import {
 import yaml from 'yaml'
 import type { Language } from '@/i18n'
 
-function hasLatexLayout(content: string): boolean {
+const latexLayoutCache = new Map<string, boolean>()
+
+function hasLatexLayout(sampleId: string, locale: LocaleLanguage): boolean {
+  const cacheKey = `${sampleId}:${locale}`
+  const cached = latexLayoutCache.get(cacheKey)
+  if (cached !== undefined) {
+    return cached
+  }
+
+  const content = getSampleResume(sampleId, locale)
   const doc = yaml.parseDocument(content)
   appendResumeLayouts(doc)
   const parsed = doc.toJS() as {
     layouts?: { engine?: string }[]
   }
-  return parsed.layouts?.some((layout) => layout.engine === 'latex') ?? false
+  const result =
+    parsed.layouts?.some((layout) => layout.engine === 'latex') ?? false
+  latexLayoutCache.set(cacheKey, result)
+  return result
 }
 
 export interface GalleryItem {
@@ -91,7 +103,7 @@ function createGalleryItem(
   locale: LocaleLanguage
 ): GalleryItem {
   const i18n = sample.i18n[locale]
-  const latexEnabled = hasLatexLayout(getSampleResume(sample.id, locale))
+  const latexEnabled = hasLatexLayout(sample.id, locale)
 
   return {
     id: sample.id,
@@ -111,36 +123,61 @@ function createGalleryItem(
   }
 }
 
+let cachedGalleryItems: GalleryItem[] | undefined
+let cachedGalleryItemMap: Map<string, GalleryItem> | undefined
+
 /**
  * Return all gallery items across all samples and supported locale languages.
  */
 export function getGalleryItems(): GalleryItem[] {
+  if (cachedGalleryItems) {
+    return cachedGalleryItems
+  }
+
   const samples = listSampleResumes()
   const items: GalleryItem[] = []
+  const itemMap = new Map<string, GalleryItem>()
 
   for (const sample of samples) {
     for (const locale of sample.languages) {
-      items.push(createGalleryItem(sample, locale))
+      const item = createGalleryItem(sample, locale)
+      items.push(item)
+      itemMap.set(`${item.id}:${item.language}`, item)
     }
   }
 
+  cachedGalleryItemMap = itemMap
+  cachedGalleryItems = items
   return items
 }
+
+const languageItemsCache = new Map<Language, GalleryItem[]>()
 
 /**
  * Return gallery items for a specific web UI language, falling back to
  * English if the sample does not support the mapped locale.
  */
 export function getGalleryItemsByLanguage(language: Language): GalleryItem[] {
+  const cached = languageItemsCache.get(language)
+  if (cached) {
+    return cached
+  }
+
   const targetLocale = webLanguageToSampleLocale[language]
   const samples = listSampleResumes()
   const items: GalleryItem[] = []
 
   for (const sample of samples) {
     const locale = sample.languages.includes(targetLocale) ? targetLocale : 'en'
-    items.push(createGalleryItem(sample, locale))
+    const item = getGalleryItemByIdAndLocale(sample.id, locale)
+    if (item) {
+      items.push(item)
+    } else {
+      items.push(createGalleryItem(sample, locale))
+    }
   }
 
+  languageItemsCache.set(language, items)
   return items
 }
 
@@ -158,33 +195,60 @@ export function getGalleryItemByIdAndLocale(
   id: string,
   language: LocaleLanguage
 ): GalleryItem | undefined {
-  return getGalleryItems().find(
-    (item) => item.id === id && item.language === language
-  )
+  if (!cachedGalleryItemMap) {
+    getGalleryItems()
+  }
+  return cachedGalleryItemMap?.get(`${id}:${language}`)
+}
+
+let cachedCategories: string[] | undefined
+let cachedTags: string[] | undefined
+let cachedLanguages: LocaleLanguage[] | undefined
+
+/**
+ * Reset module-level gallery caches (useful for testing).
+ */
+export function clearGalleryCache(): void {
+  cachedGalleryItems = undefined
+  cachedGalleryItemMap = undefined
+  cachedCategories = undefined
+  cachedTags = undefined
+  cachedLanguages = undefined
+  latexLayoutCache.clear()
+  languageItemsCache.clear()
 }
 
 /**
  * Return all unique category values across samples.
  */
 export function getGalleryCategories(): string[] {
-  return listSampleResumeCategories()
+  if (!cachedCategories) {
+    cachedCategories = listSampleResumeCategories()
+  }
+  return cachedCategories
 }
 
 /**
  * Return all unique tag values across samples.
  */
 export function getGalleryTags(): string[] {
-  return listSampleResumeTags()
+  if (!cachedTags) {
+    cachedTags = listSampleResumeTags()
+  }
+  return cachedTags
 }
 
 /**
  * Return all unique locale languages across samples.
  */
 export function getGalleryLanguages(): LocaleLanguage[] {
-  const samples = listSampleResumes()
-  return Array.from(
-    new Set(samples.flatMap((sample) => sample.languages))
-  ).sort()
+  if (!cachedLanguages) {
+    const samples = listSampleResumes()
+    cachedLanguages = Array.from(
+      new Set(samples.flatMap((sample) => sample.languages))
+    ).sort()
+  }
+  return cachedLanguages
 }
 
 /**

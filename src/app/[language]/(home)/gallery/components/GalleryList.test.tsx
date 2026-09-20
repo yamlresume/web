@@ -30,9 +30,10 @@ describe('GalleryList', () => {
     expect(
       screen.getByRole('heading', { name: 'English' }).closest('a')
     ).toHaveAttribute('href', '/gallery/languages/en')
-    expect(
-      screen.getByRole('link', { name: /Software Engineer/ })
-    ).toHaveAttribute('href', '/gallery/examples/software-engineer/en')
+    expect(screen.getByRole('link', { name: /Data Analyst/ })).toHaveAttribute(
+      'href',
+      '/gallery/examples/data-analyst/en'
+    )
   })
 
   it('renders icon headings with dividers for all showcase sections', () => {
