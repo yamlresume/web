@@ -321,6 +321,20 @@ Définit les paramètres d'alias de section pour personnaliser les noms de secti
 | `aliases?` | `Record<SectionID, string>` | ⬜     | Alias personnalisés pour les noms de section.                      |
 | `order?`   | `OrderableSectionID[]`      | ⬜     | Ordre personnalisé pour les sections dans la sortie finale.        |
 
+##### Theme
+
+Définit les paramètres visuels du thème du CV, comme les couleurs d'accent.
+Le moteur markdown ignore l'option de thème.
+
+| Prop      | Type                                   | Requis | Description                                 |
+| --------- | -------------------------------------- | ------ | ------------------------------------------- |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜     | Définit les paramètres de couleur du thème. |
+
+L'option `colors.accent` définit la couleur d'accent des éléments mis en
+avant, comme les titres de sections, les filets, les liens et les étiquettes.
+Elle accepte un préréglage [`AccentColor`](#accentcolor) nommé ou une chaîne
+de couleur hexadécimale `#RRGGBB` arbitraire.
+
 #### HtmlLayout
 
 Configuration de mise en page HTML.
@@ -331,6 +345,7 @@ Configuration de mise en page HTML.
 | `advanced?`   | [`HtmlAdvanced`](#htmladvanced)       | ⬜     | Définit les options de configuration avancées. |
 | `sections?`   | [`Sections`](#sections)               | ⬜     | Configuration de sections.               |
 | `template?`   | [`HtmlTemplate`](#htmltemplate)       | ⬜     | Modèle sélectionné.                      |
+| `theme?`      | [`Theme`](#theme)                     | ⬜     | Paramètres visuels du thème.             |
 | `typography?` | [`HtmlTypography`](#htmltypographyschema) | ⬜     | Configuration typographique.             |
 
 ##### HtmlAdvanced
@@ -339,6 +354,7 @@ Définit les options de configuration avancées pour HTML.
 
 | Prop         | Type      | Requis | Description                                                  |
 | ------------ | --------- | ------ | ------------------------------------------------------------ |
+| `showAnchors?` | `boolean` | ⬜     | Indique s'il faut émettre des attributs de fragment `id` sur les sections et les entrées pour la navigation par ancres (par défaut : `true`). |
 | `showIcons?` | `boolean` | ⬜     | Indique s'il faut afficher les icônes pour les liens et les profils. |
 | `title?`     | `string`  | ⬜     | Titre personnalisé pour le document HTML.                    |
 | `footer?`    | `string`  | ⬜     | Pied de page personnalisé pour le document HTML.             |
@@ -366,6 +382,7 @@ Configuration de mise en page LaTeX.
 | `page?`       | [`LatexPage`](#latexpage)               | ⬜     | Définit les paramètres au niveau de la page.          |
 | `sections?`   | [`Sections`](#sections)                 | ⬜     | Définit les paramètres de personnalisation de section.|
 | `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜     | Définit le modèle sélectionné.                        |
+| `theme?`      | [`Theme`](#theme)                     | ⬜     | Paramètres visuels du thème.                          |
 | `typography?` | [`LatexTypography`](#latextypography)   | ⬜     | Définit les paramètres typographiques.                |
 
 ##### LatexAdvanced
@@ -419,6 +436,7 @@ Configuration de mise en page DOCX.
 | `page?`       | [`DocxPage`](#docxpage)               | ⬜     | Définit les paramètres au niveau de la page.          |
 | `sections?`   | [`Sections`](#sections)               | ⬜     | Définit les paramètres de personnalisation de section.|
 | `template?`   | [`DocxTemplate`](#docxtemplate)       | ⬜     | Définit le modèle sélectionné.                        |
+| `theme?`      | [`Theme`](#theme)                     | ⬜     | Paramètres visuels du thème.                          |
 | `typography?` | [`DocxTypography`](#docxtypography)   | ⬜     | Définit les paramètres typographiques.                |
 
 ##### DocxAdvanced
@@ -501,6 +519,24 @@ Un type union pour toutes les options de réseaux sociaux possibles.
 
 ### Enums de Mise en Page
 
+#### AccentColor
+
+Un type d'union pour tous les préréglages de couleur d'accent possibles,
+suivant la palette du schéma de couleurs de
+[moderncv](https://github.com/moderncv/moderncv).
+Une chaîne de couleur hexadécimale `#RRGGBB` arbitraire est également
+acceptée partout où un `AccentColor` est attendu.
+
+- `black` - `#000000`
+- `blue` - `#3873B3`
+- `burgundy` - `#980000`
+- `cerulean` - `#0081A7`
+- `green` - `#59B24D`
+- `grey` - `#737373`
+- `orange` - `#F28C26`
+- `purple` - `#8054CC`
+- `red` - `#F23333`
+
 #### DocxFontSize
 
 Un type union pour toutes les options de taille de police DOCX possibles.
@@ -541,6 +577,8 @@ Un type union pour toutes les options de modèles HTML possibles.
 Voir aussi : [modèles](/fr/docs/layouts/html/templates)
 
 - `calm`
+- `kami`
+- `vscode`
 
 #### LatexFontSize
 
@@ -580,6 +618,7 @@ Un type union pour toutes les options de modèles possibles.
 
 Voir aussi : [modèles](/fr/docs/layouts/latex/templates)
 
+- `jake`
 - `moderncv-banking`
 - `moderncv-casual`
 - `moderncv-classic`

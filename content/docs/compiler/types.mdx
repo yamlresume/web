@@ -321,6 +321,20 @@ Defines section alias settings for customizing section names.
 | `aliases?` | `Record<SectionID, string>` | ⬜       | Custom aliases for section names, overriding default translations. |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | Custom order for sections in the final output.                     |
 
+##### Theme
+
+Defines visual theme settings for the resume, such as accent colors. The
+markdown engine ignores the theme option.
+
+| Prop      | Type                                   | Required | Description                 |
+| --------- | -------------------------------------- | -------- | --------------------------- |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜       | Defines theme color settings. |
+
+The `colors.accent` option sets the accent color used for highlighted
+elements such as section titles, rules, links, and labels. It accepts a named
+[`AccentColor`](#accentcolor) preset or an arbitrary `#RRGGBB` hex color
+string.
+
 #### HtmlLayout
 
 HTML layout configuration.
@@ -331,15 +345,17 @@ HTML layout configuration.
 | `advanced?`   | [`HtmlAdvanced`](#htmladvanced)       | ⬜       | Defines advanced configuration options.  |
 | `sections?`   | [`Sections`](#sections)               | ⬜       | Defines section customization settings.  |
 | `template?`   | [`HtmlTemplate`](#htmltemplate)       | ⬜       | Defines the selected template.           |
+| `theme?`      | [`Theme`](#theme)                     | ⬜       | Defines visual theme settings for the resume. |
 | `typography?` | [`HtmlTypography`](#htmltypography)   | ⬜       | Defines typography settings for document formatting. |
 
 ##### HtmlAdvanced
 
 Defines advanced HTML configuration options.
 
-| Prop         | Type      | Required | Description                                          |
-| ------------ | --------- | -------- | ---------------------------------------------------- |
-| `showIcons?` | `boolean` | ⬜       | Whether to display icons for links and profiles.     |
+| Prop          | Type      | Required | Description                                          |
+| ------------- | --------- | -------- | ---------------------------------------------------- |
+| `showAnchors?`| `boolean` | ⬜       | Whether to emit fragment `id` attributes on sections and entries for anchor navigation (default: `true`). |
+| `showIcons?`  | `boolean` | ⬜       | Whether to display icons for links and profiles.     |
 | `title?`     | `string`  | ⬜       | Custom title for the HTML document.                  |
 | `footer?`    | `string`  | ⬜       | Custom footer for the HTML document.                 |
 | `description?`| `string` | ⬜       | Meta description for the HTML document.              |
@@ -366,6 +382,7 @@ LaTeX layout configuration.
 | `page?`       | [`LatexPage`](#latexpage)               | ⬜       | Defines page-level settings for document presentation.|
 | `sections?`   | [`Sections`](#sections)                 | ⬜       | Defines section customization settings.               |
 | `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜       | Defines the selected template.                        |
+| `theme?`      | [`Theme`](#theme)                       | ⬜       | Defines visual theme settings for the resume.         |
 | `typography?` | [`LatexTypography`](#latextypography)   | ⬜       | Defines typography settings for document formatting.  |
 
 ##### LatexAdvanced
@@ -419,6 +436,7 @@ DOCX layout configuration.
 | `page?`       | [`DocxPage`](#docxpage)               | ⬜       | Defines page-level settings for document presentation.|
 | `sections?`   | [`Sections`](#sections)               | ⬜       | Defines section customization settings.               |
 | `template?`   | [`DocxTemplate`](#docxtemplate)       | ⬜       | Defines the selected template.                        |
+| `theme?`      | [`Theme`](#theme)                     | ⬜       | Defines visual theme settings for the resume.         |
 | `typography?` | [`DocxTypography`](#docxtypography)   | ⬜       | Defines typography settings for document formatting.  |
 
 ##### DocxAdvanced
@@ -501,6 +519,23 @@ A union type for all possible social network options.
 
 ### Layout Enums
 
+#### AccentColor
+
+A union type for all possible accent color presets, following the
+[moderncv](https://github.com/moderncv/moderncv) color scheme palette.
+An arbitrary `#RRGGBB` hex color string is also accepted wherever an
+`AccentColor` is expected.
+
+- `black` - `#000000`
+- `blue` - `#3873B3`
+- `burgundy` - `#980000`
+- `cerulean` - `#0081A7`
+- `green` - `#59B24D`
+- `grey` - `#737373`
+- `orange` - `#F28C26`
+- `purple` - `#8054CC`
+- `red` - `#F23333`
+
 #### DocxFontSize
 
 A union type for all possible DOCX font size options.
@@ -541,6 +576,8 @@ A union type for all possible HTML template options.
 See also: [templates](/docs/layouts/html/templates)
 
 - `calm`
+- `kami`
+- `vscode`
 
 #### LatexFontSize
 
@@ -580,6 +617,7 @@ A union type for all possible LaTeX template options.
 
 See also: [templates](/docs/layouts/latex/templates)
 
+- `jake`
 - `moderncv-banking`
 - `moderncv-casual`
 - `moderncv-classic`

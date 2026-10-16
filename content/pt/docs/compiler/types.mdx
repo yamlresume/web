@@ -296,6 +296,20 @@ Define aliases de secções para personalizar nomes.
 | `aliases?` | `Record<SectionID, string>` | ⬜️          | Alias personalizados para nomes de secções.                        |
 | `order?`   | `OrderableSectionID[]`      | ⬜️          | Ordem personalizada para secções na saída final.                  |
 
+##### Theme
+
+Define as configurações visuais do tema do currículo, como as cores de
+destaque. O motor markdown ignora a opção de tema.
+
+| Prop      | Tipo                                   | Obrigatório | Descrição                                 |
+| --------- | -------------------------------------- | ----------- | ------------------------------------------- |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜️          | Define as configurações de cor do tema.     |
+
+A opção `colors.accent` define a cor de destaque dos elementos realçados,
+como títulos de secções, réguas, hiperligações e etiquetas. Aceita uma
+predefinição [`AccentColor`](#accentcolor) nomeada ou uma cadeia de cor
+hexadecimal `#RRGGBB` arbitrária.
+
 #### HtmlLayout
 
 Configuração de layout HTML.
@@ -306,6 +320,7 @@ Configuração de layout HTML.
 | `advanced?`   | [`HtmlAdvanced`](#htmladvanced)       | ⬜️          | Configuração avançada do layout.        |
 | `sections?`   | [`Sections`](#sections)               | ⬜️          | Configuração de secções.                |
 | `template?`   | [`HtmlTemplate`](#htmltemplate)       | ⬜️          | Modelo selecionado.                     |
+| `theme?`      | [`Theme`](#theme)                     | ⬜️          | Configurações visuais do tema.          |
 | `typography?` | [`HtmlTypography`](#htmltypography)   | ⬜️          | Configuração tipográfica.               |
 
 ##### HtmlAdvanced
@@ -314,6 +329,7 @@ Define opções de configuração avançada para HTML.
 
 | Prop         | Tipo      | Obrigatório | Descrição                                                |
 | ------------ | --------- | ------------ | ---------------------------------------------------------- |
+| `showAnchors?` | `boolean` | ⬜️           | Indica se são emitidos atributos de fragmento `id` nas secções e entradas para navegação por âncoras (predefinição: `true`). |
 | `showIcons?` | `boolean` | ⬜️          | Indica se devem ser mostrados ícones para hiperligações e perfis. |
 | `title?`     | `string`  | ⬜️          | Título personalizado para o documento HTML.              |
 | `footer?`    | `string`  | ⬜️          | Rodapé personalizado para o documento HTML.              |
@@ -341,6 +357,7 @@ Configuração de layout LaTeX.
 | `page?`       | [`LatexPage`](#latexpage)               | ⬜️          | Configuração ao nível de página. |
 | `sections?`   | [`Sections`](#sections)                 | ⬜️          | Configuração de secções.          |
 | `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜️          | Modelo selecionado.              |
+| `theme?`      | [`Theme`](#theme)                     | ⬜️          | Configurações visuais do tema.   |
 | `typography?` | [`LatexTypography`](#latextypography)   | ⬜️          | Configuração tipográfica.         |
 
 ##### LatexAdvanced
@@ -394,6 +411,7 @@ Configuração de layout DOCX.
 | `page?`       | [`DocxPage`](#docxpage)               | ⬜️          | Define opções ao nível de página para a apresentação do documento. |
 | `sections?`   | [`Sections`](#sections)               | ⬜️          | Define a configuração de personalização de secções.   |
 | `template?`   | [`DocxTemplate`](#docxtemplate)       | ⬜️          | Define o modelo selecionado.                          |
+| `theme?`      | [`Theme`](#theme)                     | ⬜️          | Configurações visuais do tema.                        |
 | `typography?` | [`DocxTypography`](#docxtypography)   | ⬜️          | Define opções tipográficas para o formato do documento. |
 
 ##### DocxAdvanced
@@ -476,6 +494,24 @@ Tipo união que inclui todas as possíveis opções de redes sociais.
 
 ### Enums de Layout
 
+#### AccentColor
+
+Um tipo de união para todas as predefinições de cor de destaque possíveis,
+seguindo a paleta do esquema de cores do
+[moderncv](https://github.com/moderncv/moderncv).
+Uma cadeia de cor hexadecimal `#RRGGBB` arbitrária também é aceite onde um
+`AccentColor` é esperado.
+
+- `black` - `#000000`
+- `blue` - `#3873B3`
+- `burgundy` - `#980000`
+- `cerulean` - `#0081A7`
+- `green` - `#59B24D`
+- `grey` - `#737373`
+- `orange` - `#F28C26`
+- `purple` - `#8054CC`
+- `red` - `#F23333`
+
 #### DocxFontSize
 
 Tipo união que inclui todas as possíveis opções de tamanho de fonte DOCX.
@@ -516,6 +552,8 @@ Tipo união de opções de modelo HTML.
 Ver também: [templates](/pt/docs/layouts/html/templates)
 
 - `calm`
+- `kami`
+- `vscode`
 
 #### LatexFontSize
 
@@ -555,6 +593,7 @@ Tipo união que inclui todas as possíveis opções de modelo LaTeX.
 
 Ver também: [templates](/pt/docs/layouts/latex/templates)
 
+- `jake`
 - `moderncv-banking`
 - `moderncv-casual`
 - `moderncv-classic`

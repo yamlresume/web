@@ -313,6 +313,16 @@ C --> C8
 | `aliases?` | `Record<SectionID, string>` | ⬜       | 用于分节名称的自定义别名，覆盖默认翻译。 |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | 最终输出中分节的自定义顺序。                     |
 
+##### Theme
+
+定义简历的视觉主题设置，例如强调色。markdown 引擎会忽略主题选项。
+
+| 属性      | 类型                                   | 必需 | 说明                     |
+| --------- | -------------------------------------- | ---- | ------------------------ |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜   | 定义主题颜色设置。       |
+
+`colors.accent` 选项设置用于章节标题、分隔线、链接和标签等突出元素的强调色。它接受命名的 [`AccentColor`](#accentcolor) 预设或任意的 `#RRGGBB` 十六进制颜色字符串。
+
 #### HtmlLayout
 
 HTML 布局配置。
@@ -323,6 +333,7 @@ HTML 布局配置。
 | `advanced?`   | [`HtmlAdvanced`](#htmladvanced)         | ⬜       | 定义高级布局配置选项。 |
 | `sections?`   | [`Sections`](#sections)                 | ⬜       | 定义分节自定义设置。         |
 | `template?`   | [`HtmlTemplate`](#htmltemplate)         | ⬜       | 定义选定的模板。                  |
+| `theme?`      | [`Theme`](#theme)                       | ⬜       | 定义简历的视觉主题设置。          |
 | `typography?` | [`HtmlTypography`](#htmltypography)     | ⬜       | 定义文档格式的排版设置。 |
 
 ##### HtmlAdvanced
@@ -331,6 +342,7 @@ HTML 布局配置。
 
 | 属性         | 类型      | 必需 | 描述                                                         |
 | ------------ | --------- | -------- | ------------------------------------------------------------ |
+| `showAnchors?` | `boolean` | ⬜       | 是否在章节和条目上生成用于锚点导航的 fragment `id` 属性（默认：`true`）。 |
 | `showIcons?` | `boolean` | ⬜       | 是否显示链接和社交主页的图标。 |
 | `title?`     | `string`  | ⬜       | HTML 文档的自定义标题。                                      |
 | `footer?`    | `string`  | ⬜       | HTML 文档的自定义页脚。                                      |
@@ -358,6 +370,7 @@ LaTeX 布局配置。
 | `page?`       | [`LatexPage`](#latexpage)               | ⬜       | 定义文档演示的页面级设置。|
 | `sections?`   | [`Sections`](#sections)                 | ⬜       | 定义分节自定义设置。               |
 | `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜       | 定义选定的模板。                        |
+| `theme?`      | [`Theme`](#theme)                     | ⬜       | 定义简历的视觉主题设置。                |
 | `typography?` | [`LatexTypography`](#latextypography)   | ⬜       | 定义文档格式的排版设置。  |
 
 ##### LatexAdvanced
@@ -411,6 +424,7 @@ DOCX 布局配置。
 | `page?`       | [`DocxPage`](#docxpage)               | ⬜       | 定义文档演示的页面级设置。|
 | `sections?`   | [`Sections`](#sections)               | ⬜       | 定义分节自定义设置。               |
 | `template?`   | [`DocxTemplate`](#docxtemplate)       | ⬜       | 定义选定的模板。                        |
+| `theme?`      | [`Theme`](#theme)                     | ⬜       | 定义简历的视觉主题设置。                |
 | `typography?` | [`DocxTypography`](#docxtypography)   | ⬜       | 定义文档格式的排版设置。  |
 
 ##### DocxAdvanced
@@ -493,6 +507,20 @@ DOCX 布局配置。
 
 ### 布局 Enum
 
+#### AccentColor
+
+所有可能的强调色预设的联合类型，遵循 [moderncv](https://github.com/moderncv/moderncv) 的配色方案调色板。在任何需要 `AccentColor` 的地方，也接受任意的 `#RRGGBB` 十六进制颜色字符串。
+
+- `black` - `#000000`
+- `blue` - `#3873B3`
+- `burgundy` - `#980000`
+- `cerulean` - `#0081A7`
+- `green` - `#59B24D`
+- `grey` - `#737373`
+- `orange` - `#F28C26`
+- `purple` - `#8054CC`
+- `red` - `#F23333`
+
 #### DocxFontSize
 
 所有可能 DOCX 字体大小选项的联合类型。
@@ -533,6 +561,8 @@ HTML 引擎支持 14px 到 20px 的字体大小：
 另请参阅：[模板](/zh-cn/docs/layouts/html/templates)
 
 - `calm`
+- `kami`
+- `vscode`
 
 #### LatexFontSize
 
@@ -570,6 +600,7 @@ HTML 引擎支持 14px 到 20px 的字体大小：
 
 另请参阅：[模板](/zh-cn/docs/layouts/latex/templates)
 
+- `jake`
 - `moderncv-banking`
 - `moderncv-casual`
 - `moderncv-classic`

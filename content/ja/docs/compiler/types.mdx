@@ -311,6 +311,21 @@ C --> C8
 | `aliases?` | `Record<SectionID, string>` | ⬜       | デフォルトの翻訳を上書きする、セクション名のカスタムエイリアス。 |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | 最終出力におけるセクションのカスタム順序。                     |
 
+##### Theme
+
+セクションタイトル、罫線、リンク、ラベルなどのハイライト要素に使用する
+アクセントカラーを含む、履歴書のビジュアルテーマ設定を定義します。
+markdown エンジンはテーマオプションを無視します。
+
+| 属性      | タイプ                                 | 必須 | 説明                               |
+| --------- | -------------------------------------- | ---- | ---------------------------------- |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜   | テーマのカラー設定を定義します。   |
+
+`colors.accent` オプションは、セクションタイトル、罫線、リンク、
+ラベルなどのハイライト要素に使用するアクセントカラーを設定します。
+名前付きの [`AccentColor`](#accentcolor) プリセット、または任意の
+`#RRGGBB` 形式の16進カラー文字列を指定できます。
+
 #### HtmlLayout
 
 HTML レイアウト設定。
@@ -321,6 +336,7 @@ HTML レイアウト設定。
 | `advanced?`   | [`HtmlAdvanced`](#htmladvanced)         | ⬜       | 高度なレイアウト設定オプションを定義します。 |
 | `sections?`   | [`Sections`](#sections)                 | ⬜       | セクションのカスタマイズ設定を定義します。         |
 | `template?`   | [`HtmlTemplate`](#htmltemplate)         | ⬜       | 選択されたテンプレートを定義します。                  |
+| `theme?`      | [`Theme`](#theme)                       | ⬜       | 履歴書のビジュアルテーマ設定を定義します。            |
 | `typography?` | [`HtmlTypography`](#htmltypography)     | ⬜       | 文書フォーマットのタイポグラフィ設定を定義します。 |
 
 ##### HtmlAdvanced
@@ -329,6 +345,7 @@ HTML レイアウト設定。
 
 | 属性         | タイプ      | 必須 | 説明                                                         |
 | ------------ | --------- | -------- | ------------------------------------------------------------ |
+| `showAnchors?` | `boolean` | ⬜       | セクションとエントリーにアンカーナビゲーション用のフラグメント `id` 属性を付与するかどうか（デフォルト: `true`）。 |
 | `showIcons?` | `boolean` | ⬜       | リンクとプロフィールのアイコンを表示するかどうか。 |
 | `title?`     | `string`  | ⬜       | HTML ドキュメントのカスタムタイトル。                        |
 | `footer?`    | `string`  | ⬜       | HTML ドキュメントのカスタムフッター。                        |
@@ -356,6 +373,7 @@ LaTeX レイアウト設定。
 | `page?`       | [`LatexPage`](#latexpage)               | ⬜       | 文書プレゼンテーションのページレベル設定を定義します。|
 | `sections?`   | [`Sections`](#sections)                 | ⬜       | セクションのカスタマイズ設定を定義します。               |
 | `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜       | 選択されたテンプレートを定義します。                        |
+| `theme?`      | [`Theme`](#theme)                       | ⬜       | 履歴書のビジュアルテーマ設定を定義します。                  |
 | `typography?` | [`LatexTypography`](#latextypography)   | ⬜       | 文書フォーマットのタイポグラフィ設定を定義します。  |
 
 ##### LatexAdvanced
@@ -409,6 +427,7 @@ DOCX レイアウト設定。
 | `page?`       | [`DocxPage`](#docxpage)               | ⬜       | 文書プレゼンテーションのページレベル設定を定義します。|
 | `sections?`   | [`Sections`](#sections)               | ⬜       | セクションのカスタマイズ設定を定義します。               |
 | `template?`   | [`DocxTemplate`](#docxtemplate)       | ⬜       | 選択されたテンプレートを定義します。                        |
+| `theme?`      | [`Theme`](#theme)                       | ⬜       | 履歴書のビジュアルテーマ設定を定義します。                  |
 | `typography?` | [`DocxTypography`](#docxtypography)   | ⬜       | 文書フォーマットのタイポグラフィ設定を定義します。  |
 
 ##### DocxAdvanced
@@ -491,6 +510,23 @@ DOCX の文書フォーマットのタイポグラフィ設定を定義します
 
 ### レイアウト Enum
 
+#### AccentColor
+
+[moderncv](https://github.com/moderncv/moderncv) のカラースキームパレットに
+従う、すべてのアクセントカラープリセットの共用体型です。
+`AccentColor` が期待される任意の場所では、任意の `#RRGGBB` 形式の
+16進カラー文字列も受け付けます。
+
+- `black` - `#000000`
+- `blue` - `#3873B3`
+- `burgundy` - `#980000`
+- `cerulean` - `#0081A7`
+- `green` - `#59B24D`
+- `grey` - `#737373`
+- `orange` - `#F28C26`
+- `purple` - `#8054CC`
+- `red` - `#F23333`
+
 #### DocxFontSize
 
 すべての可能な DOCX フォントサイズオプションのユニオンタイプ。
@@ -531,6 +567,8 @@ HTML エンジンは 14px から 20px のサイズをサポートします：
 参照：[テンプレート](/ja/docs/layouts/html/templates)
 
 - `calm`
+- `kami`
+- `vscode`
 
 #### LatexFontSize
 
@@ -568,6 +606,7 @@ HTML エンジンは 14px から 20px のサイズをサポートします：
 
 参照：[テンプレート](/ja/docs/layouts/latex/templates)
 
+- `jake`
 - `moderncv-banking`
 - `moderncv-casual`
 - `moderncv-classic`

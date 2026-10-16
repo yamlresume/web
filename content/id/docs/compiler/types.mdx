@@ -321,6 +321,20 @@ Mendefinisikan pengaturan alias bagian untuk menyesuaikan nama bagian.
 | `aliases?` | `Record<SectionID, string>` | ⬜       | Alias kustom untuk nama bagian, mengoverride terjemahan default. |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | Urutan kustom untuk bagian dalam output akhir.                     |
 
+##### Theme
+
+Mendefinisikan pengaturan tema visual untuk resume, seperti warna aksen.
+Engine markdown mengabaikan opsi tema.
+
+| Prop      | Tipe                                   | Wajib | Deskripsi                             |
+| --------- | -------------------------------------- | ----- | ------------------------------------- |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜    | Mendefinisikan pengaturan warna tema. |
+
+Opsi `colors.accent` menetapkan warna aksen untuk elemen yang disorot seperti
+judul bagian, garis, tautan, dan label. Opsi ini menerima preset
+[`AccentColor`](#accentcolor) bernama atau string warna heksadesimal
+`#RRGGBB` arbitrer.
+
 #### HtmlLayout
 
 Konfigurasi tata letak HTML.
@@ -331,6 +345,7 @@ Konfigurasi tata letak HTML.
 | `advanced?`   | [`HtmlAdvanced`](#htmladvanced)       | ⬜       | Mendefinisikan opsi konfigurasi lanjutan.  |
 | `sections?`   | [`Sections`](#sections)               | ⬜       | Mendefinisikan pengaturan kustomisasi bagian.  |
 | `template?`   | [`HtmlTemplate`](#htmltemplate)       | ⬜       | Mendefinisikan template yang dipilih.           |
+| `theme?`      | [`Theme`](#theme)                     | ⬜       | Mendefinisikan pengaturan tema visual resume.   |
 | `typography?` | [`HtmlTypography`](#htmltypography)   | ⬜       | Mendefinisikan pengaturan tipografi untuk pemformatan dokumen. |
 
 ##### HtmlAdvanced
@@ -339,6 +354,7 @@ Mendefinisikan opsi konfigurasi HTML lanjutan.
 
 | Kolom         | Tipe      | Wajib | Deskripsi                                          |
 | ------------ | --------- | -------- | ---------------------------------------------------- |
+| `showAnchors?` | `boolean` | ⬜       | Apakah akan mengeluarkan atribut fragmen `id` pada bagian dan entri untuk navigasi jangkar (bawaan: `true`). |
 | `showIcons?` | `boolean` | ⬜       | Apakah menampilkan ikon untuk tautan dan profil.     |
 | `title?`     | `string`  | ⬜       | Judul kustom untuk dokumen HTML.                  |
 | `footer?`    | `string`  | ⬜       | Footer kustom untuk dokumen HTML.                 |
@@ -366,6 +382,7 @@ Konfigurasi tata letak LaTeX.
 | `page?`       | [`LatexPage`](#latexpage)               | ⬜       | Mendefinisikan pengaturan tingkat halaman untuk presentasi dokumen.|
 | `sections?`   | [`Sections`](#sections)                 | ⬜       | Mendefinisikan pengaturan kustomisasi bagian.               |
 | `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜       | Mendefinisikan template yang dipilih.                        |
+| `theme?`      | [`Theme`](#theme)                     | ⬜       | Mendefinisikan pengaturan tema visual resume.                |
 | `typography?` | [`LatexTypography`](#latextypography)   | ⬜       | Mendefinisikan pengaturan tipografi untuk pemformatan dokumen.  |
 
 ##### LatexAdvanced
@@ -419,6 +436,7 @@ Konfigurasi tata letak DOCX.
 | `page?`       | [`DocxPage`](#docxpage)               | ⬜       | Mendefinisikan pengaturan tingkat halaman untuk presentasi dokumen.|
 | `sections?`   | [`Sections`](#sections)               | ⬜       | Mendefinisikan pengaturan kustomisasi bagian.               |
 | `template?`   | [`DocxTemplate`](#docxtemplate)       | ⬜       | Mendefinisikan template yang dipilih.                        |
+| `theme?`      | [`Theme`](#theme)                     | ⬜       | Mendefinisikan pengaturan tema visual resume.                |
 | `typography?` | [`DocxTypography`](#docxtypography)   | ⬜       | Mendefinisikan pengaturan tipografi untuk pemformatan dokumen.  |
 
 ##### DocxAdvanced
@@ -501,6 +519,23 @@ Union type untuk semua opsi jaringan sosial possible.
 
 ### Layout Enum
 
+#### AccentColor
+
+Tipe union untuk semua preset warna aksen yang memungkinkan, mengikuti
+palet skema warna [moderncv](https://github.com/moderncv/moderncv).
+String warna heksadesimal `#RRGGBB` arbitrer juga diterima di mana pun
+`AccentColor` diharapkan.
+
+- `black` - `#000000`
+- `blue` - `#3873B3`
+- `burgundy` - `#980000`
+- `cerulean` - `#0081A7`
+- `green` - `#59B24D`
+- `grey` - `#737373`
+- `orange` - `#F28C26`
+- `purple` - `#8054CC`
+- `red` - `#F23333`
+
 #### DocxFontSize
 
 Union type untuk semua opsi ukuran font DOCX possible.
@@ -541,6 +576,8 @@ Union type untuk semua opsi template HTML possible.
 Lihat juga: [templates](/docs/layouts/html/templates)
 
 - `calm`
+- `kami`
+- `vscode`
 
 #### LatexFontSize
 
@@ -579,6 +616,7 @@ Union type untuk semua opsi template LaTeX possible.
 
 Lihat juga: [templates](/docs/layouts/latex/templates)
 
+- `jake`
 - `moderncv-banking`
 - `moderncv-casual`
 - `moderncv-classic`

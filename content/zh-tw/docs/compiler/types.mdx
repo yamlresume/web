@@ -313,6 +313,16 @@ C --> C8
 | `aliases?` | `Record<SectionID, string>` | ⬜       | 用於分節名稱的自定義別名，覆蓋預設翻譯。 |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | 最終輸出中分節的自定義順序。                     |
 
+##### Theme
+
+定義履歷的視覺主題設定，例如強調色。markdown 引擎會忽略主題選項。
+
+| 屬性      | 類型                                   | 必需 | 說明                     |
+| --------- | -------------------------------------- | ---- | ------------------------ |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜   | 定義主題顏色設定。       |
+
+`colors.accent` 選項設定用於章節標題、分隔線、連結和標籤等突顯元素的強調色。它接受具名的 [`AccentColor`](#accentcolor) 預設或任意的 `#RRGGBB` 十六進位顏色字串。
+
 #### HtmlLayout
 
 HTML 佈局配置。
@@ -323,6 +333,7 @@ HTML 佈局配置。
 | `advanced?`   | [`HtmlAdvanced`](#htmladvanced)         | ⬜       | 定義進階佈局配置選項。 |
 | `sections?`   | [`Sections`](#sections)                 | ⬜       | 定義分節自定義設置。         |
 | `template?`   | [`HtmlTemplate`](#htmltemplate)         | ⬜       | 定義選定的模板。                  |
+| `theme?`      | [`Theme`](#theme)                       | ⬜       | 定義履歷的視覺主題設定。          |
 | `typography?` | [`HtmlTypography`](#htmltypography)     | ⬜       | 定義文件格式的排版設置。 |
 
 ##### HtmlAdvanced
@@ -331,6 +342,7 @@ HTML 佈局配置。
 
 | 屬性         | 類型      | 必需 | 描述                                                         |
 | ------------ | --------- | -------- | ------------------------------------------------------------ |
+| `showAnchors?` | `boolean` | ⬜       | 是否在章節和條目上輸出用於錨點導覽的片段 `id` 屬性（預設：`true`）。 |
 | `showIcons?` | `boolean` | ⬜       | 是否顯示連結和社交主页的圖示。 |
 | `title?`     | `string`  | ⬜       | HTML 文件的自定義標題。                                      |
 | `footer?`    | `string`  | ⬜       | HTML 文件的自定義頁尾。                                      |
@@ -358,6 +370,7 @@ LaTeX 佈局配置。
 | `page?`       | [`LatexPage`](#latexpage)               | ⬜       | 定義文件演示的頁面級設置。|
 | `sections?`   | [`Sections`](#sections)                 | ⬜       | 定義分節自定義設置。               |
 | `template?`   | [`LatexTemplate`](#latextemplate)       | ⬜       | 定義選定的模板。                        |
+| `theme?`      | [`Theme`](#theme)                     | ⬜       | 定義履歷的視覺主題設定。                |
 | `typography?` | [`LatexTypography`](#latextypography)   | ⬜       | 定義文件格式的排版設置。  |
 
 ##### LatexAdvanced
@@ -411,6 +424,7 @@ DOCX 佈局配置。
 | `page?`       | [`DocxPage`](#docxpage)               | ⬜       | 定義文件演示的頁面級設置。|
 | `sections?`   | [`Sections`](#sections)               | ⬜       | 定義分節自定義設置。               |
 | `template?`   | [`DocxTemplate`](#docxtemplate)       | ⬜       | 定義選定的模板。                        |
+| `theme?`      | [`Theme`](#theme)                     | ⬜       | 定義履歷的視覺主題設定。                |
 | `typography?` | [`DocxTypography`](#docxtypography)   | ⬜       | 定義文件格式的排版設置。  |
 
 ##### DocxAdvanced
@@ -493,6 +507,20 @@ DOCX 佈局配置。
 
 ### 佈局 Enum
 
+#### AccentColor
+
+所有可能的強調色預設的聯合型別，遵循 [moderncv](https://github.com/moderncv/moderncv) 的配色方案調色盤。在任何需要 `AccentColor` 的地方，也接受任意的 `#RRGGBB` 十六進位顏色字串。
+
+- `black` - `#000000`
+- `blue` - `#3873B3`
+- `burgundy` - `#980000`
+- `cerulean` - `#0081A7`
+- `green` - `#59B24D`
+- `grey` - `#737373`
+- `orange` - `#F28C26`
+- `purple` - `#8054CC`
+- `red` - `#F23333`
+
 #### DocxFontSize
 
 所有可能 DOCX 字體大小選項的聯合類型。
@@ -533,6 +561,8 @@ HTML 引擎支援 14px 到 20px 的字體大小：
 另請參閱：[模板](/zh-tw/docs/layouts/html/templates)
 
 - `calm`
+- `kami`
+- `vscode`
 
 #### LatexFontSize
 
@@ -570,6 +600,7 @@ HTML 引擎支援 14px 到 20px 的字體大小：
 
 另請參閱：[模板](/zh-tw/docs/layouts/latex/templates)
 
+- `jake`
 - `moderncv-banking`
 - `moderncv-casual`
 - `moderncv-classic`
