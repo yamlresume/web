@@ -28,17 +28,18 @@ export function NewsChannel() {
           <IconSpeakerphone size={20} stroke={1.5} />
           <div className="text-sm text-fd-foreground">
             <Link
-              href={getLocalizedUrl('/blog/v0.16', language)}
+              href={getLocalizedUrl('/blog/v0.17', language)}
               className="underline font-semibold"
             >
-              YAMLResume v0.16
+              YAMLResume v0.17
             </Link>{' '}
             is here with{' '}
             <Link
-              href={getLocalizedUrl('/blog/v0.16', language)}
+              href={getLocalizedUrl('/blog/v0.17', language)}
               className="underline"
             >
-              AI translation, a smarter playground, and Node.js APIs
+              accent colors, the kami HTML template, and a 4.7x slimmer Docker
+              image
             </Link>
             .
           </div>
