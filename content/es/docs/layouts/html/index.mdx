@@ -88,14 +88,63 @@ layouts:
       lineSpacing: relaxed
 ```
 
+## Tema
+
+La opción `theme` le permite personalizar la apariencia visual de su
+currículum sin afectar la geometría de diseño medible (tamaño de página,
+márgenes, tamaños de fuente) ni la estructura de secciones. Actualmente
+admite colores de acento, y todas las plantillas HTML los respetan.
+
+### Color de Acento
+
+La opción `theme.colors.accent` establece el color de acento utilizado para
+titulares, títulos de sección, enlaces y etiquetas resaltadas. Acepta uno de
+los ajustes de color predefinidos o una cadena de color hexadecimal
+`#RRGGBB` arbitraria:
+
+| Color                                                                                                                        | Preset     | Hex       |
+| ---------------------------------------------------------------------------------------------------------------------------- | ---------- | --------- |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#000000'}} />    | `black`    | `#000000` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#3873B3'}} />    | `blue`     | `#3873B3` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#980000'}} />    | `burgundy` | `#980000` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#0081A7'}} />    | `cerulean` | `#0081A7` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#59B24D'}} />    | `green`    | `#59B24D` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#737373'}} />    | `grey`     | `#737373` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#F28C26'}} />    | `orange`   | `#F28C26` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#8054CC'}} />    | `purple`   | `#8054CC` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#F23333'}} />    | `red`      | `#F23333` |
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    theme:
+      colors:
+        accent: burgundy # o un color hexadecimal arbitrario como "#1B365D"
+```
+
+Los ajustes predefinidos de color de acento siguen la paleta del esquema de
+colores de [moderncv](https://github.com/moderncv/moderncv). Si no se
+establece el color de acento, cada plantilla recurre a su propia paleta
+predeterminada.
+
 ## Avanzado
 
 La opción `advanced` le permite configurar ajustes avanzados para el motor HTML.
+
+### Mostrar Anclas
+
+La opción `showAnchors` controla si se emiten atributos `id` de fragmento en
+las secciones y entradas para la navegación por anclas. Está habilitada de
+forma predeterminada: con las anclas activadas, cada sección obtiene un id
+como `work` y cada entrada obtiene un id como `work-2`, por lo que puede
+enlazar directamente a una parte específica del currículum.
 
 ```yml lineNumbers
 layouts:
   - engine: html
     advanced:
+      # Emite atributos `id` de fragmento en secciones y entradas.
+      showAnchors: true
       showIcons: true
       # Título personalizado para el documento HTML.
       title: "Mi Título de Currículum Personalizado"

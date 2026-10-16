@@ -84,14 +84,60 @@ layouts:
       lineSpacing: relaxed
 ```
 
+## テーマ
+
+`theme` オプションを使用すると、測定可能なレイアウトジオメトリ（ページサイズ、余白、
+フォントサイズ）やセクション構造に影響を与えることなく、履歴書の視覚的な外観を
+カスタマイズできます。現在はアクセントカラーをサポートしており、すべての HTML
+テンプレートがこれらを尊重します。
+
+### アクセントカラー
+
+`theme.colors.accent` オプションは、見出し、セクションタイトル、リンク、
+ハイライトされたラベルに使用されるアクセントカラーを設定します。名前付きカラープリセットの
+いずれか、または任意の `#RRGGBB` 形式の16進カラーコード文字列を受け付けます：
+
+| 色                                                                                                                           | プリセット | 16進コード |
+| ---------------------------------------------------------------------------------------------------------------------------- | ---------- | --------- |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#000000'}} />    | `black`    | `#000000` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#3873B3'}} />    | `blue`     | `#3873B3` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#980000'}} />    | `burgundy` | `#980000` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#0081A7'}} />    | `cerulean` | `#0081A7` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#59B24D'}} />    | `green`    | `#59B24D` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#737373'}} />    | `grey`     | `#737373` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#F28C26'}} />    | `orange`   | `#F28C26` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#8054CC'}} />    | `purple`   | `#8054CC` |
+| <span style={{display:'inline-block',width:'.9rem',height:'.9rem',borderRadius:'.2rem',border:'1px solid rgba(128,128,128,.5)',backgroundColor:'#F23333'}} />    | `red`      | `#F23333` |
+
+```yml lineNumbers
+layouts:
+  - engine: html
+    theme:
+      colors:
+        accent: burgundy # または "#1B365D" のような任意の16進カラー
+```
+
+アクセントカラーのプリセットは [moderncv](https://github.com/moderncv/moderncv)
+のカラースキームのパレットに従っています。アクセントカラーが設定されていない場合、
+各テンプレートは独自のデフォルトパレットにフォールバックします。
+
 ## 高度な設定
 
 `advanced` オプションにより、HTML エンジンの高度な設定を行うことができます。
+
+### アンカーの表示
+
+`showAnchors` オプションは、アンカーナビゲーションのためにセクションとエントリーに
+フラグメントの `id` 属性を付与するかどうかを制御します。デフォルトで有効になっており、
+アンカーを有効にすると、すべてのセクションに `work` のような ID、すべてのエントリーに
+`work-2` のような ID が付与されるため、履歴書の特定の部分に直接リンクできます。
 
 ```yml lineNumbers
 layouts:
   - engine: html
     advanced:
+      # セクションとエントリーにフラグメントの `id` 属性を付与します。
+      showAnchors: true
       showIcons: true
       # HTML ドキュメントのカスタムタイトル。
       title: "私のカスタム履歴書タイトル"
