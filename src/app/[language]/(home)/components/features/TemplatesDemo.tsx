@@ -5,10 +5,34 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 const TEMPLATE_IMAGES = [
-  '/static/images/docs/layouts/latex/templates/jake-template.png',
-  '/static/images/docs/layouts/latex/templates/moderncv-casual-template.png',
-  '/static/images/docs/layouts/latex/templates/moderncv-banking-template.png',
-  '/static/images/docs/layouts/latex/templates/moderncv-classic-template.png',
+  {
+    src: '/static/images/docs/layouts/latex/templates/jake-template.png',
+    alt: "Jake's Resume LaTeX template",
+  },
+  {
+    src: '/static/images/docs/layouts/latex/templates/moderncv-casual-template.png',
+    alt: 'ModernCV Casual LaTeX template',
+  },
+  {
+    src: '/static/images/docs/layouts/latex/templates/moderncv-banking-template.png',
+    alt: 'ModernCV Banking LaTeX template',
+  },
+  {
+    src: '/static/images/docs/layouts/latex/templates/moderncv-classic-template.png',
+    alt: 'ModernCV Classic LaTeX template',
+  },
+  {
+    src: '/static/images/docs/layouts/html/templates/calm.png',
+    alt: 'Calm HTML template',
+  },
+  {
+    src: '/static/images/docs/layouts/html/templates/kami.png',
+    alt: 'Kami HTML template',
+  },
+  {
+    src: '/static/images/docs/layouts/html/templates/vscode.png',
+    alt: 'VS Code HTML template',
+  },
 ]
 
 /**
@@ -158,8 +182,13 @@ export function TemplatesDemo() {
             }
           }
         `}</style>
-        {TEMPLATE_IMAGES.map((img, i) => (
-          <TemplateSlide key={img} src={img} isActive={i === index} />
+        {TEMPLATE_IMAGES.map((template, i) => (
+          <TemplateSlide
+            key={template.src}
+            src={template.src}
+            alt={template.alt}
+            isActive={i === index}
+          />
         ))}
       </div>
 
