@@ -1,0 +1,95 @@
+---
+title: "YAMLResume v0.17: アクセントカラー、新しい kami HTML テンプレート、4.7 倍軽量になった Docker イメージ"
+description:
+  "YAMLResume v0.17 では、latex、html、docx のレイアウトに theme.colors.accent を追加し、印刷を想起させる温かみのある新しい HTML テンプレート kami を導入するとともに、docker イメージを約 4GB から 866MB に削減しました。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-10-17
+---
+
+[YAMLResume v0.17](https://github.com/yamlresume/yamlresume/releases/tag/v0.17.0) のリリースをお知らせします。今回の目玉は、影響範囲の広い小さなオプションです。`theme.colors.accent` は、セクションタイトル、罫線、リンク、ラベルといった履歴書の強調要素にアクセントカラーを付け、LaTeX、HTML、DOCX のすべてのエンジンで有効になります。v0.17 では、3 つ目の HTML テンプレートとして温かみのある印刷スタイルの `kami` も追加され、Docker イメージは [4.7 倍軽量](/ja/blog/slim-docker-image)になりました。
+
+## アクセントカラーで履歴書をテーマ化する
+
+新しい `theme.colors.accent` オプションは、すべてのレイアウトエンジンに、履歴書のアクセントカラーを制御する共通の方法を提供します。ページサイズ、余白、フォントサイズといった測定可能なレイアウトの寸法やセクション構造には影響しません：
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: latex
+    theme:
+      colors:
+        accent: burgundy # [!code highlight]
+```
+
+このオプションは、[moderncv](https://github.com/moderncv/moderncv) の配色パレットに沿った 9 つの名前付きプリセット、または任意の `#RRGGBB` の 16 進数カラー文字列を受け付けます：
+
+```yml
+theme:
+  colors:
+    accent: "#1B365D"
+```
+
+各エンジンは、アクセントをそれぞれの慣用的な方法で適用します：
+
+- **LaTeX**: moderncv テンプレートはアクセントを moderncv の `color1` にマッピングし、jake テンプレートはセクションタイトルと罫線にカスタムの `accentcolor` を定義します。
+- **HTML**: テンプレートはアクセントを CSS 変数 `--accent-color` として公開し、見出し、セクションタイトル、リンク、スキルラベルに色を付けます。
+- **DOCX**: calm テンプレートはセクション見出しとハイパーリンクのテキストに色を付けます。
+
+アクセントカラーを設定しない場合、すべてのテンプレートはデフォルトの配色を保持します。markdown エンジンはこのオプションを無視します。また、白いページに対してコントラストが非常に低い色を選ぶと、`yamlresume build` は色あせた PDF を黙って生成する代わりに警告を出します。
+
+## Kami: 新しい HTML テンプレート
+
+`kami` が `calm` と `vscode` に加わり、3 つ目の HTML テンプレートになりました。Kami（紙 — "paper"）は、温かみのある印刷を想起させるデザインです。羊皮紙の背景、Charter ベースの統一されたセリフ体、スモールキャップのラベル、控えめなインク色のアクセントが、組版の整ったレポートのように調和しています。`theme.colors.accent` を全体で尊重するため、新しいテーマオプションとの相性も自然です：
+
+```yml
+layouts:
+  - engine: html
+    template: kami
+```
+
+![YAMLResume kami HTML テンプレート](/static/images/docs/layouts/html/templates/kami.webp)
+
+詳細は [kami テンプレートのドキュメント](/ja/docs/layouts/html/templates/kami)をご覧いただくか、[playground](/ja/playground?sample=software-engineer&locale=en&engine=html&template=kami)で今すぐお試しください。
+
+## 4.7 倍軽量になった Docker イメージ
+
+`yamlresume build` のフルパイプライン — Node.js、CLI、XeTeX、すべてのフォント — を同梱する Docker イメージは、フルの TeX Live インストールを厳選された TinyTeX インストールに置き換え、XeLaTeX が決して読まないすべてを削ることで、ディスク上で約 4GB（ダウンロード 1.77GB）から **ディスク上 866MB（ダウンロード 321MB）** になりました。`docker run` コマンドに変更はなく、PDF はバイト単位で同一です：
+
+| Image             | Download | On disk |
+| ----------------- | -------- | ------- |
+| v0.16.x (before)  | 1.77 GB  | ~4 GB   |
+| v0.17.0 (after)   | 321 MB   | 866 MB  |
+
+TinyTeX、フォントツリーの外科手術、Perl がなぜ除外されたのかなど、詳細な顛末は [YAMLResume の Docker イメージを 4GB から 1GB 未満へ削減](/ja/blog/slim-docker-image)をご覧ください。
+
+## HTML 出力のアンカーナビゲーション
+
+前回のリリース記事以降のもうひとつの改善点：HTML 出力は、すべてのセクションと項目にフラグメントの `id` 属性を付与するようになりました（`showAnchors`、デフォルトで有効）。生成された履歴書に `resume.html#work-2` などで直接リンクできるようになります。無効にするには：
+
+```yml
+layouts:
+  - engine: html
+    advanced:
+      showAnchors: false
+```
+
+## v0.17 を入手する
+
+お好みのパッケージマネージャーでアップデートしてください：
+
+```console
+$ npm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ pnpm add -g yamlresume@latest
+$ brew upgrade yamlresume
+```
+
+あるいは、新しいイメージをプルしてください：
+
+```console
+$ docker pull yamlresume/yamlresume:latest
+```
+
+始めるには[インストールガイド](/ja/docs/installation)をご覧ください。何か問題に遭遇した場合は、GitHub で[イシューを開いて](https://github.com/yamlresume/yamlresume/issues)ください。変更の完全な一覧は[changelog](https://github.com/yamlresume/yamlresume/blob/main/CHANGELOG.md)にあります。
+
+v0.17 をお楽しみください！

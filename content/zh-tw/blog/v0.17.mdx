@@ -1,0 +1,128 @@
+---
+title: "YAMLResume v0.17：強調色、Kami HTML 模板與瘦身 4.7 倍的 Docker 鏡像"
+description:
+  "YAMLResume v0.17 為 latex、html 與 docx 版面配置新增 theme.colors.accent，
+  推出溫暖的印刷風格 kami HTML 模板，並將 docker 鏡像從 ~4GB 縮減到
+  866MB。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-10-17
+---
+
+[YAMLResume v0.17](https://github.com/yamlresume/yamlresume/releases/tag/v0.17.0)
+正式發布。本次的重頭戲是一個影響範圍很廣的小選項：
+`theme.colors.accent` 會為履歷中所有醒目元素——章節標題、分隔線、連結與
+標籤——統一著色，並橫跨 LaTeX、HTML 和 DOCX 引擎。v0.17 還推出了第三個
+HTML 模板 `kami`，一個溫暖的印刷風格設計，Docker 鏡像也[瘦身
+4.7 倍](/zh-tw/blog/slim-docker-image)。
+
+## 使用強調色為履歷打造主題
+
+全新的 `theme.colors.accent` 選項為所有版面配置引擎提供統一、共用的方式
+來控制履歷的強調色，同時不影響可測量的版面幾何（頁面大小、邊界、字型大小）
+或章節結構：
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: latex
+    theme:
+      colors:
+        accent: burgundy # [!code highlight]
+```
+
+此選項接受九種遵循
+[moderncv](https://github.com/moderncv/moderncv) 配色方案的具名預設值，或任意的
+`#RRGGBB` 十六進位色碼字串：
+
+```yml
+theme:
+  colors:
+    accent: "#1B365D"
+```
+
+各引擎會以自己的慣用方式套用強調色：
+
+- **LaTeX**：moderncv 模板會將強調色對應到 moderncv 的 `color1`，而
+  jake 模板則為章節標題與分隔線定義自訂的 `accentcolor`。
+- **HTML**：模板會將強調色暴露為 CSS `--accent-color` 變數，為標題、
+  章節標題、連結與技能標籤著色。
+- **DOCX**：calm 模板會為章節標題與超連結文字著色。
+
+若未設定強調色，每個模板都會保留其預設配色。markdown 引擎會忽略此選項。
+而如果您選擇了與白底對比度過低的顏色，`yamlresume build` 會發出警告，
+而不是默默產生一份色彩灰淡的 PDF。
+
+## Kami：全新的 HTML 模板
+
+`kami` 與 `calm`、`vscode` 並列為第三個 HTML 模板。Kami（紙，
+"paper"）是一款溫暖的印刷風格設計：羊皮紙背景、單一以 Charter 為基底的
+襯線字體、小型大寫字母標籤，以及沉靜的墨色強調，整體構圖如同一份排版
+精良的報告。它全面支援 `theme.colors.accent`，因此能與全新的主題選項
+自然搭配：
+
+```yml
+layouts:
+  - engine: html
+    template: kami
+```
+
+![YAMLResume kami HTML 模板](/static/images/docs/layouts/html/templates/kami.webp)
+
+詳情請參閱 [kami 模板文件](/zh-tw/docs/layouts/html/templates/kami)，
+或立即在
+[Playground](/zh-tw/playground?sample=software-engineer&locale=en&engine=html&template=kami)
+中試用。
+
+## 瘦身 4.7 倍的 Docker 鏡像
+
+搭載完整 `yamlresume build` 管線——Node.js、CLI、XeTeX 與所有字型——
+的 Docker 鏡像，透過將完整 TeX Live 安裝替換為精選的 TinyTeX 安裝，並
+裁減所有 XeLaTeX 永遠不會讀取的內容，從磁碟約 4GB（下載 1.77GB）縮減至
+**磁碟 866MB（下載 321MB）**。您的 `docker run` 指令完全不變，產生的
+PDF 位元組完全一致：
+
+| Image             | Download | On disk |
+| ----------------- | -------- | ------- |
+| v0.16.x (before)  | 1.77 GB  | ~4 GB   |
+| v0.17.0 (after)   | 321 MB   | 866 MB  |
+
+完整故事——TinyTeX、字型樹手術，以及 Perl 為何必須移除——請閱讀[將
+YAMLResume Docker 鏡像從 4GB 瘦身到 1GB
+以下](/zh-tw/blog/slim-docker-image)。
+
+## HTML 輸出的錨點導覽
+
+自上一篇版本公告以來的另一項改進：HTML 輸出現在會為每個章節與條目產生
+片段 `id` 屬性（`showAnchors`，預設啟用），因此產生的履歷可以直接透過
+`resume.html#work-2` 連結。若要停用：
+
+```yml
+layouts:
+  - engine: html
+    advanced:
+      showAnchors: false
+```
+
+## 立即升級
+
+使用您慣用的套件管理器更新：
+
+```console
+$ npm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ pnpm add -g yamlresume@latest
+$ brew upgrade yamlresume
+```
+
+或拉取新鏡像：
+
+```console
+$ docker pull yamlresume/yamlresume:latest
+```
+
+請參閱[安裝指南](/zh-tw/docs/installation)立即開始；如果遇到任何問題，
+歡迎在 GitHub 上[提出
+issue](https://github.com/yamlresume/yamlresume/issues)。完整變更清單請見
+[changelog](https://github.com/yamlresume/yamlresume/blob/main/CHANGELOG.md)。
+
+盡情享受 v0.17！

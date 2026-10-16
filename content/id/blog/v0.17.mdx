@@ -1,0 +1,138 @@
+---
+title: "YAMLResume v0.17: Warna Aksen, Template HTML `kami`, dan Image Docker yang 4.7x Lebih Rampin"
+description:
+  "YAMLResume v0.17 menghadirkan theme.colors.accent untuk layout latex, html,
+  dan docx, template HTML `kami` baru yang hangat dan terinspirasi cetak, serta
+  memangkas image docker dari ~4GB menjadi 866MB."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-10-17
+---
+
+Kami dengan senang mengumumkan [YAMLResume
+v0.17](https://github.com/yamlresume/yamlresume/releases/tag/v0.17.0). Fitur
+utamanya adalah sebuah opsi kecil dengan jangkauan luas:
+`theme.colors.accent` mewarnai elemen-elemen yang disorot dalam resume
+Anda—judul bagian, garis, tautan, dan label—di seluruh engine LaTeX, HTML, dan
+DOCX. v0.17 juga menghadirkan template HTML ketiga, `kami`, sebuah desain
+hangat yang terinspirasi cetak, serta image Docker yang [4.7x lebih
+rampin](/id/blog/slim-docker-image).
+
+## Beri Tema pada Resume Anda dengan Warna Aksen
+
+Opsi `theme.colors.accent` yang baru memberi seluruh engine layout sebuah cara
+tunggal yang bersama untuk mengontrol warna aksen resume, tanpa memengaruhi
+geometri layout yang terukur (ukuran halaman, margin, ukuran font) atau
+struktur bagian:
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: latex
+    theme:
+      colors:
+        accent: burgundy # [!code highlight]
+```
+
+Opsi ini menerima salah satu dari sembilan preset bernama yang mengikuti palet
+skema warna [moderncv](https://github.com/moderncv/moderncv), atau string
+warna hex `#RRGGBB` sewenang-wenang:
+
+```yml
+theme:
+  colors:
+    accent: "#1B365D"
+```
+
+Setiap engine menerapkan warna aksen dengan cara khasnya masing-masing:
+
+- **LaTeX**: template moderncv memetakan warna aksen ke `color1` milik
+  moderncv, sedangkan template jake mendefinisikan `accentcolor` kustom untuk
+  judul bagian dan garis.
+- **HTML**: template mengekspos warna aksen sebagai variabel CSS
+  `--accent-color` yang mewarnai headline, judul bagian, tautan, dan label
+  skill.
+- **DOCX**: template calm mewarnai judul bagian dan teks hyperlink.
+
+Jika warna aksen tidak diatur, setiap template mempertahankan palet
+bawaannya. Engine markdown mengabaikan opsi ini. Dan jika Anda memilih warna
+dengan kontras sangat rendah terhadap halaman putih, `yamlresume build` akan
+memperingatkan Anda alih-alih diam-diam mengirimkan PDF yang pudar.
+
+## `kami`: Template HTML Baru
+
+`kami` bergabung dengan `calm` dan `vscode` sebagai template HTML ketiga.
+`kami` (紙, "kertas") adalah desain hangat yang terinspirasi cetak: latar
+belakang perkamen, satu suara serif berbasis Charter, label small-caps, dan
+aksen warna tinta yang tenang, disusun seperti laporan yang ditype dengan
+rapi. Template ini mengikuti `theme.colors.accent` di seluruhnya, sehingga
+cocok secara alami dengan opsi tema yang baru:
+
+```yml
+layouts:
+  - engine: html
+    template: kami
+```
+
+![Template HTML kami YAMLResume](/static/images/docs/layouts/html/templates/kami.webp)
+
+Lihat [dokumentasi template
+kami](/id/docs/layouts/html/templates/kami) untuk detailnya, atau coba sekarang
+juga di
+[playground](/id/playground?sample=software-engineer&locale=en&engine=html&template=kami).
+
+## Image Docker yang 4.7x Lebih Rampin
+
+Image Docker yang mengirimkan pipeline `yamlresume build` lengkap—Node.js,
+CLI, XeTeX, dan semua font—turun dari sekitar 4GB di disk (unduhan 1.77GB)
+menjadi **866MB di disk (unduhan 321MB)**, dengan mengganti instalasi TeX Live
+penuh dengan instalasi TinyTeX yang terkurasi dan memangkas semua yang tidak
+pernah dibaca XeLaTeX. Perintah `docker run` Anda tidak berubah, dan PDF-nya
+identik byte-per-byte:
+
+| Image             | Download | On disk |
+| ----------------- | -------- | ------- |
+| v0.16.x (before)  | 1.77 GB  | ~4 GB   |
+| v0.17.0 (after)   | 321 MB   | 866 MB  |
+
+Baca kisah lengkapnya—TinyTeX, operasi pohon font, dan mengapa Perl harus
+pergi—di [Merampingkan Image Docker YAMLResume dari 4GB ke Bawah
+1GB](/id/blog/slim-docker-image).
+
+## Navigasi Jangkar untuk Output HTML
+
+Satu perbaikan lagi sejak postingan rilis terakhir: output HTML kini
+mengeluarkan atribut `id` fragmen pada setiap bagian dan entri (`showAnchors`,
+aktif secara bawaan), sehingga resume yang dihasilkan dapat ditautkan langsung
+di `resume.html#work-2`. Nonaktifkan dengan:
+
+```yml
+layouts:
+  - engine: html
+    advanced:
+      showAnchors: false
+```
+
+## Dapatkan v0.17
+
+Perbarui dengan manajer paket favorit Anda:
+
+```console
+$ npm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ pnpm add -g yamlresume@latest
+$ brew upgrade yamlresume
+```
+
+Atau tarik image baru:
+
+```console
+$ docker pull yamlresume/yamlresume:latest
+```
+
+Lihat [panduan instalasi](/id/docs/installation) untuk memulai, dan jika Anda
+mengalami masalah apa pun, [buka
+issue](https://github.com/yamlresume/yamlresume/issues) di GitHub. Daftar
+lengkap perubahan ada di
+[changelog](https://github.com/yamlresume/yamlresume/blob/main/CHANGELOG.md).
+
+Nikmati v0.17!

@@ -1,0 +1,137 @@
+---
+title: "YAMLResume v0.17: Cores de Destaque, o Novo Template HTML Kami e uma Imagem Docker 4.7x Mais Leve"
+description:
+  "O YAMLResume v0.17 adiciona `theme.colors.accent` para os layouts latex,
+  html e docx, um novo template HTML kami quente e inspirado na impressão, e
+  reduz a imagem docker de ~4GB para 866MB."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-10-17
+---
+
+O [YAMLResume v0.17](https://github.com/yamlresume/yamlresume/releases/tag/v0.17.0)
+saiu. O recurso principal é uma pequena opção com amplo alcance:
+`theme.colors.accent` colore os elementos destacados do seu currículo —
+títulos de seções, réguas, links e etiquetas — nos motores LaTeX, HTML e
+DOCX. O v0.17 também traz um terceiro template HTML, o `kami`, um design
+quente e inspirado na impressão, e a imagem Docker ficou [4.7x mais
+leve](/pt/blog/slim-docker-image).
+
+## Personalize seu currículo com cores de destaque
+
+A nova opção `theme.colors.accent` dá a todos os motores de layout uma única
+forma compartilhada de controlar a cor de destaque de um currículo, sem
+afetar a geometria de layout mensurável (tamanho da página, margens, tamanhos
+de fonte) ou a estrutura de seções:
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: latex
+    theme:
+      colors:
+        accent: burgundy # [!code highlight]
+```
+
+A opção aceita uma das nove predefinições nomeadas que seguem a paleta do
+esquema de cores do [moderncv](https://github.com/moderncv/moderncv), ou uma
+string de cor hexadecimal `#RRGGBB` arbitrária:
+
+```yml
+theme:
+  colors:
+    accent: "#1B365D"
+```
+
+Cada motor aplica a cor de destaque de forma idiomática:
+
+- **LaTeX**: os templates moderncv mapeiam a cor de destaque para o `color1`
+  do moderncv, enquanto o template jake define um `accentcolor` personalizado
+  para títulos de seções e réguas.
+- **HTML**: os templates expõem a cor de destaque como uma variável CSS
+  `--accent-color` que colore títulos, títulos de seções, links e etiquetas
+  de habilidades.
+- **DOCX**: o template calm colore os títulos de seções e o texto dos links.
+
+Quando a cor de destaque não está definida, cada template mantém sua paleta
+padrão. O motor markdown ignora a opção. E se você escolher uma cor com
+contraste muito baixo em relação à página branca, o `yamlresume build` avisa
+em vez de entregar silenciosamente um PDF desbotado.
+
+## Kami: um novo template HTML
+
+O `kami` se junta ao `calm` e ao `vscode` como o terceiro template HTML. Kami
+(紙, "papel") é um design quente e inspirado na impressão: um fundo de
+pergaminho, uma única voz serifada baseada em Charter, etiquetas em versalite
+e acentos discretos na cor de tinta, composto como um relatório com boa
+composição tipográfica. Ele respeita o `theme.colors.accent` em toda a
+página, então combina naturalmente com a nova opção de tema:
+
+```yml
+layouts:
+  - engine: html
+    template: kami
+```
+
+![Template HTML kami do YAMLResume](/static/images/docs/layouts/html/templates/kami.webp)
+
+Consulte a [documentação do template
+kami](/pt/docs/layouts/html/templates/kami) para mais detalhes, ou
+experimente agora mesmo no
+[playground](/pt/playground?sample=software-engineer&locale=en&engine=html&template=kami).
+
+## Uma imagem Docker 4.7x mais leve
+
+A imagem Docker que entrega o pipeline completo do `yamlresume build` —
+Node.js, o CLI, XeTeX e todas as fontes — passou de cerca de 4GB em disco
+(1.77GB para baixar) para **866MB em disco (321MB para baixar)**, ao
+substituir a instalação completa do TeX Live por uma instalação TinyTeX
+selecionada e podando tudo o que o XeLaTeX nunca lê. Seus comandos `docker
+run` não mudam, e os PDFs são idênticos byte a byte:
+
+| Image             | Download | On disk |
+| ----------------- | -------- | ------- |
+| v0.16.x (before)  | 1.77 GB  | ~4 GB   |
+| v0.17.0 (after)   | 321 MB   | 866 MB  |
+
+Leia a história completa — TinyTeX, cirurgia na árvore de fontes e por que o
+Perl precisou sair — em [Afinando a Imagem Docker do YAMLResume de 4GB para
+Menos de 1GB](/pt/blog/slim-docker-image).
+
+## Navegação por âncoras na saída HTML
+
+Mais uma melhoria desde o último post de lançamento: a saída HTML agora emite
+atributos de fragmento `id` em cada seção e entrada (`showAnchors`, ativado
+por padrão), então um currículo gerado pode ser linkado diretamente em
+`resume.html#work-2`. Desative com:
+
+```yml
+layouts:
+  - engine: html
+    advanced:
+      showAnchors: false
+```
+
+## Atualize para o v0.17
+
+Atualize com seu gerenciador de pacotes favorito:
+
+```console
+$ npm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ pnpm add -g yamlresume@latest
+$ brew upgrade yamlresume
+```
+
+Ou baixe a nova imagem:
+
+```console
+$ docker pull yamlresume/yamlresume:latest
+```
+
+Confira o [guia de instalação](/pt/docs/installation) para começar e, como
+sempre, se encontrar qualquer problema, [abra uma
+issue](https://github.com/yamlresume/yamlresume/issues) no GitHub. A lista
+completa de mudanças está no
+[changelog](https://github.com/yamlresume/yamlresume/blob/main/CHANGELOG.md).
+
+Aproveite o v0.17!
