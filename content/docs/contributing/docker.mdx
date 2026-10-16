@@ -29,12 +29,16 @@ Live](https://www.tug.org/texlive/) and [Google Noto
 Font](/docs/installation#google-noto).
 
 This is a base image mostly used for accelerating the build process on Github
-Actions—installing texlive by `apt install texlive-xetex` thing takes about [30
-minutes](https://github.com/yamlresume/yamlresume/actions/runs/15438395862),
-which is too long to run for every docker build, so that we decided to build and
-[publish this base image
-once](https://hub.docker.com/r/yamlresume/yamlresume-base) and re-use this for
-every further build.
+Actions. Instead of installing the full TeX Live distribution via apt (which
+takes about [30
+minutes](https://github.com/yamlresume/yamlresume/actions/runs/15438395862)),
+it installs [TinyTeX](https://yihui.org/tinytex/) and uses `tlmgr` to install
+only the 37 LaTeX packages the built-in templates actually need, then prunes
+everything XeTeX never reads: unused engines, pTeX-era CJK font trees, and
+build-time tooling. It also ships just the four Noto CJK SC weights the
+templates reference instead of the full `fonts-noto-cjk` packages. These
+changes cut the base image from 894 MB to 807 MB — check the [slim docker
+image](/blog/slim-docker-image) blog post if you are curious about the details.
 
 Generally you don't need to build this image yourself, you can just reuse
 the published image on dockerhub.

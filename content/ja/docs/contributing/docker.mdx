@@ -18,9 +18,9 @@ YAMLResume の Docker イメージは2つの段階で定義・生成されます
 
 ### Dockerfile.base
 
-[Dockerfile.base](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base) には、YAMLResume を実行するための基本環境が含まれており、[TeX Live](https://www.tug.org/texlive/) からの [XeTeX](/zh-cn/docs/installation#xetex) や [Google Noto フォント](/zh-cn/docs/installation#google-noto) など、すべての必要な依存関係が含まれています。
+[Dockerfile.base](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base) には、YAMLResume を実行するための基本環境が含まれており、[TeX Live](https://www.tug.org/texlive/) からの [XeTeX](/ja/docs/installation#xetex) や [Google Noto フォント](/zh-cn/docs/installation#google-noto) など、すべての必要な依存関係が含まれています。
 
-これは基本イメージで、主に GitHub Actions でのビルドプロセスを加速するために使用されます——`apt install texlive-xetex` で texlive をインストールするには約[30分](https://github.com/yamlresume/yamlresume/actions/runs/15438395862)かかり、これは各 docker ビルドには長すぎるため、この基本イメージを一度ビルドして[公開し](https://hub.docker.com/r/yamlresume/yamlresume-base)、後続の各ビルドで再利用することにしました。
+これは基本イメージで、主に GitHub Actions でのビルドプロセスを加速するために使用されます。apt 経由で TeX Live 全体をインストールする（約[30分](https://github.com/yamlresume/yamlresume/actions/runs/15438395862)かかる）代わりに、[TinyTeX](https://yihui.org/tinytex/) をインストールし、`tlmgr` で組み込みテンプレートが実際に必要とする 37 個の LaTeX パッケージだけをインストールします。その後、XeTeX が読まないもの——未使用のエンジン、pTeX 時代の CJK フォントツリー、ビルド時専用のツール——をすべて削除します。また、テンプレートが参照する Noto CJK SC の 4 ウェイトのみを同梱し、完全な `fonts-noto-cjk` パッケージは含めません。これらの変更により、基本イメージは 894 MB から 807 MB に削減されました。詳細は [Docker イメージの軽量化に関するブログ記事](/ja/blog/slim-docker-image)をご覧ください。
 
 通常、このイメージを自分でビルドする必要はありません。dockerhub で公開されているイメージを直接再利用できます。
 

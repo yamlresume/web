@@ -20,7 +20,7 @@ YAMLResume 的 Docker 镜像在两个阶段中定义和生成：
 
 [Dockerfile.base](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base) 包含运行 YAMLResume 的基础环境，包括所有必要的依赖，如来自 [TeX Live](https://www.tug.org/texlive/) 的 [XeTeX](/zh-cn/docs/installation#xetex) 和 [Google Noto 字体](/zh-cn/docs/installation#google-noto)。
 
-这是一个基础镜像，主要用于加速 GitHub Actions 上的构建过程——通过 `apt install texlive-xetex` 安装 texlive 大约需要 [30 分钟](https://github.com/yamlresume/yamlresume/actions/runs/15438395862)，这对于每次 docker 构建来说太长了，所以我们决定构建并[发布这个基础镜像一次](https://hub.docker.com/r/yamlresume/yamlresume-base)，并在每次后续构建中重复使用。
+这是一个基础镜像，主要用于加速 GitHub Actions 上的构建过程。它不再通过 apt 安装完整的 TeX Live 发行版（约需 [30 分钟](https://github.com/yamlresume/yamlresume/actions/runs/15438395862)），而是安装 [TinyTeX](https://yihui.org/tinytex/)，并用 `tlmgr` 只安装内置模板实际需要的 37 个 LaTeX 宏包，然后裁掉 XeTeX 永远不会读取的内容：未使用的引擎、pTeX 时代的 CJK 字体树，以及仅在构建期使用的工具。它还只附带模板引用的 4 个 Noto CJK SC 字重，而不是完整的 `fonts-noto-cjk` 包。这些改动将基础镜像从 894 MB 缩减到 807 MB——好奇细节的话可以看看 [Docker 镜像瘦身博文](/zh-cn/blog/slim-docker-image)。
 
 通常您不需要自己构建这个镜像，您可以直接重复使用 dockerhub 上发布的镜像。
 
