@@ -1,0 +1,227 @@
+---
+title: YAMLResume の Docker イメージを 4GB から 1GB 未満へ削減
+description:
+  "フルの TeX Live インストールを厳選された TinyTeX インストールに置き換え、
+  YAMLResume の docker イメージを約 4GB から 866MB に削減した方法"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-10-09
+---
+
+[YAMLResume の docker イメージをリリースした](/ja/blog/yamlresume-docker)とき、目標はシンプルでした。1 つのコマンドを実行するだけで、どこでも履歴書の PDF をビルドするために必要なすべて — Node.js、yamlresume CLI、XeTeX、フォント — が揃います。
+
+動作はしましたが、イメージは重く、`yamlresume/yamlresume` はディスク上で約 4GB、[Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume) からのダウンロードで 1.77GB ありました。仕事が 1〜2 ページの PDF をレンダリングすることだけの CLI にとって、これは大きすぎます。CI でイメージをプルするたびに、そのコストを毎回支払うことになるのです。
+
+[v0.17.0](https://github.com/yamlresume/yamlresume/releases/tag/v0.17.0) では、同じイメージが **ディスク上 866MB、ダウンロード 321MB** になりました。ディスク上で約 4.7 倍、ダウンロードで 5.5 倍小さくなっています：
+
+| Image                  | Download | On disk |
+| ---------------------- | -------- | ------- |
+| v0.16.x (before)       | 1.77 GB  | ~4 GB   |
+| v0.17.0 (after)        | 321 MB   | 866 MB  |
+
+そしてあなたの手順は一切変わりません。同じ `docker run` コマンドで、PDF はバイト単位で同一です。
+
+この記事では、[フルの TeX Live を厳選された TinyTeX インストールに置き換えるコミット](https://github.com/yamlresume/yamlresume/commit/e5378f43332774494d01ecbf30df62398c7fde84) と [TeX エンジン、フォントアーティファクト、perl を削減するコミット](https://github.com/yamlresume/yamlresume/commit/18ec21375ad5fd7cfba0412eef3f6dd60210ca8d) — 2 つのコミットを通じて、どうやってここまでたどり着いたかを説明します。
+
+## なぜイメージはこんなに大きかったのか？
+
+以前の[ベースイメージの Dockerfile](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base) は次のようになっていました：
+
+```docker
+RUN apt update && \
+    apt install -y \
+    texlive-xetex \
+    texlive-fonts-extra \
+    texlive-lang-all \
+    fonts-noto-cjk \
+    fonts-noto-cjk-extra \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /usr/share/texlive/texmf-dist/doc \
+    && rm -rf /usr/share/texlive/texmf-dist/source \
+    && rm -rf /usr/share/texlive/texmf-dist/fonts/type1
+```
+
+ここではすでにできることはやっていました — apt リストの削除や、TeX Live の `doc`・`source`・`type1` ツリーの削除など — それでも結果は依然として約 4GB でした。問題は、Debian が TeX Live を大きなオールオアナッシングなコレクションとしてパッケージ化していることです：
+
+- `texlive-fonts-extra` は、名前が示す通り、基本的に TeX 用にパッケージ化されたことのあるすべてのフォント — 何千ものフォント — を含んでいます。
+- `texlive-lang-all` は、TeX が知っているすべての言語について、ハイフネーションパターン、babel データ、エンジンサポートを提供します。
+- `fonts-noto-cjk` と `fonts-noto-cjk-extra` は、完全な Noto CJK ファミリー — すべての CJK 言語、すべてのウエイト — を保持します。
+
+これらのコレクションは apt 側から削ることができません。apt に「moderncv だけ」や「Linux Libertine フォントだけ」を頼むことはできず、コレクション全体を取るか、何も取らないかの二者択一です。
+
+一方、YAMLResume 自体が使う LaTeX テンプレートは正確に [2 つ](https://github.com/yamlresume/yamlresume/tree/main/packages/core/src/renderer/latex)だけです。クラシックな `moderncv` クラスと、article ベースの `jake` テンプレートです。実際に必要とする LaTeX パッケージの集合は、小さくて列挙可能です。
+
+## TinyTeX の登場
+
+[TinyTeX](https://yihui.org/tinytex/) は Yihui Xie 氏による軽量な TeX Live ディストリビューションで、私たちの状況にぴったりのシンプルなアイデアを中心に構築されています。まず最小限の TeX コアをインストールし、次に `tlmgr` — TeX Live 独自のパッケージマネージャー — を使って、個々のパッケージを名前で追加します。
+
+apt のコレクションとは異なり、`tlmgr` は実際の LaTeX パッケージの粒度で動作します。したがって「すべてのフォント、すべての言語、すべてのエンジン」ではなく、新しい [Dockerfile.base](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base) は 2 つのテンプレートが必要とするものだけをインストールします。合計 37 パッケージです：
+
+```docker
+RUN /opt/bin/tlmgr install \
+    xetex \
+    moderncv \
+    ctex \
+    fontawesome5 \
+    fontawesome6 \
+    fontawesome7 \
+    libertine \
+    plex \
+    enumitem \
+    titlesec \
+    changepage \
+    setspace \
+    adjustbox \
+    tcolorbox \
+    environ \
+    trimspaces \
+    titling \
+    rsfs \
+    ucs \
+    microtype \
+    multirow \
+    colortbl \
+    babel-english \
+    babel-spanish \
+    babel-french \
+    babel-german \
+    babel-dutch \
+    babel-norsk \
+    babel-portuges \
+    babel-indonesian \
+    hyphen-spanish \
+    hyphen-french \
+    hyphen-german \
+    hyphen-dutch \
+    hyphen-norwegian \
+    hyphen-portuguese \
+    hyphen-indonesian
+```
+
+このリストについて補足します：
+
+- `moderncv` は moderncv テンプレート用、`enumitem`・`titlesec`・`tcolorbox` などは article ベースの jake テンプレート用です。
+- `libertine` と `plex` は、jake テンプレートのデフォルトフォントである Linux Libertine O と IBM Plex Sans を提供します。
+- `fontawesome5/6/7` は、テンプレートの各バージョンで使われるネットワークアイコンをカバーします。
+- `ctex` に `babel-*` および `hyphen-*` パッケージを加えることで、YAMLResume がサポートするロケール言語の CJK サポートとハイフネーションが得られます。
+
+ついでにもう 2 つの工夫も：
+
+```docker
+RUN wget -qO /tmp/install-tinytex.sh "https://yihui.org/tinytex/install-bin-unix.sh" && \
+    HOME=/opt sh /tmp/install-tinytex.sh && \
+    rm /tmp/install-tinytex.sh && \
+    /opt/bin/tlmgr option docfiles 0 && \
+    /opt/bin/tlmgr option srcfiles 0
+```
+
+- `HOME=/opt` — TinyTeX はデフォルトで `$HOME/.TinyTeX` にインストールします。代わりに `/opt/.TinyTeX` にインストールし、最終イメージ内の非 root の `yamlresume` ユーザーが `xelatex` を実行できるようにしました。あわせてツリー全体に `chmod -R a+rX` を実行して確実にしています。
+- `tlmgr option docfiles 0 && tlmgr option srcfiles 0` — パッケージのドキュメントも、パッケージのソースも不要です。このイメージで LaTeX パッケージを開発するわけではなく、ただ実行するだけだからです。
+
+## tlmgr が引き込むものの削減
+
+厳選されたインストールにより、最終イメージは約 4GB から 953MB へ削減されました。これは良いのですが、まだ終わりではありません。ツリーを調査すると、`ctex` などをインストールすると XeTeX が決して読まない大量のものが引き込まれることがわかりました。そこで 2 つ目のコミットでこれを取り除きました。
+
+### 使わないエンジン用のフォントツリー
+
+`ctex`（とその依存チェーン）は pdfTeX/pTeX の時代まで遡ります。当時は CJK 組版はビットマップと Type 1 のフォントツリー — `arphic`、`wadalab`、`uhc`、`zhmetrics`、`pTeX`/`upTeX` フォント — で行われていました。YAMLResume は XeLaTeX でコンパイルし、XeLaTeX は `fontspec`/`xeCJK` を通じてシステムフォントをファミリー名で読み込みます。そのため、これらのツリーはすべて無駄な重りです：
+
+```docker
+&& rm -rf \
+    /opt/.TinyTeX/texmf-dist/fonts/type1/arphic \
+    /opt/.TinyTeX/texmf-dist/fonts/type1/wadalab \
+    /opt/.TinyTeX/texmf-dist/fonts/type1/uhc \
+    /opt/.TinyTeX/texmf-dist/fonts/tfm/uhc \
+    /opt/.TinyTeX/texmf-dist/fonts/tfm/zhmetrics \
+    # ... and more
+```
+
+レガシーなフォント形式も同じ話です。`fontspec` は Linux Libertine と IBM Plex の OpenType 版を使うため、これらのファミリーの Type 1 版と `tfm` 版も削除します。依存関係として引き込まれた IPA/タイフォント（`tipa`、`fonts-tlwg`）、Latin Modern の Type 1 版、CNS ビットマップフォント、そして XeLaTeX が決して触れない 2 つのディレクトリ全体 — `fonts/afm`（フォントメトリクス）と `fonts/source`（Metafont ソース）— も同様です。
+
+### 使わない TeX エンジン
+
+TinyTeX には実行ファイルとシンボリックリンクでいっぱいの bin ディレクトリが付属しています：`luatex`、`pdftex`、`dvips`、`bibtex`、`metafont` などです。YAMLResume がシェルから呼び出すエンジンは正確に 1 つだけです。`xetex` と、その相棒である `xdvipdfmx`（XeTeX の `.xdv` 出力を PDF に変換します）、フォント検索用の `kpsewhich`、そして `xelatex` のシンボリックリンクを残し、残りは削除します：
+
+```docker
+&& TEXBIN=$(echo /opt/.TinyTeX/bin/*-linux) && \
+    find "$TEXBIN" -maxdepth 1 -type f \
+    ! -name xetex ! -name xdvipdfmx ! -name kpsewhich -delete && \
+    find "$TEXBIN" -maxdepth 1 -type l ! -name xelatex -delete && \
+    find /opt/.TinyTeX/texmf-var/web2c -name '*.fmt' ! -name 'xelatex.fmt' -delete
+```
+
+2 つ目の `find` は、他のエンジンのプリコンパイル済みフォーマットファイルを削除します。実行時に必要なのは `xelatex.fmt` だけです。
+
+### Perl
+
+TinyTeX のインストーラーと `tlmgr` は Perl スクリプトなので、ベースイメージはビルド時に Perl を必要とします。しかし `xelatex` は実行時に Perl を呼び出すことがないため、TeX ツリーが配置された時点で、Perl は `wget` と `xz-utils` とともにパージされます：
+
+```docker
+RUN apt-get purge -y wget xz-utils perl perl-modules-5.36 libperl5.36 && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
+```
+
+## 2 つのフォントパッケージの代わりに 4 つのフォントファイル
+
+以前のイメージには `fonts-noto-cjk` と `fonts-noto-cjk-extra` — 完全な Noto CJK ファミリー、すべての CJK 言語、すべてのウエイト — が含まれていました。しかし、私たちの CJK タイポグラフィ（レンダラー内の `renderCTeXConfig` を参照）は、正確に 4 つのフォント — Noto Serif/Sans CJK SC のレギュラーとボールド — しか参照しません。
+
+そこで新しいイメージでは、その 4 つの OTF ファイルだけをダウンロードします：
+
+```docker
+RUN mkdir -p /usr/share/fonts/opentype/noto-cjk && \
+    cd /usr/share/fonts/opentype/noto-cjk && \
+    wget -q "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf" && \
+    wget -q "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Bold.otf" && \
+    wget -q "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Serif/OTF/SimplifiedChinese/NotoSerifCJKsc-Regular.otf" && \
+    wget -q "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Serif/OTF/SimplifiedChinese/NotoSerifCJKsc-Bold.otf"
+```
+
+## 壊れたイメージは早期に失敗させる
+
+イメージが小さくなっても、すべてのテンプレートをコンパイルできなければ意味がありません。`fc-match` が "IBM Plex Sans" を解決できなかったり `xelatex` が存在しなかったりするイメージを黙って生成する docker ビルドは、大きなイメージよりはるかに悪いものです。そのため、Dockerfile はビルドを目立つ形で失敗させる健全性チェックで終わっています：
+
+```docker
+RUN fc-match "Linux Libertine O" && \
+    fc-match "IBM Plex Sans" && \
+    fc-match "Noto Serif CJK SC" && \
+    which xelatex && \
+    xelatex --version
+```
+
+フォント解決は `fontconfig` を通じて検証されます（これは、TinyTeX のフォントツリーを `fontspec` に公開するシンボリックリンクも同時にガードします。`fontspec` はファミリー名でフォントを解決するのに対し、`texmf-dist` は kpathsea インデックスのみだからです）。さらに CI ワークフローは[スモークテスト](https://github.com/yamlresume/yamlresume/blob/main/.github/workflows/test.yml)を実行し、イメージ経由で実際の履歴書をコンパイルします。
+
+## 結果
+
+2 つのコミットの結果を、非圧縮のディスク上サイズで示します：
+
+- TinyTeX への置き換え：最終イメージ 約 4GB → 953MB
+- エンジン、フォント、perl の削減：ベース 894MB → 807MB、最終イメージ 953MB → 866MB
+
+[Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume) には、`yamlresume/yamlresume-base:v2.0.0`（ダウンロード 306MB）と `yamlresume/yamlresume`（ダウンロード 321MB、`linux/amd64` と `linux/arm64` の両方）として公開されています：
+
+| Image                     | Download | On disk |
+| ------------------------- | -------- | ------- |
+| `yamlresume-base` v1.0.0  | 1.74 GB  | ~4 GB   |
+| `yamlresume-base` v2.0.0  | 306 MB   | 807 MB  |
+| `yamlresume` v0.16.x      | 1.77 GB  | ~4 GB   |
+| `yamlresume` v0.17.0      | 321 MB   | 866 MB  |
+
+## ユーザーにとっての変化
+
+イメージの使い方は一切変わりません：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+ただし、イメージがプルされるあらゆる場所で体験が向上します：
+
+- **CI が高速化** — [YAMLResume Action](/ja/blog/yamlresume-action) を使っている場合、ワークフローが docker レイヤーの待機に費やす時間が短くなります。
+- **ローカルの反復が安くなる** — `docker pull` で転送されるのは 1.77GB の代わりに 321MB になり、イメージのディスク使用量は 4 分の 1 になります。
+- **ベースイメージはキャッシュのまま** — [以前と同様](/ja/blog/yamlresume-docker)、`yamlresume/yamlresume` は安定した `yamlresume/yamlresume-base` の上に構築されるため、CLI のリリースが必要とするのは依然としてその上の薄いレイヤーのみです。ベースイメージはちょうど 5.7 倍軽くなりました。
+
+始めるには[インストールガイド](/ja/docs/installation)をご覧ください。いつもの通り、何か問題に遭遇した場合は、GitHub で[イシューを開いて](https://github.com/yamlresume/yamlresume/issues)ください。
+
+ずっと軽量になった docker 版 YAMLResume をお楽しみください！

@@ -1,0 +1,316 @@
+---
+title: Merampingkan Image Docker YAMLResume dari 4GB ke Bawah 1GB
+description:
+  "Bagaimana kami mengganti instalasi TeX Live penuh dengan instalasi TinyTeX
+  yang terkurasi dan memangkas image docker YAMLResume dari ~4GB ke 866MB"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-10-09
+---
+
+Ketika kami [merilis image docker YAMLResume](/id/blog/yamlresume-docker),
+tujuannya sederhana: satu perintah, dan Anda mendapatkan semuanya—Node.js, CLI
+yamlresume, XeTeX, dan font—yang diperlukan untuk membangun PDF resume di mana
+saja.
+
+Itu berhasil, tetapi image-nya berat. `yamlresume/yamlresume` memiliki ukuran
+sekitar 4GB di disk dan 1.77GB untuk diunduh dari [Docker
+Hub](https://hub.docker.com/r/yamlresume/yamlresume). Itu angka yang besar
+untuk sebuah CLI yang seluruh tugasnya hanya me-render PDF satu atau dua
+halaman, dan menarik image tersebut di CI berarti membayar biaya itu pada
+setiap run.
+
+Dengan [v0.17.0](https://github.com/yamlresume/yamlresume/releases/tag/v0.17.0),
+image yang sama sekarang **866MB di disk dan 321MB untuk diunduh**—sekitar
+4.7x lebih kecil di disk dan 5.5x lebih kecil untuk diunduh:
+
+| Image                  | Download | On disk |
+| ---------------------- | -------- | ------- |
+| v0.16.x (before)       | 1.77 GB  | ~4 GB   |
+| v0.17.0 (after)        | 321 MB   | 866 MB  |
+
+Dan tidak ada yang berubah bagi Anda: perintah `docker run` yang sama, PDF
+yang identik byte-per-byte.
+
+Postingan ini membahas bagaimana kami sampai ke sana, dalam dua commit:
+[menukar TeX Live penuh dengan instalasi TinyTeX yang
+terkurasi](https://github.com/yamlresume/yamlresume/commit/e5378f43332774494d01ecbf30df62398c7fde84)
+dan [memangkas engine TeX, artefak font, dan
+perl](https://github.com/yamlresume/yamlresume/commit/18ec21375ad5fd7cfba0412eef3f6dd60210ca8d).
+
+## Mengapa Image-nya Begitu Besar?
+
+[Dockerfile base image](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base)
+kami dulu terlihat seperti ini:
+
+```docker
+RUN apt update && \
+    apt install -y \
+    texlive-xetex \
+    texlive-fonts-extra \
+    texlive-lang-all \
+    fonts-noto-cjk \
+    fonts-noto-cjk-extra \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /usr/share/texlive/texmf-dist/doc \
+    && rm -rf /usr/share/texlive/texmf-dist/source \
+    && rm -rf /usr/share/texlive/texmf-dist/fonts/type1
+```
+
+Kami sudah melakukan pekerjaan rumah di sini—memangkas daftar apt dan
+menghapus pohon `doc`, `source`, dan `type1` milik TeX Live—tetapi hasilnya
+masih sekitar 4GB. Masalahnya adalah Debian mengemas TeX Live dalam koleksi
+besar yang serba-atau-tidak-sama-sekali:
+
+- `texlive-fonts-extra` berisi, sesuai namanya, pada dasarnya setiap font
+  yang pernah dikemas untuk TeX—ribuan di antaranya.
+- `texlive-lang-all` membawa pola hyphenation, data babel, dan dukungan
+  engine untuk setiap bahasa yang pernah dikenal TeX.
+- `fonts-noto-cjk` dan `fonts-noto-cjk-extra` membawa keluarga Noto CJK
+  secara lengkap—setiap bahasa CJK, setiap weight.
+
+Tidak ada satu pun koleksi ini yang dapat dipangkas dari sisi apt. Anda tidak
+bisa meminta apt untuk "hanya moderncv" atau "hanya font Linux Libertine"—Anda
+mengambil seluruh koleksi atau tidak sama sekali.
+
+Sementara itu, YAMLResume sendiri memiliki tepat [dua template
+LaTeX](https://github.com/yamlresume/yamlresume/tree/main/packages/core/src/renderer/latex):
+class `moderncv` yang klasik dan template `jake` berbasis article. Himpunan
+paket LaTeX yang benar-benar mereka perlukan kecil dan dapat dihitung.
+
+## Memperkenalkan TinyTeX
+
+[TinyTeX](https://yihui.org/tinytex/) adalah distribusi TeX Live ringan buatan
+Yihui Xie, yang dibangun di sekitar ide sederhana yang sangat cocok dengan
+situasi kami: memasang inti TeX minimal, lalu menggunakan `tlmgr`—manajer
+paket bawaan TeX Live—untuk menambahkan paket individual satu per satu
+berdasarkan nama.
+
+Berbeda dengan koleksi apt, `tlmgr` beroperasi pada granularitas paket LaTeX
+yang sebenarnya. Jadi alih-alih "semua font, semua bahasa, semua engine",
+[Dockerfile.base](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base)
+baru kami memasang tepat apa yang dibutuhkan kedua template tersebut—37 paket
+total:
+
+```docker
+RUN /opt/bin/tlmgr install \
+    xetex \
+    moderncv \
+    ctex \
+    fontawesome5 \
+    fontawesome6 \
+    fontawesome7 \
+    libertine \
+    plex \
+    enumitem \
+    titlesec \
+    changepage \
+    setspace \
+    adjustbox \
+    tcolorbox \
+    environ \
+    trimspaces \
+    titling \
+    rsfs \
+    ucs \
+    microtype \
+    multirow \
+    colortbl \
+    babel-english \
+    babel-spanish \
+    babel-french \
+    babel-german \
+    babel-dutch \
+    babel-norsk \
+    babel-portuges \
+    babel-indonesian \
+    hyphen-spanish \
+    hyphen-french \
+    hyphen-german \
+    hyphen-dutch \
+    hyphen-norwegian \
+    hyphen-portuguese \
+    hyphen-indonesian
+```
+
+Beberapa catatan tentang daftar ini:
+
+- `moderncv` untuk template moderncv; `enumitem`, `titlesec`, `tcolorbox`,
+  dan kawan-kawannya untuk template jake berbasis article.
+- `libertine` dan `plex` menyediakan Linux Libertine O dan IBM Plex Sans,
+  font bawaan template jake.
+- `fontawesome5/6/7` mencakup ikon jaringan yang digunakan di berbagai versi
+  template.
+- `ctex` ditambah paket-paket `babel-*` dan `hyphen-*` memberi kami dukungan
+  CJK dan hyphenation untuk bahasa lokal yang didukung YAMLResume.
+
+Dua trik lagi selagi kami mengerjakannya:
+
+```docker
+RUN wget -qO /tmp/install-tinytex.sh "https://yihui.org/tinytex/install-bin-unix.sh" && \
+    HOME=/opt sh /tmp/install-tinytex.sh && \
+    rm /tmp/install-tinytex.sh && \
+    /opt/bin/tlmgr option docfiles 0 && \
+    /opt/bin/tlmgr option srcfiles 0
+```
+
+- `HOME=/opt` — TinyTeX secara bawaan memasang ke dalam `$HOME/.TinyTeX`. Kami
+  memasangnya ke `/opt/.TinyTeX` sebagai gantinya agar pengguna non-root
+  `yamlresume` di image akhir dapat mengeksekusi `xelatex`, dan kami
+  `chmod -R a+rX` pohon direktorinya untuk memastikannya.
+- `tlmgr option docfiles 0 && tlmgr option srcfiles 0` — tanpa dokumentasi
+  paket, tanpa sumber paket. Kami tidak mengembangkan paket LaTeX di image
+  ini; kami hanya menjalankannya.
+
+## Memangkas Apa yang Ditarik tlmgr
+
+Instalasi terkurasi menurunkan image akhir dari ~4GB ke 953MB. Bagus, tetapi
+belum selesai. Inspeksi pohon direktori menunjukkan bahwa memasang `ctex` dan
+kawan-kawannya menarik segunung hal yang tidak pernah dibaca XeTeX, sehingga
+commit kedua menyisir semuanya.
+
+### Pohon Font untuk Engine yang Tidak Kami Gunakan
+
+`ctex` (dan rantai dependensinya) berasal dari era pdfTeX/pTeX, ketika
+typesetting CJK dilakukan dengan pohon font bitmap dan Type 1—font `arphic`,
+`wadalab`, `uhc`, `zhmetrics`, `pTeX`/`upTeX`. YAMLResume dikompilasi dengan
+XeLaTeX, yang membaca font sistem melalui `fontspec`/`xeCJK` berdasarkan nama
+keluarga, sehingga seluruh pohon tersebut adalah beban mati:
+
+```docker
+&& rm -rf \
+    /opt/.TinyTeX/texmf-dist/fonts/type1/arphic \
+    /opt/.TinyTeX/texmf-dist/fonts/type1/wadalab \
+    /opt/.TinyTeX/texmf-dist/fonts/type1/uhc \
+    /opt/.TinyTeX/texmf-dist/fonts/tfm/uhc \
+    /opt/.TinyTeX/texmf-dist/fonts/tfm/zhmetrics \
+    # ... and more
+```
+
+Cerita yang sama berlaku untuk format font lawas: `fontspec` menggunakan versi
+OpenType dari Linux Libertine dan IBM Plex, sehingga varian Type 1 dan `tfm`
+dari keluarga-keluarga itu juga ikut dihapus, beserta font IPA/Thai (`tipa`,
+`fonts-tlwg`) yang tertarik sebagai dependensi, varian Latin Modern Type 1,
+font bitmap CNS, dan dua direktori utuh yang tidak pernah disentuh
+XeLaTeX—`fonts/afm` (metrik font) dan `fonts/source` (sumber Metafont).
+
+### Engine TeX yang Tidak Kami Gunakan
+
+TinyTeX membawa direktori bin yang penuh dengan executable dan symlink:
+`luatex`, `pdftex`, `dvips`, `bibtex`, `metafont`, dan lainnya. YAMLResume
+memanggil tepat satu engine. Kami menyimpan `xetex`, temannya `xdvipdfmx`
+(yang mengubah keluaran `.xdv` XeTeX menjadi PDF), dan `kpsewhich` untuk
+pencarian font, plus symlink `xelatex`—dan menghapus sisanya:
+
+```docker
+&& TEXBIN=$(echo /opt/.TinyTeX/bin/*-linux) && \
+    find "$TEXBIN" -maxdepth 1 -type f \
+    ! -name xetex ! -name xdvipdfmx ! -name kpsewhich -delete && \
+    find "$TEXBIN" -maxdepth 1 -type l ! -name xelatex -delete && \
+    find /opt/.TinyTeX/texmf-var/web2c -name '*.fmt' ! -name 'xelatex.fmt' -delete
+```
+
+`find` kedua menghapus berkas format pra-kompilasi milik engine lain—hanya
+`xelatex.fmt` yang diperlukan saat runtime.
+
+### Perl
+
+Installer TinyTeX dan `tlmgr` adalah skrip Perl, sehingga base image memerlukan
+Perl saat build. Tetapi `xelatex` tidak pernah memanggil Perl saat runtime,
+sehingga begitu pohon TeX sudah terpasang, Perl dipangkas beserta `wget` dan
+`xz-utils`:
+
+```docker
+RUN apt-get purge -y wget xz-utils perl perl-modules-5.36 libperl5.36 && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
+```
+
+## Empat Berkas Font, Bukan Dua Paket Font
+
+Image lama mengirimkan `fonts-noto-cjk` dan `fonts-noto-cjk-extra`: keluarga
+Noto CJK secara lengkap, setiap bahasa CJK, setiap weight. Tetapi tipografi CJK
+kami (lihat `renderCTeXConfig` di renderer) mereferensikan tepat empat font:
+Noto Serif/Sans CJK SC, regular dan bold.
+
+Maka image baru hanya mengunduh keempat berkas OTF tersebut:
+
+```docker
+RUN mkdir -p /usr/share/fonts/opentype/noto-cjk && \
+    cd /usr/share/fonts/opentype/noto-cjk && \
+    wget -q "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf" && \
+    wget -q "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Bold.otf" && \
+    wget -q "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Serif/OTF/SimplifiedChinese/NotoSerifCJKsc-Regular.otf" && \
+    wget -q "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Serif/OTF/SimplifiedChinese/NotoSerifCJKsc-Bold.otf"
+```
+
+## Gagal Cepat pada Image yang Rusak
+
+Image yang lebih ramping baru menguntungkan jika ia masih mengompilasi setiap
+template. Sebuah build docker yang secara diam-diam menghasilkan image tempat
+`fc-match` tidak dapat menemukan "IBM Plex Sans" atau `xelatex` tidak ada,
+jauh lebih buruk daripada image yang besar, sehingga Dockerfile diakhiri
+dengan sanity check yang membuat build gagal dengan nyaring:
+
+```docker
+RUN fc-match "Linux Libertine O" && \
+    fc-match "IBM Plex Sans" && \
+    fc-match "Noto Serif CJK SC" && \
+    which xelatex && \
+    xelatex --version
+```
+
+Resolusi font diuji melalui `fontconfig` (ini juga menjaga symlink yang
+memaparkan pohon font TinyTeX ke `fontspec`, yang menemukan font berdasarkan
+nama keluarga, sementara `texmf-dist` hanya terindeks kpathsea), dan workflow
+CI menjalankan [smoke
+test](https://github.com/yamlresume/yamlresume/blob/main/.github/workflows/test.yml)
+yang mengompilasi resume sungguhan melalui image di atas semua itu.
+
+## Hasil
+
+Dua commit tersebut, diukur sebagai ukuran di disk yang tidak terkompresi:
+
+- Penukaran TinyTeX: image akhir ~4GB → 953MB
+- Pemangkasan engine, font, dan perl: base 894MB → 807MB, image akhir 953MB →
+  866MB
+
+Dipublikasikan ke [Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume)
+sebagai `yamlresume/yamlresume-base:v2.0.0` (unduhan 306MB) dan
+`yamlresume/yamlresume` (unduhan 321MB, untuk `linux/amd64` maupun
+`linux/arm64`):
+
+| Image                     | Download | On disk |
+| ------------------------- | -------- | ------- |
+| `yamlresume-base` v1.0.0  | 1.74 GB  | ~4 GB   |
+| `yamlresume-base` v2.0.0  | 306 MB   | 807 MB  |
+| `yamlresume` v0.16.x      | 1.77 GB  | ~4 GB   |
+| `yamlresume` v0.17.0      | 321 MB   | 866 MB  |
+
+## Apa Artinya Bagi Anda
+
+Tidak ada yang berubah dalam cara Anda menggunakan image ini:
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+Tetapi pengalaman membaik di mana pun image ini ditarik:
+
+- **CI menjadi lebih cepat**—jika Anda menggunakan [YAMLResume
+  Action](/id/blog/yamlresume-action), workflow Anda menghabiskan lebih sedikit
+  waktu menunggu layer docker.
+- **Iterasi lokal menjadi lebih murah**—`docker pull` kini memindahkan 321MB
+  alih-alih 1.77GB, dan image hanya membutuhkan seperempat ruang disk.
+- **Base image tetap menjadi cache**—seperti
+  [sebelumnya](/id/blog/yamlresume-docker), `yamlresume/yamlresume` dibangun di
+  atas `yamlresume/yamlresume-base` yang stabil, sehingga rilis CLI masih hanya
+  memerlukan satu layer tipis di atasnya. Base baru saja menjadi 5.7x lebih
+  ringan.
+
+Lihat [panduan instalasi](/id/docs/installation) untuk memulai, dan seperti
+biasa, jika Anda mengalami masalah apa pun, [buka
+issue](https://github.com/yamlresume/yamlresume/issues) di GitHub.
+
+Nikmati YAMLResume yang jauh lebih ringan dengan docker!

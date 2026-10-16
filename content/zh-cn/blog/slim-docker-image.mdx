@@ -1,0 +1,301 @@
+---
+title: "将 YAMLResume Docker 镜像从 4GB 精简到 1GB 以内"
+description:
+  "我们如何用精心筛选的 TinyTeX 安装替换完整的 TeX Live 安装，并将
+  YAMLResume docker 镜像从 ~4GB 缩减到 866MB"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-10-09
+---
+
+当我们[发布 YAMLResume docker 镜像](/zh-cn/blog/yamlresume-docker)时，
+目标很简单：一条命令，即可获得在任何地方构建简历 PDF 所需的全部内容
+——Node.js、yamlresume CLI、XeTeX 和字体。
+
+它确实能工作，但镜像很重。`yamlresume/yamlresume` 在磁盘上约占 4GB，
+从 [Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume) 下载需要
+1.77GB。对于一个只负责渲染一两页 PDF 的 CLI 来说，这太夸张了；而在 CI
+中拉取它，意味着每次运行都要付出这个代价。
+
+随着 [v0.17.0](https://github.com/yamlresume/yamlresume/releases/tag/v0.17.0)
+的发布，同一个镜像现在**磁盘占用 866MB、下载体积 321MB**——磁盘占用
+缩小约 4.7 倍，下载体积缩小约 5.5 倍：
+
+| Image                  | Download | On disk |
+| ---------------------- | -------- | ------- |
+| v0.16.x (before)       | 1.77 GB  | ~4 GB   |
+| v0.17.0 (after)        | 321 MB   | 866 MB  |
+
+而您无需做任何改变：相同的 `docker run` 命令，逐字节一致的 PDF。
+
+本文将介绍我们是如何通过两个提交做到这一点的：[用精心筛选的 TinyTeX
+安装替换完整的 TeX
+Live](https://github.com/yamlresume/yamlresume/commit/e5378f43332774494d01ecbf30df62398c7fde84)，
+以及[修剪 TeX 引擎、字体产物和
+perl](https://github.com/yamlresume/yamlresume/commit/18ec21375ad5fd7cfba0412eef3f6dd60210ca8d)。
+
+## 为什么镜像这么大？
+
+我们的[基础镜像
+Dockerfile](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base)
+曾经是这样的：
+
+```docker
+RUN apt update && \
+    apt install -y \
+    texlive-xetex \
+    texlive-fonts-extra \
+    texlive-lang-all \
+    fonts-noto-cjk \
+    fonts-noto-cjk-extra \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /usr/share/texlive/texmf-dist/doc \
+    && rm -rf /usr/share/texlive/texmf-dist/source \
+    && rm -rf /usr/share/texlive/texmf-dist/fonts/type1
+```
+
+我们在这里已经下过功夫——清除 apt 列表、删除 TeX Live 的 `doc`、
+`source` 和 `type1` 目录树——但结果仍然约为 4GB。问题在于，Debian 将
+TeX Live 打包成庞大且“全有或全无”的集合：
+
+- `texlive-fonts-extra` 顾名思义，基本上包含了曾为 TeX 打包过的所有字体
+  ——数以千计。
+- `texlive-lang-all` 为 TeX 听说过的每一种语言提供断字模式、babel 数据
+  和引擎支持。
+- `fonts-noto-cjk` 和 `fonts-noto-cjk-extra` 携带完整的 Noto CJK 字体
+  家族——每种 CJK 语言、每种字重。
+
+这些集合没有一个能从 apt 层面裁剪。您无法向 apt 要求“只装 moderncv”
+或“只装 Linux Libertine 字体”——要么整个集合全拿走，要么什么都拿不到。
+
+与此同时，YAMLResume 本身恰好只有两个 [LaTeX
+模板](https://github.com/yamlresume/yamlresume/tree/main/packages/core/src/renderer/latex)：
+经典的 `moderncv` 文档类和一个基于 article 的 `jake` 模板。它们实际
+需要的 LaTeX 包集合很小，并且可以一一列举。
+
+## TinyTeX 登场
+
+[TinyTeX](https://yihui.org/tinytex/) 是 Yihui Xie 的轻量级 TeX Live
+发行版，围绕一个非常适合我们情况的理念构建：先安装最精简的 TeX 核心，
+再使用 `tlmgr`——TeX Live 自带的包管理器——按名称逐个添加软件包。
+
+与 apt 的集合不同，`tlmgr` 以真正的 LaTeX 包为粒度进行操作。因此，
+我们的新
+[Dockerfile.base](https://github.com/yamlresume/yamlresume/blob/main/Dockerfile.base)
+不再安装“所有字体、所有语言、所有引擎”，而是只安装这两个模板需要的
+内容——总共 37 个包：
+
+```docker
+RUN /opt/bin/tlmgr install \
+    xetex \
+    moderncv \
+    ctex \
+    fontawesome5 \
+    fontawesome6 \
+    fontawesome7 \
+    libertine \
+    plex \
+    enumitem \
+    titlesec \
+    changepage \
+    setspace \
+    adjustbox \
+    tcolorbox \
+    environ \
+    trimspaces \
+    titling \
+    rsfs \
+    ucs \
+    microtype \
+    multirow \
+    colortbl \
+    babel-english \
+    babel-spanish \
+    babel-french \
+    babel-german \
+    babel-dutch \
+    babel-norsk \
+    babel-portuges \
+    babel-indonesian \
+    hyphen-spanish \
+    hyphen-french \
+    hyphen-german \
+    hyphen-dutch \
+    hyphen-norwegian \
+    hyphen-portuguese \
+    hyphen-indonesian
+```
+
+关于这份列表的几点说明：
+
+- `moderncv` 用于 moderncv 模板；`enumitem`、`titlesec`、`tcolorbox`
+  等用于基于 article 的 jake 模板。
+- `libertine` 和 `plex` 提供 Linux Libertine O 和 IBM Plex Sans，它们
+  是 jake 模板的默认字体。
+- `fontawesome5/6/7` 覆盖了各版本模板中使用的网络图标。
+- `ctex` 加上 `babel-*` 和 `hyphen-*` 包，为 YAMLResume 支持的区域
+  语言提供 CJK 支持和断字功能。
+
+顺便再分享两个技巧：
+
+```docker
+RUN wget -qO /tmp/install-tinytex.sh "https://yihui.org/tinytex/install-bin-unix.sh" && \
+    HOME=/opt sh /tmp/install-tinytex.sh && \
+    rm /tmp/install-tinytex.sh && \
+    /opt/bin/tlmgr option docfiles 0 && \
+    /opt/bin/tlmgr option srcfiles 0
+```
+
+- `HOME=/opt` —— TinyTeX 默认安装到 `$HOME/.TinyTeX`。我们改为安装到
+  `/opt/.TinyTeX`，以便最终镜像中的非 root 用户 `yamlresume` 也能执行
+  `xelatex`，并且我们会对整个目录树执行 `chmod -R a+rX` 来确保这一点。
+- `tlmgr option docfiles 0 && tlmgr option srcfiles 0` ——不要包文档，
+  也不要包源码。我们并不在这个镜像里开发 LaTeX 包；我们只是运行它们。
+
+## 修剪 tlmgr 引入的多余内容
+
+精心筛选的安装将最终镜像从 ~4GB 降到了 953MB。不错，但还没完。检查
+目录树发现，安装 `ctex` 等包会顺带引入一大堆 XeTeX 永远不会读取的东西，
+于是第二个提交就此下手。
+
+### 我们不使用的引擎的字体目录树
+
+`ctex`（及其依赖链）可以追溯到 pdfTeX/pTeX 时代，那时的 CJK 排版依靠
+位图和 Type 1 字体目录树——`arphic`、`wadalab`、`uhc`、`zhmetrics`、
+`pTeX`/`upTeX` 字体。YAMLResume 使用 XeLaTeX 编译，它通过
+`fontspec`/`xeCJK` 按字体家族名称读取系统字体，所以那些目录树全都是
+累赘：
+
+```docker
+&& rm -rf \
+    /opt/.TinyTeX/texmf-dist/fonts/type1/arphic \
+    /opt/.TinyTeX/texmf-dist/fonts/type1/wadalab \
+    /opt/.TinyTeX/texmf-dist/fonts/type1/uhc \
+    /opt/.TinyTeX/texmf-dist/fonts/tfm/uhc \
+    /opt/.TinyTeX/texmf-dist/fonts/tfm/zhmetrics \
+    # ... and more
+```
+
+传统字体格式也是同样的情况：`fontspec` 使用的是 Linux Libertine 和
+IBM Plex 的 OpenType 版本，所以这两个字体家族的 Type 1 和 `tfm` 变体
+也被一并移除；作为依赖被引入的 IPA/泰文字体（`tipa`、`fonts-tlwg`）、
+Latin Modern 的 Type 1 变体、CNS 位图字体，以及 XeLaTeX 永远不会触碰的
+两个完整目录——`fonts/afm`（字体度量）和 `fonts/source`（Metafont
+源文件）——也都删除了。
+
+### 我们不使用的 TeX 引擎
+
+TinyTeX 自带的 bin 目录里满是可执行文件和符号链接：`luatex`、
+`pdftex`、`dvips`、`bibtex`、`metafont` 等等。而 YAMLResume 只调用
+一个引擎。我们保留 `xetex`、它的搭档 `xdvipdfmx`（负责把 XeTeX 的
+`.xdv` 输出转换为 PDF）、用于字体查找的 `kpsewhich`，再加上 `xelatex`
+符号链接——其余全部删除：
+
+```docker
+&& TEXBIN=$(echo /opt/.TinyTeX/bin/*-linux) && \
+    find "$TEXBIN" -maxdepth 1 -type f \
+    ! -name xetex ! -name xdvipdfmx ! -name kpsewhich -delete && \
+    find "$TEXBIN" -maxdepth 1 -type l ! -name xelatex -delete && \
+    find /opt/.TinyTeX/texmf-var/web2c -name '*.fmt' ! -name 'xelatex.fmt' -delete
+```
+
+第二条 `find` 删除其他引擎的预编译格式文件——运行时只需要
+`xelatex.fmt`。
+
+### Perl
+
+TinyTeX 的安装程序和 `tlmgr` 都是 Perl 脚本，所以基础镜像在构建时
+需要 Perl。但 `xelatex` 在运行时从不调用 Perl，因此一旦 TeX 目录树
+就位，Perl 就会连同 `wget` 和 `xz-utils` 一起被清除：
+
+```docker
+RUN apt-get purge -y wget xz-utils perl perl-modules-5.36 libperl5.36 && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
+```
+
+## 四个字体文件，代替两个字体包
+
+旧镜像附带 `fonts-noto-cjk` 和 `fonts-noto-cjk-extra`：完整的 Noto
+CJK 家族，每种 CJK 语言、每种字重。但我们的 CJK 排版（参见渲染器中的
+`renderCTeXConfig`）恰好只引用了四种字体：Noto Serif/Sans CJK SC 的
+常规体和粗体。
+
+所以新镜像只下载这四个 OTF 文件：
+
+```docker
+RUN mkdir -p /usr/share/fonts/opentype/noto-cjk && \
+    cd /usr/share/fonts/opentype/noto-cjk && \
+    wget -q "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf" && \
+    wget -q "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Bold.otf" && \
+    wget -q "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Serif/OTF/SimplifiedChinese/NotoSerifCJKsc-Regular.otf" && \
+    wget -q "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Serif/OTF/SimplifiedChinese/NotoSerifCJKsc-Bold.otf"
+```
+
+## 镜像损坏时快速失败
+
+只有当一个更精简的镜像仍能编译每个模板时，它才算得上一种胜利。如果
+docker 构建悄悄产出一个 `fc-match` 无法解析 "IBM Plex Sans"、或者缺少
+`xelatex` 的镜像，那比一个臃肿的镜像糟糕得多。因此，Dockerfile 以
+一组健全性检查作为结尾，让构建在出问题时会响亮地失败：
+
+```docker
+RUN fc-match "Linux Libertine O" && \
+    fc-match "IBM Plex Sans" && \
+    fc-match "Noto Serif CJK SC" && \
+    which xelatex && \
+    xelatex --version
+```
+
+字体解析通过 `fontconfig` 进行验证（这也保护了那些将 TinyTeX 字体
+目录树暴露给 `fontspec` 的符号链接——`fontspec` 按字体家族名称解析
+字体，而 `texmf-dist` 只被 kpathsea 索引）。在此基础上，CI 工作流还会
+运行一个[冒烟测试](https://github.com/yamlresume/yamlresume/blob/main/.github/workflows/test.yml)，
+通过镜像编译一份真实的简历。
+
+## 成果
+
+这两个提交的成果，以未压缩的磁盘占用衡量：
+
+- 替换 TinyTeX：最终镜像 ~4GB → 953MB
+- 引擎、字体和 perl 修剪：基础镜像 894MB → 807MB，最终镜像 953MB →
+  866MB
+
+已发布到 [Docker Hub](https://hub.docker.com/r/yamlresume/yamlresume)：
+`yamlresume/yamlresume-base:v2.0.0`（下载体积 306MB）和
+`yamlresume/yamlresume`（下载体积 321MB，同时支持 `linux/amd64` 和
+`linux/arm64`）：
+
+| Image                     | Download | On disk |
+| ------------------------- | -------- | ------- |
+| `yamlresume-base` v1.0.0  | 1.74 GB  | ~4 GB   |
+| `yamlresume-base` v2.0.0  | 306 MB   | 807 MB  |
+| `yamlresume` v0.16.x      | 1.77 GB  | ~4 GB   |
+| `yamlresume` v0.17.0      | 321 MB   | 866 MB  |
+
+## 这对您意味着什么
+
+您使用镜像的方式没有任何变化：
+
+```sh
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
+docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume.yml
+```
+
+但凡是需要拉取镜像的地方，体验都在改善：
+
+- **CI 更快了**——如果您使用 [YAMLResume
+  Action](/zh-cn/blog/yamlresume-action)，您的工作流等待 docker 层的
+  时间就更少了。
+- **本地迭代更划算**——`docker pull` 现在只需传输 321MB 而不是
+  1.77GB，镜像占用的磁盘空间也只有原来的四分之一。
+- **基础镜像仍然充当缓存**——[如前所述](/zh-cn/blog/yamlresume-docker)，
+  `yamlresume/yamlresume` 构建在稳定的 `yamlresume/yamlresume-base`
+  之上，因此 CLI 发布仍然只需要在其上叠加薄薄的一层。而这个基础镜像
+  刚刚变轻了 5.7 倍。
+
+查看[安装指南](/zh-cn/docs/installation)开始使用。一如既往地，如果
+遇到任何问题，请在 GitHub 上[提交
+issue](https://github.com/yamlresume/yamlresume/issues)。
+
+享受更轻量的 YAMLResume docker 体验！
