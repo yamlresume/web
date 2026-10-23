@@ -242,6 +242,20 @@ YAMLResume は [zod](https://zod.dev) を採用して実行時に履歴書デー
 | `aliases?` | `Record<SectionID, string>` | ⬜       | キーは有効なセクションID、値は文字列（2-128文字）でなければなりません |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | 有効な順序付け可能なセクションIDの配列                           |
 
+##### ThemeSchema
+
+アクセントカラーなど、履歴書のビジュアルテーマ設定を定義します。
+markdown エンジンはテーマオプションを無視します。
+
+| 属性      | タイプ                                 | 必須 | 検証ルール                 |
+| --------- | -------------------------------------- | ---- | -------------------------- |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜   | [アクセントカラー](#accentcolor) を参照 |
+
+`colors.accent` オプションは、セクションタイトル、罫線、リンク、
+ラベルなどのハイライト要素に使用するアクセントカラーを設定します。
+名前付きの [`AccentColor`](#accentcolor) プリセット、または任意の
+`#RRGGBB` 形式の16進カラー文字列を指定できます。
+
 #### HtmlLayoutSchema
 
 HTML レイアウト設定を検証します。
@@ -252,6 +266,7 @@ HTML レイアウト設定を検証します。
 | `advanced?`   | [`HtmlAdvancedSchema`](#htmladvancedschema)           | ⬜       |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       |
 | `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜       |
+| `theme?`      | [`ThemeSchema`](#themeschema)                         | ⬜       |
 | `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜       |
 
 ##### HtmlAdvancedSchema
@@ -260,6 +275,7 @@ HTML レイアウト設定を検証します。
 
 | 属性         | タイプ      | 必須 | 検証ルール |
 | ------------ | --------- | -------- | ---------- |
+| `showAnchors?` | `boolean` | ⬜       | true/false |
 | `showIcons?` | `boolean` | ⬜       | true/false |
 | `title?`      | `string`  | ⬜       | -                |
 | `footer?`     | `string`  | ⬜       | -                |
@@ -295,6 +311,7 @@ LaTeX 固有の設定オプションを検証します。
 | `page?`       | [`LatexPageSchema`](#latexpageschema)               | ⬜       | [ページスキーマ](#latexpageschema) を参照                   |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | [セクションスキーマ](#sectionsschema) を参照                |
 | `template?`   | [`LatexTemplate`](#latextemplate)                   | ⬜       | 事前定義された[テンプレートオプション](#template) からである必要があります |
+| `theme?`      | [`ThemeSchema`](#themeschema)                       | ⬜       | [テーマスキーマ](#themeschema) を参照      |
 | `typography?` | [`LatexTypographySchema`](#latextypographyschema)   | ⬜       | [タイポグラフィスキーマ](#latextypographyschema) を参照      |
 
 ##### LatexAdvancedSchema
@@ -348,6 +365,7 @@ DOCX レイアウト設定を検証します。
 | `page?`       | [`DocxPageSchema`](#docxpageschema)                   | ⬜       | [ページスキーマ](#docxpageschema) を参照                   |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       | [セクションスキーマ](#sectionsschema) を参照                |
 | `template?`   | [`DocxTemplate`](#docxtemplate)                       | ⬜       | 事前定義された[テンプレートオプション](#docxtemplate) からである必要があります |
+| `theme?`      | [`ThemeSchema`](#themeschema)                         | ⬜       | [テーマスキーマ](#themeschema) を参照      |
 | `typography?` | [`DocxTypographySchema`](#docxtypographyschema)       | ⬜       | [タイポグラフィスキーマ](#docxtypographyschema) を参照      |
 
 ##### DocxAdvancedSchema
@@ -521,6 +539,26 @@ DOCX 出力用のフォントファミリー名を検証します。
 - 事前定義されたネットワークオプションの 1 つである必要があります
 - 例：`GitHub`、`LinkedIn`、`Twitter`、`Facebook`、`Instagram`
 
+### AccentColor
+
+[moderncv](https://github.com/moderncv/moderncv) のカラースキームパレットに
+従う、すべてのアクセントカラープリセットの共用体型です。
+`AccentColor` が期待される任意の場所では、任意の `#RRGGBB` 形式の
+16進カラー文字列も受け付けます。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：
+  - `black` - `#000000`
+  - `blue` - `#3873B3`
+  - `burgundy` - `#980000`
+  - `cerulean` - `#0081A7`
+  - `green` - `#59B24D`
+  - `grey` - `#737373`
+  - `orange` - `#F28C26`
+  - `purple` - `#8054CC`
+  - `red` - `#F23333`
+
 ### DocxFontSize
 
 すべての可能な DOCX フォントサイズオプションのユニオンタイプ。
@@ -554,7 +592,7 @@ DOCX 出力用のフォントファミリー名を検証します。
 
 **検証ルール：**
 
-- 以下のいずれかである必要があります：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
+- 以下のいずれかである必要があります：`jake`、`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
 - 参照：[テンプレート](/ja/docs/layouts/latex/templates)
 
 ### HtmlFontSize
@@ -573,7 +611,7 @@ DOCX 出力用のフォントファミリー名を検証します。
 
 **検証ルール：**
 
-- 以下のいずれかである必要があります：`calm`
+- 以下のいずれかである必要があります：`calm`、`kami`、`vscode`
 - 参照：[テンプレート](/ja/docs/layouts/html/templates)
 
 ### LocaleLanguage

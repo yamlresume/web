@@ -244,6 +244,20 @@ Validates section customization settings.
 | `aliases?` | `Record<SectionID, string>` | ⬜       | Keys must be valid section IDs, values must be strings (2-128 chars) |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | Array of valid orderable section IDs                                 |
 
+##### ThemeSchema
+
+Defines visual theme settings for the resume, such as accent colors. The
+markdown engine ignores the theme option.
+
+| Prop      | Type                                   | Required | Validation Rules                 |
+| --------- | -------------------------------------- | -------- | -------------------------------- |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜       | see [accent color](#accentcolor) |
+
+The `colors.accent` option sets the accent color used for highlighted
+elements such as section titles, rules, links, and labels. It accepts a named
+[`AccentColor`](#accentcolor) preset or an arbitrary `#RRGGBB` hex color
+string.
+
 #### HtmlLayoutSchema
 
 Validates HTML layout configuration.
@@ -254,6 +268,7 @@ Validates HTML layout configuration.
 | `advanced?`   | [`HtmlAdvancedSchema`](#htmladvancedschema)           | ⬜       |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       |
 | `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜       |
+| `theme?`      | [`ThemeSchema`](#themeschema)                         | ⬜       |
 | `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜       |
 
 ##### HtmlAdvancedSchema
@@ -262,6 +277,7 @@ Validates advanced HTML configuration options.
 
 | Prop          | Type      | Required | Validation Rules |
 | ------------- | --------- | -------- | ---------------- |
+| `showAnchors?`| `boolean` | ⬜       | true/false       |
 | `showIcons?`  | `boolean` | ⬜       | true/false       |
 | `title?`      | `string`  | ⬜       | -                |
 | `footer?`     | `string`  | ⬜       | -                |
@@ -297,6 +313,7 @@ Validates LaTeX layout configuration.
 | `page?`       | [`LatexPageSchema`](#latexpageschema)               | ⬜       | See [page schema](#latexpageschema)                   |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | See [sections schema](#sectionsschema)                |
 | `template?`   | [`LatexTemplate`](#latextemplate)                   | ⬜       | Must be from predefined [template options](#template) |
+| `theme?`      | [`ThemeSchema`](#themeschema)                       | ⬜       | See [theme schema](#themeschema)                      |
 | `typography?` | [`LatexTypographySchema`](#latextypographyschema)   | ⬜       | See [typography schema](#latextypographyschema)       |
 
 ##### LatexAdvancedSchema
@@ -350,6 +367,7 @@ Validates DOCX layout configuration.
 | `page?`       | [`DocxPageSchema`](#docxpageschema)                   | ⬜       | See [page schema](#docxpageschema)                    |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       | See [sections schema](#sectionsschema)                |
 | `template?`   | [`DocxTemplate`](#docxtemplate)                       | ⬜       | Must be from predefined [template options](#docxtemplate) |
+| `theme?`      | [`ThemeSchema`](#themeschema)                         | ⬜       | See [theme schema](#themeschema)                          |
 | `typography?` | [`DocxTypographySchema`](#docxtypographyschema)       | ⬜       | See [typography schema](#docxtypographyschema)        |
 
 ##### DocxAdvancedSchema
@@ -523,6 +541,26 @@ A union type for all possible social network options.
 - Must be one of the predefined network options
 - Examples: `GitHub`, `LinkedIn`, `Twitter`, `Facebook`, `Instagram`
 
+### AccentColor
+
+A union type for all possible accent color presets, following the
+[moderncv](https://github.com/moderncv/moderncv) color scheme palette.
+An arbitrary `#RRGGBB` hex color string is also accepted wherever an
+`AccentColor` is expected.
+
+**Validation Rules:**
+
+- Must be one of:
+  - `black` - `#000000`
+  - `blue` - `#3873B3`
+  - `burgundy` - `#980000`
+  - `cerulean` - `#0081A7`
+  - `green` - `#59B24D`
+  - `grey` - `#737373`
+  - `orange` - `#F28C26`
+  - `purple` - `#8054CC`
+  - `red` - `#F23333`
+
 ### DocxFontSize
 
 A union type for all possible DOCX font size options.
@@ -566,7 +604,7 @@ A union type for all possible HTML template options.
 
 **Validation Rules:**
 
-- Must be one of: `calm`
+- Must be one of: `calm`, `kami`, `vscode`
 - See also: [templates](/docs/layouts/html/templates)
 
 ### LatexTemplate
@@ -575,7 +613,7 @@ A union type for all possible LaTeX template options.
 
 **Validation Rules:**
 
-- Must be one of: `moderncv-banking`, `moderncv-casual`, `moderncv-classic`
+- Must be one of: `jake`, `moderncv-banking`, `moderncv-casual`, `moderncv-classic`
 - See also: [templates](/docs/layouts/latex/templates)
 
 ### PaperSize

@@ -242,6 +242,16 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 | `aliases?` | `Record<SectionID, string>` | ⬜       | 鍵必須是有效的分節 ID，值必須是字串（2-128 個字元） |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | 有效可排序分節 ID 的陣列                           |
 
+##### ThemeSchema
+
+定義履歷的視覺主題設置，例如強調色。markdown 引擎會忽略主題選項。
+
+| 屬性      | 類型                                   | 必需 | 驗證規則                   |
+| --------- | -------------------------------------- | ---- | -------------------------- |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜   | 參見[強調色](#accentcolor) |
+
+`colors.accent` 選項設定用於章節標題、分隔線、連結和標籤等突顯元素的強調色。它接受具名的 [`AccentColor`](#accentcolor) 預設或任意的 `#RRGGBB` 十六進位顏色字串。
+
 #### HtmlLayoutSchema
 
 驗證 HTML 佈局配置。
@@ -252,6 +262,7 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 | `advanced?`   | [`HtmlAdvancedSchema`](#htmladvancedschema)           | ⬜       |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       |
 | `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜       |
+| `theme?`      | [`ThemeSchema`](#themeschema)                         | ⬜       |
 | `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜       |
 
 ##### HtmlAdvancedSchema
@@ -260,6 +271,7 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 
 | 屬性          | 類型      | 必需 | 驗證規則 |
 | ------------- | --------- | -------- | -------- |
+| `showAnchors?`| `boolean` | ⬜       | true/false |
 | `showIcons?`  | `boolean` | ⬜       | true/false |
 | `title?`      | `string`  | ⬜       | -        |
 | `footer?`     | `string`  | ⬜       | -        |
@@ -295,6 +307,7 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 | `page?`       | [`LatexPageSchema`](#latexpageschema)               | ⬜       | 參見[頁面模式](#latexpageschema)                   |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | 參見[分節模式](#sectionsschema)                |
 | `template?`   | [`LatexTemplate`](#latextemplate)                   | ⬜       | 必須來自預定義的[模板選項](#template) |
+| `theme?`      | [`ThemeSchema`](#themeschema)                       | ⬜       | 參見[主題模式](#themeschema) |
 | `typography?` | [`LatexTypographySchema`](#latextypographyschema)   | ⬜       | 參見[排版模式](#latextypographyschema)      |
 
 ##### LatexAdvancedSchema
@@ -348,6 +361,7 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 | `page?`       | [`DocxPageSchema`](#docxpageschema)                   | ⬜       | 參見[頁面模式](#docxpageschema)                    |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       | 參見[分節模式](#sectionsschema)                |
 | `template?`   | [`DocxTemplate`](#docxtemplate)                       | ⬜       | 必須來自預定義的[模板選項](#docxtemplate) |
+| `theme?`      | [`ThemeSchema`](#themeschema)                         | ⬜       | 參見[主題模式](#themeschema) |
 | `typography?` | [`DocxTypographySchema`](#docxtypographyschema)       | ⬜       | 參見[排版模式](#docxtypographyschema)        |
 
 ##### DocxAdvancedSchema
@@ -521,14 +535,30 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 - 必須是預定義的網路選項之一
 - 示例：`GitHub`、`LinkedIn`、`Twitter`、`Facebook`、`Instagram`
 
+### AccentColor
+
+所有可能的強調色預設的聯合型別，遵循 [moderncv](https://github.com/moderncv/moderncv) 的配色方案調色盤。在任何需要 `AccentColor` 的地方，也接受任意的 `#RRGGBB` 十六進位顏色字串。
+
+**驗證規則：**
+
+- 必須是以下之一：
+  - `black` - `#000000`
+  - `blue` - `#3873B3`
+  - `burgundy` - `#980000`
+  - `cerulean` - `#0081A7`
+  - `green` - `#59B24D`
+  - `grey` - `#737373`
+  - `orange` - `#F28C26`
+  - `purple` - `#8054CC`
+  - `red` - `#F23333`
+
 ### LatexTemplate
 
 所有可能模板選項的聯合類型。
 
 **驗證規則：**
 
-- 必須是以下之一：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
-- 必須是以下之一：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
+- 必須是以下之一：`jake`、`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
 - 另請參閱：[模板](/zh-tw/docs/layouts/latex/templates)
 
 ### DocxFontSize
@@ -574,7 +604,7 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 
 **驗證規則：**
 
-- 必須是以下之一：`calm`
+- 必須是以下之一：`calm`、`kami`、`vscode`
 - 另請參閱：[模板](/zh-tw/docs/layouts/html/templates)
 
 ### LocaleLanguage

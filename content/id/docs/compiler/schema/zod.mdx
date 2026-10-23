@@ -244,6 +244,20 @@ Memvalidasi pengaturan kustomisasi bagian.
 | `aliases?` | `Record<SectionID, string>` | ⬜       | Key harus ID bagian yang valid, nilai harus string (2-128 karakter) |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | Array ID bagian yang dapat diurutkan yang valid                                 |
 
+##### ThemeSchema
+
+Mendefinisikan pengaturan tema visual untuk resume, seperti warna aksen.
+Engine markdown mengabaikan opsi tema.
+
+| Kolom      | Tipe                                   | Wajib | Aturan Validasi                 |
+| ----------- | -------------------------------------- | ----- | -------------------------------- |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜       | lihat [warna aksen](#accentcolor) |
+
+Opsi `colors.accent` menetapkan warna aksen untuk elemen yang disorot seperti
+judul bagian, garis, tautan, dan label. Opsi ini menerima preset
+[`AccentColor`](#accentcolor) bernama atau string warna heksadesimal
+`#RRGGBB` arbitrer.
+
 #### HtmlLayoutSchema
 
 Memvalidasi konfigurasi tata letak HTML.
@@ -254,6 +268,7 @@ Memvalidasi konfigurasi tata letak HTML.
 | `advanced?`   | [`HtmlAdvancedSchema`](#htmladvancedschema)           | ⬜       |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       |
 | `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜       |
+| `theme?`      | [`ThemeSchema`](#themeschema)                         | ⬜       |
 | `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜       |
 
 ##### HtmlAdvancedSchema
@@ -262,6 +277,7 @@ Memvalidasi opsi konfigurasi HTML lanjutan.
 
 | Kolom          | Tipe      | Wajib | Aturan Validasi |
 | ------------- | --------- | -------- | ---------------- |
+| `showAnchors?`| `boolean` | ⬜       | true/false       |
 | `showIcons?`  | `boolean` | ⬜       | true/false       |
 | `title?`      | `string`  | ⬜       | -                |
 | `footer?`     | `string`  | ⬜       | -                |
@@ -297,6 +313,7 @@ Memvalidasi konfigurasi tata letak LaTeX.
 | `page?`       | [`LatexPageSchema`](#latexpageschema)               | ⬜       | Lihat [skema halaman](#latexpageschema)                   |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | Lihat [skema bagian](#sectionsschema)                |
 | `template?`   | [`LatexTemplate`](#latextemplate)                   | ⬜       | Harus dari [opsi template](#template) yang telah ditentukan |
+| `theme?`      | [`ThemeSchema`](#themeschema)                       | ⬜       | Lihat [skema tema](#themeschema)                      |
 | `typography?` | [`LatexTypographySchema`](#latextypographyschema)   | ⬜       | Lihat [skema tipografi](#latextypographyschema)       |
 
 ##### LatexAdvancedSchema
@@ -350,6 +367,7 @@ Memvalidasi konfigurasi tata letak DOCX.
 | `page?`       | [`DocxPageSchema`](#docxpageschema)                   | ⬜       | Lihat [skema halaman](#docxpageschema)                    |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       | Lihat [skema bagian](#sectionsschema)                |
 | `template?`   | [`DocxTemplate`](#docxtemplate)                       | ⬜       | Harus dari [opsi template](#docxtemplate) yang telah ditentukan |
+| `theme?`      | [`ThemeSchema`](#themeschema)                         | ⬜       | Lihat [skema tema](#themeschema)                       |
 | `typography?` | [`DocxTypographySchema`](#docxtypographyschema)       | ⬜       | Lihat [skema tipografi](#docxtypographyschema)        |
 
 ##### DocxAdvancedSchema
@@ -523,6 +541,26 @@ Union type untuk semua opsi jaringan sosial possible.
 - Harus salah satu dari opsi jaringan yang telah ditentukan
 - Contoh: `GitHub`, `LinkedIn`, `Twitter`, `Facebook`, `Instagram`
 
+### AccentColor
+
+Tipe union untuk semua preset warna aksen yang memungkinkan, mengikuti
+palet skema warna [moderncv](https://github.com/moderncv/moderncv).
+String warna heksadesimal `#RRGGBB` arbitrer juga diterima di mana pun
+`AccentColor` diharapkan.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari:
+  - `black` - `#000000`
+  - `blue` - `#3873B3`
+  - `burgundy` - `#980000`
+  - `cerulean` - `#0081A7`
+  - `green` - `#59B24D`
+  - `grey` - `#737373`
+  - `orange` - `#F28C26`
+  - `purple` - `#8054CC`
+  - `red` - `#F23333`
+
 ### DocxFontSize
 
 Union type untuk semua opsi ukuran font DOCX possible.
@@ -566,7 +604,7 @@ Union type untuk semua opsi template HTML possible.
 
 **Aturan Validasi:**
 
-- Harus salah satu dari: `calm`
+- Harus salah satu dari: `calm`, `kami`, `vscode`
 - Lihat juga: [templates](/docs/layouts/html/templates)
 
 ### LatexTemplate
@@ -575,7 +613,7 @@ Union type untuk semua opsi template LaTeX possible.
 
 **Aturan Validasi:**
 
-- Harus salah satu dari: `moderncv-banking`, `moderncv-casual`, `moderncv-classic`
+- Harus salah satu dari: `jake`, `moderncv-banking`, `moderncv-casual`, `moderncv-classic`
 - Lihat juga: [templates](/docs/layouts/latex/templates)
 
 ### PaperSize

@@ -242,6 +242,16 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 | `aliases?` | `Record<SectionID, string>` | ⬜       | 键必须是有效的分节 ID，值必须是字符串（2-128 个字符） |
 | `order?`   | `OrderableSectionID[]`      | ⬜       | 有效可排序分节 ID 的数组                           |
 
+##### ThemeSchema
+
+定义简历的视觉主题设置，例如强调色。markdown 引擎会忽略主题选项。
+
+| 属性      | 类型                                   | 必需 | 验证规则                   |
+| --------- | -------------------------------------- | ---- | -------------------------- |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜   | 参见[强调色](#accentcolor) |
+
+`colors.accent` 选项设置用于章节标题、分隔线、链接和标签等突出元素的强调色。它接受命名的 [`AccentColor`](#accentcolor) 预设或任意的 `#RRGGBB` 十六进制颜色字符串。
+
 #### HtmlLayoutSchema
 
 验证 HTML 布局配置。
@@ -252,6 +262,7 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 | `advanced?`   | [`HtmlAdvancedSchema`](#htmladvancedschema)           | ⬜       |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       |
 | `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜       |
+| `theme?`      | [`ThemeSchema`](#themeschema)                         | ⬜       |
 | `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜       |
 
 ##### HtmlAdvancedSchema
@@ -260,6 +271,7 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 
 | 属性          | 类型      | 必需 | 验证规则 |
 | ------------- | --------- | -------- | -------- |
+| `showAnchors?`| `boolean` | ⬜       | true/false |
 | `showIcons?`  | `boolean` | ⬜       | true/false |
 | `title?`      | `string`  | ⬜       | -        |
 | `footer?`     | `string`  | ⬜       | -        |
@@ -295,6 +307,7 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 | `page?`       | [`LatexPageSchema`](#latexpageschema)               | ⬜       | 参见[页面模式](#latexpageschema)                   |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | 参见[分节模式](#sectionsschema)                |
 | `template?`   | [`LatexTemplate`](#latextemplate)                   | ⬜       | 必须来自预定义的[模板选项](#template) |
+| `theme?`      | [`ThemeSchema`](#themeschema)                       | ⬜       | 参见[主题模式](#themeschema) |
 | `typography?` | [`LatexTypographySchema`](#latextypographyschema)   | ⬜       | 参见[排版模式](#latextypographyschema)      |
 
 ##### LatexAdvancedSchema
@@ -348,6 +361,7 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 | `page?`       | [`DocxPageSchema`](#docxpageschema)                   | ⬜       | 参见[页面模式](#docxpageschema)                    |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜       | 参见[分节模式](#sectionsschema)                |
 | `template?`   | [`DocxTemplate`](#docxtemplate)                       | ⬜       | 必须来自预定义的[模板选项](#docxtemplate) |
+| `theme?`      | [`ThemeSchema`](#themeschema)                         | ⬜       | 参见[主题模式](#themeschema) |
 | `typography?` | [`DocxTypographySchema`](#docxtypographyschema)       | ⬜       | 参见[排版模式](#docxtypographyschema)        |
 
 ##### DocxAdvancedSchema
@@ -521,14 +535,30 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 - 必须是预定义的网络选项之一
 - 示例：`GitHub`、`LinkedIn`、`Twitter`、`Facebook`、`Instagram`
 
+### AccentColor
+
+所有可能的强调色预设的联合类型，遵循 [moderncv](https://github.com/moderncv/moderncv) 的配色方案调色板。在任何需要 `AccentColor` 的地方，也接受任意的 `#RRGGBB` 十六进制颜色字符串。
+
+**验证规则：**
+
+- 必须是以下之一：
+  - `black` - `#000000`
+  - `blue` - `#3873B3`
+  - `burgundy` - `#980000`
+  - `cerulean` - `#0081A7`
+  - `green` - `#59B24D`
+  - `grey` - `#737373`
+  - `orange` - `#F28C26`
+  - `purple` - `#8054CC`
+  - `red` - `#F23333`
+
 ### LatexTemplate
 
 所有可能模板选项的联合类型。
 
 **验证规则：**
 
-- 必须是以下之一：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
-- 必须是以下之一：`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
+- 必须是以下之一：`jake`、`moderncv-banking`、`moderncv-casual`、`moderncv-classic`
 - 另请参阅：[模板](/zh-cn/docs/layouts/latex/templates)
 
 ### DocxFontSize
@@ -574,7 +604,7 @@ YAMLResume 采用 [zod](https://zod.dev) 在运行时验证简历数据。
 
 **验证规则：**
 
-- 必须是以下之一：`calm`
+- 必须是以下之一：`calm`、`kami`、`vscode`
 - 另请参阅：[模板](/zh-cn/docs/layouts/html/templates)
 
 ### LocaleLanguage

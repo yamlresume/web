@@ -246,6 +246,20 @@ Valida a configuração de personalização de secções.
 | `aliases?` | `Record<SectionID, string>` | ⬜️          | Chaves devem ser IDs de secção válidos, valores strings (2-128 ch) |
 | `order?`   | `OrderableSectionID[]`      | ⬜️          | Array de IDs de secção ordenáveis válidos                           |
 
+##### ThemeSchema
+
+Define as configurações visuais do tema do currículo, como as cores de
+destaque. O motor markdown ignora a opção de tema.
+
+| Prop      | Tipo                                   | Obrigatório | Regras de validação                 |
+| --------- | -------------------------------------- | ----------- | ------------------------------------ |
+| `colors?` | `{ accent?: AccentColor \| HexColor }` | ⬜️          | ver [cor de destaque](#accentcolor) |
+
+A opção `colors.accent` define a cor de destaque dos elementos realçados,
+como títulos de secções, réguas, hiperligações e etiquetas. Aceita uma
+predefinição [`AccentColor`](#accentcolor) nomeada ou uma cadeia de cor
+hexadecimal `#RRGGBB` arbitrária.
+
 #### HtmlLayoutSchema
 
 Valida a configuração do layout HTML.
@@ -256,6 +270,7 @@ Valida a configuração do layout HTML.
 | `advanced?`   | [`HtmlAdvancedSchema`](#htmladvancedschema)           | ⬜️          |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜️          |
 | `template?`   | [`HtmlTemplateSchema`](#htmltemplateschema)           | ⬜️          |
+| `theme?`      | [`ThemeSchema`](#themeschema)                         | ⬜️          |
 | `typography?` | [`HtmlTypographySchema`](#htmltypographyschema)       | ⬜️          |
 
 ##### HtmlAdvancedSchema
@@ -264,6 +279,7 @@ Valida opções de configuração avançada de HTML.
 
 | Prop         | Tipo      | Obrigatório | Regras de validação |
 | ------------ | --------- | ------------ | -------------------- |
+| `showAnchors?`| `boolean` | ⬜️          | true/false           |
 | `showIcons?` | `boolean` | ⬜️          | true/false           |
 | `title?`      | `string`  | ⬜️          | -                    |
 | `footer?`     | `string`  | ⬜️          | -                    |
@@ -299,6 +315,7 @@ Valida a configuração do layout LaTeX.
 | `page?`       | [`LatexPageSchema`](#latexpageschema)               | ⬜️          | Ver [esquema de página](#latexpageschema)           |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜️          | Ver [esquema de secções](#sectionsschema)           |
 | `template?`   | [`LatexTemplate`](#latextemplate)                   | ⬜️          | Deve estar em [opções de modelo](#template)         |
+| `theme?`      | [`ThemeSchema`](#themeschema)                       | ⬜️          | Ver [esquema de tema](#themeschema)                 |
 | `typography?` | [`LatexTypographySchema`](#latextypographyschema)   | ⬜️          | Ver [esquema de tipografia](#latextypographyschema) |
 
 ##### LatexAdvancedSchema
@@ -352,6 +369,7 @@ Valida a configuração do layout DOCX.
 | `page?`       | [`DocxPageSchema`](#docxpageschema)                   | ⬜️          | Ver [esquema de página](#docxpageschema)               |
 | `sections?`   | [`SectionsSchema`](#sectionsschema)                   | ⬜️          | Ver [esquema de secções](#sectionsschema)              |
 | `template?`   | [`DocxTemplate`](#docxtemplate)                       | ⬜️          | Deve estar em [opções de modelo](#docxtemplate)        |
+| `theme?`      | [`ThemeSchema`](#themeschema)                         | ⬜️          | Ver [esquema de tema](#themeschema)                    |
 | `typography?` | [`DocxTypographySchema`](#docxtypographyschema)       | ⬜️          | Ver [esquema de tipografia](#docxtypographyschema)     |
 
 ##### DocxAdvancedSchema
@@ -441,6 +459,27 @@ Tipo união que inclui todas as possíveis opções de redes sociais.
 - Deve ser uma das opções de rede predefinidas
 - Exemplos: `GitHub`, `LinkedIn`, `Twitter`, `Facebook`, `Instagram`
 
+### AccentColor
+
+Um tipo de união para todas as predefinições de cor de destaque possíveis,
+seguindo a paleta do esquema de cores do
+[moderncv](https://github.com/moderncv/moderncv).
+Uma cadeia de cor hexadecimal `#RRGGBB` arbitrária também é aceite onde um
+`AccentColor` é esperado.
+
+**Regras de validação:**
+
+- Deve ser um de:
+  - `black` - `#000000`
+  - `blue` - `#3873B3`
+  - `burgundy` - `#980000`
+  - `cerulean` - `#0081A7`
+  - `green` - `#59B24D`
+  - `grey` - `#737373`
+  - `orange` - `#F28C26`
+  - `purple` - `#8054CC`
+  - `red` - `#F23333`
+
 ### DocxFontSize
 
 Tipo união que inclui todas as possíveis opções de tamanho de fonte DOCX.
@@ -484,7 +523,7 @@ Tipo união que inclui todas as possíveis opções de modelo HTML.
 
 **Regras de validação:**
 
-- Deve ser um de: `calm`
+- Deve ser um de: `calm`, `kami`, `vscode`
 - Ver também: [templates](/pt/docs/layouts/html/templates)
 
 ### LatexTemplate
@@ -493,7 +532,7 @@ Tipo união que inclui todas as possíveis opções de modelo.
 
 **Regras de validação:**
 
-- Deve ser um de: `moderncv-banking`, `moderncv-casual`, `moderncv-classic`
+- Deve ser um de: `jake`, `moderncv-banking`, `moderncv-casual`, `moderncv-classic`
 - Ver também: [templates](/pt/docs/layouts/latex/templates)
 
 ### LocaleLanguage
