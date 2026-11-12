@@ -6,35 +6,35 @@ import { NewsChannel } from '@/app/[language]/(home)/components/NewsChannel'
 describe('NewsChannel', () => {
   it('renders the announcement text and links', () => {
     render(<NewsChannel />)
-    expect(screen.getByText('YAMLResume v0.16')).toBeInTheDocument()
+    expect(screen.getByText('YAMLResume v0.17')).toBeInTheDocument()
     expect(
-      screen.getByRole('link', { name: 'YAMLResume v0.16' })
-    ).toHaveAttribute('href', '/blog/v0.16')
+      screen.getByRole('link', { name: 'YAMLResume v0.17' })
+    ).toHaveAttribute('href', '/blog/v0.17')
     expect(
       screen.getByRole('link', {
-        name: 'AI translation, a smarter playground, and Node.js APIs',
+        name: 'accent colors, the kami HTML template, and a 4.7x slimmer Docker image',
       })
-    ).toHaveAttribute('href', '/blog/v0.16')
+    ).toHaveAttribute('href', '/blog/v0.17')
   })
 
   it('localizes the announcement links', () => {
     setMockParams({ language: 'es' })
     render(<NewsChannel />)
     expect(
-      screen.getByRole('link', { name: 'YAMLResume v0.16' })
-    ).toHaveAttribute('href', '/es/blog/v0.16')
+      screen.getByRole('link', { name: 'YAMLResume v0.17' })
+    ).toHaveAttribute('href', '/es/blog/v0.17')
     expect(
       screen.getByRole('link', {
-        name: 'AI translation, a smarter playground, and Node.js APIs',
+        name: 'accent colors, the kami HTML template, and a 4.7x slimmer Docker image',
       })
-    ).toHaveAttribute('href', '/es/blog/v0.16')
+    ).toHaveAttribute('href', '/es/blog/v0.17')
   })
 
   it('falls back to the default language when no language param is set', () => {
     setMockParams({})
     render(<NewsChannel />)
     expect(
-      screen.getByRole('link', { name: 'YAMLResume v0.16' })
-    ).toHaveAttribute('href', '/blog/v0.16')
+      screen.getByRole('link', { name: 'YAMLResume v0.17' })
+    ).toHaveAttribute('href', '/blog/v0.17')
   })
 })

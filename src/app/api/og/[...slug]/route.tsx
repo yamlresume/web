@@ -2,12 +2,7 @@ import { notFound } from 'next/navigation'
 import { ImageResponse } from 'next/og'
 
 import { OpenGraph } from '@/app/api/og/components'
-import {
-  defaultLanguage,
-  getGalleryMessages,
-  type Language,
-  languages,
-} from '@/i18n'
+import { defaultLanguage, getGalleryMessages } from '@/i18n'
 import {
   blogSource,
   blogSourceFr,
@@ -42,16 +37,13 @@ export async function GET(
   const isGallery = slug[0] === 'gallery'
 
   if (isGallery) {
-    const locale = languages.includes(language as Language)
-      ? (language as Language)
-      : defaultLanguage
     const category =
       slug[1] === 'templates' ||
       slug[1] === 'languages' ||
       slug[1] === 'examples'
         ? slug[1]
         : 'gallery'
-    const title = getGalleryMessages(locale).metadata[category].title
+    const title = getGalleryMessages(defaultLanguage).metadata[category].title
 
     return new ImageResponse(<OpenGraph title={title} />, {
       width: 1200,

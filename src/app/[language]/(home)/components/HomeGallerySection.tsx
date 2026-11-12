@@ -1,10 +1,10 @@
 import { IconArrowRight } from '@tabler/icons-react'
 import Link from 'next/link'
-import { getHomeGalleryMessages, getLocalizedUrl, type Language } from '@/i18n'
+import { GalleryBadge } from '@/app/(home)/gallery/components/GalleryBadge'
+import { GalleryCard } from '@/app/(home)/gallery/components/GalleryCard'
+import { getHomeGalleryMessages, type Language } from '@/i18n'
 import { getGalleryItemsByLanguage } from '@/lib/gallery'
 import { getExampleGalleryPath } from '@/lib/galleryRoutes'
-import { GalleryBadge } from '../gallery/components/GalleryBadge'
-import { GalleryCard } from '../gallery/components/GalleryCard'
 import { Section } from './common'
 
 interface HomeGallerySectionProps {
@@ -36,7 +36,7 @@ export function HomeGallerySection({ language }: HomeGallerySectionProps) {
             {messages.description}
           </p>
           <Link
-            href={getLocalizedUrl('/gallery', language)}
+            href="/gallery"
             className="inline-flex items-center gap-2 font-semibold text-fd-foreground hover:underline"
           >
             {messages.browseAll}
@@ -48,10 +48,7 @@ export function HomeGallerySection({ language }: HomeGallerySectionProps) {
           {items.map((item) => (
             <GalleryCard
               key={item.id}
-              href={getLocalizedUrl(
-                getExampleGalleryPath(item.id, item.language),
-                language
-              )}
+              href={getExampleGalleryPath(item.id, item.language)}
               title={item.title}
               description={item.description}
               thumbnailSrc={item.thumbnailUrl}

@@ -58,7 +58,7 @@ export function Footer({ language }: FooterProps) {
     },
     {
       label: navbar('gallery'),
-      href: getLocalizedUrl('/gallery', language),
+      href: '/gallery',
     },
     {
       label: navbar('blog'),

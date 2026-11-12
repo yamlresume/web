@@ -65,6 +65,49 @@ describe('i18n routes', () => {
   })
 })
 
+describe('gallery', () => {
+  it('serves English gallery pages and resume language variants', async () => {
+    const gallery = await fetchText(url('/gallery'))
+    expect(gallery).toContain('Resume Gallery')
+
+    const example = await fetchText(
+      url('/gallery/examples/software-engineer/es')
+    )
+    expect(example).toContain('Open in Playground')
+    expect(example).toContain(
+      'rel="canonical" href="https://yamlresume.dev/gallery/examples/software-engineer/es"'
+    )
+    expect(example).not.toMatch(/hreflang=/i)
+  })
+
+  it('permanently redirects localized gallery URLs', async () => {
+    const cases = [
+      ['/en/gallery', '/gallery'],
+      ['/es/gallery/examples?page=2', '/gallery/examples?page=2'],
+      [
+        '/zh-cn/gallery/examples/software-engineer/zh-hans',
+        '/gallery/examples/software-engineer/zh-hans',
+      ],
+    ]
+
+    for (const [path, destination] of cases) {
+      const response = await fetch(url(path), { redirect: 'manual' })
+      expect(response.status).toBe(308)
+      expect(response.headers.get('location')).toBe(destination)
+    }
+  })
+
+  it('omits localized gallery URLs from the sitemap', async () => {
+    const body = await fetchText(url('/sitemap.xml'))
+    expect(body).toContain(
+      'https://yamlresume.dev/gallery/examples/software-engineer/es'
+    )
+    expect(body).not.toContain('https://yamlresume.dev/en/gallery')
+    expect(body).not.toContain('https://yamlresume.dev/es/gallery')
+    expect(body).not.toContain('https://yamlresume.dev/zh-cn/gallery')
+  })
+})
+
 describe('docs', () => {
   it('serves docs index pages', async () => {
     const pages = ['/docs', '/ja/docs', '/zh-cn/docs']

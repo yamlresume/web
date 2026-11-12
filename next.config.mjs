@@ -9,10 +9,6 @@ const config = {
   async rewrites() {
     return [
       {
-        source: '/gallery/:id*',
-        destination: '/en/gallery/:id*',
-      },
-      {
         source: '/:language/docs.mdx',
         destination: '/:language/llms.mdx/docs',
       },

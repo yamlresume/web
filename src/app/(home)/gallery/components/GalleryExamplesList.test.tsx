@@ -10,7 +10,10 @@ describe('GalleryExamplesList', () => {
     render(<GalleryExamplesList items={getGalleryItems()} language="en" />)
 
     expect(screen.getAllByRole('heading', { name: 'Examples' })).toHaveLength(2)
-    expect(screen.getByText(/^5 resumes$/)).toBeInTheDocument()
+    const exampleCount = new Set(getGalleryItems().map((item) => item.id)).size
+    expect(
+      screen.getByText(new RegExp(`^${exampleCount} resumes$`))
+    ).toBeInTheDocument()
     expect(
       screen.getAllByRole('link', { name: /Software Engineer/ })
     ).toHaveLength(1)
@@ -33,7 +36,12 @@ describe('GalleryExamplesList', () => {
       />
     )
 
-    expect(screen.getByText(/^5 resumes$/)).toBeInTheDocument()
+    const exampleCount = getGalleryItems().filter(
+      (item) => item.language === 'ja'
+    ).length
+    expect(
+      screen.getByText(new RegExp(`^${exampleCount} resumes$`))
+    ).toBeInTheDocument()
     expect(
       screen.getByRole('link', { name: /ソフトウェアエンジニア/ })
     ).toHaveAttribute('href', '/gallery/examples/software-engineer/ja')

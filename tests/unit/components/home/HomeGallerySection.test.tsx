@@ -32,7 +32,7 @@ describe('HomeGallerySection', () => {
     }
   })
 
-  it('uses localized copy, samples, and links', () => {
+  it('uses localized copy and samples with unlocalized gallery links', () => {
     render(<HomeGallerySection language="es" />)
 
     expect(
@@ -44,9 +44,9 @@ describe('HomeGallerySection', () => {
       screen.getByRole('link', {
         name: 'Explorar todos los currículums',
       })
-    ).toHaveAttribute('href', '/es/gallery')
+    ).toHaveAttribute('href', '/gallery')
     expect(
       screen.getByRole('link', { name: /Ingeniero de software/ })
-    ).toHaveAttribute('href', '/es/gallery/examples/software-engineer/es')
+    ).toHaveAttribute('href', '/gallery/examples/software-engineer/es')
   })
 })

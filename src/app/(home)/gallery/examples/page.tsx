@@ -1,10 +1,5 @@
 import type { Metadata } from 'next'
-import {
-  getGalleryMessages,
-  getLocalizedUrl,
-  type Language,
-  languages,
-} from '@/i18n'
+import { defaultLanguage, getGalleryMessages } from '@/i18n'
 import { getGalleryItems } from '@/lib/gallery'
 import { GalleryExamplesList } from '../components/GalleryExamplesList'
 import type { GalleryFilters } from '../components/gallery-utils'
@@ -12,7 +7,6 @@ import type { GalleryFilters } from '../components/gallery-utils'
 export const revalidate = false
 
 interface GalleryExamplesPageProps {
-  params: Promise<{ language: string }>
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }
 
@@ -35,10 +29,9 @@ function getPageValue(
 }
 
 export default async function GalleryExamplesPage({
-  params,
   searchParams,
 }: GalleryExamplesPageProps) {
-  const [{ language }, query] = await Promise.all([params, searchParams])
+  const query = await searchParams
   const initialFilters: GalleryFilters = {
     search: getFilterValue(query, 'search'),
     category: getFilterValue(query, 'category'),
@@ -49,7 +42,7 @@ export default async function GalleryExamplesPage({
   return (
     <GalleryExamplesList
       items={getGalleryItems()}
-      language={language as Language}
+      language={defaultLanguage}
       initialFilters={initialFilters}
       initialPage={getPageValue(query)}
     />
@@ -57,43 +50,34 @@ export default async function GalleryExamplesPage({
 }
 
 export async function generateMetadata({
-  params,
   searchParams,
 }: GalleryExamplesPageProps): Promise<Metadata> {
-  const [{ language }, query] = await Promise.all([params, searchParams])
-  const locale = language as Language
-  const copy = getGalleryMessages(locale).metadata.examples
-  const basePath = getLocalizedUrl('/gallery/examples', locale)
+  const query = await searchParams
+  const copy = getGalleryMessages(defaultLanguage).metadata.examples
+  const basePath = '/gallery/examples'
   const page = getPageValue(query)
   const hasFilters = ['search', 'category', 'tag', 'language'].some((key) =>
     Boolean(query[key])
   )
   const canonicalPath =
     page > 1 && !hasFilters ? `${basePath}?page=${page}` : basePath
-  const languageAlternates = Object.fromEntries(
-    languages.map((language) => [
-      language,
-      getLocalizedUrl('/gallery/examples', language),
-    ])
-  )
 
   return {
     title: copy.title,
     description: copy.description,
     alternates: {
       canonical: canonicalPath,
-      languages: languageAlternates,
     },
     openGraph: {
       title: copy.title,
       description: copy.description,
-      images: `/api/og/gallery/examples/open-graph.png?language=${locale}`,
+      images: '/api/og/gallery/examples/open-graph.png',
     },
     twitter: {
       card: 'summary_large_image',
       title: copy.title,
       description: copy.description,
-      images: `/api/og/gallery/examples/open-graph.png?language=${locale}`,
+      images: '/api/og/gallery/examples/open-graph.png',
     },
   }
 }

@@ -172,7 +172,7 @@ describe('galleryRoutes', () => {
     ).toBeUndefined()
   })
 
-  it('generates localized canonical metadata', () => {
+  it('generates unlocalized canonical metadata', () => {
     const detail = resolveTemplateGalleryDetail('html', 'calm')
 
     expect(detail).toBeDefined()
@@ -180,15 +180,10 @@ describe('galleryRoutes', () => {
       throw new Error('Expected the HTML calm template to resolve')
     }
 
-    const metadata = getGalleryDetailMetadata(detail, 'fr')
+    const metadata = getGalleryDetailMetadata(detail)
 
     expect(metadata.title).toBe('Calm HTML Resume Template')
-    expect(metadata.alternates?.canonical).toBe(
-      '/fr/gallery/templates/html/calm'
-    )
-    expect(metadata.alternates?.languages).toMatchObject({
-      en: '/gallery/templates/html/calm',
-      ja: '/ja/gallery/templates/html/calm',
-    })
+    expect(metadata.alternates?.canonical).toBe('/gallery/templates/html/calm')
+    expect(metadata.alternates?.languages).toBeUndefined()
   })
 })

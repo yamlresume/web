@@ -1,5 +1,4 @@
 import type { MetadataRoute } from 'next'
-import { getLocalizedUrl, languages } from '@/i18n'
 import {
   blogSource,
   blogSourceEs,
@@ -72,22 +71,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       getExampleGalleryPath(sampleId, resumeLanguage)
     ),
   ]
-  const galleryPages: MetadataRoute.Sitemap = galleryPaths.flatMap((path) =>
-    languages.map((language) => ({
-      url: url(getLocalizedUrl(path, language)),
-      lastModified: now,
-      changeFrequency: 'monthly' as const,
-      priority: path === '/gallery' ? 0.8 : 0.7,
-      alternates: {
-        languages: Object.fromEntries(
-          languages.map((locale) => [
-            locale,
-            url(getLocalizedUrl(path, locale)),
-          ])
-        ),
-      },
-    }))
-  )
+  const galleryPages: MetadataRoute.Sitemap = galleryPaths.map((path) => ({
+    url: url(path),
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: path === '/gallery' ? 0.8 : 0.7,
+  }))
 
   return [
     {

@@ -7,8 +7,8 @@ describe('TemplatesDemo', () => {
   it('renders all template slides and starts at the first one', () => {
     render(<TemplatesDemo />)
 
-    const slides = screen.getAllByAltText('Template Preview')
-    expect(slides).toHaveLength(4)
+    const slides = screen.getAllByRole('img')
+    expect(slides).toHaveLength(7)
     expect(slides[0].parentElement?.parentElement).toHaveClass('scale-100')
     expect(slides[1].parentElement?.parentElement).toHaveClass('scale-90')
   })
@@ -17,7 +17,7 @@ describe('TemplatesDemo', () => {
     vi.useFakeTimers()
     render(<TemplatesDemo />)
 
-    const slides = screen.getAllByAltText('Template Preview')
+    const slides = screen.getAllByRole('img')
 
     act(() => {
       vi.advanceTimersByTime(4000)
@@ -33,10 +33,10 @@ describe('TemplatesDemo', () => {
     vi.useFakeTimers()
     render(<TemplatesDemo />)
 
-    const slides = screen.getAllByAltText('Template Preview')
+    const slides = screen.getAllByRole('img')
 
     act(() => {
-      vi.advanceTimersByTime(16000)
+      vi.advanceTimersByTime(28000)
     })
 
     expect(slides[0].parentElement?.parentElement).toHaveClass('scale-100')

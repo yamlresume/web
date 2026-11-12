@@ -45,6 +45,19 @@ describe('Footer', () => {
     )
   })
 
+  it('keeps gallery unlocalized in localized footers', () => {
+    render(<Footer language="es" />)
+
+    expect(screen.getByRole('link', { name: 'Gallery' })).toHaveAttribute(
+      'href',
+      '/gallery'
+    )
+    expect(screen.getByRole('link', { name: 'Documentation' })).toHaveAttribute(
+      'href',
+      '/es/docs'
+    )
+  })
+
   it('renders product, developer and community columns', () => {
     render(<Footer language="en" />)
 

@@ -26,7 +26,7 @@ export function getNavigationOptions(currentLanguage: Language) {
       },
       {
         text: t('gallery'),
-        url: getLocalizedUrl('/gallery', currentLanguage),
+        url: '/gallery',
         active: 'nested-url' as const,
       },
       {

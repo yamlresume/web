@@ -1,6 +1,5 @@
 import type { LayoutEngine, LocaleLanguage } from '@yamlresume/core'
 import type { Metadata } from 'next'
-import { getLocalizedUrl, type Language, languages } from '@/i18n'
 import {
   type GalleryItem,
   getGalleryItemByIdAndLocale,
@@ -281,22 +280,13 @@ function getDetailTitle(detail: ResolvedGalleryDetail): string {
 }
 
 export function getGalleryDetailMetadata(
-  detail: ResolvedGalleryDetail,
-  siteLanguage: Language
+  detail: ResolvedGalleryDetail
 ): Metadata {
-  const languageAlternates = Object.fromEntries(
-    languages.map((language) => [
-      language,
-      getLocalizedUrl(detail.canonicalPath, language),
-    ])
-  )
-
   return {
     title: getDetailTitle(detail),
     description: detail.currentTemplate?.description ?? detail.item.description,
     alternates: {
-      canonical: getLocalizedUrl(detail.canonicalPath, siteLanguage),
-      languages: languageAlternates,
+      canonical: detail.canonicalPath,
     },
   }
 }

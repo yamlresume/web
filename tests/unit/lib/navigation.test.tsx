@@ -41,12 +41,12 @@ describe('getNavigationOptions', () => {
     expect(es.links[3].text).toBe('Blog')
   })
 
-  it('generates localized URLs', () => {
+  it('generates localized URLs except for gallery', () => {
     const en = getNavigationOptions('en')
     const es = getNavigationOptions('es')
 
     expect(en.links[1].url).toBe('/gallery')
-    expect(es.links[1].url).toBe('/es/gallery')
+    expect(es.links[1].url).toBe('/gallery')
 
     expect(en.links[2].url).toBe('/docs')
     expect(es.links[2].url).toBe('/es/docs')

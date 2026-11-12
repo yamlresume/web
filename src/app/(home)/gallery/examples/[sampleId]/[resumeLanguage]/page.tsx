@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { type Language, languages } from '@/i18n'
+import { defaultLanguage } from '@/i18n'
 import {
   getExampleGalleryParams,
   getGalleryDetailMetadata,
@@ -10,38 +10,33 @@ import { ResolvedGalleryDetail } from '../../../components/ResolvedGalleryDetail
 
 interface ExampleGalleryPageProps {
   params: Promise<{
-    language: string
     sampleId: string
     resumeLanguage: string
   }>
 }
 
 export function generateStaticParams() {
-  return languages.flatMap((language) =>
-    getExampleGalleryParams().map((params) => ({ language, ...params }))
-  )
+  return getExampleGalleryParams()
 }
 
 export default async function ExampleGalleryPage({
   params,
 }: ExampleGalleryPageProps) {
-  const { language, sampleId, resumeLanguage } = await params
+  const { sampleId, resumeLanguage } = await params
   const detail = resolveExampleGalleryDetail(sampleId, resumeLanguage)
 
   if (!detail) {
     notFound()
   }
 
-  return (
-    <ResolvedGalleryDetail detail={detail} language={language as Language} />
-  )
+  return <ResolvedGalleryDetail detail={detail} language={defaultLanguage} />
 }
 
 export async function generateMetadata({
   params,
 }: ExampleGalleryPageProps): Promise<Metadata> {
-  const { language, sampleId, resumeLanguage } = await params
+  const { sampleId, resumeLanguage } = await params
   const detail = resolveExampleGalleryDetail(sampleId, resumeLanguage)
 
-  return detail ? getGalleryDetailMetadata(detail, language as Language) : {}
+  return detail ? getGalleryDetailMetadata(detail) : {}
 }

@@ -29,23 +29,25 @@ beforeAll(async () => {
 })
 
 describe('sitemap', () => {
-  it('includes localized gallery indexes and detail pages', async () => {
+  it('includes each gallery page once without UI locale alternates', async () => {
     const entries = await sitemap()
     const urls = entries.map((entry) => entry.url)
 
     expect(urls).toContain('https://yamlresume.dev/gallery')
-    expect(urls).toContain('https://yamlresume.dev/ja/gallery/templates')
-    expect(urls).toContain('https://yamlresume.dev/fr/gallery/languages/ja')
     expect(urls).toContain(
-      'https://yamlresume.dev/gallery/examples/software-engineer/en'
+      'https://yamlresume.dev/gallery/examples/software-engineer/es'
     )
+    expect(urls).not.toContain('https://yamlresume.dev/ja/gallery/templates')
+    expect(urls).not.toContain('https://yamlresume.dev/fr/gallery/languages/ja')
 
-    const gallery = entries.find(
-      (entry) => entry.url === 'https://yamlresume.dev/gallery'
+    const galleryEntries = entries.filter((entry) =>
+      new URL(entry.url).pathname.startsWith('/gallery')
     )
-    expect(gallery?.alternates?.languages).toMatchObject({
-      en: 'https://yamlresume.dev/gallery',
-      ja: 'https://yamlresume.dev/ja/gallery',
-    })
+    const galleryUrls = galleryEntries.map((entry) => entry.url)
+
+    expect(new Set(galleryUrls).size).toBe(galleryUrls.length)
+    for (const entry of galleryEntries) {
+      expect(entry.alternates?.languages).toBeUndefined()
+    }
   })
 })
