@@ -81,12 +81,32 @@ function loadHashCache() {
 }
 
 /**
+ * Write a file only when its content actually changed. Skipping the write keeps
+ * no-op builds from touching the output files at all.
+ *
+ * @param {string} filePath
+ * @param {string} content
+ * @returns {boolean} Whether the file was written.
+ */
+function writeFileIfChanged(filePath, content) {
+  if (
+    fs.existsSync(filePath) &&
+    fs.readFileSync(filePath, 'utf8') === content
+  ) {
+    return false
+  }
+
+  fs.writeFileSync(filePath, content)
+  return true
+}
+
+/**
  * Save the cached YAML hashes.
  *
  * @param {Record<string, string>} hashes
  */
 function saveHashCache(hashes) {
-  fs.writeFileSync(HASH_CACHE_PATH, JSON.stringify(hashes, null, 2))
+  writeFileIfChanged(HASH_CACHE_PATH, JSON.stringify(hashes, null, 2))
 }
 
 /**
@@ -431,6 +451,39 @@ async function buildTemplateShowcase(showcase, hashes) {
 }
 
 /**
+ * Write the gallery manifest, keeping the previous `generatedAt` timestamp when
+ * the manifest content is unchanged. No-op builds therefore leave the file
+ * untouched instead of producing a timestamp-only diff.
+ *
+ * @param {{ generatedAt: string, samples: unknown[] }} manifest
+ * @returns {boolean} Whether the manifest was written.
+ */
+function writeManifest(manifest) {
+  const manifestPath = path.join(OUTPUT_DIR, 'manifest.json')
+  const samplesJson = JSON.stringify(manifest.samples, null, 2)
+  let generatedAt = manifest.generatedAt
+
+  if (fs.existsSync(manifestPath)) {
+    try {
+      const previous = JSON.parse(fs.readFileSync(manifestPath, 'utf8'))
+      if (
+        typeof previous.generatedAt === 'string' &&
+        JSON.stringify(previous.samples, null, 2) === samplesJson
+      ) {
+        generatedAt = previous.generatedAt
+      }
+    } catch {
+      // Fall back to the freshly generated timestamp on an unreadable manifest.
+    }
+  }
+
+  return writeFileIfChanged(
+    manifestPath,
+    JSON.stringify({ generatedAt, samples: manifest.samples }, null, 2)
+  )
+}
+
+/**
  * Main entry point.
  */
 async function main() {
@@ -477,10 +530,7 @@ async function main() {
     }
   }
 
-  fs.writeFileSync(
-    path.join(OUTPUT_DIR, 'manifest.json'),
-    JSON.stringify(manifest, null, 2)
-  )
+  writeManifest(manifest)
   saveHashCache(hashes)
 
   log(`Done. Wrote manifest for ${manifest.samples.length} samples.`)
