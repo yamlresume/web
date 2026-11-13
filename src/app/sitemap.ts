@@ -9,7 +9,6 @@ import {
   blogSourcePt,
   blogSourceZhCN,
   blogSourceZhTW,
-  developerDocsLastModified,
   docsSource,
   docsSourceEs,
   docsSourceFr,
@@ -18,8 +17,11 @@ import {
   docsSourcePt,
   docsSourceZhCN,
   docsSourceZhTW,
-  galleryLastModified,
 } from '@/lib'
+import {
+  developerDocsLastModified,
+  galleryLastModified,
+} from '@/lib/contentDates'
 import {
   getExampleGalleryParams,
   getExampleGalleryPath,

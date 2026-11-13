@@ -32,8 +32,6 @@ vi.mock('@/lib', () => {
     blogSourcePt: source,
     blogSourceZhCN: source,
     blogSourceZhTW: source,
-    developerDocsLastModified: new Date('2025-01-05T00:00:00Z'),
-    galleryLastModified: new Date('2025-02-10T00:00:00Z'),
     docsSource,
     docsSourceEs: source,
     docsSourceFr: source,
@@ -44,6 +42,11 @@ vi.mock('@/lib', () => {
     docsSourceZhTW: source,
   }
 })
+
+vi.mock('@/lib/contentDates', () => ({
+  developerDocsLastModified: new Date('2025-01-05T00:00:00Z'),
+  galleryLastModified: new Date('2025-02-10T00:00:00Z'),
+}))
 
 let sitemap: typeof import('./sitemap').default
 

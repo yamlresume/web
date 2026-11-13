@@ -10,12 +10,13 @@ import path from 'node:path'
  * module load and reused across the request.
  */
 
-const ROOT = process.cwd()
-
-function readJson<T>(relativePath: string): T | null {
+function readGalleryManifest(): { generatedAt?: string } | null {
   try {
-    const raw = fs.readFileSync(path.join(ROOT, relativePath), 'utf8')
-    return JSON.parse(raw) as T
+    const raw = fs.readFileSync(
+      path.join(process.cwd(), 'public', 'gallery', 'manifest.json'),
+      'utf8'
+    )
+    return JSON.parse(raw) as { generatedAt?: string }
   } catch {
     return null
   }
@@ -33,9 +34,7 @@ function parseDate(value: unknown): Date | null {
   return Number.isNaN(date.getTime()) ? null : date
 }
 
-const galleryManifest = readJson<{ generatedAt?: string }>(
-  'public/gallery/manifest.json'
-)
+const galleryManifest = readGalleryManifest()
 
 export const galleryLastModified: Date | null =
   parseDate(galleryManifest?.generatedAt) ?? null
@@ -59,7 +58,13 @@ export function developerLastModified(
   let newest = 0
 
   for (const pkg of packages) {
-    const file = path.join(ROOT, 'public/developer', pkg, 'index.html')
+    const file = path.join(
+      process.cwd(),
+      'public',
+      'developer',
+      pkg,
+      'index.html'
+    )
 
     try {
       const stats = fs.statSync(file)
