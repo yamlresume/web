@@ -2,8 +2,14 @@ import { beforeAll, describe, expect, it, vi } from 'vitest'
 
 vi.mock('@/lib', () => {
   const source = { getPages: () => [] }
+  const blogSource = {
+    getPages: () => [{ url: '/en/blog/1000-stars', data: {} }],
+  }
+  const docsSource = {
+    getPages: () => [{ url: '/en/docs/cli', data: {} }],
+  }
   return {
-    blogSource: source,
+    blogSource,
     blogSourceEs: source,
     blogSourceFr: source,
     blogSourceId: source,
@@ -11,7 +17,7 @@ vi.mock('@/lib', () => {
     blogSourcePt: source,
     blogSourceZhCN: source,
     blogSourceZhTW: source,
-    docsSource: source,
+    docsSource,
     docsSourceEs: source,
     docsSourceFr: source,
     docsSourceId: source,
@@ -49,5 +55,15 @@ describe('sitemap', () => {
     for (const entry of galleryEntries) {
       expect(entry.alternates?.languages).toBeUndefined()
     }
+  })
+
+  it('uses public default-locale URLs for docs and blog pages', async () => {
+    const entries = await sitemap()
+    const urls = entries.map((entry) => entry.url)
+
+    expect(urls).toContain('https://yamlresume.dev/docs/cli')
+    expect(urls).toContain('https://yamlresume.dev/blog/1000-stars')
+    expect(urls).not.toContain('https://yamlresume.dev/en/docs/cli')
+    expect(urls).not.toContain('https://yamlresume.dev/en/blog/1000-stars')
   })
 })

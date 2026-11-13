@@ -32,6 +32,7 @@ export const revalidate = false
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://yamlresume.dev'
   const url = (path: string): string => new URL(path, baseUrl).toString()
+  const publicPath = (path: string): string => path.replace(/^\/en(?=\/|$)/, '')
 
   // Get all pages from all locales
   const allDocsPages = [
@@ -201,7 +202,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const lastmod = page.data.lastModified
 
         return {
-          url: url(page.url),
+          url: url(publicPath(page.url)),
           lastModified: lastmod ? new Date(lastmod) : undefined,
           changeFrequency: 'weekly',
           priority: 0.8,
@@ -213,7 +214,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const lastmod = page.data.lastModified
 
         return {
-          url: url(page.url),
+          url: url(publicPath(page.url)),
           lastModified: lastmod ? new Date(lastmod) : undefined,
           changeFrequency: 'monthly',
           priority: 0.5,

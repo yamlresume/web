@@ -17,7 +17,16 @@ describe('build and lint', () => {
   it('produces a production build output', () => {
     expect(existsSync(resolve(process.cwd(), '.next'))).toBe(true)
 
-    for (const locale of ['en', 'zh-cn', 'zh-tw']) {
+    for (const locale of [
+      'en',
+      'es',
+      'fr',
+      'pt',
+      'ja',
+      'zh-cn',
+      'zh-tw',
+      'id',
+    ]) {
       expect(
         existsSync(
           resolve(process.cwd(), `.next/server/search-index/${locale}.json.gz`)
@@ -40,7 +49,16 @@ describe('server and search', () => {
     const status = await fetchStatus(url('/api/build-search-index'))
     expect(status).toBe(200)
 
-    for (const locale of ['en', 'zh-cn', 'zh-tw']) {
+    for (const locale of [
+      'en',
+      'es',
+      'fr',
+      'pt',
+      'ja',
+      'zh-cn',
+      'zh-tw',
+      'id',
+    ]) {
       expect(
         existsSync(
           resolve(process.cwd(), `.next/server/search-index/${locale}.json.gz`)
@@ -53,8 +71,13 @@ describe('server and search', () => {
     const queries: Array<{ query: string; locale: string }> = [
       { query: 'YAML', locale: 'en' },
       { query: 'markdown', locale: 'en' },
-      { query: 'YAML', locale: 'zh-cn' },
+      { query: 'YAML', locale: 'es' },
+      { query: 'YAML', locale: 'fr' },
+      { query: 'YAML', locale: 'pt' },
       { query: 'YAML', locale: 'ja' },
+      { query: 'YAML', locale: 'zh-cn' },
+      { query: 'YAML', locale: 'zh-tw' },
+      { query: 'YAML', locale: 'id' },
     ]
 
     for (const { query, locale } of queries) {
@@ -76,7 +99,7 @@ describe('server and search', () => {
 })
 
 describe('i18n routes', () => {
-  const languages = ['es', 'fr', 'id', 'pt', 'ja', 'zh-cn', 'zh-tw']
+  const languages = ['es', 'fr', 'pt', 'ja', 'zh-cn', 'zh-tw', 'id']
 
   it.each(languages)('serves localized homepage for %s', async (lang) => {
     const status = await fetchStatus(url(`/${lang}/`))
@@ -84,6 +107,20 @@ describe('i18n routes', () => {
 
     const body = await fetchText(url(`/${lang}/`))
     expect(body).toContain('YAMLResume')
+  })
+
+  it('permanently redirects explicit default-locale URLs', async () => {
+    const cases = [
+      ['/en', '/'],
+      ['/en/docs/installation', '/docs/installation'],
+      ['/en/blog/1000-stars', '/blog/1000-stars'],
+    ]
+
+    for (const [path, destination] of cases) {
+      const response = await fetch(url(path), { redirect: 'manual' })
+      expect(response.status).toBe(308)
+      expect(response.headers.get('location')).toBe(destination)
+    }
   })
 })
 
@@ -105,7 +142,8 @@ describe('gallery', () => {
   it('permanently redirects localized gallery URLs', async () => {
     const cases = [
       ['/en/gallery', '/gallery'],
-      ['/es/gallery/examples?page=2', '/gallery/examples?page=2'],
+      ['/fr/gallery', '/gallery'],
+      ['/zh-tw/gallery/examples?page=2', '/gallery/examples?page=2'],
       [
         '/zh-cn/gallery/examples/software-engineer/zh-hans',
         '/gallery/examples/software-engineer/zh-hans',
@@ -132,7 +170,14 @@ describe('gallery', () => {
 
 describe('docs', () => {
   it('serves docs index pages', async () => {
-    const pages = ['/docs', '/ja/docs', '/zh-cn/docs']
+    const pages = [
+      '/docs',
+      '/es/docs',
+      '/fr/docs',
+      '/ja/docs',
+      '/zh-tw/docs',
+      '/zh-cn/docs',
+    ]
 
     for (const path of pages) {
       const body = await fetchText(url(path))
@@ -145,7 +190,8 @@ describe('docs', () => {
       { path: '/docs/guide', text: 'Guide' },
       { path: '/docs/cli', text: 'CLI' },
       { path: '/docs/content/rich-text', text: 'Rich Text' },
-      { path: '/ja/docs/installation', text: 'インストール' },
+      { path: '/es/docs/installation', text: 'instalar' },
+      { path: '/zh-cn/docs/installation', text: '安装' },
     ]
 
     for (const { path, text } of pages) {
@@ -160,7 +206,9 @@ describe('blog', () => {
     const pages: Array<{ path: string; text: string }> = [
       { path: '/blog', text: 'Blog' },
       { path: '/blog/introducing-yamlresume', text: 'Introducing' },
-      { path: '/ja/blog/introducing-yamlresume', text: 'YAMLResume' },
+      { path: '/es/blog', text: 'Blog' },
+      { path: '/ja/blog', text: 'Blog' },
+      { path: '/zh-tw/blog/introducing-yamlresume', text: 'YAMLResume' },
     ]
 
     for (const { path, text } of pages) {
@@ -179,7 +227,7 @@ describe('playground', () => {
 
 describe('llm routes', () => {
   it('serves llm text routes', async () => {
-    const paths = ['/llms.txt', '/llms-full.txt', '/ja/llms.txt']
+    const paths = ['/llms.txt', '/llms-full.txt', '/zh-cn/llms.txt']
 
     for (const path of paths) {
       const body = await fetchText(url(path))
