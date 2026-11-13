@@ -2,12 +2,12 @@
 
 import { IconBook, IconDeviceDesktop } from '@tabler/icons-react'
 import clsx from 'clsx'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { Suspense, useId, useState } from 'react'
+import { useId, useState } from 'react'
 
 import { WindowFrame } from '@/app/[language]/(home)/components/features/WindowFrame'
-import { PlaygroundBody } from '@/app/[language]/playground/components'
 
 import {
   defaultLanguage,
@@ -15,6 +15,14 @@ import {
   type Language,
   useTranslations,
 } from '@/i18n'
+
+const PlaygroundBody = dynamic(
+  () =>
+    import('@/app/[language]/playground/components/Body').then(
+      (mod) => mod.PlaygroundBody
+    ),
+  { loading: () => <div className="h-full w-full" /> }
+)
 
 const DemoArrow = () => {
   const id = useId()
@@ -128,9 +136,7 @@ export function HeroSection() {
           )}
         >
           <WindowFrame contentClassName="h-[760px]" className="rounded-xl">
-            <Suspense fallback={<div className="h-full w-full" />}>
-              <PlaygroundBody />
-            </Suspense>
+            <PlaygroundBody />
           </WindowFrame>
         </div>
       </div>
