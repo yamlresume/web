@@ -111,10 +111,16 @@ function createGalleryItem(
   }
 }
 
+let cachedGalleryItems: GalleryItem[] | undefined
+
 /**
  * Return all gallery items across all samples and supported locale languages.
  */
 export function getGalleryItems(): GalleryItem[] {
+  if (cachedGalleryItems) {
+    return cachedGalleryItems
+  }
+
   const samples = listSampleResumes()
   const items: GalleryItem[] = []
 
@@ -124,7 +130,8 @@ export function getGalleryItems(): GalleryItem[] {
     }
   }
 
-  return items
+  cachedGalleryItems = items
+  return cachedGalleryItems
 }
 
 /**
