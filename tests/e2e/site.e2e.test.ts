@@ -16,7 +16,14 @@ describe('build and lint', () => {
 
   it('produces a production build output', () => {
     expect(existsSync(resolve(process.cwd(), '.next'))).toBe(true)
-    expect(existsSync(resolve(process.cwd(), '.next/server/search-index.json'))).toBe(true)
+
+    for (const locale of ['en', 'zh-cn', 'zh-tw']) {
+      expect(
+        existsSync(
+          resolve(process.cwd(), `.next/server/search-index/${locale}.json.gz`)
+        )
+      ).toBe(true)
+    }
   })
 })
 
@@ -29,10 +36,17 @@ describe('server and search', () => {
     expect(body).toContain('YAMLResume')
   })
 
-  it('exports the search index', async () => {
+  it('exports per-locale search indexes', async () => {
     const status = await fetchStatus(url('/api/build-search-index'))
     expect(status).toBe(200)
-    expect(existsSync(resolve(process.cwd(), '.next/server/search-index.json'))).toBe(true)
+
+    for (const locale of ['en', 'zh-cn', 'zh-tw']) {
+      expect(
+        existsSync(
+          resolve(process.cwd(), `.next/server/search-index/${locale}.json.gz`)
+        )
+      ).toBe(true)
+    }
   })
 
   it('returns search results for supported locales', async () => {
@@ -50,6 +64,14 @@ describe('server and search', () => {
       const json = (await res.json()) as unknown[]
       expect(json.length, `expected results for query "${query}" (locale ${locale})`).toBeGreaterThan(0)
     }
+  })
+
+  it('returns no results for an unsupported locale', async () => {
+    const res = await fetch(
+      `${url('/api/search')}?query=YAML&locale=unsupported`
+    )
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual([])
   })
 })
 
