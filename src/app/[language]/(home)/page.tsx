@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import 'react-medium-image-zoom/dist/styles.css'
+import { buildSiteJsonLd, JsonLd } from '@/components'
 import {
   defaultLanguage,
   getLanguageAlternates,
@@ -31,6 +32,7 @@ export default async function HomePage({
 
   return (
     <main>
+      <JsonLd data={buildSiteJsonLd(language as Language)} />
       <NewsChannel />
       <TypographyBackground />
       <div className="fd-container mt-20 space-y-36">

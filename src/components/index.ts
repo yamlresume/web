@@ -3,3 +3,10 @@ export { Analytics } from './analytics'
 export { HtmlLang } from './HtmlLang'
 export { Logo } from './logo'
 export { getMDXComponents, Mermaid } from './mdx'
+export {
+  absoluteUrl,
+  buildBlogPostingJsonLd,
+  buildDocsBreadcrumbJsonLd,
+  buildSiteJsonLd,
+  JsonLd,
+} from './structured-data'

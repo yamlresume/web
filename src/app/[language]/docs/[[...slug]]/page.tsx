@@ -8,8 +8,19 @@ import {
 } from 'fumadocs-ui/page'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getMDXComponents, LLMCopyButton, ViewOptions } from '@/components'
-import { defaultLanguage, getLanguageAlternates, languages } from '@/i18n'
+import {
+  buildDocsBreadcrumbJsonLd,
+  getMDXComponents,
+  JsonLd,
+  LLMCopyButton,
+  ViewOptions,
+} from '@/components'
+import {
+  defaultLanguage,
+  getLanguageAlternates,
+  type Language,
+  languages,
+} from '@/i18n'
 import { getLocalizedSources } from '@/lib'
 
 export const revalidate = false
@@ -34,47 +45,66 @@ export default async function Page(props: {
 
   const lastUpdate = page.data.lastModified
 
+  const breadcrumbEntries = [
+    { name: 'Docs', path: '/docs' },
+    ...(slug ?? []).map((segment, index) => {
+      const ancestor = docs.getPage((slug ?? []).slice(0, index + 1))
+      return {
+        name: ancestor?.data.title ?? segment,
+        path: `/docs/${(slug ?? []).slice(0, index + 1).join('/')}`,
+      }
+    }),
+  ]
+
   return (
-    <DocsPage
-      toc={page.data.toc}
-      tableOfContent={{ style: 'clerk', single: false }}
-      full={page.data.full}
-      editOnGithub={{
-        owner,
-        repo,
-        sha: 'main',
-        path: contentPath,
-      }}
-      lastUpdate={lastUpdate}
-    >
-      <DocsTitle>{page.data.title}</DocsTitle>
-      <div
-        className={clsx(
-          'flex',
-          'flex-row',
-          'gap-2',
-          'items-center',
-          'border-b-[1px]',
-          'border-fd-foreground',
-          'pb-6'
-        )}
+    <>
+      <JsonLd
+        data={buildDocsBreadcrumbJsonLd({
+          language: language as Language,
+          entries: breadcrumbEntries,
+        })}
+      />
+      <DocsPage
+        toc={page.data.toc}
+        tableOfContent={{ style: 'clerk', single: false }}
+        full={page.data.full}
+        editOnGithub={{
+          owner,
+          repo,
+          sha: 'main',
+          path: contentPath,
+        }}
+        lastUpdate={lastUpdate}
       >
-        <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
-        <ViewOptions
-          markdownUrl={`${page.url}.mdx`}
-          githubUrl={`https://github.com/${owner}/${repo}/blob/main/${contentPath}`}
-        />
-      </div>
-      <DocsDescription>{page.data.description}</DocsDescription>
-      <DocsBody>
-        <MDXContent
-          components={getMDXComponents({
-            // @ts-expect-error Fumadocs 16 i18n source types differ per locale
-            a: createRelativeLink(docs, page),
-          })}
-        />
-      </DocsBody>
-    </DocsPage>
+        <DocsTitle>{page.data.title}</DocsTitle>
+        <div
+          className={clsx(
+            'flex',
+            'flex-row',
+            'gap-2',
+            'items-center',
+            'border-b-[1px]',
+            'border-fd-foreground',
+            'pb-6'
+          )}
+        >
+          <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
+          <ViewOptions
+            markdownUrl={`${page.url}.mdx`}
+            githubUrl={`https://github.com/${owner}/${repo}/blob/main/${contentPath}`}
+          />
+        </div>
+        <DocsDescription>{page.data.description}</DocsDescription>
+        <DocsBody>
+          <MDXContent
+            components={getMDXComponents({
+              // @ts-expect-error Fumadocs 16 i18n source types differ per locale
+              a: createRelativeLink(docs, page),
+            })}
+          />
+        </DocsBody>
+      </DocsPage>
+    </>
   )
 }
 

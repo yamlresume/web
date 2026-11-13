@@ -3,8 +3,13 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-import { getMDXComponents } from '@/components'
-import { defaultLanguage, getLanguageAlternates, languages } from '@/i18n'
+import { buildBlogPostingJsonLd, getMDXComponents, JsonLd } from '@/components'
+import {
+  defaultLanguage,
+  getLanguageAlternates,
+  type Language,
+  languages,
+} from '@/i18n'
 import { getLocalizedSources } from '@/lib'
 
 export const revalidate = false
@@ -19,8 +24,21 @@ export default async function Page(props: {
   if (!page) notFound()
   const Mdx = page.data.body
 
+  const jsonLd = buildBlogPostingJsonLd({
+    title: page.data.title,
+    description: page.data.description,
+    date: page.data.date,
+    lastModified: page.data.lastModified,
+    author: page.data.author,
+    authorUrl: page.data.profile,
+    slug,
+    language: language as Language,
+    image: `/api/og/blog/${slug}/open-graph.png?language=${language}`,
+  })
+
   return (
     <div className="fd-container">
+      <JsonLd data={jsonLd} />
       <div className="mt-16">
         <h1 className="mb-2 text-3xl font-bold">{page.data.title}</h1>
         <p className="text-fd-muted-foreground">{page.data.description}</p>
@@ -40,7 +58,9 @@ export default async function Page(props: {
           <div>
             <p className="mb-1 text-sm text-fd-muted-foreground">At</p>
             <p className="font-medium">
-              {new Date(page.data.date).toDateString()}
+              <time dateTime={new Date(page.data.date).toISOString()}>
+                {new Date(page.data.date).toDateString()}
+              </time>
             </p>
           </div>
         </div>
@@ -141,6 +161,12 @@ export async function generateMetadata(props: {
       languages: getLanguageAlternates(`/blog/${slug}`),
     },
     openGraph: {
+      type: 'article',
+      publishedTime: new Date(page.data.date).toISOString(),
+      modifiedTime: page.data.lastModified
+        ? new Date(page.data.lastModified).toISOString()
+        : undefined,
+      authors: [page.data.author],
       images: image,
     },
     twitter: {

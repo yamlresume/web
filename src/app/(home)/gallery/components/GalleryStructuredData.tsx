@@ -1,15 +1,8 @@
+import { absoluteUrl, JsonLd } from '@/components/structured-data'
 import { siteConfig } from '@/config/site'
 import { getGalleryMessages, getLocalizedUrl, type Language } from '@/i18n'
 import type { GalleryItem } from '@/lib/gallery'
 import type { ResolvedGalleryDetail } from '@/lib/galleryRoutes'
-
-function absoluteUrl(path: string): string {
-  return new URL(path, siteConfig.url).toString()
-}
-
-export function JsonLd({ data }: { data: Record<string, unknown> }) {
-  return <script type="application/ld+json">{JSON.stringify(data)}</script>
-}
 
 export function GalleryItemListJsonLd({
   name,
