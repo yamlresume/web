@@ -1,3 +1,7 @@
+export {
+  developerDocsLastModified,
+  galleryLastModified,
+} from './contentDates'
 export { getLLMLink, getLLMText } from './llm'
 export { getNavigationOptions } from './navigation'
 export {

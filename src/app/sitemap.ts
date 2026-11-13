@@ -9,6 +9,7 @@ import {
   blogSourcePt,
   blogSourceZhCN,
   blogSourceZhTW,
+  developerDocsLastModified,
   docsSource,
   docsSourceEs,
   docsSourceFr,
@@ -17,6 +18,7 @@ import {
   docsSourcePt,
   docsSourceZhCN,
   docsSourceZhTW,
+  galleryLastModified,
 } from '@/lib'
 import {
   getExampleGalleryParams,
@@ -58,6 +60,35 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]
 
   const now = new Date()
+
+  const toDate = (value: unknown): Date | null => {
+    if (!value) return null
+    const date = new Date(value as string | Date)
+    return Number.isNaN(date.getTime()) ? null : date
+  }
+
+  const newest = (...dates: (Date | null | undefined)[]): Date | null => {
+    let result: Date | null = null
+    for (const date of dates) {
+      if (date && (!result || date > result)) result = date
+    }
+    return result
+  }
+
+  // Index pages carry no date of their own; the honest signal is the newest
+  // item they list. This keeps them moving when their contents change instead
+  // of stamping every build.
+  const docsLastModified = newest(
+    ...allDocsPages.map((page) => toDate(page.data.lastModified))
+  )
+  const blogLastModified = newest(
+    ...allBlogPages.map((page) => toDate(page.data.lastModified))
+  )
+  const siteLastModified = newest(
+    docsLastModified,
+    blogLastModified,
+    galleryLastModified
+  )
   const galleryPaths = [
     '/gallery',
     '/gallery/templates',
@@ -75,7 +106,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]
   const galleryPages: MetadataRoute.Sitemap = galleryPaths.map((path) => ({
     url: url(path),
-    lastModified: now,
+    lastModified: galleryLastModified ?? now,
     changeFrequency: 'monthly' as const,
     priority: path === '/gallery' ? 0.8 : 0.7,
   }))
@@ -83,39 +114,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     {
       url: url('/'),
-      lastModified: now,
+      lastModified: siteLastModified ?? now,
       changeFrequency: 'monthly',
       priority: 1,
     },
-    {
-      url: url('/blog'),
-      lastModified: now,
-      changeFrequency: 'monthly',
+    // Unlike /docs, the blog has no `content/blog/index.mdx`, so no page loop
+    // emits its index. Emit one per locale instead of hardcoding the bare path.
+    ...languages.map((language) => ({
+      url: url(getLocalizedUrl('/blog', language)),
+      lastModified: blogLastModified ?? now,
+      changeFrequency: 'monthly' as const,
       priority: 0.8,
-    },
-    {
-      url: url('/docs'),
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
+    })),
+    // `/docs` is not listed here: content/docs/index.mdx is a real page, so the
+    // docs loop below already emits it with that page's own lastModified.
     ...galleryPages,
     ...languages.map((language) => ({
       url: url(getLocalizedUrl('/playground', language)),
-      lastModified: now,
+      lastModified: galleryLastModified ?? now,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
     // Add locale-specific home pages
     {
       url: url('/zh-cn'),
-      lastModified: now,
+      lastModified: siteLastModified ?? now,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: url('/zh-tw'),
-      lastModified: now,
+      lastModified: siteLastModified ?? now,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
@@ -151,49 +180,49 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: url('/developer/ai/index.html'),
-      lastModified: now,
+      lastModified: developerDocsLastModified ?? now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: url('/developer/cli/index.html'),
-      lastModified: now,
+      lastModified: developerDocsLastModified ?? now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: url('/developer/core/index.html'),
-      lastModified: now,
+      lastModified: developerDocsLastModified ?? now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: url('/developer/create-yamlresume/index.html'),
-      lastModified: now,
+      lastModified: developerDocsLastModified ?? now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: url('/developer/json2yamlresume/index.html'),
-      lastModified: now,
+      lastModified: developerDocsLastModified ?? now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: url('/developer/node/index.html'),
-      lastModified: now,
+      lastModified: developerDocsLastModified ?? now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: url('/developer/playground/index.html'),
-      lastModified: now,
+      lastModified: developerDocsLastModified ?? now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: url('/developer/samples/index.html'),
-      lastModified: now,
+      lastModified: developerDocsLastModified ?? now,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
