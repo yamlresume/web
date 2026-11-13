@@ -1,6 +1,11 @@
 import type { Metadata } from 'next'
 import 'react-medium-image-zoom/dist/styles.css'
-import { defaultLanguage, type Language, languages } from '@/i18n'
+import {
+  defaultLanguage,
+  getTranslations,
+  type Language,
+  languages,
+} from '@/i18n'
 import {
   BuyMeACoffeeSection,
   ComparisonSection,
@@ -59,7 +64,11 @@ export async function generateMetadata({
     languagesAlternates[lang] = lang === defaultLanguage ? '/' : `/${lang}`
   }
 
+  const t = getTranslations(language, 'hero')
+
   return {
+    title: t('title'),
+    description: t('description'),
     alternates: {
       canonical: canonicalPath,
       languages: languagesAlternates,
