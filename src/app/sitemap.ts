@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { getLocalizedUrl, languages } from '@/i18n'
 import {
   blogSource,
   blogSourceEs,
@@ -98,6 +99,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     ...galleryPages,
+    ...languages.map((language) => ({
+      url: url(getLocalizedUrl('/playground', language)),
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
     // Add locale-specific home pages
     {
       url: url('/zh-cn'),
