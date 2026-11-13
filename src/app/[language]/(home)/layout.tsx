@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 
 import { defaultLanguage, type Language } from '@/i18n'
 import { getNavigationOptions } from '@/lib'
-import { Footer } from './components'
+import { Footer } from './components/Footer'
 
 export default async function Layout({
   children,

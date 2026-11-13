@@ -1,7 +1,7 @@
 import { HomeLayout } from 'fumadocs-ui/layouts/home'
 import type { ReactNode } from 'react'
 
-import { Footer } from '@/app/[language]/(home)/components'
+import { Footer } from '@/app/[language]/(home)/components/Footer'
 import { HtmlLang } from '@/components'
 import { defaultLanguage } from '@/i18n'
 import { getNavigationOptions } from '@/lib'

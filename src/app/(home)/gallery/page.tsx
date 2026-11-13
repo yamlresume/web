@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { defaultLanguage, getGalleryMessages } from '@/i18n'
-import { GalleryList } from './components'
+import { GalleryList } from './components/GalleryList'
 
 export const revalidate = false
 
