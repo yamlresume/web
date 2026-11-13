@@ -67,31 +67,31 @@ export function Footer({ language }: FooterProps) {
   ]
 
   const developerLinks: FooterLink[] = [
-    { label: 'CLI', href: `/${language}/developer/cli/index.html` },
+    { label: 'CLI', href: '/developer/cli/index.html' },
     {
       label: 'create-yamlresume',
-      href: `/${language}/developer/create-yamlresume/index.html`,
+      href: '/developer/create-yamlresume/index.html',
     },
     {
       label: 'json2yamlresume',
-      href: `/${language}/developer/json2yamlresume/index.html`,
+      href: '/developer/json2yamlresume/index.html',
     },
-    { label: '@yamlresume/ai', href: `/${language}/developer/ai/index.html` },
+    { label: '@yamlresume/ai', href: '/developer/ai/index.html' },
     {
       label: '@yamlresume/core',
-      href: `/${language}/developer/core/index.html`,
+      href: '/developer/core/index.html',
     },
     {
       label: '@yamlresume/node',
-      href: `/${language}/developer/node/index.html`,
+      href: '/developer/node/index.html',
     },
     {
       label: '@yamlresume/playground',
-      href: `/${language}/developer/playground/index.html`,
+      href: '/developer/playground/index.html',
     },
     {
       label: '@yamlresume/samples',
-      href: `/${language}/developer/samples/index.html`,
+      href: '/developer/samples/index.html',
     },
   ]
 

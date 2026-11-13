@@ -76,7 +76,7 @@ describe('Footer', () => {
 
     expect(
       screen.getByRole('link', { name: '@yamlresume/core' })
-    ).toHaveAttribute('href', '/en/developer/core/index.html')
+    ).toHaveAttribute('href', '/developer/core/index.html')
 
     expect(screen.getByRole('link', { name: 'Chat' })).toHaveAttribute(
       'href',
@@ -86,5 +86,19 @@ describe('Footer', () => {
       'href',
       'https://github.com/yamlresume/yamlresume/discussions'
     )
+  })
+
+  it('keeps developer links unlocalized in localized footers', () => {
+    for (const language of ['zh-cn', 'zh-tw'] as const) {
+      const { unmount } = render(<Footer language={language} />)
+
+      for (const link of screen.getAllByRole('link', {
+        name: /^(@yamlresume\/|CLI$|json2yamlresume$|create-yamlresume$)/,
+      })) {
+        expect(link.getAttribute('href')).toMatch(/^\/developer\//)
+      }
+
+      unmount()
+    }
   })
 })
