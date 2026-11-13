@@ -16,7 +16,7 @@ export function PlaygroundHeader({ language }: { language: Language }) {
           <span className="font-medium text-lg tracking-tight">YAMLResume</span>
         </Link>
         <span className="text-neutral-500">/</span>
-        <span className="font-medium">{t('Playground')}</span>
+        <h1 className="font-medium">{t('Playground')}</h1>
       </div>
       <div className="flex items-center gap-4 hidden md:flex">
         <Link

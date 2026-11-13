@@ -13,6 +13,9 @@ const translations = {
       Playground: 'Playground',
     },
     playground: {
+      title: 'YAML Resume Playground',
+      description:
+        'Edit YAML resume source and preview pixel-perfect PDF, HTML, DOCX and Markdown output live in your browser. No install required.',
       tooltips: {
         copy: 'Copy',
         undo: 'Undo',
@@ -247,6 +250,9 @@ const translations = {
       Playground: 'Playground',
     },
     playground: {
+      title: 'Editor de currículums YAML',
+      description:
+        'Edite el código YAML de su currículum y previsualice en el navegador una salida PDF, HTML, DOCX y Markdown con precisión de píxeles. Sin instalar nada.',
       tooltips: {
         copy: 'Copiar',
         undo: 'Deshacer',
@@ -486,6 +492,9 @@ const translations = {
       Playground: 'Playground',
     },
     playground: {
+      title: 'Éditeur de CV YAML',
+      description:
+        'Modifiez la source YAML de votre CV et prévisualisez en direct une sortie PDF, HTML, DOCX et Markdown au pixel près, directement dans votre navigateur. Aucune installation requise.',
       tooltips: {
         copy: 'Copier',
         undo: 'Annuler',
@@ -713,695 +722,6 @@ const translations = {
       copyright: '© 2023–Présent, ',
     },
   },
-  'zh-cn': {
-    navbar: {
-      documentation: '文档',
-      blog: '博客',
-      gallery: '作品集',
-      chat: '聊天',
-      discussions: '讨论',
-      developer: '开发者',
-      search: '搜索',
-      Playground: '演练场',
-    },
-    playground: {
-      tooltips: {
-        copy: '复制',
-        undo: '撤销',
-        redo: '重做',
-        clear: '清空',
-        print: '打印',
-        openInNewTab: '在新标签页打开',
-        download: '下载',
-      },
-    },
-    hero: {
-      tagline: '由 <ppresume>PPResume</ppresume> 精心制作 ❤',
-      title: 'YAML 代码简历',
-      description:
-        'YAMLResume 让人们能够使用 YAML 创建和版本控制简历，并轻松生成多种格式（PDF, HTML, Markdown 等）的像素级完美简历。',
-      quickStart: '快速开始',
-      checkGithub: '查看 Github',
-      Playground: '演练场',
-    },
-    quickStart: {
-      title: '一秒钟快速开始',
-    },
-    features: {
-      sectionTitle: '强大、专业、完美',
-      plainText: {
-        title: 'YAML 纯文本',
-        description:
-          '像写代码一样用 YAML 管理简历——简洁、易读且完美适配版本控制。',
-      },
-      richText: {
-        title: '富文本格式化',
-        description: '在摘要中使用类 Markdown 的富文本，让核心优势清晰呈现。',
-      },
-      flexibleSection: {
-        title: '无限灵活结构',
-        description: '自由组合模块化章节，以前所未有的灵活性打造个性化简历。',
-      },
-      latexTypesetting: {
-        title: '专业级排版引擎',
-        description: '基于 LaTeX 实现像素级完美的排版与间距，尽显专业水准。',
-      },
-      customizable: {
-        title: '深度个性定制',
-        description: '完全掌握边距、字体与字号，打造独一无二的视觉呈现。',
-      },
-      multilingual: {
-        title: '全球化多语言',
-        description: '内置多语言支持，让国际化职位申请变得游刃有余。',
-      },
-      cli: {
-        title: '开发者 CLI 工具',
-        description: '强大的命令行工具，轻松实现简历工作流的自动化与集成。',
-      },
-      privacy: {
-        title: '隐私第一原则',
-        description: '所有处理均在本地完成。您的个人数据永远留在您的机器上。',
-      },
-      themes: {
-        title: '通用主题矩阵',
-        description: '一份源码，无限可能：支持 PDF、HTML 等多种专业主题导出。',
-      },
-      schema: {
-        title: '智能 Schema 校验',
-        description: '实时智能校验，在编写过程中即刻发现并纠正格式错误。',
-      },
-      outputs: {
-        title: '多格式导出支持',
-        description:
-          '支持导出为多种专业格式，包括 PDF、响应式 HTML 以及简洁的 Markdown。',
-      },
-      templates: {
-        title: '专业简历模板',
-        description:
-          '提供多款久经考验的 LaTeX 模板，兼顾信息呈现的清晰度与专业视觉效果。',
-      },
-    },
-    testimonials: {
-      sectionTitle: '用户评价',
-    },
-    stats: {
-      sectionTitle: '开发者信赖',
-    },
-    comparison: {
-      sectionTitle: '精雕细琢，力求完美',
-      conventional: 'RxResume',
-      yamlresume: 'YAMLResume',
-    },
-    onboarding: {
-      sectionTitle: '几秒钟即可开始',
-      recommended: '推荐',
-      npx: {
-        title: 'NPX（推荐）',
-        description: '无需全局安装即可立即创建新项目',
-      },
-      action: {
-        title: 'GitHub Action',
-        description: '通过 GitHub Actions 集成在 CI/CD 工作流中构建简历',
-      },
-      npm: {
-        title: 'NPM 全局安装',
-        description: '作为全局 CLI 工具安装以便系统范围访问',
-      },
-      brew: {
-        title: 'Homebrew',
-        description: '在 macOS 上使用 Homebrew 包管理器安装',
-      },
-      docker: {
-        title: 'Docker',
-        description: '在隔离容器中运行，无需本地依赖',
-      },
-      json2yamlresume: {
-        title: 'json2yamlresume',
-        description: '无缝将 JSON Resume 转换为 YAMLResume 格式',
-      },
-    },
-    faq: {
-      title: '常见问题',
-      questions: {
-        whatIs: {
-          question: '什么是 YAMLResume？',
-          answer1:
-            'YAMLResume 是一个允许您使用 YAML 将简历作为代码管理的工具。它提供了一种结构化的方式来定义您的工作经验、技能、教育和其他简历章节，采用简单且可版本控制的纯文本文档。YAMLResume 然后将这些 YAML 数据转换为排版精美的 PDF 文档，可用于求职和奖学金申请。',
-          answer2:
-            'YAMLResume 最初是 PPResume 的核心排版引擎，PPResume 是一个基于 LaTeX 的像素级完美简历构建器。经过仔细考虑，我们决定开源它，让人们始终有权对供应商锁定说不。',
-        },
-        whyYaml: {
-          question: '为什么选择 YAML 而不是 JSON？',
-          answer:
-            '简而言之，选择 YAML 是因为它比 JSON 更具人类可读性和可写性。尽管语法更简洁、更少冗余且更灵活，YAML 还支持注释，允许您在简历中添加注释，这些注释不会出现在最终输出中。YAML 的层次结构自然映射到章节和子章节，使其非常适合像简历这样的结构化数据。',
-        },
-        howGeneratePdf: {
-          question: 'YAMLResume 如何生成 PDF？',
-          answer:
-            'YAMLResume 实际上是用于编写简历的 DSL，因此在底层它是简历的编译器。它通过多步骤过程将 YAML 数据转换为 PDF。首先，它解析 YAML 文件并根据模式验证其结构。然后，它通过生成 LaTeX 代码的代码生成过程处理数据。最后，使用 LaTeX 引擎将此 LaTeX 代码编译为专业质量的 PDF。这种方法确保了在所有设备和平台上一致的像素级完美的排版和布局。',
-        },
-        whyLatex: {
-          question: '为什么使用 LaTeX？',
-          answer:
-            'LaTeX 是专业文档排版的黄金标准，特别是在学术和技术领域。它提供卓越的排版，具有适当的字距调整、连字和断字功能，这些在 HTML/CSS 或文字处理器中很难实现。LaTeX 在一致的间距、精确定位和灵活布局方面表现出色。通过使用 LaTeX 作为底层排版引擎，YAMLResume 确保您的简历具有精致、专业的外观，在招聘人员和招聘经理中脱颖而出。',
-        },
-      },
-    },
-    buyMeACoffee: {
-      title: '喜欢这个项目吗？',
-      description:
-        'YAMLResume 是一个热爱驱动的项目，致力于为所有人提供免费、私密且强大的简历工具。如果你觉得有用，欢迎支持它的持续开发。每一杯咖啡都很有帮助！',
-      button: '请我喝杯咖啡',
-    },
-    blog: {
-      title: 'YAMLResume 博客',
-    },
-    gallery: {
-      title: '简历作品集',
-      description:
-        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
-      searchPlaceholder: '搜索简历...',
-      filterCategory: '类别',
-      filterTag: '标签',
-      filterLanguage: '语言',
-      clearFilters: '清除筛选',
-      downloadPdf: 'PDF',
-      downloadDocx: 'DOCX',
-      downloadHtml: 'HTML',
-      noResults: '没有符合筛选条件的简历。',
-      resultsCount: '份简历',
-      activeFilters: 'Active',
-      previewTitle: 'Preview',
-      card: {
-        useButton: 'Use',
-      },
-      hero: {
-        title: 'Pick a template. Choose a language. Land the role.',
-        description:
-          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
-        stats: {
-          templates:
-            'Professional templates across LaTeX, HTML, DOCX & Markdown',
-          languages: 'Languages with full locale, typesetting & idiom support',
-          examples: 'Realistic resume examples with ready-to-use content',
-        },
-      },
-      sections: {
-        templates: 'Templates',
-        templatesDescription: 'Battle-tested templates for every engine.',
-        languages: 'Languages',
-        languagesDescription: 'Resumes localized for 12+ locales.',
-        examples: 'Examples',
-        examplesDescription:
-          'Realistic resume examples for roles and career goals.',
-      },
-      actions: {
-        downloadYaml: 'YAML',
-        openInPlayground: 'Open in Playground',
-        openInNewTab: 'Open in new tab',
-      },
-      backToGallery: '← Resume Gallery',
-      templateDetails: 'Template details',
-      sourceSnippet: 'Source snippet',
-      copy: 'Copy',
-      copied: 'Copied',
-      relatedTemplates: 'More like this',
-      relatedTemplatesDescription:
-        'Other templates for this position and language.',
-      browseAll: 'Browse all',
-      seeInAnotherLanguage: 'See this resume in another language',
-      sameSourceLocalized:
-        'The same YAML source, localized for different markets.',
-      downloadRendered: 'Download rendered:',
-      renderedFor: 'Rendered for {position} in {language}.',
-    },
-    footer: {
-      copyright: '© 2023 至今，',
-    },
-  },
-  'zh-tw': {
-    navbar: {
-      documentation: '文檔',
-      blog: '部落格',
-      gallery: '作品集',
-      chat: '聊天',
-      discussions: '討論',
-      developer: '開發者',
-      search: '搜尋',
-      Playground: '演練場',
-    },
-    playground: {
-      tooltips: {
-        copy: '複製',
-        undo: '復原',
-        redo: '重做',
-        clear: '清空',
-        print: '列印',
-        openInNewTab: '在新分頁開啟',
-        download: '下載',
-      },
-    },
-    hero: {
-      tagline: '由 <ppresume>PPResume</ppresume> 精心製作 ❤',
-      title: 'YAML 程式碼履歷',
-      description:
-        'YAMLResume 讓人們能夠使用 YAML 建立和版本控制履歷，並輕鬆產生多種格式（PDF, HTML, Markdown 等）的像素級完美履歷。',
-      quickStart: '快速開始',
-      checkGithub: '查看 Github',
-      Playground: '演練場',
-    },
-    quickStart: {
-      title: '一秒鐘快速開始',
-    },
-    features: {
-      sectionTitle: '強大、專業、完美',
-      plainText: {
-        title: 'YAML 純文字',
-        description:
-          '像寫程式一樣用 YAML 管理履歷——簡潔、易讀且完美適配版本控制。',
-      },
-      richText: {
-        title: '富文字格式化',
-        description: '在摘要中使用類 Markdown 的富文字，讓核心優勢清晰呈現。',
-      },
-      flexibleSection: {
-        title: '無限靈活結構',
-        description: '自由組合模組化章節，以前所未有的靈活性打造個性化履歷。',
-      },
-      latexTypesetting: {
-        title: '專業級排版引擎',
-        description: '基於 LaTeX 實現像素級完美的排版與間距，盡顯專業水準。',
-      },
-      customizable: {
-        title: '深度個性定制',
-        description: '完全掌握邊距、字體與字型大小，打造獨一無二的視覺呈現。',
-      },
-      multilingual: {
-        title: '全球化多語言',
-        description: '內建多語言支援，讓國際化職位申請變得遊刃有餘。',
-      },
-      cli: {
-        title: '開發者 CLI 工具',
-        description: '強大的命令列工具，輕鬆實現履歷工作流的自動化與整合。',
-      },
-      privacy: {
-        title: '隱私第一原則',
-        description: '所有處理均在本地完成。您的個人數據永遠留在您的機器上。',
-      },
-      themes: {
-        title: '通用主題矩陣',
-        description: '一份源碼，無限可能：支持 PDF、HTML 等多種專業主題匯出。',
-      },
-      schema: {
-        title: '智慧 Schema 校驗',
-        description: '即時智慧校驗，在編寫過程中即刻發現並糾正格式錯誤。',
-      },
-      outputs: {
-        title: '多格式匯出支援',
-        description:
-          '支援匯出為多種專業格式，包括 PDF、響應式 HTML 以及簡潔的 Markdown。',
-      },
-      templates: {
-        title: '專業履歷模板',
-        description:
-          '提供多款久經考驗的 LaTeX 模板，兼顧資訊呈現的清晰度與專業視覺效果。',
-      },
-    },
-    testimonials: {
-      sectionTitle: '用戶評價',
-    },
-    stats: {
-      sectionTitle: '開發者信賴',
-    },
-    comparison: {
-      sectionTitle: '精雕細琢，力求完美',
-      conventional: 'RxResume',
-      yamlresume: 'YAMLResume',
-    },
-    onboarding: {
-      sectionTitle: '幾秒鐘即可開始',
-      recommended: '推薦',
-      npx: {
-        title: 'NPX（推薦）',
-        description: '無需全域安裝即可立即建立新專案',
-      },
-      action: {
-        title: 'GitHub Action',
-        description: '透過 GitHub Actions 整合在 CI/CD 工作流中建置履歷',
-      },
-      npm: {
-        title: 'NPM 全域安裝',
-        description: '作為全域 CLI 工具安裝以便系統範圍存取',
-      },
-      brew: {
-        title: 'Homebrew',
-        description: '在 macOS 上使用 Homebrew 套件管理器安裝',
-      },
-      docker: {
-        title: 'Docker',
-        description: '在隔離容器中執行，無需本地依賴',
-      },
-      json2yamlresume: {
-        title: 'json2yamlresume',
-        description: '無縫將 JSON Resume 轉換為 YAMLResume 格式',
-      },
-    },
-    faq: {
-      title: '常見問題',
-      questions: {
-        whatIs: {
-          question: '什麼是 YAMLResume？',
-          answer1:
-            'YAMLResume 是一個允許您使用 YAML 將履歷作為程式碼管理的工具。它提供了一種結構化的方式來定義您的工作經驗、技能、教育和其他履歷章節，採用簡單且可版本控制的純文字文件。YAMLResume 然後將這些 YAML 資料轉換為排版精美的 PDF 文件，可用於求職和獎學金申請。',
-          answer2:
-            'YAMLResume 最初是 PPResume 的核心排版引擎，PPResume 是一個基於 LaTeX 的像素級完美履歷建立器。經過仔細考慮，我們決定開源它，讓人們始終有權對廠商鎖定說不。',
-        },
-        whyYaml: {
-          question: '為什麼選擇 YAML 而不是 JSON？',
-          answer:
-            '簡而言之，選擇 YAML 是因為它比 JSON 更具人類可讀性和可寫性。儘管語法更簡潔、更少冗餘且更靈活，YAML 還支援註解，允許您在履歷中新增註解，這些註解不會出現在最終輸出中。YAML 的層次結構自然對應到章節和子章節，使其非常適合像履歷這樣的結構化資料。',
-        },
-        howGeneratePdf: {
-          question: 'YAMLResume 如何產生 PDF？',
-          answer:
-            'YAMLResume 實際上是用於編寫履歷的 DSL，因此在底層它是履歷的編譯器。它透過多步驟過程將 YAML 資料轉換為 PDF。首先，它解析 YAML 檔案並根據架構驗證其結構。然後，它透過產生 LaTeX 程式碼的程式碼產生過程處理資料。最後，使用 LaTeX 引擎將此 LaTeX 程式碼編譯為專業品質的 PDF。這種方法確保了在所有裝置和平台上一致的像素級完美的排版和版面配置。',
-        },
-        whyLatex: {
-          question: '為什麼使用 LaTeX？',
-          answer:
-            'LaTeX 是專業文件排版的黃金標準，特別是在學術和技術領域。它提供卓越的排版，具有適當的字距調整、連字和斷字功能，這些在 HTML/CSS 或文字處理器中很難實現。LaTeX 在一致的間距、精確定位和靈活版面配置方面表現出色。透過使用 LaTeX 作為底層排版引擎，YAMLResume 確保您的履歷具有精緻、專業的外觀，在招募人員和招聘經理中脫穎而出。',
-        },
-      },
-    },
-    buyMeACoffee: {
-      title: '喜歡這個專案嗎？',
-      description:
-        'YAMLResume 是一個熱情驅動的專案，致力於為所有人提供免費、私密且強大的履歷工具。如果你覺得有幫助，歡迎支持它的持續開發。每一杯咖啡都很重要！',
-      button: '請我喝杯咖啡',
-    },
-    blog: {
-      title: 'YAMLResume 部落格',
-    },
-    gallery: {
-      title: '履歷作品集',
-      description:
-        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
-      searchPlaceholder: '搜尋履歷...',
-      filterCategory: '類別',
-      filterTag: '標籤',
-      filterLanguage: '語言',
-      clearFilters: '清除篩選',
-      downloadPdf: 'PDF',
-      downloadDocx: 'DOCX',
-      downloadHtml: 'HTML',
-      noResults: '沒有符合篩選條件的履歷。',
-      resultsCount: '份履歷',
-      activeFilters: 'Active',
-      previewTitle: 'Preview',
-      card: {
-        useButton: 'Use',
-      },
-      hero: {
-        title: 'Pick a template. Choose a language. Land the role.',
-        description:
-          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
-        stats: {
-          templates:
-            'Professional templates across LaTeX, HTML, DOCX & Markdown',
-          languages: 'Languages with full locale, typesetting & idiom support',
-          examples: 'Realistic resume examples with ready-to-use content',
-        },
-      },
-      sections: {
-        templates: 'Templates',
-        templatesDescription: 'Battle-tested templates for every engine.',
-        languages: 'Languages',
-        languagesDescription: 'Resumes localized for 12+ locales.',
-        examples: 'Examples',
-        examplesDescription:
-          'Realistic resume examples for roles and career goals.',
-      },
-      actions: {
-        downloadYaml: 'YAML',
-        openInPlayground: 'Open in Playground',
-        openInNewTab: 'Open in new tab',
-      },
-      backToGallery: '← Resume Gallery',
-      templateDetails: 'Template details',
-      sourceSnippet: 'Source snippet',
-      copy: 'Copy',
-      copied: 'Copied',
-      relatedTemplates: 'More like this',
-      relatedTemplatesDescription:
-        'Other templates for this position and language.',
-      browseAll: 'Browse all',
-      seeInAnotherLanguage: 'See this resume in another language',
-      sameSourceLocalized:
-        'The same YAML source, localized for different markets.',
-      downloadRendered: 'Download rendered:',
-      renderedFor: 'Rendered for {position} in {language}.',
-    },
-    footer: {
-      copyright: '© 2023 至今，',
-    },
-  },
-  ja: {
-    navbar: {
-      documentation: 'ドキュメント',
-      blog: 'ブログ',
-      gallery: 'ギャラリー',
-      chat: 'チャット',
-      discussions: 'ディスカッション',
-      developer: '開発者',
-      search: '検索',
-      Playground: 'プレイグラウンド',
-    },
-    playground: {
-      tooltips: {
-        copy: 'コピー',
-        undo: '元に戻す',
-        redo: 'やり直し',
-        clear: 'クリア',
-        print: '印刷',
-        openInNewTab: '新しいタブで開く',
-        download: 'ダウンロード',
-      },
-    },
-    hero: {
-      tagline: '<ppresume>PPResume</ppresume>が❤️でお届け',
-      title: 'YAMLでコード化された履歴書',
-      description:
-        'YAMLResumeは、YAMLを使用して履歴書を作成・バージョン管理し、簡単な操作で複数の形式（PDF、HTML、Markdownなど）のピクセルパーフェクトな履歴書を生成できます。',
-      quickStart: 'クイックスタート',
-      checkGithub: 'GitHubを確認',
-      Playground: 'プレイグラウンド',
-    },
-    quickStart: {
-      title: '1秒でクイックスタート',
-    },
-    features: {
-      sectionTitle: 'パワフル、プロフェッショナル、パーフェクト',
-      plainText: {
-        title: 'YAMLプレーンテキスト',
-        description:
-          '履歴書をYAMLでコードとして管理。クリーンで読みやすく、バージョン管理に最適です。',
-      },
-      richText: {
-        title: 'リッチテキスト対応',
-        description:
-          '要約部分でMarkdown形式のリッチテキストを使用し、強みを効果的にアピール。',
-      },
-      flexibleSection: {
-        title: '無限の柔軟性',
-        description:
-          'モジュール化されたセクションを自由に組み合わせ、独自の構造を構築できます。',
-      },
-      latexTypesetting: {
-        title: 'プロ仕様の組版エンジン',
-        description:
-          'LaTeXによるピクセルパーフェクトなタイポグラフィと間距で、圧倒的な品質を実現。',
-      },
-      customizable: {
-        title: '高度なカスタマイズ',
-        description:
-          '余白、フォント、サイズを自在に調整し、自分だけのデザインを追求。',
-      },
-      multilingual: {
-        title: '多言語グローバル対応',
-        description: '標準で多言語に対応。海外への応募もスムーズに行えます。',
-      },
-      cli: {
-        title: '開発者向けCLI',
-        description:
-          '強力なコマンドラインツールにより、作成ワークフローを自動化・統合。',
-      },
-      privacy: {
-        title: 'プライバシー第一',
-        description:
-          'すべての処理はローカルで完結。あなたのデータは常に手元に保たれます。',
-      },
-      themes: {
-        title: 'ユニバーサルテーマ',
-        description:
-          '1つのソースからPDFやHTMLなど、多彩なプロフェッショナルテーマを出力可能。',
-      },
-      schema: {
-        title: 'スキーマインテリジェンス',
-        description:
-          'リアルタイムのバリデーションにより、記述エラーを即座に発見・修正。',
-      },
-      outputs: {
-        title: 'マルチフォーマット対応',
-        description:
-          'PDF、レスポンシブHTML、クリーンなMarkdownなど、複数のプロフェッショナルな形式で履歴書を出力可能。',
-      },
-      templates: {
-        title: 'プロフェッショナル・テンプレート',
-        description:
-          '情報の明快さとプロフェッショナルな印象を両立した、実績のある多彩なLaTeXテンプレートから選択可能。',
-      },
-    },
-    testimonials: {
-      sectionTitle: '利用者の声',
-    },
-    stats: {
-      sectionTitle: '開発者に信頼されています',
-    },
-    comparison: {
-      sectionTitle: '完璧を追求した作り',
-      conventional: 'RxResume',
-      yamlresume: 'YAMLResume',
-    },
-    onboarding: {
-      sectionTitle: '数秒で始める',
-      recommended: '推奨',
-      npx: {
-        title: 'NPX（推奨）',
-        description: 'グローバルインストール不要で即座に新規プロジェクトを作成',
-      },
-      action: {
-        title: 'GitHub Action',
-        description: 'GitHub Actions連携でCI/CDワークフローで履歴書をビルド',
-      },
-      npm: {
-        title: 'NPM グローバル',
-        description:
-          'システム全体でアクセス可能なグローバルCLIツールとしてインストール',
-      },
-      brew: {
-        title: 'Homebrew',
-        description:
-          'macOSでHomebrewパッケージマネージャーを使用してインストール',
-      },
-      docker: {
-        title: 'Docker',
-        description: 'ローカル依存関係なしで隔離されたコンテナで実行',
-      },
-      json2yamlresume: {
-        title: 'json2yamlresume',
-        description: 'JSON ResumeをYAMLResume形式にシームレスに変換',
-      },
-    },
-    faq: {
-      title: 'よくある質問',
-      questions: {
-        whatIs: {
-          question: 'YAMLResumeとは何ですか？',
-          answer1:
-            'YAMLResumeは、YAMLを使用して履歴書をコードとして管理できるツールです。仕事の経験、スキル、教育、その他の履歴書セクションを、シンプルでバージョン管理可能なプレーンテキスト文書で構造化された方法で定義できます。YAMLResumeは、このYAMLデータを美しくタイプセットされたPDF文書に変換し、求職や奨学金申請に使用できます。',
-          answer2:
-            'YAMLResumeは、LaTeXベースのピクセルパーフェクトな履歴書ビルダーであるPPResumeのコアタイプセッティングエンジンとして始まりました。慎重な検討の結果、人々が常にベンダーロックインにノーと言う権利を持てるように、オープンソース化することを決定しました。',
-        },
-        whyYaml: {
-          question: 'なぜJSONではなくYAMLを選ぶのですか？',
-          answer:
-            '要するに、YAMLはJSONよりも人間が読みやすく書きやすいからです。よりクリーンで冗長性が少なく、より柔軟な構文に加えて、YAMLはコメントもサポートしており、最終出力に表示されないメモで履歴書に注釈を付けることができます。YAMLの階層構造は、セクションとサブセクションに自然にマッピングされ、履歴書のような構造化データに最適です。',
-        },
-        howGeneratePdf: {
-          question: 'YAMLResumeはどのようにPDFを生成しますか？',
-          answer:
-            'YAMLResumeは実際には履歴書を書くためのDSLであり、内部では履歴書のコンパイラです。YAMLデータをPDFに変換するのは多段階のプロセスです。まず、YAMLファイルを解析し、スキーマに対して構造を検証します。次に、LaTeXコードを生成するコード生成プロセスでデータを処理します。最後に、LaTeXエンジンを使用してこのLaTeXコードをプロフェッショナル品質のPDFにコンパイルします。このアプローチにより、すべてのデバイスとプラットフォームで一貫したピクセルパーフェクトなタイポグラフィとレイアウトが保証されます。',
-        },
-        whyLatex: {
-          question: 'なぜLaTeXを使用するのですか？',
-          answer:
-            'LaTeXは、特に学術・技術分野でプロフェッショナルな文書タイプセッティングのゴールドスタンダードです。優れたタイプセッティング、適切なカーニング、リガチャ、ハイフネーションを提供し、HTML/CSSやワードプロセッサでは実現困難です。LaTeXは一貫したスペーシング、精密な配置、柔軟なレイアウトで優れています。YAMLResumeはLaTeXを基盤タイプセッティングエンジンとして使用することで、採用担当者や人事マネージャーの目に留まる洗練されたプロフェッショナルな外観の履歴書を保証します。',
-        },
-      },
-    },
-    buyMeACoffee: {
-      title: 'このプロジェクトが気に入りましたか？',
-      description:
-        'YAMLResumeは、誰でも無料かつプライベートに使える強力な履歴書ツールを提供するためのパッションプロジェクトです。役に立ったら開発支援をご検討ください。コーヒー一杯が力になります！',
-      button: 'コーヒーをおごる',
-    },
-    blog: {
-      title: 'YAMLResume ブログ',
-    },
-    gallery: {
-      title: '履歴書ギャラリー',
-      description:
-        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
-      searchPlaceholder: '履歴書を検索...',
-      filterCategory: 'カテゴリー',
-      filterTag: 'タグ',
-      filterLanguage: '言語',
-      clearFilters: 'フィルターをクリア',
-      downloadPdf: 'PDF',
-      downloadDocx: 'DOCX',
-      downloadHtml: 'HTML',
-      noResults: '条件に一致する履歴書がありません。',
-      resultsCount: '件の履歴書',
-      activeFilters: 'Active',
-      previewTitle: 'Preview',
-      card: {
-        useButton: 'Use',
-      },
-      hero: {
-        title: 'Pick a template. Choose a language. Land the role.',
-        description:
-          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
-        stats: {
-          templates:
-            'Professional templates across LaTeX, HTML, DOCX & Markdown',
-          languages: 'Languages with full locale, typesetting & idiom support',
-          examples: 'Realistic resume examples with ready-to-use content',
-        },
-      },
-      sections: {
-        templates: 'Templates',
-        templatesDescription: 'Battle-tested templates for every engine.',
-        languages: 'Languages',
-        languagesDescription: 'Resumes localized for 12+ locales.',
-        examples: 'Examples',
-        examplesDescription:
-          'Realistic resume examples for roles and career goals.',
-      },
-      actions: {
-        downloadYaml: 'YAML',
-        openInPlayground: 'Open in Playground',
-        openInNewTab: 'Open in new tab',
-      },
-      backToGallery: '← Resume Gallery',
-      templateDetails: 'Template details',
-      sourceSnippet: 'Source snippet',
-      copy: 'Copy',
-      copied: 'Copied',
-      relatedTemplates: 'More like this',
-      relatedTemplatesDescription:
-        'Other templates for this position and language.',
-      browseAll: 'Browse all',
-      seeInAnotherLanguage: 'See this resume in another language',
-      sameSourceLocalized:
-        'The same YAML source, localized for different markets.',
-      downloadRendered: 'Download rendered:',
-      renderedFor: 'Rendered for {position} in {language}.',
-    },
-
-    footer: {
-      copyright: '© 2023年〜現在、',
-    },
-  },
   pt: {
     navbar: {
       documentation: 'Documentação',
@@ -1414,6 +734,9 @@ const translations = {
       Playground: 'Playground',
     },
     playground: {
+      title: 'Editor de Currículos YAML',
+      description:
+        'Edite o código YAML do seu currículo e visualize em tempo real uma saída em PDF, HTML, DOCX e Markdown com precisão de pixels, direto no navegador. Sem instalação.',
       tooltips: {
         copy: 'Copiar',
         undo: 'Desfazer',
@@ -1641,6 +964,704 @@ const translations = {
       copyright: '© 2023–Presente, ',
     },
   },
+  ja: {
+    navbar: {
+      documentation: 'ドキュメント',
+      blog: 'ブログ',
+      gallery: 'ギャラリー',
+      chat: 'チャット',
+      discussions: 'ディスカッション',
+      developer: '開発者',
+      search: '検索',
+      Playground: 'プレイグラウンド',
+    },
+    playground: {
+      title: 'YAML 履歴書プレイグラウンド',
+      description:
+        'ブラウザ上で YAML 形式の履歴書ソースを編集し、ピクセル単位で正確な PDF・HTML・DOCX・Markdown 出力をリアルタイムにプレビューできます。インストールは不要です。',
+      tooltips: {
+        copy: 'コピー',
+        undo: '元に戻す',
+        redo: 'やり直し',
+        clear: 'クリア',
+        print: '印刷',
+        openInNewTab: '新しいタブで開く',
+        download: 'ダウンロード',
+      },
+    },
+    hero: {
+      tagline: '<ppresume>PPResume</ppresume>が❤️でお届け',
+      title: 'YAMLでコード化された履歴書',
+      description:
+        'YAMLResumeは、YAMLを使用して履歴書を作成・バージョン管理し、簡単な操作で複数の形式（PDF、HTML、Markdownなど）のピクセルパーフェクトな履歴書を生成できます。',
+      quickStart: 'クイックスタート',
+      checkGithub: 'GitHubを確認',
+      Playground: 'プレイグラウンド',
+    },
+    quickStart: {
+      title: '1秒でクイックスタート',
+    },
+    features: {
+      sectionTitle: 'パワフル、プロフェッショナル、パーフェクト',
+      plainText: {
+        title: 'YAMLプレーンテキスト',
+        description:
+          '履歴書をYAMLでコードとして管理。クリーンで読みやすく、バージョン管理に最適です。',
+      },
+      richText: {
+        title: 'リッチテキスト対応',
+        description:
+          '要約部分でMarkdown形式のリッチテキストを使用し、強みを効果的にアピール。',
+      },
+      flexibleSection: {
+        title: '無限の柔軟性',
+        description:
+          'モジュール化されたセクションを自由に組み合わせ、独自の構造を構築できます。',
+      },
+      latexTypesetting: {
+        title: 'プロ仕様の組版エンジン',
+        description:
+          'LaTeXによるピクセルパーフェクトなタイポグラフィと間距で、圧倒的な品質を実現。',
+      },
+      customizable: {
+        title: '高度なカスタマイズ',
+        description:
+          '余白、フォント、サイズを自在に調整し、自分だけのデザインを追求。',
+      },
+      multilingual: {
+        title: '多言語グローバル対応',
+        description: '標準で多言語に対応。海外への応募もスムーズに行えます。',
+      },
+      cli: {
+        title: '開発者向けCLI',
+        description:
+          '強力なコマンドラインツールにより、作成ワークフローを自動化・統合。',
+      },
+      privacy: {
+        title: 'プライバシー第一',
+        description:
+          'すべての処理はローカルで完結。あなたのデータは常に手元に保たれます。',
+      },
+      themes: {
+        title: 'ユニバーサルテーマ',
+        description:
+          '1つのソースからPDFやHTMLなど、多彩なプロフェッショナルテーマを出力可能。',
+      },
+      schema: {
+        title: 'スキーマインテリジェンス',
+        description:
+          'リアルタイムのバリデーションにより、記述エラーを即座に発見・修正。',
+      },
+      outputs: {
+        title: 'マルチフォーマット対応',
+        description:
+          'PDF、レスポンシブHTML、クリーンなMarkdownなど、複数のプロフェッショナルな形式で履歴書を出力可能。',
+      },
+      templates: {
+        title: 'プロフェッショナル・テンプレート',
+        description:
+          '情報の明快さとプロフェッショナルな印象を両立した、実績のある多彩なLaTeXテンプレートから選択可能。',
+      },
+    },
+    testimonials: {
+      sectionTitle: '利用者の声',
+    },
+    stats: {
+      sectionTitle: '開発者に信頼されています',
+    },
+    comparison: {
+      sectionTitle: '完璧を追求した作り',
+      conventional: 'RxResume',
+      yamlresume: 'YAMLResume',
+    },
+    onboarding: {
+      sectionTitle: '数秒で始める',
+      recommended: '推奨',
+      npx: {
+        title: 'NPX（推奨）',
+        description: 'グローバルインストール不要で即座に新規プロジェクトを作成',
+      },
+      action: {
+        title: 'GitHub Action',
+        description: 'GitHub Actions連携でCI/CDワークフローで履歴書をビルド',
+      },
+      npm: {
+        title: 'NPM グローバル',
+        description:
+          'システム全体でアクセス可能なグローバルCLIツールとしてインストール',
+      },
+      brew: {
+        title: 'Homebrew',
+        description:
+          'macOSでHomebrewパッケージマネージャーを使用してインストール',
+      },
+      docker: {
+        title: 'Docker',
+        description: 'ローカル依存関係なしで隔離されたコンテナで実行',
+      },
+      json2yamlresume: {
+        title: 'json2yamlresume',
+        description: 'JSON ResumeをYAMLResume形式にシームレスに変換',
+      },
+    },
+    faq: {
+      title: 'よくある質問',
+      questions: {
+        whatIs: {
+          question: 'YAMLResumeとは何ですか？',
+          answer1:
+            'YAMLResumeは、YAMLを使用して履歴書をコードとして管理できるツールです。仕事の経験、スキル、教育、その他の履歴書セクションを、シンプルでバージョン管理可能なプレーンテキスト文書で構造化された方法で定義できます。YAMLResumeは、このYAMLデータを美しくタイプセットされたPDF文書に変換し、求職や奨学金申請に使用できます。',
+          answer2:
+            'YAMLResumeは、LaTeXベースのピクセルパーフェクトな履歴書ビルダーであるPPResumeのコアタイプセッティングエンジンとして始まりました。慎重な検討の結果、人々が常にベンダーロックインにノーと言う権利を持てるように、オープンソース化することを決定しました。',
+        },
+        whyYaml: {
+          question: 'なぜJSONではなくYAMLを選ぶのですか？',
+          answer:
+            '要するに、YAMLはJSONよりも人間が読みやすく書きやすいからです。よりクリーンで冗長性が少なく、より柔軟な構文に加えて、YAMLはコメントもサポートしており、最終出力に表示されないメモで履歴書に注釈を付けることができます。YAMLの階層構造は、セクションとサブセクションに自然にマッピングされ、履歴書のような構造化データに最適です。',
+        },
+        howGeneratePdf: {
+          question: 'YAMLResumeはどのようにPDFを生成しますか？',
+          answer:
+            'YAMLResumeは実際には履歴書を書くためのDSLであり、内部では履歴書のコンパイラです。YAMLデータをPDFに変換するのは多段階のプロセスです。まず、YAMLファイルを解析し、スキーマに対して構造を検証します。次に、LaTeXコードを生成するコード生成プロセスでデータを処理します。最後に、LaTeXエンジンを使用してこのLaTeXコードをプロフェッショナル品質のPDFにコンパイルします。このアプローチにより、すべてのデバイスとプラットフォームで一貫したピクセルパーフェクトなタイポグラフィとレイアウトが保証されます。',
+        },
+        whyLatex: {
+          question: 'なぜLaTeXを使用するのですか？',
+          answer:
+            'LaTeXは、特に学術・技術分野でプロフェッショナルな文書タイプセッティングのゴールドスタンダードです。優れたタイプセッティング、適切なカーニング、リガチャ、ハイフネーションを提供し、HTML/CSSやワードプロセッサでは実現困難です。LaTeXは一貫したスペーシング、精密な配置、柔軟なレイアウトで優れています。YAMLResumeはLaTeXを基盤タイプセッティングエンジンとして使用することで、採用担当者や人事マネージャーの目に留まる洗練されたプロフェッショナルな外観の履歴書を保証します。',
+        },
+      },
+    },
+    buyMeACoffee: {
+      title: 'このプロジェクトが気に入りましたか？',
+      description:
+        'YAMLResumeは、誰でも無料かつプライベートに使える強力な履歴書ツールを提供するためのパッションプロジェクトです。役に立ったら開発支援をご検討ください。コーヒー一杯が力になります！',
+      button: 'コーヒーをおごる',
+    },
+    blog: {
+      title: 'YAMLResume ブログ',
+    },
+    gallery: {
+      title: '履歴書ギャラリー',
+      description:
+        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
+      searchPlaceholder: '履歴書を検索...',
+      filterCategory: 'カテゴリー',
+      filterTag: 'タグ',
+      filterLanguage: '言語',
+      clearFilters: 'フィルターをクリア',
+      downloadPdf: 'PDF',
+      downloadDocx: 'DOCX',
+      downloadHtml: 'HTML',
+      noResults: '条件に一致する履歴書がありません。',
+      resultsCount: '件の履歴書',
+      activeFilters: 'Active',
+      previewTitle: 'Preview',
+      card: {
+        useButton: 'Use',
+      },
+      hero: {
+        title: 'Pick a template. Choose a language. Land the role.',
+        description:
+          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+        stats: {
+          templates:
+            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+          languages: 'Languages with full locale, typesetting & idiom support',
+          examples: 'Realistic resume examples with ready-to-use content',
+        },
+      },
+      sections: {
+        templates: 'Templates',
+        templatesDescription: 'Battle-tested templates for every engine.',
+        languages: 'Languages',
+        languagesDescription: 'Resumes localized for 12+ locales.',
+        examples: 'Examples',
+        examplesDescription:
+          'Realistic resume examples for roles and career goals.',
+      },
+      actions: {
+        downloadYaml: 'YAML',
+        openInPlayground: 'Open in Playground',
+        openInNewTab: 'Open in new tab',
+      },
+      backToGallery: '← Resume Gallery',
+      templateDetails: 'Template details',
+      sourceSnippet: 'Source snippet',
+      copy: 'Copy',
+      copied: 'Copied',
+      relatedTemplates: 'More like this',
+      relatedTemplatesDescription:
+        'Other templates for this position and language.',
+      browseAll: 'Browse all',
+      seeInAnotherLanguage: 'See this resume in another language',
+      sameSourceLocalized:
+        'The same YAML source, localized for different markets.',
+      downloadRendered: 'Download rendered:',
+      renderedFor: 'Rendered for {position} in {language}.',
+    },
+
+    footer: {
+      copyright: '© 2023年〜現在、',
+    },
+  },
+  'zh-cn': {
+    navbar: {
+      documentation: '文档',
+      blog: '博客',
+      gallery: '作品集',
+      chat: '聊天',
+      discussions: '讨论',
+      developer: '开发者',
+      search: '搜索',
+      Playground: '演练场',
+    },
+    playground: {
+      title: 'YAML 简历演练场',
+      description:
+        '在浏览器中编辑 YAML 简历源码，实时预览像素级完美的 PDF、HTML、DOCX 和 Markdown 输出，无需安装任何软件。',
+      tooltips: {
+        copy: '复制',
+        undo: '撤销',
+        redo: '重做',
+        clear: '清空',
+        print: '打印',
+        openInNewTab: '在新标签页打开',
+        download: '下载',
+      },
+    },
+    hero: {
+      tagline: '由 <ppresume>PPResume</ppresume> 精心制作 ❤',
+      title: 'YAML 代码简历',
+      description:
+        'YAMLResume 让人们能够使用 YAML 创建和版本控制简历，并轻松生成多种格式（PDF, HTML, Markdown 等）的像素级完美简历。',
+      quickStart: '快速开始',
+      checkGithub: '查看 Github',
+      Playground: '演练场',
+    },
+    quickStart: {
+      title: '一秒钟快速开始',
+    },
+    features: {
+      sectionTitle: '强大、专业、完美',
+      plainText: {
+        title: 'YAML 纯文本',
+        description:
+          '像写代码一样用 YAML 管理简历——简洁、易读且完美适配版本控制。',
+      },
+      richText: {
+        title: '富文本格式化',
+        description: '在摘要中使用类 Markdown 的富文本，让核心优势清晰呈现。',
+      },
+      flexibleSection: {
+        title: '无限灵活结构',
+        description: '自由组合模块化章节，以前所未有的灵活性打造个性化简历。',
+      },
+      latexTypesetting: {
+        title: '专业级排版引擎',
+        description: '基于 LaTeX 实现像素级完美的排版与间距，尽显专业水准。',
+      },
+      customizable: {
+        title: '深度个性定制',
+        description: '完全掌握边距、字体与字号，打造独一无二的视觉呈现。',
+      },
+      multilingual: {
+        title: '全球化多语言',
+        description: '内置多语言支持，让国际化职位申请变得游刃有余。',
+      },
+      cli: {
+        title: '开发者 CLI 工具',
+        description: '强大的命令行工具，轻松实现简历工作流的自动化与集成。',
+      },
+      privacy: {
+        title: '隐私第一原则',
+        description: '所有处理均在本地完成。您的个人数据永远留在您的机器上。',
+      },
+      themes: {
+        title: '通用主题矩阵',
+        description: '一份源码，无限可能：支持 PDF、HTML 等多种专业主题导出。',
+      },
+      schema: {
+        title: '智能 Schema 校验',
+        description: '实时智能校验，在编写过程中即刻发现并纠正格式错误。',
+      },
+      outputs: {
+        title: '多格式导出支持',
+        description:
+          '支持导出为多种专业格式，包括 PDF、响应式 HTML 以及简洁的 Markdown。',
+      },
+      templates: {
+        title: '专业简历模板',
+        description:
+          '提供多款久经考验的 LaTeX 模板，兼顾信息呈现的清晰度与专业视觉效果。',
+      },
+    },
+    testimonials: {
+      sectionTitle: '用户评价',
+    },
+    stats: {
+      sectionTitle: '开发者信赖',
+    },
+    comparison: {
+      sectionTitle: '精雕细琢，力求完美',
+      conventional: 'RxResume',
+      yamlresume: 'YAMLResume',
+    },
+    onboarding: {
+      sectionTitle: '几秒钟即可开始',
+      recommended: '推荐',
+      npx: {
+        title: 'NPX（推荐）',
+        description: '无需全局安装即可立即创建新项目',
+      },
+      action: {
+        title: 'GitHub Action',
+        description: '通过 GitHub Actions 集成在 CI/CD 工作流中构建简历',
+      },
+      npm: {
+        title: 'NPM 全局安装',
+        description: '作为全局 CLI 工具安装以便系统范围访问',
+      },
+      brew: {
+        title: 'Homebrew',
+        description: '在 macOS 上使用 Homebrew 包管理器安装',
+      },
+      docker: {
+        title: 'Docker',
+        description: '在隔离容器中运行，无需本地依赖',
+      },
+      json2yamlresume: {
+        title: 'json2yamlresume',
+        description: '无缝将 JSON Resume 转换为 YAMLResume 格式',
+      },
+    },
+    faq: {
+      title: '常见问题',
+      questions: {
+        whatIs: {
+          question: '什么是 YAMLResume？',
+          answer1:
+            'YAMLResume 是一个允许您使用 YAML 将简历作为代码管理的工具。它提供了一种结构化的方式来定义您的工作经验、技能、教育和其他简历章节，采用简单且可版本控制的纯文本文档。YAMLResume 然后将这些 YAML 数据转换为排版精美的 PDF 文档，可用于求职和奖学金申请。',
+          answer2:
+            'YAMLResume 最初是 PPResume 的核心排版引擎，PPResume 是一个基于 LaTeX 的像素级完美简历构建器。经过仔细考虑，我们决定开源它，让人们始终有权对供应商锁定说不。',
+        },
+        whyYaml: {
+          question: '为什么选择 YAML 而不是 JSON？',
+          answer:
+            '简而言之，选择 YAML 是因为它比 JSON 更具人类可读性和可写性。尽管语法更简洁、更少冗余且更灵活，YAML 还支持注释，允许您在简历中添加注释，这些注释不会出现在最终输出中。YAML 的层次结构自然映射到章节和子章节，使其非常适合像简历这样的结构化数据。',
+        },
+        howGeneratePdf: {
+          question: 'YAMLResume 如何生成 PDF？',
+          answer:
+            'YAMLResume 实际上是用于编写简历的 DSL，因此在底层它是简历的编译器。它通过多步骤过程将 YAML 数据转换为 PDF。首先，它解析 YAML 文件并根据模式验证其结构。然后，它通过生成 LaTeX 代码的代码生成过程处理数据。最后，使用 LaTeX 引擎将此 LaTeX 代码编译为专业质量的 PDF。这种方法确保了在所有设备和平台上一致的像素级完美的排版和布局。',
+        },
+        whyLatex: {
+          question: '为什么使用 LaTeX？',
+          answer:
+            'LaTeX 是专业文档排版的黄金标准，特别是在学术和技术领域。它提供卓越的排版，具有适当的字距调整、连字和断字功能，这些在 HTML/CSS 或文字处理器中很难实现。LaTeX 在一致的间距、精确定位和灵活布局方面表现出色。通过使用 LaTeX 作为底层排版引擎，YAMLResume 确保您的简历具有精致、专业的外观，在招聘人员和招聘经理中脱颖而出。',
+        },
+      },
+    },
+    buyMeACoffee: {
+      title: '喜欢这个项目吗？',
+      description:
+        'YAMLResume 是一个热爱驱动的项目，致力于为所有人提供免费、私密且强大的简历工具。如果你觉得有用，欢迎支持它的持续开发。每一杯咖啡都很有帮助！',
+      button: '请我喝杯咖啡',
+    },
+    blog: {
+      title: 'YAMLResume 博客',
+    },
+    gallery: {
+      title: '简历作品集',
+      description:
+        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
+      searchPlaceholder: '搜索简历...',
+      filterCategory: '类别',
+      filterTag: '标签',
+      filterLanguage: '语言',
+      clearFilters: '清除筛选',
+      downloadPdf: 'PDF',
+      downloadDocx: 'DOCX',
+      downloadHtml: 'HTML',
+      noResults: '没有符合筛选条件的简历。',
+      resultsCount: '份简历',
+      activeFilters: 'Active',
+      previewTitle: 'Preview',
+      card: {
+        useButton: 'Use',
+      },
+      hero: {
+        title: 'Pick a template. Choose a language. Land the role.',
+        description:
+          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+        stats: {
+          templates:
+            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+          languages: 'Languages with full locale, typesetting & idiom support',
+          examples: 'Realistic resume examples with ready-to-use content',
+        },
+      },
+      sections: {
+        templates: 'Templates',
+        templatesDescription: 'Battle-tested templates for every engine.',
+        languages: 'Languages',
+        languagesDescription: 'Resumes localized for 12+ locales.',
+        examples: 'Examples',
+        examplesDescription:
+          'Realistic resume examples for roles and career goals.',
+      },
+      actions: {
+        downloadYaml: 'YAML',
+        openInPlayground: 'Open in Playground',
+        openInNewTab: 'Open in new tab',
+      },
+      backToGallery: '← Resume Gallery',
+      templateDetails: 'Template details',
+      sourceSnippet: 'Source snippet',
+      copy: 'Copy',
+      copied: 'Copied',
+      relatedTemplates: 'More like this',
+      relatedTemplatesDescription:
+        'Other templates for this position and language.',
+      browseAll: 'Browse all',
+      seeInAnotherLanguage: 'See this resume in another language',
+      sameSourceLocalized:
+        'The same YAML source, localized for different markets.',
+      downloadRendered: 'Download rendered:',
+      renderedFor: 'Rendered for {position} in {language}.',
+    },
+    footer: {
+      copyright: '© 2023 至今，',
+    },
+  },
+  'zh-tw': {
+    navbar: {
+      documentation: '文檔',
+      blog: '部落格',
+      gallery: '作品集',
+      chat: '聊天',
+      discussions: '討論',
+      developer: '開發者',
+      search: '搜尋',
+      Playground: '演練場',
+    },
+    playground: {
+      title: 'YAML 履歷演練場',
+      description:
+        '在瀏覽器中編輯 YAML 履歷原始碼，即時預覽像素級完美的 PDF、HTML、DOCX 與 Markdown 輸出，無需安裝任何軟體。',
+      tooltips: {
+        copy: '複製',
+        undo: '復原',
+        redo: '重做',
+        clear: '清空',
+        print: '列印',
+        openInNewTab: '在新分頁開啟',
+        download: '下載',
+      },
+    },
+    hero: {
+      tagline: '由 <ppresume>PPResume</ppresume> 精心製作 ❤',
+      title: 'YAML 程式碼履歷',
+      description:
+        'YAMLResume 讓人們能夠使用 YAML 建立和版本控制履歷，並輕鬆產生多種格式（PDF, HTML, Markdown 等）的像素級完美履歷。',
+      quickStart: '快速開始',
+      checkGithub: '查看 Github',
+      Playground: '演練場',
+    },
+    quickStart: {
+      title: '一秒鐘快速開始',
+    },
+    features: {
+      sectionTitle: '強大、專業、完美',
+      plainText: {
+        title: 'YAML 純文字',
+        description:
+          '像寫程式一樣用 YAML 管理履歷——簡潔、易讀且完美適配版本控制。',
+      },
+      richText: {
+        title: '富文字格式化',
+        description: '在摘要中使用類 Markdown 的富文字，讓核心優勢清晰呈現。',
+      },
+      flexibleSection: {
+        title: '無限靈活結構',
+        description: '自由組合模組化章節，以前所未有的靈活性打造個性化履歷。',
+      },
+      latexTypesetting: {
+        title: '專業級排版引擎',
+        description: '基於 LaTeX 實現像素級完美的排版與間距，盡顯專業水準。',
+      },
+      customizable: {
+        title: '深度個性定制',
+        description: '完全掌握邊距、字體與字型大小，打造獨一無二的視覺呈現。',
+      },
+      multilingual: {
+        title: '全球化多語言',
+        description: '內建多語言支援，讓國際化職位申請變得遊刃有餘。',
+      },
+      cli: {
+        title: '開發者 CLI 工具',
+        description: '強大的命令列工具，輕鬆實現履歷工作流的自動化與整合。',
+      },
+      privacy: {
+        title: '隱私第一原則',
+        description: '所有處理均在本地完成。您的個人數據永遠留在您的機器上。',
+      },
+      themes: {
+        title: '通用主題矩陣',
+        description: '一份源碼，無限可能：支持 PDF、HTML 等多種專業主題匯出。',
+      },
+      schema: {
+        title: '智慧 Schema 校驗',
+        description: '即時智慧校驗，在編寫過程中即刻發現並糾正格式錯誤。',
+      },
+      outputs: {
+        title: '多格式匯出支援',
+        description:
+          '支援匯出為多種專業格式，包括 PDF、響應式 HTML 以及簡潔的 Markdown。',
+      },
+      templates: {
+        title: '專業履歷模板',
+        description:
+          '提供多款久經考驗的 LaTeX 模板，兼顧資訊呈現的清晰度與專業視覺效果。',
+      },
+    },
+    testimonials: {
+      sectionTitle: '用戶評價',
+    },
+    stats: {
+      sectionTitle: '開發者信賴',
+    },
+    comparison: {
+      sectionTitle: '精雕細琢，力求完美',
+      conventional: 'RxResume',
+      yamlresume: 'YAMLResume',
+    },
+    onboarding: {
+      sectionTitle: '幾秒鐘即可開始',
+      recommended: '推薦',
+      npx: {
+        title: 'NPX（推薦）',
+        description: '無需全域安裝即可立即建立新專案',
+      },
+      action: {
+        title: 'GitHub Action',
+        description: '透過 GitHub Actions 整合在 CI/CD 工作流中建置履歷',
+      },
+      npm: {
+        title: 'NPM 全域安裝',
+        description: '作為全域 CLI 工具安裝以便系統範圍存取',
+      },
+      brew: {
+        title: 'Homebrew',
+        description: '在 macOS 上使用 Homebrew 套件管理器安裝',
+      },
+      docker: {
+        title: 'Docker',
+        description: '在隔離容器中執行，無需本地依賴',
+      },
+      json2yamlresume: {
+        title: 'json2yamlresume',
+        description: '無縫將 JSON Resume 轉換為 YAMLResume 格式',
+      },
+    },
+    faq: {
+      title: '常見問題',
+      questions: {
+        whatIs: {
+          question: '什麼是 YAMLResume？',
+          answer1:
+            'YAMLResume 是一個允許您使用 YAML 將履歷作為程式碼管理的工具。它提供了一種結構化的方式來定義您的工作經驗、技能、教育和其他履歷章節，採用簡單且可版本控制的純文字文件。YAMLResume 然後將這些 YAML 資料轉換為排版精美的 PDF 文件，可用於求職和獎學金申請。',
+          answer2:
+            'YAMLResume 最初是 PPResume 的核心排版引擎，PPResume 是一個基於 LaTeX 的像素級完美履歷建立器。經過仔細考慮，我們決定開源它，讓人們始終有權對廠商鎖定說不。',
+        },
+        whyYaml: {
+          question: '為什麼選擇 YAML 而不是 JSON？',
+          answer:
+            '簡而言之，選擇 YAML 是因為它比 JSON 更具人類可讀性和可寫性。儘管語法更簡潔、更少冗餘且更靈活，YAML 還支援註解，允許您在履歷中新增註解，這些註解不會出現在最終輸出中。YAML 的層次結構自然對應到章節和子章節，使其非常適合像履歷這樣的結構化資料。',
+        },
+        howGeneratePdf: {
+          question: 'YAMLResume 如何產生 PDF？',
+          answer:
+            'YAMLResume 實際上是用於編寫履歷的 DSL，因此在底層它是履歷的編譯器。它透過多步驟過程將 YAML 資料轉換為 PDF。首先，它解析 YAML 檔案並根據架構驗證其結構。然後，它透過產生 LaTeX 程式碼的程式碼產生過程處理資料。最後，使用 LaTeX 引擎將此 LaTeX 程式碼編譯為專業品質的 PDF。這種方法確保了在所有裝置和平台上一致的像素級完美的排版和版面配置。',
+        },
+        whyLatex: {
+          question: '為什麼使用 LaTeX？',
+          answer:
+            'LaTeX 是專業文件排版的黃金標準，特別是在學術和技術領域。它提供卓越的排版，具有適當的字距調整、連字和斷字功能，這些在 HTML/CSS 或文字處理器中很難實現。LaTeX 在一致的間距、精確定位和靈活版面配置方面表現出色。透過使用 LaTeX 作為底層排版引擎，YAMLResume 確保您的履歷具有精緻、專業的外觀，在招募人員和招聘經理中脫穎而出。',
+        },
+      },
+    },
+    buyMeACoffee: {
+      title: '喜歡這個專案嗎？',
+      description:
+        'YAMLResume 是一個熱情驅動的專案，致力於為所有人提供免費、私密且強大的履歷工具。如果你覺得有幫助，歡迎支持它的持續開發。每一杯咖啡都很重要！',
+      button: '請我喝杯咖啡',
+    },
+    blog: {
+      title: 'YAMLResume 部落格',
+    },
+    gallery: {
+      title: '履歷作品集',
+      description:
+        'Browse realistic resume examples generated with YAMLResume. Find a starting template for your next resume.',
+      searchPlaceholder: '搜尋履歷...',
+      filterCategory: '類別',
+      filterTag: '標籤',
+      filterLanguage: '語言',
+      clearFilters: '清除篩選',
+      downloadPdf: 'PDF',
+      downloadDocx: 'DOCX',
+      downloadHtml: 'HTML',
+      noResults: '沒有符合篩選條件的履歷。',
+      resultsCount: '份履歷',
+      activeFilters: 'Active',
+      previewTitle: 'Preview',
+      card: {
+        useButton: 'Use',
+      },
+      hero: {
+        title: 'Pick a template. Choose a language. Land the role.',
+        description:
+          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+        stats: {
+          templates:
+            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+          languages: 'Languages with full locale, typesetting & idiom support',
+          examples: 'Realistic resume examples with ready-to-use content',
+        },
+      },
+      sections: {
+        templates: 'Templates',
+        templatesDescription: 'Battle-tested templates for every engine.',
+        languages: 'Languages',
+        languagesDescription: 'Resumes localized for 12+ locales.',
+        examples: 'Examples',
+        examplesDescription:
+          'Realistic resume examples for roles and career goals.',
+      },
+      actions: {
+        downloadYaml: 'YAML',
+        openInPlayground: 'Open in Playground',
+        openInNewTab: 'Open in new tab',
+      },
+      backToGallery: '← Resume Gallery',
+      templateDetails: 'Template details',
+      sourceSnippet: 'Source snippet',
+      copy: 'Copy',
+      copied: 'Copied',
+      relatedTemplates: 'More like this',
+      relatedTemplatesDescription:
+        'Other templates for this position and language.',
+      browseAll: 'Browse all',
+      seeInAnotherLanguage: 'See this resume in another language',
+      sameSourceLocalized:
+        'The same YAML source, localized for different markets.',
+      downloadRendered: 'Download rendered:',
+      renderedFor: 'Rendered for {position} in {language}.',
+    },
+    footer: {
+      copyright: '© 2023 至今，',
+    },
+  },
   id: {
     navbar: {
       documentation: 'Dokumentasi',
@@ -1653,6 +1674,9 @@ const translations = {
       Playground: 'Playground',
     },
     playground: {
+      title: 'Playground Resume YAML',
+      description:
+        'Edit sumber resume YAML dan pratinjau keluaran PDF, HTML, DOCX, dan Markdown yang presisi piksel langsung di browser. Tanpa perlu instalasi.',
       tooltips: {
         copy: 'Salin',
         undo: 'Urungkan',
@@ -1880,20 +1904,39 @@ const translations = {
   },
 }
 
+// Resolve a dotted key inside one locale's namespace.
+function lookup(
+  source: unknown,
+  namespace: string,
+  keys: string[]
+): string | undefined {
+  let value: unknown = (source as Record<string, unknown> | undefined)?.[
+    namespace
+  ]
+
+  for (const key of keys) {
+    value = (value as Record<string, unknown> | undefined)?.[key]
+  }
+
+  return typeof value === 'string' ? value : undefined
+}
+
 // Server-side translation helper
 export function getTranslations(locale: string, namespace: string) {
   const t = (key: string) => {
     const keys = key.split('.')
-    let value: unknown = translations[locale as keyof typeof translations]
 
-    // Start with the namespace
-    value = (value as Record<string, unknown>)?.[namespace]
-
-    for (const k of keys) {
-      value = (value as Record<string, unknown>)?.[k]
-    }
-
-    return (value as string) || key
+    // Fall back to the default locale so a key that only exists in English
+    // never renders as a raw key name.
+    return (
+      lookup(
+        translations[locale as keyof typeof translations],
+        namespace,
+        keys
+      ) ??
+      lookup(translations.en, namespace, keys) ??
+      key
+    )
   }
 
   t.rich = (
@@ -1901,7 +1944,6 @@ export function getTranslations(locale: string, namespace: string) {
     tags: Record<string, (chunks: React.ReactNode) => React.ReactNode>
   ) => {
     const text = t(key)
-    if (typeof text !== 'string') return text
 
     // Simple rich text parser for tags like <ppresume>content</ppresume>
     const parts = text.split(/(<[^>]+>.*?<\/[^>]+>)/g)
