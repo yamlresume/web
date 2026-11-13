@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import 'react-medium-image-zoom/dist/styles.css'
 import {
   defaultLanguage,
+  getLanguageAlternates,
   getTranslations,
   type Language,
-  languages,
 } from '@/i18n'
 import {
   BuyMeACoffeeSection,
@@ -58,12 +58,6 @@ export async function generateMetadata({
   // Build canonical URL
   const canonicalPath = language === defaultLanguage ? '/' : `/${language}`
 
-  // Build hreflang alternates for all languages
-  const languagesAlternates: Record<string, string> = {}
-  for (const lang of languages) {
-    languagesAlternates[lang] = lang === defaultLanguage ? '/' : `/${lang}`
-  }
-
   const t = getTranslations(language, 'hero')
 
   return {
@@ -71,7 +65,7 @@ export async function generateMetadata({
     description: t('description'),
     alternates: {
       canonical: canonicalPath,
-      languages: languagesAlternates,
+      languages: getLanguageAlternates('/'),
     },
   }
 }

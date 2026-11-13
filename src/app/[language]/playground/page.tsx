@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import {
+  getLanguageAlternates,
   getLocalizedUrl,
   getTranslations,
   type Language,
-  languages,
 } from '@/i18n'
 import { PlaygroundBody, PlaygroundHeader } from './components'
 
@@ -36,17 +36,13 @@ export async function generateMetadata({
 
   // Parameterized playground URLs (`?sample=…&locale=…`) canonicalize to the
   // bare path so sample permutations do not compete with the tool page.
-  const languagesAlternates: Record<string, string> = {}
-  for (const lang of languages) {
-    languagesAlternates[lang] = getLocalizedUrl('/playground', lang)
-  }
 
   return {
     title: t('title'),
     description: t('description'),
     alternates: {
       canonical: getLocalizedUrl('/playground', language as Language),
-      languages: languagesAlternates,
+      languages: getLanguageAlternates('/playground'),
     },
   }
 }

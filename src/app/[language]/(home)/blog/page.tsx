@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { defaultLanguage, languages } from '@/i18n'
+import { defaultLanguage, getLanguageAlternates } from '@/i18n'
 import { getLocalizedSources } from '@/lib'
 import { BlogList } from './components'
 
@@ -40,19 +40,12 @@ export async function generateMetadata({
   const canonicalPath =
     language === defaultLanguage ? '/blog' : `/${language}/blog`
 
-  // Build hreflang alternates for all languages
-  const languagesAlternates: Record<string, string> = {}
-  for (const lang of languages) {
-    languagesAlternates[lang] =
-      lang === defaultLanguage ? '/blog' : `/${lang}/blog`
-  }
-
   return {
     title: 'Blog',
     description: 'Latest updates and insights from the YAMLResume team',
     alternates: {
       canonical: canonicalPath,
-      languages: languagesAlternates,
+      languages: getLanguageAlternates('/blog'),
     },
     openGraph: {
       images: `/api/og/blog/open-graph.png?language=${language}`,

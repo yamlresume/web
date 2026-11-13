@@ -11,4 +11,4 @@ export {
 export { getHomeGalleryMessages } from './homeGallery'
 export { useTranslations } from './hooks'
 export { getTranslations } from './translations'
-export { getLocalizedUrl } from './url'
+export { getLanguageAlternates, getLocalizedUrl } from './url'
