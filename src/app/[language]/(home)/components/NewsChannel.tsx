@@ -29,6 +29,7 @@ export function NewsChannel() {
           <div className="text-sm text-fd-foreground">
             <Link
               href={getLocalizedUrl('/blog/v0.17', language)}
+              prefetch={false}
               className="underline font-semibold"
             >
               YAMLResume v0.17
@@ -36,6 +37,7 @@ export function NewsChannel() {
             is here with{' '}
             <Link
               href={getLocalizedUrl('/blog/v0.17', language)}
+              prefetch={false}
               className="underline"
             >
               accent colors, the kami HTML template, and a 4.7x slimmer Docker
