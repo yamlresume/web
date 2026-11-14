@@ -4,8 +4,7 @@ import { searchAPI } from '@/lib/search-index'
 
 // This static route is evaluated at build time. Its only job is to export the
 // Orama search index to a file that the dynamic /api/search route can load
-// quickly at runtime, avoiding the Vercel FUNCTION_INVOCATION_TIMEOUT caused by
-// building the index on every cold start.
+// quickly at runtime instead of rebuilding the index on the first request.
 export const dynamic = 'force-static'
 export const revalidate = false
 

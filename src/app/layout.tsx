@@ -1,5 +1,4 @@
 import './global.css'
-import { Analytics as VercelAnalytics } from '@vercel/analytics/next'
 import { RootProvider } from 'fumadocs-ui/provider/next'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
@@ -81,7 +80,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="flex flex-col min-h-screen">
         <RootProvider i18n={provider('en')}>
           <Analytics />
-          <VercelAnalytics />
           {children}
         </RootProvider>
       </body>
