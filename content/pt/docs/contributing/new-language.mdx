@@ -6,15 +6,22 @@ description: "Guia passo a passo para adicionar um novo idioma de currículo, do
 import { Step, Steps } from "fumadocs-ui/components/steps";
 
 O YAMLResume foi desenhado para suportar [múltiplos
-idiomas](/docs/locale) desde a base, permitindo aos
+idiomas](/pt/docs/locale) desde a base, permitindo aos
 utilizadores criar currículos no seu idioma preferido.
 
 No momento de escrever, o YAMLResume suporta os seguintes idiomas:
 
-- [Inglês](/docs/locale/english)
-- [Chinês](/docs/locale/chinese)
-- [Norueguês](/docs/locale/norwegian)
-- [Espanhol](/docs/locale/spanish)
+- [Português brasileiro](/pt/docs/locale/brazilian-portuguese)
+- [Chinês](/pt/docs/locale/chinese)
+- [Holandês](/pt/docs/locale/dutch)
+- [Inglês](/pt/docs/locale/english)
+- [Francês](/pt/docs/locale/french)
+- [Alemão](/pt/docs/locale/german)
+- [Indonésio](/pt/docs/locale/indonesian)
+- [Italiano](/pt/docs/locale/italian)
+- [Japonês](/pt/docs/locale/japanese)
+- [Norueguês](/pt/docs/locale/norwegian)
+- [Espanhol](/pt/docs/locale/spanish)
 
 Se o teu idioma preferido não está listado, podes contribuir seguindo os
 passos abaixo para adicionar suporte para um novo idioma.
@@ -26,13 +33,13 @@ passos abaixo para adicionar suporte para um novo idioma.
 
 Para adicionar uma nova opção `locale.language` ao YAMLResume, primeiro
 regista o teu idioma em
-[models/resume.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/resume.ts)
+[models/options.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/options.ts)
 adicionando uma nova entrada a `LOCALE_LANGUAGE_OPTIONS`.
 
 **Lista de verificação:**
 
 - [ ] Adiciona o teu idioma a `LOCALE_LANGUAGE_OPTIONS`.
-- [ ] [Constrói e testa o novo CLI](/docs/contributing/cli#yamlresumecli-build)
+- [ ] [Constrói e testa o novo CLI](/pt/docs/contributing/cli#yamlresumecli-build)
       com `pnpm cli dev languages list`, assegurando-te de que o teu idioma aparece na
       lista.
 
@@ -65,16 +72,17 @@ adicionar traduções para o idioma norueguês.
 <Step>
 ## Atualiza a Configuração de Babel
 
-O YAMLResume usa LaTeX para geração de PDF, e para obter os melhores
-resultados de composição, precisamos de estabelecer a [configuração do pacote
-babel](https://latex3.github.io/babel/) adequada. Aqui está um
+O YAMLResume usa LaTeX e Typst para gerar PDF. O LaTeX precisa de uma
+[configuração do pacote babel](https://latex3.github.io/babel/) adequada para
+obter os melhores resultados de composição; o Typst reutiliza as traduções
+acima e não precisa de configuração adicional. Aqui está um
 [commit](https://github.com/yamlresume/yamlresume/commit/b72a4441ad2542873f449bc35a265e7208eafbe7)
 de referência para o idioma norueguês.
 
 **Lista de verificação:**
 
 - [ ] Atualiza a função `renderBabelConfig()` em
-      [preamble.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/preamble.ts)
+      [latex/base.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/latex/base.ts)
       para incluir o pacote babel para o teu novo idioma.
 
 </Step>
@@ -82,7 +90,7 @@ de referência para o idioma norueguês.
 <Step>
 ## Testa com o Novo Idioma
 
-[Constrói](/docs/contributing/cli#yamlresumecore-build) os pacotes
+[Constrói](/pt/docs/contributing/cli#yamlresumecore-build) os pacotes
 `yamlresume/core` e `yamlresume/cli`, depois:
 
 - [ ] Cria um novo currículo `pnpm cli dev new my-resume.yml`

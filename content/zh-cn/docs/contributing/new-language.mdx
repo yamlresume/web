@@ -8,8 +8,15 @@ YAMLResume 设计为从底层支持[多语言](/zh-cn/docs/locale)，允许用�
 
 在撰写本文时，YAMLResume 支持以下语言：
 
-- [英语](/zh-cn/docs/locale/english)
+- [巴西葡萄牙语](/zh-cn/docs/locale/brazilian-portuguese)
 - [中文](/zh-cn/docs/locale/chinese)
+- [荷兰语](/zh-cn/docs/locale/dutch)
+- [英语](/zh-cn/docs/locale/english)
+- [法语](/zh-cn/docs/locale/french)
+- [德语](/zh-cn/docs/locale/german)
+- [印度尼西亚语](/zh-cn/docs/locale/indonesian)
+- [意大利语](/zh-cn/docs/locale/italian)
+- [日语](/zh-cn/docs/locale/japanese)
 - [挪威语](/zh-cn/docs/locale/norwegian)
 - [西班牙语](/zh-cn/docs/locale/spanish)
 
@@ -20,7 +27,7 @@ YAMLResume 设计为从底层支持[多语言](/zh-cn/docs/locale)，允许用�
 <Step>
 ## 注册您的语言
 
-要为 YAMLResume 添加新的 `locale.language` 选项，首先在 [models/resume.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/resume.ts) 中注册您的语言，通过向 `LOCALE_LANGUAGE_OPTIONS` 添加新条目。
+要为 YAMLResume 添加新的 `locale.language` 选项，首先在 [models/options.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/options.ts) 中注册您的语言，通过向 `LOCALE_LANGUAGE_OPTIONS` 添加新条目。
 
 **检查清单：**
 
@@ -36,7 +43,7 @@ YAMLResume 设计为从底层支持[多语言](/zh-cn/docs/locale)，允许用�
 
 **检查清单：**
 
-- [ ] 为[国家名称](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/country.ts)添加翻译
+- [ ] [为[国家名称](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/country.ts)添加翻译
 - [ ] 为 `degrees`、`fluency`、`languages`、`sections` 和 `skills` 添加选项翻译
 - [ ] 为 `comma`、`colon` 和 `separator` 添加标点符号翻译
 - [ ] 为 `courses`、`keywords` 和 `score` 添加术语翻译
@@ -46,11 +53,11 @@ YAMLResume 设计为从底层支持[多语言](/zh-cn/docs/locale)，允许用�
 <Step>
 ## 更新 Babel 配置
 
-YAMLResume 使用 LaTeX 进行 PDF 生成，为了获得最佳排版效果，我们需要设置适当的 [babel 包配置](https://latex3.github.io/babel/)。以下是挪威语的参考[提交](https://github.com/yamlresume/yamlresume/commit/b72a4441ad2542873f449bc35a265e7208eafbe7)。
+YAMLResume 使用 LaTeX 和 Typst 生成 PDF。为了获得最佳排版效果，需要为 LaTeX 设置适当的 [babel 包配置](https://latex3.github.io/babel/)；Typst 会直接复用上述翻译，无需额外配置。以下是挪威语的参考[提交](https://github.com/yamlresume/yamlresume/commit/b72a4441ad2542873f449bc35a265e7208eafbe7)。
 
 **检查清单：**
 
-- [ ] 更新 [preamble.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/preamble.ts) 中的 `renderBabelConfig()` 函数，为您的语言包含 babel 包。
+- [ ] [更新 [latex/base.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/latex/base.ts) 中的 `renderBabelConfig()` 函数，为您的语言包含 babel 包。
 
 </Step>
 

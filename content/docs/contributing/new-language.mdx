@@ -11,8 +11,15 @@ resumes in their preferred language.
 
 At the time of writing, YAMLResume supports the following languages:
 
-- [English](/docs/locale/english)
+- [Brazilian Portuguese](/docs/locale/brazilian-portuguese)
 - [Chinese](/docs/locale/chinese)
+- [Dutch](/docs/locale/dutch)
+- [English](/docs/locale/english)
+- [French](/docs/locale/french)
+- [German](/docs/locale/german)
+- [Indonesian](/docs/locale/indonesian)
+- [Italian](/docs/locale/italian)
+- [Japanese](/docs/locale/japanese)
 - [Norwegian](/docs/locale/norwegian)
 - [Spanish](/docs/locale/spanish)
 
@@ -26,13 +33,13 @@ steps below to add support for a new language.
 
 To add a new `locale.language` option to YAMLResume, first register your
 language in
-[models/resume.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/resume.ts)
+[models/options.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/models/options.ts)
 by adding a new entry to `LOCALE_LANGUAGE_OPTIONS`.
 
 **Checklist:**
 
 - [ ] Add your language to `LOCALE_LANGUAGE_OPTIONS`.
-- [ ] Build and test the new CLI](/docs/contributing/cli#yamlresumecli-build)
+- [ ] [Build and test the new CLI](/docs/contributing/cli#yamlresumecli-build)
       with `pnpm cli dev languages list`, making sure your language appears in
       the list.
 
@@ -64,16 +71,17 @@ translations for the Norwegian language.
 <Step>
 ## Update Babel Configuration
 
-YAMLResume uses LaTeX for PDF generation, and to get best typesetting results,
-we need to set proper [babel package
-configuration](https://latex3.github.io/babel/). Here is a reference
+YAMLResume uses LaTeX and Typst for PDF generation. LaTeX needs a proper
+[babel package configuration](https://latex3.github.io/babel/) for the best
+typesetting results; Typst reuses the translations above and needs no extra
+configuration. Here is a reference
 [commit](https://github.com/yamlresume/yamlresume/commit/b72a4441ad2542873f449bc35a265e7208eafbe7)
-for norwegian language.
+for the Norwegian language.
 
 **Checklist:**
 
 - [ ] Update `renderBabelConfig()` function in
-      [preamble.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/preamble.ts)
+      [latex/base.ts](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/renderer/latex/base.ts)
       to include the babel package for your new language.
 
 </Step>
