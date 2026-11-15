@@ -2,7 +2,7 @@
 title: yamlresume/action
 ---
 
-[yamlresume/action](https://github.com/marketplace/actions/yamlresume) 是一個 GitHub Action，旨在透過 YAMLResume CLI 從 YAML 檔案建立專業的履歷。它將 YAMLResume 無縫整合到你的 CI/CD 流程中，讓你能夠將履歷視為程式碼，並在 GitHub 上直接自動化產生 PDF、LaTeX、HTML 和 Markdown 檔案。
+[yamlresume/action](https://github.com/marketplace/actions/yamlresume) 是一個 GitHub Action，旨在透過 YAMLResume CLI 從 YAML 檔案建立專業的履歷。它將 YAMLResume 無縫整合到你的 CI/CD 流程中，讓你能夠將履歷視為程式碼，並在 GitHub 上直接自動化產生 PDF、LaTeX 與 Typst、HTML 和 Markdown 檔案。
 
 ## 功能特色
 
@@ -19,7 +19,7 @@ title: yamlresume/action
 建置單份履歷：
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: resume.yml
 ```
@@ -29,7 +29,7 @@ title: yamlresume/action
 使用換行符分隔的清單建置多份履歷：
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: |
       resume-en.yml
@@ -39,10 +39,10 @@ title: yamlresume/action
 
 ### 跳過 PDF 產生
 
-僅產生 LaTeX 檔案（適用於自訂 PDF 流程）：
+僅產生 LaTeX 與 Typst 檔案（適用於自訂 PDF 流程）：
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: resume.yml
     no-pdf: true
@@ -53,7 +53,7 @@ title: yamlresume/action
 在建置期間跳過 Schema 驗證：
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: resume.yml
     no-validate: true
@@ -81,7 +81,7 @@ jobs:
 
       - name: Build resumes
         id: build
-        uses: yamlresume/action@v0.2.3
+        uses: yamlresume/action@v0.18.0
         with:
           resumes: |
             resume-en.yml
@@ -95,6 +95,7 @@ jobs:
           path: |
             *.pdf
             *.tex
+            *.typ
 ```
 
 ## 輸入參數
@@ -103,9 +104,9 @@ jobs:
 | ------------- | ---------------------------------------------------- | -------- | --------- |
 | `resumes` | 要建置的履歷 YAML 檔案（換行符分隔清單） | 是 | - |
 | `no-validate` | 跳過 Schema 驗證 | 否 | `false` |
-| `no-pdf` | 跳過 PDF 產生（僅產生 LaTeX） | 否 | `false` |
+| `no-pdf` | 跳過 PDF 產生（僅產生 LaTeX 與 Typst） | 否 | `false` |
 | `verbose` | 啟用詳細輸出 | 否 | `false` |
-| `version` | YAMLResume Docker 映像檔版本 | 否 | `v0.17.0` |
+| `version` | YAMLResume Docker 映像檔版本 | 否 | `v0.18.0` |
 
 ## 輸出結果
 
@@ -113,6 +114,7 @@ jobs:
 
 - `pdf-files`
 - `tex-files`
+- `typ-files`
 - `html-files`
 - `md-files`
 
@@ -121,7 +123,7 @@ jobs:
 你可以在後續步驟中使用這些輸出結果：
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   id: build
   with:
     resumes: resume.yml

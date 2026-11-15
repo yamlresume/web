@@ -3,7 +3,7 @@ title: yamlresume/action
 description: "Bangun resume secara otomatis pada setiap push dengan GitHub Action yamlresume, termasuk dukungan banyak resume dan unggah artefak."
 ---
 
-[yamlresume/action](https://github.com/marketplace/actions/yamlresume) adalah GitHub Action untuk membangun resume profesional dari file YAML menggunakan YAMLResume CLI. Ini secara mulus mengintegrasikan YAMLResume ke dalam pipeline CI/CD Anda, memungkinkan Anda untuk memperlakukan resume Anda sebagai kode dan mengotomatiskan pembuatan PDF, LaTeX, HTML, dan Markdown secara langsung di GitHub.
+[yamlresume/action](https://github.com/marketplace/actions/yamlresume) adalah GitHub Action untuk membangun resume profesional dari file YAML menggunakan YAMLResume CLI. Ini secara mulus mengintegrasikan YAMLResume ke dalam pipeline CI/CD Anda, memungkinkan Anda untuk memperlakukan resume Anda sebagai kode dan mengotomatiskan pembuatan PDF, LaTeX, Typst, HTML, dan Markdown secara langsung di GitHub.
 
 ## Fitur
 
@@ -20,7 +20,7 @@ description: "Bangun resume secara otomatis pada setiap push dengan GitHub Actio
 Bangun satu resume:
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: resume.yml
 ```
@@ -30,7 +30,7 @@ Bangun satu resume:
 Bangun beberapa resume menggunakan daftar yang dipisahkan baris baru:
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: |
       resume-en.yml
@@ -40,10 +40,10 @@ Bangun beberapa resume menggunakan daftar yang dipisahkan baris baru:
 
 ### Lewati Pembuatan PDF
 
-Hasilkan hanya file LaTeX (berguna untuk pipeline PDF kustom):
+Hasilkan hanya file LaTeX dan Typst (berguna untuk pipeline PDF kustom):
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: resume.yml
     no-pdf: true
@@ -54,7 +54,7 @@ Hasilkan hanya file LaTeX (berguna untuk pipeline PDF kustom):
 Lewati validasi skema selama build:
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: resume.yml
     no-validate: true
@@ -82,7 +82,7 @@ jobs:
 
       - name: Build resumes
         id: build
-        uses: yamlresume/action@v0.2.3
+        uses: yamlresume/action@v0.18.0
         with:
           resumes: |
             resume-en.yml
@@ -96,6 +96,7 @@ jobs:
           path: |
             *.pdf
             *.tex
+            *.typ
 ```
 
 ## Input
@@ -104,9 +105,9 @@ jobs:
 | ------------- | ------------------------------------------------------------- | ----- | --------- |
 | `resumes`     | Daftar file YAML resume yang dipisahkan baris baru untuk dibuat | Ya    | -         |
 | `no-validate` | Lewati validasi skema                                          | Tidak | `false`   |
-| `no-pdf`      | Lewati pembuatan PDF (hasilkan hanya LaTeX)                    | Tidak | `false`   |
+| `no-pdf`      | Lewati pembuatan PDF (hasilkan hanya LaTeX dan Typst)          | Tidak | `false`   |
 | `verbose`     | Aktifkan output verbose                                        | Tidak | `false`   |
-| `version`     | Versi image Docker YAMLResume                                  | Tidak | `v0.17.0` |
+| `version`     | Versi image Docker YAMLResume                                  | Tidak | `v0.18.0` |
 
 ## Output
 
@@ -114,6 +115,7 @@ Action ini menyediakan output berikut, yang merupakan daftar yang dipisahkan bar
 
 - `pdf-files`
 - `tex-files`
+- `typ-files`
 - `html-files`
 - `md-files`
 
@@ -122,7 +124,7 @@ Action ini menyediakan output berikut, yang merupakan daftar yang dipisahkan bar
 Anda dapat menggunakan output dalam langkah selanjutnya:
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   id: build
   with:
     resumes: resume.yml

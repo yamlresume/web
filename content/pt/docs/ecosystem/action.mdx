@@ -7,7 +7,7 @@ description: "Gere seu currículo automaticamente a cada push com a GitHub Actio
 para construir currículos profissionais a partir de arquivos YAML usando a CLI
 do YAMLResume. Ela integra perfeitamente o YAMLResume aos seus pipelines CI/CD,
 permitindo que você trate seu currículo como código e automatize a geração de
-PDF, LaTeX, HTML e Markdown diretamente no GitHub.
+PDF, LaTeX, Typst, HTML e Markdown diretamente no GitHub.
 
 ## Recursos
 
@@ -29,7 +29,7 @@ PDF, LaTeX, HTML e Markdown diretamente no GitHub.
 Construa um único currículo:
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: resume.yml
 ```
@@ -39,7 +39,7 @@ Construa um único currículo:
 Construa múltiplos currículos usando uma lista separada por quebras de linha:
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: |
       resume-en.yml
@@ -49,10 +49,10 @@ Construa múltiplos currículos usando uma lista separada por quebras de linha:
 
 ### Pular Geração de PDF
 
-Gere apenas arquivos LaTeX (útil para pipelines de PDF personalizados):
+Gere apenas arquivos LaTeX e Typst (útil para pipelines de PDF personalizados):
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: resume.yml
     no-pdf: true
@@ -63,7 +63,7 @@ Gere apenas arquivos LaTeX (útil para pipelines de PDF personalizados):
 Pule a validação de esquema durante a build:
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: resume.yml
     no-validate: true
@@ -92,7 +92,7 @@ jobs:
 
       - name: Build resumes
         id: build
-        uses: yamlresume/action@v0.2.3
+        uses: yamlresume/action@v0.18.0
         with:
           resumes: |
             resume-en.yml
@@ -106,6 +106,7 @@ jobs:
           path: |
             *.pdf
             *.tex
+            *.typ
 ```
 
 ## Entradas
@@ -114,9 +115,9 @@ jobs:
 | ------------- | ---------------------------------------------------- | ----------- | --------- |
 | `resumes`     | Lista separada por quebras de linha de arquivos YAML | Sim         | -         |
 | `no-validate` | Pular validação de esquema                           | Não         | `false`   |
-| `no-pdf`      | Pular geração de PDF (gera apenas LaTeX)             | Não         | `false`   |
+| `no-pdf`      | Pular geração de PDF (gera apenas LaTeX e Typst)     | Não         | `false`   |
 | `verbose`     | Ativar saída detalhada                               | Não         | `false`   |
-| `version`     | Versão da imagem Docker do YAMLResume                | Não         | `v0.17.0` |
+| `version`     | Versão da imagem Docker do YAMLResume                | Não         | `v0.18.0` |
 
 ## Saídas
 
@@ -125,6 +126,7 @@ linha dos arquivos gerados:
 
 - `pdf-files`
 - `tex-files`
+- `typ-files`
 - `html-files`
 - `md-files`
 
@@ -133,7 +135,7 @@ linha dos arquivos gerados:
 Você pode usar as saídas nas etapas subsequentes:
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   id: build
   with:
     resumes: resume.yml
