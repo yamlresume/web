@@ -9,6 +9,9 @@ ENV PATH="${PNPM_HOME}:${PATH}"
 ENV NEXT_TELEMETRY_DISABLED=1
 ARG PNPM_VERSION
 RUN npm install --global pnpm@${PNPM_VERSION}
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends git \
+  && rm -rf /var/lib/apt/lists/*
 
 FROM base AS deps
 WORKDIR /app
@@ -21,6 +24,10 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+RUN if [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then \
+      git fetch --unshallow \
+      || echo "warning: git history is still shallow; lastModified data may be incomplete"; \
+    fi
 RUN pnpm build && test -f .next/server/search-index.json
 
 FROM node:${NODE_VERSION} AS runner
