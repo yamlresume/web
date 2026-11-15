@@ -1,0 +1,179 @@
+---
+title: "YAMLResume v0.18：Typst、Italian 与 20 份多语言样例简历"
+description:
+  "YAMLResume v0.18 新增 Typst 引擎和 Jake 模板、Italian 语言区域、10 份新
+  样例简历、统一的链接下划线控制，以及更清晰的 PDF 构建诊断。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-11-13
+---
+
+[YAMLResume v0.18](https://github.com/yamlresume/yamlresume/releases/tag/v0.18.0)
+现已发布。本次最重磅的功能是全新的
+[Typst 引擎](/zh-cn/docs/layouts/typst)，让 YAMLResume 在 LaTeX 之外拥有第二
+条 PDF 排版路径。本版本还新增 Italian，将样例库从 10 份扩充到 20 份，并改进了
+链接样式、PDF 诊断和 AI 提供商默认配置。
+
+## 全新的 Typst 引擎
+
+[Typst](https://typst.app/) 是一套现代化的排版系统，提供简洁且可编程的语法。
+YAMLResume 现在可以将同一份 YAML 内容转换为 LaTeX 或 Typst 源码，并将任意一种
+源码编译为专业 PDF。
+
+在简历中添加 Typst 布局：
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: typst
+    template: jake
+    typography:
+      fontSize: 10pt
+      links:
+        underline: false
+    theme:
+      colors:
+        accent: burgundy
+```
+
+首个 Typst 模板是 [`jake`](/zh-cn/docs/layouts/typst/templates/jake)，它移植了
+简洁、ATS 友好的 LaTeX Jake 设计，支持本地化术语、Markdown 摘要、页边距、字体族、
+行距、强调色、章节别名与排序、图标、URL，以及根据语言区域选择的 CJK 字体回退。
+
+![Jake Typst 模板](/static/images/docs/layouts/typst/templates/jake-template.webp)
+
+你可以在
+[Playground](/zh-cn/playground?sample=software-engineer&locale=en&engine=typst&template=jake)
+中查看生成的 Typst 源码，或阅读 [Typst 引擎指南](/zh-cn/docs/layouts/typst)
+了解所有选项。
+
+### 安装与默认布局
+
+编译 PDF 需要 **Typst 0.13.0 或更高版本**。官方 Docker 镜像已内置 Typst
+0.15.1，因此 Docker 用户无需单独安装。运行 `yamlresume doctor` 可以检查本地
+环境。
+
+从 v0.18 开始，`yamlresume new` 生成的默认 `layouts` 数组会包含 Typst 布局。
+如果使用新的默认配置创建简历，请先安装 Typst 再构建全部 PDF，或者使用官方
+Docker 镜像；如果只需要源文件，可以跳过 PDF 编译：
+
+```console
+$ yamlresume build resume.yml --no-pdf
+```
+
+已有简历只要显式配置了 `layouts` 数组，就会继续使用原有引擎。当简历同时启用
+LaTeX 和 Typst 时，两份 PDF 分别命名为 `resume.tex.pdf` 和 `resume.typ.pdf`，
+避免相互覆盖。只启用一个 PDF 引擎时，仍使用传统的 `resume.pdf` 文件名。
+
+## 新增 Italian 语言区域
+
+Italian 以 `it` 加入内置语言区域，使 YAMLResume 现在支持 **11 种语言、13 个区域
+代码**。它提供本地化的章节标题、教育学位、语言熟练度、国家名称，以及符合意大利语
+习惯的小写月份名称。
+
+```yml lineNumbers title="resume.it.yml"
+locale:
+  language: it
+```
+
+直接从样例创建一份意大利语简历：
+
+```console
+$ yamlresume new resume.it.yml --sample software-engineer --language it
+```
+
+请参阅 [Italian 语言区域指南](/zh-cn/docs/locale/italian)，或浏览
+[意大利语作品集](/zh-cn/gallery/languages/it)。
+
+## 20 份样例简历，覆盖 13 个语言区域
+
+精选样例库已从 10 份翻倍至 **20 份简历**，覆盖更广泛的技术、设计、商业、医疗和
+公共服务职位。每份样例均提供全部 13 个区域代码的版本，作品集也会为每份本地化简历
+发布 HTML、DOCX、PDF、LaTeX、Typst、Markdown 和预览图。
+
+浏览[作品集](/zh-cn/gallery)，在终端列出样例，或创建一份本地副本：
+
+```console
+$ yamlresume samples list
+$ yamlresume new resume.yml --sample registered-nurse --language it
+```
+
+[Samples 包文档](/zh-cn/docs/ecosystem/samples)介绍了编程 API。
+
+## 统一的链接下划线控制
+
+`typography.links.underline` 选项现在可以一致地应用于 **LaTeX、Typst、HTML 和
+DOCX**：
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    typography:
+      links:
+        underline: true
+```
+
+LaTeX 和 Typst 使用固定基线的下划线，LaTeX 还会避开字母下行部分，在不改变文本间距
+的情况下保持下划线清晰可读。HTML 和 DOCX 也遵循相同设置，让四种可视化引擎共享统一
+的链接样式约定。
+
+## 更清晰的 PDF 构建诊断
+
+PDF 构建现在会先确认预期文件存在且非空，再报告成功。LaTeX 和 Typst 编译器警告也会
+直接显示，不再隐藏在调试日志中；Typst 输出中关于可选 CJK 回退字体的预期警告则会被
+过滤。
+
+结合按引擎区分的 PDF 文件名，这些改进让多引擎构建更容易理解和排查。
+
+## 更新 AI 提供商默认模型
+
+内置的 AI 生成与翻译命令现在使用最新的默认模型 ID：
+
+| 提供商   | 环境变量           | 默认模型         |
+| -------- | ------------------ | ---------------- |
+| DeepSeek | `DEEPSEEK_API_KEY` | `deepseek-flash` |
+| Kimi     | `MOONSHOT_API_KEY` | `kimi-k3.1-pro`  |
+| OpenAI   | `OPENAI_API_KEY`   | `gpt-5.6-luna`   |
+| Ollama   | `OLLAMA_HOST`      | `llama3.2`       |
+
+OpenAI 兼容提供商现在统一使用 Chat Completions API。你仍然可以通过 CLI 选项或环境
+变量覆盖模型和基础 URL；详情请参阅 [AI 生成指南](/zh-cn/docs/ai/generate)。
+
+## Breaking Change：渲染器类名增加引擎后缀
+
+引入 Typst 后，LaTeX 渲染器类名需要明确区分引擎。如果你直接从
+`@yamlresume/core` 导入渲染器类，请更新以下名称：
+
+| v0.17                    | v0.18                         |
+| ------------------------ | ----------------------------- |
+| `JakeRenderer`           | `JakeLatexRenderer`           |
+| `ModerncvBankingRenderer`| `ModerncvBankingLatexRenderer`|
+| `ModerncvCasualRenderer` | `ModerncvCasualLatexRenderer` |
+| `ModerncvClassicRenderer`| `ModerncvClassicLatexRenderer`|
+
+新的 Typst 实现通过 `JakeTypstRenderer` 提供。YAML 简历文件和使用高层渲染 API 的
+用户无需修改配置。
+
+## 立即升级到 v0.18
+
+使用你喜欢的包管理器升级：
+
+```console
+$ npm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ pnpm add -g yamlresume@latest
+$ brew upgrade yamlresume
+```
+
+或者拉取新镜像：
+
+```console
+$ docker pull yamlresume/yamlresume:latest
+```
+
+查看[安装指南](/zh-cn/docs/installation)，在 [Playground](/zh-cn/playground)
+中试用 Typst，并探索扩充后的[作品集](/zh-cn/gallery)。如果遇到任何问题，欢迎在
+GitHub 上[提交 issue](https://github.com/yamlresume/yamlresume/issues)。完整变更
+列表请参见
+[changelog](https://github.com/yamlresume/yamlresume/blob/main/CHANGELOG.md)。
+
+祝你使用 v0.18 愉快！

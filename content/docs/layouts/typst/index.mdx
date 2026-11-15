@@ -1,0 +1,168 @@
+---
+title: Typst Engine
+description: "Generate typeset PDF resumes with Typst, the Jake template, configurable typography, accent colors and CJK font fallbacks."
+---
+
+The Typst engine generates professional PDF resumes with
+[Typst](https://typst.app/), a modern typesetting system. It accepts the same
+resume content as the other engines and currently ships with the
+[`jake`](./typst/templates/jake) template.
+
+## Configuration
+
+Set `engine: typst` in a layout. PDF compilation requires **Typst 0.13.0 or
+newer**. The official Docker image includes Typst, so no separate installation
+is needed when using Docker.
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: typst
+    template: jake
+    page:
+      paperSize: a4
+      showPageNumbers: false
+    typography:
+      fontSize: 10pt
+      lineSpacing: normal
+      links:
+        underline: false
+    advanced:
+      showIcons: true
+      showUrls: true
+```
+
+Run `yamlresume build resume.yml` to generate both `resume.typ` and its PDF.
+With `--no-pdf`, YAMLResume generates only the Typst source and does not need
+the Typst CLI. If the resume also has a LaTeX layout, the two PDFs are named
+`resume.tex.pdf` and `resume.typ.pdf` to avoid overwriting each other.
+
+## Page
+
+The `page` option controls paper size, margins and page numbers. Typst supports
+`a4` and `letter` paper sizes.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    page:
+      showPageNumbers: true
+      paperSize: a4
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+```
+
+## Sections
+
+The `sections` option customizes section titles and their order. See the
+[sections documentation](./sections) for all available section IDs.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    sections:
+      aliases:
+        work: "Professional Experience"
+        education: "Education"
+      order:
+        - basics
+        - work
+        - education
+```
+
+## Templates
+
+The `template` option selects the visual design. Typst currently supports
+[`jake`](./typst/templates/jake), which is also the default.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    template: jake
+```
+
+## Typography
+
+### Font Size
+
+The `fontSize` option accepts `10pt`, `11pt` or `12pt`. Header and section
+heading sizes scale with this base font size.
+
+### Font Family
+
+The `fontFamily` option accepts a comma-separated, prioritized list of font
+families, similar to CSS `font-family`. Install the fonts you specify so Typst
+can resolve them.
+
+For CJK resumes, YAMLResume tries region-appropriate Noto, macOS and Windows
+font fallbacks. Installing [Google Noto CJK fonts](/docs/installation#google-noto)
+is recommended for consistent output.
+
+### Line Spacing
+
+The `lineSpacing` option accepts the following semantic values:
+
+| Value     | Description                              |
+| --------- | ---------------------------------------- |
+| `tight`   | Compact spacing for fitting more content |
+| `snug`    | Slightly more space than tight           |
+| `normal`  | Balanced readability (default)           |
+| `relaxed` | More breathing room between lines        |
+| `loose`   | Very spacious layout                     |
+
+### Link Underlines
+
+Set `typography.links.underline` to control whether hyperlinks are underlined.
+This option is shared by the LaTeX, Typst, HTML and DOCX engines.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    typography:
+      fontSize: 11pt
+      fontFamily: "Linux Libertine O, Noto Serif CJK SC, serif"
+      lineSpacing: relaxed
+      links:
+        underline: true
+```
+
+## Theme
+
+The `theme.colors.accent` option accepts a named preset or an arbitrary
+`#RRGGBB` hex color. It changes highlighted elements without affecting page
+geometry or section structure. See the [accent color
+reference](./latex#accent-color) for the available presets.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    theme:
+      colors:
+        accent: burgundy
+```
+
+When no accent color is set, the template keeps its default palette.
+
+## Advanced
+
+The `advanced` option controls icons and URL presentation:
+
+- `showIcons`: display icons for links and profiles.
+- `showUrls`: show raw URLs instead of hiding them behind readable text.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    advanced:
+      showIcons: true
+      showUrls: false
+```
+
+## Default Layouts
+
+Since v0.18, `yamlresume new` includes a Typst layout in the default `layouts`
+array. Install Typst 0.13.0 or newer before building the default PDF outputs,
+use the official Docker image, or pass `--no-pdf` when you only need source
+files.

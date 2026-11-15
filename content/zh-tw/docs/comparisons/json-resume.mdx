@@ -39,18 +39,18 @@ YAMLResume 深受 [JSON Resume](https://jsonresume.org/) 的啟發，採取了�
 | 功能                | YAMLResume                                                                                                                                       | JSON Resume                                             |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------- |
 | **資料格式**        | YAML                                                                                                                                             | JSON                                                    |
-| **國際化**          | 內建 [10 種語言](/zh-tw/docs/locale)                                                                                                             | 無                                                      |
+| **國際化**          | 內建 [11 種語言、13 個區域代碼](/zh-tw/docs/locale)                                                                                              | 無                                                      |
 | **富文字支援**      | 在 `summary` 欄位支援精選的 [Markdown 富文字語法](/zh-tw/docs/content/rich-text)                                                                 | 無                                                      |
 | **結構驗證**        | [嚴格的結構驗證](/zh-tw/docs/compiler/schema)，搭配 [編譯器](/zh-tw/docs/compiler/architecture)與 IDE 整合                                       | [基本 JSON Schema 驗證](https://jsonresume.org/schema)  |
 | **字型自訂**        | [字型家族、字型大小、行距](/zh-tw/docs/layouts/latex) 等                                                                                         | 無                                                      |
 | **版面自訂**        | [頁面邊距、頁碼、紙張大小](/zh-tw/docs/layouts/latex#page) 等                                                                                    | 無                                                      |
 | **章節自訂**        | [別名](/zh-tw/docs/layouts/sections/aliases)與[重新排序](/zh-tw/docs/layouts/sections/reorder)                                                   | 無                                                      |
-| **排版引擎**        | [DOCX](/zh-tw/docs/layouts/docx)、[HTML](/zh-tw/docs/layouts/html)、[LaTeX](/zh-tw/docs/layouts/latex)、[Markdown](/zh-tw/docs/layouts/markdown) | HTML                                                    |
-| **輸出格式**        | DOCX、HTML、LaTeX/PDF、Markdown                                                                                                                  | [HTML 與 PDF](https://github.com/jsonresume/resume-cli) |
-| **模板**            | 多個官方 [LaTeX](/zh-tw/docs/layouts/latex/templates) 與 [HTML](/zh-tw/docs/layouts/html/templates) 模板                                         | 數十個 [HTML 主題](https://jsonresume.org/themes)       |
+| **排版引擎**        | [DOCX](/zh-tw/docs/layouts/docx)、[HTML](/zh-tw/docs/layouts/html)、[LaTeX](/zh-tw/docs/layouts/latex)、[Typst](/zh-tw/docs/layouts/typst)、[Markdown](/zh-tw/docs/layouts/markdown) | HTML                                                    |
+| **輸出格式**        | DOCX、HTML、LaTeX/PDF、Typst/PDF、Markdown                                                                                                       | [HTML 與 PDF](https://github.com/jsonresume/resume-cli) |
+| **模板**            | 多個官方 [LaTeX](/zh-tw/docs/layouts/latex/templates)、[Typst](/zh-tw/docs/layouts/typst) 與 [HTML](/zh-tw/docs/layouts/html/templates) 模板 | 數十個 [HTML 主題](https://jsonresume.org/themes)       |
 | **開發模式**        | 自動重建的[開發模式](/zh-tw/docs/cli#dev)                                                                                                        | 是                                                      |
 | **轉換工具**        | [json2yamlresume](/zh-tw/docs/ecosystem/json2yamlresume) 協助將 JSON Resume 轉換為 YAMLResume                                                    | 不適用                                                  |
-| **Docker 支援**     | [官方 Docker 映像檔](/zh-tw/docs/contributing/docker)，已預先安裝 LaTeX 與 YAMLResume                                                            | 無                                                      |
+| **Docker 支援**     | [官方 Docker 映像檔](/zh-tw/docs/contributing/docker)，已預先安裝 LaTeX、Typst 與 YAMLResume                                                     | 無                                                      |
 | **GitHub Action**   | 用於 CI/CD 的[官方 GitHub Action](https://github.com/yamlresume/action)                                                                          | 無                                                      |
 | **Homebrew**        | 可在 macOS 與 Linux 上輕鬆安裝的 [Homebrew formula](https://formulae.brew.sh/formula/yamlresume)                                                 | 無                                                      |
 | **線上 Playground** | 互動式網頁 [playground](/zh-tw/playground)                                                                                                       | 無                                                      |
@@ -243,10 +243,12 @@ JSON Resume 止步於資料層。它告訴您如何以 JSON 結構化履歷，�
 - **[HTML 引擎](/zh-tw/docs/layouts/html)**：具備回應式設計與 SEO 中繼資料的網頁
   就緒履歷
 - **[LaTeX 引擎](/zh-tw/docs/layouts/latex)**：具備專業排版的像素級精準 PDF
+- **[Typst 引擎](/zh-tw/docs/layouts/typst)**：使用 Jake 模板與語系感知的字型
+  後備，現代、快速地產生 PDF
 - **[Markdown 引擎](/zh-tw/docs/layouts/markdown)**：適用於 LLM、ATS 系統與靜態
   網站的純淨文字
 
-單一 `yamlresume build` 指令即可從相同的原始檔案產生這四種格式。
+單一 `yamlresume build` 指令即可從相同的原始檔案產生這五種格式。
 
 YAMLResume 還提供一組豐富的版面配置自訂選項，遠超 JSON Resume 所提供的功能。
 
@@ -297,8 +299,8 @@ JSON Resume 在結構中定義了章節結構，但沒有提供重新命名或�
 
 ### 語系（國際化）
 
-在撰寫本文時，YAMLResume 開箱即用地支援 10 種語言
-（[English](/zh-tw/docs/locale/english)、[Chinese](/zh-tw/docs/locale/chinese)、[Spanish](/zh-tw/docs/locale/spanish)、[French](/zh-tw/docs/locale/french)、[Norwegian](/zh-tw/docs/locale/norwegian)、[Dutch](/zh-tw/docs/locale/dutch)、[Japanese](/zh-tw/docs/locale/japanese)、[German](/zh-tw/docs/locale/german)、[Indonesian](/zh-tw/docs/locale/indonesian)
+在撰寫本文時，YAMLResume 開箱即用地支援 11 種語言、13 個區域代碼
+（[English](/zh-tw/docs/locale/english)、[Chinese](/zh-tw/docs/locale/chinese)、[Spanish](/zh-tw/docs/locale/spanish)、[French](/zh-tw/docs/locale/french)、[Norwegian](/zh-tw/docs/locale/norwegian)、[Dutch](/zh-tw/docs/locale/dutch)、[Japanese](/zh-tw/docs/locale/japanese)、[German](/zh-tw/docs/locale/german)、[Indonesian](/zh-tw/docs/locale/indonesian)、[Italian](/zh-tw/docs/locale/italian)
 等），內建翻譯包括章節標題、國家名稱與各種詞彙、慣用的地址與日期格式、最佳實踐
 LaTeX 設定等。
 
@@ -321,6 +323,7 @@ $ yamlresume languages list
 | de              | German                          |
 | id              | Indonesian                      |
 | pt-br           | Brazilian Portuguese            |
+| it              | Italian                         |
 ```
 
 YAMLResume 透過以下方式支援國際化：
@@ -399,7 +402,8 @@ YAMLResume 為每種支援的語言設定
 YAMLResume 提供 JSON Resume 所缺乏的現代化開發者體驗功能：
 
 - **`yamlresume new`**：透過單一指令從官方模板建立新履歷
-- **`yamlresume build`**：一次將您的履歷建置為 DOCX、HTML、Markdown 與 PDF
+- **`yamlresume build`**：一次將您的履歷建置為 DOCX、HTML、Markdown、LaTeX/PDF
+  與 Typst/PDF
 - **`yamlresume dev`**：每次儲存時自動重建履歷的[監看模式](/zh-tw/blog/dev-mode)
 - **`yamlresume doctor`**：診斷您的 LaTeX 環境與字型設定，簡化疑難排解
 - **`yamlresume validate`**：無需建置即可檢查您的履歷
@@ -430,7 +434,7 @@ $ json2yamlresume resume.json resume.yml
 
 YAMLResume 提
 供[官方 Docker 映像檔](https://hub.docker.com/r/yamlresume/yamlresume)，已預先安
-裝所有相依項目，包括 Node.js、LaTeX 與推薦字型。這讓您無需本機安裝即可輕鬆開始使
+裝所有相依項目，包括 Node.js、LaTeX、Typst 與推薦字型。這讓您無需本機安裝即可輕鬆開始使
 用：
 
 ```bash
@@ -458,7 +462,7 @@ YAMLResume 提供用於 CI/CD 管道
 送時建置並提交履歷 PDF：
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: |
       resume-en.yml
@@ -478,8 +482,9 @@ React 元件，並具備以下功能：
 - **即時 YAML 編輯器**：基於 Monaco 的編輯器，具備 YAML 語法醒目提示
   與[結構驗證](/zh-tw/docs/compiler/schema/json)
 - **即時預覽**：針對
-  [DOCX](/zh-tw/docs/layouts/docx)、[HTML](/zh-tw/docs/layouts/html)、[LaTeX](/zh-tw/docs/layouts/latex)
-  與 [Markdown](/zh-tw/docs/layouts/markdown) 版面的即時渲染
+  [DOCX](/zh-tw/docs/layouts/docx)、[HTML](/zh-tw/docs/layouts/html)、[LaTeX](/zh-tw/docs/layouts/latex)、
+  [Typst](/zh-tw/docs/layouts/typst) 與 [Markdown](/zh-tw/docs/layouts/markdown)
+  版面的即時渲染
 - **匯出選項**：直接從瀏覽器下載、複製或列印您的履歷
 - **響應式設計**：桌面版採用分割窗格版面，行動版採用分頁介面
 

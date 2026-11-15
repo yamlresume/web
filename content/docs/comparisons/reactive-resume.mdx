@@ -50,28 +50,28 @@ how they compare:
 | **Data Format**           | Plain-text YAML files                                                                                                     | JSON stored in PostgreSQL, edited via the web UI                                                                         |
 | **Account Required**      | None                                                                                                                      | None for basic use; account for cloud sync                                                                               |
 | **Editing**               | Any text editor + [dev mode](/blog/dev-mode) auto-rebuild                                                                 | WYSIWYG editor with live preview in the browser                                                                          |
-| **Typesetting Engine**    | [Docx](/docs/layouts/docx), [HTML](/docs/layouts/html), [Markdown](/docs/layouts/markdown), [LaTeX/XeTeX](/docs/layouts/latex) | Client-side PDF renderer (@react-pdf/renderer)                                                                         |
-| **Output Formats**        | DOCX, HTML, Markdown, LaTeX/PDF                                                                                           | PDF, DOCX, Markdown, JSON                                                                                                |
+| **Typesetting Engine**    | [DOCX](/docs/layouts/docx), [HTML](/docs/layouts/html), [LaTeX/XeTeX](/docs/layouts/latex), [Typst](/docs/layouts/typst), [Markdown](/docs/layouts/markdown) | Client-side PDF renderer (@react-pdf/renderer)                                                                         |
+| **Output Formats**        | DOCX, HTML, LaTeX/PDF, Typst/PDF, Markdown                                                                                    | PDF, DOCX, Markdown, JSON                                                                                                |
 | **Schema Validation**     | [Strict Zod schema validation](/docs/compiler/schema) with [compiler](/docs/compiler/architecture) + IDE integration      | Server-side schema validation with user-facing error messages                                                            |
 | **Error Reporting**       | [clang-style diagnostics](/docs/cli#validate) with line numbers and positional info                                       | Inline form errors and import validation messages                                                                        |
-| **Internationalization**  | [10 languages across 12 locale codes](/docs/locale) with deep content localization                                        | UI translated into 55 locales; RTL PDF mirroring; locale-aware fallback fonts                                            |
+| **Internationalization**  | [11 languages across 13 locale codes](/docs/locale) with deep content localization                                        | UI translated into 55 locales; RTL PDF mirroring; locale-aware fallback fonts                                            |
 | **Rich Text Support**     | A selected set of [Markdown rich text syntax](/docs/content/rich-text) in `summary` fields                                | WYSIWYG rich text editor across all fields, with highlight colors                                                        |
 | **Font Customization**    | [Font family, font size, line spacing](/docs/layouts/latex#typography), etc                                               | Per-template font family, size, and spacing controls                                                                     |
-| **Color Customization**   | [Accent presets or any hex](/docs/layouts/latex#accent-color) for LaTeX, HTML, DOCX (since v0.17)                         | Template color palettes plus a Semantic CSS editor with content selectors                                                |
+| **Color Customization**   | [Accent presets or any hex](/docs/layouts/latex#accent-color) for LaTeX, Typst, HTML, DOCX                                  | Template color palettes plus a Semantic CSS editor with content selectors                                                |
 | **Layout Customization**  | [Page margins, page numbers, paper size](/docs/layouts/latex#page), etc                                                   | A4/Letter, margins, spacing, sidebar width, icon styles, drag-and-drop arrangement                                        |
 | **Section Customization** | [Aliases](/docs/layouts/sections/aliases) and [reorder](/docs/layouts/sections/reorder)                                   | Custom sections with typed fields, drag-and-drop ordering, per-item visibility                                           |
-| **Templates/Themes**      | Multiple official [LaTeX](/docs/layouts/latex/templates), [HTML](/docs/layouts/html/templates), and [DOCX](/docs/layouts/docx/templates) templates | 15 built-in templates (Azurill, Bronzor, Chikorita, Ditto, Gengar, Lapras, Rhyhorn, etc)              |
-| **Custom Styles**         | Template-based (DOCX/HTML/LaTeX source)                                                                                   | Semantic CSS rules portable across templates                                                                             |
+| **Templates/Themes**      | Multiple official [LaTeX](/docs/layouts/latex/templates), [Typst](/docs/layouts/typst), [HTML](/docs/layouts/html/templates), and [DOCX](/docs/layouts/docx/templates) templates | 15 built-in templates (Azurill, Bronzor, Chikorita, Ditto, Gengar, Lapras, Rhyhorn, etc)              |
+| **Custom Styles**         | Template-based (DOCX/HTML/LaTeX/Typst source)                                                                                 | Semantic CSS rules portable across templates                                                                             |
 | **Dev Mode**              | [Dev mode](/docs/cli#dev) with auto-rebuild                                                                               | Live preview as you type                                                                                                 |
 | **Version Control**       | Native (plain-text files in Git)                                                                                          | JSON export/import; in-app version history snapshots; no line-level diffs                                                |
-| **Docker Support**        | [Official docker image](/docs/contributing/docker) with LaTeX and YAMLResume pre-installed                                | All-in-one self-host image (Docker Hub and GHCR); one-click Vercel deploy                                                |
+| **Docker Support**        | [Official docker image](/docs/contributing/docker) with LaTeX, Typst, and YAMLResume pre-installed                        | All-in-one self-host image (Docker Hub and GHCR); one-click Vercel deploy                                                |
 | **GitHub Action**         | [Official GitHub action](https://github.com/yamlresume/action) for CI/CD                                                  | None                                                                                                                     |
 | **Homebrew**              | [Homebrew formula](https://formulae.brew.sh/formula/yamlresume) for easy installation on macOS and Linux                  | None                                                                                                                     |
 | **Web Playground**        | Interactive web-based [playground](/playground)                                                                           | The hosted app at [rxresu.me](https://rxresu.me) itself                                                                  |
 | **AI Integration**        | Built-in [generation](/docs/ai/generate) and [translation](/docs/ai/translate) via CLI and APIs                           | In-app AI agent with OpenAI, Anthropic, Google, OpenRouter, Ollama, and more, ATS check, and PDF/DOCX import             |
 | **Agent Integration**     | Resume files work with any coding agent                                                                                   | [MCP server](https://docs.rxresu.me) with OAuth, plus an OpenAPI REST API                                                |
 | **Sharing**               | Host the [HTML output](/docs/layouts/html) anywhere                                                                       | Public share links with view counts                                                                                      |
-| **Extras**                | Curated sample resumes, [json2yamlresume](/docs/ecosystem/json2yamlresume) converter                                      | Cover letters, job application tracker, Application Copilot (auto-fill, match scoring, tailored copies)                  |
+| **Extras**                | 20 curated sample resumes, [json2yamlresume](/docs/ecosystem/json2yamlresume) converter                                   | Cover letters, job application tracker, Application Copilot (auto-fill, match scoring, tailored copies)                  |
 | **Node.js API**           | [`@yamlresume/node`](/docs/ecosystem/node) for reading, validating, building, watching, generating, and translating files | REST API + MCP (no local library)                                                                                        |
 | **Deterministic Output**  | Yes                                                                                                                       | Yes (client-side PDF renderer)                                                                                           |
 
@@ -165,7 +165,7 @@ paragraphs) is supported in `summary` fields. The payoff:
 
 - Your resume is grep-able, scriptable, and diffable
 - [Multi-line YAML strings](https://yaml.org/spec/1.2.2/#8112-block-collection-literals) keep long summaries readable
-- The same content compiles to LaTeX, HTML, DOCX, and Markdown
+- The same content compiles to LaTeX, Typst, HTML, DOCX, and Markdown
 - Bulk edits (renaming an employer across ten variants) are a `sed` away
 
 ### Layouts and Rendering
@@ -174,18 +174,19 @@ The rendering architectures diverge completely.
 
 #### Engines
 
-YAMLResume provides four rendering engines:
+YAMLResume provides five rendering engines:
 
 - **[DOCX engine](/docs/layouts/docx)**: Microsoft Word documents for easy
   editing and sharing
 - **[HTML engine](/docs/layouts/html)**: Responsive, web-ready resumes with SEO
   metadata
-- **[Markdown engine](/docs/layouts/markdown)**: Clean text for LLMs, ATS
-  systems, and static sites
 - **[LaTeX engine](/docs/layouts/latex)**: Pixel-perfect PDFs with professional
   typography via XeTeX
+- **[Typst engine](/docs/layouts/typst)**: Modern, fast PDF generation
+- **[Markdown engine](/docs/layouts/markdown)**: Clean text for LLMs, ATS
+  systems, and static sites
 
-A single `yamlresume build` command generates all four formats from the same
+A single `yamlresume build` command generates all five formats from the same
 source file.
 
 Reactive Resume renders PDFs **in the browser** with `@react-pdf/renderer`
@@ -215,9 +216,10 @@ YAMLResume's LaTeX engine provides
 [page customization](/docs/layouts/latex#page) (paper size, margins, page
 numbers) and [typography controls](/docs/layouts/latex#typography) (font
 family, font size, line spacing), plus a single
-[accent color](/docs/layouts/latex#accent-color) across the LaTeX, HTML and DOCX
-engines. Templates encapsulate the remaining visual decisions—per-element color
-and fine-grained spacing control are intentionally absent. If you want to obsess
+[accent color](/docs/layouts/latex#accent-color) across the LaTeX, Typst, HTML
+and DOCX engines. Templates encapsulate the remaining visual
+decisions—per-element color and fine-grained spacing control are intentionally
+absent. If you want to obsess
 over every pixel of a unique design, Reactive Resume gives you more levers. If
 you want a professionally designed result without becoming a typesetter,
 YAMLResume's constrained approach is the point.
@@ -250,7 +252,7 @@ French resume means writing French content by hand.
 YAMLResume **localizes the content**. Setting the `locale` key switches
 section headings, country names, education degrees, skill levels, language
 fluency levels, idiomatic date and address formats, locale-appropriate
-punctuation, and LaTeX babel configuration across [10 languages and 12 locale
+punctuation, and LaTeX babel configuration across [11 languages and 13 locale
 codes](/docs/locale). A single source file can be compiled per language, and
 [`yamlresume ai translate`](/docs/ai/translate) produces structure-preserving
 translations—so maintaining an English and a Chinese resume is one file plus a
@@ -314,8 +316,8 @@ database migrations, storage, authentication, and backups are yours to run.
 
 YAMLResume is local-first: everything runs on your machine, and the
 [official Docker image](/docs/contributing/docker) exists only to provide a
-preconfigured build environment (Node.js, XeTeX, fonts). There is no server to
-operate, no database to back up, and no account to secure.
+preconfigured build environment (Node.js, XeTeX, Typst, fonts). There is no
+server to operate, no database to back up, and no account to secure.
 
 ### Distribution
 
@@ -367,9 +369,9 @@ Reactive Resume's "playground" is the product itself: a polished hosted app at
 
 - Your resume as a plain-text YAML file in Git, with native diffing, branching,
   and code review
-- Four rendering engines (DOCX, HTML, Markdown, LaTeX/PDF) from a single source
-  file
-- Deep content internationalization: 10 languages across 12 locale codes, with
+- Five rendering engines (DOCX, HTML, LaTeX/PDF, Typst/PDF, Markdown) from a
+  single source file
+- Deep content internationalization: 11 languages across 13 locale codes, with
   translated vocabularies, idiomatic dates and addresses, and CJK-ready LaTeX
   typography
 - A CLI-first developer experience with watch mode, schema-aware diagnostics,
@@ -385,5 +387,5 @@ richest template and AI-agent experience without touching a command line.
 
 Choose **YAMLResume** if you think of your resume as source code—versioned,
 reviewable, compilable, and automated—and you want one file to produce a
-pixel-perfect PDF, a Word document, a web page, and an LLM-friendly text
-version, in a dozen locales, on every commit.
+pixel-perfect PDF via LaTeX or Typst, a Word document, a web page, and an
+LLM-friendly text version, across 13 locales, on every commit.

@@ -37,12 +37,12 @@ Here is how the two workflows compare:
 | **Authoring Format**     | Plain-text YAML                                                                                                     | Binary `.docx` (a ZIP of XML)                                                               |
 | **Formatting**           | Generated from templates, so formatting stays consistent                                                              | Manual—styles, tab stops, and spacing drift over time                                       |
 | **Schema Validation**    | [Strict Zod validation](/docs/compiler/schema) with [clang-style diagnostics](/blog/yamlresume-compiler)            | None for structure—spelling and grammar only                                                |
-| **Output Formats**       | [DOCX](/docs/layouts/docx), [HTML](/docs/layouts/html), [Markdown](/docs/layouts/markdown), [LaTeX/PDF](/docs/layouts/latex) | `.docx`, PDF (Save As), plus lossy exports to other formats                                 |
+| **Output Formats**       | [DOCX](/docs/layouts/docx), [HTML](/docs/layouts/html), [LaTeX/PDF](/docs/layouts/latex), [Typst/PDF](/docs/layouts/typst), [Markdown](/docs/layouts/markdown) | `.docx`, PDF (Save As), plus lossy exports to other formats                                 |
 | **DOCX Output**          | Built-in [DOCX engine](/docs/layouts/docx) with curated templates                                                     | The document itself is the DOCX                                                             |
-| **Templates**            | Curated official set (`calm` for DOCX; more for [LaTeX](/docs/layouts/latex/templates) and [HTML](/docs/layouts/html/templates)) | Thousands of templates via Microsoft Create and third parties; quality varies widely        |
+| **Templates**            | Curated official set (`calm` for DOCX; more for [LaTeX](/docs/layouts/latex/templates), [Typst](/docs/layouts/typst), and [HTML](/docs/layouts/html/templates)) | Thousands of templates via Microsoft Create and third parties; quality varies widely        |
 | **Version Control**      | Works with Git; diffs show real changes                                                                               | Binary files—diffs and merges are effectively useless                                       |
 | **Tailoring**            | Layout files and Git branches per application                                                                         | "Save As" copies that drift apart (`resume_final_v2.docx`)                                  |
-| **Internationalization** | [10 languages across 12 locale codes](/docs/locale), plus [AI translation](/docs/ai/translate)                      | UI and spellcheck in many languages; each language is a separate manual document            |
+| **Internationalization** | [11 languages across 13 locale codes](/docs/locale), plus [AI translation](/docs/ai/translate)                      | UI and spellcheck in many languages; each language is a separate manual document            |
 | **Rich Text**            | A selected set of [Markdown syntax](/docs/content/rich-text) in `summary` fields                                    | Full formatting everywhere                                                                  |
 | **Data Model**           | Fixed, structured schema; [JSON Resume](/docs/comparisons/json-resume) interop                                      | Free-form document                                                                          |
 | **AI Features**          | Built-in [generation](/docs/ai/generate) and [translation](/docs/ai/translate) in the CLI                           | Microsoft 365 Copilot features (subscription)                                               |
@@ -66,10 +66,11 @@ fiddling. Studies show most Word users never touch named styles, so formatting
 ends up as one-off inline tweaks that are painful to revise.
 
 In YAMLResume, formatting is the compiler's job. Your content is data; the
-[DOCX engine](/docs/layouts/docx) and the [LaTeX engine](/docs/layouts/latex)
-render it through templates that enforce consistency. Change your job title in
-one place and every format—DOCX, PDF, HTML, Markdown—picks it up on the next
-build. The template makes each design decision once, and gets it right.
+[DOCX engine](/docs/layouts/docx), [LaTeX engine](/docs/layouts/latex), and
+[Typst engine](/docs/layouts/typst) render it through templates that enforce
+consistency. Change your job title in one place and every format—DOCX, PDF via
+LaTeX or Typst, HTML, Markdown—picks it up on the next build. The template makes
+each design decision once, and gets it right.
 
 ### Plain Text vs. Binary
 
@@ -130,7 +131,7 @@ resume in one language, Word's multilingual support is not your problem.
 YAMLResume shines when one career must speak several languages. Setting the
 `locale` key translates section headings, degrees, skill levels, and country
 names; formats dates and addresses in local style; and applies locale
-punctuation rules across [10 languages and 12 locale
+punctuation rules across [11 languages and 13 locale
 codes](/docs/locale). Combined with [`yamlresume ai
 translate`](/docs/ai/translate), an English-to-Japanese variant is one command
 away, generated from the same source so the two never drift. In Word, that
@@ -162,10 +163,11 @@ quality—for every well-built template there are dozens built with tables and
 text boxes that make editing hard and break ATS parsers.
 
 YAMLResume ships a small curated set: the [calm](/docs/layouts/docx/templates/calm)
-template for DOCX output, plus [LaTeX](/docs/layouts/latex/templates) and
-[HTML](/docs/layouts/html/templates) templates, all validated against every
-supported locale. Because templates are engine settings rather than documents,
-switching designs never means rewriting content.
+template for DOCX output, plus [LaTeX](/docs/layouts/latex/templates),
+[Typst](/docs/layouts/typst), and [HTML](/docs/layouts/html/templates)
+templates, all validated against every supported locale. Because templates are
+engine settings rather than documents, switching designs never means rewriting
+content.
 
 ### Recruiters and the `.docx` Format
 
@@ -180,8 +182,8 @@ URLs, contact icons) that match the other engines.
 
 One caveat applies to any DOCX file, generated or not: fonts must exist on the
 machine where the document is opened, or Word substitutes them. Choose widely
-available fonts for your DOCX layout, and keep the LaTeX/PDF engine as your
-reference for perfect-looking output.
+available fonts for your DOCX layout, and keep the LaTeX or Typst PDF engine as
+your reference for perfect-looking output.
 
 ### Automation
 
@@ -207,12 +209,12 @@ resumes.
 **YAMLResume** excels if you want:
 
 - One plain-text source file in Git, with real diffs, history, and branches
-- Generated, consistent formatting across [DOCX](/docs/layouts/docx),
-  [PDF](/docs/layouts/latex), [HTML](/docs/layouts/html), and
-  [Markdown](/docs/layouts/markdown)
+- Generated, consistent formatting across [DOCX](/docs/layouts/docx), PDF via
+  [LaTeX](/docs/layouts/latex) or [Typst](/docs/layouts/typst),
+  [HTML](/docs/layouts/html), and [Markdown](/docs/layouts/markdown)
 - [Schema validation](/docs/compiler/schema) that catches [structural
   errors](/docs/cli#validate) before recruiters do
-- Deep [internationalization](/docs/locale): [10 languages across 12 locale
+- Deep [internationalization](/docs/locale): [11 languages across 13 locale
   codes](/docs/locale) with [AI translation](/docs/ai/translate), from a single
   source of truth
 - ATS-safe output by design, plus a [Markdown engine](/docs/layouts/markdown)

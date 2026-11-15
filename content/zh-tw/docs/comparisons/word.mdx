@@ -32,12 +32,12 @@ YAML 原始碼建置 Microsoft Word 文件。真正的比較並不是「YAML 對
 | **撰寫格式**       | 純文字 YAML                                                                                                                                          | 二進位 `.docx`（一個裝滿 XML 的 ZIP 壓縮檔）        |
 | **格式設定**       | 由模板產生，格式保持一致                                                                                                                                      | 手動——樣式、定位點與間距會隨時間漂移                    |
 | **結構驗證**       | [嚴格的 Zod 驗證](/zh-tw/docs/compiler/schema)，搭配 [clang 風格的診斷訊息](/zh-tw/blog/yamlresume-compiler)                                                     | 結構方面無驗證——只有拼字與文法檢查                     |
-| **輸出格式**       | [DOCX](/zh-tw/docs/layouts/docx)、[HTML](/zh-tw/docs/layouts/html)、[Markdown](/zh-tw/docs/layouts/markdown)、[LaTeX/PDF](/zh-tw/docs/layouts/latex) | `.docx`、PDF（透過另存新檔），以及其他格式的有損匯出        |
+| **輸出格式**       | [DOCX](/zh-tw/docs/layouts/docx)、[HTML](/zh-tw/docs/layouts/html)、[Markdown](/zh-tw/docs/layouts/markdown)、[LaTeX/PDF](/zh-tw/docs/layouts/latex)、[Typst/PDF](/zh-tw/docs/layouts/typst) | `.docx`、PDF（透過另存新檔），以及其他格式的有損匯出        |
 | **DOCX 輸出**    | 內建 [DOCX 引擎](/zh-tw/docs/layouts/docx)，附精選模板                                                                                                      | 文件本身就是 DOCX                            |
-| **模板**         | 精選的官方模板集（DOCX 使用 `calm`；[LaTeX](/zh-tw/docs/layouts/latex/templates) 與 [HTML](/zh-tw/docs/layouts/html/templates) 有更多）                            | 透過 Microsoft Create 與第三方提供數千個模板；品質參差不齊 |
+| **模板**         | 精選的官方模板集（DOCX 使用 `calm`；[LaTeX](/zh-tw/docs/layouts/latex/templates)、[Typst](/zh-tw/docs/layouts/typst) 與 [HTML](/zh-tw/docs/layouts/html/templates) 有更多） | 透過 Microsoft Create 與第三方提供數千個模板；品質參差不齊 |
 | **版本控制**       | 可搭配 Git；差異比對會顯示真正的變更                                                                                                                              | 二進位檔案——差異比對與合併幾乎無用                     |
 | **客製化**        | 每份申請使用各自的版面配置檔與 Git 分支                                                                                                                            | 「另存新檔」的副本彼此漂移（`resume_final_v2.docx`）  |
-| **國際化**        | [10 種語言橫跨 12 個語系代碼](/zh-tw/docs/locale)，加上 [AI 翻譯](/zh-tw/docs/ai/translate)                                                                      | 多語言的 UI 與拼字檢查；每種語言都是一份獨立的手動文件          |
+| **國際化**        | [11 種語言橫跨 13 個區域代碼](/zh-tw/docs/locale)，加上 [AI 翻譯](/zh-tw/docs/ai/translate)                                                                      | 多語言的 UI 與拼字檢查；每種語言都是一份獨立的手動文件          |
 | **富文字**        | 在 `summary` 欄位中使用精選的 [Markdown 語法](/zh-tw/docs/content/rich-text)                                                                                 | 任何地方都有完整的格式設定                          |
 | **資料模型**       | 固定、結構化的結構描述；具備 [JSON Resume](/zh-tw/docs/comparisons/json-resume) 互操作性                                                                            | 自由格式文件                                 |
 | **AI 功能**      | CLI 內建的[產生](/zh-tw/docs/ai/generate)與[翻譯](/zh-tw/docs/ai/translate)功能                                                                             | Microsoft 365 Copilot 功能（需訂閱）          |
@@ -60,10 +60,10 @@ YAML 原始碼建置 Microsoft Word 文件。真正的比較並不是「YAML 對
 格式最後變成一次性的手動調整，日後修改非常痛苦。
 
 在 YAMLResume 中，格式設定是編譯器的工作。您的內容是資料；[DOCX 引
-擎](/zh-tw/docs/layouts/docx)與 [LaTeX 引擎](/zh-tw/docs/layouts/latex)會透過
-強制一致性的模板來渲染它。在一個地方修改您的職稱，下一次建置時每種格式
-——DOCX、PDF、HTML、Markdown——都會自動跟上。模板把每個設計決策做一次，
-而且一次就做對。
+擎](/zh-tw/docs/layouts/docx)、[LaTeX 引擎](/zh-tw/docs/layouts/latex)與
+[Typst 引擎](/zh-tw/docs/layouts/typst)會透過強制一致性的模板來渲染它。在一個地方
+修改您的職稱，下一次建置時每種格式——DOCX、LaTeX/PDF、Typst/PDF、HTML、
+Markdown——都會自動跟上。模板把每個設計決策做一次，而且一次就做對。
 
 ### 純文字對上二進位
 
@@ -116,7 +116,7 @@ Word 在這方面表現出色：它能很好地處理多語言文件、拼字檢
 
 當同一份職涯必須說多種語言時，YAMLResume 就展現出優勢。設定 `locale` 鍵
 會翻譯章節標題、學位、技能等級與國家名稱；以本地慣用格式呈現日期與地址；
-並套用橫跨 [10 種語言與 12 個語系代碼](/zh-tw/docs/locale)的語系標點規則。
+並套用橫跨 [11 種語言與 13 個區域代碼](/zh-tw/docs/locale)的語系標點規則。
 搭配 [`yamlresume ai translate`](/zh-tw/docs/ai/translate)，英譯日的變體只
 需要一道指令，而且因為是從相同來源產生，兩者永遠不會漂移。在 Word 中，這
 意味著兩份文件和一位翻譯。
@@ -143,7 +143,7 @@ Microsoft 的模板生態系統非常龐大：[Microsoft Create](https://create.
 
 YAMLResume 提供一小組精選模板：用於 DOCX 輸出的
 [calm](/zh-tw/docs/layouts/docx/templates/calm) 模板，加上
-[LaTeX](/zh-tw/docs/layouts/latex/templates) 與
+[LaTeX](/zh-tw/docs/layouts/latex/templates)、[Typst](/zh-tw/docs/layouts/typst) 與
 [HTML](/zh-tw/docs/layouts/html/templates) 模板，全部針對每個支援的語系進行驗
 證。因為模板是引擎設定而非文件，切換設計永遠不需要重寫內容。
 
@@ -159,7 +159,7 @@ YAMLResume 提供一小組精選模板：用於 DOCX 輸出的
 
 有一個注意事項適用於任何 DOCX 檔案，無論是否為產生的：字型必須存在於開啟
 文件的機器上，否則 Word 會替換它們。請為您的 DOCX 版面配置選擇通用的字型，
-並將 LaTeX/PDF 引擎作為完美外觀輸出的基準。
+並將 LaTeX 或 Typst 引擎作為完美外觀 PDF 輸出的基準。
 
 ### 自動化
 
@@ -184,11 +184,11 @@ Word 有巨集；YAMLResume 有管線。[GitHub Action](https://github.com/yamlr
 **YAMLResume** 適合以下需求：
 
 - Git 中的單一純文字原始檔，具備真正的差異比對、歷史紀錄與分支
-- 橫跨 [DOCX](/zh-tw/docs/layouts/docx)、[PDF](/zh-tw/docs/layouts/latex)、
-  [HTML](/zh-tw/docs/layouts/html) 與 [Markdown](/zh-tw/docs/layouts/markdown)
-  的自動產生且一致的格式設定
+- 橫跨 [DOCX](/zh-tw/docs/layouts/docx)、[LaTeX/PDF](/zh-tw/docs/layouts/latex)、
+  [Typst/PDF](/zh-tw/docs/layouts/typst)、[HTML](/zh-tw/docs/layouts/html) 與
+  [Markdown](/zh-tw/docs/layouts/markdown) 的自動產生且一致的格式設定
 - 在招募人員發現之前就先攔下[結構錯誤](/zh-tw/docs/cli#validate)的[結構驗證](/zh-tw/docs/compiler/schema)
-- 從單一真實來源出發的深度[國際化](/zh-tw/docs/locale)：[橫跨 10 種語言與 12 個語系代碼](/zh-tw/docs/locale)，並具備 [AI 翻譯](/zh-tw/docs/ai/translate)
+- 從單一真實來源出發的深度[國際化](/zh-tw/docs/locale)：[橫跨 11 種語言與 13 個區域代碼](/zh-tw/docs/locale)，並具備 [AI 翻譯](/zh-tw/docs/ai/translate)
 - 設計上即確保 ATS 相容的輸出，外加適用於文字管線的 [Markdown 引擎](/zh-tw/docs/layouts/markdown)
 - 自動化：[監看模式](/zh-tw/blog/dev-mode)、[CI/CD 建置](/zh-tw/docs/ecosystem/action)、[Docker](/zh-tw/docs/contributing/docker)，以及 [Node.js API](/zh-tw/docs/ecosystem/node)
 - 透過[內建的 DOCX 引擎](/zh-tw/docs/layouts/docx)獲得 Word 相容性，*卻不需要* Word 的工作流程

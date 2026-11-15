@@ -46,8 +46,8 @@ Options:
 
 Commands:
   ai                             AI-powered resume generation
-  build [options] <resume-path>  build a resume to Docx, HTML, Markdown or
-                                 LaTeX/PDF
+  build [options] <resume-path>  build a resume to Docx, HTML, Markdown,
+                                 LaTeX/PDF or Typst/PDF
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
@@ -62,7 +62,7 @@ Commands:
 
 ```console
 $ yamlresume -V
-0.15.3
+0.18.0
 ```
 
 ## New
@@ -106,16 +106,31 @@ $ yamlresume new my-resume.yml --sample no-such-sample
  ERROR  Sample resume not found: no-such-sample
 
 ℹ Available samples:
+  - account-executive: Account Executive
+  - ai-engineer: AI Engineer
+  - business-analyst: Business Analyst
+  - customer-success-manager: Customer Success Manager
+  - cybersecurity-engineer: Cybersecurity Engineer
   - data-analyst: Data Analyst
+  - data-engineer: Data Engineer
   - data-scientist: Data Scientist
+  - devops-engineer: DevOps Engineer
+  - financial-analyst: Financial Analyst
+  - human-resources-manager: Human Resources Manager
+  - marketing-manager: Marketing Manager
+  - mechanical-engineer: Mechanical Engineer
+  - operations-manager: Operations Manager
   - product-manager: Product Manager
+  - project-manager: Project Manager
+  - qa-engineer: QA Engineer
+  - registered-nurse: Registered Nurse
   - software-engineer: Software Engineer
   - ux-designer: UX Designer
 ```
 
 ### `--language`
 
-所有示例简历都翻译成了 12 种区域语言。您可以使用 `--language` 选项从本地化的示例创建简历，这对于编写非英语简历非常方便：
+全部 20 个示例简历都翻译成了 13 种区域语言。您可以使用 `--language` 选项从本地化的示例创建简历，这对于编写非英语简历非常方便：
 
 ```console
 $ yamlresume new my-resume.yml --sample software-engineer --language zh-hans
@@ -124,7 +139,7 @@ $ yamlresume new my-resume.yml --sample software-engineer --language zh-hans
 
 ## 示例简历
 
-YAMLResume 为常见职位提供了一套精选的示例简历，并翻译成 12 种区域语言（`de`、`en`、`es`、`fr`、`id`、`ja`、`nl`、`no`、`pt-br`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`）。使用 `samples list` 子命令列出全部示例：
+YAMLResume 为常见职位提供了 20 个精选示例简历，每个都翻译成 13 种区域语言（`de`、`en`、`es`、`fr`、`id`、`it`、`ja`、`nl`、`no`、`pt-br`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`）。使用 `samples list` 子命令列出全部示例：
 
 ```console
 $ yamlresume samples --help
@@ -141,35 +156,53 @@ Commands:
 
 $ yamlresume samples list
 
-| ID                | Position          | Title             | Category       |
-| ----------------- | ----------------- | ----------------- | -------------- |
-| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
-| data-scientist    | data scientist    | Data Scientist    | Data Science   |
-| product-manager   | product manager   | Product Manager   | Product        |
-| software-engineer | software engineer | Software Engineer | Engineering    |
-| ux-designer       | ux designer       | UX Designer       | Design         |
+| ID                       | Position                 | Title                    | Category         |
+| ------------------------ | ------------------------ | ------------------------ | ---------------- |
+| account-executive        | account executive        | Account Executive        | Sales            |
+| ai-engineer              | ai engineer              | AI Engineer              | Engineering      |
+| business-analyst         | business analyst         | Business Analyst         | Business         |
+| customer-success-manager | customer success manager | Customer Success Manager | Customer Success |
+| cybersecurity-engineer   | cybersecurity engineer   | Cybersecurity Engineer   | Engineering      |
+| data-analyst             | data analyst             | Data Analyst             | Data Analytics   |
+| data-engineer            | data engineer            | Data Engineer            | Engineering      |
+| data-scientist           | data scientist           | Data Scientist           | Data Science     |
+| devops-engineer          | devops engineer          | DevOps Engineer          | Engineering      |
+| financial-analyst        | financial analyst        | Financial Analyst        | Finance          |
+| human-resources-manager  | human resources manager  | Human Resources Manager  | Human Resources  |
+| marketing-manager        | marketing manager        | Marketing Manager        | Marketing        |
+| mechanical-engineer      | mechanical engineer      | Mechanical Engineer      | Engineering      |
+| operations-manager       | operations manager       | Operations Manager       | Operations       |
+| product-manager          | product manager          | Product Manager          | Product          |
+| project-manager          | project manager          | Project Manager          | Management       |
+| qa-engineer              | qa engineer              | QA Engineer              | Engineering      |
+| registered-nurse         | registered nurse         | Registered Nurse         | Healthcare       |
+| software-engineer        | software engineer        | Software Engineer        | Engineering      |
+| ux-designer              | ux designer              | UX Designer              | Design           |
 ```
 
 使用 [`yamlresume new --sample <id>`](#new) 从示例创建新的简历文件。
 
 ## Build
 
-从 YAML 构建简历到 PDF。它将同时生成 latex 代码和 PDF，如果您使用 [XeTeX](/zh-cn/docs/installation#xetex) 作为排版引擎，还会生成一些中间文件 `.aux`、`.log` 等。
+构建 YAML 简历中配置的所有布局。一条命令可以生成 DOCX、HTML、Markdown、LaTeX/PDF 和 Typst/PDF 输出，LaTeX 和 Typst 布局还会分别生成 `.tex` 和 `.typ` 源文件。使用 [XeTeX](/zh-cn/docs/installation#xetex) 时可能留下 `.aux`、`.log` 等中间文件。
+
+同时配置两种 PDF 引擎时，LaTeX 和 Typst 输出分别命名为 `resume.tex.pdf` 和 `resume.typ.pdf`，避免相互覆盖；只配置一种 PDF 引擎时仍使用 `resume.pdf`。
 
 ```console
 $ yamlresume build --help
 Usage: yamlresume build [options] <resume-path>
 
-build a resume to LaTeX, PDF, Markdown, or HTML
+build a resume to Docx, HTML, Markdown, LaTeX/PDF or Typst/PDF
 
 Arguments:
   resume-path              the resume file path
 
 Options:
-  --no-pdf                 only generate TeX file without PDF (for LaTeX layouts)
+  --no-pdf                 only generate source files (TeX/Typst) without PDF
   --no-validate            skip resume schema validation
   -o, --output <dir>       output directory for generated files
-  -t, --timeout <seconds>  timeout for LaTeX compilation in seconds (default: 30, 0 to disable)
+  -t, --timeout <seconds>  timeout for LaTeX/Typst compilation in seconds
+                           (default: 30, 0 to disable)
   -h, --help               display help for command
 
 $ yamlresume build my-resume.yml
@@ -179,7 +212,7 @@ $ yamlresume build my-resume.yml
 
 ### `--no-pdf`
 
-如果您只想生成 LaTeX 文件而不生成 PDF，可以使用 `--no-pdf` 选项。
+如果只想生成 LaTeX 和 Typst 源文件而不生成 PDF，可以使用 `--no-pdf` 选项。
 
 ```console
 $ yamlresume build --no-pdf my-resume.yml
@@ -203,7 +236,7 @@ $ yamlresume build -o ./output my-resume.yml
 
 ### `--timeout`
 
-如果你想自定义 LaTeX 编译的超时时间，可以使用 `--timeout`
+如果你想自定义 LaTeX 或 Typst 编译的超时时间，可以使用 `--timeout`
 选项。默认超时时间为 30 秒。你可以将其设置为 0 来禁用超时。
 
 ```console
@@ -334,6 +367,9 @@ $ yamlresume doctor
 ℹ Checking Tectonic...
   Tectonic: tectonic 0.15.0
 
+ℹ Checking Typst...
+  Typst: typst 0.15.1
+
 ℹ Checking Fonts...
   Linux Libertine O: Not Installed
   Linux Libertine: Installed
@@ -346,6 +382,7 @@ doctor 命令检查:
 - **系统信息**: 操作系统、CPU 架构
 - **二进制文件**: Node.js、npm、pnpm、Yarn、Bun
 - **LaTeX 引擎**: XeTeX 和 Tectonic 的可用性
+- **Typst**: Typst 是否可用，以及是否满足 0.13.0 最低版本
 - **字体**: 最佳简历渲染所需的字体（拉丁文本用 Linux Libertine，中日韩文字用
   Noto CJK）
 
@@ -366,6 +403,7 @@ $ yamlresume languages list
 | zh-hant-tw      | Traditional Chinese (Taiwan)    |
 | es              | Spanish                         |
 | fr              | French                          |
+| it              | Italian                         |
 | no              | Norwegian                       |
 | nl              | Dutch                           |
 | ja              | Japanese                        |
@@ -391,4 +429,5 @@ $ yamlresume templates list
 | kami                | html   | Kami             | Warm parchment and serif typography inspired by tw93/kami.          |
 | vscode              | html   | VS Code          | Dark theme inspired by Visual Studio Code, tailored for developers. |
 | calm                | docx   | Calm             | Clean and minimalist design suitable for all professionals.         |
+| jake                | typst  | Jake's Resume    | A simple, straight-forward resume template based on Jake's Resume   |
 ```

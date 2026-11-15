@@ -4,7 +4,7 @@ title: 安装
 
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
-YAMLResume 是一个 Node.js 工具，在底层，它将您的简历从 YAML 格式转换为 LaTeX 代码，然后调用 LaTeX 排版引擎来编译生成的 LaTeX 代码为 PDF。此外，为了获得最佳的 PDF 输出，我们还建议安装一些字体。简而言之，您需要安装以下内容才能开始使用 YAMLResume：
+YAMLResume 是一个 Node.js 工具，可以将 YAML 简历转换为 DOCX、HTML、Markdown、LaTeX 或 Typst 输出，并通过 LaTeX 或 Typst 排版引擎生成 PDF。为了获得最佳的 PDF 输出，我们还建议安装一些字体。简而言之，你需要安装以下内容才能开始使用 YAMLResume：
 
 - Node.js 22 或更新版本
 - [yamlresume 包](https://www.npmjs.com/package/yamlresume)
@@ -20,6 +20,7 @@ YAMLResume 是一个 Node.js 工具，在底层，它将您的简历从 YAML 格
 - [Node.js](/zh-cn/docs/installation#nodejs)
 - [yamlresume CLI](/zh-cn/docs/installation#yamlresume)
 - [XeTeX](/zh-cn/docs/installation#xetex)
+- [Typst](/zh-cn/docs/installation#typst)
 - [一些推荐的字体](/zh-cn/docs/installation#font)
 
 您可以使用以下命令立即创建新简历：
@@ -202,8 +203,8 @@ Options:
 
 Commands:
   ai                             AI-powered resume generation
-  build [options] <resume-path>  build a resume to Docx, HTML, Markdown or
-                                 LaTeX/PDF
+  build [options] <resume-path>  build a resume to Docx, HTML, Markdown,
+                                 LaTeX/PDF or Typst/PDF
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
@@ -236,21 +237,33 @@ bun exec yamlresume help
 
 ### 排版引擎
 
-在底层，`yamlresume` 完成编译器的工作，将 YAML 简历解析为 [AST](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/ast.ts)，然后[将 AST 转换为 LaTeX 代码](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/codegen/latex.ts)。
+在底层，`yamlresume` 将 YAML 简历解析为 [AST](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/ast.ts)，然后转换为 LaTeX 或 Typst 源代码。只生成源文件不需要外部编译器；要将源文件编译为 PDF，则需要安装对应的排版引擎：
 
-作为一个小型编译器，`yamlresume` 依赖排版引擎来编译生成的 LaTeX 代码为 PDF。因此，您必须首先安装排版引擎，然后才能使用 `yamlresume` 生成简历 PDF。
+- **LaTeX 布局**：[XeTeX](#xetex) 或 [Tectonic](#tectonic)
+- **Typst 布局**：[Typst](#typst) 0.13.0 或更高版本
 
-YAMLResume 目前支持两个排版引擎：[XeTeX](#xetex) 和
-[Tectonic](#tectonic)。
-
-<Callout title="为什么选择 LaTeX？">
-  在撰写本文时，[LaTeX](https://www.latex-project.org/) 仍然是 生成专业外观 PDF
-  的最佳排版引擎选择。 [Typst](https://typst.app/)
-  是一个很好的替代品，但它仍然处于早期阶段，其 CJK
-  支持还不成熟，不适合生产使用。
-  之前我写了一篇文章[关于排版引擎](https://blog.ppresume.com/posts/on-typesetting-engines)，解释了我创立
-  [PPResume](https://ppresume.com) 时为什么选择 LaTeX 而不是其他排版引擎的原因。
+<Callout title="为什么同时支持 LaTeX 和 Typst？">
+  [LaTeX](https://www.latex-project.org/) 拥有成熟的排版生态和多个经典简历模板；
+  [Typst](https://typst.app/) 则提供现代语法和快速编译。YAMLResume
+  同时支持两者，因此你可以按布局选择引擎，而无需修改简历内容。
 </Callout>
+
+#### Typst
+
+按照[官方安装指南](https://github.com/typst/typst#installation)安装 [Typst](https://typst.app/) 0.13.0 或更高版本。在 macOS 上，可以使用 Homebrew：
+
+```sh
+brew install typst
+```
+
+确认 CLI 可用且版本符合要求：
+
+```console
+$ typst --version
+typst 0.15.1
+```
+
+`yamlresume doctor` 也会检查已安装的 Typst 版本。
 
 #### XeTeX
 

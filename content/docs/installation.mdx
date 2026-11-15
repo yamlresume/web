@@ -1,13 +1,13 @@
 ---
 title: Installation
-description: Install the YAMLResume CLI with npm, pnpm, Docker or Homebrew, plus XeTeX or Tectonic and the recommended fonts for PDF output.
+description: Install the YAMLResume CLI with npm, pnpm, Docker or Homebrew, plus XeTeX, Tectonic or Typst and the recommended fonts for PDF output.
 ---
 
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
 YAMLResume is distributed as a Node.js CLI and a set of reusable packages. For
-DOCX, HTML, and Markdown output, you only need Node.js and the `yamlresume` CLI.
-Generating a PDF from a LaTeX layout additionally requires a supported
+DOCX, HTML, Markdown, LaTeX and Typst source output, you only need Node.js and
+the `yamlresume` CLI. PDF output additionally requires the corresponding
 [typesetting engine](#typesetting-engine), and installing the recommended fonts
 improves the final typography.
 
@@ -16,10 +16,11 @@ In short, a local CLI installation needs:
 - Node.js 22 or newer
 - the [`yamlresume` CLI package](https://www.npmjs.com/package/yamlresume)
 - [optional] XeTeX or Tectonic for LaTeX/PDF output
+- [optional] Typst 0.13.0 or newer for Typst/PDF output
 - [optional] recommended fonts for optimal PDF output
 
-If you prefer an environment with the CLI, XeTeX, and fonts already installed,
-use the official Docker image below.
+If you prefer an environment with the CLI, XeTeX, Typst and fonts already
+installed, use the official Docker image below.
 
 ## Docker Users
 
@@ -30,6 +31,7 @@ everything pre-packaged, including:
 - [Node.js](/docs/installation#nodejs)
 - [yamlresume CLI](/docs/installation#yamlresume)
 - [XeTeX](/docs/installation#xetex)
+- [Typst](/docs/installation#typst)
 - [some recommended fonts](/docs/installation#font)
 
 You can create a new resume instantly with the following command:
@@ -244,8 +246,8 @@ Options:
 
 Commands:
   ai                             AI-powered resume commands
-  build [options] <resume-path>  build a resume to Docx, HTML, Markdown or
-                                 LaTeX/PDF
+  build [options] <resume-path>  build a resume to Docx, HTML, Markdown,
+                                 LaTeX/PDF or Typst/PDF
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
@@ -297,29 +299,41 @@ For model-level AI APIs that operate on strings rather than files, install
 
 ### Typesetting Engine
 
-Under the hood, `yamlresume` does the job of a compiler, parsing a YAML resume
-to an
+Under the hood, `yamlresume` parses a YAML resume into an
 [AST](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/ast.ts)
-and then [transforming the AST to LaTeX
-code](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/codegen/latex.ts).
+and transforms it into LaTeX or Typst source code. Generating source files does
+not require an external compiler. To turn those sources into PDFs, install the
+corresponding typesetting engine:
 
-As a mini-compiler, `yamlresume` relies on a typesetting engine to compile the
-generated LaTeX code to PDFs. Therefore you must first install a typesetting
-engine first before you can use `yamlresume` to generate resume PDFs.
+- **LaTeX layouts**: [XeTeX](#xetex) or [Tectonic](#tectonic)
+- **Typst layouts**: [Typst](#typst) 0.13.0 or newer
 
-YAMLResume currently supports two typesetting engines: [XeTeX](#xetex) and
-[Tectonic](#tectonic).
-
-<Callout title="Why LaTeX?">
-  At the time of writing, [LaTeX](https://www.latex-project.org/) is still the
-  best choice of typesetting engine for producing professional looking PDFs.
-  [Typst](https://typst.app/) is a great alternative, but it is still in its
-  early stage and its CJK support is not mature and production ready yet.
-  Previously I wrote a post [On Typesetting
-  Engines](https://blog.ppresume.com/posts/on-typesetting-engines) explaining
-  the reasons why I chose LaTeX over other typesetting engines when I founded
-  [PPResume](https://ppresume.com).
+<Callout title="Why LaTeX and Typst?">
+  [LaTeX](https://www.latex-project.org/) provides a mature typesetting
+  ecosystem and several established resume templates.
+  [Typst](https://typst.app/) offers a modern language and fast compilation.
+  YAMLResume supports both, so you can choose per layout without changing the
+  resume content.
 </Callout>
+
+#### Typst
+
+Install [Typst](https://typst.app/) 0.13.0 or newer by following the
+[official installation guide](https://github.com/typst/typst#installation). On
+macOS, you can use Homebrew:
+
+```sh
+brew install typst
+```
+
+Verify that the CLI is available and reports a supported version:
+
+```console
+$ typst --version
+typst 0.15.1
+```
+
+`yamlresume doctor` also checks the installed Typst version.
 
 #### XeTeX
 

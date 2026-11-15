@@ -44,28 +44,28 @@ Reactive Resume 与 YAMLResume 秉持相同的价值观——免费、开源、�
 | **数据格式**        | 纯文本 YAML 文件                                                                                                          | 存储在 PostgreSQL 中的 JSON，通过 Web UI 编辑                                                                            |
 | **账号要求**        | 无需                                                                                                                      | 基础使用无需；云同步需要账号                                                                                             |
 | **编辑方式**        | 任意文本编辑器 + [开发模式](/zh-cn/blog/dev-mode)自动重建                                                                 | 浏览器中实时预览的 WYSIWYG 编辑器                                                                                        |
-| **排版引擎**        | [Docx](/zh-cn/docs/layouts/docx)、[HTML](/zh-cn/docs/layouts/html)、[Markdown](/zh-cn/docs/layouts/markdown)、[LaTeX/XeTeX](/zh-cn/docs/layouts/latex) | 客户端 PDF 渲染器（@react-pdf/renderer）                                                                                 |
-| **输出格式**        | DOCX、HTML、Markdown、LaTeX/PDF                                                                                           | PDF、DOCX、Markdown、JSON                                                                                                |
+| **排版引擎**        | [DOCX](/zh-cn/docs/layouts/docx)、[HTML](/zh-cn/docs/layouts/html)、[LaTeX/XeTeX](/zh-cn/docs/layouts/latex)、[Typst](/zh-cn/docs/layouts/typst)、[Markdown](/zh-cn/docs/layouts/markdown) | 客户端 PDF 渲染器（@react-pdf/renderer）                                              |
+| **输出格式**        | DOCX、HTML、LaTeX/PDF、Typst/PDF、Markdown                                                                                    | PDF、DOCX、Markdown、JSON                                                                                                |
 | **Schema 验证**     | [严格的 Zod Schema 验证](/zh-cn/docs/compiler/schema)，配合[编译器](/zh-cn/docs/compiler/architecture) + IDE 集成        | 服务端 Schema 验证，提供面向用户的错误信息                                                                               |
 | **错误报告**        | [clang 风格的诊断信息](/zh-cn/docs/cli#validate)，包含行号和位置信息                                                      | 表单内联错误和导入验证信息                                                                                               |
-| **国际化**          | [10 种语言、12 个语言区域代码](/zh-cn/docs/locale)，深度内容本地化                                                        | UI 翻译为 55 个语言区域；PDF RTL 镜像；具备语言区域感知的回退字体                                                        |
+| **国际化**          | [11 种语言、13 个区域代码](/zh-cn/docs/locale)，深度内容本地化                                                          | UI 翻译为 55 个语言区域；PDF RTL 镜像；具备语言区域感知的回退字体                                                        |
 | **富文本支持**      | 在 `summary` 字段中支持精选的 [Markdown 富文本语法](/zh-cn/docs/content/rich-text)                                        | 所有字段均支持 WYSIWYG 富文本编辑器，带高亮颜色                                                                          |
 | **字体自定义**      | [字体族、字号、行距](/zh-cn/docs/layouts/latex#typography) 等                                                             | 按模板设置字体族、字号和间距                                                                                             |
-| **颜色自定义**      | [强调色预设或任意十六进制颜色](/zh-cn/docs/layouts/latex#强调色)，支持 LaTeX、HTML 和 DOCX（v0.17 起）                                      | 模板配色方案 + 带内容选择器的 Semantic CSS 编辑器                                                                        |
+| **颜色自定义**      | [强调色预设或任意十六进制颜色](/zh-cn/docs/layouts/latex#强调色)，支持 LaTeX、HTML 和 DOCX（v0.17 起），以及 Typst（v0.18 起） | 模板配色方案 + 带内容选择器的 Semantic CSS 编辑器                                                     |
 | **布局自定义**      | [页边距、页码、纸张尺寸](/zh-cn/docs/layouts/latex#page) 等                                                               | A4/Letter、页边距、间距、侧栏宽度、图标样式、拖拽排版                                                                    |
 | **章节自定义**      | [别名](/zh-cn/docs/layouts/sections/aliases)和[重新排序](/zh-cn/docs/layouts/sections/reorder)                            | 自定义章节，带类型化字段、拖拽排序、按条目控制可见性                                                                     |
-| **模板/主题**       | 多个官方 [LaTeX](/zh-cn/docs/layouts/latex/templates)、[HTML](/zh-cn/docs/layouts/html/templates) 和 [DOCX](/zh-cn/docs/layouts/docx/templates) 模板 | 15 个内置模板（Azurill、Bronzor、Chikorita、Ditto、Gengar、Lapras、Rhyhorn 等）                                         |
-| **自定义样式**      | 基于模板（DOCX/HTML/LaTeX 源文件）                                                                                        | 可跨模板移植的 Semantic CSS 规则                                                                                         |
+| **模板/主题**       | 多个官方 [LaTeX](/zh-cn/docs/layouts/latex/templates)、[Typst](/zh-cn/docs/layouts/typst)、[HTML](/zh-cn/docs/layouts/html/templates) 和 [DOCX](/zh-cn/docs/layouts/docx/templates) 模板 | 15 个内置模板（Azurill、Bronzor、Chikorita、Ditto、Gengar、Lapras、Rhyhorn 等）                  |
+| **自定义样式**      | 基于模板（DOCX/HTML/LaTeX/Typst 源文件）                                                                                 | 可跨模板移植的 Semantic CSS 规则                                                                                         |
 | **开发模式**        | [开发模式](/zh-cn/docs/cli#dev)，自动重建                                                                                 | 输入时实时预览                                                                                                           |
 | **版本控制**        | 原生支持（Git 中的纯文本文件）                                                                                            | JSON 导出/导入；应用内版本历史快照；无行级 diff                                                                          |
-| **Docker 支持**     | [官方 Docker 镜像](/zh-cn/docs/contributing/docker)，预装 LaTeX 和 YAMLResume                                             | 一体化自托管镜像（Docker Hub 和 GHCR）；一键部署到 Vercel                                                                |
+| **Docker 支持**     | [官方 Docker 镜像](/zh-cn/docs/contributing/docker)，预装 LaTeX、Typst 和 YAMLResume                                      | 一体化自托管镜像（Docker Hub 和 GHCR）；一键部署到 Vercel                                                                |
 | **GitHub Action**   | [官方 GitHub Action](https://github.com/yamlresume/action)，用于 CI/CD                                                    | 无                                                                                                                       |
 | **Homebrew**        | [Homebrew formula](https://formulae.brew.sh/formula/yamlresume)，便于在 macOS 和 Linux 上安装                             | 无                                                                                                                       |
 | **网页 Playground** | 交互式网页 [Playground](/zh-cn/playground)                                                                                | 托管应用 [rxresu.me](https://rxresu.me) 本身                                                                             |
 | **AI 集成**         | 通过 CLI 和 API 内置[生成](/zh-cn/docs/ai/generate)和[翻译](/zh-cn/docs/ai/translate)                                     | 应用内 AI agent，支持 OpenAI、Anthropic、Google、OpenRouter、Ollama 等，含 ATS 检查和 PDF/DOCX 导入                      |
 | **Agent 集成**      | 简历文件可与任意编码 agent 配合使用                                                                                       | [MCP 服务器](https://docs.rxresu.me)（支持 OAuth），外加 OpenAPI REST API                                               |
 | **分享**            | 将 [HTML 输出](/zh-cn/docs/layouts/html)托管到任何地方                                                                    | 带浏览量统计的公开分享链接                                                                                               |
-| **其他**            | 精选示例简历、[json2yamlresume](/zh-cn/docs/ecosystem/json2yamlresume) 转换器                                             | 求职信、求职申请追踪器、Application Copilot（自动填充、匹配评分、定制副本）                                              |
+| **其他**            | 20 个精选示例简历、[json2yamlresume](/zh-cn/docs/ecosystem/json2yamlresume) 转换器                                        | 求职信、求职申请追踪器、Application Copilot（自动填充、匹配评分、定制副本）                                              |
 | **Node.js API**     | [`@yamlresume/node`](/zh-cn/docs/ecosystem/node)，用于读取、验证、构建、监听、生成和翻译文件                              | REST API + MCP（无本地库）                                                                                               |
 | **确定性输出**      | 是                                                                                                                        | 是（客户端 PDF 渲染器）                                                                                                  |
 
@@ -153,7 +153,7 @@ YAMLResume 则有意放弃了部分即时性，以换取**可移植性和规模*
 - 你的简历可 grep、可脚本化、可 diff
 - [多行 YAML 字符串](https://yaml.org/spec/1.2.2/#8112-block-collection-literals)
   让冗长的个人总结保持可读
-- 同一份内容可编译为 LaTeX、HTML、DOCX 和 Markdown
+- 同一份内容可编译为 LaTeX、Typst、HTML、DOCX 和 Markdown
 - 批量编辑（在十个变体中重命名雇主）一条 `sed` 命令即可搞定
 
 ### 布局与渲染
@@ -162,7 +162,7 @@ YAMLResume 则有意放弃了部分即时性，以换取**可移植性和规模*
 
 #### 引擎
 
-YAMLResume 提供四种渲染引擎：
+YAMLResume 提供五种渲染引擎：
 
 - **[DOCX 引擎](/zh-cn/docs/layouts/docx)**：Microsoft Word 文档，便于编辑和分享
 - **[HTML 引擎](/zh-cn/docs/layouts/html)**：响应式、适合网页展示的简历，带 SEO
@@ -171,8 +171,10 @@ YAMLResume 提供四种渲染引擎：
   LLM、ATS 系统和静态站点
 - **[LaTeX 引擎](/zh-cn/docs/layouts/latex)**：像素级完美的 PDF，通过 XeTeX 实现
   专业排版
+- **[Typst 引擎](/zh-cn/docs/layouts/typst)**：现代、快速的 PDF 生成，支持 Jake
+  模板和语言区域感知的字体回退
 
-一条 `yamlresume build` 命令即可从同一份源文件生成所有四种格式。
+一条 `yamlresume build` 命令即可从同一份源文件生成所有五种格式。
 
 Reactive Resume 使用 `@react-pdf/renderer` **在浏览器中**渲染 PDF
 （v5 发布时带有服务端打印服务；该服务在 v5.1 中被移除）。导出格式包括
@@ -198,7 +200,7 @@ Reactive Resume 提供了更丰富的视觉工具箱：
 YAMLResume 的 LaTeX 引擎提供[页面自定义](/zh-cn/docs/layouts/latex#page)
 （纸张尺寸、页边距、页码）和[排版控制](/zh-cn/docs/layouts/latex#typography)
 （字体族、字号、行距），并通过[强调色](/zh-cn/docs/layouts/latex#强调色)为
-LaTeX、HTML 和 DOCX 引擎提供统一的配色。其余视觉决策由模板封装——有意不提供
+LaTeX、Typst、HTML 和 DOCX 引擎提供统一的配色。其余视觉决策由模板封装——有意不提供
 逐元素的颜色和细粒度间距控制。如果你想为独特设计雕琢每一个像素，Reactive
 Resume 会给你更多杠杆。如果你想要专业设计的成果，又不想成为排版师，
 YAMLResume 的约束式方法正是其意义所在。
@@ -226,7 +228,7 @@ PDF 流水线在所有模板中处理从右到左（RTL）的镜像，并为韩�
 
 YAMLResume **本地化内容**。设置 `locale` 键即可切换章节标题、国家名称、教
 育学位、技能等级、语言熟练度等级、地道的日期和地址格式、适合语言区域的标点
-符号，以及跨 [10 种语言、12 个语言区域代码](/zh-cn/docs/locale)的 LaTeX babel
+符号，以及跨 [11 种语言、13 个区域代码](/zh-cn/docs/locale)的 LaTeX babel
 配置。一份源文件可以按语言分别编译，
 [`yamlresume ai translate`](/zh-cn/docs/ai/translate) 可生成保持结构的翻译
 ——因此维护一份英文简历和一份中文简历只是一个文件加上一个翻译步骤，而不是
@@ -284,7 +286,7 @@ Reactive Resume 可自托管：提供[一体化 Docker 镜像](https://github.co
 
 YAMLResume 是本地优先的：一切都在你的机器上运行，
 [官方 Docker 镜像](/zh-cn/docs/contributing/docker) 的存在仅仅是为了提供预配
-置的构建环境（Node.js、XeTeX、字体）。没有需要运维的服务器、没有需要备份
+置的构建环境（Node.js、XeTeX、Typst、字体）。没有需要运维的服务器、没有需要备份
 的数据库、没有需要保护的账号。
 
 ### 分发
@@ -332,9 +334,9 @@ Reactive Resume 的"Playground"就是产品本身：一个精致的托管应用
 **YAMLResume** 适合如果你需要：
 
 - 简历作为 Git 中的纯文本 YAML 文件，原生支持 diff、分支和代码评审
-- 从单一源文件输出四种渲染引擎（DOCX、HTML、Markdown、LaTeX/PDF）
-- 深度内容国际化：10 种语言、12 个语言区域代码，带翻译词汇表、地道的日期
-  和地址格式，以及 CJK 就绪的 LaTeX 排版
+- 从单一源文件输出五种渲染引擎（DOCX、HTML、LaTeX/PDF、Typst/PDF、Markdown）
+- 深度内容国际化：11 种语言、13 个区域代码，带翻译词汇表、地道的日期和地址格式，
+  以及 CJK 就绪的 LaTeX 排版
 - CLI 优先的开发者体验，带监听模式、Schema 感知诊断和确定性构建
 - 在本地终端或 CI 中运行的 AI 生成与翻译
 - 为自动化打造的生态工具：Homebrew、Docker、GitHub Action、Node.js API，

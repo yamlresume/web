@@ -1,0 +1,145 @@
+---
+title: Typst 引擎
+description: "使用 Typst 產生排版精美的 PDF 履歷，支援 Jake 範本、字體配置、強調色和 CJK 字體回退。"
+---
+
+Typst 引擎使用現代排版系統 [Typst](https://typst.app/) 產生專業 PDF 履歷。它與其他引擎讀取相同的履歷內容，目前提供 [`jake`](./typst/templates/jake) 範本。
+
+## 配置
+
+在佈局中設定 `engine: typst` 即可使用。編譯 PDF 需要 **Typst 0.13.0 或更新版本**。官方 Docker 映像已內建 Typst，使用 Docker 時無需單獨安裝。
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: typst
+    template: jake
+    page:
+      paperSize: a4
+      showPageNumbers: false
+    typography:
+      fontSize: 10pt
+      lineSpacing: normal
+      links:
+        underline: false
+    advanced:
+      showIcons: true
+      showUrls: true
+```
+
+執行 `yamlresume build resume.yml` 會產生 `resume.typ` 和對應的 PDF。使用 `--no-pdf` 時只產生 Typst 原始檔，無需安裝 Typst CLI。如果履歷同時包含 LaTeX 佈局，兩個 PDF 會分別命名為 `resume.tex.pdf` 和 `resume.typ.pdf`，避免互相覆蓋。
+
+## 頁面
+
+`page` 選項用於設定紙張、頁邊距和頁碼。Typst 支援 `a4` 和 `letter` 兩種紙張尺寸。
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    page:
+      showPageNumbers: true
+      paperSize: a4
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+```
+
+## 章節
+
+`sections` 選項用於自訂章節標題和順序。所有可用的章節 ID 請參閱[章節文件](./sections)。
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    sections:
+      aliases:
+        work: "工作經歷"
+        education: "教育經歷"
+      order:
+        - basics
+        - work
+        - education
+```
+
+## 範本
+
+`template` 選項用於選擇視覺設計。Typst 目前支援 [`jake`](./typst/templates/jake)，它也是預設範本。
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    template: jake
+```
+
+## 字體排版
+
+### 字號
+
+`fontSize` 選項支援 `10pt`、`11pt` 和 `12pt`。姓名和章節標題的字號會隨基礎字號一起縮放。
+
+### 字體族
+
+`fontFamily` 選項接受以逗號分隔、按優先順序排列的字體族清單，類似 CSS 的 `font-family`。請安裝指定的字體，以便 Typst 正確解析。
+
+對於 CJK 履歷，YAMLResume 會根據語言區域嘗試 Noto、macOS 和 Windows 字體回退。建議安裝 [Google Noto CJK 字體](/zh-tw/docs/installation#google-noto)，以獲得一致的輸出效果。
+
+### 行距
+
+`lineSpacing` 選項支援以下語義值：
+
+| 值        | 說明                   |
+| --------- | ---------------------- |
+| `tight`   | 緊湊行距，容納更多內容 |
+| `snug`    | 比緊湊行距略寬鬆       |
+| `normal`  | 均衡易讀（預設）       |
+| `relaxed` | 更寬鬆的閱讀空間       |
+| `loose`   | 非常寬鬆的佈局         |
+
+### 連結底線
+
+`typography.links.underline` 用於控制超連結是否顯示底線。LaTeX、Typst、HTML 和 DOCX 引擎都支援此選項。
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    typography:
+      fontSize: 11pt
+      fontFamily: "Linux Libertine O, Noto Serif CJK TC, serif"
+      lineSpacing: relaxed
+      links:
+        underline: true
+```
+
+## 主題
+
+`theme.colors.accent` 接受命名預設或任意 `#RRGGBB` 十六進位顏色，只會改變高亮元素，不影響頁面尺寸或章節結構。可用預設請參閱[強調色參考](./latex#強調色)。
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    theme:
+      colors:
+        accent: burgundy
+```
+
+未設定強調色時，範本會保留預設配色。
+
+## 進階選項
+
+`advanced` 選項用於控制圖示和 URL 的展示方式：
+
+- `showIcons`：顯示連結和社交帳號圖示。
+- `showUrls`：顯示原始 URL，而不是將其隱藏在易讀文字後面。
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    advanced:
+      showIcons: true
+      showUrls: false
+```
+
+## 預設佈局
+
+從 v0.18 開始，`yamlresume new` 產生的預設 `layouts` 陣列包含 Typst 佈局。建置預設 PDF 輸出前，請安裝 Typst 0.13.0 或更新版本、使用官方 Docker 映像，或者在只需要原始檔時傳入 `--no-pdf`。

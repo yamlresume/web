@@ -32,12 +32,12 @@ Word 导出的 PDF。
 | **创作格式**          | 纯文本 YAML                                                                                                         | 二进制 `.docx`（ZIP 压缩的 XML）                                                            |
 | **格式排版**          | 由模板生成，格式始终保持一致                                                                                        | 手动设置——样式、制表位和间距会随时间漂移                                                    |
 | **Schema 验证**       | [严格的 Zod 验证](/zh-cn/docs/compiler/schema)，配合 [clang 风格的诊断信息](/zh-cn/blog/yamlresume-compiler)      | 无结构验证——仅有拼写和语法检查                                                              |
-| **输出格式**          | [DOCX](/zh-cn/docs/layouts/docx)、[HTML](/zh-cn/docs/layouts/html)、[Markdown](/zh-cn/docs/layouts/markdown)、[LaTeX/PDF](/zh-cn/docs/layouts/latex) | `.docx`、PDF（另存为），以及有损导出为其他格式                              |
+| **输出格式**          | [DOCX](/zh-cn/docs/layouts/docx)、[HTML](/zh-cn/docs/layouts/html)、[LaTeX/PDF](/zh-cn/docs/layouts/latex)、[Typst/PDF](/zh-cn/docs/layouts/typst)、[Markdown](/zh-cn/docs/layouts/markdown) | `.docx`、PDF（另存为），以及有损导出为其他格式                    |
 | **DOCX 输出**         | 内置 [DOCX 引擎](/zh-cn/docs/layouts/docx)，搭配精选模板                                                            | 文档本身就是 DOCX                                                                           |
-| **模板**              | 精选官方模板集（DOCX 为 `calm`；[LaTeX](/zh-cn/docs/layouts/latex/templates) 和 [HTML](/zh-cn/docs/layouts/html/templates) 模板更多） | 通过 Microsoft Create 和第三方提供数千个模板；质量参差不齐                 |
+| **模板**              | 精选官方模板集（DOCX 为 `calm`；另有 [LaTeX](/zh-cn/docs/layouts/latex/templates)、[Typst](/zh-cn/docs/layouts/typst) 和 [HTML](/zh-cn/docs/layouts/html/templates) 模板） | 通过 Microsoft Create 和第三方提供数千个模板；质量参差不齐          |
 | **版本控制**          | 兼容 Git；diff 展示真实的变更                                                                                       | 二进制文件——diff 和合并实际上毫无用处                                                       |
 | **按岗位定制**        | 每个申请使用布局文件和 Git 分支                                                                                     | "另存为"的副本逐渐失同步（`resume_final_v2.docx`）                                          |
-| **国际化**            | [10 种语言、12 个语言区域](/zh-cn/docs/locale)，外加 [AI 翻译](/zh-cn/docs/ai/translate)                            | 界面和拼写检查支持多种语言；每种语言都是一份单独手动维护的文档                              |
+| **国际化**            | [11 种语言、13 个区域代码](/zh-cn/docs/locale)，外加 [AI 翻译](/zh-cn/docs/ai/translate)                            | 界面和拼写检查支持多种语言；每种语言都是一份单独手动维护的文档                              |
 | **富文本**            | 在 `summary` 字段中支持精选的 [Markdown 语法](/zh-cn/docs/content/rich-text)                                        | 任意位置均可使用完整格式                                                                    |
 | **数据模型**          | 固定、结构化的 Schema；兼容 [JSON Resume](/zh-cn/docs/comparisons/json-resume)                                      | 自由格式文档                                                                                |
 | **AI 功能**           | CLI 内置[生成](/zh-cn/docs/ai/generate)与[翻译](/zh-cn/docs/ai/translate)                                          | Microsoft 365 Copilot 功能（订阅制）                                                        |
@@ -59,10 +59,10 @@ Word 导出的 PDF。
 大多数 Word 用户从不使用命名样式，因此排版最终会变成一堆难以修改的一次性临时调
 整。
 
-在 YAMLResume 中，排版是编译器的工作。你的内容是数据；[DOCX 引擎](/zh-cn/docs/layouts/docx)
-和 [LaTeX 引擎](/zh-cn/docs/layouts/latex)通过强制执行一致性的模板来渲染它。在一个
-地方修改职位名称，所有格式——DOCX、PDF、HTML、Markdown——都会在下次构建时自动更
-新。模板把每个设计决策只做一次，并把它做对。
+在 YAMLResume 中，排版是编译器的工作。你的内容是数据；[DOCX 引擎](/zh-cn/docs/layouts/docx)、
+[LaTeX 引擎](/zh-cn/docs/layouts/latex)和 [Typst 引擎](/zh-cn/docs/layouts/typst)通过
+强制执行一致性的模板来渲染它。在一个地方修改职位名称，所有格式——DOCX、PDF、HTML、
+Markdown——都会在下次构建时自动更新。模板把每个设计决策只做一次，并把它做对。
 
 ### 纯文本与二进制
 
@@ -114,7 +114,7 @@ Word 在这方面表现出色：它非常好地处理多语言文档、拼写检
 
 当一份职业经历需要用多种语言呈现时，YAMLResume 就大放异彩。设置 `locale` 键即可
 翻译章节标题、学位、技能等级和国家名称；按照当地习惯格式化日期和地址；并在
-[10 种语言、12 个语言区域](/zh-cn/docs/locale)中应用语言区域标点规则。配合
+[11 种语言、13 个区域代码](/zh-cn/docs/locale)中应用语言区域标点规则。配合
 [`yamlresume ai translate`](/zh-cn/docs/ai/translate)，英译日变体只需一条命令即可
 生成，且由于源自同一份源文件，两者永远不会失同步。而在 Word 中，这意味着两份文
 档外加一位翻译。
@@ -140,9 +140,9 @@ YAMLResume 的 DOCX 输出由结构化数据生成，因此底层文档干净且
 的模板，它们不仅让编辑变得困难，还会破坏 ATS 解析器。
 
 YAMLResume 提供少量精选模板：用于 DOCX 输出的 [calm](/zh-cn/docs/layouts/docx/templates/calm)
-模板，以及 [LaTeX](/zh-cn/docs/layouts/latex/templates) 和 [HTML](/zh-cn/docs/layouts/html/templates)
-模板，全部针对每个支持的语言区域进行了验证。由于模板是引擎设置而非文档，切换设计
-永远不需要重写内容。
+模板，以及 [LaTeX](/zh-cn/docs/layouts/latex/templates)、[Typst](/zh-cn/docs/layouts/typst)
+和 [HTML](/zh-cn/docs/layouts/html/templates) 模板，全部针对每个支持的语言区域进行了
+验证。由于模板是引擎设置而非文档，切换设计永远不需要重写内容。
 
 ### 招聘人员与 `.docx` 格式
 
@@ -154,8 +154,8 @@ PDF 更可靠，而且猎头公司在转发前通常会删除你的联系方式�
 其他引擎保持一致。
 
 有一点需要注意，适用于任何 DOCX 文件（无论是否生成）：字体必须存在于打开文档的机
-器上，否则 Word 会进行替换。为 DOCX 布局选择广泛可用的字体，并以 LaTeX/PDF 引擎作
-为完美输出效果的参考。
+器上，否则 Word 会进行替换。为 DOCX 布局选择广泛可用的字体，并以 LaTeX 或 Typst 引
+擎生成的 PDF 作为完美输出效果的参考。
 
 ### 自动化
 
@@ -179,12 +179,12 @@ Word 有宏；YAMLResume 有流水线。[GitHub Action](https://github.com/yamlr
 **YAMLResume** 适合如果你需要：
 
 - Git 中的一份纯文本源文件，具备真实的 diff、历史和分支
-- 跨 [DOCX](/zh-cn/docs/layouts/docx)、[PDF](/zh-cn/docs/layouts/latex)、
-  [HTML](/zh-cn/docs/layouts/html) 和 [Markdown](/zh-cn/docs/layouts/markdown)
-  的生成式一致排版
+- 跨 [DOCX](/zh-cn/docs/layouts/docx)、[LaTeX/PDF](/zh-cn/docs/layouts/latex)、
+  [Typst/PDF](/zh-cn/docs/layouts/typst)、[HTML](/zh-cn/docs/layouts/html) 和
+  [Markdown](/zh-cn/docs/layouts/markdown) 的生成式一致排版
 - [Schema 验证](/zh-cn/docs/compiler/schema)，在招聘人员发现之前捕获[结构性错
   误](/zh-cn/docs/cli#validate)
-- 深度[国际化](/zh-cn/docs/locale)：[10 种语言、12 个语言区域](/zh-cn/docs/locale)，
+- 深度[国际化](/zh-cn/docs/locale)：[11 种语言、13 个区域代码](/zh-cn/docs/locale)，
   配合 [AI 翻译](/zh-cn/docs/ai/translate)，全部源自单一事实来源
 - 设计上即保证 ATS 安全，外加用于文本流水线的 [Markdown 引擎](/zh-cn/docs/layouts/markdown)
 - 自动化：[监听模式](/zh-cn/blog/dev-mode)、[CI/CD 构建](/zh-cn/docs/ecosystem/action)、

@@ -39,18 +39,18 @@ YAMLResume 深受 [JSON Resume](https://jsonresume.org/) 的启发，采取了�
 | 功能                | YAMLResume                                                                                                                                       | JSON Resume                                              |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
 | **数据格式**        | YAML                                                                                                                                             | JSON                                                     |
-| **国际化**          | 内置 [10 种语言](/zh-cn/docs/locale)                                                                                                             | 无                                                       |
+| **国际化**          | 内置 [11 种语言、13 个区域代码](/zh-cn/docs/locale)                                                                                              | 无                                                       |
 | **富文本支持**      | 在 `summary` 字段中支持精选的 [Markdown 富文本语法](/zh-cn/docs/content/rich-text)                                                               | 无                                                       |
 | **Schema 验证**     | [严格的 Schema 验证](/zh-cn/docs/compiler/schema)，配合[编译器](/zh-cn/docs/compiler/architecture) + IDE 集成                                    | [基础的 JSON Schema 验证](https://jsonresume.org/schema) |
 | **字体自定义**      | [字体族、字号、行距](/zh-cn/docs/layouts/latex) 等                                                                                               | 无                                                       |
 | **布局自定义**      | [页边距、页码、纸张尺寸](/zh-cn/docs/layouts/latex#page) 等                                                                                      | 无                                                       |
 | **章节自定义**      | [别名](/zh-cn/docs/layouts/sections/aliases)与[重新排序](/zh-cn/docs/layouts/sections/reorder)                                                   | 无                                                       |
-| **排版引擎**        | [DOCX](/zh-cn/docs/layouts/docx)、[HTML](/zh-cn/docs/layouts/html)、[LaTeX](/zh-cn/docs/layouts/latex)、[Markdown](/zh-cn/docs/layouts/markdown) | HTML                                                     |
-| **输出格式**        | DOCX、HTML、LaTeX/PDF、Markdown                                                                                                                  | [HTML 与 PDF](https://github.com/jsonresume/resume-cli)  |
-| **模板**            | 多个官方 [LaTeX](/zh-cn/docs/layouts/latex/templates) 和 [HTML](/zh-cn/docs/layouts/html/templates) 模板                                         | 数十款 [HTML 主题](https://jsonresume.org/themes)        |
+| **排版引擎**        | [DOCX](/zh-cn/docs/layouts/docx)、[HTML](/zh-cn/docs/layouts/html)、[LaTeX](/zh-cn/docs/layouts/latex)、[Typst](/zh-cn/docs/layouts/typst)、[Markdown](/zh-cn/docs/layouts/markdown) | HTML                                                     |
+| **输出格式**        | DOCX、HTML、LaTeX/PDF、Typst/PDF、Markdown                                                                                                       | [HTML 与 PDF](https://github.com/jsonresume/resume-cli)  |
+| **模板**            | 多个官方 [LaTeX](/zh-cn/docs/layouts/latex/templates)、[Typst](/zh-cn/docs/layouts/typst) 和 [HTML](/zh-cn/docs/layouts/html/templates) 模板             | 数十款 [HTML 主题](https://jsonresume.org/themes)        |
 | **开发模式**        | [开发模式](/zh-cn/docs/cli#dev)，自动重建                                                                                                        | 支持                                                     |
 | **转换工具**        | [json2yamlresume](/zh-cn/docs/ecosystem/json2yamlresume) 可将 JSON Resume 转换为 YAMLResume                                                      | 不适用                                                   |
-| **Docker 支持**     | [官方 Docker 镜像](/zh-cn/docs/contributing/docker)，预装 LaTeX 和 YAMLResume                                                                    | 无                                                       |
+| **Docker 支持**     | [官方 Docker 镜像](/zh-cn/docs/contributing/docker)，预装 LaTeX、Typst 和 YAMLResume                                                             | 无                                                       |
 | **GitHub Action**   | [官方 GitHub Action](https://github.com/yamlresume/action)，用于 CI/CD                                                                           | 无                                                       |
 | **Homebrew**        | [Homebrew formula](https://formulae.brew.sh/formula/yamlresume)，便于在 macOS 和 Linux 上安装                                                    | 无                                                       |
 | **网页 Playground** | 交互式网页 [Playground](/zh-cn/playground)                                                                                                       | 无                                                       |
@@ -246,8 +246,10 @@ JSON Resume 止步于数据层。它告诉你如何用 JSON 结构化简历，�
 - **[Markdown 引擎](/zh-cn/docs/layouts/markdown)**：干净的纯文本，适用于
   LLM、ATS 系统和静态站点
 - **[LaTeX 引擎](/zh-cn/docs/layouts/latex)**：像素级完美的 PDF，专业排版
+- **[Typst 引擎](/zh-cn/docs/layouts/typst)**：现代、快速的 PDF 生成，支持 Jake
+  模板和语言区域感知的字体回退
 
-一条 `yamlresume build` 命令即可从同一份源文件生成所有四种格式。
+一条 `yamlresume build` 命令即可从同一份源文件生成所有五种格式。
 
 YAMLResume 还提供了一系列丰富的布局自定义选项，远超 JSON Resume 所提供的功能。
 
@@ -297,8 +299,8 @@ JSON Resume 在 Schema 中定义了章节结构，但没有提供重命名或重
 
 ### Locale (i18n)
 
-截至本文撰写时，YAMLResume 开箱即用地支持 10 种语言
-（[English](/zh-cn/docs/locale/english)、[Chinese](/zh-cn/docs/locale/chinese)、[Spanish](/zh-cn/docs/locale/spanish)、[French](/zh-cn/docs/locale/french)、[Norwegian](/zh-cn/docs/locale/norwegian)、[Dutch](/zh-cn/docs/locale/dutch)、[Japanese](/zh-cn/docs/locale/japanese)、[German](/zh-cn/docs/locale/german)、[Indonesian](/zh-cn/docs/locale/indonesian)
+截至本文撰写时，YAMLResume 开箱即用地支持 11 种语言
+（[English](/zh-cn/docs/locale/english)、[Chinese](/zh-cn/docs/locale/chinese)、[Spanish](/zh-cn/docs/locale/spanish)、[French](/zh-cn/docs/locale/french)、[Norwegian](/zh-cn/docs/locale/norwegian)、[Dutch](/zh-cn/docs/locale/dutch)、[Japanese](/zh-cn/docs/locale/japanese)、[German](/zh-cn/docs/locale/german)、[Indonesian](/zh-cn/docs/locale/indonesian)、[Italian](/zh-cn/docs/locale/italian)
 等），内置了章节标题、国家名称和各种术语的翻译，地道的地址和日期格式，最佳实践的
 LaTeX 配置等。
 
@@ -320,6 +322,7 @@ $ yamlresume languages list
 | ja              | Japanese                        |
 | de              | German                          |
 | id              | Indonesian                      |
+| it              | Italian                         |
 | pt-br           | Brazilian Portuguese            |
 ```
 
@@ -431,7 +434,7 @@ $ json2yamlresume resume.json resume.yml
 
 YAMLResume 提供
 了[官方 Docker 镜像](https://hub.docker.com/r/yamlresume/yamlresume)，预装了所有
-依赖，包括 Node.js、LaTeX 和推荐字体。这使得无需本地安装即可轻松上手：
+依赖，包括 Node.js、LaTeX、Typst 和推荐字体。这使得无需本地安装即可轻松上手：
 
 ```bash
 docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
@@ -457,7 +460,7 @@ YAMLResume 提供了[官方 GitHub Action](https://github.com/yamlresume/action)
 于 CI/CD 流水线。你可以在每次推送时自动构建并提交简历 PDF：
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: |
       resume-en.yml
@@ -477,8 +480,9 @@ React 组件构建，具备以下特性：
 - **实时 YAML 编辑器**：基于 Monaco 的编辑器，支持 YAML 语法高亮和
   [Schema 验证](/zh-cn/docs/compiler/schema/json)
 - **实时预
-  览**：[DOCX](/zh-cn/docs/layouts/docx)、[HTML](/zh-cn/docs/layouts/html)、[LaTeX](/zh-cn/docs/layouts/latex)
-  和 [Markdown](/zh-cn/docs/layouts/markdown) 布局的即时渲染
+  览**：[DOCX](/zh-cn/docs/layouts/docx)、[HTML](/zh-cn/docs/layouts/html)、[LaTeX](/zh-cn/docs/layouts/latex)、
+  [Typst](/zh-cn/docs/layouts/typst) 和 [Markdown](/zh-cn/docs/layouts/markdown)
+  布局的即时渲染
 - **导出选项**：直接从浏览器下载、复制或打印你的简历
 - **响应式设计**：桌面端分栏布局，移动端标签页界面
 

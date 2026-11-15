@@ -21,11 +21,13 @@ most often used for medium-to-large technical or scientific documents but it
 can be used for almost any form of publishing.
 ```
 
-不过有一点需要说明：**YAMLResume 并非 LaTeX 的替代品，而是构建于 LaTeX 之上。**
-YAMLResume 的 [LaTeX 引擎](/zh-cn/docs/layouts/latex) 会根据你的 YAML 生成 `.tex`
-源码，并使用 XeLaTeX 编译——这与手写 LaTeX 简历使用的引擎相同。真正的对比在于两种
-*创作工作流*：直接在 TeX 标记中编写简历，还是以结构化 YAML 编写并让编译器为你生成
-TeX。
+不过有一点需要说明：**YAMLResume 并非简单的 LaTeX 替代品：它既构建于 LaTeX
+之上，也提供 Typst 排版路径。** YAMLResume 的
+[LaTeX 引擎](/zh-cn/docs/layouts/latex) 会根据你的 YAML 生成 `.tex` 源码，并使用
+XeLaTeX 编译——这与手写 LaTeX 简历使用的引擎相同；
+[Typst 引擎](/zh-cn/docs/layouts/typst) 则可生成 `.typ` 源码和 PDF。真正的对比在于
+两种*创作工作流*：直接在 TeX 标记中编写简历，还是以结构化 YAML 编写并让编译器为你
+生成排版源码。
 
 以下是两种工作流的对比：
 
@@ -33,19 +35,19 @@ TeX。
 
 | 功能                  | YAMLResume                                                                                                        | 手写 LaTeX                                                                                      |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| **方式**              | YAML 源码编译为 LaTeX                                                                                             | 直接在 TeX 中编写文档                                                                           |
+| **方式**              | YAML 源码编译为 LaTeX、Typst 等格式                                                                               | 直接在 TeX 中编写文档                                                                           |
 | **创作语言**          | YAML（纯文本，无标记）                                                                                            | TeX/LaTeX 标记                                                                                  |
 | **TeX 知识**          | 无需掌握                                                                                                          | 自定义时需要熟练使用                                                                            |
-| **排版引擎**          | XeLaTeX                                                                                                           | 自行选择：pdfLaTeX、XeLaTeX、LuaLaTeX                                                           |
-| **输出格式**          | [DOCX](/zh-cn/docs/layouts/docx)、[HTML](/zh-cn/docs/layouts/html)、[Markdown](/zh-cn/docs/layouts/markdown)、[LaTeX/PDF](/zh-cn/docs/layouts/latex) | PDF（可通过 pandoc 转换，但会损失质量）                                       |
-| **生成源码**          | 会输出干净的 `.tex` 文件，与 PDF 一并提供，可供检查或微调                                                        | 不适用（手写源码即全部）                                                                        |
+| **排版引擎**          | XeLaTeX、Typst                                                                                                    | 自行选择：pdfLaTeX、XeLaTeX、LuaLaTeX                                                           |
+| **输出格式**          | [DOCX](/zh-cn/docs/layouts/docx)、[HTML](/zh-cn/docs/layouts/html)、[LaTeX/PDF](/zh-cn/docs/layouts/latex)、[Typst/PDF](/zh-cn/docs/layouts/typst)、[Markdown](/zh-cn/docs/layouts/markdown) | PDF（可通过 pandoc 转换，但会损失质量）                            |
+| **生成源码**          | 会输出干净的 `.tex` 或 `.typ` 文件，与 PDF 一并提供，可供检查或微调                                              | 不适用（手写源码即全部）                                                                        |
 | **Schema 验证**       | [严格的 Zod 验证](/zh-cn/docs/compiler/schema)，配合 JSON Schema IDE 集成                                         | 无——只有编译时的 TeX 错误                                                                       |
 | **错误报告**          | [clang 风格的诊断信息](/zh-cn/docs/cli#validate)，包含行号、列号和源码片段                                        | TeX 日志：通常出现含义不明、远离真正原因的级联错误                                              |
-| **环境配置**          | `npm install -g yamlresume`、Homebrew 或预装 XeTeX 的 Docker；`yamlresume doctor` 会检查字体                     | 安装数 GB 的 TeX Live/MacTeX/MiKTeX，寻找缺失宏包，手动配置字体——或使用云端的 Overleaf |
-| **模板**              | 精选的官方 [LaTeX](/zh-cn/docs/layouts/latex/templates)、[HTML](/zh-cn/docs/layouts/html/templates) 和 [DOCX](/zh-cn/docs/layouts/docx/templates) 模板 | 数千个社区模板与文档类（[Awesome-CV](https://github.com/posquit0/Awesome-CV)、[moderncv](https://github.com/moderncv/moderncv)、[AltaCV](https://github.com/liantze/AltaCV)、[Jake's Resume](https://github.com/jakegut/resume)，……）          |
+| **环境配置**          | `npm install -g yamlresume`、Homebrew 或预装 XeTeX 和 Typst 的 Docker；`yamlresume doctor` 会检查字体            | 安装数 GB 的 TeX Live/MacTeX/MiKTeX，寻找缺失宏包，手动配置字体——或使用云端的 Overleaf |
+| **模板**              | 精选的官方 [LaTeX](/zh-cn/docs/layouts/latex/templates)、[Typst](/zh-cn/docs/layouts/typst)、[HTML](/zh-cn/docs/layouts/html/templates) 和 [DOCX](/zh-cn/docs/layouts/docx/templates) 模板 | 数千个社区模板与文档类（[Awesome-CV](https://github.com/posquit0/Awesome-CV)、[moderncv](https://github.com/moderncv/moderncv)、[AltaCV](https://github.com/liantze/AltaCV)、[Jake's Resume](https://github.com/jakegut/resume)，……） |
 | **设计自定义**        | [页面](/zh-cn/docs/layouts/latex#page)、[排版](/zh-cn/docs/layouts/latex#typography) 和章节参数——主题封装          | 无限——任何 TeX 能排版的内容                                                                     |
 | **章节自定义**        | [别名](/zh-cn/docs/layouts/sections/aliases)与[重新排序](/zh-cn/docs/layouts/sections/reorder)                    | 任意宏包与环境                                                                                  |
-| **国际化**            | [10 种语言、12 个语言区域](/zh-cn/docs/locale)，自动配置 babel 与 CJK 宏包                                        | 手动配置：babel/polyglossia、fontspec、ctex/xeCJK/luatexja/kotex                                |
+| **国际化**            | [11 种语言、13 个区域代码](/zh-cn/docs/locale)，自动配置 babel 与 CJK 宏包                                        | 手动配置：babel/polyglossia、fontspec、ctex/xeCJK/luatexja/kotex                                |
 | **富文本**            | 在 `summary` 字段中支持精选的 [Markdown 语法](/zh-cn/docs/content/rich-text)                                      | 任何位置均可使用任意 TeX 标记                                                                   |
 | **数据模型**          | 固定、结构化的 Schema；兼容 [JSON Resume](/zh-cn/docs/comparisons/json-resume)                                    | 自由格式文档                                                                                    |
 | **AI 工作流**         | 内置[生成](/zh-cn/docs/ai/generate)与[翻译](/zh-cn/docs/ai/translate)；Markdown 输出便于 LLM 处理                 | 自行设计 LLM 提示词                                                                             |
@@ -137,18 +139,19 @@ YAMLResume 将[关注点分离](https://github.com/yamlresume/yamlresume)作为�
 行，内容文件完全不动。这也让按申请岗位定制简历变得轻而易举：保留一份权威内容文件，
 再维护几个重新排序或别名章节的小型布局变体。
 
-### 一份源文件，四种引擎
+### 一份源文件，五种引擎
 
 `.tex` 文件编译成 PDF。这就是整条流水线，对很多人来说也足够了——直到招聘人员要
 Word 版本，或者你想把简历作为个人网站的一个页面，又或者需要纯文本版本粘贴到 ATS 表
 单中。Pandoc 可以把 LaTeX 转成 DOCX 或 HTML，但结果在排版上远逊于专用引擎，因为转换
 过程必须从标记中猜测意图。
 
-YAMLResume 提供四种一流引擎——[DOCX](/zh-cn/docs/layouts/docx)、
-[HTML](/zh-cn/docs/layouts/html)、[Markdown](/zh-cn/docs/layouts/markdown) 和
-[LaTeX](/zh-cn/docs/layouts/latex)——一条 `yamlresume build` 命令就能从同一份源文件
-生成全部四种输出。其中 [Markdown 引擎](/zh-cn/docs/layouts/markdown) 在 2026 年特别
-实用：它能从同一份已验证数据中提取出干净、结构化的文本，供 LLM 和 ATS 解析器使用。
+YAMLResume 提供五种一流引擎——[DOCX](/zh-cn/docs/layouts/docx)、
+[HTML](/zh-cn/docs/layouts/html)、[Markdown](/zh-cn/docs/layouts/markdown)、
+[LaTeX](/zh-cn/docs/layouts/latex) 和 [Typst](/zh-cn/docs/layouts/typst)——一条
+`yamlresume build` 命令就能从同一份源文件生成全部五种输出。其中
+[Markdown 引擎](/zh-cn/docs/layouts/markdown) 在 2026 年特别实用：它能从同一份已验证
+数据中提取出干净、结构化的文本，供 LLM 和 ATS 解析器使用。
 
 ### 国际化
 
@@ -157,7 +160,7 @@ YAMLResume 提供四种一流引擎——[DOCX](/zh-cn/docs/layouts/docx)、
 体回退——对 TeX 老手来说是熟门熟路，但第一次做往往要耗费数天。每增加一种语言，工作
 量都会成倍增长，因为文档之间无法共享配置。
 
-在 YAMLResume 中，你只需设置 [`locale`](/zh-cn/docs/locales) 键。编译器会自动翻译
+在 YAMLResume 中，你只需设置 [`locale`](/zh-cn/docs/locale) 键。编译器会自动翻译
 章节标题、国家名称、学位、技能等级和熟练度等级；以符合语言区域习惯的方式格式化日期
 和地址；应用适合该语言区域的标点规则（包括 CJK 的全角标点和法语高标点前的不断行空
 格）；并自动为 XeLaTeX 配置 [babel](https://ctan.org/pkg/babel?lang=en) 和正确的
@@ -177,9 +180,9 @@ CJK 宏包。此外，[`yamlresume ai translate`](/zh-cn/docs/ai/translate) 可�
 边距和页码](/zh-cn/docs/layouts/latex#page)、[字体族、字号和行距](/zh-cn/docs/layouts/latex#typography)，
 以及[章节别名与顺序](/zh-cn/docs/layouts/sections/aliases)。
 
-如果你确实撞到了天花板，还有一个逃生口：生成的 `.tex` 源码会随 PDF 一起输出。你可
-以阅读它来学习，也可以 fork 后接手继续定制。YAMLResume 并不向你隐藏 LaTeX；它只是不
-强制你使用。
+如果你确实撞到了天花板，还有一个逃生口：生成的 `.tex` 或 `.typ` 源码会随 PDF 一起
+输出。你可以阅读它来学习，也可以 fork 后接手继续定制。YAMLResume 并不向你隐藏
+LaTeX 或 Typst；它只是不强制你使用。
 
 ## 生态系统
 
@@ -190,9 +193,10 @@ CTAN 以及各类精选网站上拥有数千个简历模板，涵盖你能想象
 质量参差不齐——模板从精心维护的文档类到一次性导出文件应有尽有，后者可能包含硬编码
 数值、过时的宏包用法且没有任何验证。
 
-YAMLResume 采取精选路线：少量官方 [LaTeX](/zh-cn/docs/layouts/latex/templates) 模板
-（moderncv-classic、moderncv-casual、moderncv-banking、jake 等），每个都针对全部 12
-个语言区域进行测试，因此切换模板不会悄悄破坏一份本地化简历。
+YAMLResume 采取精选路线：少量官方 [LaTeX](/zh-cn/docs/layouts/latex/templates) 和
+[Typst](/zh-cn/docs/layouts/typst) 模板（moderncv-classic、moderncv-casual、
+moderncv-banking、jake 等），每个都针对全部 13 个区域代码进行测试，因此切换模板不
+会悄悄破坏一份本地化简历。
 
 ### Overleaf
 
@@ -210,10 +214,10 @@ YAMLResume 采取精选路线：少量官方 [LaTeX](/zh-cn/docs/layouts/latex/t
 两种工作流都可以自动化。LaTeX 世界有社区解决方案，例如 GitHub Actions 的
 [latex-action](https://github.com/xu-cheng/latex-action)，Overleaf 的 GitHub 同步则
 是付费功能。YAMLResume 提供[官方 GitHub Action](https://github.com/yamlresume/action)，
-一步完成简历验证并构建全部四种格式：
+一步完成简历验证并构建全部五种格式：
 
 ```yaml
-- uses: yamlresume/action@v0.16.1
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: |
       resume-en.yml
@@ -238,10 +242,10 @@ YAMLResume 采取精选路线：少量官方 [LaTeX](/zh-cn/docs/layouts/latex/t
 
 **YAMLResume** 适合如果你需要：
 
-- 通过 XeLaTeX 实现 LaTeX 级别的 PDF 排版，而无需编写或调试 TeX
+- 通过 XeLaTeX 或 Typst 实现专业 PDF 排版，而无需编写或调试排版源码
 - 结构化、已验证的数据，以及 clang 风格的错误信息，而非编译日志
-- 从一份源文件输出多种格式（DOCX、HTML、Markdown、LaTeX/PDF）
-- 深度[国际化](/zh-cn/docs/locales)，覆盖 10 种语言、12 个语言区域，包括自动 CJK 配
+- 从一份源文件输出多种格式（DOCX、HTML、LaTeX/PDF、Typst/PDF、Markdown）
+- 深度[国际化](/zh-cn/docs/locale)，覆盖 11 种语言、13 个区域代码，包括自动 CJK 配
   置和 AI 辅助翻译
 - 无需重写内容即可切换模板，这得益于内容、语言区域和布局的严格分离
 - 开发者工具链：监听模式、环境诊断、Docker、Homebrew 和用于 CI/CD 的 GitHub Action

@@ -41,23 +41,23 @@ compare:
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
 | **Language**              | TypeScript/Node.js                                                                                                             | Python 3.12+                                                                                     |
 | **Data Format**           | YAML                                                                                                                           | YAML                                                                                             |
-| **Typesetting Engine**    | [Docx](/docs/layouts/docx), [HTML](/docs/layouts/html), [Markdown](/docs/layouts/markdown), [LaTeX/XeTeX](/docs/layouts/latex) | Typst                                                                                            |
-| **Output Formats**        | Docx, HTML, Markdown, LaTeX/PDF                                                                                                | PDF, Markdown, HTML, PNG                                                                         |
+| **Typesetting Engine**    | [DOCX](/docs/layouts/docx), [HTML](/docs/layouts/html), [LaTeX/XeTeX](/docs/layouts/latex), [Typst](/docs/layouts/typst), [Markdown](/docs/layouts/markdown) | Typst                                                                                            |
+| **Output Formats**        | DOCX, HTML, LaTeX/PDF, Typst/PDF, Markdown                                                                                       | PDF, Markdown, HTML, PNG                                                                         |
 | **Schema Validation**     | [Strict Zod schema validation](/docs/compiler/schema) with [compiler](/docs/compiler/architecture) + IDE integration           | Pydantic validation with JSON Schema for IDE autocompletion                                      |
 | **Error Reporting**       | [clang-style diagnostics](/docs/cli#validate) with line numbers and positional info                                            | Pydantic error messages with field paths                                                         |
-| **Internationalization**  | [12 languages](/docs/locale) built-in with deep localization                                                                   | 22 built-in locales (month names, date strings), manual customization required                   |
+| **Internationalization**  | [11 languages across 13 locale codes](/docs/locale) with deep localization                                                       | 22 built-in locales (month names, date strings), manual customization required                   |
 | **Date Formatting**       | Locale-specific idiomatic formats (address ordering, punctuation, month names)                                                 | Configurable via `locale` field (month abbreviations, present string)                            |
 | **Address Formatting**    | Locale-aware reordering (e.g., Chinese vs. German vs. English)                                                                 | Free-form text                                                                                   |
 | **Rich Text Support**     | A selected set of [Markdown rich text syntax](/docs/content/rich-text) in `summary` fields                                     | Markdown + Typst math/commands in all text fields                                                |
 | **Font Customization**    | [Font family, font size, line spacing](/docs/layouts/latex#typography), etc                                                    | Font family, font size, line spacing, bold, small caps, etc                                      |
-| **Color Customization**   | [Accent presets or any hex](/docs/layouts/latex#accent-color) for LaTeX, HTML, DOCX (since v0.17)                              | Full RGB color control for every element (name, links, section titles, etc)                      |
+| **Color Customization**   | [Accent presets or any hex](/docs/layouts/latex#accent-color) for LaTeX, Typst, HTML, DOCX                                     | Full RGB color control for every element (name, links, section titles, etc)                      |
 | **Layout Customization**  | [Page margins, page numbers, paper size](/docs/layouts/latex#page), etc                                                        | Page margins, paper size, header alignment, photo position, footer, etc                          |
 | **Section Customization** | [Aliases](/docs/layouts/sections/aliases) and [reorder](/docs/layouts/sections/reorder)                                        | Arbitrary section titles; one entry type per section                                             |
 | **Entry Types**           | Fixed schema per section (work, education, projects, etc)                                                                      | 9 reusable entry types (ExperienceEntry, EducationEntry, BulletEntry, etc)                       |
-| **Templates/Themes**      | Multiple official [LaTeX](/docs/layouts/latex/templates) and [HTML](/docs/layouts/html/templates) templates                    | 9 built-in themes with full template override support                                            |
-| **Custom Themes**         | Template-based (DOCX/HTML/LaTeX source)                                                                                        | `rendercv create-theme` with editable Typst/Jinja2 templates                                     |
+| **Templates/Themes**      | Multiple official [LaTeX](/docs/layouts/latex/templates), [Typst](/docs/layouts/typst), and [HTML](/docs/layouts/html/templates) templates | 9 built-in themes with full template override support                                            |
+| **Custom Themes**         | Template-based (DOCX/HTML/LaTeX/Typst source)                                                                                  | `rendercv create-theme` with editable Typst/Jinja2 templates                                     |
 | **Dev Mode**              | [Dev mode](/docs/cli#dev) with auto-rebuild                                                                                    | `--watch` flag for auto-reload                                                                   |
-| **Docker Support**        | [Official docker image](/docs/contributing/docker) with LaTeX and YAMLResume pre-installed                                     | Official [Docker image at GHCR](https://ghcr.io/rendercv/rendercv) (linux/amd64 and linux/arm64) |
+| **Docker Support**        | [Official docker image](/docs/contributing/docker) with LaTeX, Typst, and YAMLResume pre-installed                             | Official [Docker image at GHCR](https://ghcr.io/rendercv/rendercv) (linux/amd64 and linux/arm64) |
 | **GitHub Action**         | [Official GitHub action](https://github.com/yamlresume/action) for CI/CD                                                       | None (community solutions exist)                                                                 |
 | **Homebrew**              | [Homebrew formula](https://formulae.brew.sh/formula/yamlresume) for easy installation on macOS and Linux                       | None (pip install only)                                                                          |
 | **Web Playground**        | Interactive web-based [playground](/playground)                                                                                | Web app at [rendercv.com](https://rendercv.com)                                                  |
@@ -189,7 +189,7 @@ capabilities.
 YAMLResume supports a [limited set of Markdown syntax](/docs/content/rich-text)
 (bold, italic, links, lists, and paragraphs) in `summary` fields across all
 sections that have them. This is intentionally constrained to ensure consistent
-rendering across LaTeX, HTML, and Markdown engines.
+rendering across all five engines.
 
 RenderCV supports basic Markdown (bold, italic, links, inline code) in **all**
 text fields, including highlights and summaries. Highlights also support nested
@@ -238,26 +238,29 @@ diverge significantly.
 
 #### Engines
 
-YAMLResume provides four rendering engines:
+YAMLResume provides five rendering engines:
 
 - **[DOCX engine](/docs/layouts/docx)**: Microsoft Word documents for easy
   editing and sharing
 - **[HTML engine](/docs/layouts/html)**: Responsive, web-ready resumes with SEO
   metadata
-- **[Markdown engine](/docs/layouts/markdown)**: Clean text for LLMs, ATS
-  systems, and static sites
 - **[LaTeX engine](/docs/layouts/latex)**: Pixel-perfect PDFs with professional
   typography via XeTeX
+- **[Typst engine](/docs/layouts/typst)**: Modern, fast PDF generation
+- **[Markdown engine](/docs/layouts/markdown)**: Clean text for LLMs, ATS
+  systems, and static sites
 
-A single `yamlresume build` command can generate all four formats from the same
+A single `yamlresume build` command can generate all five formats from the same
 source file.
 
-RenderCV uses [Typst](https://typst.app) as its primary typesetting engine.
-Typst is a modern alternative to LaTeX that compiles faster and produces
-standards-compliant PDFs. A single `rendercv render` command outputs PDF,
-Markdown, HTML, and PNG, plus the intermediate Typst source (`.typ`). Since
-v2.8, the `rendercv-typst` package and Font Awesome are bundled inside the
-Python wheel, so PDF compilation works offline with no runtime downloads.
+Both tools support [Typst](https://typst.app), but their rendering pipelines
+differ. RenderCV has a dedicated Typst/Jinja2 pipeline that produces
+standards-compliant PDFs. YAMLResume lets the same content choose either LaTeX
+or Typst for PDF output and can additionally generate DOCX, HTML, and Markdown.
+A single `rendercv render` command outputs PDF, Markdown, HTML, and PNG, plus
+the intermediate Typst source (`.typ`). Since v2.8, the `rendercv-typst`
+package and Font Awesome are bundled inside the Python wheel, so PDF
+compilation works offline with no runtime downloads.
 
 #### DOCX output
 
@@ -292,7 +295,7 @@ YAMLResume's LaTeX engine provides
 numbers) and [typography controls](/docs/layouts/latex#typography) (font family,
 font size, line spacing). It also exposes a single
 [accent color](/docs/layouts/latex#accent-color) per resume — one of nine
-presets or any `#RRGGBB` hex value, applied by the LaTeX, HTML and DOCX
+presets or any `#RRGGBB` hex value, applied by the LaTeX, Typst, HTML and DOCX
 engines — but deliberately stops short of per-element colors or fine-grained
 spacing control. This is by design: YAMLResume templates encapsulate visual
 decisions so you don't have to make them.
@@ -319,16 +322,17 @@ far beyond YAMLResume's alias/reorder system.
 
 This is one of the biggest differences between the two tools.
 
-YAMLResume supports 10+ languages out of the box
+YAMLResume supports 11 languages across 13 locale codes out of the box
 ([English](/docs/locale/english), [Chinese](/docs/locale/chinese),
 [Spanish](/docs/locale/spanish), [French](/docs/locale/french),
 [Norwegian](/docs/locale/norwegian), [Dutch](/docs/locale/dutch),
 [Japanese](/docs/locale/japanese), [German](/docs/locale/german),
 [Indonesian](/docs/locale/indonesian),
-[Brazilian Portuguese](/docs/locale/brazilian-portuguese), etc.) with built-in
-translations of section headers, country names, degrees, skill levels, language
-fluency levels, idiomatic address and date formats, locale-appropriate
-punctuation, and LaTeX babel configuration.
+[Brazilian Portuguese](/docs/locale/brazilian-portuguese),
+[Italian](/docs/locale/italian), etc.) with built-in translations of section
+headers, country names, degrees, skill levels, language fluency levels,
+idiomatic address and date formats, locale-appropriate punctuation, and LaTeX
+babel configuration.
 
 For example, YAMLResume automatically:
 
@@ -428,7 +432,8 @@ output.
 
 YAMLResume provides an
 [official Docker image](https://hub.docker.com/r/yamlresume/yamlresume) with all
-dependencies pre-installed, including Node.js, LaTeX, and recommended fonts:
+dependencies pre-installed, including Node.js, LaTeX, Typst, and recommended
+fonts:
 
 ```bash
 docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
@@ -462,7 +467,7 @@ YAMLResume provides an
 pipelines:
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: |
       resume-en.yml
@@ -509,11 +514,12 @@ Copilot, and other AI coding agents.
 **YAMLResume** excels if you want:
 
 - Deep internationalization with idiomatic date formats, address ordering,
-  punctuation rules, and LaTeX babel configuration for 12 languages
+  punctuation rules, and LaTeX babel configuration across 11 languages and 13
+  locale codes
 - Mature CJK and complex-script typography via LaTeX packages like ctex,
   luatexja, kotex, and xeCJK
-- Multiple rendering engines (DOCX, HTML, Markdown, LaTeX/PDF) from a single
-  source file
+- Five rendering engines (DOCX, HTML, LaTeX/PDF, Typst/PDF, Markdown) from a
+  single source file
 - Native Microsoft Word (DOCX) output for recruiters or hiring managers who need
   an editable document
 - A strictly validated, standardized data model that ensures consistency across
@@ -526,8 +532,7 @@ Copilot, and other AI coding agents.
   encoded in official templates
 
 Choose **RenderCV** if you are an academic or engineer who wants fine-grained
-control over every visual detail and prefers Typst's modern typesetting over
-LaTeX.
+control over every visual detail within its dedicated Typst/Jinja2 pipeline.
 
 Choose **YAMLResume** if you want an opinionated, batteries-included solution
 that handles everything from data validation to professional PDF generation
