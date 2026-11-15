@@ -28,7 +28,7 @@ RUN if [ "$(git rev-parse --is-shallow-repository 2>/dev/null)" = "true" ]; then
       git fetch --unshallow \
       || echo "warning: git history is still shallow; lastModified data may be incomplete"; \
     fi
-RUN pnpm build && test -f .next/server/search-index.json
+RUN pnpm build && test -f .next/server/search-index/en.json.gz
 
 FROM node:${NODE_VERSION} AS runner
 WORKDIR /app
@@ -40,7 +40,7 @@ RUN mkdir .next && chown node:node .next
 COPY --from=builder --chown=node:node /app/public ./public
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
-COPY --from=builder --chown=node:node /app/.next/server/search-index.json ./.next/server/search-index.json
+COPY --from=builder --chown=node:node /app/.next/server/search-index ./.next/server/search-index
 USER node
 EXPOSE 3000
 CMD ["node", "server.js"]
