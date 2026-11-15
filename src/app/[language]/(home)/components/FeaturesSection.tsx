@@ -131,7 +131,7 @@ feat: update work experience
       className:
         'md:col-span-2 lg:col-span-4 md:row-span-2 order-3 lg:order-none',
       demo: <TemplatesDemo />,
-      href: getLocalizedUrl('/docs/layouts/latex/templates', lang),
+      href: getLocalizedUrl('/docs/layouts', lang),
     },
     {
       id: 'outputs',

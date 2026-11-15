@@ -58,7 +58,7 @@ const translations = {
       latexTypesetting: {
         title: 'Pro-Grade Typesetting',
         description:
-          'Powered by LaTeX for pixel-perfect typography, consistent spacing, and a professional aesthetic.',
+          'Powered by LaTeX and Typst for pixel-perfect typography, consistent spacing, and a professional aesthetic.',
       },
       customizable: {
         title: 'Deep Customization',
@@ -98,7 +98,7 @@ const translations = {
       templates: {
         title: 'Professional Templates',
         description:
-          'Choose from a variety of battle-tested LaTeX templates designed for clarity and professional impact.',
+          'Choose from a variety of battle-tested LaTeX and Typst templates designed for clarity and professional impact.',
       },
     },
     testimonials: {
@@ -157,7 +157,7 @@ const translations = {
         howGeneratePdf: {
           question: 'How does YAMLResume generate PDFs?',
           answer:
-            "YAMLResume is actually a DSL for writing resumes, so under the hood it is a compiler for resumes. It transforms the YAML data into PDFs in a multi-step process. First, it parses the YAML file and validates its structure against a schema. Then, it processes the data with a codegen process that generates LaTeX code. Finally, this LaTeX code is compiled into a professional-quality PDF using a LaTeX engine. This approach ensures pixel-perfect typography and layout that's consistent across all devices and platforms.",
+            'YAMLResume is actually a DSL for writing resumes, so under the hood it is a compiler for resumes. It transforms YAML data into PDFs in a multi-step process. First, it parses and validates the YAML file against a schema. Then, codegen produces LaTeX or Typst source according to the selected layout. Finally, a LaTeX or Typst engine compiles that source into a professional-quality PDF. This approach ensures precise, consistent typography across devices and platforms.',
         },
         whyLatex: {
           question: 'Why use LaTeX?',
@@ -197,10 +197,10 @@ const translations = {
       hero: {
         title: 'Pick a template. Choose a language. Land the role.',
         description:
-          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+          'Explore resume templates for any position, rendered in 13 locale languages and 5 output engines — all from a single YAML source.',
         stats: {
           templates:
-            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+            'Professional templates across LaTeX, Typst, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
           examples: 'Realistic resume examples with ready-to-use content',
         },
@@ -209,7 +209,7 @@ const translations = {
         templates: 'Templates',
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
-        languagesDescription: 'Resumes localized for 12+ locales.',
+        languagesDescription: 'Resumes localized for 13+ locales.',
         examples: 'Examples',
         examplesDescription:
           'Realistic resume examples for roles and career goals.',
@@ -295,7 +295,7 @@ const translations = {
       latexTypesetting: {
         title: 'Composición de Nivel Profesional',
         description:
-          'Impulsado por LaTeX para una tipografía perfecta a nivel de píxel, espaciado constante y una estética profesional.',
+          'Impulsado por LaTeX y Typst para una tipografía perfecta a nivel de píxel, espaciado constante y una estética profesional.',
       },
       customizable: {
         title: 'Personalización Profunda',
@@ -335,7 +335,7 @@ const translations = {
       templates: {
         title: 'Plantillas Profesionales',
         description:
-          'Elija entre una variedad de plantillas LaTeX probadas en combate, diseñadas para la claridad y el impacto profesional.',
+          'Elija entre una variedad de plantillas LaTeX y Typst probadas en combate, diseñadas para la claridad y el impacto profesional.',
       },
     },
     testimonials: {
@@ -399,7 +399,7 @@ const translations = {
         howGeneratePdf: {
           question: '¿Cómo genera YAMLResume los PDFs?',
           answer:
-            'YAMLResume es en realidad un DSL para escribir currículums, por lo que internamente es un compilador para currículums. Transforma los datos YAML en PDFs en un proceso de varios pasos. Primero, analiza el archivo YAML y valida su estructura contra un esquema. Luego, procesa los datos con un proceso de generación de código que genera código LaTeX. Finalmente, este código LaTeX se compila en un PDF de calidad profesional usando un motor LaTeX. Este enfoque asegura una tipografía y diseño perfectos a nivel de píxel que son consistentes en todos los dispositivos y plataformas.',
+            'YAMLResume es en realidad un DSL para escribir currículums, por lo que internamente es un compilador para currículums. Transforma los datos YAML en PDFs en un proceso de varios pasos. Primero, analiza y valida el archivo YAML contra un esquema. Luego, la generación de código produce código LaTeX o Typst según el diseño seleccionado. Finalmente, un motor LaTeX o Typst compila ese código en un PDF de calidad profesional. Este enfoque garantiza una tipografía precisa y consistente en todos los dispositivos y plataformas.',
         },
         whyLatex: {
           question: '¿Por qué usar LaTeX?',
@@ -439,10 +439,10 @@ const translations = {
       hero: {
         title: 'Pick a template. Choose a language. Land the role.',
         description:
-          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+          'Explore resume templates for any position, rendered in 13 locale languages and 5 output engines — all from a single YAML source.',
         stats: {
           templates:
-            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+            'Professional templates across LaTeX, Typst, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
           examples: 'Realistic resume examples with ready-to-use content',
         },
@@ -451,7 +451,7 @@ const translations = {
         templates: 'Templates',
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
-        languagesDescription: 'Resumes localized for 12+ locales.',
+        languagesDescription: 'Resumes localized for 13+ locales.',
         examples: 'Examples',
         examplesDescription:
           'Realistic resume examples for roles and career goals.',
@@ -537,7 +537,7 @@ const translations = {
       latexTypesetting: {
         title: 'Composition de Qualité Professionnelle',
         description:
-          'Propulsé par LaTeX pour une typographie parfaite au pixel près, un espacement constant et une esthétique professionnelle.',
+          'Propulsé par LaTeX et Typst pour une typographie parfaite au pixel près, un espacement constant et une esthétique professionnelle.',
       },
       customizable: {
         title: 'Personnalisation Poussée',
@@ -577,7 +577,7 @@ const translations = {
       templates: {
         title: 'Modèles Professionnels',
         description:
-          'Choisissez parmi une variété de modèles LaTeX éprouvés, conçus pour la clarté et un impact professionnel.',
+          'Choisissez parmi une variété de modèles LaTeX et Typst éprouvés, conçus pour la clarté et un impact professionnel.',
       },
     },
     testimonials: {
@@ -641,7 +641,7 @@ const translations = {
         howGeneratePdf: {
           question: 'Comment YAMLResume génère-t-il des PDF ?',
           answer:
-            "YAMLResume est en fait un DSL pour écrire des CV, donc sous le capot, c'est un compilateur pour les CV. Il transforme les données YAML en PDF dans un processus en plusieurs étapes. D'abord, il analyse le fichier YAML et valide sa structure contre un schéma. Ensuite, il traite les données avec un processus de génération de code qui génère du code LaTeX. Enfin, ce code LaTeX est compilé en un PDF de qualité professionnelle en utilisant un moteur LaTeX. Cette approche garantit une typographie et une mise en page parfaites au pixel près qui sont cohérentes sur tous les appareils et plateformes.",
+            "YAMLResume est en fait un DSL pour écrire des CV, donc sous le capot, c'est un compilateur pour les CV. Il transforme les données YAML en PDF dans un processus en plusieurs étapes. D'abord, il analyse et valide le fichier YAML par rapport à un schéma. Ensuite, la génération de code produit du code LaTeX ou Typst selon la mise en page sélectionnée. Enfin, un moteur LaTeX ou Typst compile ce code en un PDF de qualité professionnelle. Cette approche garantit une typographie précise et cohérente sur tous les appareils et plateformes.",
         },
         whyLatex: {
           question: 'Pourquoi utiliser LaTeX ?',
@@ -681,10 +681,10 @@ const translations = {
       hero: {
         title: 'Pick a template. Choose a language. Land the role.',
         description:
-          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+          'Explore resume templates for any position, rendered in 13 locale languages and 5 output engines — all from a single YAML source.',
         stats: {
           templates:
-            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+            'Professional templates across LaTeX, Typst, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
           examples: 'Realistic resume examples with ready-to-use content',
         },
@@ -693,7 +693,7 @@ const translations = {
         templates: 'Templates',
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
-        languagesDescription: 'Resumes localized for 12+ locales.',
+        languagesDescription: 'Resumes localized for 13+ locales.',
         examples: 'Examples',
         examplesDescription:
           'Realistic resume examples for roles and career goals.',
@@ -779,7 +779,7 @@ const translations = {
       latexTypesetting: {
         title: 'Composição de Nível Profissional',
         description:
-          'Powered by LaTeX para tipografia perfeita ao pixel, espaçamento consistente e estética profissional.',
+          'Impulsionado por LaTeX e Typst para tipografia perfeita ao pixel, espaçamento consistente e estética profissional.',
       },
       customizable: {
         title: 'Personalização Profunda',
@@ -819,7 +819,7 @@ const translations = {
       templates: {
         title: 'Modelos Profissionais',
         description:
-          'Escolha entre uma variedade de modelos LaTeX testados, concebidos para clareza e impacto profissional.',
+          'Escolha entre uma variedade de modelos LaTeX e Typst testados, concebidos para clareza e impacto profissional.',
       },
     },
     testimonials: {
@@ -883,7 +883,7 @@ const translations = {
         howGeneratePdf: {
           question: 'Como é que o YAMLResume gera PDFs?',
           answer:
-            'O YAMLResume é na verdade um DSL para escrever currículos, portanto, sob o capô, é um compilador para currículos. Transforma os dados YAML em PDFs num processo de múltiplas etapas. Primeiro, analisa o ficheiro YAML e valida a sua estrutura contra um schema. Depois, processa os dados com um processo de geração de código que gera código LaTeX. Finalmente, este código LaTeX é compilado num PDF de qualidade profissional usando um motor LaTeX. Esta abordagem garante tipografia e layout perfeitos ao pixel que são consistentes em todos os dispositivos e plataformas.',
+            'O YAMLResume é na verdade um DSL para escrever currículos, portanto, sob o capô, é um compilador para currículos. Transforma os dados YAML em PDFs num processo de múltiplas etapas. Primeiro, analisa e valida o ficheiro YAML contra um schema. Depois, a geração de código produz código LaTeX ou Typst de acordo com o layout selecionado. Finalmente, um motor LaTeX ou Typst compila esse código num PDF de qualidade profissional. Esta abordagem garante tipografia precisa e consistente em todos os dispositivos e plataformas.',
         },
         whyLatex: {
           question: 'Porquê usar LaTeX?',
@@ -923,10 +923,10 @@ const translations = {
       hero: {
         title: 'Pick a template. Choose a language. Land the role.',
         description:
-          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+          'Explore resume templates for any position, rendered in 13 locale languages and 5 output engines — all from a single YAML source.',
         stats: {
           templates:
-            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+            'Professional templates across LaTeX, Typst, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
           examples: 'Realistic resume examples with ready-to-use content',
         },
@@ -935,7 +935,7 @@ const translations = {
         templates: 'Templates',
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
-        languagesDescription: 'Resumes localized for 12+ locales.',
+        languagesDescription: 'Resumes localized for 13+ locales.',
         examples: 'Examples',
         examplesDescription:
           'Realistic resume examples for roles and career goals.',
@@ -1021,7 +1021,7 @@ const translations = {
       latexTypesetting: {
         title: 'プロ仕様の組版エンジン',
         description:
-          'LaTeXによるピクセルパーフェクトなタイポグラフィと間距で、圧倒的な品質を実現。',
+          'LaTeXとTypstによるピクセルパーフェクトなタイポグラフィと間距で、圧倒的な品質を実現。',
       },
       customizable: {
         title: '高度なカスタマイズ',
@@ -1060,7 +1060,7 @@ const translations = {
       templates: {
         title: 'プロフェッショナル・テンプレート',
         description:
-          '情報の明快さとプロフェッショナルな印象を両立した、実績のある多彩なLaTeXテンプレートから選択可能。',
+          '情報の明快さとプロフェッショナルな印象を両立した、実績のある多彩なLaTeX・Typstテンプレートから選択可能。',
       },
     },
     testimonials: {
@@ -1122,7 +1122,7 @@ const translations = {
         howGeneratePdf: {
           question: 'YAMLResumeはどのようにPDFを生成しますか？',
           answer:
-            'YAMLResumeは実際には履歴書を書くためのDSLであり、内部では履歴書のコンパイラです。YAMLデータをPDFに変換するのは多段階のプロセスです。まず、YAMLファイルを解析し、スキーマに対して構造を検証します。次に、LaTeXコードを生成するコード生成プロセスでデータを処理します。最後に、LaTeXエンジンを使用してこのLaTeXコードをプロフェッショナル品質のPDFにコンパイルします。このアプローチにより、すべてのデバイスとプラットフォームで一貫したピクセルパーフェクトなタイポグラフィとレイアウトが保証されます。',
+            'YAMLResumeは実際には履歴書を書くためのDSLであり、内部では履歴書のコンパイラです。YAMLデータをPDFに変換するのは多段階のプロセスです。まず、YAMLファイルを解析し、スキーマに対して構造を検証します。次に、選択したレイアウトに応じてLaTeXまたはTypstのソースコードを生成します。最後に、LaTeXまたはTypstエンジンがそのソースをプロフェッショナル品質のPDFにコンパイルします。このアプローチにより、すべてのデバイスとプラットフォームで正確で一貫したタイポグラフィが保証されます。',
         },
         whyLatex: {
           question: 'なぜLaTeXを使用するのですか？',
@@ -1162,10 +1162,10 @@ const translations = {
       hero: {
         title: 'Pick a template. Choose a language. Land the role.',
         description:
-          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+          'Explore resume templates for any position, rendered in 13 locale languages and 5 output engines — all from a single YAML source.',
         stats: {
           templates:
-            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+            'Professional templates across LaTeX, Typst, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
           examples: 'Realistic resume examples with ready-to-use content',
         },
@@ -1174,7 +1174,7 @@ const translations = {
         templates: 'Templates',
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
-        languagesDescription: 'Resumes localized for 12+ locales.',
+        languagesDescription: 'Resumes localized for 13+ locales.',
         examples: 'Examples',
         examplesDescription:
           'Realistic resume examples for roles and career goals.',
@@ -1258,7 +1258,8 @@ const translations = {
       },
       latexTypesetting: {
         title: '专业级排版引擎',
-        description: '基于 LaTeX 实现像素级完美的排版与间距，尽显专业水准。',
+        description:
+          '基于 LaTeX 与 Typst 实现像素级完美的排版与间距，尽显专业水准。',
       },
       customizable: {
         title: '深度个性定制',
@@ -1292,7 +1293,7 @@ const translations = {
       templates: {
         title: '专业简历模板',
         description:
-          '提供多款久经考验的 LaTeX 模板，兼顾信息呈现的清晰度与专业视觉效果。',
+          '提供多款久经考验的 LaTeX 与 Typst 模板，兼顾信息呈现的清晰度与专业视觉效果。',
       },
     },
     testimonials: {
@@ -1352,7 +1353,7 @@ const translations = {
         howGeneratePdf: {
           question: 'YAMLResume 如何生成 PDF？',
           answer:
-            'YAMLResume 实际上是用于编写简历的 DSL，因此在底层它是简历的编译器。它通过多步骤过程将 YAML 数据转换为 PDF。首先，它解析 YAML 文件并根据模式验证其结构。然后，它通过生成 LaTeX 代码的代码生成过程处理数据。最后，使用 LaTeX 引擎将此 LaTeX 代码编译为专业质量的 PDF。这种方法确保了在所有设备和平台上一致的像素级完美的排版和布局。',
+            'YAMLResume 是用于编写简历的 DSL，底层是一个多步骤简历编译器。它首先解析 YAML 并根据 schema 验证结构，然后根据所选布局生成 LaTeX 或 Typst 源代码，最后调用对应的排版引擎编译为专业 PDF。这种方法在不同设备和平台上都能提供精确、一致的排版效果。',
         },
         whyLatex: {
           question: '为什么使用 LaTeX？',
@@ -1392,10 +1393,10 @@ const translations = {
       hero: {
         title: 'Pick a template. Choose a language. Land the role.',
         description:
-          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+          'Explore resume templates for any position, rendered in 13 locale languages and 5 output engines — all from a single YAML source.',
         stats: {
           templates:
-            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+            'Professional templates across LaTeX, Typst, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
           examples: 'Realistic resume examples with ready-to-use content',
         },
@@ -1404,7 +1405,7 @@ const translations = {
         templates: 'Templates',
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
-        languagesDescription: 'Resumes localized for 12+ locales.',
+        languagesDescription: 'Resumes localized for 13+ locales.',
         examples: 'Examples',
         examplesDescription:
           'Realistic resume examples for roles and career goals.',
@@ -1487,7 +1488,8 @@ const translations = {
       },
       latexTypesetting: {
         title: '專業級排版引擎',
-        description: '基於 LaTeX 實現像素級完美的排版與間距，盡顯專業水準。',
+        description:
+          '基於 LaTeX 與 Typst 實現像素級完美的排版與間距，盡顯專業水準。',
       },
       customizable: {
         title: '深度個性定制',
@@ -1521,7 +1523,7 @@ const translations = {
       templates: {
         title: '專業履歷模板',
         description:
-          '提供多款久經考驗的 LaTeX 模板，兼顧資訊呈現的清晰度與專業視覺效果。',
+          '提供多款久經考驗的 LaTeX 與 Typst 模板，兼顧資訊呈現的清晰度與專業視覺效果。',
       },
     },
     testimonials: {
@@ -1581,7 +1583,7 @@ const translations = {
         howGeneratePdf: {
           question: 'YAMLResume 如何產生 PDF？',
           answer:
-            'YAMLResume 實際上是用於編寫履歷的 DSL，因此在底層它是履歷的編譯器。它透過多步驟過程將 YAML 資料轉換為 PDF。首先，它解析 YAML 檔案並根據架構驗證其結構。然後，它透過產生 LaTeX 程式碼的程式碼產生過程處理資料。最後，使用 LaTeX 引擎將此 LaTeX 程式碼編譯為專業品質的 PDF。這種方法確保了在所有裝置和平台上一致的像素級完美的排版和版面配置。',
+            'YAMLResume 實際上是用於編寫履歷的 DSL，因此在底層它是履歷的編譯器。它透過多步驟過程將 YAML 資料轉換為 PDF。首先，它解析 YAML 檔案並根據架構驗證其結構。然後，它透過程式碼產生過程處理資料，產生 LaTeX 或 Typst 原始碼。最後，使用對應的排版引擎將原始碼編譯為專業品質的 PDF。這種方法確保了在所有裝置和平台上一致的像素級完美的排版和版面配置。',
         },
         whyLatex: {
           question: '為什麼使用 LaTeX？',
@@ -1621,10 +1623,10 @@ const translations = {
       hero: {
         title: 'Pick a template. Choose a language. Land the role.',
         description:
-          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+          'Explore resume templates for any position, rendered in 13 locale languages and 5 output engines — all from a single YAML source.',
         stats: {
           templates:
-            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+            'Professional templates across LaTeX, Typst, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
           examples: 'Realistic resume examples with ready-to-use content',
         },
@@ -1633,7 +1635,7 @@ const translations = {
         templates: 'Templates',
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
-        languagesDescription: 'Resumes localized for 12+ locales.',
+        languagesDescription: 'Resumes localized for 13+ locales.',
         examples: 'Examples',
         examplesDescription:
           'Realistic resume examples for roles and career goals.',
@@ -1719,7 +1721,7 @@ const translations = {
       latexTypesetting: {
         title: 'Typesetting Tingkat Profesional',
         description:
-          'Didukung oleh LaTeX untuk tipografi sempurna piksel, jarak yang konsisten, dan estetika profesional.',
+          'Didukung oleh LaTeX dan Typst untuk tipografi sempurna piksel, jarak yang konsisten, dan estetika profesional.',
       },
       customizable: {
         title: 'Kustomisasi Mendalam',
@@ -1759,7 +1761,7 @@ const translations = {
       templates: {
         title: 'Template Profesional',
         description:
-          'Pilih dari berbagai template LaTeX yang teruji, dirancang untuk kejelasan dan dampak profesional.',
+          'Pilih dari berbagai template LaTeX dan Typst yang teruji, dirancang untuk kejelasan dan dampak profesional.',
       },
     },
     testimonials: {
@@ -1821,7 +1823,7 @@ const translations = {
         howGeneratePdf: {
           question: 'Bagaimana YAMLResume menghasilkan PDF?',
           answer:
-            'YAMLResume sebenarnya adalah DSL untuk menulis resume, jadi di balik layar itu adalah kompiler untuk resume. Ini mengubah data YAML menjadi PDF dalam proses multi-langkah. Pertama, ia mengurai file YAML dan memvalidasinya terhadap skema. Kemudian, ia memproses data dengan proses codegen yang menghasilkan kode LaTeX. Terakhir, kode LaTeX ini dikompilasi menjadi PDF berkualitas profesional menggunakan mesin LaTeX. Pendekatan ini memastikan tipografi dan tata letak sempurna piksel yang konsisten di semua perangkat dan platform.',
+            'YAMLResume sebenarnya adalah DSL untuk menulis resume, jadi di balik layar itu adalah kompiler untuk resume. Ini mengubah data YAML menjadi PDF dalam proses multi-langkah. Pertama, ia mengurai dan memvalidasi file YAML terhadap skema. Kemudian, codegen menghasilkan kode LaTeX atau Typst sesuai tata letak yang dipilih. Terakhir, mesin LaTeX atau Typst mengompilasi kode tersebut menjadi PDF berkualitas profesional. Pendekatan ini memastikan tipografi yang presisi dan konsisten di semua perangkat dan platform.',
         },
         whyLatex: {
           question: 'Mengapa menggunakan LaTeX?',
@@ -1861,10 +1863,10 @@ const translations = {
       hero: {
         title: 'Pick a template. Choose a language. Land the role.',
         description:
-          'Explore resume templates for any position, rendered in 12 languages and 4 output engines — all from a single YAML source.',
+          'Explore resume templates for any position, rendered in 13 locale languages and 5 output engines — all from a single YAML source.',
         stats: {
           templates:
-            'Professional templates across LaTeX, HTML, DOCX & Markdown',
+            'Professional templates across LaTeX, Typst, HTML, DOCX & Markdown',
           languages: 'Languages with full locale, typesetting & idiom support',
           examples: 'Realistic resume examples with ready-to-use content',
         },
@@ -1873,7 +1875,7 @@ const translations = {
         templates: 'Templates',
         templatesDescription: 'Battle-tested templates for every engine.',
         languages: 'Languages',
-        languagesDescription: 'Resumes localized for 12+ locales.',
+        languagesDescription: 'Resumes localized for 13+ locales.',
         examples: 'Examples',
         examplesDescription:
           'Realistic resume examples for roles and career goals.',

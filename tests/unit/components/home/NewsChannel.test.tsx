@@ -6,35 +6,35 @@ import { NewsChannel } from '@/app/[language]/(home)/components/NewsChannel'
 describe('NewsChannel', () => {
   it('renders the announcement text and links', () => {
     render(<NewsChannel />)
-    expect(screen.getByText('YAMLResume v0.17')).toBeInTheDocument()
+    expect(screen.getByText('YAMLResume v0.18')).toBeInTheDocument()
     expect(
-      screen.getByRole('link', { name: 'YAMLResume v0.17' })
-    ).toHaveAttribute('href', '/blog/v0.17')
+      screen.getByRole('link', { name: 'YAMLResume v0.18' })
+    ).toHaveAttribute('href', '/blog/v0.18')
     expect(
       screen.getByRole('link', {
-        name: 'accent colors, the kami HTML template, and a 4.7x slimmer Docker image',
+        name: 'Typst, Italian, and 20 localized sample resumes',
       })
-    ).toHaveAttribute('href', '/blog/v0.17')
+    ).toHaveAttribute('href', '/blog/v0.18')
   })
 
   it('localizes the announcement links', () => {
     setMockParams({ language: 'es' })
     render(<NewsChannel />)
     expect(
-      screen.getByRole('link', { name: 'YAMLResume v0.17' })
-    ).toHaveAttribute('href', '/es/blog/v0.17')
+      screen.getByRole('link', { name: 'YAMLResume v0.18' })
+    ).toHaveAttribute('href', '/es/blog/v0.18')
     expect(
       screen.getByRole('link', {
-        name: 'accent colors, the kami HTML template, and a 4.7x slimmer Docker image',
+        name: 'Typst, Italian, and 20 localized sample resumes',
       })
-    ).toHaveAttribute('href', '/es/blog/v0.17')
+    ).toHaveAttribute('href', '/es/blog/v0.18')
   })
 
   it('falls back to the default language when no language param is set', () => {
     setMockParams({})
     render(<NewsChannel />)
     expect(
-      screen.getByRole('link', { name: 'YAMLResume v0.17' })
-    ).toHaveAttribute('href', '/blog/v0.17')
+      screen.getByRole('link', { name: 'YAMLResume v0.18' })
+    ).toHaveAttribute('href', '/blog/v0.18')
   })
 })

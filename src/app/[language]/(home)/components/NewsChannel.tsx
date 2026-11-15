@@ -28,20 +28,19 @@ export function NewsChannel() {
           <IconSpeakerphone size={20} stroke={1.5} />
           <div className="text-sm text-fd-foreground">
             <Link
-              href={getLocalizedUrl('/blog/v0.17', language)}
+              href={getLocalizedUrl('/blog/v0.18', language)}
               prefetch={false}
               className="underline font-semibold"
             >
-              YAMLResume v0.17
+              YAMLResume v0.18
             </Link>{' '}
             is here with{' '}
             <Link
-              href={getLocalizedUrl('/blog/v0.17', language)}
+              href={getLocalizedUrl('/blog/v0.18', language)}
               prefetch={false}
               className="underline"
             >
-              accent colors, the kami HTML template, and a 4.7x slimmer Docker
-              image
+              Typst, Italian, and 20 localized sample resumes
             </Link>
             .
           </div>
