@@ -1,4 +1,10 @@
-export { defaultLanguage, i18nConfig, type Language, languages } from './config'
+export {
+  defaultLanguage,
+  i18nConfig,
+  type Language,
+  languageNames,
+  languages,
+} from './config'
 export {
   type GalleryCategory,
   type GalleryMessages,

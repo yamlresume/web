@@ -9,6 +9,16 @@ const config = {
   async redirects() {
     return [
       {
+        source: '/:locale(en|es|fr|pt|ja|zh-cn|zh-tw|id)/gallery',
+        destination: '/gallery',
+        permanent: true,
+      },
+      {
+        source: '/:locale(en|es|fr|pt|ja|zh-cn|zh-tw|id)/gallery/:path*',
+        destination: '/gallery/:path*',
+        permanent: true,
+      },
+      {
         source: '/en',
         destination: '/',
         permanent: true,

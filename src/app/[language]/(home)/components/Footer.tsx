@@ -4,7 +4,13 @@ import { IconBrandDiscord, IconBrandGithub } from '@tabler/icons-react'
 import Link from 'next/link'
 
 import { Logo } from '@/components'
-import { getLocalizedUrl, type Language, useTranslations } from '@/i18n'
+import {
+  getLocalizedUrl,
+  type Language,
+  languageNames,
+  languages,
+  useTranslations,
+} from '@/i18n'
 
 interface FooterProps {
   language: Language
@@ -172,41 +178,16 @@ export function Footer({ language }: FooterProps) {
 
           <nav aria-label="Languages">
             <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-fd-muted-foreground">
-              <li>
-                <Link href="/" className="hover:underline">
-                  English
-                </Link>
-              </li>
-              <li>
-                <Link href="/es" className="hover:underline">
-                  Español
-                </Link>
-              </li>
-              <li>
-                <Link href="/fr" className="hover:underline">
-                  Français
-                </Link>
-              </li>
-              <li>
-                <Link href="/ja" className="hover:underline">
-                  日本語
-                </Link>
-              </li>
-              <li>
-                <Link href="/pt" className="hover:underline">
-                  Português
-                </Link>
-              </li>
-              <li>
-                <Link href="/zh-cn" className="hover:underline">
-                  简体中文
-                </Link>
-              </li>
-              <li>
-                <Link href="/zh-tw" className="hover:underline">
-                  繁體中文
-                </Link>
-              </li>
+              {languages.map((locale) => (
+                <li key={locale}>
+                  <Link
+                    href={getLocalizedUrl('/', locale)}
+                    className="hover:underline"
+                  >
+                    {languageNames[locale]}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
         </div>

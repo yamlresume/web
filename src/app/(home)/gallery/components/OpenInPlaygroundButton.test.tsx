@@ -40,16 +40,16 @@ describe('OpenInPlaygroundButton', () => {
     render(
       <OpenInPlaygroundButton
         sampleId="software-engineer"
-        locale="ja"
-        language="ja"
+        locale="zh-hans"
+        language="zh-cn"
       />
     )
 
     expect(
-      screen.getByRole('link', { name: 'Playground で開く' })
+      screen.getByRole('link', { name: '在演练场中打开' })
     ).toHaveAttribute(
       'href',
-      '/ja/playground?sample=software-engineer&locale=ja'
+      '/zh-cn/playground?sample=software-engineer&locale=zh-hans'
     )
   })
 })

@@ -297,44 +297,42 @@ describe('GalleryDetail', () => {
     render(
       <GalleryDetail
         item={item}
-        language="es"
+        language="zh-cn"
         target={exampleTarget}
-        yamlContent="locale: es"
+        yamlContent="locale: zh-hans"
       />
     )
 
     expect(
-      screen.getByRole('navigation', { name: 'Ruta de navegación' })
-    ).toHaveTextContent('GaleríaEjemplosSoftware Engineer')
+      screen.getByRole('navigation', { name: '面包屑导航' })
+    ).toHaveTextContent('作品集示例Software Engineer')
     expect(
       screen.getByRole('region', {
-        name: 'Vista previa y descargas del currículum',
+        name: '简历预览与下载',
       })
     ).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: 'Vista previa' })).toBeVisible()
-    expect(screen.getByRole('tab', { name: 'Código fuente' })).toBeVisible()
-    expect(screen.getByRole('button', { name: 'Descargar YAML' })).toBeVisible()
-    expect(
-      screen.getByRole('link', { name: 'Abrir en Playground' })
-    ).toBeVisible()
-    expect(screen.getByRole('heading', { name: 'Detalles' })).toBeVisible()
-    expect(screen.getByRole('heading', { name: 'Descargar' })).toBeVisible()
+    expect(screen.getByRole('tab', { name: '预览' })).toBeVisible()
+    expect(screen.getByRole('tab', { name: '源代码' })).toBeVisible()
+    expect(screen.getByRole('button', { name: '下载 YAML' })).toBeVisible()
+    expect(screen.getByRole('link', { name: '在演练场中打开' })).toBeVisible()
+    expect(screen.getByRole('heading', { name: '详情' })).toBeVisible()
+    expect(screen.getByRole('heading', { name: '下载' })).toBeVisible()
   })
 
   it('links every detail page back to all gallery catalogs', () => {
-    render(<GalleryDetail item={item} language="fr" />)
+    render(<GalleryDetail item={item} language="zh-tw" />)
 
-    expect(screen.getByRole('link', { name: /Modèles/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /範本/ })).toHaveAttribute(
       'href',
-      '/fr/gallery/templates'
+      '/zh-tw/gallery/templates'
     )
-    expect(screen.getByRole('link', { name: /Langues/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /語言/ })).toHaveAttribute(
       'href',
-      '/fr/gallery/languages'
+      '/zh-tw/gallery/languages'
     )
-    expect(screen.getByRole('link', { name: /Exemples/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /範例/ })).toHaveAttribute(
       'href',
-      '/fr/gallery/examples'
+      '/zh-tw/gallery/examples'
     )
   })
 
@@ -344,9 +342,9 @@ describe('GalleryDetail', () => {
     expect(
       screen.getByRole('heading', { name: 'Available in other languages' })
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: '日本語' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: '简体中文' })).toHaveAttribute(
       'href',
-      '/gallery/examples/software-engineer/ja'
+      '/gallery/examples/software-engineer/zh-hans'
     )
     expect(
       screen.queryByRole('link', { name: 'English' })

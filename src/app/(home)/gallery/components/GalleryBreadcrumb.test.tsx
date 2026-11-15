@@ -36,16 +36,16 @@ describe('GalleryBreadcrumb', () => {
     render(
       <GalleryBreadcrumb
         item={item}
-        language="fr"
+        language="zh-tw"
         target={{ type: 'language', resumeLanguage: 'en' }}
       />
     )
 
-    expect(screen.getByRole('link', { name: 'Galerie' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: '作品集' })).toHaveAttribute(
       'href',
-      '/fr/gallery'
+      '/zh-tw/gallery'
     )
-    expect(screen.getByRole('navigation')).toHaveTextContent('LanguesEnglish')
+    expect(screen.getByRole('navigation')).toHaveTextContent('語言English')
   })
 
   it('renders engine and template segments for template details', () => {

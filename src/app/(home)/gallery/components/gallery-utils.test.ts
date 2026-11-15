@@ -10,10 +10,10 @@ import {
 
 describe('getExampleItems', () => {
   const english = makeGalleryItem({ language: 'en', languageLabel: 'English' })
-  const japanese = makeGalleryItem({
-    language: 'ja',
-    languageLabel: '日本語',
-    title: 'ソフトウェアエンジニア',
+  const chinese = makeGalleryItem({
+    language: 'zh-hans',
+    languageLabel: '简体中文',
+    title: '软件工程师',
   })
   const designer = makeGalleryItem({
     id: 'designer',
@@ -22,16 +22,16 @@ describe('getExampleItems', () => {
   })
 
   it('returns one preferred locale per example', () => {
-    expect(getExampleItems([english, japanese, designer], 'ja', '')).toEqual([
+    expect(getExampleItems([english, chinese, designer], 'zh-cn', '')).toEqual([
       designer,
-      japanese,
+      chinese,
     ])
   })
 
   it('returns only examples available in the selected resume language', () => {
-    expect(getExampleItems([english, japanese, designer], 'en', 'ja')).toEqual([
-      japanese,
-    ])
+    expect(
+      getExampleItems([english, chinese, designer], 'en', 'zh-hans')
+    ).toEqual([chinese])
   })
 })
 

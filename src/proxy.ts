@@ -8,6 +8,8 @@ export const config = {
   // Matcher ignoring `/_next/` and `/api/`
   // You may need to adjust it to ignore static assets in `/public` folder
   matcher: [
+    // `gallery` is unlocalized; `next.config.mjs` permanently redirects the
+    // localized variants, so the middleware must not rewrite them first.
     '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.webmanifest|static|schema.json|schemas|developer|gallery|en/gallery/|es/gallery/|fr/gallery/|pt/gallery/|ja/gallery/|zh-cn/gallery/|zh-tw/gallery/|id/gallery/).*)',
   ],
 }

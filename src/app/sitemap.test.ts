@@ -1,15 +1,7 @@
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 
 vi.mock('@/lib', () => {
-  const source = { getPages: () => [] }
-  const blogSource = {
-    getPages: () => [
-      {
-        url: '/en/blog/1000-stars',
-        data: { lastModified: new Date('2025-03-01T00:00:00Z') },
-      },
-    ],
-  }
+  const empty = { getPages: () => [] }
   const docsSource = {
     getPages: () => [
       // content/docs/index.mdx is a real page whose url normalizes to `/docs`.
@@ -23,23 +15,44 @@ vi.mock('@/lib', () => {
       },
     ],
   }
+  const blogSource = {
+    getPages: () => [
+      {
+        url: '/en/blog/1000-stars',
+        data: { lastModified: new Date('2025-03-01T00:00:00Z') },
+      },
+    ],
+  }
+  const spanishDocs = {
+    getPages: () => [
+      {
+        url: '/es/docs/cli',
+        data: { lastModified: new Date('2025-05-01T00:00:00Z') },
+      },
+    ],
+  }
+  const japaneseBlog = {
+    getPages: () => [
+      {
+        url: '/ja/blog/1000-stars',
+        data: { lastModified: new Date('2025-04-01T00:00:00Z') },
+      },
+    ],
+  }
+
   return {
-    blogSource,
-    blogSourceEs: source,
-    blogSourceFr: source,
-    blogSourceId: source,
-    blogSourceJa: source,
-    blogSourcePt: source,
-    blogSourceZhCN: source,
-    blogSourceZhTW: source,
-    docsSource,
-    docsSourceEs: source,
-    docsSourceFr: source,
-    docsSourceId: source,
-    docsSourceJa: source,
-    docsSourcePt: source,
-    docsSourceZhCN: source,
-    docsSourceZhTW: source,
+    getLocalizedSources: (language: string) => {
+      switch (language) {
+        case 'es':
+          return { docs: spanishDocs, blog: empty }
+        case 'ja':
+          return { docs: empty, blog: japaneseBlog }
+        case 'en':
+          return { docs: docsSource, blog: blogSource }
+        default:
+          return { docs: empty, blog: empty }
+      }
+    },
   }
 })
 
@@ -112,7 +125,9 @@ describe('sitemap', () => {
       new Date('2025-07-01T00:00:00Z').toISOString()
     )
     expect(byUrl.get('https://yamlresume.dev/blog')).toBe(
-      new Date('2025-03-01T00:00:00Z').toISOString()
+      // The index carries the newest post across every locale, and the mocked
+      // Japanese post is newer than the English one.
+      new Date('2025-04-01T00:00:00Z').toISOString()
     )
   })
 
@@ -156,5 +171,27 @@ describe('sitemap', () => {
     expect(
       urls.filter((url) => url === 'https://yamlresume.dev/blog')
     ).toHaveLength(1)
+  })
+
+  it('lists a home page for every non-default locale', async () => {
+    const entries = await sitemap()
+    const urls = entries.map((entry) => entry.url)
+
+    for (const locale of ['es', 'fr', 'pt', 'ja', 'zh-cn', 'zh-tw', 'id']) {
+      expect(urls).toContain(`https://yamlresume.dev/${locale}`)
+    }
+
+    expect(
+      urls.filter((url) => url === 'https://yamlresume.dev/')
+    ).toHaveLength(1)
+  })
+
+  it('lists translated docs and blog pages without an /en prefix', async () => {
+    const entries = await sitemap()
+    const urls = entries.map((entry) => entry.url)
+
+    expect(urls).toContain('https://yamlresume.dev/es/docs/cli')
+    expect(urls).toContain('https://yamlresume.dev/ja/blog/1000-stars')
+    expect(urls.every((url) => !url.includes('yamlresume.dev/en/'))).toBe(true)
   })
 })

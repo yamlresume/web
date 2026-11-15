@@ -21,32 +21,35 @@ describe('Footer', () => {
     )
     expect(screen.getByRole('link', { name: 'Español' })).toHaveAttribute(
       'href',
-      '/es'
+      '/es/'
     )
     expect(screen.getByRole('link', { name: 'Français' })).toHaveAttribute(
       'href',
-      '/fr'
-    )
-    expect(screen.getByRole('link', { name: '日本語' })).toHaveAttribute(
-      'href',
-      '/ja'
+      '/fr/'
     )
     expect(screen.getByRole('link', { name: 'Português' })).toHaveAttribute(
       'href',
-      '/pt'
+      '/pt/'
+    )
+    expect(screen.getByRole('link', { name: '日本語' })).toHaveAttribute(
+      'href',
+      '/ja/'
     )
     expect(screen.getByRole('link', { name: '简体中文' })).toHaveAttribute(
       'href',
-      '/zh-cn'
+      '/zh-cn/'
     )
     expect(screen.getByRole('link', { name: '繁體中文' })).toHaveAttribute(
       'href',
-      '/zh-tw'
+      '/zh-tw/'
     )
+    expect(
+      screen.getByRole('link', { name: 'Bahasa Indonesia' })
+    ).toHaveAttribute('href', '/id/')
   })
 
   it('keeps gallery unlocalized in localized footers', () => {
-    render(<Footer language="es" />)
+    render(<Footer language="zh-cn" />)
 
     expect(screen.getByRole('link', { name: 'Gallery' })).toHaveAttribute(
       'href',
@@ -54,7 +57,7 @@ describe('Footer', () => {
     )
     expect(screen.getByRole('link', { name: 'Documentation' })).toHaveAttribute(
       'href',
-      '/es/docs'
+      '/zh-cn/docs'
     )
   })
 

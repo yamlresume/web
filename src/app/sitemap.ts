@@ -1,23 +1,6 @@
 import type { MetadataRoute } from 'next'
-import { getLocalizedUrl, languages } from '@/i18n'
-import {
-  blogSource,
-  blogSourceEs,
-  blogSourceFr,
-  blogSourceId,
-  blogSourceJa,
-  blogSourcePt,
-  blogSourceZhCN,
-  blogSourceZhTW,
-  docsSource,
-  docsSourceEs,
-  docsSourceFr,
-  docsSourceId,
-  docsSourceJa,
-  docsSourcePt,
-  docsSourceZhCN,
-  docsSourceZhTW,
-} from '@/lib'
+import { defaultLanguage, getLocalizedUrl, languages } from '@/i18n'
+import { getLocalizedSources } from '@/lib'
 import {
   developerDocsLastModified,
   galleryLastModified,
@@ -39,27 +22,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const publicPath = (path: string): string => path.replace(/^\/en(?=\/|$)/, '')
 
   // Get all pages from all locales
-  const allDocsPages = [
-    ...docsSource.getPages(),
-    ...docsSourceZhCN.getPages(),
-    ...docsSourceZhTW.getPages(),
-    ...docsSourceFr.getPages(),
-    ...docsSourceJa.getPages(),
-    ...docsSourceEs.getPages(),
-    ...docsSourcePt.getPages(),
-    ...docsSourceId.getPages(),
-  ]
+  const allDocsPages = languages.flatMap((language) =>
+    getLocalizedSources(language).docs.getPages()
+  )
 
-  const allBlogPages = [
-    ...blogSource.getPages(),
-    ...blogSourceZhCN.getPages(),
-    ...blogSourceZhTW.getPages(),
-    ...blogSourceFr.getPages(),
-    ...blogSourceJa.getPages(),
-    ...blogSourceEs.getPages(),
-    ...blogSourcePt.getPages(),
-    ...blogSourceId.getPages(),
-  ]
+  const allBlogPages = languages.flatMap((language) =>
+    getLocalizedSources(language).blog.getPages()
+  )
 
   const now = new Date()
 
@@ -138,48 +107,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     })),
     // Add locale-specific home pages
-    {
-      url: url('/zh-cn'),
-      lastModified: siteLastModified ?? now,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: url('/zh-tw'),
-      lastModified: siteLastModified ?? now,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: url('/ja'),
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: url('/es'),
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: url('/pt'),
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: url('/id'),
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: url('/fr'),
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
+    ...languages
+      .filter((language) => language !== defaultLanguage)
+      .map((language) => ({
+        // `getLocalizedUrl('/', locale)` keeps a trailing slash; drop it to
+        // match the canonical form the metadata emits.
+        url: url(getLocalizedUrl('/', language).replace(/\/$/, '')),
+        lastModified: siteLastModified ?? now,
+        changeFrequency: 'monthly' as const,
+        priority: 0.9,
+      })),
     {
       url: url('/developer/ai/index.html'),
       lastModified: developerDocsLastModified ?? now,

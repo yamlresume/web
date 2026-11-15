@@ -70,72 +70,14 @@ export default async function Page(props: {
 }
 
 export function generateStaticParams(): { slug: string; language: string }[] {
-  const enParams = getLocalizedSources('en')
-    .blog.getPages()
-    .map((page) => ({
-      slug: page.slugs[0],
-      language: 'en',
-    }))
-
-  const frParams = getLocalizedSources('fr')
-    .blog.getPages()
-    .map((page) => ({
-      slug: page.slugs[0],
-      language: 'fr',
-    }))
-
-  const jaParams = getLocalizedSources('ja')
-    .blog.getPages()
-    .map((page) => ({
-      slug: page.slugs[0],
-      language: 'ja',
-    }))
-
-  const zhCNParams = getLocalizedSources('zh-cn')
-    .blog.getPages()
-    .map((page) => ({
-      slug: page.slugs[0],
-      language: 'zh-cn',
-    }))
-
-  const zhTWParams = getLocalizedSources('zh-tw')
-    .blog.getPages()
-    .map((page) => ({
-      slug: page.slugs[0],
-      language: 'zh-tw',
-    }))
-
-  const esParams = getLocalizedSources('es')
-    .blog.getPages()
-    .map((page) => ({
-      slug: page.slugs[0],
-      language: 'es',
-    }))
-
-  const idParams = getLocalizedSources('id')
-    .blog.getPages()
-    .map((page) => ({
-      slug: page.slugs[0],
-      language: 'id',
-    }))
-
-  const ptParams = getLocalizedSources('pt')
-    .blog.getPages()
-    .map((page) => ({
-      slug: page.slugs[0],
-      language: 'pt',
-    }))
-
-  return [
-    ...enParams,
-    ...frParams,
-    ...jaParams,
-    ...zhCNParams,
-    ...zhTWParams,
-    ...esParams,
-    ...idParams,
-    ...ptParams,
-  ]
+  return languages.flatMap((language) =>
+    getLocalizedSources(language)
+      .blog.getPages()
+      .map((page) => ({
+        slug: page.slugs[0],
+        language,
+      }))
+  )
 }
 
 export async function generateMetadata(props: {

@@ -2,24 +2,8 @@ import { notFound } from 'next/navigation'
 import { ImageResponse } from 'next/og'
 
 import { OpenGraph } from '@/app/api/og/components'
-import { defaultLanguage, getGalleryMessages } from '@/i18n'
-import {
-  blogSource,
-  blogSourceFr,
-  blogSourceId,
-  blogSourceJa,
-  blogSourcePt,
-  blogSourceZhCN,
-  blogSourceZhTW,
-  docsSource,
-  docsSourceFr,
-  docsSourceId,
-  docsSourceJa,
-  docsSourcePt,
-  docsSourceZhCN,
-  docsSourceZhTW,
-} from '@/lib'
-import { blogSourceEs, docsSourceEs } from '@/lib/source'
+import { defaultLanguage, getGalleryMessages, languages } from '@/i18n'
+import { getLocalizedSources } from '@/lib'
 
 export const revalidate = false
 
@@ -55,78 +39,8 @@ export async function GET(
     notFound()
   }
 
-  // Get the appropriate source based on language and type
-  let source:
-    | typeof blogSource
-    | typeof blogSourceEs
-    | typeof blogSourceFr
-    | typeof blogSourceId
-    | typeof blogSourceJa
-    | typeof blogSourcePt
-    | typeof blogSourceZhCN
-    | typeof blogSourceZhTW
-    | typeof docsSource
-    | typeof docsSourceEs
-    | typeof docsSourceFr
-    | typeof docsSourceId
-    | typeof docsSourceJa
-    | typeof docsSourcePt
-    | typeof docsSourceZhCN
-    | typeof docsSourceZhTW
-
-  if (isBlog) {
-    switch (language) {
-      case 'es':
-        source = blogSourceEs
-        break
-      case 'fr':
-        source = blogSourceFr
-        break
-      case 'id':
-        source = blogSourceId
-        break
-      case 'ja':
-        source = blogSourceJa
-        break
-      case 'pt':
-        source = blogSourcePt
-        break
-      case 'zh-cn':
-        source = blogSourceZhCN
-        break
-      case 'zh-tw':
-        source = blogSourceZhTW
-        break
-      default:
-        source = blogSource
-    }
-  } else {
-    switch (language) {
-      case 'es':
-        source = docsSourceEs
-        break
-      case 'fr':
-        source = docsSourceFr
-        break
-      case 'id':
-        source = docsSourceId
-        break
-      case 'ja':
-        source = docsSourceJa
-        break
-      case 'pt':
-        source = docsSourcePt
-        break
-      case 'zh-cn':
-        source = docsSourceZhCN
-        break
-      case 'zh-tw':
-        source = docsSourceZhTW
-        break
-      default:
-        source = docsSource
-    }
-  }
+  const sources = getLocalizedSources(language)
+  const source = isBlog ? sources.blog : sources.docs
 
   // Remove the type prefix and the .png suffix
   const pageSlug = slug.slice(1, -1)
@@ -148,87 +62,26 @@ export function generateStaticParams() {
     { slug: ['gallery', 'examples', 'open-graph.png'] },
   ]
 
-  // Generate params for blog (English only)
-  const blogParams = blogSource.generateParams().map((page) => ({
-    slug: ['blog', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...blogParams)
+  // Every locale resolves to its own tree, but the route only varies by
+  // `?language=`, so the slugs are shared. Dedupe them.
+  const seen = new Set(params.map(({ slug }) => slug.join('/')))
 
-  const blogEsParams = blogSourceEs.generateParams().map((page) => ({
-    slug: ['blog', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...blogEsParams)
+  for (const language of languages) {
+    const { blog, docs } = getLocalizedSources(language)
 
-  const blogFrParams = blogSourceFr.generateParams().map((page) => ({
-    slug: ['blog', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...blogFrParams)
-
-  const blogIdParams = blogSourceId.generateParams().map((page) => ({
-    slug: ['blog', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...blogIdParams)
-
-  const blogJaParams = blogSourceJa.generateParams().map((page) => ({
-    slug: ['blog', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...blogJaParams)
-
-  const blogPtParams = blogSourcePt.generateParams().map((page) => ({
-    slug: ['blog', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...blogPtParams)
-
-  const blogZhCNParams = blogSourceZhCN.generateParams().map((page) => ({
-    slug: ['blog', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...blogZhCNParams)
-
-  const blogZhTWParams = blogSourceZhTW.generateParams().map((page) => ({
-    slug: ['blog', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...blogZhTWParams)
-
-  // Generate params for docs in all languages
-  const docsParams = docsSource.generateParams().map((page) => ({
-    slug: ['docs', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...docsParams)
-
-  const docsEsParams = docsSourceEs.generateParams().map((page) => ({
-    slug: ['docs', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...docsEsParams)
-
-  const docsFrParams = docsSourceFr.generateParams().map((page) => ({
-    slug: ['docs', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...docsFrParams)
-
-  const docsIdParams = docsSourceId.generateParams().map((page) => ({
-    slug: ['docs', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...docsIdParams)
-
-  const docsJaParams = docsSourceJa.generateParams().map((page) => ({
-    slug: ['docs', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...docsJaParams)
-
-  const docsPtParams = docsSourcePt.generateParams().map((page) => ({
-    slug: ['docs', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...docsPtParams)
-
-  const docsZhCNParams = docsSourceZhCN.generateParams().map((page) => ({
-    slug: ['docs', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...docsZhCNParams)
-
-  const docsZhTWParams = docsSourceZhTW.generateParams().map((page) => ({
-    slug: ['docs', ...page.slug, 'open-graph.png'],
-  }))
-  params.push(...docsZhTWParams)
+    for (const [type, source] of [
+      ['blog', blog],
+      ['docs', docs],
+    ] as const) {
+      for (const page of source.generateParams()) {
+        const slug = [type, ...page.slug, 'open-graph.png']
+        const key = slug.join('/')
+        if (seen.has(key)) continue
+        seen.add(key)
+        params.push({ slug })
+      }
+    }
+  }
 
   return params
 }

@@ -52,21 +52,21 @@ describe('GalleryHero', () => {
         templateCount={8}
         languageCount={12}
         exampleCount={5}
-        language="fr"
+        language="zh-tw"
       />
     )
 
     expect(screen.getByRole('link', { name: /8\+/ })).toHaveAttribute(
       'href',
-      '/fr/gallery/templates'
+      '/zh-tw/gallery/templates'
     )
     expect(screen.getByRole('link', { name: /12\+/ })).toHaveAttribute(
       'href',
-      '/fr/gallery/languages'
+      '/zh-tw/gallery/languages'
     )
     expect(screen.getByRole('link', { name: /5\+/ })).toHaveAttribute(
       'href',
-      '/fr/gallery/examples'
+      '/zh-tw/gallery/examples'
     )
   })
 })

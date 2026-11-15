@@ -7,77 +7,67 @@ import {
 import lastModified from 'fumadocs-mdx/plugins/last-modified'
 import { z } from 'zod'
 
+// Shared collection options. Keeping them here means a new locale is one
+// `defineDocs` / `defineCollections` call instead of a copy-pasted block.
+const docsOptions = {
+  docs: {
+    postprocess: {
+      includeProcessedMarkdown: true,
+    },
+  },
+}
+
+const blogOptions = {
+  type: 'doc',
+  postprocess: {
+    includeProcessedMarkdown: true,
+  },
+  schema: frontmatterSchema.extend({
+    author: z.string(),
+    date: z.string().date().or(z.date()),
+    profile: z.string(),
+  }),
+} as const
+
 // Define docs for each locale
 export const docs = defineDocs({
   dir: 'content/docs',
-  docs: {
-    postprocess: {
-      includeProcessedMarkdown: true,
-    },
-  },
-})
-
-export const docsZhCN = defineDocs({
-  dir: 'content/zh-cn/docs',
-  docs: {
-    postprocess: {
-      includeProcessedMarkdown: true,
-    },
-  },
-})
-
-export const docsZhTW = defineDocs({
-  dir: 'content/zh-tw/docs',
-  docs: {
-    postprocess: {
-      includeProcessedMarkdown: true,
-    },
-  },
-})
-
-export const docsFr = defineDocs({
-  dir: 'content/fr/docs',
-  docs: {
-    postprocess: {
-      includeProcessedMarkdown: true,
-    },
-  },
-})
-
-export const docsJa = defineDocs({
-  dir: 'content/ja/docs',
-  docs: {
-    postprocess: {
-      includeProcessedMarkdown: true,
-    },
-  },
+  ...docsOptions,
 })
 
 export const docsEs = defineDocs({
   dir: 'content/es/docs',
-  docs: {
-    postprocess: {
-      includeProcessedMarkdown: true,
-    },
-  },
+  ...docsOptions,
+})
+
+export const docsFr = defineDocs({
+  dir: 'content/fr/docs',
+  ...docsOptions,
 })
 
 export const docsPt = defineDocs({
   dir: 'content/pt/docs',
-  docs: {
-    postprocess: {
-      includeProcessedMarkdown: true,
-    },
-  },
+  ...docsOptions,
+})
+
+export const docsJa = defineDocs({
+  dir: 'content/ja/docs',
+  ...docsOptions,
+})
+
+export const docsZhCN = defineDocs({
+  dir: 'content/zh-cn/docs',
+  ...docsOptions,
+})
+
+export const docsZhTW = defineDocs({
+  dir: 'content/zh-tw/docs',
+  ...docsOptions,
 })
 
 export const docsId = defineDocs({
   dir: 'content/id/docs',
-  docs: {
-    postprocess: {
-      includeProcessedMarkdown: true,
-    },
-  },
+  ...docsOptions,
 })
 
 export default defineConfig({
@@ -89,105 +79,41 @@ export default defineConfig({
 
 // Define blog collections for each locale
 export const blog = defineCollections({
-  type: 'doc',
   dir: 'content/blog',
-  postprocess: {
-    includeProcessedMarkdown: true,
-  },
-  schema: frontmatterSchema.extend({
-    author: z.string(),
-    date: z.string().date().or(z.date()),
-    profile: z.string(),
-  }),
-})
-
-export const blogZhCN = defineCollections({
-  type: 'doc',
-  dir: 'content/zh-cn/blog',
-  postprocess: {
-    includeProcessedMarkdown: true,
-  },
-  schema: frontmatterSchema.extend({
-    author: z.string(),
-    date: z.string().date().or(z.date()),
-    profile: z.string(),
-  }),
-})
-
-export const blogZhTW = defineCollections({
-  type: 'doc',
-  dir: 'content/zh-tw/blog',
-  postprocess: {
-    includeProcessedMarkdown: true,
-  },
-  schema: frontmatterSchema.extend({
-    author: z.string(),
-    date: z.string().date().or(z.date()),
-    profile: z.string(),
-  }),
-})
-
-export const blogFr = defineCollections({
-  type: 'doc',
-  dir: 'content/fr/blog',
-  postprocess: {
-    includeProcessedMarkdown: true,
-  },
-  schema: frontmatterSchema.extend({
-    author: z.string(),
-    date: z.string().date().or(z.date()),
-    profile: z.string(),
-  }),
-})
-
-export const blogJa = defineCollections({
-  type: 'doc',
-  dir: 'content/ja/blog',
-  postprocess: {
-    includeProcessedMarkdown: true,
-  },
-  schema: frontmatterSchema.extend({
-    author: z.string(),
-    date: z.string().date().or(z.date()),
-    profile: z.string(),
-  }),
+  ...blogOptions,
 })
 
 export const blogEs = defineCollections({
-  type: 'doc',
   dir: 'content/es/blog',
-  postprocess: {
-    includeProcessedMarkdown: true,
-  },
-  schema: frontmatterSchema.extend({
-    author: z.string(),
-    date: z.string().date().or(z.date()),
-    profile: z.string(),
-  }),
+  ...blogOptions,
+})
+
+export const blogFr = defineCollections({
+  dir: 'content/fr/blog',
+  ...blogOptions,
 })
 
 export const blogPt = defineCollections({
-  type: 'doc',
   dir: 'content/pt/blog',
-  postprocess: {
-    includeProcessedMarkdown: true,
-  },
-  schema: frontmatterSchema.extend({
-    author: z.string(),
-    date: z.string().date().or(z.date()),
-    profile: z.string(),
-  }),
+  ...blogOptions,
+})
+
+export const blogJa = defineCollections({
+  dir: 'content/ja/blog',
+  ...blogOptions,
+})
+
+export const blogZhCN = defineCollections({
+  dir: 'content/zh-cn/blog',
+  ...blogOptions,
+})
+
+export const blogZhTW = defineCollections({
+  dir: 'content/zh-tw/blog',
+  ...blogOptions,
 })
 
 export const blogId = defineCollections({
-  type: 'doc',
   dir: 'content/id/blog',
-  postprocess: {
-    includeProcessedMarkdown: true,
-  },
-  schema: frontmatterSchema.extend({
-    author: z.string(),
-    date: z.string().date().or(z.date()),
-    profile: z.string(),
-  }),
+  ...blogOptions,
 })

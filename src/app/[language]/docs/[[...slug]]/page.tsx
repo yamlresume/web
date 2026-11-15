@@ -98,7 +98,6 @@ export default async function Page(props: {
         <DocsBody>
           <MDXContent
             components={getMDXComponents({
-              // @ts-expect-error Fumadocs 16 i18n source types differ per locale
               a: createRelativeLink(docs, page),
             })}
           />
@@ -109,49 +108,11 @@ export default async function Page(props: {
 }
 
 export async function generateStaticParams() {
-  // Generate params for all languages
-  const enParams = getLocalizedSources('en')
-    .docs.generateParams()
-    .map((p) => ({ ...p, language: 'en' }))
-
-  const frParams = getLocalizedSources('fr')
-    .docs.generateParams()
-    .map((p) => ({ ...p, language: 'fr' }))
-
-  const jaParams = getLocalizedSources('ja')
-    .docs.generateParams()
-    .map((p) => ({ ...p, language: 'ja' }))
-
-  const zhCNParams = getLocalizedSources('zh-cn')
-    .docs.generateParams()
-    .map((p) => ({ ...p, language: 'zh-cn' }))
-
-  const zhTWParams = getLocalizedSources('zh-tw')
-    .docs.generateParams()
-    .map((p) => ({ ...p, language: 'zh-tw' }))
-
-  const esParams = getLocalizedSources('es')
-    .docs.generateParams()
-    .map((p) => ({ ...p, language: 'es' }))
-
-  const idParams = getLocalizedSources('id')
-    .docs.generateParams()
-    .map((p) => ({ ...p, language: 'id' }))
-
-  const ptParams = getLocalizedSources('pt')
-    .docs.generateParams()
-    .map((p) => ({ ...p, language: 'pt' }))
-
-  return [
-    ...enParams,
-    ...frParams,
-    ...jaParams,
-    ...zhCNParams,
-    ...zhTWParams,
-    ...esParams,
-    ...idParams,
-    ...ptParams,
-  ]
+  return languages.flatMap((language) =>
+    getLocalizedSources(language)
+      .docs.generateParams()
+      .map((p) => ({ ...p, language }))
+  )
 }
 
 export async function generateMetadata({

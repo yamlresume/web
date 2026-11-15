@@ -19,195 +19,58 @@ import {
   docsZhCN,
   docsZhTW,
 } from '@/.source/server'
+import { defaultLanguage, type Language, languages } from '@/i18n/config'
 
-// Create i18n configurations for each locale
-const i18nEn = defineI18n({
-  defaultLanguage: 'en',
-  languages: ['en'],
-  fallbackLanguage: 'en',
-})
+// One row per locale. Everything below is derived from this table, so adding a
+// locale means adding a row (and its collections in source.config.ts).
+const collections = {
+  en: { docs, blog },
+  es: { docs: docsEs, blog: blogEs },
+  fr: { docs: docsFr, blog: blogFr },
+  pt: { docs: docsPt, blog: blogPt },
+  ja: { docs: docsJa, blog: blogJa },
+  'zh-cn': { docs: docsZhCN, blog: blogZhCN },
+  'zh-tw': { docs: docsZhTW, blog: blogZhTW },
+  id: { docs: docsId, blog: blogId },
+} satisfies Record<Language, { docs: object; blog: object }>
 
-const i18nFr = defineI18n({
-  defaultLanguage: 'fr',
-  languages: ['fr'],
-  fallbackLanguage: 'fr',
-})
+function createSources(language: Language) {
+  // Each locale is loaded as its own single-language source, so a page can only
+  // resolve against its own content tree.
+  const i18n = defineI18n({
+    defaultLanguage: language,
+    languages: [language],
+    fallbackLanguage: language,
+  })
+  const collection = collections[language]
 
-const i18nEs = defineI18n({
-  defaultLanguage: 'es',
-  languages: ['es'],
-  fallbackLanguage: 'es',
-})
-
-const i18nJa = defineI18n({
-  defaultLanguage: 'ja',
-  languages: ['ja'],
-  fallbackLanguage: 'ja',
-})
-
-const i18nZhCN = defineI18n({
-  defaultLanguage: 'zh-cn',
-  languages: ['zh-cn'],
-  fallbackLanguage: 'zh-cn',
-})
-
-const i18nZhTW = defineI18n({
-  defaultLanguage: 'zh-tw',
-  languages: ['zh-tw'],
-  fallbackLanguage: 'zh-tw',
-})
-
-const i18nPt = defineI18n({
-  defaultLanguage: 'pt',
-  languages: ['pt'],
-  fallbackLanguage: 'pt',
-})
-
-const i18nId = defineI18n({
-  defaultLanguage: 'id',
-  languages: ['id'],
-  fallbackLanguage: 'id',
-})
-
-// Create sources for each language
-export const blogSource = loader({
-  baseUrl: '/blog',
-  source: toFumadocsSource(blog, []),
-  i18n: i18nEn,
-})
-
-export const blogSourceFr = loader({
-  baseUrl: '/blog',
-  source: toFumadocsSource(blogFr, []),
-  i18n: i18nFr,
-})
-
-export const blogSourceEs = loader({
-  baseUrl: '/blog',
-  source: toFumadocsSource(blogEs, []),
-  i18n: i18nEs,
-})
-
-export const blogSourceJa = loader({
-  baseUrl: '/blog',
-  source: toFumadocsSource(blogJa, []),
-  i18n: i18nJa,
-})
-
-export const blogSourceZhCN = loader({
-  baseUrl: '/blog',
-  source: toFumadocsSource(blogZhCN, []),
-  i18n: i18nZhCN,
-})
-
-export const blogSourceZhTW = loader({
-  baseUrl: '/blog',
-  source: toFumadocsSource(blogZhTW, []),
-  i18n: i18nZhTW,
-})
-
-export const blogSourcePt = loader({
-  baseUrl: '/blog',
-  source: toFumadocsSource(blogPt, []),
-  i18n: i18nPt,
-})
-
-export const blogSourceId = loader({
-  baseUrl: '/blog',
-  source: toFumadocsSource(blogId, []),
-  i18n: i18nId,
-})
-
-export const docsSource = loader({
-  baseUrl: '/docs',
-  source: docs.toFumadocsSource(),
-  i18n: i18nEn,
-})
-
-export const docsSourceFr = loader({
-  baseUrl: '/docs',
-  source: docsFr.toFumadocsSource(),
-  i18n: i18nFr,
-})
-
-export const docsSourceEs = loader({
-  baseUrl: '/docs',
-  source: docsEs.toFumadocsSource(),
-  i18n: i18nEs,
-})
-
-export const docsSourceJa = loader({
-  baseUrl: '/docs',
-  source: docsJa.toFumadocsSource(),
-  i18n: i18nJa,
-})
-
-export const docsSourceZhCN = loader({
-  baseUrl: '/docs',
-  source: docsZhCN.toFumadocsSource(),
-  i18n: i18nZhCN,
-})
-
-export const docsSourceZhTW = loader({
-  baseUrl: '/docs',
-  source: docsZhTW.toFumadocsSource(),
-  i18n: i18nZhTW,
-})
-
-export const docsSourcePt = loader({
-  baseUrl: '/docs',
-  source: docsPt.toFumadocsSource(),
-  i18n: i18nPt,
-})
-
-export const docsSourceId = loader({
-  baseUrl: '/docs',
-  source: docsId.toFumadocsSource(),
-  i18n: i18nId,
-})
-
-// Helper function to get localized sources
-export function getLocalizedSources(locale: string) {
-  switch (locale) {
-    case 'fr':
-      return {
-        docs: docsSourceFr,
-        blog: blogSourceFr,
-      }
-    case 'es':
-      return {
-        docs: docsSourceEs,
-        blog: blogSourceEs,
-      }
-    case 'zh-cn':
-      return {
-        docs: docsSourceZhCN,
-        blog: blogSourceZhCN,
-      }
-    case 'zh-tw':
-      return {
-        docs: docsSourceZhTW,
-        blog: blogSourceZhTW,
-      }
-    case 'ja':
-      return {
-        docs: docsSourceJa,
-        blog: blogSourceJa,
-      }
-    case 'pt':
-      return {
-        docs: docsSourcePt,
-        blog: blogSourcePt,
-      }
-    case 'id':
-      return {
-        docs: docsSourceId,
-        blog: blogSourceId,
-      }
-    default:
-      return {
-        docs: docsSource,
-        blog: blogSource,
-      }
+  return {
+    docs: loader({
+      baseUrl: '/docs',
+      source: collection.docs.toFumadocsSource(),
+      i18n,
+    }),
+    blog: loader({
+      baseUrl: '/blog',
+      source: toFumadocsSource(collection.blog, []),
+      i18n,
+    }),
   }
+}
+
+export type LocalizedSources = ReturnType<typeof createSources>
+
+export const localizedSources = Object.fromEntries(
+  languages.map((language) => [language, createSources(language)])
+) as Record<Language, LocalizedSources>
+
+// The English sources stay exported by name because they anchor the page types
+// used by the llm routes.
+export const docsSource = localizedSources.en.docs
+export const blogSource = localizedSources.en.blog
+
+export function getLocalizedSources(language: string): LocalizedSources {
+  return (
+    localizedSources[language as Language] ?? localizedSources[defaultLanguage]
+  )
 }
