@@ -43,23 +43,23 @@ de dados. Veja como eles se comparam:
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
 | **Linguagem**                | TypeScript/Node.js                                                                                                                         | Python 3.12+                                                                                        |
 | **Formato de Dados**         | YAML                                                                                                                                       | YAML                                                                                                |
-| **Motor de Composição**      | [DOCX](/pt/docs/layouts/docx), [HTML](/pt/docs/layouts/html), [Markdown](/pt/docs/layouts/markdown), [LaTeX/XeTeX](/pt/docs/layouts/latex) | Typst                                                                                               |
-| **Formatos de Saída**        | DOCX, HTML, Markdown, LaTeX/PDF                                                                                                            | PDF, Markdown, HTML, PNG                                                                            |
+| **Motor de Composição**      | [DOCX](/pt/docs/layouts/docx), [HTML](/pt/docs/layouts/html), [LaTeX/XeTeX](/pt/docs/layouts/latex), [Typst](/pt/docs/layouts/typst), [Markdown](/pt/docs/layouts/markdown) | Typst                                                                                               |
+| **Formatos de Saída**        | DOCX, HTML, LaTeX/PDF, Typst/PDF, Markdown                                                                                                 | PDF, Markdown, HTML, PNG                                                                            |
 | **Validação de Schema**      | [Validação estrita de schema Zod](/pt/docs/compiler/schema) com [compilador](/pt/docs/compiler/architecture) + integração com IDE          | Validação Pydantic com JSON Schema para auto-completação em IDE                                     |
 | **Relatório de Erros**       | [Diagnósticos no estilo clang](/pt/docs/cli#validate) com números de linha e informação posicional                                         | Mensagens de erro Pydantic com campos de campo                                                      |
-| **Internacionalização**      | [12 idiomas](/pt/docs/locale) integrados com localização profunda                                                                          | 22 localidades integradas (nomes de mês, strings de data), personalização manual necessária         |
+| **Internacionalização**      | [11 idiomas em 13 códigos de localidade](/pt/docs/locale) com localização profunda                                                          | 22 localidades integradas (nomes de mês, strings de data), personalização manual necessária         |
 | **Formatação de Data**       | Formatos idiomáticos específicos da localidade (ordenação de endereço, pontuação, nomes de mês)                                            | Configurável via campo `locale` (abreviações de mês, string presente)                               |
 | **Formatação de Endereço**   | Reordenação consciente de localidade (ex.: chinês vs. alemão vs. inglês)                                                                   | Texto de forma livre                                                                                |
 | **Suporte a Rich Text**      | Um conjunto selecionado de [sintaxe rich text em Markdown](/pt/docs/content/rich-text) em campos `summary`                                 | Markdown + matemática/comandos Typst em todos os campos de texto                                    |
 | **Personalização de Fonte**  | [Família de fonte, tamanho de fonte, espaçamento entre linhas](/pt/docs/layouts/latex#typography), etc.                                    | Família de fonte, tamanho de fonte, espaçamento entre linhas, negrito, versaletes, etc.             |
-| **Personalização de Cores**  | [Presets de acento ou qualquer valor hex](/pt/docs/layouts/latex) para LaTeX, HTML, DOCX (desde a v0.17)                                                                                                               | Controle total de cor RGB para cada elemento (nome, links, títulos de seção, etc.)                  |
+| **Personalização de Cores**  | [Presets de acento ou qualquer valor hex](/pt/docs/layouts/latex) para LaTeX, Typst, HTML, DOCX                                                                                                               | Controle total de cor RGB para cada elemento (nome, links, títulos de seção, etc.)                  |
 | **Personalização de Layout** | [Margens da página, números de página, tamanho do papel](/pt/docs/layouts/latex#page), etc.                                                | Margens da página, tamanho do papel, alinhamento do cabeçalho, posição da foto, rodapé, etc.        |
 | **Personalização de Seções** | [Aliases](/pt/docs/layouts/sections/aliases) e [reordenação](/pt/docs/layouts/sections/reorder)                                            | Títulos de seção arbitrários; um tipo de entrada por seção                                          |
 | **Tipos de Entrada**         | Schema fixo por seção (work, education, projects, etc.)                                                                                    | 9 tipos de entrada reutilizáveis (ExperienceEntry, EducationEntry, BulletEntry, etc.)               |
-| **Templates/Temas**          | Múltiplos templates oficiais [LaTeX](/pt/docs/layouts/latex/templates) e [HTML](/pt/docs/layouts/html/templates)                           | 9 temas integrados com suporte total a sobrescrição de templates                                    |
-| **Temas Personalizados**     | Baseado em template (código-fonte DOCX/HTML/LaTeX)                                                                                         | `rendercv create-theme` com templates Typst/Jinja2 editáveis                                        |
+| **Templates/Temas**          | Múltiplos templates oficiais [LaTeX](/pt/docs/layouts/latex/templates), [Typst](/pt/docs/layouts/typst) e [HTML](/pt/docs/layouts/html/templates)                           | 9 temas integrados com suporte total a sobrescrição de templates                                    |
+| **Temas Personalizados**     | Baseado em template (código-fonte DOCX/HTML/LaTeX/Typst)                                                                                   | `rendercv create-theme` com templates Typst/Jinja2 editáveis                                        |
 | **Modo Dev**                 | [Modo dev](/pt/docs/cli#dev) com reconstrução automática                                                                                   | Flag `--watch` para recarga automática                                                              |
-| **Suporte a Docker**         | [Imagem Docker oficial](/pt/docs/contributing/docker) com LaTeX e YAMLResume pré-instalados                                                | Imagem oficial [Docker no GHCR](https://ghcr.io/rendercv/rendercv) (linux/amd64 e linux/arm64)      |
+| **Suporte a Docker**         | [Imagem Docker oficial](/pt/docs/contributing/docker) com LaTeX, Typst e YAMLResume pré-instalados                                         | Imagem oficial [Docker no GHCR](https://ghcr.io/rendercv/rendercv) (linux/amd64 e linux/arm64)      |
 | **GitHub Action**            | [GitHub Action oficial](https://github.com/yamlresume/action) para CI/CD                                                                   | Nenhuma (existem soluções da comunidade)                                                            |
 | **Homebrew**                 | [Fórmula Homebrew](https://formulae.brew.sh/formula/yamlresume) para instalação fácil no macOS e Linux                                     | Nenhuma (apenas instalação via pip)                                                                 |
 | **Playground Web**           | [Playground](/pt/playground) web interativo                                                                                                | Aplicativo web em [rendercv.com](https://rendercv.com)                                              |
@@ -197,7 +197,7 @@ O YAMLResume suporta um
 [conjunto limitado de sintaxe Markdown](/pt/docs/content/rich-text) (negrito,
 itálico, links, listas e parágrafos) em campos `summary` em todas as seções que
 os possuem. Isso é intencionalmente restrito para garantir renderização
-consistente entre os motores LaTeX, HTML e Markdown.
+consistente entre todos os cinco motores.
 
 O RenderCV suporta Markdown básico (negrito, itálico, links, código inline) em
 **todos** os campos de texto, incluindo destaques e resumos. Os destaques também
@@ -246,27 +246,30 @@ renderização divergem significativamente.
 
 #### Motores
 
-O YAMLResume fornece quatro motores de renderização:
+O YAMLResume fornece cinco motores de renderização:
 
 - **[Motor DOCX](/pt/docs/layouts/docx)**: documentos Microsoft Word para fácil
   edição e compartilhamento
 - **[Motor HTML](/pt/docs/layouts/html)**: currículos responsivos e prontos para
   web com metadados SEO
-- **[Motor Markdown](/pt/docs/layouts/markdown)**: texto limpo para LLMs,
-  sistemas ATS e sites estáticos
 - **[Motor LaTeX](/pt/docs/layouts/latex)**: PDFs pixel-perfeitos com tipografia
   profissional via XeTeX
+- **[Motor Typst](/pt/docs/layouts/typst)**: geração de PDF moderna e rápida
+- **[Motor Markdown](/pt/docs/layouts/markdown)**: texto limpo para LLMs,
+  sistemas ATS e sites estáticos
 
-Um único comando `yamlresume build` pode gerar os quatro formatos a partir do
+Um único comando `yamlresume build` pode gerar os cinco formatos a partir do
 mesmo arquivo fonte.
 
-O RenderCV usa o [Typst](https://typst.app) como seu motor de composição
-tipográfica principal. O Typst é uma alternativa moderna ao LaTeX que compila
-mais rápido e produz PDFs em conformidade com padrões. Um único comando
-`rendercv render` gera PDF, Markdown, HTML e PNG, além do código-fonte Typst
-intermediário (`.typ`). Desde a v2.8, o pacote `rendercv-typst` e o Font Awesome
-são empacotados dentro da wheel Python, então a compilação de PDF funciona
-offline sem downloads em tempo de execução.
+Ambas as ferramentas suportam o [Typst](https://typst.app), mas os seus
+pipelines de renderização diferem. O RenderCV tem um pipeline Typst/Jinja2
+dedicado que produz PDFs em conformidade com os padrões. O YAMLResume permite
+que o mesmo conteúdo escolha entre LaTeX ou Typst para a saída PDF e pode ainda
+gerar DOCX, HTML e Markdown. Um único comando `rendercv render` gera PDF,
+Markdown, HTML e PNG, além do código-fonte Typst intermediário (`.typ`). Desde a
+v2.8, o pacote `rendercv-typst` e o Font Awesome são empacotados dentro da wheel
+Python, então a compilação de PDF funciona offline sem downloads em tempo de
+execução.
 
 #### Saída DOCX
 
@@ -307,7 +310,7 @@ margens, números de página) e
 [controles de tipografia](/pt/docs/layouts/latex#typography) (família de fonte,
 tamanho de fonte, espaçamento entre linhas). Ele também expõe uma única
 [cor de destaque](/pt/docs/layouts/latex) por currículo — um dos nove presets ou
-qualquer valor hex `#RRGGBB`, aplicada pelos motores LaTeX, HTML e DOCX — mas
+qualquer valor hex `#RRGGBB`, aplicada pelos motores LaTeX, Typst, HTML e DOCX — mas
 deliberadamente para antes de cores por elemento ou espaçamento granular. Isso é
 proposital: os templates do YAMLResume encapsulam decisões visuais para que você
 não precise tomá-las.
@@ -335,16 +338,17 @@ alias/reordenação do YAMLResume.
 
 Esta é uma das maiores diferenças entre as duas ferramentas.
 
-O YAMLResume suporta mais de 10 idiomas prontos para uso
+O YAMLResume suporta 11 idiomas em 13 códigos de localidade prontos para uso
 ([English](/pt/docs/locale/english), [Chinese](/pt/docs/locale/chinese),
 [Spanish](/pt/docs/locale/spanish), [French](/pt/docs/locale/french),
 [Norwegian](/pt/docs/locale/norwegian), [Dutch](/pt/docs/locale/dutch),
 [Japanese](/pt/docs/locale/japanese), [German](/pt/docs/locale/german),
 [Indonesian](/pt/docs/locale/indonesian),
-[Brazilian Portuguese](/pt/docs/locale/portuguese), etc.) com traduções
-integradas de cabeçalhos de seção, nomes de países, graus, níveis de habilidade,
-níveis de fluência em idiomas, formatos idiomáticos de endereço e data,
-pontuação apropriada à localidade e configuração do babel LaTeX.
+[Brazilian Portuguese](/pt/docs/locale/brazilian-portuguese),
+[Italian](/pt/docs/locale/italian), etc.) com traduções integradas de cabeçalhos
+de seção, nomes de países, graus, níveis de habilidade, níveis de fluência em
+idiomas, formatos idiomáticos de endereço e data, pontuação apropriada à
+localidade e configuração do babel LaTeX.
 
 Por exemplo, o YAMLResume automaticamente:
 
@@ -447,7 +451,7 @@ de problemas e saída em múltiplos formatos.
 
 O YAMLResume fornece uma
 [imagem Docker oficial](https://hub.docker.com/r/yamlresume/yamlresume) com
-todas as dependências pré-instaladas, incluindo Node.js, LaTeX e fontes
+todas as dependências pré-instaladas, incluindo Node.js, LaTeX, Typst e fontes
 recomendadas:
 
 ```bash
@@ -482,7 +486,7 @@ O YAMLResume fornece uma
 CI/CD:
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: |
       resume-en.yml
@@ -531,11 +535,12 @@ Cursor, Copilot e outros agentes de codificação de IA.
 **YAMLResume** se destaca se você quer:
 
 - Internacionalização profunda com formatos de data idiomáticos, ordenação de
-  endereços, regras de pontuação e configuração do babel LaTeX para 12 idiomas
+  endereços, regras de pontuação e configuração do babel LaTeX em 11 idiomas e
+  13 códigos de localidade
 - Tipografia madura para CJK e scripts complexos via pacotes LaTeX como ctex,
   luatexja, kotex e xeCJK
-- Múltiplos motores de renderização (DOCX, HTML, Markdown, LaTeX/PDF) a partir
-  de um único arquivo fonte
+- Cinco motores de renderização (DOCX, HTML, LaTeX/PDF, Typst/PDF, Markdown) a
+  partir de um único arquivo fonte
 - Saída nativa Microsoft Word (DOCX) para recrutadores ou gestores de
   contratação que precisam de um documento editável
 - Um modelo de dados estritamente validado e padronizado que garante
@@ -548,8 +553,7 @@ Cursor, Copilot e outros agentes de codificação de IA.
   estão codificadas em templates oficiais
 
 Escolha **RenderCV** se você é um acadêmico ou engenheiro que quer controle
-granular sobre cada detalhe visual e prefere a composição tipográfica moderna do
-Typst em vez do LaTeX.
+granular sobre cada detalhe visual dentro do seu pipeline Typst/Jinja2 dedicado.
 
 Escolha **YAMLResume** se você quer uma solução opinativa e completa que cuida
 de tudo, desde a validação de dados até a geração de PDF profissional em

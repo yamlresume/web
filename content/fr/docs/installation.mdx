@@ -1,19 +1,22 @@
 ---
 title: Installation
-description: "Installez la CLI YAMLResume avec npm, pnpm, Docker ou Homebrew, ainsi que XeTeX ou Tectonic et les polices recommandées pour le PDF."
+description: "Installez la CLI YAMLResume avec npm, pnpm, Docker ou Homebrew, ainsi que XeTeX, Tectonic ou Typst et les polices recommandées pour le PDF."
 ---
 
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
-YAMLResume est un outil Node.js qui, sous le capot, transforme vos CV du format
-YAML vers le code LaTeX puis appelle un moteur de composition LaTeX pour compiler
-le code LaTeX généré en PDF. De plus, pour obtenir une sortie PDF optimale, nous
-suggérons également d'installer certaines polices. En résumé, vous devez installer
-les éléments suivants pour commencer avec YAMLResume :
+YAMLResume est distribué comme CLI Node.js et comme ensemble de paquets
+réutilisables. Pour les sorties DOCX, HTML, Markdown, LaTeX et Typst, vous
+n'avez besoin que de Node.js et du CLI `yamlresume`. La sortie PDF nécessite en
+plus le [moteur de composition](#typesetting-engine) correspondant, et
+l'installation des polices recommandées améliore la typographie finale. En
+résumé, vous devez installer les éléments suivants pour commencer avec
+YAMLResume :
 
 - Node.js 22 ou plus récent
 - [package yamlresume](https://www.npmjs.com/package/yamlresume)
-- un moteur de composition
+- [optionnel] XeTeX ou Tectonic pour la sortie LaTeX/PDF
+- [optionnel] Typst 0.13.0 ou plus récent pour la sortie Typst/PDF
 - [optionnel] quelques polices
 
 Cela semble un peu compliqué, mais ne vous inquiétez pas, nous sommes là pour vous.
@@ -27,6 +30,7 @@ tout pré-emballé, y compris :
 - [Node.js](/docs/installation#nodejs)
 - [CLI yamlresume](/docs/installation#yamlresume)
 - [XeTeX](/docs/installation#xetex)
+- [Typst](/docs/installation#typst)
 - [quelques polices recommandées](/docs/installation#font)
 
 Vous pouvez créer un nouveau CV instantanément avec la commande suivante :
@@ -246,8 +250,8 @@ Options:
 
 Commands:
   ai                             AI-powered resume generation
-  build [options] <resume-path>  build a resume to Docx, HTML, Markdown or
-                                 LaTeX/PDF
+  build [options] <resume-path>  build a resume to Docx, HTML, Markdown,
+                                 LaTeX/PDF or Typst/PDF
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
@@ -280,29 +284,41 @@ bun exec yamlresume help
 
 ### Moteur de Composition
 
-Sous le capot, `yamlresume` fait le travail d'un compilateur, analysant un CV YAML
-vers un
+Sous le capot, `yamlresume` analyse un CV YAML en un
 [AST](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/ast.ts)
-puis [transformant l'AST en code LaTeX](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/codegen/latex.ts).
+et le transforme en code source LaTeX ou Typst. Générer les fichiers sources ne
+nécessite aucun compilateur externe. Pour transformer ces sources en PDF,
+installez le moteur de composition correspondant :
 
-En tant que mini-compilateur, `yamlresume` s'appuie sur un moteur de composition
-pour compiler le code LaTeX généré en PDFs. Par conséquent, vous devez d'abord
-installer un moteur de composition avant de pouvoir utiliser `yamlresume` pour
-générer des PDFs de CV.
+- **Mises en page LaTeX** : [XeTeX](#xetex) ou [Tectonic](#tectonic)
+- **Mises en page Typst** : [Typst](#typst) 0.13.0 ou plus récent
 
-YAMLResume supporte actuellement deux moteurs de composition : [XeTeX](#xetex) et
-[Tectonic](#tectonic).
-
-<Callout title="Pourquoi LaTeX ?">
-  Au moment de l'écriture, [LaTeX](https://www.latex-project.org/) est toujours
-  le meilleur choix de moteur de composition pour produire des PDFs d'apparence
-  professionnelle. [Typst](https://typst.app/) est une excellente alternative,
-  mais il est encore dans sa phase précoce et son support CJK n'est pas mature
-  et prêt pour la production. Précédemment j'ai écrit un post [On Typesetting
-  Engines](https://blog.ppresume.com/posts/on-typesetting-engines) expliquant
-  les raisons pour lesquelles j'ai choisi LaTeX plutôt que d'autres moteurs de
-  composition quand j'ai fondé [PPResume](https://ppresume.com).
+<Callout title="Pourquoi LaTeX et Typst ?">
+  [LaTeX](https://www.latex-project.org/) offre un écosystème de composition
+  mature et plusieurs modèles de CV établis. [Typst](https://typst.app/) propose
+  un langage moderne et une compilation rapide. YAMLResume prend en charge les
+  deux, vous pouvez donc choisir pour chaque mise en page sans modifier le
+  contenu du CV.
 </Callout>
+
+#### Typst
+
+Installez [Typst](https://typst.app/) 0.13.0 ou plus récent en suivant le
+[guide d'installation officiel](https://github.com/typst/typst#installation).
+Sur macOS, vous pouvez utiliser Homebrew :
+
+```sh
+brew install typst
+```
+
+Vérifiez que le CLI est disponible et signale une version prise en charge :
+
+```console
+$ typst --version
+typst 0.15.1
+```
+
+`yamlresume doctor` vérifie également la version de Typst installée.
 
 #### XeTeX
 

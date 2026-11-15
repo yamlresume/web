@@ -37,12 +37,12 @@ Veja como os dois fluxos de trabalho se comparam:
 | **Formato de Autoria**   | YAML em texto simples                                                                                               | `.docx` binário (um ZIP de XML)                                                             |
 | **Formatação**           | Gerada a partir de templates, então a formatação permanece consistente                                              | Manual—estilos, tabulações e espaçamento se perdem com o tempo                              |
 | **Validação de Schema**  | [Validação estrita de Zod](/pt/docs/compiler/schema) com [diagnósticos no estilo clang](/pt/blog/yamlresume-compiler) | Nenhuma para estrutura—apenas ortografia e gramática                                        |
-| **Formatos de Saída**    | [DOCX](/pt/docs/layouts/docx), [HTML](/pt/docs/layouts/html), [Markdown](/pt/docs/layouts/markdown), [LaTeX/PDF](/pt/docs/layouts/latex) | `.docx`, PDF (Salvar Como), além de exportações com perdas para outros formatos             |
+| **Formatos de Saída**    | [DOCX](/pt/docs/layouts/docx), [HTML](/pt/docs/layouts/html), [LaTeX/PDF](/pt/docs/layouts/latex), [Typst/PDF](/pt/docs/layouts/typst), [Markdown](/pt/docs/layouts/markdown) | `.docx`, PDF (Salvar Como), além de exportações com perdas para outros formatos             |
 | **Saída DOCX**           | [Motor DOCX](/pt/docs/layouts/docx) integrado com templates curados                                                 | O próprio documento é o DOCX                                                                |
-| **Templates**            | Conjunto oficial curado (`calm` para DOCX; mais para [LaTeX](/pt/docs/layouts/latex/templates) e [HTML](/pt/docs/layouts/html/templates)) | Milhares de templates via Microsoft Create e terceiros; qualidade varia muito               |
+| **Templates**            | Conjunto oficial curado (`calm` para DOCX; mais para [LaTeX](/pt/docs/layouts/latex/templates), [Typst](/pt/docs/layouts/typst) e [HTML](/pt/docs/layouts/html/templates)) | Milhares de templates via Microsoft Create e terceiros; qualidade varia muito               |
 | **Controle de Versão**   | Funciona com Git; diffs mostram mudanças reais                                                                      | Arquivos binários—diffs e merges são inúteis na prática                                     |
 | **Personalização**       | Arquivos de layout e branches do Git por candidatura                                                                | Cópias de "Salvar Como" que se perdem entre si (`resume_final_v2.docx`)                     |
-| **Internacionalização**  | [10 idiomas em 12 códigos de localidade](/pt/docs/locale), além de [tradução por IA](/pt/docs/ai/translate)         | Interface e corretor em muitos idiomas; cada idioma é um documento manual separado          |
+| **Internacionalização**  | [11 idiomas em 13 códigos de localidade](/pt/docs/locale), além de [tradução por IA](/pt/docs/ai/translate)         | Interface e corretor em muitos idiomas; cada idioma é um documento manual separado          |
 | **Rich Text**            | Um conjunto selecionado de [sintaxe Markdown](/pt/docs/content/rich-text) em campos `summary`                       | Formatação completa em qualquer lugar                                                       |
 | **Modelo de Dados**      | Schema fixo e estruturado; interoperabilidade com [JSON Resume](/pt/docs/comparisons/json-resume)                   | Documento de forma livre                                                                    |
 | **Funcionalidades de IA** | [Geração](/pt/docs/ai/generate) e [tradução](/pt/docs/ai/translate) integradas na CLI                                | Funcionalidades do Microsoft 365 Copilot (assinatura)                                       |
@@ -67,11 +67,11 @@ usuários do Word nunca usa estilos nomeados, então a formatação acaba como
 ajustes avulsos inline, dolorosos de revisar.
 
 No YAMLResume, a formatação é trabalho do compilador. Seu conteúdo é dado; o
-[motor DOCX](/pt/docs/layouts/docx) e o
-[motor LaTeX](/pt/docs/layouts/latex) o renderizam através de templates que
-impõem consistência. Altere seu cargo em um único lugar e todo formato—DOCX,
-PDF, HTML, Markdown—o reflete no próximo build. O template toma cada decisão de
-design uma única vez, e acerta.
+[motor DOCX](/pt/docs/layouts/docx), o [motor LaTeX](/pt/docs/layouts/latex) e o
+[motor Typst](/pt/docs/layouts/typst) o renderizam através de templates que
+impõem consistência. Altere seu cargo em um único lugar e todo formato—DOCX, PDF
+via LaTeX ou Typst, HTML, Markdown—o reflete no próximo build. O template toma
+cada decisão de design uma única vez, e acerta.
 
 ### Texto Simples vs. Binário
 
@@ -138,7 +138,7 @@ seu problema.
 O YAMLResume brilha quando uma carreira precisa falar vários idiomas. Definir a
 chave `locale` traduz títulos de seção, graus, níveis de habilidade e nomes de
 países; formata datas e endereços no estilo local; e aplica regras de
-pontuação da localidade em [10 idiomas e 12 códigos de
+pontuação da localidade em [11 idiomas e 13 códigos de
 localidade](/pt/docs/locale). Combinado com o
 [`yamlresume ai translate`](/pt/docs/ai/translate), uma variante de inglês para
 japonês está a um comando de distância, gerada a partir da mesma fonte para que
@@ -174,7 +174,7 @@ caixas de texto que dificultam a edição e quebram parsers de ATS.
 
 O YAMLResume traz um pequeno conjunto curado: o template
 [calm](/pt/docs/layouts/docx/templates/calm) para saída DOCX, além de templates
-[LaTeX](/pt/docs/layouts/latex/templates) e
+[LaTeX](/pt/docs/layouts/latex/templates), [Typst](/pt/docs/layouts/typst) e
 [HTML](/pt/docs/layouts/html/templates), todos validados contra cada localidade
 suportada. Como os templates são configurações do motor e não documentos,
 trocar de design nunca significa reescrever o conteúdo.
@@ -195,7 +195,7 @@ partir da mesma fonte YAML, com opções de
 Uma ressalva se aplica a qualquer arquivo DOCX, gerado ou não: as fontes
 precisam existir na máquina onde o documento é aberto, ou o Word as substitui.
 Escolha fontes amplamente disponíveis para o seu layout DOCX, e mantenha o
-motor LaTeX/PDF como sua referência para uma saída perfeita.
+motor de PDF LaTeX ou Typst como sua referência para uma saída perfeita.
 
 ### Automação
 
@@ -225,12 +225,13 @@ você mantém currículos.
 
 - Um único arquivo-fonte em texto simples no Git, com diffs reais, histórico e
   branches
-- Formatação gerada e consistente entre [DOCX](/pt/docs/layouts/docx),
-  [PDF](/pt/docs/layouts/latex), [HTML](/pt/docs/layouts/html) e
+- Formatação gerada e consistente entre [DOCX](/pt/docs/layouts/docx), PDF via
+  [LaTeX](/pt/docs/layouts/latex) ou [Typst](/pt/docs/layouts/typst),
+  [HTML](/pt/docs/layouts/html) e
   [Markdown](/pt/docs/layouts/markdown)
 - [Validação de schema](/pt/docs/compiler/schema) que pega
   [erros estruturais](/pt/docs/cli#validate) antes dos recrutadores
-- [Internacionalização](/pt/docs/locale) profunda: [10 idiomas em 12 códigos
+- [Internacionalização](/pt/docs/locale) profunda: [11 idiomas em 13 códigos
   de localidade](/pt/docs/locale) com [tradução por IA](/pt/docs/ai/translate),
   a partir de uma única fonte da verdade
 - Saída segura para ATS por design, mais um

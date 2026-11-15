@@ -65,6 +65,7 @@ B1[DocxLayout]
 B2[HtmlLayout]
 B3[LatexLayout]
 B4[MarkdownLayout]
+B5[TypstLayout]
 end
 
 subgraph Content
@@ -86,6 +87,7 @@ B --> B1
 B --> B2
 B --> B3
 B --> B4
+B --> B5
 C --> C1
 C --> C2
 C --> C3
@@ -298,7 +300,7 @@ Tableau d'éléments de mise en page prenant en charge plusieurs formats de sort
 
 | Prop        | Type                                                                 | Requis | Description                            |
 | ----------- | -------------------------------------------------------------------- | ------ | -------------------------------------- |
-| `layouts[]` | [`DocxLayout`](#docxlayout) \| [`HtmlLayout`](#htmllayout) \| [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜     | Configurations de mise en page multiples. |
+| `layouts[]` | [`DocxLayout`](#docxlayout) \| [`HtmlLayout`](#htmllayout) \| [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) \| [`TypstLayout`](#typstlayout) | ⬜     | Configurations de mise en page multiples. |
 
 #### Types de Mise en Page Courants
 
@@ -371,6 +373,7 @@ Définit les paramètres typographiques pour le formatage du document HTML.
 | `fontFamily?` | `string`                          | ⬜     | Une liste de familles de polices séparées par des virgules. |
 | `fontSize?`   | [`HtmlFontSize`](#htmlfontsize)   | ⬜     | Taille de police de base pour le document. |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)    | ⬜     | Interligne pour le document.            |
+| `links?`      | `{ underline?: boolean }`         | ⬜     | Paramètres de style de lien.            |
 
 #### LatexLayout
 
@@ -416,6 +419,50 @@ Définit les paramètres typographiques pour le formatage du document.
 | `fontFamily?` | `string`                            | ⬜     | Une liste de familles de polices séparées par des virgules. |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)      | ⬜     | Interligne pour le document.            |
 | `links?`      | `{ underline?: boolean }`           | ⬜     | Paramètres de style de lien.            |
+
+#### TypstLayout
+
+Configuration de mise en page Typst.
+
+| Prop          | Type                                    | Requis | Description                                           |
+| ------------- | --------------------------------------- | ------ | ----------------------------------------------------- |
+| `engine`      | `'typst'`                               | ✅     | Le moteur pour générer le CV.                         |
+| `advanced?`   | [`TypstAdvanced`](#typstadvanced)       | ⬜     | Définit les options de configuration avancées.        |
+| `page?`       | [`TypstPage`](#typstpage)               | ⬜     | Définit les paramètres au niveau de la page pour la présentation du document.|
+| `sections?`   | [`Sections`](#sections)                 | ⬜     | Définit les paramètres de personnalisation de section.|
+| `template?`   | [`TypstTemplate`](#typsttemplate)       | ⬜     | Définit le modèle sélectionné.                        |
+| `theme?`      | [`Theme`](#theme)                       | ⬜     | Paramètres visuels du thème du CV.                    |
+| `typography?` | [`TypstTypography`](#typsttypography)   | ⬜     | Définit les paramètres typographiques pour le formatage du document. |
+
+##### TypstAdvanced
+
+Définit les options de configuration avancées pour Typst.
+
+| Prop         | Type      | Requis | Description                                          |
+| ------------ | --------- | ------ | ---------------------------------------------------- |
+| `showIcons?` | `boolean` | ⬜     | Indique s'il faut afficher les icônes pour les liens et les profils. |
+| `showUrls?`  | `boolean` | ⬜     | Indique s'il faut afficher les URL brutes ou les masquer derrière un texte raisonnable. |
+
+##### TypstPage
+
+Définit les paramètres au niveau de la page pour la présentation du document.
+
+| Prop               | Type                           | Requis | Description                          |
+| ------------------ | ------------------------------ | ------ | ------------------------------------ |
+| `margins?`         | [`Margins`](#margins)          | ⬜     | Définit les paramètres de marges de page. |
+| `paperSize?`       | [`TypstPaperSize`](#typstpapersize) | ⬜     | Définit la taille du papier.         |
+| `showPageNumbers?` | `boolean`                      | ⬜     | Indique s'il faut afficher les numéros de page. |
+
+##### TypstTypography
+
+Définit les paramètres typographiques pour le formatage du document.
+
+| Prop          | Type                                | Requis | Description                      |
+| ------------- | ----------------------------------- | ------ | -------------------------------- |
+| `fontSize?`   | [`TypstFontSize`](#typstfontsize)   | ⬜     | Taille de police de base pour le document. |
+| `fontFamily?` | `string`                            | ⬜     | Une liste de familles de polices séparées par des virgules. |
+| `lineSpacing?`| [`LineSpacing`](#linespacing)       | ⬜     | Interligne pour le document.     |
+| `links?`      | `{ underline?: boolean }`           | ⬜     | Paramètres de style de lien.     |
 
 #### MarkdownLayout
 
@@ -468,6 +515,7 @@ Définit les paramètres typographiques pour le formatage du document.
 | `fontSize?`   | [`DocxFontSize`](#docxfontsize)     | ⬜     | Taille de police de base pour le document. |
 | `fontFamily?` | `string`                            | ⬜     | Une liste de familles de polices séparées par des virgules. |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)       | ⬜     | Interligne pour le document.            |
+| `links?`      | `{ underline?: boolean }`           | ⬜     | Paramètres de style de lien.            |
 
 ## Types d'Énumération
 
@@ -624,6 +672,29 @@ Voir aussi : [modèles](/fr/docs/layouts/latex/templates)
 - `moderncv-casual`
 - `moderncv-classic`
 
+#### TypstFontSize
+
+Un type union pour toutes les options de taille de police Typst possibles.
+
+- `10pt` - Taille de police 10pt (par défaut)
+- `11pt` - Taille de police 11pt
+- `12pt` - Taille de police 12pt
+
+#### TypstPaperSize
+
+Un type union pour toutes les options de taille de papier Typst possibles.
+
+- `a4` (par défaut)
+- `letter`
+
+#### TypstTemplate
+
+Un type union pour toutes les options de modèles Typst possibles.
+
+Voir aussi : [modèles](/fr/docs/layouts/typst/templates)
+
+- `jake`
+
 #### PaperSize
 
 Un type union pour toutes les options de taille de papier LaTeX possibles.
@@ -639,8 +710,16 @@ Un type union pour toutes les langues de locale possibles.
 
 Voir aussi : [multi-langues](/fr/docs/locale)
 
+- `de`
 - `en`
 - `es`
+- `fr`
+- `id`
+- `it`
+- `ja`
+- `nl`
+- `no`
+- `pt-br`
 - `zh-hans`
 - `zh-hant-hk`
 - `zh-hant-tw`

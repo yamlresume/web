@@ -221,7 +221,7 @@ Définit la configuration de validation de la mise en page globale.
 
 | Prop        | Type                                                                                         | Requis | Règles de Validation            |
 | ----------- | -------------------------------------------------------------------------------------------- | ------ | ------------------------------- |
-| `layouts[]` | [`DocxLayoutSchema`](#docxlayoutschema) \| [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜     | Tableau de configurations de mise en page. |
+| `layouts[]` | [`DocxLayoutSchema`](#docxlayoutschema) \| [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) \| [`TypstLayoutSchema`](#typstlayoutschema) | ⬜     | Tableau de configurations de mise en page. |
 
 #### Schémas de Mise en Page Courants
 
@@ -302,6 +302,7 @@ Valide les paramètres de typographie HTML.
 | `fontFamily?` | `string`                          | ⬜     | Une liste de familles de polices séparées par des virgules. |
 | `fontSize?`   | [`HtmlFontSize`](#htmlfontsize)   | ⬜     | Doit être parmi les [options de taille de police](#htmlfontsize) prédéfinies |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)     | ⬜     | Doit être parmi les [options d'interligne](#linespacing) prédéfinies |
+| `links?`      | `{ underline?: boolean }`         | ⬜     | true/false                                                 |
 
 #### LatexLayoutSchema
 
@@ -347,6 +348,50 @@ Valide les paramètres typographiques pour le formatage du document.
 | `fontFamily?` | `string`                        | ⬜     | Une liste de familles de polices séparées par des virgules. |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)  | ⬜     | Doit être parmi les [options d'interligne](#linespacing) prédéfinies |
 | `links?`      | `{ underline?: boolean }`       | ⬜     | true/false                                                 |
+
+#### TypstLayoutSchema
+
+Valide la configuration de mise en page Typst.
+
+| Prop          | Type                                                | Requis | Règles de Validation                                      |
+| ------------- | --------------------------------------------------- | ------ | --------------------------------------------------------- |
+| `advanced?`   | [`TypstAdvancedSchema`](#typstadvancedschema)       | ⬜     | Voir [schéma avancé](#typstadvancedschema)                |
+| `engine`      | `'typst'`                                           | ✅     | Doit être "typst"                                         |
+| `page?`       | [`TypstPageSchema`](#typstpageschema)               | ⬜     | Voir [schéma de page](#typstpageschema)                   |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜     | Voir [schéma de sections](#sectionsschema)                |
+| `template?`   | [`TypstTemplate`](#typsttemplate)                   | ⬜     | Doit être `jake`                                          |
+| `theme?`      | [`ThemeSchema`](#themeschema)                       | ⬜     | Voir [schéma de thème](#themeschema)                      |
+| `typography?` | [`TypstTypographySchema`](#typsttypographyschema)   | ⬜     | Voir [schéma de typographie](#typsttypographyschema)      |
+
+##### TypstAdvancedSchema
+
+Valide les options de configuration avancées pour Typst.
+
+| Prop         | Type      | Requis | Règles de Validation |
+| ------------ | --------- | ------ | -------------------- |
+| `showIcons?` | `boolean` | ⬜     | true/false           |
+| `showUrls?`  | `boolean` | ⬜     | true/false           |
+
+##### TypstPageSchema
+
+Valide les paramètres au niveau de la page pour Typst.
+
+| Prop               | Type                        | Requis | Règles de Validation                           |
+| ------------------ | --------------------------- | ------ | ---------------------------------------------- |
+| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜     | Voir [schéma de marges](#marginsschema)        |
+| `paperSize?`       | [`TypstPaperSize`](#typstpapersize) | ⬜     | Doit être `a4` ou `letter`                     |
+| `showPageNumbers?` | `boolean`                   | ⬜     | true/false                                     |
+
+##### TypstTypographySchema
+
+Valide les paramètres de typographie Typst.
+
+| Prop          | Type                        | Requis | Règles de Validation                                       |
+| ------------- | --------------------------- | ------ | ---------------------------------------------------------- |
+| `fontSize?`   | [`TypstFontSize`](#typstfontsize) | ⬜     | Doit être `10pt`, `11pt` ou `12pt`                         |
+| `fontFamily?` | `string`                    | ⬜     | Une liste de familles de polices séparées par des virgules. |
+| `lineSpacing?`| [`LineSpacing`](#linespacing) | ⬜     | Doit être parmi les [options d'interligne](#linespacing) prédéfinies |
+| `links?`      | `{ underline?: boolean }`   | ⬜     | true/false                                                 |
 
 #### MarkdownLayoutSchema
 
@@ -399,6 +444,7 @@ Valide les paramètres typographiques pour le formatage du document.
 | `fontSize?`   | [`DocxFontSize`](#docxfontsize)   | ⬜     | Doit être parmi les [options de taille de police](#docxfontsize) prédéfinies |
 | `fontFamily?` | `string`                          | ⬜     | Une liste de familles de polices séparées par des virgules. |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)     | ⬜     | Doit être parmi les [options d'interligne](#linespacing) prédéfinies |
+| `links?`      | `{ underline?: boolean }`         | ⬜     | true/false                                                 |
 
 ## Schémas de Validation Primitifs
 
@@ -624,7 +670,8 @@ Un type union pour toutes les langues de locale possibles.
 
 **Règles de Validation :**
 
-- Doit être l'une de : `en`, `es`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`
+- Doit être l'une de : `de`, `en`, `es`, `fr`, `id`, `it`, `ja`, `nl`, `no`,
+  `pt-br`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`
 - Voir aussi : [multi-langues](/fr/docs/locale)
 
 ### LatexFontspecNumbers
@@ -659,6 +706,33 @@ Un type union pour toutes les options de taille de police possibles.
 
 - Doit être l'une de : `10pt`, `11pt`, `12pt`
 - `10pt` est la taille de police par défaut
+
+### TypstFontSize
+
+Un type union pour toutes les options de taille de police Typst possibles.
+
+**Règles de Validation :**
+
+- Doit être l'une de : `10pt`, `11pt`, `12pt`
+- `10pt` est la taille de police par défaut
+
+### TypstPaperSize
+
+Un type union pour toutes les options de taille de papier Typst possibles.
+
+**Règles de Validation :**
+
+- Doit être l'une de : `a4`, `letter`
+- `a4` est la taille de papier par défaut
+
+### TypstTemplate
+
+Un type union pour toutes les options de modèle Typst possibles.
+
+**Règles de Validation :**
+
+- Doit être l'un de : `jake`
+- Voir aussi : [modèles](/fr/docs/layouts/typst/templates)
 
 ### PaperSize
 

@@ -42,38 +42,38 @@ WYSIWYG ビルダーで履歴書を編集し、データはアプリ内（Postgr
 
 ## 機能比較
 
-| 機能                       | YAMLResume                                                                                                                | Reactive Resume                                                                                                          |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| **種類**                   | CLI ツールチェーン + ファイル形式                                                                                         | Web アプリケーション（ホスティングまたはセルフホスト）                                                                   |
-| **言語**                   | TypeScript/Node.js                                                                                                        | TypeScript（TanStack Router、React 19、Hono、Node.js）                                                                   |
-| **ライセンス**             | MIT                                                                                                                       | MIT                                                                                                                      |
-| **データ形式**             | プレーンテキストの YAML ファイル                                                                                          | Web UI で編集される PostgreSQL に保存された JSON                                                                         |
-| **アカウントが必要**       | なし                                                                                                                      | 基本的な利用では不要；クラウド同期にはアカウント                                                                         |
-| **編集**                   | 任意のテキストエディター + [Dev モード](/ja/blog/dev-mode) の自動リビルド                                                 | ブラウザでライブプレビューする WYSIWYG エディター                                                                        |
-| **組版エンジン**           | [DOCX](/ja/docs/layouts/docx)、[HTML](/ja/docs/layouts/html)、[Markdown](/ja/docs/layouts/markdown)、[LaTeX/XeTeX](/ja/docs/layouts/latex) | クライアントサイド PDF レンダラー（@react-pdf/renderer）                                                                 |
-| **出力形式**               | DOCX、HTML、Markdown、LaTeX/PDF                                                                                           | PDF、DOCX、Markdown、JSON                                                                                                |
-| **スキーマ検証**           | [コンパイラ](/ja/docs/compiler/architecture) + IDE 統合による [厳格な Zod スキーマ検証](/ja/docs/compiler/schema)         | ユーザー向けエラーメッセージを伴うサーバーサイドのスキーマ検証                                                           |
-| **エラー報告**             | 行番号と位置情報を含む [clang スタイルの診断](/ja/docs/cli#validate)                                                      | インラインのフォームエラーとインポート検証メッセージ                                                                     |
-| **国際化（i18n）**         | 深いコンテンツローカリゼーションを備えた [12 ロケールコードで 10 言語](/ja/docs/locale)                                  | UI は 55 のロケールに翻訳；RTL の PDF ミラーリング；ロケールを認識したフォールバックフォント                           |
-| **リッチテキストサポート** | `summary` フィールドでの選択的な [Markdown リッチテキスト構文](/ja/docs/content/rich-text) サポート                       | すべてのフィールドでハイライトカラーを備えた WYSIWYG リッチテキストエディター                                          |
-| **フォントカスタマイズ**   | [フォントファミリー、フォントサイズ、行間](/ja/docs/layouts/latex#typography) など                                        | テンプレートごとのフォントファミリー、サイズ、間隔の制御                                                                 |
-| **カラーカスタマイズ**     | [アクセントのプリセットまたは任意の hex](/ja/docs/layouts/latex) を LaTeX、HTML、DOCX で利用可能（v0.17 以降） | テンプレートのカラーパレットに加え、コンテンツセレクターを備えた Semantic CSS エディター                               |
-| **レイアウトカスタマイズ** | [ページ余白、ページ番号、用紙サイズ](/ja/docs/layouts/latex#page) など                                                    | A4/Letter、余白、間隔、サイドバー幅、アイコンスタイル、ドラッグ＆ドロップによる配置                                     |
-| **セクションカスタマイズ** | [エイリアス](/ja/docs/layouts/sections/aliases) と [並べ替え](/ja/docs/layouts/sections/reorder)                           | 型付きフィールドを持つカスタムセクション、ドラッグ＆ドロップでの並べ替え、項目ごとの可視性                               |
-| **テンプレート/テーマ**    | 複数の公式 [LaTeX](/ja/docs/layouts/latex/templates)、[HTML](/ja/docs/layouts/html/templates)、[DOCX](/ja/docs/layouts/docx/templates) テンプレート | 15 の組み込みテンプレート（Azurill、Bronzor、Chikorita、Ditto、Gengar、Lapras、Rhyhorn など）        |
-| **カスタムスタイル**       | テンプレートベース（DOCX/HTML/LaTeX ソース）                                                                              | テンプレート間で移植可能な Semantic CSS ルール                                                                           |
-| **Dev モード**             | 自動リビルド付き [Dev モード](/ja/docs/cli#dev)                                                                           | 入力と同時にライブプレビュー                                                                                             |
-| **バージョン管理**         | ネイティブ対応（Git 内のプレーンテキストファイル）                                                                        | JSON エクスポート/インポート；アプリ内のバージョン履歴スナップショット；行レベルの差分なし                               |
-| **Docker サポート**        | LaTeX と YAMLResume がプリインストールされた [公式 Docker イメージ](/ja/docs/contributing/docker)                         | オールインワンのセルフホスト用イメージ（Docker Hub と GHCR）；ワンクリックの Vercel デプロイ                             |
-| **GitHub Action**          | CI/CD 用の [公式 GitHub Action](https://github.com/yamlresume/action)                                                     | なし                                                                                                                     |
-| **Homebrew**               | macOS および Linux での簡単なインストールのための [Homebrew 公式パッケージ](https://formulae.brew.sh/formula/yamlresume) | なし                                                                                                                     |
-| **Web プレイグラウンド**   | インタラクティブな Web ベースの [プレイグラウンド](/ja/playground)                                                        | [rxresu.me](https://rxresu.me) のホスティング版アプリそのもの                                                            |
-| **AI 統合**                | CLI と API による内蔵の [生成](/ja/docs/ai/generate) と [翻訳](/ja/docs/ai/translate)                                     | OpenAI、Anthropic、Google、OpenRouter、Ollama などに対応したアプリ内 AI エージェント、ATS チェック、PDF/DOCX インポート |
-| **エージェント統合**       | 履歴書ファイルはあらゆるコーディングエージェントで動作                                                                    | OAuth を備えた [MCP サーバー](https://docs.rxresu.me) に加え、OpenAPI REST API                                            |
-| **共有**                   | [HTML 出力](/ja/docs/layouts/html) を任意の場所でホスティング                                                             | ビューカウント付きの公開共有リンク                                                                                       |
-| **その他**                 | 厳選されたサンプル履歴書、[json2yamlresume](/ja/docs/ecosystem/json2yamlresume) コンバーター                              | カバーレター、求職活動トラッカー、Application Copilot（自動入力、マッチスコアリング、カスタマイズ版作成）               |
-| **Node.js API**            | ファイルの読み込み、検証、ビルド、監視、生成、翻訳のための [`@yamlresume/node`](/ja/docs/ecosystem/node)                  | REST API + MCP（ローカルライブラリなし）                                                                                 |
-| **決定論的出力**           | はい                                                                                                                      | はい（クライアントサイド PDF レンダラー）                                                                                |
+| 機能                       | YAMLResume                                                                                                                                                                           | Reactive Resume                                                                                                         |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| **種類**                   | CLI ツールチェーン + ファイル形式                                                                                                                                                    | Web アプリケーション（ホスティングまたはセルフホスト）                                                                  |
+| **言語**                   | TypeScript/Node.js                                                                                                                                                                   | TypeScript（TanStack Router、React 19、Hono、Node.js）                                                                  |
+| **ライセンス**             | MIT                                                                                                                                                                                  | MIT                                                                                                                     |
+| **データ形式**             | プレーンテキストの YAML ファイル                                                                                                                                                     | Web UI で編集される PostgreSQL に保存された JSON                                                                        |
+| **アカウントが必要**       | なし                                                                                                                                                                                 | 基本的な利用では不要；クラウド同期にはアカウント                                                                        |
+| **編集**                   | 任意のテキストエディター + [Dev モード](/ja/blog/dev-mode) の自動リビルド                                                                                                            | ブラウザでライブプレビューする WYSIWYG エディター                                                                       |
+| **組版エンジン**           | [DOCX](/ja/docs/layouts/docx)、[HTML](/ja/docs/layouts/html)、[LaTeX/XeTeX](/ja/docs/layouts/latex)、[Typst](/ja/docs/layouts/typst)、[Markdown](/ja/docs/layouts/markdown)          | クライアントサイド PDF レンダラー（@react-pdf/renderer）                                                                |
+| **出力形式**               | DOCX、HTML、LaTeX/PDF、Typst/PDF、Markdown                                                                                                                                           | PDF、DOCX、Markdown、JSON                                                                                               |
+| **スキーマ検証**           | [コンパイラ](/ja/docs/compiler/architecture) + IDE 統合による [厳格な Zod スキーマ検証](/ja/docs/compiler/schema)                                                                    | ユーザー向けエラーメッセージを伴うサーバーサイドのスキーマ検証                                                          |
+| **エラー報告**             | 行番号と位置情報を含む [clang スタイルの診断](/ja/docs/cli#validate)                                                                                                                 | インラインのフォームエラーとインポート検証メッセージ                                                                    |
+| **国際化（i18n）**         | 深いコンテンツローカリゼーションを備えた [13 ロケールコードで 11 言語](/ja/docs/locale)                                                                                              | UI は 55 のロケールに翻訳；RTL の PDF ミラーリング；ロケールを認識したフォールバックフォント                            |
+| **リッチテキストサポート** | `summary` フィールドでの選択的な [Markdown リッチテキスト構文](/ja/docs/content/rich-text) サポート                                                                                  | すべてのフィールドでハイライトカラーを備えた WYSIWYG リッチテキストエディター                                           |
+| **フォントカスタマイズ**   | [フォントファミリー、フォントサイズ、行間](/ja/docs/layouts/latex#typography) など                                                                                                   | テンプレートごとのフォントファミリー、サイズ、間隔の制御                                                                |
+| **カラーカスタマイズ**     | [アクセントのプリセットまたは任意の hex](/ja/docs/layouts/latex) を LaTeX、Typst、HTML、DOCX で利用可能                                                                              | テンプレートのカラーパレットに加え、コンテンツセレクターを備えた Semantic CSS エディター                                |
+| **レイアウトカスタマイズ** | [ページ余白、ページ番号、用紙サイズ](/ja/docs/layouts/latex#page) など                                                                                                               | A4/Letter、余白、間隔、サイドバー幅、アイコンスタイル、ドラッグ＆ドロップによる配置                                     |
+| **セクションカスタマイズ** | [エイリアス](/ja/docs/layouts/sections/aliases) と [並べ替え](/ja/docs/layouts/sections/reorder)                                                                                     | 型付きフィールドを持つカスタムセクション、ドラッグ＆ドロップでの並べ替え、項目ごとの可視性                              |
+| **テンプレート/テーマ**    | 複数の公式 [LaTeX](/ja/docs/layouts/latex/templates)、[Typst](/ja/docs/layouts/typst)、[HTML](/ja/docs/layouts/html/templates)、[DOCX](/ja/docs/layouts/docx/templates) テンプレート | 15 の組み込みテンプレート（Azurill、Bronzor、Chikorita、Ditto、Gengar、Lapras、Rhyhorn など）                           |
+| **カスタムスタイル**       | テンプレートベース（DOCX/HTML/LaTeX/Typst ソース）                                                                                                                                   | テンプレート間で移植可能な Semantic CSS ルール                                                                          |
+| **Dev モード**             | 自動リビルド付き [Dev モード](/ja/docs/cli#dev)                                                                                                                                      | 入力と同時にライブプレビュー                                                                                            |
+| **バージョン管理**         | ネイティブ対応（Git 内のプレーンテキストファイル）                                                                                                                                   | JSON エクスポート/インポート；アプリ内のバージョン履歴スナップショット；行レベルの差分なし                              |
+| **Docker サポート**        | LaTeX、Typst、YAMLResume がプリインストールされた [公式 Docker イメージ](/ja/docs/contributing/docker)                                                                               | オールインワンのセルフホスト用イメージ（Docker Hub と GHCR）；ワンクリックの Vercel デプロイ                            |
+| **GitHub Action**          | CI/CD 用の [公式 GitHub Action](https://github.com/yamlresume/action)                                                                                                                | なし                                                                                                                    |
+| **Homebrew**               | macOS および Linux での簡単なインストールのための [Homebrew 公式パッケージ](https://formulae.brew.sh/formula/yamlresume)                                                             | なし                                                                                                                    |
+| **Web プレイグラウンド**   | インタラクティブな Web ベースの [プレイグラウンド](/ja/playground)                                                                                                                   | [rxresu.me](https://rxresu.me) のホスティング版アプリそのもの                                                           |
+| **AI 統合**                | CLI と API による内蔵の [生成](/ja/docs/ai/generate) と [翻訳](/ja/docs/ai/translate)                                                                                                | OpenAI、Anthropic、Google、OpenRouter、Ollama などに対応したアプリ内 AI エージェント、ATS チェック、PDF/DOCX インポート |
+| **エージェント統合**       | 履歴書ファイルはあらゆるコーディングエージェントで動作                                                                                                                               | OAuth を備えた [MCP サーバー](https://docs.rxresu.me) に加え、OpenAPI REST API                                          |
+| **共有**                   | [HTML 出力](/ja/docs/layouts/html) を任意の場所でホスティング                                                                                                                        | ビューカウント付きの公開共有リンク                                                                                      |
+| **その他**                 | 20 個の厳選されたサンプル履歴書、[json2yamlresume](/ja/docs/ecosystem/json2yamlresume) コンバーター                                                                                  | カバーレター、求職活動トラッカー、Application Copilot（自動入力、マッチスコアリング、カスタマイズ版作成）               |
+| **Node.js API**            | ファイルの読み込み、検証、ビルド、監視、生成、翻訳のための [`@yamlresume/node`](/ja/docs/ecosystem/node)                                                                             | REST API + MCP（ローカルライブラリなし）                                                                                |
+| **決定論的出力**           | はい                                                                                                                                                                                 | はい（クライアントサイド PDF レンダラー）                                                                               |
 
 ## 主な違いの解説
 
@@ -168,7 +168,7 @@ YAMLResume は、その即時性の一部を意図的に **移植性とスケー
 
 - 履歴書は grep 可能で、スクリプト可能で、差分比較可能
 - [複数行 YAML 文字列](https://yaml.org/spec/1.2.2/#8112-block-collection-literals) により、長いサマリーも読みやすく保たれる
-- 同じコンテンツが LaTeX、HTML、DOCX、Markdown にコンパイルされる
+- 同じコンテンツが LaTeX、Typst、HTML、DOCX、Markdown にコンパイルされる
 - 一括編集（10 のバリアント全体で雇用主名を変更するなど）は `sed` ひとつで済む
 
 ### レイアウトとレンダリング
@@ -177,18 +177,19 @@ YAMLResume は、その即時性の一部を意図的に **移植性とスケー
 
 #### エンジン
 
-YAMLResume は 4 つのレンダリングエンジンを提供します：
+YAMLResume は 5 つのレンダリングエンジンを提供します：
 
 - **[DOCX エンジン](/ja/docs/layouts/docx)**：簡単な編集と共有が可能な Microsoft
   Word 文書
 - **[HTML エンジン](/ja/docs/layouts/html)**：SEO メタデータを持つレスポンシブで
   Web 対応の履歴書
-- **[Markdown エンジン](/ja/docs/layouts/markdown)**：LLM、ATS システム、静的サ
-  イト向けのクリーンなテキスト
 - **[LaTeX エンジン](/ja/docs/layouts/latex)**：XeTeX によるプロフェッショナルな
   タイポグラフィのピクセルパーフェクトな PDF
+- **[Typst エンジン](/ja/docs/layouts/typst)**：モダンで高速な PDF 生成
+- **[Markdown エンジン](/ja/docs/layouts/markdown)**：LLM、ATS システム、静的サ
+  イト向けのクリーンなテキスト
 
-単一の `yamlresume build` コマンドで、同じソースファイルから 4 つの形式すべてを
+単一の `yamlresume build` コマンドで、同じソースファイルから 5 つの形式すべてを
 生成できます。
 
 Reactive Resume は `@react-pdf/renderer` を使用して PDF を **ブラウザ内で** レ
@@ -218,7 +219,7 @@ Reactive Resume はより広範なビジュアルツールキットを提供し�
 YAMLResume の LaTeX エンジン
 は、[ページカスタマイズ](/ja/docs/layouts/latex#page)（用紙サイズ、余白、ページ
 番号）と [タイポグラフィ制御](/ja/docs/layouts/latex#typography)（フォントファミ
-リー、フォントサイズ、行間）に加え、LaTeX、HTML、DOCX エンジンで単一の
+リー、フォントサイズ、行間）に加え、LaTeX、Typst、HTML、DOCX エンジンで単一の
 [アクセントカラー](/ja/docs/layouts/latex) を提供します。テンプレートは残りの
 ビジュアル上の決定をカプセル化します。要素ごとのカラーやきめ細かな間隔制御は意
 図的に存在しません。ユニ
@@ -254,8 +255,8 @@ Crowdin 経由で 55 のロケールに翻訳され、PDF パイプラインは�
 
 YAMLResume は **コンテンツをローカライズ** します。`locale` キーを設定するだ
 けで、セクション見出し、国名、学位、スキルレベル、言語の流暢さレベル、慣用的な
-日付と住所の形式、ロケールに適した句読点、LaTeX babel 設定が [12 ロケールコー
-ドで 10 言語](/ja/docs/locale) にわたって切り替わります。単一のソースファイル
+日付と住所の形式、ロケールに適した句読点、LaTeX babel 設定が [13 ロケールコー
+ドで 11 言語](/ja/docs/locale) にわたって切り替わります。単一のソースファイル
 を言語ごとにコンパイルでき、[`yamlresume ai translate`](/ja/docs/ai/translate)
 は構造を保持した翻訳を生成します。つまり、英語版と中国語版の履歴書のメンテナン
 スは、2 つの並行したドキュメントが乖離していくのではなく、1 つのファイルと翻
@@ -314,7 +315,7 @@ Redis、Vercel Blob ストレージをプロビジョニングするワンクリ
 
 YAMLResume はローカルファーストです：すべてがあなたのマシン上で動作し、
 [公式 Docker イメージ](/ja/docs/contributing/docker) は、あらかじめ構成されたビ
-ルド環境（Node.js、XeTeX、フォント）を提供するためだけに存在します。運用するサ
+ルド環境（Node.js、XeTeX、Typst、フォント）を提供するためだけに存在します。運用するサ
 ーバーも、バックアップするデータベースも、セキュアにするアカウントもありません。
 
 ### 配布
@@ -368,9 +369,9 @@ Reactive Resume の「プレイグラウンド」は製品そのものです：
 
 - Git 内のプレーンテキスト YAML ファイルとしての履歴書。ネイティブな差分比較、
   ブランチ、コードレビューに対応
-- 単一のソースファイルから 4 つのレンダリングエンジン（DOCX、HTML、
-  Markdown、LaTeX/PDF）を出力
-- 深いコンテンツ国際化：12 ロケールコードで 10 言語、翻訳された語彙、慣用的な
+- 単一のソースファイルから 5 つのレンダリングエンジン（DOCX、HTML、LaTeX/PDF、
+  Typst/PDF、Markdown）を出力
+- 深いコンテンツ国際化：13 ロケールコードで 11 言語、翻訳された語彙、慣用的な
   日付と住所、CJK 対応の LaTeX タイポグラフィ
 - ウォッチモード、スキーマを認識した診断、決定論的ビルドを備えた CLI ファース
   トの開発者体験
@@ -384,6 +385,6 @@ Reactive Resume の「プレイグラウンド」は製品そのものです：
 の体験が欲しい場合は、**Reactive Resume** を選びましょう。
 
 履歴書をソースコード——バージョン管理され、レビュー可能で、コンパイル可能で、
-自動化されたもの——と考えており、1 つのファイルから、すべてのコミットで、12 の
-ロケールにわたって、ピクセルパーフェクトな PDF、Word 文書、Web ページ、
-LLM フレンドリーなテキスト版を生成したい場合は、**YAMLResume** を選びましょう。
+自動化されたもの——と考えており、1 つのファイルから、すべてのコミットで、13 の
+ロケールにわたって、LaTeX または Typst によるピクセルパーフェクトな PDF、Word 文書、
+Web ページ、LLM フレンドリーなテキスト版を生成したい場合は、**YAMLResume** を選びましょう。

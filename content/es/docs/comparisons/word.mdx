@@ -37,12 +37,12 @@ Así es como se comparan los dos flujos de trabajo:
 | **Formato de Autoría**         | YAML de texto plano                                                                                                                            | `.docx` binario (un ZIP de XML)                                                             |
 | **Formato**                    | Generado a partir de plantillas, por lo que el formato se mantiene consistente                                                                 | Manual—los estilos, las tabulaciones y los espacios se desvían con el tiempo                |
 | **Validación de Esquema**      | [Validación estricta con esquema Zod](/es/docs/compiler/schema) con [diagnósticos al estilo de clang](/es/blog/yamlresume-compiler)            | Ninguna para la estructura—solo ortografía y gramática                                      |
-| **Formatos de Salida**         | [DOCX](/es/docs/layouts/docx), [HTML](/es/docs/layouts/html), [Markdown](/es/docs/layouts/markdown), [LaTeX/PDF](/es/docs/layouts/latex)       | `.docx`, PDF (Guardar como), además de exportaciones con pérdida a otros formatos           |
+| **Formatos de Salida**         | [DOCX](/es/docs/layouts/docx), [HTML](/es/docs/layouts/html), [LaTeX/PDF](/es/docs/layouts/latex), [Typst/PDF](/es/docs/layouts/typst), [Markdown](/es/docs/layouts/markdown) | `.docx`, PDF (Guardar como), además de exportaciones con pérdida a otros formatos           |
 | **Salida DOCX**                | [Motor DOCX](/es/docs/layouts/docx) integrado con plantillas seleccionadas                                                                     | El documento en sí es el DOCX                                                               |
-| **Plantillas**                 | Conjunto oficial seleccionado (`calm` para DOCX; más para [LaTeX](/es/docs/layouts/latex/templates) y [HTML](/es/docs/layouts/html/templates)) | Miles de plantillas a través de Microsoft Create y terceros; la calidad varía ampliamente   |
+| **Plantillas**                 | Conjunto oficial seleccionado (`calm` para DOCX; más para [LaTeX](/es/docs/layouts/latex/templates), [Typst](/es/docs/layouts/typst) y [HTML](/es/docs/layouts/html/templates)) | Miles de plantillas a través de Microsoft Create y terceros; la calidad varía ampliamente   |
 | **Control de Versiones**       | Funciona con Git; los diffs muestran cambios reales                                                                                            | Archivos binarios—los diffs y merges son inútiles en la práctica                            |
 | **Personalización**            | Archivos de diseño y ramas de Git por solicitud                                                                                                | Copias de "Guardar como" que se desvían entre sí (`resume_final_v2.docx`)                   |
-| **Internacionalización**       | [10 idiomas en 12 códigos de configuración regional](/es/docs/locale), más [traducción con IA](/es/docs/ai/translate)                          | Interfaz y corrector en muchos idiomas; cada idioma es un documento manual separado         |
+| **Internacionalización**       | [11 idiomas en 13 códigos de configuración regional](/es/docs/locale), más [traducción con IA](/es/docs/ai/translate)                          | Interfaz y corrector en muchos idiomas; cada idioma es un documento manual separado         |
 | **Texto Enriquecido**          | Un conjunto seleccionado de [sintaxis Markdown](/es/docs/content/rich-text) en campos `summary`                                                | Formato completo en todas partes                                                            |
 | **Modelo de Datos**            | Esquema fijo y estructurado; interoperabilidad con [JSON Resume](/es/docs/comparisons/json-resume)                                             | Documento de forma libre                                                                    |
 | **Funciones de IA**            | [Generación](/es/docs/ai/generate) y [traducción](/es/docs/ai/translate) integradas en la CLI                                                  | Funciones de Microsoft 365 Copilot (suscripción)                                            |
@@ -68,11 +68,12 @@ que el formato acaba siendo ajustes puntuales en línea que son dolorosos de
 revisar.
 
 En YAMLResume, el formato es trabajo del compilador. Tu contenido son datos; el
-[motor DOCX](/es/docs/layouts/docx) y el [motor
-LaTeX](/es/docs/layouts/latex) lo renderizan a través de plantillas que hacen
-cumplir la consistencia. Cambia tu título laboral en un solo lugar y cada
-formato—DOCX, PDF, HTML, Markdown—lo recoge en la siguiente compilación. La
-plantilla toma cada decisión de diseño una vez, y la toma bien.
+[motor DOCX](/es/docs/layouts/docx), el [motor LaTeX](/es/docs/layouts/latex) y
+el [motor Typst](/es/docs/layouts/typst) lo renderizan a través de plantillas
+que hacen cumplir la consistencia. Cambia tu título laboral en un solo lugar y
+cada formato—DOCX, PDF mediante LaTeX o Typst, HTML, Markdown—lo recoge en la
+siguiente compilación. La plantilla toma cada decisión de diseño una vez, y la
+toma bien.
 
 ### Texto Plano frente a Binario
 
@@ -141,7 +142,7 @@ YAMLResume brilla cuando una carrera debe hablar varios idiomas. Establecer la
 clave `locale` traduce los encabezados de sección, los grados, los niveles de
 habilidad y los nombres de países; formatea fechas y direcciones al estilo
 local; y aplica reglas de puntuación de cada configuración regional en
-[10 idiomas y 12 códigos de configuración
+[11 idiomas y 13 códigos de configuración
 regional](/es/docs/locale). Combinado con [`yamlresume ai
 translate`](/es/docs/ai/translate), una variante de inglés a japonés está a un
 comando de distancia, generada desde la misma fuente para que las dos nunca se
@@ -176,11 +177,11 @@ cuadros de texto que dificultan la edición y rompen los analizadores ATS.
 
 YAMLResume incluye un pequeño conjunto seleccionado: la plantilla
 [calm](/es/docs/layouts/docx/templates/calm) para salida DOCX, además de
-plantillas de [LaTeX](/es/docs/layouts/latex/templates) y
-[HTML](/es/docs/layouts/html/templates), todas validadas contra cada
-configuración regional soportada. Debido a que las plantillas son opciones del
-motor en lugar de documentos, cambiar de diseño nunca significa reescribir el
-contenido.
+plantillas de [LaTeX](/es/docs/layouts/latex/templates),
+[Typst](/es/docs/layouts/typst) y [HTML](/es/docs/layouts/html/templates), todas
+validadas contra cada configuración regional soportada. Debido a que las
+plantillas son opciones del motor en lugar de documentos, cambiar de diseño
+nunca significa reescribir el contenido.
 
 ### Reclutadores y el Formato `.docx`
 
@@ -197,8 +198,8 @@ iconos de contacto) que coinciden con los otros motores.
 
 Una advertencia se aplica a cualquier archivo DOCX, generado o no: las fuentes
 deben existir en la máquina donde se abre el documento, o Word las sustituye.
-Elige fuentes ampliamente disponibles para tu diseño DOCX, y mantén el motor
-LaTeX/PDF como tu referencia para una salida de aspecto perfecto.
+Elige fuentes ampliamente disponibles para tu diseño DOCX, y mantén el motor PDF
+de LaTeX o Typst como tu referencia para una salida de aspecto perfecto.
 
 ### Automatización
 
@@ -226,12 +227,12 @@ mantienen currículums a escala—cambia cómo mantienes los currículums.
 
 - Un único archivo fuente de texto plano en Git, con diffs reales, historial y
   ramas
-- Formato generado y consistente en [DOCX](/es/docs/layouts/docx),
-  [PDF](/es/docs/layouts/latex), [HTML](/es/docs/layouts/html) y
-  [Markdown](/es/docs/layouts/markdown)
+- Formato generado y consistente en [DOCX](/es/docs/layouts/docx), PDF mediante
+  [LaTeX](/es/docs/layouts/latex) o [Typst](/es/docs/layouts/typst),
+  [HTML](/es/docs/layouts/html) y [Markdown](/es/docs/layouts/markdown)
 - [Validación de esquema](/es/docs/compiler/schema) que detecta [errores
   estructurales](/es/docs/cli#validate) antes que los reclutadores
-- [Internacionalización](/es/docs/locale) profunda: [10 idiomas en 12 códigos
+- [Internacionalización](/es/docs/locale) profunda: [11 idiomas en 13 códigos
   de configuración regional](/es/docs/locale) con [traducción con
   IA](/es/docs/ai/translate), desde una única fuente de verdad
 - Salida segura para ATS por diseño, más un [motor Markdown](/es/docs/layouts/markdown)

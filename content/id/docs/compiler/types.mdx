@@ -65,6 +65,7 @@ Berikut adalah diagram tingkat tinggi dari struktur resume:
  B2[HtmlLayout]
  B3[LatexLayout]
  B4[MarkdownLayout]
+ B5[TypstLayout]
  end
 
  subgraph Content
@@ -86,6 +87,7 @@ Berikut adalah diagram tingkat tinggi dari struktur resume:
  B --> B2
  B --> B3
  B --> B4
+ B --> B5
  C --> C1
  C --> C2
  C --> C3
@@ -298,7 +300,7 @@ Array item tata letak yang mendukung berbagai format output.
 
 | Kolom        | Tipe                                                                 | Wajib | Deskripsi                            |
 | ----------- | -------------------------------------------------------------------- | -------- | -------------------------------------- |
-| `layouts[]` | [`DocxLayout`](#docxlayout) \| [`HtmlLayout`](#htmllayout) \| [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜       | Beberapa konfigurasi tata letak output. |
+| `layouts[]` | [`DocxLayout`](#docxlayout) \| [`HtmlLayout`](#htmllayout) \| [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) \| [`TypstLayout`](#typstlayout) | ⬜       | Beberapa konfigurasi tata letak output. |
 
 #### Common Layout Types
 
@@ -371,6 +373,7 @@ Mendefinisikan pengaturan tipografi HTML untuk pemformatan dokumen.
 | `fontSize?`   | [`HtmlFontSize`](#htmlfontsize)   | ⬜       | Ukuran font dasar untuk dokumen. |
 | `fontFamily?` | `string`                          | ⬜       | Daftar keluarga font yang dipisahkan koma. |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)    | ⬜       | Spasi baris untuk dokumen.      |
+| `links?`      | `{ underline?: boolean }`         | ⬜       | Pengaturan gaya tautan.         |
 
 #### LatexLayout
 
@@ -416,6 +419,50 @@ Mendefinisikan pengaturan tipografi latex untuk pemformatan dokumen.
 | `fontFamily?` | `string`                            | ⬜       | Daftar keluarga font yang dipisahkan koma. |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)       | ⬜       | Spasi baris untuk dokumen.     |
 | `links?`      | `{ underline?: boolean }`           | ⬜       | Pengaturan gaya tautan.        |
+
+#### TypstLayout
+
+Konfigurasi tata letak Typst.
+
+| Kolom         | Tipe                                    | Wajib | Deskripsi                                            |
+| ------------- | --------------------------------------- | -------- | ----------------------------------------------------- |
+| `engine`      | `'typst'`                               | ✅       | Mesin untuk menghasilkan resume.                     |
+| `advanced?`   | [`TypstAdvanced`](#typstadvanced)       | ⬜       | Mendefinisikan opsi konfigurasi lanjutan.            |
+| `page?`       | [`TypstPage`](#typstpage)               | ⬜       | Mendefinisikan pengaturan tingkat halaman untuk presentasi dokumen.|
+| `sections?`   | [`Sections`](#sections)                 | ⬜       | Mendefinisikan pengaturan kustomisasi bagian.        |
+| `template?`   | [`TypstTemplate`](#typsttemplate)       | ⬜       | Mendefinisikan template yang dipilih.                |
+| `theme?`      | [`Theme`](#theme)                       | ⬜       | Mendefinisikan pengaturan tema visual resume.        |
+| `typography?` | [`TypstTypography`](#typsttypography)   | ⬜       | Mendefinisikan pengaturan tipografi untuk pemformatan dokumen. |
+
+##### TypstAdvanced
+
+Mendefinisikan opsi konfigurasi Typst lanjutan.
+
+| Kolom        | Tipe      | Wajib | Deskripsi                                            |
+| ------------ | --------- | -------- | ------------------------------------------------------ |
+| `showIcons?` | `boolean` | ⬜       | Apakah menampilkan ikon untuk tautan dan profil.      |
+| `showUrls?`  | `boolean` | ⬜       | Apakah menampilkan URL mentah atau menyembunyikannya di balik teks yang masuk akal. |
+
+##### TypstPage
+
+Mendefinisikan pengaturan tingkat halaman Typst untuk presentasi dokumen.
+
+| Kolom              | Tipe                           | Wajib | Deskripsi                             |
+| ------------------ | ------------------------------ | -------- | --------------------------------------- |
+| `margins?`         | [`Margins`](#margins)          | ⬜       | Mendefinisikan pengaturan margin halaman. |
+| `paperSize?`       | [`TypstPaperSize`](#typstpapersize) | ⬜       | Mendefinisikan ukuran kertas.        |
+| `showPageNumbers?` | `boolean`                      | ⬜       | Apakah menampilkan nomor halaman.     |
+
+##### TypstTypography
+
+Mendefinisikan pengaturan tipografi Typst untuk pemformatan dokumen.
+
+| Kolom          | Tipe                                | Wajib | Deskripsi                       |
+| ------------- | ----------------------------------- | -------- | -------------------------------- |
+| `fontSize?`   | [`TypstFontSize`](#typstfontsize)   | ⬜       | Ukuran font dasar untuk dokumen. |
+| `fontFamily?` | `string`                            | ⬜       | Daftar keluarga font yang dipisahkan koma. |
+| `lineSpacing?`| [`LineSpacing`](#linespacing)       | ⬜       | Spasi baris untuk dokumen.       |
+| `links?`      | `{ underline?: boolean }`           | ⬜       | Pengaturan gaya tautan.          |
 
 #### MarkdownLayout
 
@@ -468,6 +515,7 @@ Mendefinisikan pengaturan tipografi DOCX untuk pemformatan dokumen.
 | `fontSize?`   | [`DocxFontSize`](#docxfontsize)     | ⬜       | Ukuran font dasar untuk dokumen. |
 | `fontFamily?` | `string`                            | ⬜       | Daftar keluarga font yang dipisahkan koma. |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)       | ⬜       | Spasi baris untuk dokumen.   |
+| `links?`      | `{ underline?: boolean }`           | ⬜       | Pengaturan gaya tautan.      |
 
 ## Enum Tipe
 
@@ -622,6 +670,29 @@ Lihat juga: [templates](/docs/layouts/latex/templates)
 - `moderncv-casual`
 - `moderncv-classic`
 
+#### TypstFontSize
+
+Union type untuk semua opsi ukuran font Typst possible.
+
+- `10pt` - ukuran font 10pt (default)
+- `11pt` - ukuran font 11pt
+- `12pt` - ukuran font 12pt
+
+#### TypstPaperSize
+
+Union type untuk semua opsi ukuran kertas Typst possible.
+
+- `a4` (default)
+- `letter`
+
+#### TypstTemplate
+
+Union type untuk semua opsi template Typst possible.
+
+Lihat juga: [template](/id/docs/layouts/typst/templates)
+
+- `jake`
+
 #### PaperSize
 
 Union type untuk semua opsi ukuran kertas LaTeX possible.
@@ -637,8 +708,16 @@ Union type untuk semua bahasa locale possible.
 
 Lihat juga: [multi-languages](/docs/locale)
 
+- `de`
 - `en`
 - `es`
+- `fr`
+- `id`
+- `it`
+- `ja`
+- `nl`
+- `no`
+- `pt-br`
 - `zh-hans`
 - `zh-hant-hk`
 - `zh-hant-tw`

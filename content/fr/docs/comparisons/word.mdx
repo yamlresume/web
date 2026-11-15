@@ -38,12 +38,12 @@ Voici comment les deux flux de travail se comparent :
 | **Format de rédaction**              | YAML en texte brut                                                                                                                                | `.docx` binaire (un ZIP de XML)                                                                                 |
 | **Mise en forme**                    | Générée à partir de modèles, donc cohérente                                                                                                       | Manuelle — les styles, taquets de tabulation et espacements dérivent avec le temps                              |
 | **Validation du schéma**             | [Validation stricte du schéma Zod](/fr/docs/compiler/schema) avec [diagnostics de style clang](/fr/blog/yamlresume-compiler)                      | Aucune pour la structure — orthographe et grammaire seulement                                                   |
-| **Formats de sortie**                | [DOCX](/fr/docs/layouts/docx), [HTML](/fr/docs/layouts/html), [Markdown](/fr/docs/layouts/markdown), [LaTeX/PDF](/fr/docs/layouts/latex)          | `.docx`, PDF (Enregistrer sous), plus des exports avec perte vers d'autres formats                              |
+| **Formats de sortie**                | [DOCX](/fr/docs/layouts/docx), [HTML](/fr/docs/layouts/html), [LaTeX/PDF](/fr/docs/layouts/latex), [Typst/PDF](/fr/docs/layouts/typst), [Markdown](/fr/docs/layouts/markdown) | `.docx`, PDF (Enregistrer sous), plus des exports avec perte vers d'autres formats                              |
 | **Sortie DOCX**                      | [Moteur DOCX](/fr/docs/layouts/docx) intégré avec des modèles sélectionnés                                                                        | Le document lui-même est le DOCX                                                                                |
-| **Modèles**                          | Ensemble officiel sélectionné (`calm` pour DOCX ; plus pour [LaTeX](/fr/docs/layouts/latex/templates) et [HTML](/fr/docs/layouts/html/templates)) | Des milliers de modèles via Microsoft Create et des tiers ; qualité très variable                               |
+| **Modèles**                          | Ensemble officiel sélectionné (`calm` pour DOCX ; plus pour [LaTeX](/fr/docs/layouts/latex/templates), [Typst](/fr/docs/layouts/typst) et [HTML](/fr/docs/layouts/html/templates)) | Des milliers de modèles via Microsoft Create et des tiers ; qualité très variable                               |
 | **Gestion de versions**              | Fonctionne avec Git ; les diffs montrent les vrais changements                                                                                    | Fichiers binaires — diffs et fusions pratiquement inutiles                                                      |
 | **Personnalisation par candidature** | Fichiers de mise en page et branches Git par candidature                                                                                          | Copies « Enregistrer sous » qui dérivent (`resume_final_v2.docx`)                                               |
-| **Internationalisation**             | [10 langues sur 12 codes de locale](/fr/docs/locale), plus [traduction IA](/fr/docs/ai/translate)                                                 | Interface et vérification orthographique en de nombreuses langues ; chaque langue est un document manuel séparé |
+| **Internationalisation**             | [11 langues sur 13 codes de locale](/fr/docs/locale), plus [traduction IA](/fr/docs/ai/translate)                                                 | Interface et vérification orthographique en de nombreuses langues ; chaque langue est un document manuel séparé |
 | **Texte enrichi**                    | Un ensemble sélectionné de [syntaxe Markdown](/fr/docs/content/rich-text) dans les champs `summary`                                               | Formatage complet partout                                                                                       |
 | **Modèle de données**                | Schéma fixe et structuré ; interop [JSON Resume](/fr/docs/comparisons/json-resume)                                                                | Document libre                                                                                                  |
 | **Fonctionnalités IA**               | [Génération](/fr/docs/ai/generate) et [traduction](/fr/docs/ai/translate) intégrées dans la CLI                                                   | Fonctionnalités Microsoft 365 Copilot (abonnement)                                                              |
@@ -69,10 +69,11 @@ utilisateurs de Word n'utilisent jamais les styles nommés, si bien que la mise
 en forme finit en ajustements ponctuels douloureux à réviser.
 
 Dans YAMLResume, la mise en forme est le travail du compilateur. Votre contenu
-est des données ; le [moteur DOCX](/fr/docs/layouts/docx) et le [moteur
-LaTeX](/fr/docs/layouts/latex) le composent via des modèles qui assurent la
-cohérence. Changez votre titre de poste en un seul endroit et chaque format —
-DOCX, PDF, HTML, Markdown — le prend en compte à la prochaine compilation. Le
+est des données ; le [moteur DOCX](/fr/docs/layouts/docx), le [moteur
+LaTeX](/fr/docs/layouts/latex) et le [moteur Typst](/fr/docs/layouts/typst) le
+composent via des modèles qui assurent la cohérence. Changez votre titre de
+poste en un seul endroit et chaque format — DOCX, PDF via LaTeX ou Typst, HTML,
+Markdown — le prend en compte à la prochaine compilation. Le
 modèle prend chaque décision de design une seule fois, et la prend bien.
 
 ### Texte brut vs binaire
@@ -141,7 +142,7 @@ YAMLResume brille quand une carrière doit parler plusieurs langues. La
 définition de la clé `locale` traduit les titres de section, les diplômes, les
 niveaux de compétence et les noms de pays ; formate les dates et les adresses
 selon le style local ; et applique les règles de ponctuation adaptées à la
-locale sur [10 langues et 12 codes de locale](/fr/docs/locale). Combiné avec
+locale sur [11 langues et 13 codes de locale](/fr/docs/locale). Combiné avec
 [`yamlresume ai translate`](/fr/docs/ai/translate), une variante de l'anglais
 vers le japonais est à une commande de distance, générée à partir de la même
 source pour que les deux ne dérivent jamais. Dans Word, cela signifie deux
@@ -176,7 +177,8 @@ des zones de texte qui compliquent l'édition et cassent les parseurs ATS.
 
 YAMLResume livre un petit ensemble sélectionné : le modèle
 [calm](/fr/docs/layouts/docx/templates/calm) pour la sortie DOCX, plus des
-modèles [LaTeX](/fr/docs/layouts/latex/templates) et
+modèles [LaTeX](/fr/docs/layouts/latex/templates),
+[Typst](/fr/docs/layouts/typst) et
 [HTML](/fr/docs/layouts/html/templates), tous validés contre chaque locale
 prise en charge. Parce que les modèles sont des réglages de moteur plutôt que
 des documents, changer de design ne signifie jamais réécrire le contenu.
@@ -197,8 +199,8 @@ icônes de contact) qui correspondent aux autres moteurs.
 Une mise en garde s'applique à tout fichier DOCX, généré ou non : les polices
 doivent exister sur la machine où le document est ouvert, sinon Word les
 remplace. Choisissez des polices largement disponibles pour votre mise en page
-DOCX, et gardez le moteur LaTeX/PDF comme référence pour une sortie au rendu
-parfait.
+DOCX, et gardez le moteur PDF LaTeX ou Typst comme référence pour une sortie au
+rendu parfait.
 
 ### Automatisation
 
@@ -229,12 +231,13 @@ CV.
 
 - Un fichier source en texte brut dans Git, avec de vrais diffs, un historique
   et des branches
-- Une mise en forme générée et cohérente sur [DOCX](/fr/docs/layouts/docx),
-  [PDF](/fr/docs/layouts/latex), [HTML](/fr/docs/layouts/html) et
+- Une mise en forme générée et cohérente sur [DOCX](/fr/docs/layouts/docx), PDF
+  via [LaTeX](/fr/docs/layouts/latex) ou [Typst](/fr/docs/layouts/typst),
+  [HTML](/fr/docs/layouts/html) et
   [Markdown](/fr/docs/layouts/markdown)
 - Une [validation du schéma](/fr/docs/compiler/schema) qui détecte les
   [erreurs de structure](/fr/docs/cli#validate) avant les recruteurs
-- Une [internationalisation](/fr/docs/locale) profonde : [10 langues sur 12
+- Une [internationalisation](/fr/docs/locale) profonde : [11 langues sur 13
   codes de locale](/fr/docs/locale) avec [traduction IA](/fr/docs/ai/translate),
   à partir d'une source de vérité unique
 - Une sortie sûre pour les ATS par conception, plus un [moteur

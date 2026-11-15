@@ -1,0 +1,169 @@
+---
+title: Mesin Typst
+description: "Hasilkan resume PDF tertata dengan Typst, template Jake, tipografi yang dapat diatur, warna aksen, dan fallback font CJK."
+---
+
+Mesin Typst menghasilkan resume PDF profesional dengan
+[Typst](https://typst.app/), sebuah sistem typesetting modern. Mesin ini
+menerima konten resume yang sama seperti mesin lainnya dan saat ini hadir
+dengan template [`jake`](./typst/templates/jake).
+
+## Konfigurasi
+
+Atur `engine: typst` pada sebuah tata letak. Kompilasi PDF membutuhkan **Typst
+0.13.0 atau yang lebih baru**. Image Docker resmi sudah menyertakan Typst, jadi
+tidak perlu instalasi terpisah saat menggunakan Docker.
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: typst
+    template: jake
+    page:
+      paperSize: a4
+      showPageNumbers: false
+    typography:
+      fontSize: 10pt
+      lineSpacing: normal
+      links:
+        underline: false
+    advanced:
+      showIcons: true
+      showUrls: true
+```
+
+Jalankan `yamlresume build resume.yml` untuk menghasilkan `resume.typ` beserta
+PDF-nya. Dengan `--no-pdf`, YAMLResume hanya menghasilkan sumber Typst dan tidak
+memerlukan CLI Typst. Jika resume juga memiliki tata letak LaTeX, kedua PDF
+akan dinamai `resume.tex.pdf` dan `resume.typ.pdf` agar tidak saling menimpa.
+
+## Halaman
+
+Opsi `page` mengontrol ukuran kertas, margin, dan nomor halaman. Typst
+mendukung ukuran kertas `a4` dan `letter`.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    page:
+      showPageNumbers: true
+      paperSize: a4
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+```
+
+## Bagian
+
+Opsi `sections` menyesuaikan judul bagian dan urutannya. Lihat
+[dokumentasi bagian](./sections) untuk semua id bagian yang tersedia.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    sections:
+      aliases:
+        work: "Professional Experience"
+        education: "Education"
+      order:
+        - basics
+        - work
+        - education
+```
+
+## Template
+
+Opsi `template` memilih desain visual. Saat ini Typst mendukung
+[`jake`](./typst/templates/jake), yang juga merupakan bawaan.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    template: jake
+```
+
+## Tipografi
+
+### Ukuran Font
+
+Opsi `fontSize` menerima `10pt`, `11pt`, atau `12pt`. Ukuran header dan judul
+bagian menyesuaikan ukuran font dasar ini.
+
+### Keluarga Font
+
+Opsi `fontFamily` menerima daftar nama keluarga font yang dipisahkan koma dan
+diurutkan berdasarkan prioritas, serupa dengan `font-family` CSS. Instal font
+yang Anda tentukan agar Typst dapat menemukannya.
+
+Untuk resume CJK, YAMLResume mencoba fallback font Noto, macOS, dan Windows yang
+sesuai wilayah. Menginstal [font Google Noto CJK](/id/docs/installation#google-noto)
+direkomendasikan untuk hasil yang konsisten.
+
+### Spasi Baris
+
+Opsi `lineSpacing` menerima nilai semantik berikut:
+
+| Nilai     | Deskripsi                                   |
+| --------- | ------------------------------------------- |
+| `tight`   | Spasi kompak untuk muat lebih banyak konten |
+| `snug`    | Sedikit lebih banyak ruang dari tight       |
+| `normal`  | Keseimbangan keterbacaan (default)          |
+| `relaxed` | Lebih banyak ruang antar baris              |
+| `loose`   | Tata letak sangat ruang                     |
+
+### Garis Bawah Tautan
+
+Atur `typography.links.underline` untuk mengontrol apakah hyperlink diberi
+garis bawah. Opsi ini digunakan bersama oleh mesin LaTeX, Typst, HTML, dan DOCX.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    typography:
+      fontSize: 11pt
+      fontFamily: "Linux Libertine O, Noto Serif CJK SC, serif"
+      lineSpacing: relaxed
+      links:
+        underline: true
+```
+
+## Tema
+
+Opsi `theme.colors.accent` menerima preset bernama atau string warna hex
+`#RRGGBB` arbitrer. Opsi ini mengubah elemen yang disorot tanpa memengaruhi
+geometri halaman atau struktur bagian. Lihat [referensi warna
+aksen](./latex#warna-aksen) untuk preset yang tersedia.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    theme:
+      colors:
+        accent: burgundy
+```
+
+Ketika warna aksen tidak diatur, template mempertahankan palet bawaannya.
+
+## Lanjutan
+
+Opsi `advanced` mengontrol ikon dan penyajian URL:
+
+- `showIcons`: menampilkan ikon untuk tautan dan profil.
+- `showUrls`: menampilkan URL mentah alih-alih menyembunyikannya di balik teks
+  yang mudah dibaca.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    advanced:
+      showIcons: true
+      showUrls: false
+```
+
+## Tata Letak Bawaan
+
+Sejak v0.18, `yamlresume new` menyertakan tata letak Typst di array `layouts`
+bawaan. Instal Typst 0.13.0 atau yang lebih baru sebelum membangun output PDF
+bawaan, gunakan image Docker resmi, atau berikan `--no-pdf` ketika Anda hanya
+membutuhkan file sumber.

@@ -1,0 +1,174 @@
+---
+title: Moteur Typst
+description: "Générez des CV PDF composés avec Typst, le modèle Jake, une typographie configurable, des couleurs d'accent et des polices de secours CJK."
+---
+
+Le moteur Typst génère des CV PDF professionnels avec
+[Typst](https://typst.app/), un système de composition moderne. Il accepte le
+même contenu de CV que les autres moteurs et est actuellement livré avec le
+modèle [`jake`](./typst/templates/jake).
+
+## Configuration
+
+Définissez `engine: typst` dans une mise en page. La compilation PDF nécessite
+**Typst 0.13.0 ou plus récent**. L'image Docker officielle inclut Typst, donc
+aucune installation séparée n'est nécessaire si vous utilisez Docker.
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: typst
+    template: jake
+    page:
+      paperSize: a4
+      showPageNumbers: false
+    typography:
+      fontSize: 10pt
+      lineSpacing: normal
+      links:
+        underline: false
+    advanced:
+      showIcons: true
+      showUrls: true
+```
+
+Exécutez `yamlresume build resume.yml` pour générer à la fois `resume.typ` et
+son PDF. Avec `--no-pdf`, YAMLResume génère uniquement la source Typst et n'a
+pas besoin du CLI Typst. Si le CV possède aussi une mise en page LaTeX, les
+deux PDF sont nommés `resume.tex.pdf` et `resume.typ.pdf` afin de ne pas
+s'écraser mutuellement.
+
+## Page
+
+L'option `page` contrôle la taille du papier, les marges et les numéros de
+page. Typst prend en charge les tailles de papier `a4` et `letter`.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    page:
+      showPageNumbers: true
+      paperSize: a4
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+```
+
+## Sections
+
+L'option `sections` personnalise les titres de section et leur ordre. Voir la
+[documentation des sections](./sections) pour tous les identifiants de section
+disponibles.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    sections:
+      aliases:
+        work: "Expérience Professionnelle"
+        education: "Éducation"
+      order:
+        - basics
+        - work
+        - education
+```
+
+## Modèles
+
+L'option `template` sélectionne le design visuel. Typst prend actuellement en
+charge [`jake`](./typst/templates/jake), qui est également le modèle par défaut.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    template: jake
+```
+
+## Typographie
+
+### Taille de la police
+
+L'option `fontSize` accepte `10pt`, `11pt` ou `12pt`. Les tailles des en-têtes
+et des titres de section s'adaptent à cette taille de police de base.
+
+### Famille de polices
+
+L'option `fontFamily` accepte une liste prioritaire de familles de polices
+séparées par des virgules, comme la propriété CSS `font-family`. Installez les
+polices que vous spécifiez pour que Typst puisse les résoudre.
+
+Pour les CV CJK, YAMLResume essaie des polices de secours Noto, macOS et
+Windows adaptées à la région. L'installation des
+[polices Google Noto CJK](/fr/docs/installation#google-noto) est recommandée
+pour une sortie cohérente.
+
+### Interligne
+
+L'option `lineSpacing` accepte les valeurs sémantiques suivantes :
+
+| Valeur    | Description                                |
+| --------- | ------------------------------------------ |
+| `tight`   | Interligne compact pour plus de contenu    |
+| `snug`    | Un peu plus d'espace que tight             |
+| `normal`  | Lisibilité équilibrée (par défaut)         |
+| `relaxed` | Plus d'espace entre les lignes             |
+| `loose`   | Mise en page très aérée                    |
+
+### Soulignement des liens
+
+Définissez `typography.links.underline` pour contrôler si les hyperliens sont
+soulignés. Cette option est partagée par les moteurs LaTeX, Typst, HTML et DOCX.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    typography:
+      fontSize: 11pt
+      fontFamily: "Linux Libertine O, Noto Serif CJK SC, serif"
+      lineSpacing: relaxed
+      links:
+        underline: true
+```
+
+## Thème
+
+L'option `theme.colors.accent` accepte un préréglage nommé ou une couleur
+hexadécimale `#RRGGBB` arbitraire. Elle modifie les éléments mis en évidence
+sans affecter la géométrie de la page ni la structure des sections. Voir la
+[référence des couleurs d'accent](./latex#couleur-daccent) pour les préréglages
+disponibles.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    theme:
+      colors:
+        accent: burgundy
+```
+
+Lorsque aucune couleur d'accent n'est définie, le modèle conserve sa palette par
+défaut.
+
+## Avancé
+
+L'option `advanced` contrôle les icônes et la présentation des URL :
+
+- `showIcons` : affiche des icônes pour les liens et les profils.
+- `showUrls` : affiche les URL brutes au lieu de les masquer derrière un texte
+  lisible.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    advanced:
+      showIcons: true
+      showUrls: false
+```
+
+## Mises en page par défaut
+
+Depuis la v0.18, `yamlresume new` inclut une mise en page Typst dans le tableau
+`layouts` par défaut. Installez Typst 0.13.0 ou plus récent avant de compiler
+les sorties PDF par défaut, utilisez l'image Docker officielle, ou passez
+`--no-pdf` lorsque vous n'avez besoin que des fichiers sources.

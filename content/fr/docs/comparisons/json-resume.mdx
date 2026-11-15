@@ -44,18 +44,18 @@ ils se comparent :
 | Fonctionnalité                          | YAMLResume                                                                                                                           | JSON Resume                                                     |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
 | **Format de données**                   | YAML                                                                                                                                 | JSON                                                            |
-| **Internationalisation**                | [10 langues](/fr/docs/locale) intégrées                                                                                              | Aucune                                                          |
+| **Internationalisation**                | [11 langues réparties sur 13 codes de locale](/fr/docs/locale) intégrées                                                             | Aucune                                                          |
 | **Support de texte enrichi**            | Un ensemble sélectionné de [syntaxe Markdown pour texte enrichi](/fr/docs/content/rich-text) dans les champs `summary`               | Aucune                                                          |
 | **Validation du schéma**                | [Validation stricte du schéma](/fr/docs/compiler/schema) avec [compilateur](/fr/docs/compiler/architecture) + intégration IDE        | [Validation JSON Schema basique](https://jsonresume.org/schema) |
 | **Personnalisation des polices**        | [Famille de police, taille de police, interligne](/fr/docs/layouts/latex), etc.                                                      | Aucune                                                          |
 | **Personnalisation de la mise en page** | [Marges de page, numéros de page, taille du papier](/fr/docs/layouts/latex#page), etc.                                               | Aucune                                                          |
 | **Personnalisation des sections**       | [Alias](/fr/docs/layouts/sections/aliases) et [réorganisation](/fr/docs/layouts/sections/reorder)                                    | Aucune                                                          |
-| **Moteur de composition**               | [DOCX](/fr/docs/layouts/docx), [HTML](/fr/docs/layouts/html), [LaTeX](/fr/docs/layouts/latex), [Markdown](/fr/docs/layouts/markdown) | HTML                                                            |
-| **Formats de sortie**                   | DOCX, HTML, LaTeX/PDF, Markdown                                                                                                      | [HTML et PDF](https://github.com/jsonresume/resume-cli)         |
-| **Modèles**                             | Plusieurs [modèles LaTeX](/fr/docs/layouts/latex/templates) et [HTML](/fr/docs/layouts/html/templates) officiels                     | Des dizaines de [thèmes HTML](https://jsonresume.org/themes)    |
+| **Moteur de composition**               | [DOCX](/fr/docs/layouts/docx), [HTML](/fr/docs/layouts/html), [LaTeX](/fr/docs/layouts/latex), [Typst](/fr/docs/layouts/typst), [Markdown](/fr/docs/layouts/markdown) | HTML                                                            |
+| **Formats de sortie**                   | DOCX, HTML, LaTeX/PDF, Typst/PDF, Markdown                                                                                           | [HTML et PDF](https://github.com/jsonresume/resume-cli)         |
+| **Modèles**                             | Plusieurs [modèles LaTeX](/fr/docs/layouts/latex/templates), [Typst](/fr/docs/layouts/typst) et [HTML](/fr/docs/layouts/html/templates) officiels | Des dizaines de [thèmes HTML](https://jsonresume.org/themes)    |
 | **Mode dev**                            | [Mode dev](/fr/docs/cli#dev) avec reconstruction automatique                                                                         | Oui                                                             |
 | **Outil de conversion**                 | [json2yamlresume](/fr/docs/ecosystem/json2yamlresume) aide à convertir JSON Resume vers YAMLResume                                   | N/A                                                             |
-| **Support Docker**                      | [Image Docker officielle](/fr/docs/contributing/docker) avec LaTeX et YAMLResume préinstallés                                        | Aucun                                                           |
+| **Support Docker**                      | [Image Docker officielle](/fr/docs/contributing/docker) avec LaTeX, Typst et YAMLResume préinstallés                                 | Aucun                                                           |
 | **GitHub Action**                       | [GitHub Action officielle](https://github.com/yamlresume/action) pour CI/CD                                                          | Aucune                                                          |
 | **Homebrew**                            | [Formule Homebrew](https://formulae.brew.sh/formula/yamlresume) pour une installation facile sur macOS et Linux                      | Aucun                                                           |
 | **Playground Web**                      | [Playground](/fr/playground) interactif basé sur le web                                                                              | Aucun                                                           |
@@ -273,12 +273,14 @@ pipeline complet et opinioné de la source YAML à la sortie polie :
   faciliter l'édition et le partage
 - **[Moteur HTML](/fr/docs/layouts/html)** : CV réactifs et prêts pour le web
   avec des métadonnées SEO
-- **[Moteur Markdown](/fr/docs/layouts/markdown)** : Texte propre pour les LLM,
-  les systèmes ATS et les sites statiques
 - **[Moteur LaTeX](/fr/docs/layouts/latex)** : PDF pixel-perfect avec une
   typographie professionnelle
+- **[Moteur Typst](/fr/docs/layouts/typst)** : Génération de PDF moderne et
+  rapide avec le modèle Jake et des polices de secours adaptées à chaque locale
+- **[Moteur Markdown](/fr/docs/layouts/markdown)** : Texte propre pour les LLM,
+  les systèmes ATS et les sites statiques
 
-Une seule commande `yamlresume build` peut générer les quatre formats à partir
+Une seule commande `yamlresume build` peut générer les cinq formats à partir
 du même fichier source.
 
 YAMLResume fournit également un ensemble riche d'options de personnalisation de
@@ -350,12 +352,14 @@ verrouillée selon ce que le thème code en dur.
 
 ### Locale (i18n)
 
-Au moment de la rédaction, YAMLResume prend en charge 10 langues nativement
+Au moment de la rédaction, YAMLResume prend en charge 11 langues réparties sur
+13 codes de locale nativement
 ([anglais](/fr/docs/locale/english), [chinois](/fr/docs/locale/chinese),
 [espagnol](/fr/docs/locale/spanish), [français](/fr/docs/locale/french),
 [norvégien](/fr/docs/locale/norwegian), [néerlandais](/fr/docs/locale/dutch),
 [japonais](/fr/docs/locale/japanese), [allemand](/fr/docs/locale/german),
-[indonésien](/fr/docs/locale/indonesian), etc.) avec des traductions intégrées
+[indonésien](/fr/docs/locale/indonesian), [italien](/fr/docs/locale/italian),
+etc.) avec des traductions intégrées
 des en-têtes de section, des noms de pays et de divers termes, des formats
 d'adresse et de date idiomatiques, une configuration LaTeX optimale, etc.
 
@@ -379,6 +383,7 @@ $ yamlresume languages list
 | de              | German                          |
 | id              | Indonesian                      |
 | pt-br           | Brazilian Portuguese            |
+| it              | Italian                         |
 ```
 
 YAMLResume prend en charge l'i18n des manières suivantes :
@@ -514,8 +519,8 @@ format plus plat de YAMLResume au niveau supérieur.
 
 YAMLResume fournit une
 [image Docker officielle](https://hub.docker.com/r/yamlresume/yamlresume) avec
-toutes les dépendances préinstallées, incluant Node.js, LaTeX et les polices
-recommandées. Cela facilite la prise en main sans installation locale :
+toutes les dépendances préinstallées, incluant Node.js, LaTeX, Typst et les
+polices recommandées. Cela facilite la prise en main sans installation locale :
 
 ```bash
 docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
@@ -545,7 +550,7 @@ pipelines CI/CD. Vous pouvez automatiquement compiler et valider les PDF de CV �
 chaque push :
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: |
       resume-en.yml
@@ -569,7 +574,8 @@ et offre :
   syntaxique YAML et [validation par schéma](/fr/docs/compiler/schema/json)
 - **Aperçu en temps réel** : Rendu instantané pour les mises en page
   [DOCX](/fr/docs/layouts/docx), [HTML](/fr/docs/layouts/html),
-  [LaTeX](/fr/docs/layouts/latex) et [Markdown](/fr/docs/layouts/markdown)
+  [LaTeX](/fr/docs/layouts/latex), [Typst](/fr/docs/layouts/typst) et
+  [Markdown](/fr/docs/layouts/markdown)
 - **Options d'exportation** : Téléchargez, copiez ou imprimez votre CV
   directement depuis le navigateur
 - **Design réactif** : Mise en page en volets sur bureau, interface à onglets

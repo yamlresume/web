@@ -30,28 +30,28 @@ Microsoft 自身の製品ページからの引用です：
 
 ## 機能比較
 
-| 機能                       | YAMLResume                                                                                                          | Microsoft Word                                                                              |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| **種類**                   | 履歴書コンパイラ（CLI ツールチェーン）                                                                              | 汎用ワープロソフト                                                                          |
-| **作成形式**               | プレーンテキストの YAML                                                                                             | バイナリの `.docx`（XML の ZIP アーカイブ）                                                 |
-| **フォーマット**           | テンプレートから生成されるため、フォーマットが一貫                                                                  | 手作業—スタイル、タブストップ、間隔が時間とともにずれていく                                 |
-| **スキーマ検証**           | [厳格な Zod 検証](/ja/docs/compiler/schema) と [clang スタイルの診断](/ja/blog/yamlresume-compiler)                 | 構造に対する検証はなし—スペルと文法のみ                                                     |
-| **出力形式**               | [DOCX](/ja/docs/layouts/docx)、[HTML](/ja/docs/layouts/html)、[Markdown](/ja/docs/layouts/markdown)、[LaTeX/PDF](/ja/docs/layouts/latex) | `.docx`、PDF（形式を選択して保存）、その他の形式への劣化したエクスポート                    |
-| **DOCX 出力**              | 厳選されたテンプレートを備えた組み込みの [DOCX エンジン](/ja/docs/layouts/docx)                                     | 文書自体が DOCX                                                                             |
-| **テンプレート**           | 厳選された公式セット（DOCX 用は `calm`、[LaTeX](/ja/docs/layouts/latex/templates) および [HTML](/ja/docs/layouts/html/templates) はさらに多数） | Microsoft Create やサードパーティ経由の何千ものテンプレート。品質は大きく異なる            |
-| **バージョン管理**         | Git と連携。diff には実際の変更が表示される                                                                           | バイナリファイルのため、diff とマージは実質的に無意味                                       |
-| **カスタマイズ**           | 応募ごとのレイアウトファイルと Git ブランチ                                                                           | 「名前を付けて保存」したコピーがどんどん乖離（`resume_final_v2.docx`）                      |
-| **国際化**                 | [12 のロケールコードで 10 言語](/ja/docs/locale)、さらに [AI 翻訳](/ja/docs/ai/translate)                           | 多数の言語での UI とスペルチェック。各言語は別々の手作業の文書                              |
-| **リッチテキスト**         | `summary` フィールドで一部の [Markdown 構文](/ja/docs/content/rich-text)                                            | あらゆる場所で完全なフォーマット                                                            |
-| **データモデル**           | 固定された構造化スキーマ。[JSON Resume](/ja/docs/comparisons/json-resume) との相互運用                              | 自由形式の文書                                                                              |
-| **AI 機能**                | CLI に組み込みの [生成](/ja/docs/ai/generate) と [翻訳](/ja/docs/ai/translate)                                      | Microsoft 365 Copilot 機能（サブスクリプション）                                            |
-| **共同編集**               | プレーンテキストに対する Git プルリクエストとコードレビュー                                                         | 優れたリアルタイム共同編集、コメント、変更履歴                                              |
-| **ATS 安全性**             | クリーンで生成された文書構造。テキストフィールドには [Markdown](/ja/docs/layouts/markdown) 出力                    | テンプレートの規律次第—表、テキストボックス、段組みは多くのパーサーを壊す                   |
-| **決定論的出力**           | はい—同じ入力なら、どのマシンでも同じバイト                                                                           | フォントとレイアウトはマシンや Word のバージョン間で変わる                                  |
-| **Dev モード**             | 保存するたびにリビルドする [`yamlresume dev`](/ja/blog/dev-mode)                                                    | WYSIWYG 編集（リアルタイムだが手作業）                                                      |
-| **CI/CD と自動化**         | [GitHub Action](https://github.com/yamlresume/action)、[Docker](/ja/docs/contributing/docker)、[`@yamlresume/node`](/ja/docs/ecosystem/node) | 履歴書向けの組み込み機能はなし                                                              |
-| **オフライン**             | はい（インストール後）                                                                                              | デスクトップアプリは可。Word for the web は接続が必要                                       |
-| **コスト**                 | 無料（オープンソース）                                                                                              | Microsoft 365 サブスクリプション。制限付きの無料 Web 版                                     |
+| 機能               | YAMLResume                                                                                                                                                                    | Microsoft Word                                                                  |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| **種類**           | 履歴書コンパイラ（CLI ツールチェーン）                                                                                                                                        | 汎用ワープロソフト                                                              |
+| **作成形式**       | プレーンテキストの YAML                                                                                                                                                       | バイナリの `.docx`（XML の ZIP アーカイブ）                                     |
+| **フォーマット**   | テンプレートから生成されるため、フォーマットが一貫                                                                                                                            | 手作業—スタイル、タブストップ、間隔が時間とともにずれていく                     |
+| **スキーマ検証**   | [厳格な Zod 検証](/ja/docs/compiler/schema) と [clang スタイルの診断](/ja/blog/yamlresume-compiler)                                                                           | 構造に対する検証はなし—スペルと文法のみ                                         |
+| **出力形式**       | [DOCX](/ja/docs/layouts/docx)、[HTML](/ja/docs/layouts/html)、[LaTeX/PDF](/ja/docs/layouts/latex)、[Typst/PDF](/ja/docs/layouts/typst)、[Markdown](/ja/docs/layouts/markdown) | `.docx`、PDF（形式を選択して保存）、その他の形式への劣化したエクスポート        |
+| **DOCX 出力**      | 厳選されたテンプレートを備えた組み込みの [DOCX エンジン](/ja/docs/layouts/docx)                                                                                               | 文書自体が DOCX                                                                 |
+| **テンプレート**   | 厳選された公式セット（DOCX 用は `calm`、[LaTeX](/ja/docs/layouts/latex/templates)、[Typst](/ja/docs/layouts/typst)、[HTML](/ja/docs/layouts/html/templates) はさらに多数）    | Microsoft Create やサードパーティ経由の何千ものテンプレート。品質は大きく異なる |
+| **バージョン管理** | Git と連携。diff には実際の変更が表示される                                                                                                                                   | バイナリファイルのため、diff とマージは実質的に無意味                           |
+| **カスタマイズ**   | 応募ごとのレイアウトファイルと Git ブランチ                                                                                                                                   | 「名前を付けて保存」したコピーがどんどん乖離（`resume_final_v2.docx`）          |
+| **国際化**         | [13 のロケールコードで 11 言語](/ja/docs/locale)、さらに [AI 翻訳](/ja/docs/ai/translate)                                                                                     | 多数の言語での UI とスペルチェック。各言語は別々の手作業の文書                  |
+| **リッチテキスト** | `summary` フィールドで一部の [Markdown 構文](/ja/docs/content/rich-text)                                                                                                      | あらゆる場所で完全なフォーマット                                                |
+| **データモデル**   | 固定された構造化スキーマ。[JSON Resume](/ja/docs/comparisons/json-resume) との相互運用                                                                                        | 自由形式の文書                                                                  |
+| **AI 機能**        | CLI に組み込みの [生成](/ja/docs/ai/generate) と [翻訳](/ja/docs/ai/translate)                                                                                                | Microsoft 365 Copilot 機能（サブスクリプション）                                |
+| **共同編集**       | プレーンテキストに対する Git プルリクエストとコードレビュー                                                                                                                   | 優れたリアルタイム共同編集、コメント、変更履歴                                  |
+| **ATS 安全性**     | クリーンで生成された文書構造。テキストフィールドには [Markdown](/ja/docs/layouts/markdown) 出力                                                                               | テンプレートの規律次第—表、テキストボックス、段組みは多くのパーサーを壊す       |
+| **決定論的出力**   | はい—同じ入力なら、どのマシンでも同じバイト                                                                                                                                   | フォントとレイアウトはマシンや Word のバージョン間で変わる                      |
+| **Dev モード**     | 保存するたびにリビルドする [`yamlresume dev`](/ja/blog/dev-mode)                                                                                                              | WYSIWYG 編集（リアルタイムだが手作業）                                          |
+| **CI/CD と自動化** | [GitHub Action](https://github.com/yamlresume/action)、[Docker](/ja/docs/contributing/docker)、[`@yamlresume/node`](/ja/docs/ecosystem/node)                                  | 履歴書向けの組み込み機能はなし                                                  |
+| **オフライン**     | はい（インストール後）                                                                                                                                                        | デスクトップアプリは可。Word for the web は接続が必要                           |
+| **コスト**         | 無料（オープンソース）                                                                                                                                                        | Microsoft 365 サブスクリプション。制限付きの無料 Web 版                         |
 
 ## 主な違いの解説
 
@@ -66,10 +66,11 @@ Word では、フォーマットはあなたの仕事です。箇条書きのイ
 す。
 
 YAMLResume では、フォーマットはコンパイラの仕事です。コンテンツはデータであり、
-[DOCX エンジン](/ja/docs/layouts/docx) と [LaTeX エンジン](/ja/docs/layouts/latex)
-がテンプレートを通じてレンダリングし、一貫性を強制します。職名を 1 か所変更すれ
-ば、DOCX、PDF、HTML、Markdown のすべての形式が次のビルドでそれを反映します。テ
-ンプレートはデザイン判断を一度だけ行い、正しくやり遂げます。
+[DOCX エンジン](/ja/docs/layouts/docx)、[LaTeX エンジン](/ja/docs/layouts/latex)、
+[Typst エンジン](/ja/docs/layouts/typst) がテンプレートを通じてレンダリングし、一貫
+性を強制します。職名を 1 か所変更すれば、DOCX、LaTeX または Typst 経由の PDF、HTML、
+Markdown のすべての形式が次のビルドでそれを反映します。テンプレートはデザイン判断
+を一度だけ行い、正しくやり遂げます。
 
 ### プレーンテキスト 対 バイナリ
 
@@ -132,7 +133,7 @@ Word はこれが得意です。多言語文書、スペルチェック、中国
 YAMLResume が輝くのは、1 つのキャリアが複数の言語を話さなければならないときで
 す。`locale` キーを設定すると、セクションヘッダー、学位、スキルレベル、国名が翻
 訳され、日付と住所がローカルなスタイルでフォーマットされ、
-[10 言語 12 ロケールコード](/ja/docs/locale) にわたってロケールに適した句読点ルー
+[11 言語 13 ロケールコード](/ja/docs/locale) にわたってロケールに適した句読点ルー
 ルが適用されます。[`yamlresume ai translate`](/ja/docs/ai/translate) と組み合わ
 せれば、英語から日本語へのバリアントも 1 つのコマンドで作れ、同じソースから生成
 されるため 2 つが乖離することはありません。Word では、それは 2 つの文書と翻訳者
@@ -165,7 +166,8 @@ Microsoft のテンプレートエコシステムは巨大です。
 
 YAMLResume は小さな厳選セットを同梱します。DOCX 出力用の
 [calm](/ja/docs/layouts/docx/templates/calm) テンプレート、プラス
-[LaTeX](/ja/docs/layouts/latex/templates) と
+[LaTeX](/ja/docs/layouts/latex/templates)、
+[Typst](/ja/docs/layouts/typst)、
 [HTML](/ja/docs/layouts/html/templates) テンプレートで、すべてがサポートされてい
 るすべてのロケールに対して検証済みです。テンプレートは文書ではなくエンジンの設
 定であるため、デザインの切り替えがコンテンツの書き直しを意味することは決してあ
@@ -185,7 +187,7 @@ URL、連絡先アイコン）は他のエンジンと揃えられています�
 生成されるかどうかに関わらず、どの DOCX ファイルにも注意点が 1 つあります。フォ
 ントは文書が開かれるマシンに存在している必要があり、なければ Word が代替フォン
 トに置き換えます。DOCX レイアウトには普及したフォントを選び、完璧な見た目の出
-力の参照として LaTeX/PDF エンジンを使い続けてください。
+力の参照として LaTeX または Typst の PDF エンジンを使い続けてください。
 
 ### 自動化
 
@@ -211,13 +213,14 @@ Word にはマクロがあります。YAMLResume にはパイプラインがあ�
 
 - Git に置かれた 1 つのプレーンテキストソースファイル。実際の diff、履歴、ブラン
   チ付き
-- [DOCX](/ja/docs/layouts/docx)、[PDF](/ja/docs/layouts/latex)、
+- [DOCX](/ja/docs/layouts/docx)、[LaTeX](/ja/docs/layouts/latex) または
+  [Typst](/ja/docs/layouts/typst) 経由の PDF、
   [HTML](/ja/docs/layouts/html)、[Markdown](/ja/docs/layouts/markdown) にわたって一貫
   する生成されたフォーマット
 - 採用担当者より先に[構造上のエラー](/ja/docs/cli#validate) を捕捉する
   [スキーマ検証](/ja/docs/compiler/schema)
 - 深い[国際化](/ja/docs/locale)。単一の信頼できる情報源からの
-  [10 言語 12 ロケールコード](/ja/docs/locale) と [AI 翻訳](/ja/docs/ai/translate)
+  [11 言語 13 ロケールコード](/ja/docs/locale) と [AI 翻訳](/ja/docs/ai/translate)
 - 設計上 ATS セーフな出力。プラス、テキストパイプライン向けの
   [Markdown エンジン](/ja/docs/layouts/markdown)
 - 自動化。[ウォッチモード](/ja/blog/dev-mode)、[CI/CD

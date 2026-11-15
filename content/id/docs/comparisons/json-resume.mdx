@@ -44,18 +44,18 @@ adalah perbandingannya:
 | Fitur                      | YAMLResume                                                                                                                           | JSON Resume                                                 |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
 | **Format Data**            | YAML                                                                                                                                 | JSON                                                        |
-| **Internasionalisasi**     | [10 bahasa](/id/docs/locale) bawaan                                                                                                  | Tidak ada                                                   |
+| **Internasionalisasi**     | [11 bahasa dalam 13 kode lokal](/id/docs/locale) bawaan                                                                             | Tidak ada                                                   |
 | **Dukungan Teks Kaya**     | Sekumpulan [sintaks teks kaya Markdown](/id/docs/content/rich-text) di bidang `summary`                                              | Tidak ada                                                   |
 | **Validasi Skema**         | [Validasi skema ketat](/id/docs/compiler/schema) dengan [compiler](/id/docs/compiler/architecture) + integrasi IDE                   | [Validasi JSON Schema dasar](https://jsonresume.org/schema) |
 | **Kustomisasi Font**       | [Keluarga font, ukuran font, jarak baris](/id/docs/layouts/latex), dll                                                               | Tidak ada                                                   |
 | **Kustomisasi Tata Letak** | [Margin halaman, nomor halaman, ukuran kertas](/id/docs/layouts/latex#page), dll                                                     | Tidak ada                                                   |
 | **Kustomisasi Bagian**     | [Alias](/id/docs/layouts/sections/aliases) dan [pengurutan ulang](/id/docs/layouts/sections/reorder)                                 | Tidak ada                                                   |
-| **Mesin Typesetting**      | [DOCX](/id/docs/layouts/docx), [HTML](/id/docs/layouts/html), [LaTeX](/id/docs/layouts/latex), [Markdown](/id/docs/layouts/markdown) | HTML                                                        |
-| **Format Output**          | DOCX, HTML, LaTeX/PDF, Markdown                                                                                                      | [HTML dan PDF](https://github.com/jsonresume/resume-cli)    |
-| **Template**               | Beberapa template [LaTeX](/id/docs/layouts/latex/templates) dan [HTML](/id/docs/layouts/html/templates) resmi                        | Puluhan [tema HTML](https://jsonresume.org/themes)          |
+| **Mesin Typesetting**      | [DOCX](/id/docs/layouts/docx), [HTML](/id/docs/layouts/html), [LaTeX](/id/docs/layouts/latex), [Typst](/id/docs/layouts/typst), [Markdown](/id/docs/layouts/markdown) | HTML                                                        |
+| **Format Output**          | DOCX, HTML, LaTeX/PDF, Typst/PDF, Markdown                                                                                           | [HTML dan PDF](https://github.com/jsonresume/resume-cli)    |
+| **Template**               | Beberapa template [LaTeX](/id/docs/layouts/latex/templates), [Typst](/id/docs/layouts/typst), dan [HTML](/id/docs/layouts/html/templates) resmi | Puluhan [tema HTML](https://jsonresume.org/themes)          |
 | **Mode Dev**               | [Mode dev](/id/docs/cli#dev) dengan pembangunan otomatis                                                                             | Ya                                                          |
 | **Alat Konversi**          | [json2yamlresume](/id/docs/ecosystem/json2yamlresume) membantu mengkonversi JSON Resume ke YAMLResume                                | N/A                                                         |
-| **Dukungan Docker**        | [Gambar docker resmi](/id/docs/contributing/docker) dengan LaTeX dan YAMLResume yang sudah terinstal                                 | Tidak ada                                                   |
+| **Dukungan Docker**        | [Gambar docker resmi](/id/docs/contributing/docker) dengan LaTeX, Typst, dan YAMLResume yang sudah terinstal                         | Tidak ada                                                   |
 | **GitHub Action**          | [GitHub action resmi](https://github.com/yamlresume/action) untuk CI/CD                                                              | Tidak ada                                                   |
 | **Homebrew**               | [Formula Homebrew](https://formulae.brew.sh/formula/yamlresume) untuk instalasi mudah di macOS dan Linux                             | Tidak ada                                                   |
 | **Taman Bermain Web**      | [Taman bermain](/id/playground) berbasis web interaktif                                                                              | Tidak ada                                                   |
@@ -273,10 +273,12 @@ yang dipoles:
   dengan metadata SEO
 - **[Mesin LaTeX](/id/docs/layouts/latex)**: PDF yang sempurna secara piksel
   dengan tipografi profesional
+- **[Mesin Typst](/id/docs/layouts/typst)**: Pembuatan PDF modern dan cepat
+  dengan template Jake dan fallback font yang sadar lokal
 - **[Mesin Markdown](/id/docs/layouts/markdown)**: Teks bersih untuk LLM, sistem
   ATS, dan situs statis
 
-Satu perintah `yamlresume build` dapat menghasilkan keempat format dari file
+Satu perintah `yamlresume build` dapat menghasilkan kelima format dari file
 sumber yang sama.
 
 YAMLResume juga menyediakan seperangkat opsi kustomisasi tata letak yang kaya
@@ -345,14 +347,14 @@ pada apa pun yang tema hardcode.
 
 ### Lokal (i18n)
 
-Pada saat penulisan, YAMLResume mendukung 10 bahasa secara langsung
-([English](/id/docs/locale/english), [Chinese](/id/docs/locale/chinese),
+Pada saat penulisan, YAMLResume mendukung 11 bahasa dalam 13 kode lokal secara
+langsung ([English](/id/docs/locale/english), [Chinese](/id/docs/locale/chinese),
 [Spanish](/id/docs/locale/spanish), [French](/id/docs/locale/french),
 [Norwegian](/id/docs/locale/norwegian), [Dutch](/id/docs/locale/dutch),
 [Japanese](/id/docs/locale/japanese), [German](/id/docs/locale/german),
-[Indonesian](/id/docs/locale/indonesian), dll.) dengan terjemahan bawaan header
-bagian, nama negara dan berbagai istilah, format alamat dan tanggal idiomatis,
-konfigurasi LaTeX terbaik, dll.
+[Indonesian](/id/docs/locale/indonesian), [Italian](/id/docs/locale/italian),
+dll.) dengan terjemahan bawaan header bagian, nama negara dan berbagai istilah,
+format alamat dan tanggal idiomatis, konfigurasi LaTeX terbaik, dll.
 
 Anda dapat menggunakan `yamlresume languages list` untuk melihat semua bahasa
 yang didukung:
@@ -374,6 +376,7 @@ $ yamlresume languages list
 | de              | German                          |
 | id              | Indonesian                      |
 | pt-br           | Brazilian Portuguese            |
+| it              | Italian                         |
 ```
 
 YAMLResume mendukung i18n dengan cara berikut:
@@ -506,8 +509,8 @@ atas YAMLResume yang lebih datar.
 
 YAMLResume menyediakan
 [gambar Docker resmi](https://hub.docker.com/r/yamlresume/yamlresume) dengan
-semua dependensi yang sudah terinstal, termasuk Node.js, LaTeX, dan font yang
-direkomendasikan. Ini memudahkan untuk memulai tanpa instalasi lokal:
+semua dependensi yang sudah terinstal, termasuk Node.js, LaTeX, Typst, dan font
+yang direkomendasikan. Ini memudahkan untuk memulai tanpa instalasi lokal:
 
 ```bash
 docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume new my-resume.yml
@@ -537,7 +540,7 @@ CI/CD. Anda dapat secara otomatis membangun dan melakukan commit PDF resume pada
 setiap push:
 
 ```yaml
-- uses: yamlresume/action@v0.2.3
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: |
       resume-en.yml
@@ -561,7 +564,8 @@ dan memiliki fitur:
   YAML dan [validasi skema](/id/docs/compiler/schema/json)
 - **Pratinjau Real-time**: Rendering instan untuk tata letak
   [DOCX](/id/docs/layouts/docx), [HTML](/id/docs/layouts/html),
-  [LaTeX](/id/docs/layouts/latex), dan [Markdown](/id/docs/layouts/markdown)
+  [LaTeX](/id/docs/layouts/latex), [Typst](/id/docs/layouts/typst), dan
+  [Markdown](/id/docs/layouts/markdown)
 - **Opsi Ekspor**: Unduh, salin, atau cetak resume Anda langsung dari browser
 - **Desain Responsif**: Tata letak panel terpisah di desktop, antarmuka ber-tab
   di mobile

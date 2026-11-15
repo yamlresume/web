@@ -51,8 +51,8 @@ Options:
 
 Commands:
   ai                             AI-powered resume generation
-  build [options] <resume-path>  build a resume to Docx, HTML, Markdown or
-                                 LaTeX/PDF
+  build [options] <resume-path>  build a resume to Docx, HTML, Markdown,
+                                 LaTeX/PDF or Typst/PDF
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
@@ -67,7 +67,7 @@ Afficher la version du CLI YAMLResume :
 
 ```console
 $ yamlresume -V
-0.15.3
+0.18.0
 ```
 
 ## New
@@ -119,16 +119,31 @@ $ yamlresume new my-resume.yml --sample no-such-sample
  ERROR  Sample resume not found: no-such-sample
 
 ℹ Available samples:
+  - account-executive: Account Executive
+  - ai-engineer: AI Engineer
+  - business-analyst: Business Analyst
+  - customer-success-manager: Customer Success Manager
+  - cybersecurity-engineer: Cybersecurity Engineer
   - data-analyst: Data Analyst
+  - data-engineer: Data Engineer
   - data-scientist: Data Scientist
+  - devops-engineer: DevOps Engineer
+  - financial-analyst: Financial Analyst
+  - human-resources-manager: Human Resources Manager
+  - marketing-manager: Marketing Manager
+  - mechanical-engineer: Mechanical Engineer
+  - operations-manager: Operations Manager
   - product-manager: Product Manager
+  - project-manager: Project Manager
+  - qa-engineer: QA Engineer
+  - registered-nurse: Registered Nurse
   - software-engineer: Software Engineer
   - ux-designer: UX Designer
 ```
 
 ### `--language`
 
-Tous les exemples de CV sont traduits en 12 langues locales. Vous pouvez utiliser
+Les 20 exemples de CV sont tous traduits en 13 langues locales. Vous pouvez utiliser
 l'option `--language` pour créer un CV à partir d'un exemple localisé, ce qui est
 très pratique pour rédiger des CV dans une autre langue que l'anglais :
 
@@ -139,10 +154,10 @@ $ yamlresume new my-resume.yml --sample software-engineer --language zh-hans
 
 ## Samples
 
-YAMLResume est livré avec un ensemble d'exemples de CV sélectionnés avec soin
-pour des postes courants, traduits en 12 langues locales (`de`, `en`, `es`,
-`fr`, `id`, `ja`, `nl`, `no`, `pt-br`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`).
-Listez-les tous avec la sous-commande `samples list` :
+YAMLResume est livré avec 20 exemples de CV sélectionnés avec soin pour des
+postes courants, chacun traduit en 13 langues locales (`de`, `en`, `es`, `fr`,
+`id`, `it`, `ja`, `nl`, `no`, `pt-br`, `zh-hans`, `zh-hant-hk`,
+`zh-hant-tw`). Listez-les tous avec la sous-commande `samples list` :
 
 ```console
 $ yamlresume samples --help
@@ -159,13 +174,28 @@ Commands:
 
 $ yamlresume samples list
 
-| ID                | Position          | Title             | Category       |
-| ----------------- | ----------------- | ----------------- | -------------- |
-| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
-| data-scientist    | data scientist    | Data Scientist    | Data Science   |
-| product-manager   | product manager   | Product Manager   | Product        |
-| software-engineer | software engineer | Software Engineer | Engineering    |
-| ux-designer       | ux designer       | UX Designer       | Design         |
+| ID                       | Position                 | Title                    | Category         |
+| ------------------------ | ------------------------ | ------------------------ | ---------------- |
+| account-executive        | account executive        | Account Executive        | Sales            |
+| ai-engineer              | ai engineer              | AI Engineer              | Engineering      |
+| business-analyst         | business analyst         | Business Analyst         | Business         |
+| customer-success-manager | customer success manager | Customer Success Manager | Customer Success |
+| cybersecurity-engineer   | cybersecurity engineer   | Cybersecurity Engineer   | Engineering      |
+| data-analyst             | data analyst             | Data Analyst             | Data Analytics   |
+| data-engineer            | data engineer            | Data Engineer            | Engineering      |
+| data-scientist           | data scientist           | Data Scientist           | Data Science     |
+| devops-engineer          | devops engineer          | DevOps Engineer          | Engineering      |
+| financial-analyst        | financial analyst        | Financial Analyst        | Finance          |
+| human-resources-manager  | human resources manager  | Human Resources Manager  | Human Resources  |
+| marketing-manager        | marketing manager        | Marketing Manager        | Marketing        |
+| mechanical-engineer      | mechanical engineer      | Mechanical Engineer      | Engineering      |
+| operations-manager       | operations manager       | Operations Manager       | Operations       |
+| product-manager          | product manager          | Product Manager          | Product          |
+| project-manager          | project manager          | Project Manager          | Management       |
+| qa-engineer              | qa engineer              | QA Engineer              | Engineering      |
+| registered-nurse         | registered nurse         | Registered Nurse         | Healthcare       |
+| software-engineer        | software engineer        | Software Engineer        | Engineering      |
+| ux-designer              | ux designer              | UX Designer              | Design           |
 ```
 
 Utilisez [`yamlresume new --sample <id>`](#new) pour créer un nouveau fichier de
@@ -173,24 +203,30 @@ CV à partir d'un exemple.
 
 ## Build
 
-Construire un CV de YAML vers PDF. Il générera le code LaTeX et le PDF en même
-temps, avec quelques fichiers intermédiaires `.aux`, `.log` etc, si vous utilisez
-[XeTeX](/docs/installation#xetex) comme moteur de composition.
+Construire toutes les mises en page configurées dans un CV YAML. Une seule
+commande peut générer des sorties DOCX, HTML, Markdown, LaTeX/PDF et Typst/PDF.
+Les mises en page LaTeX et Typst produisent aussi les sources `.tex` et `.typ`.
+XeTeX peut laisser des fichiers intermédiaires comme `.aux` et `.log`.
+
+Lorsque les deux moteurs PDF sont configurés, leurs sorties utilisent des noms
+distincts : `resume.tex.pdf` pour LaTeX et `resume.typ.pdf` pour Typst. Avec un
+seul moteur PDF, la sortie conserve le nom historique `resume.pdf`.
 
 ```console
 $ yamlresume build --help
 Usage: yamlresume build [options] <resume-path>
 
-build a resume to LaTeX, PDF, Markdown, or HTML
+build a resume to Docx, HTML, Markdown, LaTeX/PDF or Typst/PDF
 
 Arguments:
   resume-path              the resume file path
 
 Options:
-  --no-pdf                 only generate TeX file without PDF (for LaTeX layouts)
+  --no-pdf                 only generate source files (TeX/Typst) without PDF
   --no-validate            skip resume schema validation
   -o, --output <dir>       output directory for generated files
-  -t, --timeout <seconds>  timeout for LaTeX compilation in seconds (default: 30, 0 to disable)
+  -t, --timeout <seconds>  timeout for LaTeX/Typst compilation in seconds
+                           (default: 30, 0 to disable)
   -h, --help               display help for command
 
 $ yamlresume build my-resume.yml
@@ -200,8 +236,8 @@ $ yamlresume build my-resume.yml
 
 ### `--no-pdf`
 
-Si vous voulez seulement générer le fichier LaTeX sans PDF, vous pouvez utiliser
-l'option `--no-pdf`.
+Si vous voulez seulement générer les fichiers sources LaTeX et Typst sans PDF,
+utilisez l'option `--no-pdf`.
 
 ```console
 $ yamlresume build --no-pdf my-resume.yml
@@ -227,8 +263,8 @@ $ yamlresume build -o ./output my-resume.yml
 
 ### `--timeout`
 
-Si vous voulez personnaliser le délai d'attente pour la compilation LaTeX, vous
-pouvez utiliser l'option `--timeout`. Le délai d'attente par défaut est de 30
+Si vous voulez personnaliser le délai d'attente pour la compilation LaTeX ou
+Typst, utilisez l'option `--timeout`. Le délai d'attente par défaut est de 30
 secondes. Vous pouvez désactiver le délai d'attente en le réglant sur 0.
 
 ```console
@@ -364,6 +400,9 @@ $ yamlresume doctor
 ℹ Checking Tectonic...
   Tectonic: tectonic 0.15.0
 
+ℹ Checking Typst...
+  Typst: typst 0.15.1
+
 ℹ Checking Fonts...
   Linux Libertine O: Not Installed
   Linux Libertine: Installed
@@ -376,6 +415,7 @@ La commande doctor vérifie :
 - **Informations système** : OS, architecture CPU
 - **Binaires** : Node.js, npm, pnpm, Yarn, Bun
 - **Moteurs LaTeX** : Disponibilité de XeTeX et Tectonic
+- **Typst** : Disponibilité de Typst et version minimale 0.13.0
 - **Polices** : Polices requises pour un rendu optimal du CV (Linux Libertine
   pour le texte latin, Noto CJK pour le chinois/japonais/coréen)
 
@@ -402,6 +442,7 @@ $ yamlresume languages list
 | zh-hant-tw      | Traditional Chinese (Taiwan)    |
 | es              | Spanish                         |
 | fr              | French                          |
+| it              | Italian                         |
 | no              | Norwegian                       |
 | nl              | Dutch                           |
 | ja              | Japanese                        |
@@ -428,4 +469,5 @@ $ yamlresume templates list
 | kami                | html   | Kami             | Warm parchment and serif typography inspired by tw93/kami.          |
 | vscode              | html   | VS Code          | Dark theme inspired by Visual Studio Code, tailored for developers. |
 | calm                | docx   | Calm             | Clean and minimalist design suitable for all professionals.         |
+| jake                | typst  | Jake's Resume    | A simple, straight-forward resume template based on Jake's Resume   |
 ```

@@ -1,0 +1,204 @@
+---
+title: "YAMLResume v0.18 : Typst, l'italien et 20 exemples de CV localisés"
+description:
+  "YAMLResume v0.18 ajoute un moteur Typst avec le modèle Jake, la prise en
+  charge de la locale italienne, dix nouveaux exemples de CV, des contrôles
+  partagés de soulignement des liens et des compilations PDF plus claires."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-11-13
+---
+
+[YAMLResume v0.18](https://github.com/yamlresume/yamlresume/releases/tag/v0.18.0)
+est disponible. La fonctionnalité phare est le nouveau
+[moteur Typst](/fr/docs/layouts/typst), qui offre à YAMLResume une seconde voie
+de composition PDF à côté de LaTeX. Cette version ajoute également l'italien,
+fait passer la bibliothèque d'exemples de 10 à 20 CV, et améliore le style des
+liens, les diagnostics PDF et les modèles IA par défaut.
+
+## Un nouveau moteur Typst
+
+[Typst](https://typst.app/) est un système de composition moderne doté d'une
+syntaxe concise et programmable. YAMLResume peut désormais transformer le même
+contenu YAML en source LaTeX ou Typst et compiler l'une ou l'autre en PDF
+professionnel.
+
+Ajoutez une mise en page Typst à votre CV :
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: typst
+    template: jake
+    typography:
+      fontSize: 10pt
+      links:
+        underline: false
+    theme:
+      colors:
+        accent: burgundy
+```
+
+Le premier modèle Typst est [`jake`](/fr/docs/layouts/typst/templates/jake), un
+portage du design LaTeX Jake épuré et compatible ATS. Il prend en charge les
+termes localisés, les résumés Markdown, les marges de page, les familles de
+polices, l'interligne, les couleurs d'accent, les alias et l'ordre des sections,
+les icônes, les URL et les polices de secours CJK adaptées à la locale.
+
+![Modèle Typst Jake](/static/images/docs/layouts/typst/templates/jake-template.webp)
+
+Vous pouvez inspecter la source Typst générée dans le
+[playground](/fr/playground?sample=software-engineer&locale=en&engine=typst&template=jake)
+ou consulter le [guide du moteur Typst](/fr/docs/layouts/typst) pour toutes les
+options.
+
+### Installation et mises en page par défaut
+
+La compilation PDF nécessite **Typst 0.13.0 ou plus récent**. L'image Docker
+officielle inclut Typst 0.15.1, donc les utilisateurs de Docker n'ont pas besoin
+d'une installation séparée. Exécutez `yamlresume doctor` pour vérifier votre
+installation locale.
+
+À partir de la v0.18, `yamlresume new` inclut une mise en page Typst dans le
+tableau `layouts` par défaut. Si vous créez un CV avec les nouveaux réglages par
+défaut, installez Typst avant de compiler toutes les sorties PDF, utilisez
+l'image Docker officielle, ou ignorez la compilation PDF lorsque vous n'avez
+besoin que des fichiers sources :
+
+```console
+$ yamlresume build resume.yml --no-pdf
+```
+
+Les CV existants dotés d'un tableau `layouts` explicite conservent les moteurs
+configurés. Lorsqu'un CV active à la fois LaTeX et Typst, leurs PDF sont nommés
+`resume.tex.pdf` et `resume.typ.pdf` pour que l'un ne puisse pas écraser
+l'autre. Un seul moteur PDF activé conserve le nom de fichier traditionnel
+`resume.pdf`.
+
+## Prise en charge de la locale italienne
+
+L'italien rejoint les locales intégrées sous le code `it`, ce qui porte
+YAMLResume à **13 codes de locale répartis sur 11 langues**. Cela inclut des
+titres de section, des diplômes, des niveaux de compétence linguistique, des
+noms de pays et des noms de mois en minuscules idiomatiques, tous localisés.
+
+```yml lineNumbers title="resume.it.yml"
+locale:
+  language: it
+```
+
+Créez un CV italien directement à partir d'un exemple :
+
+```console
+$ yamlresume new resume.it.yml --sample software-engineer --language it
+```
+
+Consultez le [guide de la locale italienne](/fr/docs/locale/italian) ou
+parcourez la [galerie italienne](/fr/gallery/languages/it).
+
+## 20 exemples de CV sur 13 locales
+
+La bibliothèque d'exemples sélectionnés a doublé, passant de 10 à **20 CV**, et
+couvre un éventail plus large de postes techniques, de design, commerciaux, de
+santé et de service public. Chaque exemple est disponible dans les 13 codes de
+locale, et la galerie publie désormais du HTML, du DOCX, du PDF, du LaTeX, du
+Typst, du Markdown et des images d'aperçu pour chaque CV localisé.
+
+Explorez la [galerie](/fr/gallery), listez les exemples depuis votre terminal,
+ou créez une copie locale :
+
+```console
+$ yamlresume samples list
+$ yamlresume new resume.yml --sample registered-nurse --language it
+```
+
+La [documentation du package d'exemples](/fr/docs/ecosystem/samples) couvre les
+API programmatiques.
+
+## Contrôles partagés de soulignement des liens
+
+L'option `typography.links.underline` fonctionne désormais de manière cohérente
+sur **LaTeX, Typst, HTML et DOCX** :
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    typography:
+      links:
+        underline: true
+```
+
+LaTeX et Typst utilisent des soulignements à ligne de base fixe, et LaTeX
+évite les jambages pour que les soulignements restent lisibles sans modifier
+l'espacement du texte. HTML et DOCX respectent le même réglage, ce qui donne aux
+quatre moteurs visuels un contrat commun de style des liens.
+
+## Des compilations PDF plus claires
+
+Les compilations PDF vérifient désormais que le fichier attendu existe et n'est
+pas vide avant d'annoncer un succès. Les avertissements des compilateurs LaTeX
+et Typst sont également remontés au lieu d'être cachés dans les journaux de
+débogage, tandis que les avertissements attendus concernant les polices de
+secours CJK facultatives sont filtrés de la sortie Typst.
+
+Avec les noms de fichiers PDF propres à chaque moteur, ces changements rendent
+les compilations multi-moteurs plus faciles à comprendre et à diagnostiquer.
+
+## Modèles IA par défaut mis à jour
+
+Les commandes intégrées de génération et de traduction IA utilisent désormais
+des identifiants de modèle par défaut à jour :
+
+| Fournisseur | Variable d'environnement | Modèle par défaut |
+| ----------- | ------------------------ | ----------------- |
+| DeepSeek    | `DEEPSEEK_API_KEY`       | `deepseek-flash`  |
+| Kimi        | `MOONSHOT_API_KEY`       | `kimi-k3.1-pro`   |
+| OpenAI      | `OPENAI_API_KEY`         | `gpt-5.6-luna`    |
+| Ollama      | `OLLAMA_HOST`            | `llama3.2`        |
+
+Les fournisseurs compatibles OpenAI utilisent désormais systématiquement l'API
+Chat Completions. Vous pouvez toujours remplacer le modèle et l'URL de base via
+les options du CLI ou les variables d'environnement ; voir le [guide de
+génération IA](/fr/docs/ai/generate).
+
+## Changement cassant : noms de moteurs de rendu explicites
+
+L'ajout de Typst a rendu nécessaire l'explicitation des noms de classes des
+moteurs de rendu LaTeX. Si vous importez directement les classes de moteur de
+rendu depuis `@yamlresume/core`, mettez à jour ces imports :
+
+| v0.17                    | v0.18                         |
+| ------------------------ | ----------------------------- |
+| `JakeRenderer`           | `JakeLatexRenderer`           |
+| `ModerncvBankingRenderer`| `ModerncvBankingLatexRenderer`|
+| `ModerncvCasualRenderer` | `ModerncvCasualLatexRenderer` |
+| `ModerncvClassicRenderer`| `ModerncvClassicLatexRenderer`|
+
+La nouvelle implémentation Typst est disponible sous le nom
+`JakeTypstRenderer`. Les fichiers YAML de CV et les utilisateurs des API de rendu
+de plus haut niveau n'ont pas besoin de modifier leur configuration.
+
+## Obtenez la v0.18
+
+Mettez à jour avec votre gestionnaire de packages préféré :
+
+```console
+$ npm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ pnpm add -g yamlresume@latest
+$ brew upgrade yamlresume
+```
+
+Ou tirez la nouvelle image :
+
+```console
+$ docker pull yamlresume/yamlresume:latest
+```
+
+Consultez le [guide d'installation](/fr/docs/installation), essayez Typst dans le
+[playground](/fr/playground), et explorez la [galerie](/fr/gallery) enrichie. Si
+vous rencontrez le moindre problème, [ouvrez une
+issue](https://github.com/yamlresume/yamlresume/issues) sur GitHub. La liste
+complète des changements se trouve dans le
+[changelog](https://github.com/yamlresume/yamlresume/blob/main/CHANGELOG.md).
+
+Profitez de la v0.18 !

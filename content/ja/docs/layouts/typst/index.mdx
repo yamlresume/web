@@ -1,0 +1,170 @@
+---
+title: Typst エンジン
+description: "Typst、Jake テンプレート、設定可能なタイポグラフィ、アクセントカラー、CJK フォントのフォールバックを使って、組版された PDF 履歴書を生成します。"
+---
+
+Typst エンジンは、モダンな組版システムである [Typst](https://typst.app/) を使用して
+プロフェッショナルな PDF 履歴書を生成します。他のエンジンと同じ履歴書コンテンツを
+受け取り、現在は [`jake`](./typst/templates/jake) テンプレートを提供しています。
+
+## 設定
+
+レイアウトで `engine: typst` を指定します。PDF のコンパイルには
+**Typst 0.13.0 以降**が必要です。公式 Docker イメージには Typst が含まれているため、
+Docker を使用する場合は別途インストールする必要はありません。
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: typst
+    template: jake
+    page:
+      paperSize: a4
+      showPageNumbers: false
+    typography:
+      fontSize: 10pt
+      lineSpacing: normal
+      links:
+        underline: false
+    advanced:
+      showIcons: true
+      showUrls: true
+```
+
+`yamlresume build resume.yml` を実行すると、`resume.typ` とその PDF の両方が生成され
+ます。`--no-pdf` を指定すると、YAMLResume は Typst ソースのみを生成し、Typst CLI を
+必要としません。履歴書に LaTeX レイアウトもある場合、2 つの PDF は互いに上書きしな
+いよう `resume.tex.pdf` と `resume.typ.pdf` という名前になります。
+
+## ページ
+
+`page` オプションは、用紙サイズ、余白、ページ番号を制御します。Typst は `a4` と
+`letter` の用紙サイズをサポートしています。
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    page:
+      showPageNumbers: true
+      paperSize: a4
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+```
+
+## セクション
+
+`sections` オプションは、セクションタイトルとその順序をカスタマイズします。利用可能
+なセクション ID の一覧については
+[セクションのドキュメント](./sections) を参照してください。
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    sections:
+      aliases:
+        work: "Professional Experience"
+        education: "Education"
+      order:
+        - basics
+        - work
+        - education
+```
+
+## テンプレート
+
+`template` オプションは視覚的なデザインを選択します。Typst は現在
+[`jake`](./typst/templates/jake) をサポートしており、これがデフォルトでもあります。
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    template: jake
+```
+
+## タイポグラフィ
+
+### フォントサイズ
+
+`fontSize` オプションは `10pt`、`11pt`、`12pt` を受け付けます。ヘッダーとセクション
+見出しのサイズは、この基本フォントサイズに合わせて拡大縮小されます。
+
+### フォントファミリー
+
+`fontFamily` オプションは、CSS の `font-family` と同様に、優先順位付きのフォント
+ファミリー名のカンマ区切りリストを受け付けます。Typst が解決できるよう、指定した
+フォントをインストールしておいてください。
+
+CJK 履歴書の場合、YAMLResume は地域に適した Noto、macOS、Windows のフォントフォール
+バックを試みます。一貫した出力のため
+[Google Noto CJK フォント](/ja/docs/installation#google-noto) のインストールを推奨し
+ます。
+
+### 行間
+
+`lineSpacing` オプションは、以下のセマンティック値を受け付けます：
+
+| 値        | 説明                                         |
+| --------- | -------------------------------------------- |
+| `tight`   | より多くのコンテンツを収めるコンパクトな間隔 |
+| `snug`    | tight よりわずかに多いスペース               |
+| `normal`  | バランスの取れた読みやすさ（デフォルト）     |
+| `relaxed` | 行間にゆとりを持たせた間隔                   |
+| `loose`   | 非常にゆったりとしたレイアウト               |
+
+### リンクの下線
+
+`typography.links.underline` を設定すると、ハイパーリンクに下線を付けるかどうかを
+制御できます。このオプションは LaTeX、Typst、HTML、DOCX の各エンジンで共通です。
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    typography:
+      fontSize: 11pt
+      fontFamily: "Linux Libertine O, Noto Serif CJK SC, serif"
+      lineSpacing: relaxed
+      links:
+        underline: true
+```
+
+## テーマ
+
+`theme.colors.accent` オプションは、名前付きプリセットまたは任意の `#RRGGBB` 形式の
+16進カラーコードを受け付けます。この設定はハイライトされた要素の色を変更しますが、
+ページのジオメトリやセクション構造には影響しません。利用可能なプリセットについては
+[アクセントカラー](./latex#アクセントカラー) のリファレンスを参照してください。
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    theme:
+      colors:
+        accent: burgundy
+```
+
+アクセントカラーが設定されていない場合、テンプレートはデフォルトのパレットを保持し
+ます。
+
+## 高度な設定
+
+`advanced` オプションはアイコンと URL の表示を制御します：
+
+- `showIcons`：リンクとプロフィールのアイコンを表示します。
+- `showUrls`：URL を読みやすいテキストの背後に隠さず、生の URL を表示します。
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    advanced:
+      showIcons: true
+      showUrls: false
+```
+
+## デフォルトのレイアウト
+
+v0.18 以降、`yamlresume new` はデフォルトの `layouts` 配列に Typst レイアウトを含め
+ます。デフォルトの PDF 出力をビルドする前に Typst 0.13.0 以降をインストールするか、
+公式 Docker イメージを使用するか、ソースファイルのみが必要な場合は `--no-pdf` を指
+定してください。

@@ -1,16 +1,21 @@
 ---
 title: Instalação
-description: "Instale a CLI do YAMLResume com npm, pnpm, Docker ou Homebrew, além de XeTeX ou Tectonic e as fontes recomendadas para gerar PDF."
+description: "Instale a CLI do YAMLResume com npm, pnpm, Docker ou Homebrew, além de XeTeX, Tectonic ou Typst e as fontes recomendadas para gerar PDF."
 ---
 
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
-O YAMLResume é uma ferramenta Node.js, por baixo do capô, transforma os seus currículos do formato YAML para código LaTeX e depois chama um motor de composição tipográfica LaTeX para compilar o código LaTeX gerado para PDF. Além disso, para obter uma saída PDF ótima, também sugerimos instalar algumas fontes. Em resumo, precisa de instalar o seguinte para começar com o YAMLResume:
+O YAMLResume é distribuído como um CLI Node.js e um conjunto de pacotes reutilizáveis. Para gerar DOCX, HTML, Markdown e código-fonte LaTeX e Typst, só precisa do Node.js e do CLI `yamlresume`. A saída PDF requer adicionalmente o [motor de composição tipográfica](#typesetting-engine) correspondente, e instalar as fontes recomendadas melhora a tipografia final.
+
+Em resumo, uma instalação local do CLI precisa de:
 
 - Node.js 22 ou posterior
 - [pacote yamlresume](https://www.npmjs.com/package/yamlresume)
-- um motor de composição tipográfica
-- [opcional] algumas fontes
+- [opcional] XeTeX ou Tectonic para saída LaTeX/PDF
+- [opcional] Typst 0.13.0 ou posterior para saída Typst/PDF
+- [opcional] algumas fontes recomendadas para uma saída PDF ótima
+
+Se preferir um ambiente com o CLI, XeTeX, Typst e as fontes já instalados, use a imagem Docker oficial abaixo.
 
 Isto parece um pouco complicado, mas não se preocupe, nós cobrimos tudo.
 
@@ -21,6 +26,7 @@ Se é utilizador de docker, tem sorte, temos uma [imagem de docker](https://hub.
 - [Node.js](/pt/docs/installation#nodejs)
 - [CLI yamlresume](/pt/docs/installation#yamlresume)
 - [XeTeX](/pt/docs/installation#xetex)
+- [Typst](/pt/docs/installation#typst)
 - [algumas fontes recomendadas](/pt/docs/installation#font)
 
 Pode criar um novo currículo instantaneamente com o seguinte comando:
@@ -204,8 +210,8 @@ Options:
 
 Commands:
   ai                             AI-powered resume generation
-  build [options] <resume-path>  build a resume to Docx, HTML, Markdown or
-                                 LaTeX/PDF
+  build [options] <resume-path>  build a resume to Docx, HTML, Markdown,
+                                 LaTeX/PDF or Typst/PDF
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
@@ -237,23 +243,41 @@ bun exec yamlresume help
 
 ### Motor de Composição Tipográfica
 
-Por baixo do capô, o `yamlresume` faz o trabalho de um compilador, analisando um currículo YAML para um
+Por baixo do capô, o `yamlresume` analisa um currículo YAML para um
 [AST](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/ast.ts)
-e depois [transformando o AST para código LaTeX](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/codegen/latex.ts).
+e transforma-o em código-fonte LaTeX ou Typst. Gerar ficheiros de código-fonte
+não requer um compilador externo. Para transformar esses códigos-fonte em PDFs,
+instale o motor de composição tipográfica correspondente:
 
-Como um mini-compilador, o `yamlresume` depende de um motor de composição tipográfica para compilar o código LaTeX gerado para PDFs. Portanto, primeiro deve instalar um motor de composição tipográfica antes de poder usar o `yamlresume` para gerar PDFs de currículo.
+- **Layouts LaTeX**: [XeTeX](#xetex) ou [Tectonic](#tectonic)
+- **Layouts Typst**: [Typst](#typst) 0.13.0 ou superior
 
-O YAMLResume atualmente suporta dois motores de composição tipográfica: [XeTeX](#xetex) e [Tectonic](#tectonic).
-
-<Callout title="Porquê LaTeX?">
-  No momento em que escrevo isto, o [LaTeX](https://www.latex-project.org/) continua a ser a
-  melhor opção de motor de composição tipográfica para produzir PDFs de aspeto profissional.
-  [Typst](https://typst.app/) é uma grande alternativa, mas ainda está na sua
-  fase inicial e o seu suporte CJK não está maduro nem pronto para produção ainda.
-  Anteriormente escrevi uma publicação [Sobre Motores de Composição Tipográfica](https://blog.ppresume.com/posts/on-typesetting-engines) explicando
-  as razões pelas quais escolhi LaTeX sobre outros motores de composição tipográfica quando fundei
-  [PPResume](https://ppresume.com).
+<Callout title="Porquê LaTeX e Typst?">
+  O [LaTeX](https://www.latex-project.org/) oferece um ecossistema maduro de
+  composição tipográfica e vários modelos de currículo consagrados. O
+  [Typst](https://typst.app/) oferece uma linguagem moderna e uma compilação
+  rápida. O YAMLResume suporta ambos, para que possa escolher por layout sem
+  alterar o conteúdo do currículo.
 </Callout>
+
+#### Typst
+
+Instale o [Typst](https://typst.app/) 0.13.0 ou superior seguindo o
+[guia de instalação oficial](https://github.com/typst/typst#installation). No
+macOS, pode usar o Homebrew:
+
+```sh
+brew install typst
+```
+
+Verifique que o CLI está disponível e reporta uma versão suportada:
+
+```console
+$ typst --version
+typst 0.15.1
+```
+
+O `yamlresume doctor` também verifica a versão do Typst instalada.
 
 #### XeTeX
 

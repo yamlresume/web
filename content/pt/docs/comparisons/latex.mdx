@@ -24,13 +24,15 @@ most often used for medium-to-large technical or scientific documents but it
 can be used for almost any form of publishing.
 ```
 
-A questão é esta: **o YAMLResume não é uma alternativa ao LaTeX—ele é
-construído sobre ele.** O [motor LaTeX](/pt/docs/layouts/latex) do YAMLResume
+A questão é esta: **o YAMLResume não é simplesmente uma alternativa ao
+LaTeX—ele inclui um motor LaTeX e também oferece um caminho de composição
+tipográfica com Typst.** O [motor LaTeX](/pt/docs/layouts/latex) do YAMLResume
 gera código-fonte `.tex` a partir do seu YAML e o compila com XeLaTeX, o mesmo
-motor que alimenta currículos LaTeX escritos à mão. A comparação real é entre
-dois *fluxos de trabalho de autoria*: escrever seu currículo diretamente em
-marcação TeX, ou escrevê-lo como YAML estruturado e deixar que um compilador
-gere o TeX para você.
+motor que alimenta currículos LaTeX escritos à mão. O seu [motor
+Typst](/pt/docs/layouts/typst) pode, em alternativa, gerar código-fonte `.typ` e
+PDF. A comparação real é entre dois *fluxos de trabalho de autoria*: escrever seu
+currículo diretamente em marcação TeX, ou escrevê-lo como YAML estruturado e
+deixar que um compilador gere o código-fonte de composição para você.
 
 Veja como os dois fluxos de trabalho se comparam:
 
@@ -38,19 +40,19 @@ Veja como os dois fluxos de trabalho se comparam:
 
 | Funcionalidade           | YAMLResume                                                                                                        | LaTeX Escrito à Mão                                                                                     |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **Abordagem**            | Fonte YAML compilada para LaTeX                                                                                   | Documentos criados diretamente em TeX                                                                   |
+| **Abordagem**            | Fonte YAML compilada através de cinco motores                                                                     | Documentos criados diretamente em TeX                                                                   |
 | **Linguagem de Autoria** | YAML (texto simples, sem marcação)                                                                                | Marcação TeX/LaTeX                                                                                      |
 | **Conhecimento de TeX**  | Nenhum necessário                                                                                                 | Proficiência necessária para personalização                                                             |
-| **Motor de Composição Tipográfica** | XeLaTeX                                                                                                  | Sua escolha: pdfLaTeX, XeLaTeX, LuaLaTeX                                                                |
-| **Formatos de Saída**    | [DOCX](/pt/docs/layouts/docx), [HTML](/pt/docs/layouts/html), [Markdown](/pt/docs/layouts/markdown), [LaTeX/PDF](/pt/docs/layouts/latex) | PDF (conversões com pandoc são possíveis, mas com perdas)                                       |
-| **Fonte Gerada**         | `.tex` limpo emitido junto ao PDF—você pode inspecioná-lo ou ajustá-lo                                            | N/A (a fonte escrita à mão é tudo o que existe)                                                         |
+| **Motor de Composição Tipográfica** | XeLaTeX e [Typst](/pt/docs/layouts/typst)                                                        | Sua escolha: pdfLaTeX, XeLaTeX, LuaLaTeX                                                                |
+| **Formatos de Saída**    | [DOCX](/pt/docs/layouts/docx), [HTML](/pt/docs/layouts/html), [LaTeX/PDF](/pt/docs/layouts/latex), [Typst/PDF](/pt/docs/layouts/typst), [Markdown](/pt/docs/layouts/markdown) | PDF (conversões com pandoc são possíveis, mas com perdas)                                       |
+| **Fonte Gerada**         | `.tex` ou `.typ` limpo emitido junto ao PDF—você pode inspecioná-lo ou ajustá-lo                                  | N/A (a fonte escrita à mão é tudo o que existe)                                                         |
 | **Validação de Schema**  | [Validação estrita de Zod](/pt/docs/compiler/schema) com integração de JSON Schema em IDE                         | Nenhuma—apenas erros de TeX em tempo de compilação                                                      |
 | **Relatório de Erros**   | [Diagnósticos no estilo clang](/pt/docs/cli#validate) com números de linha, colunas e trechos de código-fonte     | Log do TeX: erros em cascata frequentemente crípticos e distantes da causa real                         |
-| **Configuração do Ambiente** | `npm install -g yamlresume`, Homebrew ou Docker com XeTeX pré-instalado; `yamlresume doctor` verifica fontes  | Instalação multi-gigabyte do TeX Live/MacTeX/MiKTeX, busca por pacotes ausentes, configuração manual de fontes—ou Overleaf baseado na nuvem |
-| **Templates**            | Templates oficiais curados [LaTeX](/pt/docs/layouts/latex/templates), [HTML](/pt/docs/layouts/html/templates) e [DOCX](/pt/docs/layouts/docx/templates) | Milhares de templates e classes da comunidade ([Awesome-CV](https://github.com/posquit0/Awesome-CV), [moderncv](https://github.com/moderncv/moderncv), [AltaCV](https://github.com/liantze/AltaCV), [Jake's Resume](https://github.com/jakegut/resume), ...)          |
+| **Configuração do Ambiente** | `npm install -g yamlresume`, Homebrew ou Docker com XeTeX e Typst pré-instalados; `yamlresume doctor` verifica fontes  | Instalação multi-gigabyte do TeX Live/MacTeX/MiKTeX, busca por pacotes ausentes, configuração manual de fontes—ou Overleaf baseado na nuvem |
+| **Templates**            | Templates oficiais curados [LaTeX](/pt/docs/layouts/latex/templates), [Typst](/pt/docs/layouts/typst), [HTML](/pt/docs/layouts/html/templates) e [DOCX](/pt/docs/layouts/docx/templates) | Milhares de templates e classes da comunidade ([Awesome-CV](https://github.com/posquit0/Awesome-CV), [moderncv](https://github.com/moderncv/moderncv), [AltaCV](https://github.com/liantze/AltaCV), [Jake's Resume](https://github.com/jakegut/resume), ...)          |
 | **Personalização de Design** | Controles de [página](/pt/docs/layouts/latex#page), [tipografia](/pt/docs/layouts/latex#typography) e seções—encapsulados pelo tema | Ilimitada—tudo o que o TeX pode compor                                                                  |
 | **Personalização de Seções** | [Aliases](/pt/docs/layouts/sections/aliases) e [reordenação](/pt/docs/layouts/sections/reorder)                  | Macros e ambientes arbitrários                                                                          |
-| **Internacionalização**  | [10 idiomas em 12 códigos de localidade](/pt/docs/locale), configuração automática do babel e pacotes CJK         | Manual: babel/polyglossia, fontspec, ctex/xeCJK/luatexja/kotex                                          |
+| **Internacionalização**  | [11 idiomas em 13 códigos de localidade](/pt/docs/locale), configuração automática do babel e pacotes CJK        | Manual: babel/polyglossia, fontspec, ctex/xeCJK/luatexja/kotex                                          |
 | **Rich Text**            | Um conjunto selecionado de [sintaxe Markdown](/pt/docs/content/rich-text) em campos `summary`                     | Qualquer marcação TeX, em qualquer lugar                                                                |
 | **Modelo de Dados**      | Schema fixo e estruturado; interoperabilidade com [JSON Resume](/pt/docs/comparisons/json-resume)                 | Documento de forma livre                                                                                |
 | **Fluxos de Trabalho com IA** | [Geração](/pt/docs/ai/generate) e [tradução](/pt/docs/ai/translate) integradas; saída Markdown é amigável para LLMs | Prompting próprio de um LLM                                                                             |
@@ -158,7 +160,7 @@ torna trivial a personalização por candidatura: mantenha um arquivo de conteú
 canônico e versione pequenas variantes de layout que reordenam ou criam aliases
 de seções.
 
-### Uma Fonte, Quatro Motores
+### Uma Fonte, Cinco Motores
 
 Um arquivo `.tex` compila para PDF. Esse é todo o pipeline, e para muitas
 pessoas é suficiente—até que um recrutador peça uma versão Word, ou você queira
@@ -168,11 +170,11 @@ LaTeX para DOCX ou HTML, mas os resultados são tipograficamente medianos
 comparados a um motor construído para isso, porque a conversão precisa adivinhar
 a intenção a partir da marcação.
 
-O YAMLResume oferece quatro motores de primeira
+O YAMLResume oferece cinco motores de primeira
 classe—[DOCX](/pt/docs/layouts/docx), [HTML](/pt/docs/layouts/html),
-[Markdown](/pt/docs/layouts/markdown) e
-[LaTeX](/pt/docs/layouts/latex)—e um único `yamlresume build` produz todos eles a
-partir da mesma fonte. O [motor Markdown](/pt/docs/layouts/markdown) é
+[LaTeX](/pt/docs/layouts/latex), [Typst](/pt/docs/layouts/typst) e
+[Markdown](/pt/docs/layouts/markdown)—e um único `yamlresume build` produz todos
+eles a partir da mesma fonte. O [motor Markdown](/pt/docs/layouts/markdown) é
 particularmente útil em 2026: ele fornece a LLMs e parsers de ATS texto limpo e
 estruturado extraído dos mesmos dados validados.
 
@@ -185,7 +187,7 @@ CJK e configurar fallbacks de fonte—caminhos bem conhecidos para veteranos de
 TeX, mas genuinamente dias de esforço na primeira vez. Cada idioma adicional
 multiplica o trabalho, porque nada é compartilhado entre documentos.
 
-No YAMLResume, você define a chave [`locale`](/pt/docs/locales). O compilador
+No YAMLResume, você define a chave [`locale`](/pt/docs/locale). O compilador
 traduz títulos de seção, nomes de países, graus, níveis de habilidade e níveis
 de fluência; formata datas e endereços de forma idiomática; aplica regras de
 pontuação apropriadas à localidade (incluindo pontuação de largura total para
@@ -217,9 +219,10 @@ espaçamento entre linhas](/pt/docs/layouts/latex#typography) e [aliases e
 ordenação de seções](/pt/docs/layouts/sections/aliases).
 
 E se você alguma vez atingir o teto, há uma saída de emergência: o código-fonte
-`.tex` gerado é emitido junto ao seu PDF. Você pode lê-lo para aprender, ou
-fazer um fork e assumir a partir dali. O YAMLResume não esconde o LaTeX de
-você; ele apenas não exige que você o use.
+`.tex` ou `.typ` gerado é emitido junto ao seu PDF. Você pode lê-lo para
+aprender, ou fazer um fork e assumir a partir dali. O YAMLResume não esconde o
+LaTeX nem o Typst de você; ele apenas não exige que você escreva o código-fonte
+diretamente.
 
 ## Ecossistema
 
@@ -235,9 +238,10 @@ nenhuma validação.
 
 O YAMLResume adota a abordagem curada: um pequeno conjunto de templates
 oficiais [LaTeX](/pt/docs/layouts/latex/templates) (moderncv-classic,
-moderncv-casual, moderncv-banking, jake, etc.), cada um testado contra os 12
-códigos de localidade, para que uma mudança de template nunca quebre
-silenciosamente um currículo localizado.
+moderncv-casual, moderncv-banking, jake, etc.) e templates
+[Typst](/pt/docs/layouts/typst), cada um testado contra os 13 códigos de
+localidade, para que uma mudança de template nunca quebre silenciosamente um
+currículo localizado.
 
 ### Overleaf
 
@@ -262,10 +266,10 @@ comunidade como a [latex-action](https://github.com/xu-cheng/latex-action) para
 GitHub Actions, e o Overleaf pode sincronizar com GitHub como um recurso pago.
 O YAMLResume oferece uma [GitHub Action
 oficial](https://github.com/yamlresume/action) que valida seu currículo e
-compila todos os quatro formatos em uma única etapa:
+compila todos os cinco formatos em uma única etapa:
 
 ```yaml
-- uses: yamlresume/action@v0.16.1
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: |
       resume-en.yml
@@ -292,14 +296,15 @@ todas as variantes localizadas a partir de uma única edição.
 
 **YAMLResume** se destaca se você quer:
 
-- Tipografia PDF em nível LaTeX—via XeLaTeX—sem escrever ou depurar TeX
+- Tipografia PDF profissional via XeLaTeX ou Typst, sem escrever ou depurar
+  código-fonte de composição tipográfica
 - Dados estruturados e validados com erros no estilo clang em vez de logs de
   compilação
-- Formatos de saída estendidos (DOCX, HTML, Markdown, LaTeX/PDF) a partir de um
-  único arquivo fonte
-- Internacionalização profunda em [10 idiomas](/pt/docs/locales) e 12 códigos
-  de localidade, incluindo configuração automática de CJK, com tradução assistida
-  por IA
+- Formatos de saída estendidos (DOCX, HTML, LaTeX/PDF, Typst/PDF, Markdown) a
+  partir de um único arquivo fonte
+- Internacionalização profunda em [11 idiomas e 13 códigos de
+  localidade](/pt/docs/locale), incluindo configuração automática de CJK, com
+  tradução assistida por IA
 - Mudança de template sem reescrever conteúdo, graças à separação estrita de
   conteúdo, localidade e layouts
 - Uma cadeia de ferramentas de desenvolvedor: modo de observação, diagnósticos

@@ -1,18 +1,26 @@
 ---
 title: Instalasi
-description: "Pasang CLI YAMLResume dengan npm, pnpm, Docker, atau Homebrew, plus XeTeX atau Tectonic dan font yang direkomendasikan untuk keluaran PDF."
+description: "Pasang CLI YAMLResume dengan npm, pnpm, Docker, atau Homebrew, plus XeTeX, Tectonic, atau Typst dan font yang direkomendasikan untuk keluaran PDF."
 ---
 
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 
-YAMLResume adalah alat Node.js, di baliknya, ini mengubah resume Anda dari format YAML ke kode LaTeX dan kemudian memanggil mesin typesetting LaTeX untuk mengompilasi kode LaTeX yang dihasilkan ke PDF. Selain itu, untuk mendapatkan output PDF yang optimal, kami juga menyarankan untuk menginstal beberapa font. Singkatnya, Anda perlu menginstal hal-hal berikut untuk memulai dengan YAMLResume:
+YAMLResume didistribusikan sebagai CLI Node.js dan sekumpulan paket yang dapat
+digunakan kembali. Untuk output sumber DOCX, HTML, Markdown, LaTeX, dan Typst,
+Anda hanya membutuhkan Node.js dan CLI `yamlresume`. Output PDF juga
+membutuhkan [mesin typesetting](#typesetting-engine) yang sesuai, dan
+menginstal font yang direkomendasikan akan menyempurnakan tipografi akhir.
+
+Singkatnya, instalasi CLI lokal membutuhkan:
 
 - Node.js 22 atau yang lebih baru
 - [paket yamlresume](https://www.npmjs.com/package/yamlresume)
-- mesin typesetting
-- [opsional] beberapa font
+- [opsional] XeTeX atau Tectonic untuk output LaTeX/PDF
+- [opsional] Typst 0.13.0 atau yang lebih baru untuk output Typst/PDF
+- [opsional] font yang direkomendasikan untuk output PDF yang optimal
 
-Kedengarannya sedikit rumit, tapi jangan khawatir, kami siap membantu Anda.
+Jika Anda lebih suka lingkungan dengan CLI, XeTeX, Typst, dan font yang sudah
+terinstal, gunakan image Docker resmi di bawah ini.
 
 ## Pengguna Docker
 
@@ -21,6 +29,7 @@ Jika Anda pengguna docker, Anda beruntung, kami memiliki [image docker](https://
 - [Node.js](/docs/installation#nodejs)
 - [yamlresume CLI](/docs/installation#yamlresume)
 - [XeTeX](/docs/installation#xetex)
+- [Typst](/id/docs/installation#typst)
 - [beberapa font yang direkomendasikan](/docs/installation#font)
 
 Anda dapat membuat resume baru secara instan dengan perintah berikut:
@@ -204,8 +213,8 @@ Options:
 
 Commands:
   ai                             AI-powered resume generation
-  build [options] <resume-path>  build a resume to Docx, HTML, Markdown or
-                                 LaTeX/PDF
+  build [options] <resume-path>  build a resume to Docx, HTML, Markdown,
+                                 LaTeX/PDF or Typst/PDF
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
@@ -237,15 +246,41 @@ bun exec yamlresume help
 
 ### Mesin Typesetting
 
-Di balik layar, `yamlresume` melakukan pekerjaan sebagai kompiler, mengurai resume YAML ke [AST](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/ast.ts) dan kemudian [mentransformasi AST ke kode LaTeX](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/codegen/latex.ts).
+Di balik layar, `yamlresume` mengurai resume YAML ke
+[AST](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/compiler/ast.ts)
+lalu mentransformasinya menjadi kode sumber LaTeX atau Typst. Menghasilkan file
+sumber tidak memerlukan kompiler eksternal. Untuk mengubah sumber tersebut
+menjadi PDF, instal mesin typesetting yang sesuai:
 
-Sebagai kompiler mini, `yamlresume` bergantung pada mesin typesetting untuk mengompilasi kode LaTeX yang dihasilkan ke PDF. Oleh karena itu, Anda harus terlebih dahulu menginstal mesin typesetting sebelum Anda dapat menggunakan `yamlresume` untuk menghasilkan resume PDF.
+- **Tata letak LaTeX**: [XeTeX](#xetex) atau [Tectonic](#tectonic)
+- **Tata letak Typst**: [Typst](#typst) 0.13.0 atau yang lebih baru
 
-YAMLResume saat ini mendukung dua mesin typesetting: [XeTeX](#xetex) dan [Tectonic](#tectonic).
-
-<Callout title="Mengapa LaTeX?">
-Pada saat penulisan, [LaTeX](https://www.latex-project.org/) masih menjadi pilihan terbaik mesin typesetting untuk menghasilkan PDF yang terlihat profesional. [Typst](https://typst.app/) adalah alternatif yang bagus, tetapi masih dalam tahap awal dan dukungan CJK-nya belum matang dan siap produksi. Sebelumnya saya menulis posting [On Typesetting Engines](https://blog.ppresume.com/posts/on-typesetting-engines) yang menjelaskan mengapa saya memilih LaTeX daripada mesin typesetting lain ketika saya mendirikan [PPResume](https://ppresume.com).
+<Callout title="Mengapa LaTeX dan Typst?">
+  [LaTeX](https://www.latex-project.org/) menyediakan ekosistem typesetting
+  yang matang dan beberapa template resume yang sudah mapan.
+  [Typst](https://typst.app/) menawarkan bahasa modern dan kompilasi yang cepat.
+  YAMLResume mendukung keduanya, sehingga Anda dapat memilih per tata letak
+  tanpa mengubah konten resume.
 </Callout>
+
+#### Typst
+
+Instal [Typst](https://typst.app/) 0.13.0 atau yang lebih baru dengan mengikuti
+[panduan instalasi resmi](https://github.com/typst/typst#installation). Di
+macOS, Anda dapat menggunakan Homebrew:
+
+```sh
+brew install typst
+```
+
+Verifikasi bahwa CLI tersedia dan melaporkan versi yang didukung:
+
+```console
+$ typst --version
+typst 0.15.1
+```
+
+`yamlresume doctor` juga memeriksa versi Typst yang terinstal.
 
 #### XeTeX
 

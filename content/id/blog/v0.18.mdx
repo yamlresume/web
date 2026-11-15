@@ -1,0 +1,200 @@
+---
+title: "YAMLResume v0.18: Typst, Bahasa Italia, dan 20 Contoh Resume Terlokalisasi"
+description:
+  "YAMLResume v0.18 menghadirkan mesin Typst dengan template Jake, dukungan
+  lokal Italia, sepuluh contoh resume baru, kontrol garis bawah tautan yang
+  dibagi bersama, dan build PDF yang lebih jelas."
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-11-13
+---
+
+[YAMLResume v0.18](https://github.com/yamlresume/yamlresume/releases/tag/v0.18.0)
+telah dirilis. Fitur utamanya adalah [mesin Typst](/id/docs/layouts/typst) yang
+baru, yang memberi YAMLResume jalur typesetting PDF kedua di samping LaTeX.
+Rilis ini juga menambahkan bahasa Italia, memperluas pustaka contoh dari 10
+menjadi 20 resume, serta memperbaiki gaya tautan, diagnostik PDF, dan model
+bawaan penyedia AI.
+
+## Mesin Typst yang Baru
+
+[Typst](https://typst.app/) adalah sistem typesetting modern dengan sintaks
+yang ringkas dan dapat diprogram. YAMLResume kini dapat mengubah konten YAML
+yang sama menjadi sumber LaTeX atau Typst dan mengompilasi salah satunya
+menjadi PDF profesional.
+
+Tambahkan tata letak Typst ke resume Anda:
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: typst
+    template: jake
+    typography:
+      fontSize: 10pt
+      links:
+        underline: false
+    theme:
+      colors:
+        accent: burgundy
+```
+
+Template Typst pertama adalah [`jake`](/id/docs/layouts/typst/templates/jake),
+sebuah port dari desain LaTeX Jake yang bersih dan ramah ATS. Template ini
+mendukung istilah terlokalisasi, ringkasan Markdown, margin halaman, keluarga
+font, spasi baris, warna aksen, alias dan pengurutan bagian, ikon, URL, serta
+fallback font CJK yang sadar lokal.
+
+![Template Typst Jake](/static/images/docs/layouts/typst/templates/jake-template.webp)
+
+Anda dapat memeriksa sumber Typst yang dihasilkan di
+[playground](/id/playground?sample=software-engineer&locale=en&engine=typst&template=jake)
+atau membaca [panduan mesin Typst](/id/docs/layouts/typst) untuk setiap opsinya.
+
+### Instalasi dan Tata Letak Bawaan
+
+Kompilasi PDF membutuhkan **Typst 0.13.0 atau yang lebih baru**. Image Docker
+resmi menyertakan Typst 0.15.1, sehingga pengguna Docker tidak perlu instalasi
+terpisah. Jalankan `yamlresume doctor` untuk memeriksa penyiapan lokal Anda.
+
+Mulai v0.18, `yamlresume new` menyertakan tata letak Typst di array `layouts`
+bawaan. Jika Anda membuat resume dengan bawaan baru ini, instal Typst sebelum
+membangun semua output PDF, gunakan image Docker resmi, atau lewati kompilasi
+PDF ketika Anda hanya membutuhkan file sumber:
+
+```console
+$ yamlresume build resume.yml --no-pdf
+```
+
+Resume yang sudah ada dan memiliki array `layouts` eksplisit tetap
+mempertahankan mesin yang dikonfigurasi. Ketika sebuah resume mengaktifkan
+LaTeX dan Typst sekaligus, PDF-nya dinamai `resume.tex.pdf` dan
+`resume.typ.pdf` agar yang satu tidak menimpa yang lain. Satu mesin PDF yang
+aktif tetap mempertahankan nama file `resume.pdf` seperti biasa.
+
+## Dukungan Lokal Italia
+
+Bahasa Italia bergabung dengan lokal bawaan sebagai `it`, sehingga YAMLResume
+kini mencakup **13 kode lokal dalam 11 bahasa**. Dukungan ini mencakup judul
+bagian, jenjang pendidikan, tingkat kefasihan bahasa, nama negara, dan nama
+bulan bergaya huruf kecil yang idiomatis.
+
+```yml lineNumbers title="resume.it.yml"
+locale:
+  language: it
+```
+
+Buat resume bahasa Italia langsung dari contoh:
+
+```console
+$ yamlresume new resume.it.yml --sample software-engineer --language it
+```
+
+Lihat [panduan lokal Italia](/id/docs/locale/italian) atau jelajahi
+[galeri Italia](/id/gallery/languages/it).
+
+## 20 Contoh Resume di 13 Lokal
+
+Pustaka contoh terkurasi kini berlipat ganda dari 10 menjadi **20 resume**,
+mencakup lebih banyak peran teknis, desain, bisnis, kesehatan, dan layanan
+publik. Setiap contoh tersedia dalam semua 13 kode lokal, dan galeri kini
+menerbitkan HTML, DOCX, PDF, LaTeX, Typst, Markdown, serta gambar pratinjau
+untuk setiap resume terlokalisasi.
+
+Jelajahi [galeri](/id/gallery), daftar contoh dari terminal Anda, atau buat
+salinan lokal:
+
+```console
+$ yamlresume samples list
+$ yamlresume new resume.yml --sample registered-nurse --language it
+```
+
+[Dokumentasi paket samples](/id/docs/ecosystem/samples) membahas API
+programatisnya.
+
+## Kontrol Garis Bawah Tautan yang Dibagi Bersama
+
+Opsi `typography.links.underline` kini bekerja secara konsisten di **LaTeX,
+Typst, HTML, dan DOCX**:
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    typography:
+      links:
+        underline: true
+```
+
+LaTeX dan Typst menggunakan garis bawah dengan garis dasar tetap, dan LaTeX
+melewati huruf berekor (descender) sehingga garis bawah tetap terbaca tanpa
+mengubah spasi teks. HTML dan DOCX mematuhi pengaturan yang sama, sehingga
+keempat mesin visual memiliki kontrak gaya tautan yang sama.
+
+## Build PDF yang Lebih Jelas
+
+Build PDF kini memverifikasi bahwa file yang diharapkan ada dan tidak kosong
+sebelum melaporkan keberhasilan. Peringatan kompilator LaTeX dan Typst juga
+ditampilkan alih-alih disembunyikan di log debug, sementara peringatan yang
+memang diharapkan tentang font fallback CJK opsional disaring dari keluaran
+Typst.
+
+Bersama dengan nama file PDF yang spesifik mesin, perubahan ini membuat build
+multi-mesin lebih mudah dipahami dan didiagnosis.
+
+## Model Bawaan Penyedia AI yang Diperbarui
+
+Perintah generasi dan terjemahan AI bawaan kini menggunakan id model bawaan
+terbaru:
+
+| Penyedia | Variabel lingkungan | Model bawaan     |
+| -------- | ------------------- | ---------------- |
+| DeepSeek | `DEEPSEEK_API_KEY`  | `deepseek-flash` |
+| Kimi     | `MOONSHOT_API_KEY`  | `kimi-k3.1-pro`  |
+| OpenAI   | `OPENAI_API_KEY`    | `gpt-5.6-luna`   |
+| Ollama   | `OLLAMA_HOST`       | `llama3.2`       |
+
+Penyedia yang kompatibel dengan OpenAI kini konsisten menggunakan Chat
+Completions API. Anda tetap dapat menimpa model dan URL basis dengan opsi CLI
+atau variabel lingkungan; lihat [panduan generasi AI](/id/docs/ai/generate).
+
+## Perubahan yang Merusak: Nama Renderer Spesifik Mesin
+
+Penambahan Typst mengharuskan nama kelas renderer LaTeX menjadi eksplisit. Jika
+Anda mengimpor kelas renderer langsung dari `@yamlresume/core`, perbarui impor
+berikut:
+
+| v0.17                     | v0.18                          |
+| ------------------------- | ------------------------------ |
+| `JakeRenderer`            | `JakeLatexRenderer`            |
+| `ModerncvBankingRenderer` | `ModerncvBankingLatexRenderer` |
+| `ModerncvCasualRenderer`  | `ModerncvCasualLatexRenderer`  |
+| `ModerncvClassicRenderer` | `ModerncvClassicLatexRenderer` |
+
+Implementasi Typst yang baru tersedia sebagai `JakeTypstRenderer`. File resume
+YAML dan pengguna API rendering tingkat tinggi tidak perlu mengubah
+konfigurasinya.
+
+## Dapatkan v0.18
+
+Perbarui dengan manajer paket favorit Anda:
+
+```console
+$ npm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ pnpm add -g yamlresume@latest
+$ brew upgrade yamlresume
+```
+
+Atau tarik image baru:
+
+```console
+$ docker pull yamlresume/yamlresume:latest
+```
+
+Lihat [panduan instalasi](/id/docs/installation), coba Typst di
+[playground](/id/playground), dan jelajahi [galeri](/id/gallery) yang kini
+lebih lengkap. Jika Anda menemui masalah apa pun, [buka
+issue](https://github.com/yamlresume/yamlresume/issues) di GitHub. Daftar
+lengkap perubahan ada di
+[changelog](https://github.com/yamlresume/yamlresume/blob/main/CHANGELOG.md).
+
+Nikmati v0.18!

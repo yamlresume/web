@@ -219,7 +219,7 @@ YAMLResume は [zod](https://zod.dev) を採用して実行時に履歴書デー
 
 | 属性        | タイプ                                                                                         | 必須 | 検証ルール            |
 | ----------- | -------------------------------------------------------------------------------------------- | -------- | ------------------------------- |
-| `layouts[]` | [`DocxLayoutSchema`](#docxlayoutschema) \| [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | レイアウト設定の配列。 |
+| `layouts[]` | [`DocxLayoutSchema`](#docxlayoutschema) \| [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) \| [`TypstLayoutSchema`](#typstlayoutschema) | ⬜       | レイアウト設定の配列。 |
 
 #### 一般的なレイアウトスキーマ
 
@@ -300,6 +300,7 @@ HTML タイポグラフィ設定を検証します。
 | `fontFamily?` | `string`                          | ⬜       | フォントファミリーのカンマ区切りリスト。                   |
 | `fontSize?`   | [`HtmlFontSize`](#htmlfontsize)     | ⬜       | 事前定義された[フォントサイズオプション](#htmlfontsize) からである必要があります |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)      | ⬜       | 事前定義された[行間オプション](#linespacing) からである必要があります |
+| `links?`      | `{ underline?: boolean }`          | ⬜       | true/false                                                 |
 
 #### LatexLayoutSchema
 
@@ -345,6 +346,50 @@ LaTeX の高度な設定オプションを検証します。
 | `fontFamily?` | `string`                        | ⬜       | フォントファミリーのカンマ区切りリスト。                   |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)   | ⬜       | 事前定義された[行間オプション](#linespacing) からである必要があります |
 | `links?`      | `{ underline?: boolean }`        | ⬜       | true/false                                           |
+
+#### TypstLayoutSchema
+
+Typst レイアウト設定を検証します。
+
+| 属性          | タイプ                                                | 必須 | 検証ルール                                      |
+| ------------- | --------------------------------------------------- | -------- | ----------------------------------------------------- |
+| `advanced?`   | [`TypstAdvancedSchema`](#typstadvancedschema)       | ⬜       | [高度なスキーマ](#typstadvancedschema) を参照           |
+| `engine`      | `'typst'`                                           | ✅       | "typst" でなければなりません                                       |
+| `page?`       | [`TypstPageSchema`](#typstpageschema)               | ⬜       | [ページスキーマ](#typstpageschema) を参照                   |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | [セクションスキーマ](#sectionsschema) を参照                |
+| `template?`   | [`TypstTemplate`](#typsttemplate)                   | ⬜       | `jake` でなければなりません                                        |
+| `theme?`      | [`ThemeSchema`](#themeschema)                       | ⬜       | [テーマスキーマ](#themeschema) を参照                      |
+| `typography?` | [`TypstTypographySchema`](#typsttypographyschema)   | ⬜       | [タイポグラフィスキーマ](#typsttypographyschema) を参照       |
+
+##### TypstAdvancedSchema
+
+高度な Typst 設定オプションを検証します。
+
+| 属性         | タイプ      | 必須 | 検証ルール |
+| ------------ | --------- | -------- | ---------------- |
+| `showIcons?` | `boolean` | ⬜       | true/false       |
+| `showUrls?`  | `boolean` | ⬜       | true/false       |
+
+##### TypstPageSchema
+
+Typst のページレベル設定を検証します。
+
+| 属性               | タイプ                        | 必須 | 検証ルール                               |
+| ------------------ | --------------------------- | -------- | ---------------------------------------------- |
+| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜       | [マージンスキーマ](#marginsschema) を参照           |
+| `paperSize?`       | [`TypstPaperSize`](#typstpapersize) | ⬜       | `a4` または `letter` である必要があります                       |
+| `showPageNumbers?` | `boolean`                   | ⬜       | true/false                                     |
+
+##### TypstTypographySchema
+
+Typst タイポグラフィ設定を検証します。
+
+| 属性          | タイプ                        | 必須 | 検証ルール                                           |
+| ------------- | --------------------------- | -------- | ---------------------------------------------------------- |
+| `fontSize?`   | [`TypstFontSize`](#typstfontsize) | ⬜       | `10pt`、`11pt`、`12pt` のいずれかである必要があります                           |
+| `fontFamily?` | `string`                    | ⬜       | フォントファミリーのカンマ区切りリスト。                   |
+| `lineSpacing?`| [`LineSpacing`](#linespacing) | ⬜       | 事前定義された[行間オプション](#linespacing) からである必要があります |
+| `links?`      | `{ underline?: boolean }`   | ⬜       | true/false                                                 |
 
 #### MarkdownLayoutSchema
 
@@ -397,6 +442,7 @@ DOCX の高度な設定オプションを検証します。
 | `fontSize?`   | [`DocxFontSize`](#docxfontsize)   | ⬜       | 事前定義された[フォントサイズオプション](#docxfontsize) からである必要があります |
 | `fontFamily?` | `string`                          | ⬜       | フォントファミリーのカンマ区切りリスト。                   |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)     | ⬜       | 事前定義された[行間オプション](#linespacing) からである必要があります |
+| `links?`      | `{ underline?: boolean }`         | ⬜       | true/false                                                 |
 
 ## プリミティブ検証スキーマ
 
@@ -621,7 +667,8 @@ DOCX 出力用のフォントファミリー名を検証します。
 
 **検証ルール：**
 
-- 以下のいずれかである必要があります：`en`、`es`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`
+- 以下のいずれかである必要があります：`de`、`en`、`es`、`fr`、`id`、`it`、`ja`、`nl`、`no`、
+  `pt-br`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`
 - 参照：[多言語](/ja/docs/locale)
 
 ### LatexFontspecNumbers
@@ -643,6 +690,33 @@ DOCX 出力用のフォントファミリー名を検証します。
 
 - 以下のいずれかである必要があります：`10pt`、`11pt`、`12pt`
 - `10pt` がデフォルトフォントサイズです
+
+### TypstFontSize
+
+すべての可能な Typst フォントサイズオプションのユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：`10pt`、`11pt`、`12pt`
+- `10pt` がデフォルトフォントサイズです
+
+### TypstPaperSize
+
+すべての可能な Typst 用紙サイズオプションのユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：`a4`、`letter`
+- `a4` がデフォルトの用紙サイズです
+
+### TypstTemplate
+
+すべての可能な Typst テンプレートオプションのユニオンタイプ。
+
+**検証ルール：**
+
+- 以下のいずれかである必要があります：`jake`
+- 参照：[テンプレート](/ja/docs/layouts/typst/templates)
 
 ### LineSpacing
 

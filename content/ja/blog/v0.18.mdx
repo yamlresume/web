@@ -1,0 +1,144 @@
+---
+title: "YAMLResume v0.18: Typst、イタリア語、20 個のローカライズされたサンプル履歴書"
+description:
+  "YAMLResume v0.18 では、Jake テンプレートを備えた Typst エンジン、イタリア語ロケールのサポート、10 個の新しいサンプル履歴書、リンク下線の共通設定、より分かりやすい PDF ビルドを追加しました。"
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-11-13
+---
+
+[YAMLResume v0.18](https://github.com/yamlresume/yamlresume/releases/tag/v0.18.0) がリリースされました。今回の目玉は新しい [Typst エンジン](/ja/docs/layouts/typst) です。これにより YAMLResume は、LaTeX に加えて 2 つ目の PDF 組版パスを手に入れました。このリリースでは、イタリア語の追加、サンプルライブラリの 10 個から 20 個への拡大、リンクのスタイリング、PDF の診断、AI プロバイダーのデフォルトの改善も行われています。
+
+## 新しい Typst エンジン
+
+[Typst](https://typst.app/) は、簡潔でプログラム可能な構文を持つモダンな組版システムです。YAMLResume は同じ YAML コンテンツから LaTeX または Typst のソースを生成し、どちらかをプロフェッショナルな PDF にコンパイルできるようになりました。
+
+履歴書に Typst レイアウトを追加します：
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: typst
+    template: jake
+    typography:
+      fontSize: 10pt
+      links:
+        underline: false
+    theme:
+      colors:
+        accent: burgundy
+```
+
+最初の Typst テンプレートは [`jake`](/ja/docs/layouts/typst/templates/jake) で、クリーンで ATS フレンドリーな LaTeX の Jake デザインを移植したものです。ローカライズされた用語、Markdown サマリー、ページ余白、フォントファミリー、行間、アクセントカラー、セクションのエイリアスと順序、アイコン、URL、ロケールに応じた CJK フォントのフォールバックをサポートします。
+
+![Jake Typst テンプレート](/static/images/docs/layouts/typst/templates/jake-template.webp)
+
+生成された Typst ソースは[プレイグラウンド](/ja/playground?sample=software-engineer&locale=en&engine=typst&template=jake)で確認できます。すべてのオプションについては [Typst エンジンのガイド](/ja/docs/layouts/typst) をご覧ください。
+
+### インストールとデフォルトのレイアウト
+
+PDF のコンパイルには **Typst 0.13.0 以降**が必要です。公式 Docker イメージには Typst 0.15.1 が含まれているため、Docker ユーザーは別途インストールする必要がありません。ローカルのセットアップは `yamlresume doctor` で確認できます。
+
+v0.18 以降、`yamlresume new` はデフォルトの `layouts` 配列に Typst レイアウトを含めます。新しいデフォルトで履歴書を作成した場合は、すべての PDF 出力をビルドする前に Typst をインストールするか、公式 Docker イメージを使用するか、ソースファイルのみが必要なときは PDF のコンパイルをスキップしてください：
+
+```console
+$ yamlresume build resume.yml --no-pdf
+```
+
+明示的な `layouts` 配列を持つ既存の履歴書は、設定済みのエンジンをそのまま維持します。LaTeX と Typst の両方を有効にした履歴書では、PDF は `resume.tex.pdf` と `resume.typ.pdf` という名前になり、一方が他方を上書きすることはありません。PDF エンジンを 1 つだけ有効にした場合は、従来どおり `resume.pdf` というファイル名になります。
+
+## イタリア語ロケールのサポート
+
+イタリア語が `it` として組み込みロケールに加わり、YAMLResume は **11 言語、13 のロケールコード**に対応しました。ローカライズされたセクションタイトル、学位、言語習熟度、国名、小文字を使う慣用的な月名が含まれます。
+
+```yml lineNumbers title="resume.it.yml"
+locale:
+  language: it
+```
+
+サンプルから直接イタリア語の履歴書を作成できます：
+
+```console
+$ yamlresume new resume.it.yml --sample software-engineer --language it
+```
+
+[イタリア語ロケールのガイド](/ja/docs/locale/italian) をご覧いただくか、[イタリア語ギャラリー](/ja/gallery/languages/it) を閲覧してください。
+
+## 13 ロケールにわたる 20 個のサンプル履歴書
+
+厳選されたサンプルライブラリは 10 個から **20 個の履歴書** に倍増し、技術、デザイン、ビジネス、ヘルスケア、公共サービスなど幅広い職種をカバーします。すべてのサンプルが 13 のロケールコードすべてで利用でき、ギャラリーではローカライズされた各履歴書の HTML、DOCX、PDF、LaTeX、Typst、Markdown、プレビュー画像が公開されるようになりました。
+
+[ギャラリー](/ja/gallery)を探索するか、ターミナルからサンプルを一覧表示するか、ローカルにコピーを作成してください：
+
+```console
+$ yamlresume samples list
+$ yamlresume new resume.yml --sample registered-nurse --language it
+```
+
+プログラムから利用する API については、[samples パッケージのドキュメント](/ja/docs/ecosystem/samples) で説明しています。
+
+## リンク下線の共通設定
+
+`typography.links.underline` オプションが **LaTeX、Typst、HTML、DOCX** 全体で一貫して動作するようになりました：
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    typography:
+      links:
+        underline: true
+```
+
+LaTeX と Typst は固定ベースラインの下線を使用し、LaTeX はディセンダーを避けるため、テキストの間隔を変えることなく下線が読みやすいまま保たれます。HTML と DOCX も同じ設定に従うため、4 つのビジュアルエンジンすべてが共通のリンクスタイリングの取り決めを持つことになりました。
+
+## より分かりやすい PDF ビルド
+
+PDF ビルドは、成功を報告する前に、期待されるファイルが存在し空でないことを確認するようになりました。LaTeX と Typst のコンパイラ警告もデバッグログに隠されずに表示され、CJK フォールバックフォントに関する想定内の警告は Typst の出力から除外されます。
+
+エンジンごとの PDF ファイル名と合わせて、これらの変更によりマルチエンジンのビルドが理解しやすく、診断しやすくなります。
+
+## AI プロバイダーのデフォルトの更新
+
+組み込みの AI 生成・翻訳コマンドは、現在のデフォルトモデル ID を使用するようになりました：
+
+| プロバイダー | 環境変数           | デフォルトモデル |
+| ------------ | ------------------ | ---------------- |
+| DeepSeek     | `DEEPSEEK_API_KEY` | `deepseek-flash` |
+| Kimi         | `MOONSHOT_API_KEY` | `kimi-k3.1-pro`  |
+| OpenAI       | `OPENAI_API_KEY`   | `gpt-5.6-luna`   |
+| Ollama       | `OLLAMA_HOST`      | `llama3.2`       |
+
+OpenAI 互換プロバイダーは、一貫して Chat Completions API を使用するようになりました。モデルとベース URL は、CLI オプションまたは環境変数で引き続き上書きできます。詳しくは [AI 生成のガイド](/ja/docs/ai/generate) をご覧ください。
+
+## 破壊的変更：エンジン固有のレンダラー名
+
+Typst の追加に伴い、LaTeX のレンダラークラス名を明示する必要がありました。`@yamlresume/core` からレンダラークラスを直接インポートしている場合は、以下のインポートを更新してください：
+
+| v0.17                     | v0.18                          |
+| ------------------------- | ------------------------------ |
+| `JakeRenderer`            | `JakeLatexRenderer`            |
+| `ModerncvBankingRenderer` | `ModerncvBankingLatexRenderer` |
+| `ModerncvCasualRenderer`  | `ModerncvCasualLatexRenderer`  |
+| `ModerncvClassicRenderer` | `ModerncvClassicLatexRenderer` |
+
+新しい Typst 実装は `JakeTypstRenderer` として利用できます。YAML 履歴書ファイルや高レベルのレンダリング API の利用者は、設定を変更する必要はありません。
+
+## v0.18 を入手する
+
+お好みのパッケージマネージャーでアップデートしてください：
+
+```console
+$ npm install -g yamlresume@latest
+$ yarn global add yamlresume@latest
+$ pnpm add -g yamlresume@latest
+$ brew upgrade yamlresume
+```
+
+あるいは、新しいイメージをプルしてください：
+
+```console
+$ docker pull yamlresume/yamlresume:latest
+```
+
+[インストールガイド](/ja/docs/installation) をご覧いただき、[プレイグラウンド](/ja/playground)で Typst を試し、拡大した[ギャラリー](/ja/gallery)を探索してみてください。問題が発生した場合は、GitHub で[イシューを開いて](https://github.com/yamlresume/yamlresume/issues)ください。変更の完全な一覧は[changelog](https://github.com/yamlresume/yamlresume/blob/main/CHANGELOG.md)にあります。
+
+v0.18 をお楽しみください！

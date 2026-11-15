@@ -221,7 +221,7 @@ Mendefinisikan konfigurasi validasi tata letak keseluruhan.
 
 | Kolom        | Tipe                                                                                         | Wajib | Aturan Validasi                |
 | ----------- | -------------------------------------------------------------------------------------------- | -------- | ------------------------------- |
-| `layouts[]` | [`DocxLayoutSchema`](#docxlayoutschema) \| [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | Beberapa konfigurasi tata letak output. |
+| `layouts[]` | [`DocxLayoutSchema`](#docxlayoutschema) \| [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) \| [`TypstLayoutSchema`](#typstlayoutschema) | ⬜       | Beberapa konfigurasi tata letak output. |
 
 #### Common Layout Schemas
 
@@ -302,6 +302,7 @@ Memvalidasi pengaturan tipografi HTML.
 | `fontSize?`   | [`HtmlFontSize`](#htmlfontsize)    | ⬜       | Harus dari [opsi ukuran font](#htmlfontsize) yang telah ditentukan |
 | `fontFamily?` | `string`                          | ⬜       | Daftar keluarga font yang dipisahkan koma.                  |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)     | ⬜       | Harus dari [opsi spasi baris](#linespacing) yang telah ditentukan |
+| `links?`      | `{ underline?: boolean }`         | ⬜       | true/false                                                  |
 
 #### LatexLayoutSchema
 
@@ -347,6 +348,50 @@ Memvalidasi pengaturan tipografi untuk pemformatan dokumen.
 | `fontFamily?` | `string`                        | ⬜       | Daftar keluarga font yang dipisahkan koma.                  |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)  | ⬜       | Harus dari [opsi spasi baris](#linespacing) yang telah ditentukan |
 | `links?`      | `{ underline?: boolean }`      | ⬜       | true/false                                                  |
+
+#### TypstLayoutSchema
+
+Memvalidasi konfigurasi tata letak Typst.
+
+| Kolom         | Tipe                                                | Wajib | Aturan Validasi                                      |
+| ------------- | --------------------------------------------------- | -------- | ----------------------------------------------------- |
+| `advanced?`   | [`TypstAdvancedSchema`](#typstadvancedschema)       | ⬜       | Lihat [skema lanjutan](#typstadvancedschema)           |
+| `engine`      | `'typst'`                                           | ✅       | Harus "typst"                                          |
+| `page?`       | [`TypstPageSchema`](#typstpageschema)               | ⬜       | Lihat [skema halaman](#typstpageschema)                |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | Lihat [skema bagian](#sectionsschema)                  |
+| `template?`   | [`TypstTemplate`](#typsttemplate)                   | ⬜       | Harus `jake`                                           |
+| `theme?`      | [`ThemeSchema`](#themeschema)                       | ⬜       | Lihat [skema tema](#themeschema)                       |
+| `typography?` | [`TypstTypographySchema`](#typsttypographyschema)   | ⬜       | Lihat [skema tipografi](#typsttypographyschema)        |
+
+##### TypstAdvancedSchema
+
+Memvalidasi opsi konfigurasi Typst lanjutan.
+
+| Kolom        | Tipe      | Wajib | Aturan Validasi |
+| ------------ | --------- | -------- | ---------------- |
+| `showIcons?` | `boolean` | ⬜       | true/false       |
+| `showUrls?`  | `boolean` | ⬜       | true/false       |
+
+##### TypstPageSchema
+
+Memvalidasi pengaturan tingkat halaman Typst.
+
+| Kolom              | Tipe                                | Wajib | Aturan Validasi                       |
+| ------------------ | ----------------------------------- | -------- | -------------------------------------- |
+| `margins?`         | [`MarginsSchema`](#marginsschema)   | ⬜       | Lihat [skema margins](#marginsschema)   |
+| `paperSize?`       | [`TypstPaperSize`](#typstpapersize) | ⬜       | Harus `a4` atau `letter`               |
+| `showPageNumbers?` | `boolean`                           | ⬜       | true/false                             |
+
+##### TypstTypographySchema
+
+Memvalidasi pengaturan tipografi Typst.
+
+| Kolom          | Tipe                              | Wajib | Aturan Validasi                                            |
+| ------------- | --------------------------------- | -------- | ----------------------------------------------------------- |
+| `fontSize?`   | [`TypstFontSize`](#typstfontsize) | ⬜       | Harus `10pt`, `11pt`, atau `12pt`                           |
+| `fontFamily?` | `string`                          | ⬜       | Daftar keluarga font yang dipisahkan koma.                  |
+| `lineSpacing?`| [`LineSpacing`](#linespacing)     | ⬜       | Harus dari [opsi spasi baris](#linespacing) yang telah ditentukan |
+| `links?`      | `{ underline?: boolean }`         | ⬜       | true/false                                                  |
 
 #### MarkdownLayoutSchema
 
@@ -399,6 +444,7 @@ Memvalidasi pengaturan tipografi untuk pemformatan dokumen.
 | `fontSize?`   | [`DocxFontSize`](#docxfontsize)   | ⬜       | Harus dari [opsi ukuran font](#docxfontsize) yang telah ditentukan |
 | `fontFamily?` | `string`                          | ⬜       | Daftar keluarga font yang dipisahkan koma.                   |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)     | ⬜       | Harus dari [opsi spasi baris](#linespacing) yang telah ditentukan |
+| `links?`      | `{ underline?: boolean }`         | ⬜       | true/false                                                  |
 
 ## Skema Validasi Primitif
 
@@ -634,6 +680,33 @@ Union type untuk semua opsi ukuran font LaTeX possible.
 - Harus salah satu dari: `10pt`, `11pt`, `12pt`
 - `10pt` adalah ukuran font default
 
+### TypstFontSize
+
+Union type untuk semua opsi ukuran font Typst possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari: `10pt`, `11pt`, `12pt`
+- `10pt` adalah ukuran font default
+
+### TypstPaperSize
+
+Union type untuk semua opsi ukuran kertas Typst possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari: `a4`, `letter`
+- `a4` adalah ukuran kertas default
+
+### TypstTemplate
+
+Union type untuk semua opsi template Typst possible.
+
+**Aturan Validasi:**
+
+- Harus salah satu dari: `jake`
+- Lihat juga: [template](/id/docs/layouts/typst/templates)
+
 ### LatexFontspecNumbers
 
 Union type untuk semua opsi nomor fontspec latex possible.
@@ -665,5 +738,6 @@ Union type untuk semua bahasa locale possible.
 
 **Aturan Validasi:**
 
-- Harus salah satu dari: `en`, `es`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`
+- Harus salah satu dari: `de`, `en`, `es`, `fr`, `id`, `it`, `ja`, `nl`, `no`,
+  `pt-br`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`
 - Lihat juga: [multi-languages](/docs/locale)

@@ -47,8 +47,8 @@ Options:
 
 Commands:
   ai                             AI-powered resume generation
-  build [options] <resume-path>  build a resume to Docx, HTML, Markdown or
-                                 LaTeX/PDF
+  build [options] <resume-path>  build a resume to Docx, HTML, Markdown,
+                                 LaTeX/PDF or Typst/PDF
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support
@@ -63,7 +63,7 @@ YAMLResume CLI のバージョンを表示：
 
 ```console
 $ yamlresume -V
-0.15.3
+0.18.0
 ```
 
 ## New
@@ -107,16 +107,31 @@ $ yamlresume new my-resume.yml --sample no-such-sample
  ERROR  Sample resume not found: no-such-sample
 
 ℹ Available samples:
+  - account-executive: Account Executive
+  - ai-engineer: AI Engineer
+  - business-analyst: Business Analyst
+  - customer-success-manager: Customer Success Manager
+  - cybersecurity-engineer: Cybersecurity Engineer
   - data-analyst: Data Analyst
+  - data-engineer: Data Engineer
   - data-scientist: Data Scientist
+  - devops-engineer: DevOps Engineer
+  - financial-analyst: Financial Analyst
+  - human-resources-manager: Human Resources Manager
+  - marketing-manager: Marketing Manager
+  - mechanical-engineer: Mechanical Engineer
+  - operations-manager: Operations Manager
   - product-manager: Product Manager
+  - project-manager: Project Manager
+  - qa-engineer: QA Engineer
+  - registered-nurse: Registered Nurse
   - software-engineer: Software Engineer
   - ux-designer: UX Designer
 ```
 
 ### `--language`
 
-すべてのサンプル履歴書は 12 のロケール言語に翻訳されています。`--language` オプションを使用すると、ローカライズされたサンプルから履歴書を作成できます。これは英語以外の履歴書を書く際に非常に便利です：
+20 個のサンプル履歴書はすべて 13 のロケール言語に翻訳されています。`--language` オプションを使用すると、ローカライズされたサンプルから履歴書を作成できます。これは英語以外の履歴書を書く際に非常に便利です：
 
 ```console
 $ yamlresume new my-resume.yml --sample software-engineer --language zh-hans
@@ -125,7 +140,7 @@ $ yamlresume new my-resume.yml --sample software-engineer --language zh-hans
 
 ## サンプル履歴書
 
-YAMLResume には、一般的な職種向けに厳選されたサンプル履歴書セットが付属しており、12 のロケール言語（`de`、`en`、`es`、`fr`、`id`、`ja`、`nl`、`no`、`pt-br`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`）に翻訳されています。`samples list` サブコマンドですべてをリストできます：
+YAMLResume には、一般的な職種向けに厳選された 20 個のサンプル履歴書が付属しており、それぞれが 13 のロケール言語（`de`、`en`、`es`、`fr`、`id`、`it`、`ja`、`nl`、`no`、`pt-br`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`）に翻訳されています。`samples list` サブコマンドですべてをリストできます：
 
 ```console
 $ yamlresume samples --help
@@ -142,35 +157,53 @@ Commands:
 
 $ yamlresume samples list
 
-| ID                | Position          | Title             | Category       |
-| ----------------- | ----------------- | ----------------- | -------------- |
-| data-analyst      | data analyst      | Data Analyst      | Data Analytics |
-| data-scientist    | data scientist    | Data Scientist    | Data Science   |
-| product-manager   | product manager   | Product Manager   | Product        |
-| software-engineer | software engineer | Software Engineer | Engineering    |
-| ux-designer       | ux designer       | UX Designer       | Design         |
+| ID                       | Position                 | Title                    | Category         |
+| ------------------------ | ------------------------ | ------------------------ | ---------------- |
+| account-executive        | account executive        | Account Executive        | Sales            |
+| ai-engineer              | ai engineer              | AI Engineer              | Engineering      |
+| business-analyst         | business analyst         | Business Analyst         | Business         |
+| customer-success-manager | customer success manager | Customer Success Manager | Customer Success |
+| cybersecurity-engineer   | cybersecurity engineer   | Cybersecurity Engineer   | Engineering      |
+| data-analyst             | data analyst             | Data Analyst             | Data Analytics   |
+| data-engineer            | data engineer            | Data Engineer            | Engineering      |
+| data-scientist           | data scientist           | Data Scientist           | Data Science     |
+| devops-engineer          | devops engineer          | DevOps Engineer          | Engineering      |
+| financial-analyst        | financial analyst        | Financial Analyst        | Finance          |
+| human-resources-manager  | human resources manager  | Human Resources Manager  | Human Resources  |
+| marketing-manager        | marketing manager        | Marketing Manager        | Marketing        |
+| mechanical-engineer      | mechanical engineer      | Mechanical Engineer      | Engineering      |
+| operations-manager       | operations manager       | Operations Manager       | Operations       |
+| product-manager          | product manager          | Product Manager          | Product          |
+| project-manager          | project manager          | Project Manager          | Management       |
+| qa-engineer              | qa engineer              | QA Engineer              | Engineering      |
+| registered-nurse         | registered nurse         | Registered Nurse         | Healthcare       |
+| software-engineer        | software engineer        | Software Engineer        | Engineering      |
+| ux-designer              | ux designer              | UX Designer              | Design           |
 ```
 
 [`yamlresume new --sample <id>`](#new) を使用して、サンプルから新しい履歴書ファイルを作成できます。
 
 ## Build
 
-YAML から PDF に履歴書をビルド。latex コードと PDF の両方を生成し、[XeTeX](/ja/docs/installation#xetex) をタイプセッティングエンジンとして使用する場合、`.aux`、`.log` などのいくつかの中間ファイルも生成されます。
+YAML 履歴書で設定されたすべてのレイアウトをビルドします。1 つのコマンドで、DOCX、HTML、Markdown、LaTeX/PDF、Typst/PDF の出力を生成できます。LaTeX と Typst のレイアウトは、`.tex` と `.typ` のソースも生成します。XeTeX は `.aux` や `.log` などの中間ファイルを残すことがあります。
+
+PDF エンジンを両方設定した場合、出力はそれぞれ異なる名前になります：LaTeX は `resume.tex.pdf`、Typst は `resume.typ.pdf` です。PDF エンジンが 1 つだけの場合は、従来どおり `resume.pdf` という名前になります。
 
 ```console
 $ yamlresume build --help
 Usage: yamlresume build [options] <resume-path>
 
-build a resume to LaTeX, PDF, Markdown, or HTML
+build a resume to Docx, HTML, Markdown, LaTeX/PDF or Typst/PDF
 
 Arguments:
   resume-path              the resume file path
 
 Options:
-  --no-pdf                 only generate TeX file without PDF (for LaTeX layouts)
+  --no-pdf                 only generate source files (TeX/Typst) without PDF
   --no-validate            skip resume schema validation
   -o, --output <dir>       output directory for generated files
-  -t, --timeout <seconds>  timeout for LaTeX compilation in seconds (default: 30, 0 to disable)
+  -t, --timeout <seconds>  timeout for LaTeX/Typst compilation in seconds
+                           (default: 30, 0 to disable)
   -h, --help               display help for command
 
 $ yamlresume build my-resume.yml
@@ -180,7 +213,7 @@ $ yamlresume build my-resume.yml
 
 ### `--no-pdf`
 
-LaTeX ファイルのみを生成し、PDF を生成したくない場合は、`--no-pdf` オプションを使用できます。
+LaTeX と Typst のソースファイルのみを生成し、PDF を生成したくない場合は、`--no-pdf` オプションを使用します。
 
 ```console
 $ yamlresume build --no-pdf my-resume.yml
@@ -205,7 +238,7 @@ $ yamlresume build -o ./output my-resume.yml
 
 ### `--timeout`
 
-LaTeX コンパイルのタイムアウトをカスタマイズしたい場合は、`--timeout`
+LaTeX または Typst のコンパイルのタイムアウトをカスタマイズしたい場合は、`--timeout`
 オプションを使用できます。デフォルトのタイムアウトは 30 秒です。0
 に設定するとタイムアウトを無効にできます。
 
@@ -338,6 +371,9 @@ $ yamlresume doctor
 ℹ Checking Tectonic...
   Tectonic: tectonic 0.15.0
 
+ℹ Checking Typst...
+  Typst: typst 0.15.1
+
 ℹ Checking Fonts...
   Linux Libertine O: Not Installed
   Linux Libertine: Installed
@@ -350,6 +386,7 @@ doctor コマンドは以下をチェックします:
 - **システム情報**: OS、CPU アーキテクチャ
 - **バイナリ**: Node.js、npm、pnpm、Yarn、Bun
 - **LaTeX エンジン**: XeTeX と Tectonic の利用可能性
+- **Typst**: Typst の利用可能性と最小バージョン 0.13.0
 - **フォント**: 最適な履歴書レンダリングに必要なフォント（ラテン文字用の Linux
   Libertine、中国語/日本語/韓国語用の Noto CJK）
 
@@ -371,6 +408,7 @@ $ yamlresume languages list
 | zh-hant-tw      | Traditional Chinese (Taiwan)    |
 | es              | Spanish                         |
 | fr              | French                          |
+| it              | Italian                         |
 | no              | Norwegian                       |
 | nl              | Dutch                           |
 | ja              | Japanese                        |
@@ -396,4 +434,5 @@ $ yamlresume templates list
 | kami                | html   | Kami             | Warm parchment and serif typography inspired by tw93/kami.          |
 | vscode              | html   | VS Code          | Dark theme inspired by Visual Studio Code, tailored for developers. |
 | calm                | docx   | Calm             | Clean and minimalist design suitable for all professionals.         |
+| jake                | typst  | Jake's Resume    | A simple, straight-forward resume template based on Jake's Resume   |
 ```

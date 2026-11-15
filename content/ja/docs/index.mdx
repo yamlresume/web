@@ -43,7 +43,7 @@ docker run --rm -v $(pwd):/home/yamlresume yamlresume/yamlresume build my-resume
 <Step>
 #### Node.js のインストール
 
-[Node.js](https://nodejs.org/en/download/package-manager/all#macos) 20.x 以降を[インストール](https://nodejs.org/en/download/package-manager/all#macos) する必要があります。
+[Node.js](https://nodejs.org/en/download/package-manager/all#macos) 22.x 以降を[インストール](https://nodejs.org/en/download/package-manager/all#macos) する必要があります。
 
 ```sh
 brew install node
@@ -54,18 +54,23 @@ brew install node
 <Step>
 #### タイプセッティングエンジンのインストール
 
-YAMLResume は PDF を生成するために[タイプセッティングエンジン](/ja/docs/installation#typesetting-engine) が必要です。現在、2 つのタイプセッティングエンジンをサポートしています：
+YAMLResume は PDF を生成するためにタイプセッティングエンジンが必要です。LaTeX レイアウトは XeTeX と Tectonic をサポートし、Typst レイアウトには Typst 0.13.0 以降が必要です：
 
 - [XeTeX](/ja/docs/installation#xetex)
 - [Tectonic](/ja/docs/installation#tectonic)
+- [Typst](/ja/docs/installation#typst)
 
-<Tabs groupId="typesetting-engine" persist items={["XeTeX", "Tectonic"]}>
+<Tabs groupId="typesetting-engine" persist items={["XeTeX", "Tectonic", "Typst"]}>
 ```sh tab="XeTeX"
 brew install mactex
 ```
 
 ```sh tab="Tectonic"
 brew install tectonic
+```
+
+```sh tab="Typst"
+brew install typst
 ```
 
 </Tabs>
@@ -124,8 +129,8 @@ Options:
 
 Commands:
   ai                             AI-powered resume generation
-  build [options] <resume-path>  build a resume to Docx, HTML, Markdown or
-                                 LaTeX/PDF
+  build [options] <resume-path>  build a resume to Docx, HTML, Markdown,
+                                 LaTeX/PDF or Typst/PDF
   dev [options] <resume-path>    build a resume on file changes (watch mode)
   doctor                         check environment for YAMLResume dependencies
   languages                      i18n and l10n support

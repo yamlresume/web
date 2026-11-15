@@ -55,6 +55,7 @@ B1[DocxLayout]
 B2[HtmlLayout]
 B3[LatexLayout]
 B4[MarkdownLayout]
+B5[TypstLayout]
 end
 
 subgraph Content
@@ -76,6 +77,7 @@ B --> B1
 B --> B2
 B --> B3
 B --> B4
+B --> B5
 C --> C1
 C --> C2
 C --> C3
@@ -288,7 +290,7 @@ C --> C8
 
 | 属性        | タイプ                                                                 | 必須 | 説明                            |
 | ----------- | -------------------------------------------------------------------- | -------- | -------------------------------------- |
-| `layouts[]` | [`DocxLayout`](#docxlayout) \| [`HtmlLayout`](#htmllayout) \| [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜       | 複数の出力レイアウト設定。 |
+| `layouts[]` | [`DocxLayout`](#docxlayout) \| [`HtmlLayout`](#htmllayout) \| [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) \| [`TypstLayout`](#typstlayout) | ⬜       | 複数の出力レイアウト設定。 |
 
 #### 一般的なレイアウトタイプ
 
@@ -362,6 +364,7 @@ HTML 文書フォーマットのタイポグラフィ設定を定義します。
 | `fontFamily?` | `string`                          | ⬜       | 使用するフォントファミリーのカンマ区切りリスト。 |
 | `fontSize?`   | [`HtmlFontSize`](#htmlfontsize)     | ⬜       | 文書の基本フォントサイズ。 |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)       | ⬜       | 文書の行間。          |
+| `links?`      | `{ underline?: boolean }`            | ⬜       | リンクのスタイル設定。    |
 
 #### LatexLayout
 
@@ -407,6 +410,50 @@ LaTeX の文書フォーマットのタイポグラフィ設定を定義しま�
 | `fontFamily?` | `string`                            | ⬜       | 使用するフォントファミリーのカンマ区切りリスト。 |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)       | ⬜       | 文書の行間。           |
 | `links?`      | `{ underline?: boolean }`           | ⬜       | リンクのスタイル設定。    |
+
+#### TypstLayout
+
+Typst レイアウト設定。
+
+| 属性          | タイプ                                    | 必須 | 説明                                           |
+| ------------- | --------------------------------------- | -------- | ----------------------------------------------------- |
+| `engine`      | `'typst'`                               | ✅       | 履歴書を生成するエンジン。                    |
+| `advanced?`   | [`TypstAdvanced`](#typstadvanced)       | ⬜       | 高度な設定オプションを定義します。               |
+| `page?`       | [`TypstPage`](#typstpage)               | ⬜       | 文書プレゼンテーションのページレベル設定を定義します。|
+| `sections?`   | [`Sections`](#sections)                 | ⬜       | セクションのカスタマイズ設定を定義します。               |
+| `template?`   | [`TypstTemplate`](#typsttemplate)       | ⬜       | 選択されたテンプレートを定義します。                        |
+| `theme?`      | [`Theme`](#theme)                       | ⬜       | 履歴書の視覚的なテーマ設定を定義します。         |
+| `typography?` | [`TypstTypography`](#typsttypography)   | ⬜       | 文書フォーマットのタイポグラフィ設定を定義します。  |
+
+##### TypstAdvanced
+
+Typst の高度な設定オプションを定義します。
+
+| 属性         | タイプ      | 必須 | 説明                                          |
+| ------------ | --------- | -------- | ---------------------------------------------------- |
+| `showIcons?` | `boolean` | ⬜       | リンクとプロフィールのアイコンを表示するかどうか。     |
+| `showUrls?`  | `boolean` | ⬜       | 生の URL を表示するか、読みやすいテキストの背後に隠すかどうか。 |
+
+##### TypstPage
+
+Typst の文書プレゼンテーションのページレベル設定を定義します。
+
+| 属性               | タイプ                           | 必須 | 説明                          |
+| ------------------ | ------------------------------ | -------- | ------------------------------------ |
+| `margins?`         | [`Margins`](#margins)          | ⬜       | ページマージン設定を定義します。        |
+| `paperSize?`       | [`TypstPaperSize`](#typstpapersize) | ⬜       | 用紙サイズを定義します。              |
+| `showPageNumbers?` | `boolean`                      | ⬜       | ページ番号を表示するかどうか。     |
+
+##### TypstTypography
+
+Typst の文書フォーマットのタイポグラフィ設定を定義します。
+
+| 属性          | タイプ                                | 必須 | 説明                      |
+| ------------- | ----------------------------------- | -------- | -------------------------------- |
+| `fontSize?`   | [`TypstFontSize`](#typstfontsize)   | ⬜       | 文書の基本フォントサイズ。 |
+| `fontFamily?` | `string`                            | ⬜       | 使用するフォントファミリーのカンマ区切りリスト。 |
+| `lineSpacing?`| [`LineSpacing`](#linespacing)       | ⬜       | 文書の行間。   |
+| `links?`      | `{ underline?: boolean }`           | ⬜       | リンクのスタイル設定。           |
 
 #### MarkdownLayout
 
@@ -459,6 +506,7 @@ DOCX の文書フォーマットのタイポグラフィ設定を定義します
 | `fontSize?`   | [`DocxFontSize`](#docxfontsize)     | ⬜       | 文書の基本フォントサイズ。 |
 | `fontFamily?` | `string`                            | ⬜       | 使用するフォントファミリーのカンマ区切りリスト。 |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)       | ⬜       | 文書の行間。           |
+| `links?`      | `{ underline?: boolean }`           | ⬜       | リンクのスタイル設定。           |
 
 ## 列挙タイプ
 
@@ -612,6 +660,29 @@ HTML エンジンは 14px から 20px のサイズをサポートします：
 - `moderncv-casual`
 - `moderncv-classic`
 
+#### TypstFontSize
+
+すべての可能な Typst フォントサイズオプションのユニオンタイプ。
+
+- `10pt` - 10pt フォントサイズ（デフォルト）
+- `11pt` - 11pt フォントサイズ
+- `12pt` - 12pt フォントサイズ
+
+#### TypstPaperSize
+
+すべての可能な Typst 用紙サイズオプションのユニオンタイプ。
+
+- `a4` (デフォルト)
+- `letter`
+
+#### TypstTemplate
+
+すべての可能な Typst テンプレートオプションのユニオンタイプ。
+
+参照：[テンプレート](/ja/docs/layouts/typst/templates)
+
+- `jake`
+
 #### PaperSize
 
 すべての可能な LaTeX 用紙サイズオプションのユニオンタイプ。
@@ -627,8 +698,16 @@ HTML エンジンは 14px から 20px のサイズをサポートします：
 
 参照：[多言語](/ja/docs/locale)
 
+- `de`
 - `en`
 - `es`
+- `fr`
+- `id`
+- `it`
+- `ja`
+- `nl`
+- `no`
+- `pt-br`
 - `zh-hans`
 - `zh-hant-hk`
 - `zh-hant-tw`

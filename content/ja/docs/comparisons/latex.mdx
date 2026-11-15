@@ -20,41 +20,43 @@ most often used for medium-to-large technical or scientific documents but it
 can be used for almost any form of publishing.
 ```
 
-しかし、重要な点はこうです。**YAMLResume は LaTeX の代替ではなく、その上に構築さ
-れています。** YAMLResume の [LaTeX エンジン](/ja/docs/layouts/latex) は、YAML から
-`.tex` ソースを生成し、手書きの LaTeX 履歴書を動かしているものと同じ XeLaTeX エン
-ジンでコンパイルします。本当の比較は、2 つの*作成ワークフロー*の間にあります。履
-歴書を直接 TeX マークアップで書くのか、構造化された YAML として書いてコンパイラに
-TeX を生成させるのか、ということです。
+しかし、重要な点はこうです。**YAMLResume は単に LaTeX の代替ではなく、LaTeX エン
+ジンを内蔵しつつ、Typst という組版の道も用意しています。** YAMLResume の
+[LaTeX エンジン](/ja/docs/layouts/latex) は、YAML から `.tex` ソースを生成し、手書
+きの LaTeX 履歴書を動かしているものと同じ XeLaTeX エンジンでコンパイルします。一
+方、[Typst エンジン](/ja/docs/layouts/typst) は `.typ` ソースと PDF を生成できま
+す。本当の比較は、2 つの*作成ワークフロー*の間にあります。履歴書を直接 TeX マーク
+アップで書くのか、構造化された YAML として書いてコンパイラに組版ソースを生成させる
+のか、ということです。
 
 以下に、2 つのワークフローの比較を示します：
 
 ## 機能比較
 
-| 機能                       | YAMLResume                                                                                                        | 手書き LaTeX                                                                                            |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **アプローチ**             | YAML から LaTeX へコンパイル                                                                                      | 直接 TeX で作成された文書                                                                               |
-| **作成言語**               | YAML（プレーンテキスト、マークアップなし）                                                                        | TeX/LaTeX マークアップ                                                                                  |
-| **TeX の知識**             | 不要                                                                                                              | カスタマイズには習熟が必要                                                                              |
-| **組版エンジン**           | XeLaTeX                                                                                                           | 選択可能：pdfLaTeX、XeLaTeX、LuaLaTeX                                                                   |
-| **出力形式**               | [DOCX](/ja/docs/layouts/docx)、[HTML](/ja/docs/layouts/html)、[Markdown](/ja/docs/layouts/markdown)、[LaTeX/PDF](/ja/docs/layouts/latex) | PDF（pandoc による変換は可能だが品質が低下）                                                            |
-| **生成ソース**             | PDF とともにクリーンな `.tex` が出力され、確認や微調整が可能                                                      | 該当なし（手書きのソースがすべて）                                                                      |
-| **スキーマ検証**           | [厳格な Zod 検証](/ja/docs/compiler/schema) と JSON Schema IDE 統合                                               | なし—コンパイル時の TeX エラーのみ                                                                      |
-| **エラー報告**             | 行番号、列番号、ソーススニペットを含む [clang スタイルの診断](/ja/docs/cli#validate)                              | TeX ログ：しばしば原因から遠い暗号的な連鎖エラー                                                        |
-| **環境構築**               | `npm install -g yamlresume`、Homebrew、または XeTeX プリインストール済みの Docker；`yamlresume doctor` がフォントを確認 | 数ギガバイトの TeX Live/MacTeX/MiKTeX インストール、不足パッケージの探索、手動フォント設定、またはクラウドベースの Overleaf |
-| **テンプレート**           | 厳選された公式 [LaTeX](/ja/docs/layouts/latex/templates)、[HTML](/ja/docs/layouts/html/templates)、[DOCX](/ja/docs/layouts/docx/templates) テンプレート | 何千ものコミュニティテンプレートとクラス（[Awesome-CV](https://github.com/posquit0/Awesome-CV)、[moderncv](https://github.com/moderncv/moderncv)、[AltaCV](https://github.com/liantze/AltaCV)、[Jake's Resume](https://github.com/jakegut/resume)、...） |
-| **デザインのカスタマイズ** | [ページ](/ja/docs/layouts/latex#page)、[タイポグラフィ](/ja/docs/layouts/latex#typography)、セクションのつまみ—テーマにカプセル化 | 無制限—TeX が組版できるものなら何でも                                                                  |
-| **セクションのカスタマイズ** | [エイリアス](/ja/docs/layouts/sections/aliases) と [並べ替え](/ja/docs/layouts/sections/reorder)                  | 任意のマクロと環境                                                                                      |
-| **国際化（i18n）**         | [12 のロケールコードで 10 言語](/ja/docs/locale)、babel と CJK パッケージの自動設定                               | 手動：babel/polyglossia、fontspec、ctex/xeCJK/luatexja/kotex                                            |
-| **リッチテキスト**         | `summary` フィールドで一部の [Markdown 構文](/ja/docs/content/rich-text) をサポート                               | どこにでも任意の TeX マークアップ                                                                       |
-| **データモデル**           | 固定された構造化スキーマ；[JSON Resume](/ja/docs/comparisons/json-resume) との相互運用                            | 自由形式の文書                                                                                          |
-| **AI ワークフロー**        | 組み込みの [生成](/ja/docs/ai/generate) と [翻訳](/ja/docs/ai/translate)；Markdown 出力は LLM フレンドリー        | 独自の LLM プロンプトが必要                                                                             |
-| **Dev モード**             | 保存するたびにリビルドする [`yamlresume dev`](/ja/blog/dev-mode)                                                  | `latexmk -pvc` または Overleaf の自動コンパイル                                                         |
-| **バージョン管理**         | クリーンなコンテンツの差分—意味のある変更のみが表示される                                                         | マークアップの変更が混在した差分                                                                        |
-| **CI/CD**                  | [公式 GitHub Action](https://github.com/yamlresume/action) + [Docker イメージ](/ja/docs/contributing/docker)      | コミュニティアクション（例：`latex-action`）；Overleaf の GitHub 同期は有料機能                         |
-| **共同編集**               | プレーン YAML への Git プルリクエスト                                                                             | Overleaf のリアルタイム共同編集（有料プラン）または `.tex` 上の Git                                     |
-| **決定論的出力**           | はい                                                                                                              | はい（ツールチェーンとパッケージを固定すれば）                                                          |
-| **コスト**                 | 無料（オープンソース）                                                                                            | セルフホストでは無料；Overleaf はフリーミアム                                                           |
+| 機能                         | YAMLResume                                                                                                                                                                               | 手書き LaTeX                                                                                                                                                                                                                                             |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **アプローチ**               | YAML ソースを 5 つのエンジンでコンパイル                                                                                                                                                 | 直接 TeX で作成された文書                                                                                                                                                                                                                                |
+| **作成言語**                 | YAML（プレーンテキスト、マークアップなし）                                                                                                                                               | TeX/LaTeX マークアップ                                                                                                                                                                                                                                   |
+| **TeX の知識**               | 不要                                                                                                                                                                                     | カスタマイズには習熟が必要                                                                                                                                                                                                                               |
+| **組版エンジン**             | XeLaTeX と [Typst](/ja/docs/layouts/typst)                                                                                                                                               | 選択可能：pdfLaTeX、XeLaTeX、LuaLaTeX                                                                                                                                                                                                                    |
+| **出力形式**                 | [DOCX](/ja/docs/layouts/docx)、[HTML](/ja/docs/layouts/html)、[LaTeX/PDF](/ja/docs/layouts/latex)、[Typst/PDF](/ja/docs/layouts/typst)、[Markdown](/ja/docs/layouts/markdown)            | PDF（pandoc による変換は可能だが品質が低下）                                                                                                                                                                                                             |
+| **生成ソース**               | PDF とともにクリーンな `.tex` または `.typ` が出力され、確認や微調整が可能                                                                                                               | 該当なし（手書きのソースがすべて）                                                                                                                                                                                                                       |
+| **スキーマ検証**             | [厳格な Zod 検証](/ja/docs/compiler/schema) と JSON Schema IDE 統合                                                                                                                      | なし—コンパイル時の TeX エラーのみ                                                                                                                                                                                                                       |
+| **エラー報告**               | 行番号、列番号、ソーススニペットを含む [clang スタイルの診断](/ja/docs/cli#validate)                                                                                                     | TeX ログ：しばしば原因から遠い暗号的な連鎖エラー                                                                                                                                                                                                         |
+| **環境構築**                 | `npm install -g yamlresume`、Homebrew、または XeTeX と Typst がプリインストール済みの Docker；`yamlresume doctor` がフォントを確認                                                       | 数ギガバイトの TeX Live/MacTeX/MiKTeX インストール、不足パッケージの探索、手動フォント設定、またはクラウドベースの Overleaf                                                                                                                              |
+| **テンプレート**             | 厳選された公式 [LaTeX](/ja/docs/layouts/latex/templates)、[Typst](/ja/docs/layouts/typst)、[HTML](/ja/docs/layouts/html/templates)、[DOCX](/ja/docs/layouts/docx/templates) テンプレート | 何千ものコミュニティテンプレートとクラス（[Awesome-CV](https://github.com/posquit0/Awesome-CV)、[moderncv](https://github.com/moderncv/moderncv)、[AltaCV](https://github.com/liantze/AltaCV)、[Jake's Resume](https://github.com/jakegut/resume)、...） |
+| **デザインのカスタマイズ**   | [ページ](/ja/docs/layouts/latex#page)、[タイポグラフィ](/ja/docs/layouts/latex#typography)、セクションのつまみ—テーマにカプセル化                                                        | 無制限—TeX が組版できるものなら何でも                                                                                                                                                                                                                    |
+| **セクションのカスタマイズ** | [エイリアス](/ja/docs/layouts/sections/aliases) と [並べ替え](/ja/docs/layouts/sections/reorder)                                                                                         | 任意のマクロと環境                                                                                                                                                                                                                                       |
+| **国際化（i18n）**           | [13 のロケールコードで 11 言語](/ja/docs/locale)、babel と CJK パッケージの自動設定                                                                                                      | 手動：babel/polyglossia、fontspec、ctex/xeCJK/luatexja/kotex                                                                                                                                                                                             |
+| **リッチテキスト**           | `summary` フィールドで一部の [Markdown 構文](/ja/docs/content/rich-text) をサポート                                                                                                      | どこにでも任意の TeX マークアップ                                                                                                                                                                                                                        |
+| **データモデル**             | 固定された構造化スキーマ；[JSON Resume](/ja/docs/comparisons/json-resume) との相互運用                                                                                                   | 自由形式の文書                                                                                                                                                                                                                                           |
+| **AI ワークフロー**          | 組み込みの [生成](/ja/docs/ai/generate) と [翻訳](/ja/docs/ai/translate)；Markdown 出力は LLM フレンドリー                                                                               | 独自の LLM プロンプトが必要                                                                                                                                                                                                                              |
+| **Dev モード**               | 保存するたびにリビルドする [`yamlresume dev`](/ja/blog/dev-mode)                                                                                                                         | `latexmk -pvc` または Overleaf の自動コンパイル                                                                                                                                                                                                          |
+| **バージョン管理**           | クリーンなコンテンツの差分—意味のある変更のみが表示される                                                                                                                                | マークアップの変更が混在した差分                                                                                                                                                                                                                         |
+| **CI/CD**                    | [公式 GitHub Action](https://github.com/yamlresume/action) + [Docker イメージ](/ja/docs/contributing/docker)                                                                             | コミュニティアクション（例：`latex-action`）；Overleaf の GitHub 同期は有料機能                                                                                                                                                                          |
+| **共同編集**                 | プレーン YAML への Git プルリクエスト                                                                                                                                                    | Overleaf のリアルタイム共同編集（有料プラン）または `.tex` 上の Git                                                                                                                                                                                      |
+| **決定論的出力**             | はい                                                                                                                                                                                     | はい（ツールチェーンとパッケージを固定すれば）                                                                                                                                                                                                           |
+| **コスト**                   | 無料（オープンソース）                                                                                                                                                                   | セルフホストでは無料；Overleaf はフリーミアム                                                                                                                                                                                                            |
 
 ## 主な違いの解説
 
@@ -149,7 +151,7 @@ YAMLResume は設計原則として[関心の分離](https://github.com/yamlresu
 し、セクションの順序やエイリアスを変更する小さなレイアウトバリエーションを管理す
 ればよいのです。
 
-### 1 つのソース、4 つのエンジン
+### 1 つのソース、5 つのエンジン
 
 `.tex` ファイルは PDF にコンパイルされます。これがパイプラインのすべてであり、多
 くの人にとっては十分です。しかし、採用担当者に Word 版を求められたり、個人サイト
@@ -158,9 +160,10 @@ YAMLResume は設計原則として[関心の分離](https://github.com/yamlresu
 できますが、変換はマークアップから意図を推測する必要があるため、専用エンジンと比
 べるとタイポグラフィが平凡になりがちです。
 
-YAMLResume には 4 つの第一級エンジンが搭載されています。
+YAMLResume には 5 つの第一級エンジンが搭載されています。
 [DOCX](/ja/docs/layouts/docx)、[HTML](/ja/docs/layouts/html)、
-[Markdown](/ja/docs/layouts/markdown)、[LaTeX](/ja/docs/layouts/latex) です。そして
+[LaTeX](/ja/docs/layouts/latex)、[Typst](/ja/docs/layouts/typst)、
+[Markdown](/ja/docs/layouts/markdown) です。そして
 1 回の `yamlresume build` で、同じソースからこれらすべてを生成します。
 [Markdown エンジン](/ja/docs/layouts/markdown) は 2026 年に特に便利です。同じ検証
 済みデータから抽出された、クリーンで構造化されたテキストを LLM や ATS パーサーに
@@ -175,7 +178,7 @@ LaTeX でドイツ語や中国語の履歴書を手書きするのは、それ�
 知られた道ですが、初めての場合は実際に数日の作業になります。言語を追加するたびに
 作業は倍増し、文書間で共有されるものは何もありません。
 
-YAMLResume では [`locale`](/ja/docs/locales) キーを設定します。コンパイラはセク
+YAMLResume では [`locale`](/ja/docs/locale) キーを設定します。コンパイラはセク
 ションヘッダー、国名、学位、スキルレベル、言語の流暢さレベルを翻訳し、日付や住所
 を慣用的な形式でフォーマットし、ロケールに適した句読点ルール（CJK 用の全角句読点
 や、フランス語の高い句読点前のノーブレークスペースなど）を適用し、XeLaTeX 用の
@@ -201,10 +204,10 @@ YAMLResume では [`locale`](/ja/docs/locales) キーを設定します。コン
 [フォントファミリー、サイズ、行間](/ja/docs/layouts/latex#typography)、
 [セクションエイリアスと順序](/ja/docs/layouts/sections/aliases) です。
 
-そして上限にぶつかってしまった場合、脱出ハッチがあります。生成された `.tex` ソー
-スは PDF とともに出力されます。それを読んで学ぶことも、フォークしてそこから引き
-継ぐこともできます。YAMLResume は LaTeX を隠しません。ただ、LaTeX を要求しないだ
-けです。
+そして上限にぶつかってしまった場合、脱出ハッチがあります。生成された `.tex` または
+`.typ` ソースは PDF とともに出力されます。それを読んで学ぶことも、フォークしてそこ
+から引き継ぐこともできます。YAMLResume は LaTeX や Typst を隠しません。ただ、それ
+らのソースを直接書くことを要求しないだけです。
 
 ## エコシステム
 
@@ -219,7 +222,8 @@ YAMLResume では [`locale`](/ja/docs/locales) キーを設定します。コン
 
 YAMLResume は厳選アプローチを取ります。公式
 [LaTeX](/ja/docs/layouts/latex/templates) テンプレートを少数提供しており
-（moderncv-classic、moderncv-casual、moderncv-banking、jake など）、それぞれが 12
+（moderncv-classic、moderncv-casual、moderncv-banking、jake など）、さらに
+[Typst](/ja/docs/layouts/typst) テンプレートも用意しています。それぞれが 13
 のロケールコードすべてでテストされているため、テンプレートを切り替えてもローカラ
 イズされた履歴書が暗黙的に壊れることはありません。
 
@@ -242,11 +246,11 @@ Git をバージョン履歴として利用します。
 両方のワークフローは自動化できます。LaTeX 界には GitHub Actions 向けの
 [latex-action](https://github.com/xu-cheng/latex-action) のようなコミュニティソリュ
 ーションがあり、Overleaf は有料機能として GitHub との同期ができます。YAMLResume は
-履歴書を検証し、4 つの形式を一度にビルドする
+履歴書を検証し、5 つの形式を一度にビルドする
 [公式 GitHub Action](https://github.com/yamlresume/action) を提供しています：
 
 ```yaml
-- uses: yamlresume/action@v0.16.1
+- uses: yamlresume/action@v0.18.0
   with:
     resumes: |
       resume-en.yml
@@ -272,11 +276,12 @@ Git をバージョン履歴として利用します。
 
 **YAMLResume** は、以下を求める場合に優れています：
 
-- TeX を書いたりデバッグしたりすることなく、XeLaTeX による LaTeX 級の PDF タイポ
-  グラフィ
+- 組版ソースを書いたりデバッグしたりすることなく、XeLaTeX または Typst によるプロ
+  フェッショナルな PDF タイポグラフィ
 - コンパイルログの代わりに clang スタイルのエラーを伴う構造化された検証済みデータ
-- 1 つのソースファイルから DOCX、HTML、Markdown、LaTeX/PDF への拡張出力形式
-- 10 言語 12 ロケールコードにわたる深い[国際化](/ja/docs/locales)。自動 CJK 設定と
+- 1 つのソースファイルから DOCX、HTML、LaTeX/PDF、Typst/PDF、Markdown への拡張出力
+  形式
+- 11 言語 13 ロケールコードにわたる深い[国際化](/ja/docs/locale)。自動 CJK 設定と
   AI 支援翻訳を含む
 - コンテンツ、ロケール、レイアウトの厳格な分離により、コンテンツを書き換えること
   なくテンプレートを切り替えられる

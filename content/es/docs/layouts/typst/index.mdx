@@ -1,0 +1,173 @@
+---
+title: Motor Typst
+description: "Genera currículums PDF compuestos con Typst, la plantilla Jake, tipografía configurable, colores de acento y fuentes de respaldo CJK."
+---
+
+El motor Typst genera currículums PDF profesionales con
+[Typst](https://typst.app/), un sistema de composición tipográfica moderno.
+Acepta el mismo contenido de currículum que los demás motores y actualmente
+incluye la plantilla [`jake`](./typst/templates/jake).
+
+## Configuración
+
+Establece `engine: typst` en un layout. La compilación a PDF requiere **Typst
+0.13.0 o posterior**. La imagen oficial de Docker incluye Typst, así que no hace
+falta una instalación aparte cuando usas Docker.
+
+```yml lineNumbers title="resume.yml"
+layouts:
+  - engine: typst
+    template: jake
+    page:
+      paperSize: a4
+      showPageNumbers: false
+    typography:
+      fontSize: 10pt
+      lineSpacing: normal
+      links:
+        underline: false
+    advanced:
+      showIcons: true
+      showUrls: true
+```
+
+Ejecuta `yamlresume build resume.yml` para generar tanto `resume.typ` como su
+PDF. Con `--no-pdf`, YAMLResume genera solo el código fuente Typst y no necesita
+el CLI de Typst. Si el currículum también tiene un layout LaTeX, los dos PDFs se
+llaman `resume.tex.pdf` y `resume.typ.pdf` para evitar que se sobrescriban.
+
+## Página
+
+La opción `page` controla el tamaño de papel, los márgenes y los números de
+página. Typst soporta los tamaños de papel `a4` y `letter`.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    page:
+      showPageNumbers: true
+      paperSize: a4
+      margins:
+        top: 2.5cm
+        left: 1.5cm
+        right: 1.5cm
+        bottom: 2.5cm
+```
+
+## Secciones
+
+La opción `sections` personaliza los títulos de las secciones y su orden.
+Consulta la [documentación de secciones](./sections) para ver todos los IDs de
+sección disponibles.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    sections:
+      aliases:
+        work: "Professional Experience"
+        education: "Education"
+      order:
+        - basics
+        - work
+        - education
+```
+
+## Plantillas
+
+La opción `template` selecciona el diseño visual. Typst actualmente soporta
+[`jake`](./typst/templates/jake), que también es la plantilla predeterminada.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    template: jake
+```
+
+## Tipografía
+
+### Tamaño de fuente
+
+La opción `fontSize` acepta `10pt`, `11pt` o `12pt`. Los tamaños del encabezado
+y de los títulos de sección se escalan con este tamaño de fuente base.
+
+### Familia de fuentes
+
+La opción `fontFamily` acepta una lista priorizada de familias de fuentes
+separada por comas, similar a `font-family` de CSS. Instala las fuentes que
+especifiques para que Typst pueda resolverlas.
+
+Para currículums CJK, YAMLResume prueba fuentes de respaldo Noto, de macOS y de
+Windows apropiadas para la región. Se recomienda instalar [las fuentes Google
+Noto CJK](/es/docs/installation#google-noto) para obtener una salida
+consistente.
+
+### Espaciado de línea
+
+La opción `lineSpacing` acepta los siguientes valores semánticos:
+
+| Valor     | Descripción                                 |
+| --------- | ------------------------------------------- |
+| `tight`   | Espaciado compacto para caber más contenido |
+| `snug`    | Un poco más de espacio que tight            |
+| `normal`  | Legibilidad equilibrada (predeterminado)    |
+| `relaxed` | Más espacio entre líneas                    |
+| `loose`   | Diseño muy espacioso                        |
+
+### Subrayado de enlaces
+
+Establece `typography.links.underline` para controlar si los hipervínculos se
+subrayan. Esta opción la comparten los motores LaTeX, Typst, HTML y DOCX.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    typography:
+      fontSize: 11pt
+      fontFamily: "Linux Libertine O, Noto Serif CJK SC, serif"
+      lineSpacing: relaxed
+      links:
+        underline: true
+```
+
+## Tema
+
+La opción `theme.colors.accent` acepta un ajuste predefinido con nombre o un
+color hexadecimal `#RRGGBB` arbitrario. Cambia los elementos resaltados sin
+afectar la geometría de página ni la estructura de secciones. Consulta la
+[referencia del color de acento](./latex#color-de-acento) para ver los ajustes
+predefinidos disponibles.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    theme:
+      colors:
+        accent: burgundy
+```
+
+Cuando no se establece un color de acento, la plantilla conserva su paleta
+predeterminada.
+
+## Avanzado
+
+La opción `advanced` controla los iconos y la presentación de las URL:
+
+- `showIcons`: muestra iconos para enlaces y perfiles.
+- `showUrls`: muestra las URL en bruto en lugar de ocultarlas detrás de un texto
+  legible.
+
+```yml lineNumbers
+layouts:
+  - engine: typst
+    advanced:
+      showIcons: true
+      showUrls: false
+```
+
+## Diseños predeterminados
+
+Desde v0.18, `yamlresume new` incluye un layout Typst en el array `layouts`
+predeterminado. Instala Typst 0.13.0 o posterior antes de construir las salidas
+PDF predeterminadas, usa la imagen oficial de Docker, o pasa `--no-pdf` cuando
+solo necesites los archivos fuente.

@@ -64,6 +64,7 @@ flowchart LR
  B2[HtmlLayout]
  B3[LatexLayout]
  B4[MarkdownLayout]
+ B5[TypstLayout]
  end
 
  subgraph Content
@@ -85,6 +86,7 @@ flowchart LR
  B --> B2
  B --> B3
  B --> B4
+ B --> B5
  C --> C1
  C --> C2
  C --> C3
@@ -273,7 +275,7 @@ Array de configurações de layout suportando múltiplos formatos de saída.
 
 | Prop        | Tipo                                                                 | Obrigatório | Descrição                       |
 | ----------- | -------------------------------------------------------------------- | ------------ | --------------------------------- |
-| `layouts[]` | [`DocxLayout`](#docxlayout) \| [`HtmlLayout`](#htmllayout) \| [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜️          | Configurações de layout.         |
+| `layouts[]` | [`DocxLayout`](#docxlayout) \| [`HtmlLayout`](#htmllayout) \| [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) \| [`TypstLayout`](#typstlayout) | ⬜️          | Configurações de layout.         |
 
 #### Tipos de Layout Comuns
 
@@ -346,6 +348,7 @@ Define opções tipográficas para formato de documento HTML.
 | `fontFamily?` | `string`                          | ⬜️          | Uma lista de famílias de fontes separada por vírgulas. |
 | `fontSize?`   | [`HtmlFontSize`](#htmlfontsize)   | ⬜️          | Tamanho base de fonte para o documento. |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)     | ⬜️          | Espaçamento de linha para o documento. |
+| `links?`      | `{ underline?: boolean }`         | ⬜️          | Estilo de hiperligações.     |
 
 #### LatexLayout
 
@@ -391,6 +394,50 @@ Define opções tipográficas para LaTeX.
 | `fontFamily?` | `string`                            | ⬜️          | Uma lista de famílias de fontes separada por vírgulas. |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)       | ⬜️          | Espaçamento de linha para o documento. |
 | `links?`      | `{ underline?: boolean }`           | ⬜️          | Estilo de hiperligações.     |
+
+#### TypstLayout
+
+Configuração de layout Typst.
+
+| Prop          | Tipo                                    | Obrigatório | Descrição                                            |
+| ------------- | --------------------------------------- | ----------- | ----------------------------------------------------- |
+| `engine`      | `'typst'`                               | ✅           | Motor para gerar o currículo.                         |
+| `advanced?`   | [`TypstAdvanced`](#typstadvanced)       | ⬜️          | Define opções de configuração avançada.               |
+| `page?`       | [`TypstPage`](#typstpage)               | ⬜️          | Define opções ao nível de página para a apresentação do documento. |
+| `sections?`   | [`Sections`](#sections)                 | ⬜️          | Define a configuração de personalização de secções.   |
+| `template?`   | [`TypstTemplate`](#typsttemplate)       | ⬜️          | Define o modelo selecionado.                          |
+| `theme?`      | [`Theme`](#theme)                       | ⬜️          | Configurações visuais do tema.                        |
+| `typography?` | [`TypstTypography`](#typsttypography)   | ⬜️          | Define opções tipográficas para o formato do documento. |
+
+##### TypstAdvanced
+
+Define opções de configuração avançada para Typst.
+
+| Prop         | Tipo      | Obrigatório | Descrição                                                |
+| ------------ | --------- | ----------- | ---------------------------------------------------------- |
+| `showIcons?` | `boolean` | ⬜️          | Indica se devem ser mostrados ícones para hiperligações e perfis. |
+| `showUrls?`  | `boolean` | ⬜️          | Indica se devem ser mostrados URLs em bruto ou ocultá-los atrás de um texto razoável. |
+
+##### TypstPage
+
+Define opções ao nível de página para Typst.
+
+| Prop               | Tipo                           | Obrigatório | Descrição                          |
+| ------------------ | ------------------------------ | ----------- | ------------------------------------ |
+| `margins?`         | [`Margins`](#margins)          | ⬜️          | Define as margens de página.        |
+| `paperSize?`       | [`TypstPaperSize`](#typstpapersize) | ⬜️     | Define o tamanho de papel.          |
+| `showPageNumbers?` | `boolean`                      | ⬜️          | Mostrar números de página.          |
+
+##### TypstTypography
+
+Define opções tipográficas para Typst.
+
+| Prop          | Tipo                                | Obrigatório | Descrição                      |
+| ------------- | ----------------------------------- | ----------- | -------------------------------- |
+| `fontSize?`   | [`TypstFontSize`](#typstfontsize)   | ⬜️          | Tamanho base de fonte.           |
+| `fontFamily?` | `string`                            | ⬜️          | Uma lista de famílias de fontes separada por vírgulas. |
+| `lineSpacing?`| [`LineSpacing`](#linespacing)       | ⬜️          | Espaçamento de linha para o documento. |
+| `links?`      | `{ underline?: boolean }`           | ⬜️          | Estilo de hiperligações.         |
 
 #### MarkdownLayout
 
@@ -443,6 +490,7 @@ Define opções tipográficas para DOCX.
 | `fontSize?`   | [`DocxFontSize`](#docxfontsize)     | ⬜️          | Tamanho base de fonte para o documento. |
 | `fontFamily?` | `string`                            | ⬜️          | Uma lista de famílias de fontes separada por vírgulas. |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)       | ⬜️          | Espaçamento de linha para o documento. |
+| `links?`      | `{ underline?: boolean }`           | ⬜️          | Estilo de hiperligações.     |
 
 ## Tipos de Enumeração
 
@@ -599,6 +647,29 @@ Ver também: [templates](/pt/docs/layouts/latex/templates)
 - `moderncv-casual`
 - `moderncv-classic`
 
+#### TypstFontSize
+
+Tipo união que inclui todas as possíveis opções de tamanho de fonte Typst.
+
+- `10pt` - tamanho de fonte de 10pt (por defeito)
+- `11pt` - tamanho de fonte de 11pt
+- `12pt` - tamanho de fonte de 12pt
+
+#### TypstPaperSize
+
+Tipo união que inclui todas as possíveis opções de tamanho de papel Typst.
+
+- `a4` (por defeito)
+- `letter`
+
+#### TypstTemplate
+
+Tipo união que inclui todas as possíveis opções de modelo Typst.
+
+Ver também: [templates](/pt/docs/layouts/typst/templates)
+
+- `jake`
+
 #### PaperSize
 
 Tipo união que inclui todas as possíveis opções de tamanho de papel LaTeX.
@@ -614,8 +685,16 @@ Tipo união que inclui todos os possíveis códigos de língua local.
 
 Ver também: [multi-languages](/pt/docs/locale)
 
+- `de`
 - `en`
 - `es`
+- `fr`
+- `id`
+- `it`
+- `ja`
+- `nl`
+- `no`
+- `pt-br`
 - `zh-hans`
 - `zh-hant-hk`
 - `zh-hant-tw`

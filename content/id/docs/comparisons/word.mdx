@@ -37,12 +37,12 @@ Berikut adalah perbandingan kedua alur kerja tersebut:
 | **Format Penulisan**     | YAML teks biasa                                                                                                                                            | `.docx` biner (ZIP berisi XML)                                                             |
 | **Pemformatan**          | Dihasilkan dari template, sehingga pemformatan tetap konsisten                                                                                             | Manual—gaya, tab stop, dan spasi bergeser seiring waktu                                    |
 | **Validasi Skema**       | [Validasi Zod ketat](/id/docs/compiler/schema) dengan [diagnostik gaya clang](/id/blog/yamlresume-compiler)                                                | Tidak ada untuk struktur—hanya ejaan dan tata bahasa                                       |
-| **Format Output**        | [DOCX](/id/docs/layouts/docx), [HTML](/id/docs/layouts/html), [Markdown](/id/docs/layouts/markdown), [LaTeX/PDF](/id/docs/layouts/latex)                   | `.docx`, PDF (Save As), plus ekspor lossy ke format lain                                   |
+| **Format Output**        | [DOCX](/id/docs/layouts/docx), [HTML](/id/docs/layouts/html), [LaTeX/PDF](/id/docs/layouts/latex), [Typst/PDF](/id/docs/layouts/typst), [Markdown](/id/docs/layouts/markdown) | `.docx`, PDF (Save As), plus ekspor lossy ke format lain                                   |
 | **Output DOCX**          | [Mesin DOCX](/id/docs/layouts/docx) bawaan dengan template yang dikurasi                                                                                   | Dokumennya sendiri adalah DOCX                                                             |
-| **Template**             | Kumpulan resmi yang dikurasi (`calm` untuk DOCX; lebih banyak untuk [LaTeX](/id/docs/layouts/latex/templates) dan [HTML](/id/docs/layouts/html/templates)) | Ribuan template via Microsoft Create dan pihak ketiga; kualitasnya sangat bervariasi       |
+| **Template**             | Kumpulan resmi yang dikurasi (`calm` untuk DOCX; lebih banyak untuk [LaTeX](/id/docs/layouts/latex/templates), [Typst](/id/docs/layouts/typst), dan [HTML](/id/docs/layouts/html/templates)) | Ribuan template via Microsoft Create dan pihak ketiga; kualitasnya sangat bervariasi       |
 | **Kontrol Versi**        | Berfungsi dengan Git; diff menunjukkan perubahan nyata                                                                                                     | File biner—diff dan merge praktis tidak berguna                                            |
 | **Penyesuaian**          | File layout dan cabang Git per lamaran                                                                                                                     | Salinan "Save As" yang saling bergeser (`resume_final_v2.docx`)                            |
-| **Internasionalisasi**   | [10 bahasa di 12 kode lokal](/id/docs/locale), plus [terjemahan AI](/id/docs/ai/translate)                                                                 | UI dan pemeriksaan ejaan dalam banyak bahasa; setiap bahasa adalah dokumen manual terpisah |
+| **Internasionalisasi**   | [11 bahasa di 13 kode lokal](/id/docs/locale), plus [terjemahan AI](/id/docs/ai/translate)                                                                 | UI dan pemeriksaan ejaan dalam banyak bahasa; setiap bahasa adalah dokumen manual terpisah |
 | **Teks Kaya**            | Sekumpulan [sintaks Markdown](/id/docs/content/rich-text) terpilih di bidang `summary`                                                                     | Pemformatan penuh di mana-mana                                                             |
 | **Model Data**           | Skema terstruktur yang tetap; interoperabilitas [JSON Resume](/id/docs/comparisons/json-resume)                                                            | Dokumen bebas bentuk                                                                       |
 | **Fitur AI**             | [Generasi](/id/docs/ai/generate) dan [terjemahan](/id/docs/ai/translate) bawaan di CLI                                                                     | Fitur Microsoft 365 Copilot (berlangganan)                                                 |
@@ -68,9 +68,10 @@ tidak pernah menyentuh gaya bernama, sehingga pemformatan berakhir sebagai
 penyetelan inline satu kali yang menyakitkan untuk direvisi.
 
 Di YAMLResume, pemformatan adalah tugas compiler. Konten Anda adalah data;
-[mesin DOCX](/id/docs/layouts/docx) dan [mesin LaTeX](/id/docs/layouts/latex)
-me-render-nya melalui template yang menegakkan konsistensi. Ubah jabatan Anda
-di satu tempat dan setiap format—DOCX, PDF, HTML, Markdown—mengambilnya pada
+[mesin DOCX](/id/docs/layouts/docx), [mesin LaTeX](/id/docs/layouts/latex), dan
+[mesin Typst](/id/docs/layouts/typst) me-render-nya melalui template yang
+menegakkan konsistensi. Ubah jabatan Anda di satu tempat dan setiap
+format—DOCX, PDF melalui LaTeX atau Typst, HTML, Markdown—mengambilnya pada
 build berikutnya. Template membuat setiap keputusan desain satu kali, dan
 melakukannya dengan benar.
 
@@ -141,7 +142,7 @@ multibahasa Word bukan masalah Anda.
 YAMLResume bersinar ketika satu karier harus berbicara dalam beberapa bahasa.
 Mengatur kunci `locale` menerjemahkan judul bagian, gelar, tingkat
 keterampilan, dan nama negara; memformat tanggal dan alamat dalam gaya lokal;
-dan menerapkan aturan tanda baca lokal di [10 bahasa dan 12 kode
+dan menerapkan aturan tanda baca lokal di [11 bahasa dan 13 kode
 lokal](/id/docs/locale). Dikombinasikan dengan [`yamlresume ai
 translate`](/id/docs/ai/translate), varian Inggris-ke-Jepang hanya berjarak
 satu perintah, dihasilkan dari sumber yang sama sehingga keduanya tidak pernah
@@ -177,10 +178,11 @@ merusak parser ATS.
 
 YAMLResume mengirimkan kumpulan kecil yang dikurasi: template
 [calm](/id/docs/layouts/docx/templates/calm) untuk output DOCX, ditambah
-template [LaTeX](/id/docs/layouts/latex/templates) dan
-[HTML](/id/docs/layouts/html/templates), semuanya divalidasi terhadap setiap
-lokal yang didukung. Karena template adalah pengaturan mesin daripada dokumen,
-mengganti desain tidak pernah berarti menulis ulang konten.
+template [LaTeX](/id/docs/layouts/latex/templates),
+[Typst](/id/docs/layouts/typst), dan [HTML](/id/docs/layouts/html/templates),
+semuanya divalidasi terhadap setiap lokal yang didukung. Karena template adalah
+pengaturan mesin daripada dokumen, mengganti desain tidak pernah berarti
+menulis ulang konten.
 
 ### Recruiter dan Format `.docx`
 
@@ -197,8 +199,8 @@ dapat diklik, ikon kontak) yang selaras dengan mesin lainnya.
 
 Satu catatan berlaku untuk file DOCX apa pun, dihasilkan atau tidak: font
 harus ada di mesin tempat dokumen dibuka, atau Word menggantinya. Pilih font
-yang tersedia luas untuk layout DOCX Anda, dan jadikan mesin LaTeX/PDF
-sebagai referensi Anda untuk output yang tampil sempurna.
+yang tersedia luas untuk layout DOCX Anda, dan jadikan mesin PDF LaTeX atau
+Typst sebagai referensi Anda untuk output yang tampil sempurna.
 
 ### Otomatisasi
 
@@ -225,11 +227,12 @@ memelihara resume dalam skala besar—ini mengubah cara Anda memelihara resume.
 
 - Satu file sumber teks biasa di Git, dengan diff nyata, riwayat, dan cabang
 - Pemformatan yang dihasilkan dan konsisten di [DOCX](/id/docs/layouts/docx),
-  [PDF](/id/docs/layouts/latex), [HTML](/id/docs/layouts/html), dan
+  PDF melalui [LaTeX](/id/docs/layouts/latex) atau
+  [Typst](/id/docs/layouts/typst), [HTML](/id/docs/layouts/html), dan
   [Markdown](/id/docs/layouts/markdown)
 - [Validasi skema](/id/docs/compiler/schema) yang menangkap [kesalahan
   struktural](/id/docs/cli#validate) sebelum recruiter menyadarinya
-- [Internasionalisasi](/id/docs/locale) mendalam: [10 bahasa di 12 kode
+- [Internasionalisasi](/id/docs/locale) mendalam: [11 bahasa di 13 kode
   lokal](/id/docs/locale) dengan [terjemahan AI](/id/docs/ai/translate), dari
   satu sumber kebenaran
 - Output yang aman ATS secara desain, plus [mesin
