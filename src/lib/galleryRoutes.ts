@@ -36,7 +36,7 @@ export interface GalleryPreview {
 }
 
 export interface GalleryDownload {
-  format: 'pdf' | 'tex' | 'docx' | 'html' | 'markdown' | 'webp'
+  format: 'pdf' | 'tex' | 'typ' | 'docx' | 'html' | 'markdown' | 'webp'
   href: string
 }
 
@@ -54,6 +54,7 @@ function getItemDownloads(item: GalleryItem): GalleryDownload[] {
   return [
     { format: 'pdf', href: item.pdfUrl },
     ...(item.texUrl ? [{ format: 'tex' as const, href: item.texUrl }] : []),
+    ...(item.typUrl ? [{ format: 'typ' as const, href: item.typUrl }] : []),
     { format: 'docx', href: item.docxUrl },
     { format: 'html', href: item.htmlUrl },
     { format: 'markdown', href: item.markdownUrl },
@@ -96,11 +97,15 @@ function getTemplatePresentation(showcase: TemplateShowcase): {
   }
 
   const pdfUrl = getTemplateAssetUrl(showcase, 'pdf')
+  const sourceFormat = showcase.engine === 'typst' ? 'typ' : 'tex'
   return {
     preview: { type: 'image', src: webpUrl },
     downloads: [
       { format: 'pdf', href: pdfUrl },
-      { format: 'tex', href: getTemplateAssetUrl(showcase, 'tex') },
+      {
+        format: sourceFormat,
+        href: getTemplateAssetUrl(showcase, sourceFormat),
+      },
       { format: 'webp', href: webpUrl },
     ],
   }

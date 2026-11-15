@@ -13,13 +13,13 @@ import {
 import yaml from 'yaml'
 import type { Language } from '@/i18n'
 
-function hasLatexLayout(content: string): boolean {
+function hasLayout(content: string, engine: LayoutEngine): boolean {
   const doc = yaml.parseDocument(content)
   appendResumeLayouts(doc)
   const parsed = doc.toJS() as {
     layouts?: { engine?: string }[]
   }
-  return parsed.layouts?.some((layout) => layout.engine === 'latex') ?? false
+  return parsed.layouts?.some((layout) => layout.engine === engine) ?? false
 }
 
 export interface GalleryItem {
@@ -37,6 +37,7 @@ export interface GalleryItem {
   docxUrl: string
   markdownUrl: string
   texUrl?: string
+  typUrl?: string
 }
 
 /**
@@ -67,6 +68,7 @@ export const sampleLocaleLabels: Record<LocaleLanguage, string> = {
   'zh-hant-hk': '繁體中文（香港）',
   'zh-hant-tw': '繁體中文（台灣）',
   id: 'Bahasa Indonesia',
+  it: 'Italiano',
   de: 'Deutsch',
   nl: 'Nederlands',
   no: 'Norsk',
@@ -91,7 +93,9 @@ function createGalleryItem(
   locale: LocaleLanguage
 ): GalleryItem {
   const i18n = sample.i18n[locale]
-  const latexEnabled = hasLatexLayout(getSampleResume(sample.id, locale))
+  const content = getSampleResume(sample.id, locale)
+  const latexEnabled = hasLayout(content, 'latex')
+  const typstEnabled = hasLayout(content, 'typst')
 
   return {
     id: sample.id,
@@ -108,6 +112,7 @@ function createGalleryItem(
     docxUrl: getAssetUrl(sample.id, locale, 'docx'),
     markdownUrl: getAssetUrl(sample.id, locale, 'md'),
     ...(latexEnabled ? { texUrl: getAssetUrl(sample.id, locale, 'tex') } : {}),
+    ...(typstEnabled ? { typUrl: getAssetUrl(sample.id, locale, 'typ') } : {}),
   }
 }
 

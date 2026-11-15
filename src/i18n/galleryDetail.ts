@@ -24,6 +24,7 @@ export interface GalleryDetailMessages {
   formats: {
     pdf: string
     tex: string
+    typ: string
     docx: string
     html: string
     markdown: string
@@ -75,6 +76,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     formats: {
       pdf: 'PDF',
       tex: 'TeX',
+      typ: 'Typst',
       docx: 'DOCX',
       html: 'HTML',
       markdown: 'Markdown',
@@ -125,6 +127,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     formats: {
       pdf: 'PDF',
       tex: 'TeX',
+      typ: 'Typst',
       docx: 'DOCX',
       html: 'HTML',
       markdown: 'Markdown',
@@ -175,6 +178,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     formats: {
       pdf: 'PDF',
       tex: 'TeX',
+      typ: 'Typst',
       docx: 'DOCX',
       html: 'HTML',
       markdown: 'Markdown',
@@ -225,6 +229,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     formats: {
       pdf: 'PDF',
       tex: 'TeX',
+      typ: 'Typst',
       docx: 'DOCX',
       html: 'HTML',
       markdown: 'Markdown',
@@ -275,6 +280,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     formats: {
       pdf: 'PDF',
       tex: 'TeX',
+      typ: 'Typst',
       docx: 'DOCX',
       html: 'HTML',
       markdown: 'Markdown',
@@ -325,6 +331,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     formats: {
       pdf: 'PDF',
       tex: 'TeX',
+      typ: 'Typst',
       docx: 'DOCX',
       html: 'HTML',
       markdown: 'Markdown',
@@ -374,6 +381,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     formats: {
       pdf: 'PDF',
       tex: 'TeX',
+      typ: 'Typst',
       docx: 'DOCX',
       html: 'HTML',
       markdown: 'Markdown',
@@ -423,6 +431,7 @@ const galleryDetailMessages: Record<Language, GalleryDetailMessages> = {
     formats: {
       pdf: 'PDF',
       tex: 'TeX',
+      typ: 'Typst',
       docx: 'DOCX',
       html: 'HTML',
       markdown: 'Markdown',

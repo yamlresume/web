@@ -46,6 +46,7 @@ export function GalleryDetail({
   downloads = [
     { format: 'pdf', href: item.pdfUrl },
     ...(item.texUrl ? [{ format: 'tex' as const, href: item.texUrl }] : []),
+    ...(item.typUrl ? [{ format: 'typ' as const, href: item.typUrl }] : []),
     { format: 'docx', href: item.docxUrl },
     { format: 'html', href: item.htmlUrl },
     { format: 'markdown', href: item.markdownUrl },

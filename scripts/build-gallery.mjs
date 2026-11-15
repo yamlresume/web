@@ -5,12 +5,15 @@
  *
  * Outputs are written to public/gallery/:
  *   - examples/{id}/{locale}/resume.html
- *   - examples/{id}/{locale}/resume.pdf
+ *   - examples/{id}/{locale}/resume.docx
+ *   - examples/{id}/{locale}/resume.pdf (LaTeX preview)
  *   - examples/{id}/{locale}/resume.tex
+ *   - examples/{id}/{locale}/resume.typ
  *   - examples/{id}/{locale}/resume.md
  *   - examples/{id}/{locale}/resume.webp
  *   - templates/html/{template}/resume.{html,webp}
  *   - templates/latex/{template}/resume.{pdf,tex,webp}
+ *   - templates/typst/{template}/resume.{pdf,typ,webp}
  *   - templates/docx/{template}/resume.docx
  *   - manifest.json (metadata for the gallery UI)
  *
@@ -193,17 +196,11 @@ function removeLegacyThumbnail(webpPath) {
 /**
  * Check whether all non-thumbnail outputs exist.
  *
- * @param {string} htmlPath
- * @param {string} docxPath
- * @param {string} pdfPath
- * @param {string} markdownPath
- * @param {string} texPath
+ * @param {...(string|undefined)} filePaths
  * @returns {boolean}
  */
-function outputsExist(htmlPath, docxPath, pdfPath, markdownPath, texPath) {
-  return [htmlPath, docxPath, pdfPath, markdownPath, texPath]
-    .filter(Boolean)
-    .every((filePath) => fs.existsSync(filePath))
+function outputsExist(...filePaths) {
+  return filePaths.filter(Boolean).every((filePath) => fs.existsSync(filePath))
 }
 
 /**
@@ -215,8 +212,8 @@ function outputsExist(htmlPath, docxPath, pdfPath, markdownPath, texPath) {
 function removeLegacySampleDirectory(entry) {
   const hasCompleteReplacement = entry.languages.every((locale) => {
     const directory = path.join(OUTPUT_DIR, 'examples', entry.id, locale)
-    return ['html', 'docx', 'pdf', 'tex', 'md', 'webp'].every((extension) =>
-      fs.existsSync(path.join(directory, `resume.${extension}`))
+    return ['html', 'docx', 'pdf', 'tex', 'typ', 'md', 'webp'].every(
+      (extension) => fs.existsSync(path.join(directory, `resume.${extension}`))
     )
   })
 
@@ -233,12 +230,12 @@ function removeLegacySampleDirectory(entry) {
 /**
  * Build a sample resume with the buildResumeFile API from @yamlresume/node.
  *
- * PDF compilation depends on a local LaTeX engine; if it is unavailable, the
- * build fails after HTML has been generated and thumbnail generation is
- * skipped.
+ * PDF compilation depends on local LaTeX and Typst compilers. Failures are
+ * checked against the expected outputs by the caller.
  *
  * @param {string} resumePath
  * @param {string} outputDir
+ * @returns {Promise<Error|undefined>}
  */
 async function buildWithYamlresume(resumePath, outputDir) {
   try {
@@ -249,6 +246,7 @@ async function buildWithYamlresume(resumePath, outputDir) {
     })
   } catch (error) {
     log(`  yamlresume build exited with warnings: ${error.message}`)
+    return error
   }
 }
 
@@ -267,7 +265,9 @@ async function buildSampleLocale(entry, locale, hashes) {
   fs.mkdirSync(sampleDir, { recursive: true })
 
   const yamlCode = getSampleResume(entry.id, locale)
-  const yamlHash = hashYaml(yamlCode)
+  const doc = yaml.parseDocument(yamlCode)
+  appendResumeLayouts(doc)
+  const yamlHash = hashYaml(doc.toString())
   const cacheKey = `examples/${entry.id}/${locale}`
   const thumbnailCacheKey = `${cacheKey}:thumbnail`
   const thumbnailHash = hashThumbnail(yamlHash)
@@ -278,17 +278,19 @@ async function buildSampleLocale(entry, locale, hashes) {
   const markdownPath = path.join(sampleDir, 'resume.md')
   const webpPath = path.join(sampleDir, 'resume.webp')
 
-  const doc = yaml.parseDocument(yamlCode)
-  appendResumeLayouts(doc)
   const layouts = doc.get('layouts')?.toJSON() ?? []
   const hasLatexLayout = layouts.some((layout) => layout.engine === 'latex')
+  const hasTypstLayout = layouts.some((layout) => layout.engine === 'typst')
   const texPath = hasLatexLayout
     ? path.join(sampleDir, 'resume.tex')
+    : undefined
+  const typPath = hasTypstLayout
+    ? path.join(sampleDir, 'resume.typ')
     : undefined
 
   if (
     hashes[cacheKey] === yamlHash &&
-    outputsExist(htmlPath, docxPath, pdfPath, markdownPath, texPath)
+    outputsExist(htmlPath, docxPath, pdfPath, markdownPath, texPath, typPath)
   ) {
     if (
       hashes[thumbnailCacheKey] !== thumbnailHash ||
@@ -309,7 +311,7 @@ async function buildSampleLocale(entry, locale, hashes) {
 
   log(`  ${cacheKey}`)
 
-  const layoutOrder = ['html', 'docx', 'markdown', 'latex']
+  const layoutOrder = ['html', 'docx', 'markdown', 'latex', 'typst']
   doc.set(
     'layouts',
     [...layouts].sort(
@@ -321,7 +323,60 @@ async function buildSampleLocale(entry, locale, hashes) {
   const resumePath = path.join(sampleDir, 'resume.yml')
   fs.writeFileSync(resumePath, doc.toString())
 
-  await buildWithYamlresume(resumePath, sampleDir)
+  if (fs.existsSync(pdfPath)) {
+    fs.unlinkSync(pdfPath)
+  }
+
+  const buildError = await buildWithYamlresume(resumePath, sampleDir)
+
+  if (buildError && !hasTypstLayout) {
+    throw buildError
+  }
+
+  if (buildError) {
+    for (const filename of ['resume.pdf', 'resume.tex.pdf', 'resume.typ.pdf']) {
+      const incompletePdfPath = path.join(sampleDir, filename)
+      if (fs.existsSync(incompletePdfPath)) {
+        fs.unlinkSync(incompletePdfPath)
+      }
+    }
+
+    log(`  ${cacheKey} (retrying Typst separately)`)
+    doc.set(
+      'layouts',
+      layouts.filter((layout) => layout.engine === 'typst')
+    )
+    fs.writeFileSync(resumePath, doc.toString())
+    const typstError = await buildWithYamlresume(resumePath, sampleDir)
+    if (typstError) {
+      throw typstError
+    }
+    log(`  ${cacheKey} (using Typst PDF preview)`)
+  } else {
+    if (hasLatexLayout) {
+      const latexPdfPath = path.join(sampleDir, 'resume.tex.pdf')
+      if (fs.existsSync(latexPdfPath)) {
+        fs.renameSync(latexPdfPath, pdfPath)
+      }
+    }
+
+    if (hasTypstLayout) {
+      const typstPdfPath = path.join(sampleDir, 'resume.typ.pdf')
+      if (!fs.existsSync(typstPdfPath)) {
+        throw new Error(`Missing Typst PDF output for ${cacheKey}`)
+      }
+      if (fs.existsSync(pdfPath)) {
+        fs.unlinkSync(typstPdfPath)
+      } else {
+        log(`  ${cacheKey} (using Typst PDF preview)`)
+        fs.renameSync(typstPdfPath, pdfPath)
+      }
+    }
+  }
+
+  if (typPath && !fs.existsSync(typPath)) {
+    throw new Error(`Missing Typst source for ${cacheKey}`)
+  }
 
   for (const ext of ['.yml', '.aux', '.log', '.out']) {
     const auxiliaryPath = path.join(sampleDir, `resume${ext}`)
@@ -369,12 +424,19 @@ async function buildTemplateShowcase(showcase, hashes) {
   const docxPath = path.join(templateDir, 'resume.docx')
   const pdfPath = path.join(templateDir, 'resume.pdf')
   const webpPath = path.join(templateDir, 'resume.webp')
+  const sourcePath =
+    showcase.engine === 'latex'
+      ? path.join(templateDir, 'resume.tex')
+      : showcase.engine === 'typst'
+        ? path.join(templateDir, 'resume.typ')
+        : undefined
   const expectedPaths =
     showcase.engine === 'html'
       ? [htmlPath]
       : showcase.engine === 'docx'
         ? [docxPath]
-        : [pdfPath, path.join(templateDir, 'resume.tex'), webpPath]
+        : [pdfPath, sourcePath, webpPath].filter(Boolean)
+  const hasPdfPreview = ['latex', 'typst'].includes(showcase.engine)
 
   if (
     hashes[cacheKey] === templateHash &&
@@ -383,7 +445,7 @@ async function buildTemplateShowcase(showcase, hashes) {
       .every((filePath) => fs.existsSync(filePath))
   ) {
     if (
-      showcase.engine === 'latex' &&
+      hasPdfPreview &&
       (hashes[thumbnailCacheKey] !== thumbnailHash || !fs.existsSync(webpPath))
     ) {
       if (!buildThumbnail(pdfPath, webpPath)) {
@@ -424,7 +486,7 @@ async function buildTemplateShowcase(showcase, hashes) {
   fs.writeFileSync(resumePath, doc.toString())
   await buildWithYamlresume(resumePath, templateDir)
 
-  if (showcase.engine === 'latex') {
+  if (hasPdfPreview) {
     if (!fs.existsSync(pdfPath)) {
       throw new Error(`Missing PDF output for ${cacheKey}`)
     }

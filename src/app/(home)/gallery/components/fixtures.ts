@@ -18,6 +18,7 @@ export function makeGalleryItem(
     docxUrl: '/gallery/examples/software-engineer/en/resume.docx',
     markdownUrl: '/gallery/examples/software-engineer/en/resume.md',
     texUrl: '/gallery/examples/software-engineer/en/resume.tex',
+    typUrl: '/gallery/examples/software-engineer/en/resume.typ',
     ...overrides,
   }
 }
