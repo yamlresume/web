@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Marco Bianchi Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Marco Bianchi</h1>
+    <p class="resume-headline">Ingegnere Meccanico Senior specializzato in progettazione e produzione</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:marco.bianchi@example.it" class="resume-contact-link">marco.bianchi@example.it</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+39 02 1234 5678</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.marcobianchi-ingegnere.it" class="resume-contact-link">https://www.marcobianchi-ingegnere.it</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Via Roma 45, Milano, Lombardia, Italia, 20121</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/marcobianchi-mech" class="resume-contact-link">@marcobianchi-mech</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Informazioni personali</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>Ingegnere meccanico con oltre 8 anni di esperienza nella progettazione e nello sviluppo di componenti e sistemi meccanici.</p>
+          </li>
+          <li>
+            <p>Specializzato in progettazione CAD 3D, analisi FEM e ottimizzazione di prodotti per i settori automotive e industriale.</p>
+          </li>
+          <li>
+            <p>Esperienza nella gestione di progetti dalla fase di concept fino alla produzione, collaborando con team multifunzionali.</p>
+          </li>
+          <li>
+            <p>Forte orientamento al problem solving, alla qualità e al miglioramento continuo, con conoscenza delle metodologie Lean e Six Sigma.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Formazione</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.polimi.it">Politecnico di Milano</a></div>
+            <div class="resume-entry-organization">Laurea magistrale, Ingegneria Meccanica, Punteggio: 110/110 e lode</div>
+          </div>
+          <div class="resume-entry-date">set 2012–lug 2017</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Formazione solida in progettazione meccanica, con focus su calcolo strutturale e simulazione numerica.</p>
+            </li>
+            <li>
+              <p>Tesi sperimentale sulla ottimizzazione topologica di componenti per riduzione di peso.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Progettazione Meccanica Assistita dal Calcolo, Analisi agli Elementi Finiti, Tecnologie di Produzione, Dinamica dei Sistemi Meccanici, Materiali per l&#39;Ingegneria, Gestione della Produzione Industriale</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Esperienza professionale</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.meccanicaavanzata.it">Meccanica Avanzata S.p.A.</a></div>
+            <div class="resume-entry-organization">Ingegnere Meccanico Senior</div>
+          </div>
+          <div class="resume-entry-date">mar 2020–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Responsabile della progettazione e dello sviluppo di nuovi componenti meccanici per macchine industriali.</p>
+            </li>
+            <li>
+              <p>Coordinamento di un team di 5 ingegneri e disegnatori, con gestione delle attività di progettazione e validazione.</p>
+            </li>
+            <li>
+              <p>Implementazione di metodologie di analisi FEM per la verifica strutturale e termica dei componenti.</p>
+            </li>
+            <li>
+              <p>Collaborazione con il reparto produzione per ottimizzare i processi di fabbricazione e ridurre i costi.</p>
+            </li>
+            <li>
+              <p>Gestione di progetti chiave, rispettando tempi e budget, con reportistica periodica alla direzione tecnica.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Progettazione meccanica, Analisi FEM, Gestione progetti, Produzione snella, SolidWorks</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ingegneriadinamica.it">Ingegneria Dinamica S.r.l.</a></div>
+            <div class="resume-entry-organization">Ingegnere di Progettazione</div>
+          </div>
+          <div class="resume-entry-date">set 2017–feb 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Progettazione di componenti meccanici e assiemi utilizzando CAD 3D (SolidWorks e CATIA).</p>
+            </li>
+            <li>
+              <p>Esecuzione di analisi strutturali e termiche con software FEM per validare i progetti.</p>
+            </li>
+            <li>
+              <p>Redazione di documentazione tecnica, disegni costruttivi e specifiche di prodotto.</p>
+            </li>
+            <li>
+              <p>Supporto al reparto qualità per l&#39;analisi dei difetti e l&#39;implementazione di azioni correttive.</p>
+            </li>
+            <li>
+              <p>Partecipazione a progetti di miglioramento continuo e riduzione dei costi.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: CAD 3D, CATIA, Analisi strutturale, Disegno tecnico, Qualità</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Lingue</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Italiano<span class="resume-language-fluency">: Madrelingua o bilingue</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: Madrelingua</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Inglese<span class="resume-language-fluency">: Competenza professionale completa</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: Certificazione C1, Inglese tecnico</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Competenze</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Progettazione Meccanica<span class="resume-skill-level">: Esperto</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: SolidWorks, CATIA, AutoCAD, Disegno tecnico, Tolleranze</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Analisi e Simulazione<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Analisi FEM, ANSYS, Calcolo strutturale, Termica</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Gestione Progetti<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Pianificazione, Coordinamento team, Metodologie Lean, Six Sigma</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Produzione e Materiali<span class="resume-skill-level">: Intermedio</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Tecnologie di produzione, Metallurgia, Controllo qualità, Manifattura additiva</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Premi</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Premio Innovazione Tecnica</div>
+            <div class="resume-entry-organization">Associazione Italiana di Meccanica</div>
+          </div>
+          <div class="resume-entry-date">nov 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Riconoscimento per il contributo allo sviluppo di un componente meccanico innovativo che ha ridotto i costi di produzione del 15%.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.solidworks.com/certification">Certified SolidWorks Professional</a></div>
+            <div class="resume-entry-organization">Dassault Systèmes</div>
+          </div>
+          <div class="resume-entry-date">giu 2019</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.pmi.org/certifications/project-management-pmp">Project Management Professional (PMP)</a></div>
+            <div class="resume-entry-organization">Project Management Institute</div>
+          </div>
+          <div class="resume-entry-date">ott 2023</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Pubblicazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.riim.it/articoli/ottimizzazione-topologica">Ottimizzazione topologica di componenti meccanici per la riduzione di peso</a></div>
+            <div class="resume-entry-organization">Rivista Italiana di Ingegneria Meccanica</div>
+          </div>
+          <div class="resume-entry-date">apr 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Studio sull&#39;applicazione dell&#39;ottimizzazione topologica per la progettazione di componenti leggeri e resistenti.</p>
+            </li>
+            <li>
+              <p>Analisi dei risultati ottenuti tramite simulazioni FEM e validazione sperimentale.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Progetti</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.meccanicaavanzata.it/progetti/trasmissione">Sviluppo di un nuovo sistema di trasmissione</a></div>
+            <div class="resume-entry-description">Progettazione e prototipazione di un sistema di trasmissione ad alta efficienza per macchine industriali.</div>
+          </div>
+          <div class="resume-entry-date">gen 2021–dic 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Progettazione meccanica del sistema, inclusi ingranaggi, alberi e supporti.</p>
+            </li>
+            <li>
+              <p>Analisi FEM per la verifica delle sollecitazioni e della durata.</p>
+            </li>
+            <li>
+              <p>Realizzazione di prototipi e test di validazione.</p>
+            </li>
+            <li>
+              <p>Riduzione del 20% delle perdite energetiche rispetto al sistema precedente.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Trasmissione, Ingranaggi, Prototipazione, Analisi FEM</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interessi</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Motori e Veicoli</span>: Formula 1, Restauro auto d&#39;epoca, Meccatronica</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Tecnologie Emergenti</span>: Stampa 3D, Materiali compositi, Automazione industriale</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Volontariato</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.aimi.it">Associazione Ingegneri Meccanici Italiani</a></div>
+            <div class="resume-entry-organization">Mentor Tecnico</div>
+          </div>
+          <div class="resume-entry-date">set 2018–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Supporto a studenti e giovani ingegneri nello sviluppo di competenze pratiche di progettazione meccanica.</p>
+            </li>
+            <li>
+              <p>Organizzazione di workshop su CAD, FEM e metodologie di progettazione.</p>
+            </li>
+            <li>
+              <p>Partecipazione a eventi di orientamento e divulgazione tecnica.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

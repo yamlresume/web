@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Sanne de Vries Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Sanne de Vries</h1>
+    <p class="resume-headline">Geregistreerde verpleegkundige met focus op acute en chronische zorg</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:sanne.devries@zorgmail.nl" class="resume-contact-link">sanne.devries@zorgmail.nl</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+31 6 1234 5678</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.sanne-de-vries.nl" class="resume-contact-link">https://www.sanne-de-vries.nl</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Maliebaan 45, Utrecht, Utrecht, Nederland, 3512 JE</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/sanne-de-vries-rn" class="resume-contact-link">@sanne-de-vries-rn</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Medium</span>: <a href="https://medium.com/@sannezorg" class="resume-contact-link">@sannezorg</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Basis Informatie</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <p>Geregistreerde verpleegkundige met meer dan zes jaar ervaring in de ziekenhuiszorg en de eerstelijnszorg. Sterk in het leveren van persoonsgerichte zorg, het opstellen en evalueren van zorgplannen en het veilig uitvoeren van medicatie- en wondzorg.</p>
+        <ul>
+          <li>
+            <p>Ervaren in acute zorg, chronische zorg en palliatieve zorg</p>
+          </li>
+          <li>
+            <p>Vaardig met elektronische patiëntendossiers (HiX, EPIC) en zorgtechnologie</p>
+          </li>
+          <li>
+            <p>Communicatief sterk, sociaal en gericht op samenwerking met patiënten, naasten en multidisciplinaire teams</p>
+          </li>
+          <li>
+            <p>Proactief in kwaliteitsverbetering, patiëntveiligheid en professionele ontwikkeling</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Opleidingen</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hu.nl">Hogeschool Utrecht</a></div>
+            <div class="resume-entry-organization">Bachelor, HBO-Verpleegkunde, Score: 8.4</div>
+          </div>
+          <div class="resume-entry-date">sep 2014–jul 2018</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Afgestudeerd met een brede basis in ziekenhuiszorg, chronische zorg en preventie</p>
+            </li>
+            <li>
+              <p>Tijdens stages ervaring opgedaan op een chirurgische afdeling en in de wijkverpleging</p>
+            </li>
+            <li>
+              <p>Afstudeeronderzoek gedaan naar medicatieveiligheid bij ouderen</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cursussen</span>: Verpleegkundig handelen, Anatomie en fysiologie, Pathologie, Farmacologie, Verpleegkundige ethiek, Communicatie en gespreksvoering, Kwaliteit en veiligheid in de zorg, Zorgtechnologie</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Werkervaring</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.sintmaartenskliniek.nl">Sint-Maartens Kliniek</a></div>
+            <div class="resume-entry-organization">Verpleegkundige</div>
+          </div>
+          <div class="resume-entry-date">mrt 2021–Heden</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Verantwoordelijk voor de verpleegkundige zorg aan patiënten op de afdeling orthopedie en revalidatie</p>
+            </li>
+            <li>
+              <p>Stelt zorgplannen op, voert deze uit en evalueert ze samen met patiënt en naasten</p>
+            </li>
+            <li>
+              <p>Voert medicatiebeheer, wondzorg en pijnmanagement uit volgens protocollen</p>
+            </li>
+            <li>
+              <p>Werkt samen met artsen, fysiotherapeuten, apothekers en verzorgenden in een multidisciplinair team</p>
+            </li>
+            <li>
+              <p>Draagt bij aan kwaliteitsverbetering door deelname aan audits en het melden van incidenten</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Klinische zorg, Patiëntveiligheid, Zorgplanning, Medicatiebeheer, Wondzorg, Revalidatie</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.zorgcentrumparkzicht.nl">Zorgcentrum Parkzicht</a></div>
+            <div class="resume-entry-organization">Verpleegkundige</div>
+          </div>
+          <div class="resume-entry-date">aug 2018–feb 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Verleende persoonsgerichte zorg aan ouderen met complexe somatische en psychogeriatrische zorgvragen</p>
+            </li>
+            <li>
+              <p>Coördineerde zorgprocessen, bewaakte veiligheid en ondersteunde verzorgenden bij de uitvoering van zorg</p>
+            </li>
+            <li>
+              <p>Voerde verpleegtechnische handelingen uit, waaronder wondzorg, insulinetoediening en katheterzorg</p>
+            </li>
+            <li>
+              <p>Had aandachtsgebied palliatieve zorg en begeleidde families in de laatste levensfase</p>
+            </li>
+            <li>
+              <p>Nam deel aan multidisciplinair overleg en familiegesprekken</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Ouderenzorg, Palliatieve zorg, Zorgcoördinatie, Psychogeriatrie, Familiebegeleiding</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Talen</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Nederlands<span class="resume-language-fluency">: Moedertaal of tweetalige vaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: Moedertaal</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Engels<span class="resume-language-fluency">: Volledige professionele vaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: TOEFL iBT 105, Professionele zorgcommunicatie</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Duits<span class="resume-language-fluency">: Beperkte werkvaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: Goethe-Zertifikat B1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Vaardigheden</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Klinische Verpleegkunde<span class="resume-skill-level">: Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Anamnese, Zorgdiagnose, Zorgplanning, Interventies, Evaluatie</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Medicatiebeheer<span class="resume-skill-level">: Geavanceerd</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Medicatiecontrole, Toediening, Bijwerkingen, Polyfarmacie, Veiligheid</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Wondzorg<span class="resume-skill-level">: Geavanceerd</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Wondbeoordeling, Verbandleer, Infectiepreventie, Compressietherapie</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Communicatie<span class="resume-skill-level">: Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Gespreksvoering, Familiegesprekken, Multidisciplinair overleg, Voorlichting</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Digitale Zorg<span class="resume-skill-level">: Intermediair</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: HiX, EPIC, Nedap, Zorgtechnologie, Microsoft Teams</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Onderscheidingen</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Verpleegkundige van het Jaar 2023</div>
+            <div class="resume-entry-organization">Sint-Maartens Kliniek</div>
+          </div>
+          <div class="resume-entry-date">nov 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Erkend voor uitmuntende patiëntgerichte zorg, sterke samenwerking en initiatief in het verbeteren van medicatieveiligheid op de afdeling.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificaten</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.bigregister.nl">BIG-registratie Verpleegkundige</a></div>
+            <div class="resume-entry-organization">CIBG</div>
+          </div>
+          <div class="resume-entry-date">aug 2018</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hartstichting.nl">Basale reanimatie (BLS)</a></div>
+            <div class="resume-entry-organization">Nederlandse Hartstichting</div>
+          </div>
+          <div class="resume-entry-date">mrt 2024</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hartstichting.nl">Gevorderde reanimatie (ALS)</a></div>
+            <div class="resume-entry-organization">Nederlandse Hartstichting</div>
+          </div>
+          <div class="resume-entry-date">apr 2024</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Publicaties</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.tvz.nl">Medicatieveiligheid bij ouderen in de thuissituatie</a></div>
+            <div class="resume-entry-organization">Tijdschrift voor Verpleegkunde</div>
+          </div>
+          <div class="resume-entry-date">jun 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Artikel over knelpunten en verbeteringen bij medicatieoverdracht tussen ziekenhuis en thuiszorg</p>
+            </li>
+            <li>
+              <p>Gebaseerd op een kwaliteitsproject binnen de Sint-Maartens Kliniek</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Projecten</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.sintmaartenskliniek.nl">Medicatieprotocol revalidatieafdeling</a></div>
+            <div class="resume-entry-description">Implementatie van een vernieuwd medicatieprotocol om overdrachtsfouten te verminderen.</div>
+          </div>
+          <div class="resume-entry-date">jan 2022–dec 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Analyseerde incidentmeldingen en observeerde medicatieprocessen</p>
+            </li>
+            <li>
+              <p>Ontwikkelde samen met apotheek en artsen een checklist voor medicatieoverdracht</p>
+            </li>
+            <li>
+              <p>Verzorgde trainingen aan verpleegkundigen en verzorgenden</p>
+            </li>
+            <li>
+              <p>Leidde tot 25% minder geregistreerde medicatie-incidenten</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Kwaliteitsverbetering, Patiëntveiligheid, Medicatie, Implementatie</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interesses</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Gezondheid en beweging</span>: Hardlopen, Yoga, Wandelen</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Vrijwilligerswerk</span>: Buurtzorg, Eenzaamheidspreventie</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Creatief</span>: Koken, Fotografie</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Vrijwilligerswerk</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.rodekruis.nl">Rode Kruis Utrecht</a></div>
+            <div class="resume-entry-organization">Vrijwilliger EHBO</div>
+          </div>
+          <div class="resume-entry-date">sep 2019–jun 2024</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Verleende EHBO-hulp bij lokale evenementen en sportwedstrijden</p>
+            </li>
+            <li>
+              <p>Hield EHBO-kennis en vaardigheden actueel door jaarlijkse herhalingstrainingen</p>
+            </li>
+            <li>
+              <p>Droeg bij aan voorlichting over eerste hulp en gezondheid in de wijk</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

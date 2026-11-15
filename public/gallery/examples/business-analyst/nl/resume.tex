@@ -1,0 +1,287 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Dutch language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-dutch.html
+\usepackage[dutch]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Jeroen van Leeuwen}{}
+\title{Business Analist met focus op datagedreven procesverbetering}
+\phone[mobile]{+31 6 12345678}
+\email{jeroen.vanleeuwen@analytiq.nl}
+\homepage{https://jeroenvanleeuwen.nl}
+
+\address{Keizersgracht 123, Amsterdam, Noord-Holland, Nederland, 1015 CJ}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/jeroenvanleeuwen}{@jeroenvanleeuwen} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@jeroenvanleeuwen}{@jeroenvanleeuwen}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basis Informatie}
+
+\cvline{}{\begin{itemize}
+\item Business analist met 7+ jaar ervaring in de financiële dienstverlening, retail en publieke sector
+\item Sterk in het vertalen van bedrijfsdoelen naar heldere requirements, procesmodellen en data-oplossingen
+\item Ervaren in agile teams, stakeholder management en het begeleiden van multidisciplinaire workshops
+\item Combineert analytisch vermogen met communicatieve vaardigheden om draagvlak te creëren voor verandering
+\end{itemize}}
+\section{Opleidingen}
+
+\cventry{sep 2014–aug 2016}
+        {Master, Bedrijfskunde, Score: 8.2}
+        {Universiteit van Amsterdam}
+        {\url{https://www.uva.nl}}
+        {}
+        {\begin{itemize}
+\item Afgestudeerd met specialisatie in digitaal transformatiemanagement
+\item Scriptie over datagedreven procesverbetering in de financiële sector
+\item Actief lid van de studievereniging en organisator van carrière-evenementen
+\end{itemize}
+\textbf{Cursussen}: Strategisch Management, Business Process Management, Data-analyse voor Bedrijfskunde, Informatiesystemen, Financieel Management, Operationeel Onderzoek}
+
+\cventry{sep 2011–jun 2014}
+        {Bachelor, Informatiekunde, Score: 7.8}
+        {Universiteit Utrecht}
+        {\url{https://www.uu.nl}}
+        {}
+        {\begin{itemize}
+\item Basis gelegd in informatiesystemen, data modellering en organisatieprocessen
+\item Minor gevolgd in Bedrijfseconomie aan de Universiteit van Amsterdam
+\item Stage gelopen bij een gemeentelijke afdeling voor digitale dienstverlening
+\end{itemize}
+\textbf{Cursussen}: Informatiesystemen, Databases, Systeemontwikkeling, Organisatiekunde, Statistiek, Projectmanagement}
+\section{Werkervaring}
+
+\cventry{jan 2022–Heden}
+        {Senior Business Analist}
+        {NN Group}
+        {\url{https://www.nn-group.com}}
+        {}
+        {\begin{itemize}
+\item Verantwoordelijk voor requirements engineering en impactanalyse voor digitale claimprocessen
+\item Samenwerken met product owners, architecten en compliance om wet- en regelgeving te vertalen naar oplossingen
+\item Opstellen van user stories, acceptatiecriteria en procesmodellen (BPMN) voor agile teams
+\item Sturen op datakwaliteit en het definiëren van KPI's voor continue procesverbetering
+\item Begeleiden van twee junior business analisten en verzorgen van interne trainingen
+\end{itemize}
+\textbf{Trefwoorden}: Requirements Engineering, Procesoptimalisatie, Data-analyse, Agile, Verzekeringen}
+
+\cventry{mrt 2018–dec 2021}
+        {Business Analist}
+        {Coolblue}
+        {\url{https://www.coolblue.nl}}
+        {}
+        {\begin{itemize}
+\item Analyseerde klant- en orderprocessen en vertaalde knelpunten naar concrete verbetervoorstellen
+\item Werkte nauw samen met e-commerce, logistiek en klantenservice om end-to-end processen te optimaliseren
+\item Stelde dashboards op in Power BI voor het monitoren van operationele prestaties
+\item Faciliteerde workshops met stakeholders om requirements en prioriteiten te bepalen
+\item Droeg bij aan de invoering van een nieuwe order management systeem
+\end{itemize}
+\textbf{Trefwoorden}: eCommerce, Procesanalyse, Power BI, Stakeholdermanagement, Scrum}
+
+\cventry{sep 2016–feb 2018}
+        {Junior Business Analist}
+        {Capgemini}
+        {\url{https://www.capgemini.com}}
+        {}
+        {\begin{itemize}
+\item Ondersteunde senior analisten bij het in kaart brengen van bedrijfsprocessen en informatiesystemen
+\item Maakte procesbeschrijvingen, datastroomdiagrammen en testscenario's
+\item Participeerde in klantworkshops en vertaalde bevindingen naar heldere rapportages
+\item Leerde werken volgens de Waterval- en Agile-methodiek binnen overheidsprojecten
+\end{itemize}
+\textbf{Trefwoorden}: Business Analyse, Procesmodellering, Testscenario's, Overheid, Agile}
+\section{Talen}
+
+\cvline{Nederlands}{Moedertaal of tweetalige vaardigheid \hfill \textbf{Trefwoorden}: Moedertaal}
+\cvline{Engels}{Volledige professionele vaardigheid \hfill \textbf{Trefwoorden}: TOEFL iBT 108, Zakelijk Engels}
+\cvline{Duits}{Beperkte werkvaardigheid \hfill \textbf{Trefwoorden}: Goethe B1}
+\section{Vaardigheden}
+
+\cvline{Business Analyse}{Expert \hfill \textbf{Trefwoorden}: Requirements Engineering, Procesmodellering, Stakeholdermanagement, User Stories, BPMN}
+\cvline{Data \& Analytics}{Geavanceerd \hfill \textbf{Trefwoorden}: SQL, Power BI, Tableau, Excel, Python}
+\cvline{Agile \& Scrum}{Geavanceerd \hfill \textbf{Trefwoorden}: Scrum, Kanban, SAFe, Jira, Confluence}
+\cvline{Domeinkennis}{Geavanceerd \hfill \textbf{Trefwoorden}: Verzekeringen, Retail, Financiële dienstverlening, eCommerce}
+\cvline{Tools}{Intermediair \hfill \textbf{Trefwoorden}: Visio, Azure DevOps, Miro, Figma, SAP}
+\section{Onderscheidingen}
+
+\cventry{jun 2016}
+        {Universiteit van Amsterdam}
+        {Beste Afstudeerscriptie Bedrijfskunde}
+        {}
+        {}
+        {Toegekend voor een scriptie over datagedreven procesverbetering in de financiële sector, met een beoordeling van 9,0.}
+
+\cventry{nov 2020}
+        {Coolblue}
+        {Coolblue Innovation Award}
+        {}
+        {}
+        {Erkend voor het ontwikkelen van een nieuw KPI-dashboard dat de orderdoorlooptijd met 15\% verkortte.}
+\section{Certificaten}
+
+\cventry{mrt 2021}
+        {Scrum.org}
+        {Professional Scrum Master I}
+        {\url{https://www.scrum.org/professional-scrum-certifications/professional-scrum-master-i-assessment}}
+        {}
+        {}
+
+\cventry{sep 2022}
+        {IIBA}
+        {CBAP}
+        {\url{https://www.iiba.org/certifications/certified-business-analysis-professional/}}
+        {}
+        {}
+
+\cventry{feb 2019}
+        {PeopleCert}
+        {PRINCE2 Foundation}
+        {\url{https://www.peoplecert.org}}
+        {}
+        {}
+\section{Publicaties}
+
+\cventry{nov 2021}
+        {Datagedreven procesverbetering in de verzekeringssector}
+        {Tijdschrift voor Business Analyse}
+        {\url{https://www.tijdschriftbusinessanalyse.nl/artikel/datagedreven-procesverbetering}}
+        {}
+        {\begin{itemize}
+\item Beschrijft een praktijkgerichte aanpak voor het combineren van procesanalyse en data-analyse
+\item Gaat in op KPI-gedreven sturing en stakeholdermanagement in verzekeringsprocessen
+\item Inclusief checklist voor business analisten die datagedreven verbeteringen willen doorvoeren
+\end{itemize}}
+\section{Projecten}
+
+\cventry{jan 2023–okt 2023}
+        {Herontwerp van de klantreis voor schadeclaims van eerste melding tot uitbetaling.}
+        {Klantreisoptimalisatie NN Group}
+        {\url{https://www.nn-group.com/innovatie/klantreis}}
+        {}
+        {\begin{itemize}
+\item Voerde klantinterviews en journey mapping-workshops uit met vertegenwoordigers van klantenservice, schade en IT
+\item Identificeerde vijf kritieke knelpunten en vertaalde deze naar een prioriteitenlijst met quick wins
+\item Realiseerde een verkorting van de gemiddelde doorlooptijd met 20\% door processtappen te elimineren
+\end{itemize}
+\textbf{Trefwoorden}: Klantreis, Procesoptimalisatie, Design Thinking, Data-analyse}
+
+\cventry{feb 2020–nov 2021}
+        {Migratie van een verouderd datawarehouse naar een cloudgebaseerde analytics-omgeving.}
+        {Datawarehouse migratie Coolblue}
+        {\url{https://www.coolblue.nl/tech/datawarehouse}}
+        {}
+        {\begin{itemize}
+\item Vertaalde rapportagebehoeften van finance, logistiek en marketing naar datamodellen
+\item Schreef functionele specificaties en testcases voor ETL-processen
+\item Begeleidde gebruikers bij de acceptatie en adoptie van nieuwe Power BI-rapporten
+\end{itemize}
+\textbf{Trefwoorden}: Datawarehouse, ETL, Power BI, Requirements}
+\section{Interesses}
+
+\cvline{Hardlopen}{Halve marathon, Trailrunning}
+\cvline{Culinair}{Koken, Wijnproeven}
+\cvline{Technologie}{AI, Python, Open data}
+\section{Vrijwilligerswerk}
+
+\cventry{sep 2020–Heden}
+        {Mentor}
+        {Stichting Business Analyse Nederland}
+        {\url{https://www.businessanalyse.nl}}
+        {}
+        {\begin{itemize}
+\item Begeleidt startende business analisten bij hun professionele ontwikkeling
+\item Geeft workshops over requirements engineering en stakeholdercommunicatie
+\item Draagt bij aan de jaarlijkse kennisdag voor de beroepsvereniging
+\end{itemize}}
+    
+
+\cventry{jan 2019–dec 2021}
+        {Vrijwilliger Data Coach}
+        {Amsterdam Data Collective}
+        {\url{https://www.amsterdamdatacollective.nl}}
+        {}
+        {\begin{itemize}
+\item Ondersteunde non-profitorganisaties bij het opzetten van eenvoudige data-analyses
+\item Hielp bij het vertalen van maatschappelijke vraagstukken naar meetbare indicatoren
+\item Verzorgde trainingen in Excel en Power BI voor vrijwilligers
+\end{itemize}}
+    
+\end{document}

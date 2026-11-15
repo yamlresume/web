@@ -1,0 +1,251 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK JP}{
+  \setCJKmainfont{Noto Serif CJK JP}
+}{}
+\IfFontExistsTF{Noto Sans CJK JP}{
+  \setCJKsansfont{Noto Sans CJK JP}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{高橋 健司}{}
+\title{財務分析 / FP\&A / 企業価値評価}
+\phone[mobile]{+81 90-1234-5678}
+\email{kenji.takahashi.finance@example.jp}
+\homepage{https://www.linkedin.com/in/kenji-takahashi-finance}
+
+\address{日本、東京都、千代田区、東京都千代田区丸の内1-2-3、100-0005}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/kenji-takahashi-finance}{@kenji-takahashi-finance} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/kenji\_fpna}{@kenji\_fpna}}
+
+\begin{document}
+
+\maketitle
+
+\section{基本情報}
+
+\cvline{}{\begin{itemize}
+\item 企業価値評価とFP\&Aを専門とする財務アナリスト。7年以上の実務経験を通じ、予算策定、業績管理、M\&Aデューデリジェンス、経営層向け報告資料の作成に従事。
+\item 財務モデリングとデータ分析を組み合わせ、経営判断に資する示唆を提供。Excel、SQL、Power BI、Pythonを活用した分析基盤の改善に強み。
+\item 銀行および事業会社での経験を活かし、会計・財務・事業部門の橋渡しを推進。日本語と英語でのコミュニケーションが可能。
+\end{itemize}}
+\section{学歴}
+
+\cventry{2014年4月～2018年3月}
+        {学士、商学部金融学科、成績：3.7/4.0}
+        {一橋大学}
+        {\url{https://www.hit-u.ac.jp/}}
+        {}
+        {\begin{itemize}
+\item 財務会計、コーポレートファイナンス、統計学を中心に履修
+\item ゼミナールで企業価値評価と資本市場の研究に従事
+\item グループワークを通じて財務分析とプレゼンテーション能力を養成
+\end{itemize}
+\textbf{コース}：財務会計、管理会計、コーポレートファイナンス、投資理論、統計学、計量経済学、企業価値評価、資本市場論}
+\section{職歴}
+
+\cventry{2021年4月～現在}
+        {シニア・ファイナンシャル・アナリスト}
+        {みらいキャピタル株式会社}
+        {}
+        {}
+        {\begin{itemize}
+\item 中期経営計画の策定支援として、部門別予算と5カ年財務モデルを構築し、経営会議向けのシナリオ分析を実施
+\item M\&A案件において対象企業の財務デューデリジェンス、バリュエーション、PMI初期計画の策定を担当
+\item 月次・四半期の業績管理を高度化し、KPIダッシュボードと差異分析レポートを経営層へ提供
+\item 事業部門と連携して収益改善施策の定量評価を行い、原価低減と価格最適化の意思決定を支援
+\item 若手アナリスト2名の育成を担当し、財務モデリングの品質基準とレビュー体制を整備
+\end{itemize}
+\textbf{キーワード}：財務モデリング、M\&A、予算管理、FP\&A、経営報告}
+
+\cventry{2019年1月～2021年3月}
+        {ファイナンシャル・アナリスト}
+        {東都銀行}
+        {}
+        {}
+        {\begin{itemize}
+\item 法人融資案件の信用分析、財務諸表分析、返済能力評価を担当
+\item 業種別のリスク要因を整理し、与信判断に必要な分析レポートを作成
+\item 融資先の月次モニタリングを設計し、早期警戒指標の可視化を推進
+\item Excel VBAとSQLを用いた集計業務の自動化により、月次作業時間を約40\%削減
+\end{itemize}
+\textbf{キーワード}：信用分析、融資審査、Excel、SQL、Power BI}
+
+\cventry{2018年4月～2018年12月}
+        {アナリスト}
+        {サクラ会計事務所}
+        {}
+        {}
+        {\begin{itemize}
+\item 上場企業および中小企業の財務諸表分析、監査支援、税務申告補助を担当
+\item 経理担当者へのヒアリングを通じて、改善提案と内部統制の整備を支援
+\item 決算整理仕訳の確認と分析資料の作成を実施
+\end{itemize}
+\textbf{キーワード}：財務諸表分析、監査支援、IFRS、税務}
+\section{言語}
+
+\cvline{日本語}{ネイティブ・母国語レベル \hfill \textbf{キーワード}：日本語、ビジネス文書}
+\cvline{英語}{完全な実務レベル \hfill \textbf{キーワード}：TOEIC 920、英語財務報告、海外ステークホルダー対応}
+\section{スキル}
+
+\cvline{財務分析}{エキスパート \hfill \textbf{キーワード}：財務モデリング、DCF法、企業価値評価、予算策定、差異分析}
+\cvline{データ分析}{上級 \hfill \textbf{キーワード}：Excel、SQL、Power BI、Python、Tableau}
+\cvline{会計・報告}{上級 \hfill \textbf{キーワード}：IFRS、JGAAP、連結決算、管理会計}
+\cvline{コミュニケーション}{上級 \hfill \textbf{キーワード}：経営層向け報告資料作成、ステークホルダー調整、英語プレゼンテーション、チーム育成}
+\section{受賞・表彰}
+
+\cventry{2023年12月}
+        {みらいキャピタル株式会社}
+        {優秀プロジェクト賞}
+        {}
+        {}
+        {M\&Aデューデリジェンスと買収後統合計画の定量分析が高く評価され、経営企画部門より表彰。}
+\section{資格・免状}
+
+\cventry{2022年2月}
+        {CFA協会}
+        {CFAレベル2合格}
+        {\url{https://www.cfainstitute.org/}}
+        {}
+        {}
+
+\cventry{2017年11月}
+        {日本商工会議所}
+        {日商簿記1級}
+        {}
+        {}
+        {}
+
+\cventry{2020年6月}
+        {コーポレート・ファイナンス・インスティテュート}
+        {FMVA（財務モデリング・バリュエーション・アナリスト）}
+        {\url{https://corporatefinanceinstitute.com/}}
+        {}
+        {}
+\section{出版・著作}
+
+\cventry{2023年10月}
+        {国内製薬業界のM\&A動向と企業価値評価}
+        {みらいキャピタル調査部}
+        {\url{https://www.example.com/research/pharma-ma-valuation}}
+        {}
+        {\begin{itemize}
+\item 国内製薬企業のM\&A事例を対象に、シナジー評価とバリュエーション手法を比較分析
+\item 創薬パイプラインの価値評価におけるリスク調整アプローチを整理
+\item 経営企画・事業開発部門向けに、案件検討時の実務示唆を提供
+\end{itemize}}
+\section{プロジェクト}
+
+\cventry{2023年1月～2023年6月}
+        {経営層と事業部門向けに、予算・実績・予測を一元管理するFP\&Aダッシュボードを再構築}
+        {FP\&Aダッシュボード刷新プロジェクト}
+        {\url{https://www.example.com/projects/fpa-dashboard}}
+        {}
+        {\begin{itemize}
+\item 部門別の予算消化率、売上・利益の差異要因、キャッシュフロー予測を可視化
+\item SQLによるデータ整備とPower BIによるレポート自動更新を設計
+\item 経営会議の意思決定に必要な分析リードタイムを従来比で約50\%短縮
+\end{itemize}
+\textbf{キーワード}：FP\&A、Power BI、SQL、予算管理、可視化}
+\section{興味・関心}
+
+\cvline{読書}{企業価値評価、経済史、英語ビジネス書}
+\cvline{スポーツ}{テニス、ランニング、登山}
+\cvline{金融教育}{金融リテラシー、コミュニティ活動}
+\section{ボランティア活動}
+
+\cventry{2022年9月～現在}
+        {金融リテラシー講師}
+        {NPO法人金融教育推進ネットワーク}
+        {\url{https://www.example.com/volunteer/financial-literacy}}
+        {}
+        {\begin{itemize}
+\item 高校生・大学生向けに、家計管理、資産形成、投資の基礎をテーマとしたワークショップを実施
+\item 教材作成とグループディスカッションのファシリテーションを担当
+\item 参加者アンケートの分析をもとに、講座内容の改善を継続
+\end{itemize}}
+    
+\end{document}

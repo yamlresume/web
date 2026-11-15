@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Marco Bianchi Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Marco Bianchi</h1>
+    <p class="resume-headline">Account Executive | Vendite B2B | Soluzioni SaaS</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:marco.bianchi@example.it" class="resume-contact-link">marco.bianchi@example.it</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+39 333 123 4567</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.marcobianchi.it" class="resume-contact-link">https://www.marcobianchi.it</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Via Roma 45, Milano, Lombardia, Italia, 20121</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/marcobianchi" class="resume-contact-link">@marcobianchi</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Twitter</span>: <a href="https://twitter.com/marcobianchi" class="resume-contact-link">@marcobianchi</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Informazioni personali</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <p>Account Executive con oltre 8 anni di esperienza nelle vendite B2B e nella gestione di clienti enterprise. Specializzato in soluzioni SaaS e trasformazione digitale, con una comprovata capacità di superare gli obiettivi di fatturato e di costruire relazioni solide e durature con i decision maker.</p>
+        <p>Esperto nella gestione dell&#39;intero ciclo di vendita, dalla prospezione alla negoziazione e chiusura, con un forte orientamento al cliente e all&#39;analisi dei dati. Abituato a lavorare in team cross-funzionali e a utilizzare CRM avanzati per monitorare pipeline e performance.</p>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Formazione</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.unibocconi.it">Università Bocconi</a></div>
+            <div class="resume-entry-organization">Laurea magistrale, Economia e Management, Punteggio: 110/110 e lode</div>
+          </div>
+          <div class="resume-entry-date">set 2014–lug 2016</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Approfondimento delle tecniche di vendita complesse e della gestione di team commerciali.</p>
+            </li>
+            <li>
+              <p>Sviluppo di competenze analitiche per l&#39;interpretazione dei dati di mercato e delle performance di vendita.</p>
+            </li>
+            <li>
+              <p>Partecipazione a project work con aziende del settore tecnologico per l&#39;ottimizzazione dei processi di vendita.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Marketing Strategico, Comportamento Organizzativo, Finanza Aziendale, Business Analytics, Gestione delle Vendite, Negoziazione Commerciale</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.unibo.it">Università di Bologna</a></div>
+            <div class="resume-entry-organization">Laurea triennale, Economia Aziendale, Punteggio: 108/110</div>
+          </div>
+          <div class="resume-entry-date">set 2011–lug 2014</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Formazione di base solida in economia e gestione aziendale.</p>
+            </li>
+            <li>
+              <p>Primo approccio alle dinamiche commerciali e alle tecniche di analisi di mercato.</p>
+            </li>
+            <li>
+              <p>Tesi sperimentale sulle strategie di pricing nel settore B2B.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Economia Aziendale, Diritto Commerciale, Statistica, Marketing, Ragioneria Generale</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Esperienza professionale</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.techsales.it">TechSales S.p.A.</a></div>
+            <div class="resume-entry-organization">Senior Account Executive</div>
+          </div>
+          <div class="resume-entry-date">gen 2021–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Gestione di un portafoglio clienti enterprise nel settore manifatturiero e logistico, con un fatturato annuo gestito di oltre 2,5 milioni di euro.</p>
+            </li>
+            <li>
+              <p>Sviluppo di nuove opportunità di business attraverso attività di prospezione mirata e networking, con un tasso di conversione del 35%.</p>
+            </li>
+            <li>
+              <p>Conduzione di negoziazioni complesse con C-level, garantendo margini elevati e contratti pluriennali.</p>
+            </li>
+            <li>
+              <p>Collaborazione con i team di marketing e product per allineare l&#39;offerta alle esigenze del mercato.</p>
+            </li>
+            <li>
+              <p>Mentoring di due Account Executive junior, con conseguente miglioramento delle loro performance.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Vendite enterprise, Negoziazione, Gestione portafoglio, Salesforce, SaaS, Mentoring</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.cloudsolutions.it">CloudSolutions Srl</a></div>
+            <div class="resume-entry-organization">Account Executive</div>
+          </div>
+          <div class="resume-entry-date">mar 2018–dic 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Responsabile dello sviluppo del mercato italiano per soluzioni cloud, con focus su PMI e medie imprese.</p>
+            </li>
+            <li>
+              <p>Gestione dell&#39;intero ciclo di vendita: dalla qualifica del lead alla chiusura del contratto.</p>
+            </li>
+            <li>
+              <p>Raggiungimento e superamento degli obiettivi di vendita trimestrali per 11 trimestri consecutivi.</p>
+            </li>
+            <li>
+              <p>Utilizzo di HubSpot CRM per la gestione della pipeline e il monitoraggio delle attività.</p>
+            </li>
+            <li>
+              <p>Partecipazione a fiere di settore e eventi di networking per la generazione di contatti qualificati.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Cloud, Vendite B2B, HubSpot, Pipeline management, Fiere</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.innovaretail.it">InnovaRetail S.p.A.</a></div>
+            <div class="resume-entry-organization">Sales Development Representative</div>
+          </div>
+          <div class="resume-entry-date">giu 2016–feb 2018</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Prospezione telefonica e via email per conto del team vendite, con generazione di oltre 150 lead qualificati al mese.</p>
+            </li>
+            <li>
+              <p>Qualifica dei contatti in base al budget, all&#39;autorità decisionale, alla necessità e alla tempistica (BANT).</p>
+            </li>
+            <li>
+              <p>Organizzazione di appuntamenti per gli Account Executive e supporto nella preparazione di demo commerciali.</p>
+            </li>
+            <li>
+              <p>Utilizzo di Salesforce per la registrazione delle attività e il tracciamento delle opportunità.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Prospezione, Lead generation, Salesforce, BANT, Appuntamenti</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Lingue</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Italiano<span class="resume-language-fluency">: Madrelingua o bilingue</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: Madrelingua</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Inglese<span class="resume-language-fluency">: Competenza professionale completa</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: C1, Business English</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Francese<span class="resume-language-fluency">: Competenza professionale limitata</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: B2, Conversazione</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Competenze</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Vendite e sviluppo business<span class="resume-skill-level">: Esperto</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Vendite B2B, Sviluppo business, Gestione territoriale, Upselling, Cross-selling</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Gestione CRM<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Salesforce, HubSpot, Microsoft Dynamics, SAP CRM, Analisi pipeline</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Negoziazione<span class="resume-skill-level">: Esperto</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Negoziazione complessa, Gestione obiezioni, Contratti enterprise, Pricing strategy</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Analisi di mercato<span class="resume-skill-level">: Intermedio</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Ricerche di mercato, Analisi competitor, Data analysis, Reporting</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Comunicazione e presentazioni<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Public speaking, Presentazioni efficaci, Comunicazione interpersonale, Storytelling</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Premi</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Sales Excellence Award</div>
+            <div class="resume-entry-organization">TechSales S.p.A.</div>
+          </div>
+          <div class="resume-entry-date">dic 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Riconoscimento assegnato per aver superato l&#39;obiettivo annuale di fatturato del 120% e per l&#39;eccellenza nella gestione delle relazioni con i clienti enterprise.</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Top Performer Q4</div>
+            <div class="resume-entry-organization">CloudSolutions Srl</div>
+          </div>
+          <div class="resume-entry-date">gen 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Premio per il miglior risultato trimestrale del team vendite, con un incremento del 40% rispetto al trimestre precedente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://trailhead.salesforce.com/certification">Salesforce Certified Administrator</a></div>
+            <div class="resume-entry-organization">Salesforce</div>
+          </div>
+          <div class="resume-entry-date">mar 2021</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://academy.hubspot.com/courses/inbound-sales">HubSpot Inbound Sales Certification</a></div>
+            <div class="resume-entry-organization">HubSpot Academy</div>
+          </div>
+          <div class="resume-entry-date">set 2019</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Pubblicazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.salesmagazine.it/strategie-vendita-b2b">Strategie di vendita B2B nell&#39;era digitale</a></div>
+            <div class="resume-entry-organization">Sales Magazine Italia</div>
+          </div>
+          <div class="resume-entry-date">giu 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Analisi delle principali tendenze nelle vendite B2B e dell&#39;impatto della trasformazione digitale.</p>
+            </li>
+            <li>
+              <p>Approfondimento sulle tecniche di social selling e sull&#39;utilizzo dei dati per personalizzare l&#39;offerta.</p>
+            </li>
+            <li>
+              <p>Case study di aziende italiane che hanno ottenuto risultati significativi attraverso l&#39;innovazione commerciale.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Progetti</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.techsales.it/progetti/crm-salesforce">Implementazione CRM Salesforce</a></div>
+            <div class="resume-entry-description">Progetto di migrazione e ottimizzazione del CRM Salesforce per il team vendite.</div>
+          </div>
+          <div class="resume-entry-date">feb 2021–set 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Coordinamento delle attività di migrazione dei dati e configurazione di pipeline personalizzate.</p>
+            </li>
+            <li>
+              <p>Formazione dei colleghi sull&#39;utilizzo delle nuove funzionalità e delle best practice.</p>
+            </li>
+            <li>
+              <p>Riduzione del 30% del tempo dedicato alle attività amministrative e miglioramento della reportistica.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Salesforce, Migrazione dati, Formazione, Ottimizzazione processi</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Programma di mentoring vendite</div>
+            <div class="resume-entry-description">Programma di mentoring per nuovi Account Executive.</div>
+          </div>
+          <div class="resume-entry-date">gen 2023–dic 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Definizione di un percorso di affiancamento strutturato per i nuovi assunti.</p>
+            </li>
+            <li>
+              <p>Organizzazione di sessioni settimanali su tecniche di vendita, gestione delle obiezioni e utilizzo del CRM.</p>
+            </li>
+            <li>
+              <p>Miglioramento del time-to-productivity dei nuovi venditori del 25%.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Mentoring, Formazione, Sviluppo talenti, Vendite</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interessi</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Sport</span>: Corsa, Calcio, Sci, Pallavolo</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Lettura</span>: Romanzi, Biografie, Saggi di economia</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Viaggi</span>: Europa, Asia, Fotografia</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Volontariato</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.fondazionesalesiani.it">Fondazione Salesiani</a></div>
+            <div class="resume-entry-organization">Mentore</div>
+          </div>
+          <div class="resume-entry-date">set 2019–giu 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Affiancamento di giovani in cerca di occupazione nel percorso di orientamento al lavoro.</p>
+            </li>
+            <li>
+              <p>Organizzazione di laboratori su competenze trasversali e tecniche di colloquio.</p>
+            </li>
+            <li>
+              <p>Supporto nella redazione di CV e nella preparazione ai colloqui di lavoro.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="volunteer-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.aism.it">Associazione Italiana Sclerosi Multipla</a></div>
+            <div class="resume-entry-organization">Volontario</div>
+          </div>
+          <div class="resume-entry-date">apr 2017–dic 2018</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Partecipazione a eventi di raccolta fondi e attività di sensibilizzazione.</p>
+            </li>
+            <li>
+              <p>Supporto logistico durante le manifestazioni organizzate dall&#39;associazione.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

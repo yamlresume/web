@@ -1,0 +1,261 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Jordan Ellis}{}
+\title{Business Analyst | Process Improvement \& Data Insights}
+\phone[mobile]{(415) 555-2387}
+\email{jordan.ellis@example.com}
+\homepage{https://www.jordanellisba.com}
+
+\address{456 Market Street, Suite 900, San Francisco, California, United States, 94105}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/jordanellisba}{@jordanellisba} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/jordanellisba}{@jordanellisba}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{\begin{itemize}
+\item Business analyst with 6+ years of experience translating complex business needs into actionable technical requirements
+\item Skilled in process mapping, stakeholder facilitation, and data-driven decision support across finance and SaaS domains
+\item Proficient in SQL, Tableau, and Agile delivery, with a track record of improving operational efficiency and user adoption
+\item Strong communicator who bridges gaps between business leaders, product teams, and engineering stakeholders
+\end{itemize}}
+\section{Education}
+
+\cventry{Sep 2014–Jun 2018}
+        {Bachelor, Business Administration, Score: 3.8}
+        {University of California, Berkeley}
+        {\url{https://www.berkeley.edu/}}
+        {}
+        {\begin{itemize}
+\item Graduated with honors and a concentration in business analytics and information systems
+\item Completed capstone project on optimizing customer onboarding workflows for a regional financial services firm
+\item Developed strong foundations in quantitative analysis, process design, and cross-functional collaboration
+\end{itemize}
+\textbf{Courses}: Business Analytics, Financial Accounting, Operations Management, Statistics for Business, Information Systems, Marketing Research, Corporate Finance, Managerial Economics}
+\section{Work}
+
+\cventry{Jan 2022–Present}
+        {Senior Business Analyst}
+        {Northwind Analytics}
+        {\url{https://www.northwindanalytics.com}}
+        {}
+        {\begin{itemize}
+\item Lead requirements elicitation and process discovery for a portfolio of data platform and reporting initiatives
+\item Facilitate workshops with product, finance, and operations stakeholders to define scope, acceptance criteria, and success metrics
+\item Translate business rules into user stories, data mappings, and functional specifications for engineering teams
+\item Partner with QA and business owners to coordinate UAT, defect triage, and post-launch adoption tracking
+\item Mentor junior analysts and contribute to the BA community of practice through templates, coaching, and peer reviews
+\end{itemize}
+\textbf{Keywords}: Requirements Elicitation, Process Improvement, Stakeholder Management, Agile Delivery, UAT Coordination, Data Mapping}
+
+\cventry{Jun 2019–Dec 2021}
+        {Business Analyst}
+        {BlueRiver Financial}
+        {\url{https://www.blueriverfinancial.com}}
+        {}
+        {\begin{itemize}
+\item Supported digital transformation projects across lending, servicing, and member experience teams
+\item Documented current-state and future-state processes, identifying automation opportunities that reduced manual effort by 25\%
+\item Built SQL queries and Tableau dashboards to track KPIs, operational bottlenecks, and customer behavior trends
+\item Coordinated requirement reviews, sprint demos, and change requests with product owners and technical leads
+\item Created test scenarios and assisted business users during UAT cycles for new workflow and reporting releases
+\end{itemize}
+\textbf{Keywords}: Business Process Mapping, SQL, Tableau, Agile Scrum, UAT, Financial Services}
+
+\cventry{Jul 2018–May 2019}
+        {Junior Business Analyst}
+        {Cedar Point Consulting}
+        {\url{https://www.cedarpointconsulting.com}}
+        {}
+        {\begin{itemize}
+\item Gathered and documented business requirements for small-business technology and operations projects
+\item Prepared meeting notes, process flows, and requirement traceability matrices to support project delivery
+\item Conducted data validation and basic reporting to help clients monitor project outcomes and service levels
+\item Collaborated with senior consultants to prepare client presentations and implementation roadmaps
+\end{itemize}
+\textbf{Keywords}: Requirements Documentation, Process Flows, Data Validation, Client Presentations}
+\section{Languages}
+
+\cvline{English}{Native or Bilingual Proficiency}
+\cvline{Spanish}{Limited Working Proficiency \hfill \textbf{Keywords}: Business conversations, Client support}
+\cvline{Mandarin}{Elementary Proficiency \hfill \textbf{Keywords}: Basic conversation}
+\section{Skills}
+
+\cvline{Business Analysis}{Expert \hfill \textbf{Keywords}: Requirements Elicitation, Process Mapping, Stakeholder Management, Gap Analysis, User Stories}
+\cvline{Data Analysis}{Advanced \hfill \textbf{Keywords}: SQL, Tableau, Excel, Power BI, Data Visualization}
+\cvline{Project Delivery}{Advanced \hfill \textbf{Keywords}: Agile Scrum, UAT Coordination, Change Management, Risk Management}
+\cvline{Tools}{Intermediate \hfill \textbf{Keywords}: Jira, Confluence, Visio, Lucidchart, Smartsheet}
+\section{Awards}
+
+\cventry{Nov 2023}
+        {Northwind Analytics}
+        {Excellence in Business Analysis Award}
+        {}
+        {}
+        {Recognized for leading a cross-functional requirements program that improved delivery predictability and stakeholder satisfaction across three product teams.}
+
+\cventry{May 2017}
+        {University of California, Berkeley}
+        {Dean's List}
+        {}
+        {}
+        {Awarded for sustained academic achievement in the Business Administration program.}
+\section{Certificates}
+
+\cventry{Mar 2021}
+        {International Institute of Business Analysis}
+        {Certified Business Analysis Professional (CBAP)}
+        {\url{https://www.iiba.org/certification/cbap/}}
+        {}
+        {}
+
+\cventry{Aug 2022}
+        {Scrum.org}
+        {Professional Scrum Master I}
+        {\url{https://www.scrum.org/professional-scrum-certifications/professional-scrum-master-i-certification}}
+        {}
+        {}
+
+\cventry{Jan 2023}
+        {Tableau}
+        {Tableau Desktop Specialist}
+        {\url{https://www.tableau.com/learn/certification/desktop-specialist}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Sep 2023}
+        {Bridging the Gap Between IT and Business: A Practical Framework}
+        {Northwind Analytics Insights}
+        {\url{https://www.northwindanalytics.com/insights/bridging-it-business}}
+        {}
+        {\begin{itemize}
+\item Presents a repeatable framework for aligning business stakeholders and technical teams during discovery
+\item Outlines techniques for requirement prioritization, process documentation, and measurable acceptance criteria
+\item Includes practical templates and lessons learned from data platform and reporting initiatives
+\end{itemize}}
+\section{Projects}
+
+\cventry{Jan 2023–Jun 2023}
+        {A cross-functional initiative to simplify customer onboarding and reduce time to first value.}
+        {Customer Onboarding Process Redesign}
+        {}
+        {}
+        {\begin{itemize}
+\item Mapped current-state onboarding journeys across sales, operations, and support teams
+\item Facilitated stakeholder workshops to prioritize pain points and define future-state workflow requirements
+\item Partnered with engineering and QA to deliver phased improvements, including automated document collection and status tracking
+\item Established KPIs and a post-launch dashboard to monitor cycle time, handoffs, and customer satisfaction
+\end{itemize}
+\textbf{Keywords}: Process Redesign, Customer Onboarding, Workshop Facilitation, KPI Reporting}
+
+\cventry{Mar 2021–Aug 2021}
+        {A Tableau dashboard that consolidated pipeline, bookings, and renewal data for sales leadership.}
+        {Sales Forecasting Dashboard}
+        {}
+        {}
+        {\begin{itemize}
+\item Defined dashboard requirements and metric definitions with sales operations and finance stakeholders
+\item Wrote SQL queries to combine data from CRM, billing, and contract systems
+\item Built interactive Tableau views for pipeline health, forecast variance, and segment performance
+\item Delivered training and documentation to support weekly forecasting reviews and executive reporting
+\end{itemize}
+\textbf{Keywords}: Tableau, SQL, Sales Operations, Forecasting}
+\section{Interests}
+
+\cvline{Data Storytelling}{Tableau, Power BI, Narrative Visualization}
+\cvline{Community}{Mentoring, Volunteering, Professional Development}
+\section{Volunteer}
+
+\cventry{Jan 2022–Present}
+        {Volunteer Mentor}
+        {Bay Area Business Analysts Association}
+        {\url{https://www.babaa.org}}
+        {}
+        {\begin{itemize}
+\item Mentor early-career business analysts on requirements gathering, stakeholder communication, and career development
+\item Review portfolio artifacts and provide feedback on process mapping, user stories, and data analysis approaches
+\item Support association events and workshops focused on business analysis best practices
+\end{itemize}}
+    
+\end{document}

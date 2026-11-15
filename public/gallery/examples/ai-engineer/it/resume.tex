@@ -1,0 +1,258 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Luca Moretti}{}
+\title{Ingegnere AI senior specializzato in apprendimento automatico e MLOps}
+\phone[mobile]{+39 347 892 1456}
+\email{luca.moretti.ai@gmail.com}
+\homepage{https://www.lucamoretti.ai}
+
+\address{Via Alessandro Volta 42, Milano, Lombardia, Italia, 20154}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/lucamoretti-ai}{@lucamoretti-ai} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/lucamoretti}{@lucamoretti}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{Ingegnere AI con oltre 7 anni di esperienza nella progettazione e nel deployment di sistemi di apprendimento automatico scalabili. Specializzato in modelli di linguaggio, visione artificiale e pipeline MLOps in ambienti cloud.
+%
+\begin{itemize}
+\item Guida tecnica di team distribuiti e mentorship di giovani ingegneri.
+\item Forte orientamento ai risultati, alla qualità del codice e all'impatto di business.
+\item Esperienza end-to-end: dalla raccolta dati alla messa in produzione e monitoraggio.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2017–lug 2019}
+        {Laurea magistrale, Ingegneria Informatica, Punteggio: 110/110 con lode}
+        {Politecnico di Milano}
+        {\url{https://www.polimi.it}}
+        {}
+        {\begin{itemize}
+\item Tesi magistrale su modelli transformer per il rilevamento di anomalie in serie temporali industriali.
+\item Progetto di gruppo con azienda manifatturiera per la manutenzione predittiva.
+\item Media ponderata elevata e attività di tutoraggio per corsi di programmazione.
+\end{itemize}
+\textbf{Corsi}: Apprendimento automatico e riconoscimento di pattern, Elaborazione del linguaggio naturale, Visione artificiale, Sistemi distribuiti e cloud computing, Ottimizzazione e ricerca operativa, Architetture dei calcolatori}
+
+\cventry{set 2014–lug 2017}
+        {Laurea triennale, Ingegneria Informatica, Punteggio: 108/110}
+        {Università di Bologna}
+        {\url{https://www.unibo.it}}
+        {}
+        {\begin{itemize}
+\item Solida base in matematica applicata, algoritmi e sviluppo software.
+\item Progetto finale su sistemi di raccomandazione basati su filtraggio collaborativo.
+\end{itemize}
+\textbf{Corsi}: Algoritmi e strutture dati, Basi di dati, Reti di calcolatori, Probabilità e statistica, Programmazione orientata agli oggetti}
+\section{Esperienza professionale}
+
+\cventry{gen 2022–Presente}
+        {Ingegnere AI Senior}
+        {Neuralis Labs}
+        {\url{https://www.neuralislabs.it}}
+        {}
+        {\begin{itemize}
+\item Progettazione e implementazione di una piattaforma di modelli di linguaggio per l'assistenza clienti, con riduzione del 35\% dei tempi di risposta.
+\item Responsabile tecnico di un team di 6 ingegneri AI e data scientist, con mentorship e revisione del codice.
+\item Definizione di architetture MLOps su Kubernetes e AWS per training, deployment e monitoraggio continuo.
+\item Collaborazione con product manager e stakeholder per tradurre requisiti di business in soluzioni AI misurabili.
+\end{itemize}
+\textbf{Parole chiave}: LLM, MLOps, Kubernetes, AWS, NLP}
+
+\cventry{mar 2020–dic 2021}
+        {Ingegnere Machine Learning}
+        {DataMind Italia}
+        {\url{https://www.datamind.it}}
+        {}
+        {\begin{itemize}
+\item Sviluppo di modelli di visione artificiale per il controllo qualità in linea di produzione, con accuratezza superiore al 96\%.
+\item Creazione di pipeline di dati automatiche con Python, Airflow e Spark su Azure.
+\item Implementazione di test A/B e monitoraggio delle performance dei modelli in produzione.
+\item Documentazione tecnica e trasferimento di conoscenza ai team operativi.
+\end{itemize}
+\textbf{Parole chiave}: Computer Vision, Python, Apache Airflow, Azure, Test A/B}
+
+\cventry{set 2019–feb 2020}
+        {Scienziato dei Dati}
+        {Aurora Robotics}
+        {\url{https://www.aurorarobotics.it}}
+        {}
+        {\begin{itemize}
+\item Analisi di dati sensoriali per robot collaborativi e sviluppo di modelli predittivi per la manutenzione.
+\item Prototipazione di algoritmi di rilevamento anomalie con scikit-learn e PyTorch.
+\item Presentazione dei risultati a team tecnici e non tecnici.
+\end{itemize}
+\textbf{Parole chiave}: Data Science, PyTorch, Scikit-learn, Anomaly Detection}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 8.0, C1}
+\cvline{Francese}{Competenza professionale limitata \hfill \textbf{Parole chiave}: DELF B1}
+\section{Competenze}
+
+\cvline{Apprendimento automatico}{Esperto \hfill \textbf{Parole chiave}: PyTorch, TensorFlow, Scikit-learn, XGBoost, Reti neurali}
+\cvline{MLOps}{Avanzato \hfill \textbf{Parole chiave}: Docker, Kubernetes, MLflow, Kubeflow, CI/CD}
+\cvline{Elaborazione del linguaggio naturale}{Avanzato \hfill \textbf{Parole chiave}: Transformer, LLM, Hugging Face, RAG, Fine-tuning}
+\cvline{Cloud e infrastrutture}{Avanzato \hfill \textbf{Parole chiave}: AWS, Azure, GCP, Terraform, Serverless}
+\cvline{Data Engineering}{Intermedio \hfill \textbf{Parole chiave}: SQL, Spark, Airflow, Kafka, Snowflake}
+\section{Premi}
+
+\cventry{nov 2023}
+        {Associazione Italiana per l'Intelligenza Artificiale}
+        {Premio Innovazione AI}
+        {}
+        {}
+        {Riconoscimento per il progetto di assistenza clienti basato su modelli linguistici, selezionato tra oltre 120 candidature nazionali.}
+\section{Certificazioni}
+
+\cventry{feb 2023}
+        {Amazon Web Services}
+        {AWS Certified Machine Learning - Specialty}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{giu 2021}
+        {Google}
+        {TensorFlow Developer Certificate}
+        {\url{https://www.tensorflow.org/certificate}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{set 2022}
+        {Modelli transformer per il rilevamento di anomalie industriali}
+        {Atti del Congresso Italiano di Intelligenza Artificiale}
+        {\url{https://doi.org/10.1000/aiia.2022.042}}
+        {}
+        {\begin{itemize}
+\item Studio su architetture transformer applicate a serie temporali multivariate per la manutenzione predittiva.
+\item Confronto con modelli tradizionali e analisi dell'impatto della qualità dei dati.
+\item Dataset e codice resi disponibili alla comunità scientifica.
+\end{itemize}}
+\section{Progetti}
+
+\cventry{apr 2021–nov 2021}
+        {Sistema di controllo qualità visivo basato su deep learning per linee di produzione industriali}
+        {VisionQC}
+        {\url{https://github.com/lucamoretti/visionqc}}
+        {}
+        {\begin{itemize}
+\item Rilevamento automatico di difetti superficiali con reti convoluzionali e segmentazione semantica.
+\item Integrazione con telecamere industriali e dashboard di monitoraggio in tempo reale.
+\item Riduzione dei falsi negativi del 28\% rispetto al sistema precedente.
+\end{itemize}
+\textbf{Parole chiave}: Computer Vision, Deep Learning, PyTorch, FastAPI}
+
+\cventry{feb 2023–ago 2023}
+        {Assistente conversazionale con RAG per la ricerca semantica su documenti aziendali}
+        {Assistente Documentale}
+        {\url{https://github.com/lucamoretti/doc-assistant}}
+        {}
+        {\begin{itemize}
+\item Pipeline di ingestion, chunking e indicizzazione vettoriale di documenti PDF e testuali.
+\item Integrazione di modelli LLM con controllo delle citazioni e mitigazione delle allucinazioni.
+\item Interfaccia web e API per l'uso da parte dei team interni.
+\end{itemize}
+\textbf{Parole chiave}: RAG, LLM, Vector Database, LangChain, Python}
+\section{Interessi}
+
+\cvline{Tecnologia}{Open source, Robotica, Intelligenza artificiale}
+\cvline{Sport}{Corsa, Ciclismo, Arrampicata}
+\cvline{Musica}{Chitarra, Jazz}
+\section{Volontariato}
+
+\cventry{ott 2021–Presente}
+        {Mentore AI}
+        {PoliAi}
+        {\url{https://www.poliai.it}}
+        {}
+        {\begin{itemize}
+\item Mentorship per studenti universitari su progetti di machine learning e carriera nel settore AI.
+\item Organizzazione di workshop su Python, PyTorch e buone pratiche MLOps.
+\item Supporto alla community con revisione di progetti open source.
+\end{itemize}}
+    
+\end{document}

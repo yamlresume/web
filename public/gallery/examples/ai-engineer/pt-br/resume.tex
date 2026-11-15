@@ -1,0 +1,289 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Brazilian Portuguese language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-portuguese.html
+\usepackage[brazilian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Mariana Costa Almeida}{}
+\title{Engenheira de IA Sênior | LLMs, MLOps e Visão Computacional}
+\phone[mobile]{+55 11 98765-4321}
+\email{mariana.almeida.ai@example.com}
+\homepage{https://marianacosta-ai.dev}
+
+\address{Rua dos Pinheiros, 1234, Apto 56, São Paulo, São Paulo, Brasil, 05422-001}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/marianacostaai}{@marianacostaai} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/marianacostaai}{@marianacostaai} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@marianacostaai}{@marianacostaai}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informações Básicas}
+
+\cvline{}{Engenheira de IA com mais de 7 anos de experiência no desenvolvimento e implantação de soluções de aprendizado de máquina em produção. Especializada em modelos de linguagem, visão computacional e pipelines de MLOps, com forte atuação em arquiteturas escaláveis e liderança técnica.
+%
+\begin{itemize}
+\item Projetou e implantou sistemas de recomendação e busca semântica com LLMs, reduzindo o tempo de resposta em 40\%.
+\item Experiência sólida em Python, PyTorch, TensorFlow, AWS e Kubernetes, com foco em reprodutibilidade e monitoramento contínuo.
+\item Liderou equipes multidisciplinares e programas de mentoria, promovendo boas práticas de IA responsável e experimentação ágil.
+\end{itemize}}
+\section{Formação}
+
+\cventry{mar. de 2018–dez. de 2020}
+        {Mestrado, Ciência da Computação com ênfase em Inteligência Artificial, Nota: 3.9/4.0}
+        {Universidade de São Paulo}
+        {\url{https://www.usp.br}}
+        {}
+        {\begin{itemize}
+\item Dissertação sobre modelos de linguagem aplicados à sumarização de documentos jurídicos.
+\item Publicação em simpósio nacional e colaboração com laboratório de IA da universidade.
+\item Monitoria em disciplina de aprendizado profundo por dois semestres.
+\end{itemize}
+\textbf{Cursos}: Aprendizado de Máquina Avançado, Processamento de Linguagem Natural, Visão Computacional, Aprendizado por Reforço, Otimização Convexa}
+
+\cventry{mar. de 2014–dez. de 2017}
+        {Bacharelado, Engenharia de Computação, Nota: 3.7/4.0}
+        {Universidade Estadual de Campinas}
+        {\url{https://www.unicamp.br}}
+        {}
+        {\begin{itemize}
+\item Formação com foco em sistemas distribuídos, computação em nuvem e fundamentos de IA.
+\item Trabalho de conclusão de curso sobre detecção de anomalias em séries temporais.
+\item Participação em grupo de estudos de aprendizado de máquina e maratonas de programação.
+\end{itemize}
+\textbf{Cursos}: Algoritmos e Estruturas de Dados, Sistemas Operacionais, Banco de Dados, Redes de Computadores, Estatística e Probabilidade, Inteligência Artificial}
+\section{Experiência Profissional}
+
+\cventry{jan. de 2022–Atual}
+        {Engenheira de IA Sênior}
+        {Lumina AI Brasil}
+        {\url{https://www.luminaai.com.br}}
+        {}
+        {\begin{itemize}
+\item Liderou a construção de uma plataforma de busca semântica e geração aumentada por recuperação (RAG) para o setor jurídico, atendendo mais de 50 mil usuários.
+\item Desenvolveu pipelines de ingestão, indexação e avaliação de LLMs com LangChain, FAISS e métricas de qualidade automatizadas.
+\item Implantou monitoramento de modelos em produção com Prometheus, Grafana e Evidently, reduzindo incidentes em 35\%.
+\item Coordenou equipe de 6 engenheiros e cientistas de dados, definindo arquitetura, padrões de código e roadmap técnico.
+\item Promoveu práticas de IA responsável, incluindo revisão de vieses e documentação de modelos.
+\end{itemize}
+\textbf{Palavras-chave}: LLMs, RAG, MLOps, Liderança, Arquitetura}
+
+\cventry{fev. de 2020–dez. de 2021}
+        {Engenheira de Machine Learning}
+        {DataSemente Analytics}
+        {\url{https://www.datasemente.com.br}}
+        {}
+        {\begin{itemize}
+\item Desenvolveu modelos de propensão de compra e churn para clientes de varejo, com ganho de 18\% em precisão sobre a linha de base.
+\item Criou features e pipelines de treinamento em Spark e scikit-learn, processando mais de 2 TB de dados diariamente.
+\item Automatizou o deploy de modelos com Docker, Airflow e AWS SageMaker, reduzindo o tempo de entrega de 2 semanas para 3 dias.
+\item Colaborou com times de produto e negócio para traduzir requisitos em soluções de IA mensuráveis.
+\end{itemize}
+\textbf{Palavras-chave}: Machine Learning, Spark, SageMaker, Churn, Varejo}
+
+\cventry{jan. de 2018–jan. de 2020}
+        {Cientista de Dados Júnior}
+        {Inova Analytics}
+        {\url{https://www.inovaanalytics.com.br}}
+        {}
+        {\begin{itemize}
+\item Construiu dashboards e modelos estatísticos para apoiar decisões de marketing e operações.
+\item Realizou análises exploratórias e testes A/B em campanhas digitais, identificando oportunidades de otimização.
+\item Desenvolveu scripts em Python e SQL para automatizar relatórios recorrentes e reduzir trabalho manual.
+\item Participou da migração de dados para ambiente cloud, garantindo qualidade e governança.
+\end{itemize}
+\textbf{Palavras-chave}: Python, SQL, A/B Testing, Estatística, Cloud}
+\section{Idiomas}
+
+\cvline{Português}{Nativo ou Bilíngue \hfill \textbf{Palavras-chave}: Nativo}
+\cvline{Inglês}{Proficiência Profissional Fluente \hfill \textbf{Palavras-chave}: TOEFL iBT 112, Inglês técnico}
+\cvline{Espanhol}{Proficiência Profissional Limitada \hfill \textbf{Palavras-chave}: Espanhol intermediário}
+\section{Competências}
+
+\cvline{Aprendizado de Máquina}{Especialista \hfill \textbf{Palavras-chave}: Python, PyTorch, TensorFlow, scikit-learn, XGBoost}
+\cvline{Processamento de Linguagem Natural}{Avançado \hfill \textbf{Palavras-chave}: Transformers, LLMs, RAG, LangChain, Hugging Face}
+\cvline{Visão Computacional}{Avançado \hfill \textbf{Palavras-chave}: OpenCV, YOLO, Detectron2, Segment Anything}
+\cvline{MLOps e Cloud}{Avançado \hfill \textbf{Palavras-chave}: AWS SageMaker, Docker, Kubernetes, MLflow, Airflow}
+\cvline{Engenharia de Dados}{Intermediário \hfill \textbf{Palavras-chave}: Spark, SQL, Kafka, dbt, Snowflake}
+\cvline{Liderança Técnica}{Avançado \hfill \textbf{Palavras-chave}: Mentoria, Arquitetura de IA, Agile, IA responsável}
+\section{Prêmios}
+
+\cventry{nov. de 2023}
+        {Lumina AI Brasil}
+        {Prêmio de Inovação em IA}
+        {}
+        {}
+        {Reconhecimento pelo desenvolvimento da plataforma de busca semântica com LLMs, que gerou economia estimada de R\$ 2 milhões ao ano.}
+
+\cventry{out. de 2021}
+        {Simpósio Brasileiro de Inteligência Artificial}
+        {Melhor Artigo Científico}
+        {}
+        {}
+        {Premiação pelo artigo sobre aprendizado por reforço aplicado à otimização de recursos em nuvem.}
+\section{Certificados}
+
+\cventry{mar. de 2022}
+        {AWS}
+        {AWS Certified Machine Learning – Specialty}
+        {\url{https://aws.amazon.com/certification/certified-machine-learning-specialty/}}
+        {}
+        {}
+
+\cventry{jun. de 2023}
+        {Google Cloud}
+        {Google Cloud Professional Machine Learning Engineer}
+        {\url{https://cloud.google.com/certification/machine-learning-engineer}}
+        {}
+        {}
+
+\cventry{set. de 2021}
+        {TensorFlow}
+        {TensorFlow Developer Certificate}
+        {\url{https://www.tensorflow.org/certificate}}
+        {}
+        {}
+\section{Publicações}
+
+\cventry{out. de 2021}
+        {Aprendizado por Reforço para Otimização de Recursos em Nuvem}
+        {Simpósio Brasileiro de Inteligência Artificial (SBIA)}
+        {\url{https://sol.sbc.org.br/index.php/sbia}}
+        {}
+        {\begin{itemize}
+\item Propõe um agente de aprendizado por reforço para alocação dinâmica de recursos computacionais.
+\item Demonstra redução de custos operacionais em ambientes de nuvem com manutenção de SLA.
+\item Discute desafios de escalabilidade e reprodutibilidade em experimentos de longa duração.
+\end{itemize}}
+\section{Projetos}
+
+\cventry{jan. de 2024–jun. de 2024}
+        {Assistente virtual que combina busca semântica e LLMs para responder dúvidas jurídicas com citações.}
+        {Assistente Jurídico com RAG}
+        {\url{https://github.com/marianacostaai/assistente-juridico-rag}}
+        {}
+        {\begin{itemize}
+\item Construiu pipeline de ingestão e chunking de documentos jurídicos com LangChain e FAISS.
+\item Implementou avaliação automatizada de respostas com métricas de fidelidade e cobertura.
+\item Desenvolveu API em FastAPI e interface web para demonstração do produto.
+\end{itemize}
+\textbf{Palavras-chave}: RAG, LLMs, LangChain, FAISS, FastAPI}
+
+\cventry{mar. de 2022–dez. de 2022}
+        {Modelo de visão computacional para triagem de exames de imagem com foco em transparência.}
+        {Classificador de Imagens Médicas}
+        {\url{https://github.com/marianacostaai/classificador-imagens-medicas}}
+        {}
+        {\begin{itemize}
+\item Treinou e avaliou redes neurais convolucionais para classificação de exames de raios-X.
+\item Aplicou técnicas de aumento de dados e explicabilidade com Grad-CAM.
+\item Publicou resultados em workshop de IA aplicada à saúde.
+\end{itemize}
+\textbf{Palavras-chave}: Visão Computacional, PyTorch, Grad-CAM, Saúde, CNN}
+
+\cventry{ago. de 2021–fev. de 2022}
+        {Infraestrutura reprodutível para treinamento, versionamento e deploy de modelos de recomendação.}
+        {Pipeline de MLOps para Recomendação}
+        {\url{https://github.com/marianacostaai/pipeline-mlops-recomendacao}}
+        {}
+        {\begin{itemize}
+\item Orquestrou treinamentos com Airflow e versionamento de dados e modelos com MLflow.
+\item Configurou deploy em Kubernetes com monitoramento de deriva de dados.
+\item Reduziu o tempo de treinamento e validação de modelos em 30\%.
+\end{itemize}
+\textbf{Palavras-chave}: MLOps, Airflow, MLflow, Kubernetes, Recomendação}
+\section{Interesses}
+
+\cvline{Pesquisa em IA}{LLMs, Aprendizado por Reforço, Ética em IA}
+\cvline{Esportes}{Corrida, Ciclismo, Natação}
+\cvline{Música}{Violão, Piano}
+\section{Voluntariado}
+
+\cventry{mar. de 2022–Atual}
+        {Mentora Técnica}
+        {PyLadies São Paulo}
+        {\url{https://www.pyladies.com}}
+        {}
+        {\begin{itemize}
+\item Mentora mulheres em transição de carreira para tecnologia, com foco em Python e fundamentos de IA.
+\item Organiza workshops de introdução a machine learning e boas práticas de projetos.
+\item Apoia a revisão de currículos e a preparação para entrevistas técnicas.
+\end{itemize}}
+    
+\end{document}

@@ -1,0 +1,257 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Giulia Ferrari}{}
+\title{UX Designer specializzata in ricerca utente e design system}
+\phone[mobile]{+39 347 123 4567}
+\email{giulia.ferrari@design.it}
+\homepage{https://www.giuliaferrari.design}
+
+\address{Via Brera 18, Milano, Lombardia, Italia, 20121}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/giuliaferrari-ux}{@giuliaferrari-ux} {} {} {} • {} {} {} 
+{\small \faBehance}\ \href{https://www.behance.net/giuliaferrari}{@giuliaferrari} {} {} {} • {} {} {} 
+{\small \faDribbble}\ \href{https://dribbble.com/giuliaferrari}{@giuliaferrari}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{\begin{itemize}
+\item UX Designer con oltre 6 anni di esperienza nella progettazione di prodotti digitali centrati sull'utente
+\item Solida esperienza in ricerca qualitativa e quantitativa, usability test e analisi dei dati comportamentali
+\item Progettazione di design system scalabili e accessibili, con particolare attenzione all'inclusione
+\item Collaborazione con team multidisciplinari per trasformare bisogni complessi in soluzioni semplici ed efficaci
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2016–lug 2018}
+        {Laurea magistrale, Design della Comunicazione, Punteggio: 110/110 con lode}
+        {Politecnico di Milano}
+        {\url{https://www.polimi.it}}
+        {}
+        {\begin{itemize}
+\item Tesi sperimentale sulla progettazione di servizi pubblici digitali accessibili
+\item Partecipazione a laboratori con aziende del settore fintech e healthcare
+\item Approfondimento di metodologie di ricerca utente e valutazione euristica
+\end{itemize}
+\textbf{Corsi}: User Experience Design, Interaction Design, Metodi di ricerca qualitativa, Design System e Accessibilità, Prototipazione e Test con Utenti}
+
+\cventry{set 2013–lug 2016}
+        {Laurea triennale, Design Industriale, Punteggio: 108/110}
+        {Università di Bologna}
+        {\url{https://www.unibo.it}}
+        {}
+        {\begin{itemize}
+\item Basi solide di progettazione centrata sull'utente e prototipazione rapida
+\item Project work su usabilità di interfacce per elettrodomestici intelligenti
+\end{itemize}
+\textbf{Corsi}: Fondamenti di Design, Ergonomia e Fattori Umani, Disegno e Modellazione 3D, Storia del Design}
+\section{Esperienza professionale}
+
+\cventry{gen 2022–Presente}
+        {Senior UX Designer}
+        {Lumen Digital}
+        {\url{https://www.lumendigital.it}}
+        {}
+        {\begin{itemize}
+\item Guido il team UX nella progettazione di piattaforme B2B e B2C per clienti nei settori energia e retail
+\item Definisco strategie di ricerca utente, conducendo interviste, usability test e analisi dei dati comportamentali
+\item Progetto e mantengo design system scalabili, migliorando la coerenza dell'interfaccia e riducendo i tempi di sviluppo
+\item Collaboro con product manager, sviluppatori e stakeholder per tradurre bisogni complessi in soluzioni semplici
+\end{itemize}
+\textbf{Parole chiave}: Ricerca utente, Design system, Usability test, Leadership UX}
+
+\cventry{mar 2019–dic 2021}
+        {UX Designer}
+        {Studio Forma}
+        {\url{https://www.studioforma.it}}
+        {}
+        {\begin{itemize}
+\item Progettato flussi e interfacce per app mobile e siti web in ambito turismo, cultura e servizi pubblici
+\item Condotto workshop di co-design con utenti e stakeholder per validare concept e priorità di prodotto
+\item Realizzato wireframe, prototipi interattivi e specifiche di design per team di sviluppo agile
+\item Contribuito alla creazione di linee guida di accessibilità e design inclusivo
+\end{itemize}
+\textbf{Parole chiave}: Prototipazione, Co-design, Accessibilità, Mobile UX}
+
+\cventry{set 2018–feb 2019}
+        {Junior UX Designer}
+        {Agenzia Pixel}
+        {\url{https://www.agenziapixel.it}}
+        {}
+        {\begin{itemize}
+\item Supportato il team di design nella ricerca utente e nella mappatura dei customer journey
+\item Creato wireframe e mockup per campagne digitali e landing page
+\item Partecipato a revisioni di usabilità e alla documentazione dei risultati
+\end{itemize}
+\textbf{Parole chiave}: Customer journey, Wireframe, Mockup}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 8.0, Scrittura UX}
+\cvline{Francese}{Competenza professionale limitata \hfill \textbf{Parole chiave}: DELF B1}
+\section{Competenze}
+
+\cvline{Ricerca UX}{Esperto \hfill \textbf{Parole chiave}: Interviste utente, Usability test, Analisi dati, Journey mapping, Personas}
+\cvline{UI Design}{Avanzato \hfill \textbf{Parole chiave}: Figma, Sketch, Adobe XD, Prototipazione, Accessibilità}
+\cvline{Design System}{Avanzato \hfill \textbf{Parole chiave}: Componenti, Token di design, Documentazione, Governance}
+\cvline{Collaborazione}{Avanzato \hfill \textbf{Parole chiave}: Workshop, Agile, Stakeholder, Mentoring}
+\cvline{Analisi}{Intermedio \hfill \textbf{Parole chiave}: Google Analytics, Hotjar, Maze, A/B testing}
+\section{Premi}
+
+\cventry{nov 2023}
+        {Associazione Design Italia}
+        {Premio Design Accessibile}
+        {}
+        {}
+        {Riconoscimento per il progetto di riqualificazione dell'esperienza utente di un servizio pubblico digitale, con particolare attenzione all'accessibilità e all'inclusione.}
+\section{Certificazioni}
+
+\cventry{giu 2021}
+        {Google}
+        {Google UX Design Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-ux-design}}
+        {}
+        {}
+
+\cventry{feb 2023}
+        {Nielsen Norman Group}
+        {Certificazione Nielsen Norman Group - UX Research}
+        {\url{https://www.nngroup.com/ux-certification/}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{apr 2022}
+        {Progettare servizi pubblici digitali accessibili}
+        {Interaction Design Magazine Italia}
+        {\url{https://www.interactiondesign.it/articoli/servizi-pubblici-accessibili}}
+        {}
+        {\begin{itemize}
+\item Articolo su metodologie di ricerca e co-design applicate alla Pubblica Amministrazione
+\item Analisi di casi studio italiani e linee guida per test di usabilità inclusivi
+\end{itemize}}
+\section{Progetti}
+
+\cventry{mar 2022–set 2022}
+        {Progetto end-to-end di redesign dell'app mobile per una banca digitale.}
+        {Ridisegno dell'app di home banking Aurora}
+        {\url{https://www.lumendigital.it/progetti/aurora}}
+        {}
+        {\begin{itemize}
+\item Condotto ricerca utente con 24 clienti e analisi dei dati di utilizzo
+\item Progettato nuovi flussi di pagamento e gestione delle finanze personali
+\item Ridotto del 35\% le chiamate al supporto per le operazioni più comuni
+\end{itemize}
+\textbf{Parole chiave}: Mobile banking, Ricerca utente, Redesign, Design system}
+
+\cventry{gen 2020–giu 2021}
+        {Sistema di design modulare per portali e app di promozione culturale.}
+        {Design system per il turismo culturale}
+        {\url{https://www.studioforma.it/progetti/turismo-culturale}}
+        {}
+        {\begin{itemize}
+\item Definito libreria di componenti accessibili e linee guida editoriali
+\item Allineato il design system alle WCAG 2.1 AA
+\item Formato il team interno su utilizzo e manutenzione dei componenti
+\end{itemize}
+\textbf{Parole chiave}: Design system, Accessibilità, Cultura, WCAG}
+\section{Interessi}
+
+\cvline{Fotografia}{Paesaggio, Ritratto}
+\cvline{Trekking}{Alpi, Sentieri}
+\cvline{Musica}{Pianoforte, Jazz}
+\section{Volontariato}
+
+\cventry{set 2021–Presente}
+        {Mentore UX}
+        {Designers Italia}
+        {\url{https://designers.italia.it}}
+        {}
+        {\begin{itemize}
+\item Affiancato team di giovani designer nella progettazione di servizi pubblici digitali
+\item Organizzato sessioni di formazione su ricerca utente e accessibilità
+\item Contribuito a linee guida per test di usabilità con utenti fragili
+\end{itemize}}
+    
+\end{document}

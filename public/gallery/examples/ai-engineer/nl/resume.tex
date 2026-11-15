@@ -1,0 +1,297 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Dutch language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-dutch.html
+\usepackage[dutch]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Sanne de Vries}{}
+\title{AI-engineer | Machine Learning \& MLOps}
+\phone[mobile]{+31 6 1234 5678}
+\email{sanne@sannedevries.nl}
+\homepage{https://www.sannedevries.nl}
+
+\address{Keizersgracht 123, Amsterdam, Noord-Holland, Nederland, 1015 CJ}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/sannedevries-ai}{@sannedevries-ai} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/sannedevries}{@sannedevries} {} {} {} • {} {} {} 
+{\small \faStackOverflow}\ \href{https://stackoverflow.com/users/18422031/sanne-de-vries}{@sanne-de-vries}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basis Informatie}
+
+\cvline{}{AI-engineer met 6+ jaar ervaring in het ontwerpen, bouwen en opschalen van machine learning-oplossingen van prototype tot productie. Sterk in het vertalen van businessvragen naar meetbare modellen en het neerzetten van betrouwbare MLOps-pipelines.
+%
+\begin{itemize}
+\item Ervaren in Python, PyTorch, TensorFlow en cloudplatformen (AWS, Azure, GCP)
+\item Combineert kennis van natuurlijke taalverwerking en computer vision met pragmatische software-engineering
+\item Gedreven teamspeler die graag kennis deelt en multidisciplinaire teams meeneemt in verantwoorde AI
+\end{itemize}}
+\section{Opleidingen}
+
+\cventry{sep 2017–jul 2019}
+        {Master, Computerwetenschappen - Kunstmatige Intelligentie, Score: 8.2/10}
+        {Technische Universiteit Delft}
+        {\url{https://www.tudelft.nl}}
+        {}
+        {\begin{itemize}
+\item Gespecialiseerd in machine learning, natuurlijke taalverwerking en uitlegbaarheid van modellen
+\item Afstudeerproject over transparante deep learning-modellen voor klinische besluitvorming, beoordeeld met een 9,0
+\item Praktijkervaring opgedaan via onderzoekssamenwerkingen met twee industriële partners
+\item Vakken op het snijvlak van algoritmiek, statistiek en verantwoorde AI
+\end{itemize}
+\textbf{Cursussen}: Machine Learning, Deep Learning, Natuurlijke taalverwerking, Computer Vision, Reinforcement Learning, MLOps en Cloud Computing, Ethiek van AI, Data Engineering}
+
+\cventry{sep 2014–jun 2017}
+        {Bachelor, Informatiekunde, Score: 7.8/10}
+        {Universiteit Utrecht}
+        {\url{https://www.uu.nl}}
+        {}
+        {\begin{itemize}
+\item Brede basis in informatiesystemen, data-analyse en softwareontwikkeling
+\item Minor gevolgd in toegepaste statistiek en datawetenschap
+\item Scriptie over predictive analytics voor openbare voorzieningen, afgerond met een 8,5
+\end{itemize}
+\textbf{Cursussen}: Programmeren in Python, Databases en SQL, Statistiek en Kansrekening, Algoritmen en Datastructuren, Informatiesystemen, Inleiding Machine Learning}
+\section{Werkervaring}
+
+\cventry{mrt 2022–Heden}
+        {Senior AI-engineer}
+        {Aiden Analytics}
+        {\url{https://www.aidenanalytics.nl}}
+        {}
+        {\begin{itemize}
+\item Leidt een team van vier engineers dat generatieve AI-toepassingen bouwt voor klanten in de financiële sector en de zorg
+\item Ontwierp een retrieval-augmented generatiearchitectuur die de responstijd met 45\% verlaagde en de feitelijke nauwkeurigheid meetbaar verbeterde
+\item Zette een MLOps-platform op met CI/CD, modelregistratie, monitoring en drift-detectie, waardoor releases van weken naar dagen gingen
+\item Stelde interne richtlijnen op voor verantwoorde AI, inclusief bias-testen, modelkaarten en menselijke controle bij hoog-risico beslissingen
+\item Coacht junior engineers en verzorgt kennissessies over LLM-evaluatie en prompt-engineering
+\end{itemize}
+\textbf{Trefwoorden}: MLOps, Generatieve AI, LLM-evaluatie, Kubernetes, Verantwoorde AI}
+
+\cventry{sep 2019–feb 2022}
+        {Machine Learning Engineer}
+        {MediQ Data}
+        {\url{https://www.mediqdata.nl}}
+        {}
+        {\begin{itemize}
+\item Ontwikkelde en productiseerde voorspelmodellen voor patiëntstromen, met een reductie van 18\% in gemiste afspraken
+\item Bouwde NLP-pipelines voor het anonimiseren en structureren van vrije tekst uit elektronische patiëntendossiers
+\item Automatiseerde het trainingsproces met PyTorch en Airflow, inclusief reproduceerbare experimenten en versiebeheer van datasets
+\item Werkte samen met data-ethici en juristen om te voldoen aan de AVG en medische richtlijnen
+\item Presenteerde resultaten aan niet-technische stakeholders en vertaalde die naar concrete productkeuzes
+\end{itemize}
+\textbf{Trefwoorden}: PyTorch, NLP, Airflow, AVG, Voorspelmodellen}
+
+\cventry{aug 2018–aug 2019}
+        {Data Scientist}
+        {Blauwdruk Digital}
+        {\url{https://www.blauwdrukdigital.nl}}
+        {}
+        {\begin{itemize}
+\item Analyseerde klantgedrag voor e-commerceklanten en bouwde aanbevelingsmodellen die de conversie met 12\% verhoogden
+\item Ontwikkelde herbruikbare feature-engineering-bibliotheek in Python die door drie teams werd gebruikt
+\item Realiseerde dashboards en rapportages in samenwerking met marketing- en productteams
+\item Verkende en vergeleek modellen met A/B-testen en statistische validatie
+\end{itemize}
+\textbf{Trefwoorden}: Python, Aanbevelingssystemen, A/B-testen, SQL, Feature Engineering}
+\section{Talen}
+
+\cvline{Nederlands}{Moedertaal of tweetalige vaardigheid \hfill \textbf{Trefwoorden}: Moedertaal}
+\cvline{Engels}{Volledige professionele vaardigheid \hfill \textbf{Trefwoorden}: Dagelijks gebruikt op het werk, Technische documentatie}
+\cvline{Duits}{Beperkte werkvaardigheid \hfill \textbf{Trefwoorden}: Basale gesprekken}
+\section{Vaardigheden}
+
+\cvline{Machine Learning}{Expert \hfill \textbf{Trefwoorden}: PyTorch, TensorFlow, Scikit-learn, XGBoost, Hugging Face}
+\cvline{MLOps en Infrastructuur}{Geavanceerd \hfill \textbf{Trefwoorden}: Docker, Kubernetes, MLflow, Airflow, Terraform}
+\cvline{Data Engineering}{Geavanceerd \hfill \textbf{Trefwoorden}: Python, SQL, Spark, dbt, Kafka}
+\cvline{Cloud}{Geavanceerd \hfill \textbf{Trefwoorden}: AWS SageMaker, Azure ML, Google Vertex AI}
+\cvline{AI-ethiek en Governance}{Intermediair \hfill \textbf{Trefwoorden}: Modelkaarten, Bias-detectie, Uitlegbaarheid, AVG}
+\section{Onderscheidingen}
+
+\cventry{nov 2023}
+        {Dutch Data Science Awards}
+        {Beste AI-project van het jaar}
+        {}
+        {}
+        {Toegekend voor een retrieval-augmented generatieoplossing die klantmedewerkers ondersteunt bij complexe vragen, met aantoonbaar hogere nauwkeurigheid en kortere afhandeltijd.}
+
+\cventry{jul 2019}
+        {Technische Universiteit Delft}
+        {Cum laude afstudeerproject}
+        {}
+        {}
+        {Scriptie over uitlegbaarheid van deep learning in de zorg beoordeeld met een 9,0 en genomineerd voor de facultaire scriptieprijs.}
+\section{Certificaten}
+
+\cventry{apr 2023}
+        {Amazon Web Services}
+        {AWS Certified Machine Learning - Specialty}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{jun 2022}
+        {Google Cloud}
+        {Professional Machine Learning Engineer}
+        {\url{https://cloud.google.com/learn/certification}}
+        {}
+        {}
+
+\cventry{feb 2021}
+        {DeepLearning.AI}
+        {Deep Learning Specialization}
+        {\url{https://www.coursera.org/specializations/deep-learning}}
+        {}
+        {}
+\section{Publicaties}
+
+\cventry{mrt 2020}
+        {Uitlegbare voorspelmodellen voor klinische besluitvorming: een praktijkstudie}
+        {Journal of Biomedical Informatics}
+        {\url{https://www.sciencedirect.com/journal/journal-of-biomedical-informatics}}
+        {}
+        {\begin{itemize}
+\item Onderzoekt hoe attention-visualisaties en counterfactual explanations clinici ondersteunen bij het interpreteren van modeluitkomsten
+\item Beschrijft een evaluatie met 42 clinici in twee ziekenhuizen
+\item Geeft praktische richtlijnen voor het documenteren en valideren van klinische modellen
+\end{itemize}}
+\section{Referenties}
+
+\cventry{\emaillink[m.vandenberg@tudelft.nl]{m.vandenberg@tudelft.nl}}
+        {Hoogleraar Kunstmatige Intelligentie}
+        {Dr. Marijke van den Berg}
+        {+31 15 278 1234}
+        {}
+        {Sanne combineert sterke technische vaardigheden met een scherp oog voor de maatschappelijke impact van AI. Ze is zelfstandig, communiceert helder met niet-technische stakeholders en tilt teams naar een hoger niveau.}
+\section{Projecten}
+
+\cventry{jan 2023–Heden}
+        {Open-source assistent die interne documentatie doorzoekbaar maakt met retrieval-augmented generatie}
+        {Vraagbaak}
+        {\url{https://github.com/sannedevries/vraagbaak}}
+        {}
+        {\begin{itemize}
+\item Combineert een vector-database met een taalmodel voor betrouwbare antwoorden met bronverwijzingen
+\item Inclusief evaluatieharness voor hallucinatiedetectie en antwoordkwaliteit
+\item Wordt door drie organisaties in productie gebruikt
+\end{itemize}
+\textbf{Trefwoorden}: RAG, Vector Database, LLM, Open Source}
+
+\cventry{mei 2021–dec 2022}
+        {Computer vision-pipeline voor het automatisch classificeren van inspectiefoto's in de maakindustrie}
+        {Beeldscan}
+        {\url{https://github.com/sannedevries/beeldscan}}
+        {}
+        {\begin{itemize}
+\item Transfer learning met een CNN backbone, getraind op een gelabelde dataset van 120.000 afbeeldingen
+\item Bereikte een gemiddelde precisie van 96\% bij vier schadecategorieën
+\item Geïmplementeerd als containerized inference-service met monitoring op datadrift
+\end{itemize}
+\textbf{Trefwoorden}: Computer Vision, Transfer Learning, Docker}
+\section{Interesses}
+
+\cvline{Sport}{Hardlopen, Wielrennen, Zwemmen}
+\cvline{Muziek}{Piano, Jazz}
+\cvline{Overig}{Schaken, Open Source, Filosofie van AI}
+\section{Vrijwilligerswerk}
+
+\cventry{sep 2020–Heden}
+        {Mentor datawetenschap}
+        {Stichting AI voor Iedereen}
+        {\url{https://www.aivooriedereen.nl}}
+        {}
+        {\begin{itemize}
+\item Begeleidt jaarlijks vier carrièreswitchers bij hun eerste stappen in machine learning
+\item Verzorgt gastlessen over AI-geletterdheid op middelbare scholen
+\item Organiseert maandelijkse bijeenkomsten voor de open-source community
+\end{itemize}}
+    
+
+\cventry{feb 2022–Heden}
+        {Vrijwilliger werkgroep Ethiek}
+        {NL AI Coalitie}
+        {\url{https://www.nlaic.nl}}
+        {}
+        {\begin{itemize}
+\item Draagt bij aan publieke richtlijnen voor transparante en uitlegbare AI-toepassingen
+\item Reviewt praktijkcases van organisaties die hun AI-systemen willen documenteren
+\end{itemize}}
+    
+\end{document}

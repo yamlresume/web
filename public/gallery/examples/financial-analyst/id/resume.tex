@@ -1,0 +1,256 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Indonesian (Bahasa Indonesia) language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-indonesian.html
+\usepackage[indonesian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Rizky Pratama Nugraha}{}
+\title{Analis Keuangan Senior | Pemodelan Finansial \& Valuasi}
+\phone[mobile]{+62 812 3456 7890}
+\email{rizky.pratama@keuangannusantara.co.id}
+\homepage{https://www.rizkypratama.id}
+
+\address{Jl. Jenderal Sudirman Kav. 52-53, Jakarta Selatan, DKI Jakarta, Indonesia, 12190}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/rizky-pratama-keuangan}{@rizky-pratama-keuangan} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@rizkypratama.finance}{@rizkypratama.finance}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informasi Dasar}
+
+\cvline{}{Analis keuangan dengan pengalaman lebih dari 8 tahun dalam analisis investasi, pemodelan finansial, dan manajemen risiko di sektor perbankan dan pasar modal.
+%
+\begin{itemize}
+\item Terampil membangun model valuasi DCF, komparasi perusahaan, dan analisis sensitivitas untuk mendukung keputusan investasi.
+\item Berpengalaman menyusun laporan keuangan manajemen, proyeksi kas, dan rekomendasi portofolio bagi manajemen senior.
+\item Kuat dalam analisis data menggunakan Excel lanjutan, SQL, Python, dan Tableau; memahami regulasi OJK dan standar PSAK.
+\item Terbiasa bekerja lintas fungsi, memimpin riset industri, serta menyampaikan insight kepada pemangku kepentingan.
+\end{itemize}}
+\section{Pendidikan}
+
+\cventry{Sep 2014–Jul 2016}
+        {Magister, Manajemen Keuangan, Nilai: 3.85}
+        {Universitas Cakrawala Bisnis}
+        {\url{https://www.ucb.ac.id}}
+        {}
+        {\begin{itemize}
+\item Memperdalam teknik valuasi perusahaan, analisis risiko, dan strategi portofolio.
+\item Menyelesaikan tesis tentang dampak suku bunga terhadap kinerja sektor perbankan.
+\end{itemize}
+\textbf{Mata Kuliah}: Analisis Investasi, Manajemen Risiko Keuangan, Pasar Modal dan Portofolio, Akuntansi Manajemen Lanjutan, Ekonomi Moneter}
+
+\cventry{Sep 2010–Jul 2014}
+        {Sarjana, Akuntansi, Nilai: 3.72}
+        {Universitas Nusantara Ekonomi}
+        {\url{https://www.une.ac.id}}
+        {}
+        {\begin{itemize}
+\item Membangun dasar kuat dalam laporan keuangan, penganggaran, dan analisis rasio.
+\item Aktif dalam organisasi kemahasiswaan bidang pasar modal.
+\end{itemize}
+\textbf{Mata Kuliah}: Akuntansi Keuangan, Manajemen Keuangan, Statistik Bisnis, Ekonomi Mikro dan Makro, Audit Internal}
+\section{Pengalaman Kerja}
+
+\cventry{Mar 2021–Sekarang}
+        {Analis Keuangan Senior}
+        {PT Sentosa Kapital Investama}
+        {\url{https://www.sentosa-kapital.co.id}}
+        {}
+        {\begin{itemize}
+\item Memimpin analisis investasi untuk portofolio ekuitas dan obligasi senilai Rp2,4 triliun.
+\item Membangun model DCF, LBO, dan komparasi perusahaan untuk mendukung uji tuntas.
+\item Menyusun laporan kinerja bulanan dan rekomendasi alokasi aset kepada direksi.
+\item Mengawasi dua analis junior dan mengembangkan template pemodelan standar.
+\end{itemize}
+\textbf{Kata Kunci}: Analisis Investasi, Pemodelan DCF, Uji Tuntas, Valuasi Perusahaan, Riset Industri}
+
+\cventry{Jun 2017–Feb 2021}
+        {Analis Keuangan}
+        {Bank Nusantara Mandiri}
+        {\url{https://www.banknusantaramandiri.co.id}}
+        {}
+        {\begin{itemize}
+\item Menganalisis kinerja kredit korporasi dan menyusun proyeksi arus kas debitur.
+\item Menilai kelayakan pembiayaan dengan analisis rasio, sensitivitas, dan uji stres.
+\item Menyiapkan paket laporan manajemen untuk komite kredit dan regulator.
+\item Berkolaborasi dengan tim risiko dan kepatuhan untuk memastikan kesesuaian regulasi OJK.
+\end{itemize}
+\textbf{Kata Kunci}: Analisis Kredit, Proyeksi Kas, Manajemen Risiko, Regulasi OJK, Pelaporan Manajemen}
+
+\cventry{Agu 2016–Mei 2017}
+        {Analis Keuangan Junior}
+        {PT Analitika Pasar Modal}
+        {\url{https://www.analitikapasarmodal.co.id}}
+        {}
+        {\begin{itemize}
+\item Mengumpulkan dan membersihkan data pasar untuk riset sektor konsumen dan perbankan.
+\item Menyusun ringkasan harian pasar modal dan catatan analis untuk tim investasi.
+\item Membantu pembuatan model keuangan dasar serta presentasi internal.
+\end{itemize}
+\textbf{Kata Kunci}: Riset Pasar, Data Pasar, Model Keuangan, Pasar Modal, Analisis Sektor}
+\section{Bahasa}
+
+\cvline{Indonesia}{Bahasa Ibu / Bilingual}
+\cvline{Inggris}{Tingkat Profesional Penuh \hfill \textbf{Kata Kunci}: IELTS 7.5, Presentasi Bisnis}
+\section{Keahlian}
+
+\cvline{Analisis Keuangan}{Ahli \hfill \textbf{Kata Kunci}: Laporan Keuangan, Analisis Rasio, Proyeksi Kas, Anggaran, Valuasi}
+\cvline{Pemodelan Finansial}{Mahir \hfill \textbf{Kata Kunci}: DCF, LBO, Excel Lanjutan, Analisis Sensitivitas, Komparasi Perusahaan}
+\cvline{Analitik Data}{Mahir \hfill \textbf{Kata Kunci}: SQL, Python, Tableau, Power BI, Bloomberg Terminal}
+\cvline{Manajemen Risiko}{Menengah \hfill \textbf{Kata Kunci}: Uji Stres, Analisis Kredit, Regulasi OJK, PSAK, Kepatuhan}
+\cvline{Komunikasi Bisnis}{Mahir \hfill \textbf{Kata Kunci}: Presentasi Manajemen, Penulisan Laporan, Kolaborasi Lintas Fungsi}
+\section{Penghargaan}
+
+\cventry{Des 2023}
+        {PT Sentosa Kapital Investama}
+        {Analis Keuangan Terbaik}
+        {}
+        {}
+        {Diberikan atas kontribusi dalam penyusunan model valuasi portofolio dan rekomendasi investasi yang meningkatkan imbal hasil portofolio inti sebesar 12\% secara tahunan.}
+\section{Sertifikat}
+
+\cventry{Nov 2022}
+        {Corporate Finance Institute}
+        {Financial Modeling \& Valuation Analyst (FMVA)}
+        {\url{https://corporatefinanceinstitute.com/certifications/fmva/}}
+        {}
+        {}
+
+\cventry{Agu 2020}
+        {CFA Institute}
+        {Certified Financial Analyst (CFA) Level I}
+        {\url{https://www.cfainstitute.org/programs/cfa-program}}
+        {}
+        {}
+\section{Publikasi}
+
+\cventry{Jun 2022}
+        {Dampak Suku Bunga terhadap Kinerja Sektor Perbankan Indonesia}
+        {Jurnal Riset Keuangan Nusantara}
+        {\url{https://www.jrkn.ac.id/artikel/dampak-suku-bunga-perbankan}}
+        {}
+        {\begin{itemize}
+\item Menganalisis hubungan antara perubahan suku bunga acuan dan profitabilitas bank umum.
+\item Menemukan bahwa kualitas kredit dan likuiditas memoderasi dampak suku bunga terhadap margin bunga bersih.
+\item Memberikan rekomendasi kebijakan bagi manajemen risiko perbankan.
+\end{itemize}}
+\section{Proyek}
+
+\cventry{Jan 2023–Agu 2023}
+        {Dasbor internal untuk memantau KPI keuangan, arus kas, dan eksposur risiko portofolio.}
+        {Dasbor Pemantauan Kinerja Keuangan}
+        {\url{https://www.sentosa-kapital.co.id/proyek/dashboard-keuangan}}
+        {}
+        {\begin{itemize}
+\item Merancang metrik utama dan tata kelola data untuk dasbor manajemen.
+\item Mengotomatiskan laporan bulanan menggunakan SQL, Python, dan Power BI.
+\item Memangkas waktu penyusunan laporan dari 5 hari menjadi 1 hari.
+\end{itemize}
+\textbf{Kata Kunci}: Dasbor, Power BI, Otomasi Laporan, KPI Keuangan, Tata Kelola Data}
+
+\cventry{Mar 2022–Des 2022}
+        {Model valuasi untuk menilai peluang investasi di sektor energi terbarukan.}
+        {Model Valuasi Sektor Energi Terbarukan}
+        {\url{https://www.sentosa-kapital.co.id/proyek/valuasi-energi}}
+        {}
+        {\begin{itemize}
+\item Membangun model DCF dan skenario sensitivitas harga listrik serta biaya modal.
+\item Menyusun komparasi perusahaan dan analisis risiko regulasi.
+\item Menyajikan rekomendasi investasi kepada komite investasi.
+\end{itemize}
+\textbf{Kata Kunci}: DCF, Energi Terbarukan, Analisis Skenario, Risiko Regulasi, Komite Investasi}
+\section{Minat}
+
+\cvline{Pasar Modal}{Analisis Saham, Obligasi, Reksa Dana, Makroekonomi}
+\cvline{Pengembangan Diri}{Berbicara Publik, Menulis, Visualisasi Data}
+\section{Kegiatan Sukarela}
+
+\cventry{Jan 2018–Des 2024}
+        {Relawan Edukasi Keuangan}
+        {Yayasan Literasi Keuangan Indonesia}
+        {\url{https://www.ylki.or.id}}
+        {}
+        {\begin{itemize}
+\item Memberikan pelatihan literasi keuangan kepada pelajar dan pelaku UMKM.
+\item Menyusun modul sederhana tentang anggaran, tabungan, dan investasi aman.
+\item Membantu kampanye pencegahan investasi ilegal bersama komunitas lokal.
+\end{itemize}}
+    
+\end{document}

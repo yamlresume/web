@@ -1,0 +1,279 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Elena M. Vasquez}{}
+\title{Senior Cybersecurity Engineer | Cloud Security \& Threat Detection}
+\phone[mobile]{(415) 555-0198}
+\email{elena.vasquez@example.com}
+\homepage{https://elenavasquez.dev}
+
+\address{475 Brannan Street, Suite 300, San Francisco, California, United States, 94107}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/elena-vasquez-sec}{@elena-vasquez-sec} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/elenavasquez}{@elenavasquez} {} {} {} • {} {} {} 
+{\small \faStackOverflow}\ \href{https://stackoverflow.com/users/1234567/elena-vasquez}{@elena-vasquez}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{\begin{itemize}
+\item Cybersecurity engineer with 8+ years of experience securing cloud-native applications, enterprise networks, and high-traffic SaaS platforms.
+\item Specialized in threat detection, incident response, vulnerability management, and secure architecture across AWS and Azure environments.
+\item Adept at building automation with Python, Terraform, and SIEM tooling to reduce response time and strengthen security posture.
+\item Collaborates with engineering, compliance, and product teams to translate risk requirements into practical controls and measurable outcomes.
+\end{itemize}}
+\section{Education}
+
+\cventry{Aug 2013–May 2015}
+        {Master, Cybersecurity, Score: 3.9}
+        {Georgia Institute of Technology}
+        {\url{https://www.gatech.edu}}
+        {}
+        {\begin{itemize}
+\item Completed graduate coursework in secure systems, network defense, and applied cryptography.
+\item Built a cloud incident response lab and evaluated detection coverage for common attack paths.
+\item Collaborated on a capstone project focused on identity-based threat detection in hybrid environments.
+\end{itemize}
+\textbf{Courses}: Advanced Network Security, Applied Cryptography, Cloud Security Architecture, Incident Response and Forensics, Secure Software Development, Risk Management and Compliance}
+
+\cventry{Aug 2009–May 2013}
+        {Bachelor, Computer Science, Score: 3.8}
+        {University of Illinois Urbana-Champaign}
+        {\url{https://illinois.edu}}
+        {}
+        {\begin{itemize}
+\item Developed a strong foundation in operating systems, networking, and software engineering.
+\item Completed coursework projects in network protocol analysis and secure application development.
+\item Served as a teaching assistant for an introductory computer security course.
+\end{itemize}
+\textbf{Courses}: Data Structures, Operating Systems, Computer Networks, Database Systems, Algorithms, Software Engineering}
+\section{Work}
+
+\cventry{Jan 2021–Present}
+        {Staff Cybersecurity Engineer}
+        {Northstar Cloud Systems}
+        {\url{https://www.northstarcloud.io}}
+        {}
+        {\begin{itemize}
+\item Lead threat detection and incident response for a multi-tenant cloud platform serving enterprise customers.
+\item Designed detection-as-code pipelines and tuned SIEM/EDR alerts to cut mean time to investigate by 35\%.
+\item Partnered with platform engineering to implement zero trust controls, least-privilege IAM, and secure-by-default services.
+\item Coordinated tabletop exercises and post-incident reviews with legal, compliance, and product stakeholders.
+\item Mentored security engineers and established reusable playbooks for cloud forensics and containment.
+\end{itemize}
+\textbf{Keywords}: Threat Detection, Incident Response, AWS Security, SIEM, Zero Trust}
+
+\cventry{Mar 2017–Dec 2020}
+        {Senior Security Engineer}
+        {Apex Financial Technologies}
+        {\url{https://www.apexfintech.com}}
+        {}
+        {\begin{itemize}
+\item Owned vulnerability management and secure SDLC programs for payment and lending applications.
+\item Led PCI DSS remediation efforts across distributed teams and reduced critical findings by 42\% year over year.
+\item Built Python and Splunk automations to correlate vulnerability data with asset ownership and patch status.
+\item Performed threat modeling, security reviews, and penetration test coordination for new product launches.
+\end{itemize}
+\textbf{Keywords}: Vulnerability Management, PCI DSS, Python, Splunk, Penetration Testing}
+
+\cventry{Jun 2015–Feb 2017}
+        {Security Analyst}
+        {BlueRiver Health Systems}
+        {\url{https://www.blueriverhealth.org}}
+        {}
+        {\begin{itemize}
+\item Monitored and triaged security events in a 24x7 SOC supporting clinical and corporate environments.
+\item Investigated phishing, malware, and unauthorized access incidents and documented response actions.
+\item Improved endpoint detection coverage and reduced false positives through rule tuning and asset baselining.
+\item Assisted with HIPAA security assessments and NIST CSF gap analysis across infrastructure teams.
+\end{itemize}
+\textbf{Keywords}: SOC Operations, NIST CSF, Endpoint Security, Log Analysis, Phishing Response}
+\section{Languages}
+
+\cvline{English}{Native or Bilingual Proficiency \hfill \textbf{Keywords}: Native speaker, Technical writing}
+\cvline{Spanish}{Full Professional Proficiency \hfill \textbf{Keywords}: Professional working, Cross-team liaison}
+\section{Skills}
+
+\cvline{Cloud Security}{Expert \hfill \textbf{Keywords}: AWS, Azure, GCP, Terraform, IAM}
+\cvline{Threat Detection and Response}{Expert \hfill \textbf{Keywords}: SIEM, EDR, SOAR, Splunk, CrowdStrike}
+\cvline{Application Security}{Advanced \hfill \textbf{Keywords}: OWASP Top 10, SAST, DAST, Threat Modeling, Secure SDLC}
+\cvline{Network Security}{Advanced \hfill \textbf{Keywords}: Firewalls, IDS/IPS, VPN, Zero Trust, Wireshark}
+\cvline{Programming and Automation}{Advanced \hfill \textbf{Keywords}: Python, Bash, PowerShell, Go, Ansible}
+\cvline{Governance Risk and Compliance}{Advanced \hfill \textbf{Keywords}: SOC 2, ISO 27001, NIST CSF, PCI DSS, HIPAA}
+\section{Awards}
+
+\cventry{Nov 2023}
+        {Northstar Cloud Systems}
+        {Outstanding Security Engineer Award}
+        {}
+        {}
+        {Recognized for leading the response to a high-severity cloud incident and improving detection coverage across critical services.}
+
+\cventry{Sep 2019}
+        {BSides San Francisco}
+        {Capture the Flag Champion}
+        {}
+        {}
+        {Placed first in a team-based enterprise security competition focused on cloud exploitation, forensics, and incident response.}
+\section{Certificates}
+
+\cventry{Jun 2018}
+        {ISC2}
+        {Certified Information Systems Security Professional (CISSP)}
+        {\url{https://www.isc2.org/certifications/cissp}}
+        {}
+        {}
+
+\cventry{Feb 2022}
+        {Amazon Web Services}
+        {AWS Certified Security - Specialty}
+        {\url{https://aws.amazon.com/certification/certified-security-specialty/}}
+        {}
+        {}
+
+\cventry{Oct 2016}
+        {Offensive Security}
+        {Offensive Security Certified Professional (OSCP)}
+        {\url{https://www.offsec.com/courses/pen-200/}}
+        {}
+        {}
+
+\cventry{Mar 2020}
+        {SANS Institute}
+        {GIAC Certified Incident Handler (GCIH)}
+        {\url{https://www.giac.org/certifications/certified-incident-handler-gcih/}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Aug 2022}
+        {Detecting Lateral Movement in Cloud Environments}
+        {IEEE Security \& Privacy}
+        {\url{https://ieeexplore.ieee.org/document/9876543}}
+        {}
+        {\begin{itemize}
+\item Presents a practical detection model for identifying lateral movement across hybrid cloud workloads.
+\item Combines identity telemetry, network flow logs, and endpoint signals to reduce false positives.
+\item Includes open-source detection rules and evaluation results from a simulated enterprise environment.
+\end{itemize}}
+\section{Projects}
+
+\cventry{Jan 2020–Jun 2021}
+        {Open-source phishing triage platform for SOC teams}
+        {PhishGuard}
+        {\url{https://github.com/elenavasquez/phishguard}}
+        {}
+        {\begin{itemize}
+\item Automates phishing report ingestion, enrichment, and analyst triage workflows.
+\item Integrates with email security APIs and ticketing systems to reduce manual effort.
+\item Provides dashboards for tracking recurring sender patterns and campaign trends.
+\end{itemize}
+\textbf{Keywords}: Phishing, Python, SOAR, Email Security}
+
+\cventry{Mar 2022–Nov 2022}
+        {Automated scanner for identifying risky IAM permissions in AWS}
+        {Cloud IAM Posture Scanner}
+        {\url{https://github.com/elenavasquez/iam-posture-scanner}}
+        {}
+        {\begin{itemize}
+\item Inventories IAM roles, policies, and trust relationships across multiple AWS accounts.
+\item Flags excessive permissions, unused credentials, and risky cross-account access paths.
+\item Generates remediation guidance and exports findings to security dashboards.
+\end{itemize}
+\textbf{Keywords}: AWS, IAM, Python, Security Automation}
+\section{Interests}
+
+\cvline{Security Research}{CTF competitions, Malware analysis, Cloud forensics}
+\cvline{Outdoors}{Trail running, Rock climbing, Backpacking}
+\section{Volunteer}
+
+\cventry{Sep 2019–Present}
+        {Mentor and Workshop Instructor}
+        {Bay Area Women in Cybersecurity}
+        {\url{https://www.bawic.org}}
+        {}
+        {\begin{itemize}
+\item Mentor early-career security professionals on cloud security fundamentals and career development.
+\item Deliver hands-on workshops covering detection engineering, log analysis, and incident response.
+\item Help organize community meetups and an annual conference track for local practitioners.
+\end{itemize}}
+    
+\end{document}

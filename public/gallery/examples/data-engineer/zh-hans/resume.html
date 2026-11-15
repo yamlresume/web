@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>林雨辰 Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">林雨辰</h1>
+    <p class="resume-headline">高级数据工程师 / 实时数仓与数据平台建设</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:yuchen.lin@example.com" class="resume-contact-link">yuchen.lin@example.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+86 138 0013 8000</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.linyuchen-data.dev" class="resume-contact-link">https://www.linyuchen-data.dev</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>中国，上海，上海，浦东新区世纪大道 100 号，200120</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/yuchen-lin-data" class="resume-contact-link">@yuchen-lin-data</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/yuchen-lin-data" class="resume-contact-link">@yuchen-lin-data</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Stack Overflow</span>: <a href="https://stackoverflow.com/users/12345678/yuchen-lin" class="resume-contact-link">@yuchen-lin</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">简介</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <p>具备 7 年数据工程与数据平台建设经验，专注于实时数仓、数据湖治理和批流一体架构。</p>
+        <ul>
+          <li>
+            <p>熟练使用 Spark、Flink、Kafka、Hive、ClickHouse 与 Airflow 构建稳定高效的数据链路</p>
+          </li>
+          <li>
+            <p>擅长从业务目标出发设计数据模型、指标体系与数据质量监控方案</p>
+          </li>
+          <li>
+            <p>具备云原生数据平台落地经验，熟悉 AWS、阿里云与 Kubernetes 环境</p>
+          </li>
+          <li>
+            <p>重视工程规范、成本优化与跨团队协作，能够推动数据产品持续迭代</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">教育背景</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ecust.edu.cn">华东理工大学</a></div>
+            <div class="resume-entry-organization">硕士，计算机科学与技术，成绩：3.8/4.0</div>
+          </div>
+          <div class="resume-entry-date">2015年9月–2018年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>研究方向为大规模数据管理与实时计算，完成基于流式处理的数据分析课题</p>
+            </li>
+            <li>
+              <p>系统学习数据库、分布式系统与数据挖掘课程，为数据工程实践打下扎实基础</p>
+            </li>
+            <li>
+              <p>参与实验室数据平台项目，负责数据采集、清洗与指标计算模块</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>课程</span>：数据库系统原理、分布式计算、数据挖掘与知识发现、大数据存储与管理、机器学习基础、云计算与虚拟化技术</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">工作经历</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.yunqi-data.cn">云启数据科技有限公司</a></div>
+            <div class="resume-entry-organization">高级数据工程师</div>
+          </div>
+          <div class="resume-entry-date">2022年3月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>负责企业级实时数仓与数据中台建设，支撑营销、风控与运营分析等核心场景</p>
+            </li>
+            <li>
+              <p>设计基于 Flink 与 Kafka 的实时数据链路，将核心报表时效从小时级提升至分钟级</p>
+            </li>
+            <li>
+              <p>主导数据模型分层与指标口径治理，沉淀公共维度与主题数据集，降低重复开发成本</p>
+            </li>
+            <li>
+              <p>建设数据质量监控与告警体系，覆盖完整性、及时性、唯一性与一致性等关键规则</p>
+            </li>
+            <li>
+              <p>推动数据任务成本优化，通过资源队列、分区策略与任务合并降低计算与存储开销</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>：实时数仓、Flink、Kafka、数据治理、成本优化</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.xinghe-fin.com">星河金融信息服务有限公司</a></div>
+            <div class="resume-entry-organization">数据工程师</div>
+          </div>
+          <div class="resume-entry-date">2019年7月–2022年2月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>参与金融业务数据仓库建设，负责客户、交易与产品主题域的数据开发</p>
+            </li>
+            <li>
+              <p>使用 Spark SQL 与 Hive 完成离线批处理任务，保障日终报表与监管报送稳定产出</p>
+            </li>
+            <li>
+              <p>搭建 Airflow 调度依赖与任务巡检流程，缩短故障定位与恢复时间</p>
+            </li>
+            <li>
+              <p>与分析师和产品团队协作，梳理指标定义并输出数据字典与开发规范</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>：Spark、Hive、Airflow、数据仓库、监管报送</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.lanjing-tech.com">蓝鲸网络科技有限公司</a></div>
+            <div class="resume-entry-organization">数据分析工程师</div>
+          </div>
+          <div class="resume-entry-date">2018年7月–2019年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>负责电商用户行为数据的采集、清洗与建模，支持增长与运营分析</p>
+            </li>
+            <li>
+              <p>开发用户分群、漏斗转化与留存分析数据集，提升分析响应效率</p>
+            </li>
+            <li>
+              <p>编写 SQL 与 Python 脚本完成日常数据提取和自动化报表生成</p>
+            </li>
+            <li>
+              <p>参与埋点规范设计，推动数据源质量与口径一致性提升</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>：SQL、Python、用户行为、埋点治理、报表自动化</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">语言</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">中文<span class="resume-language-fluency">：母语或双语水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>关键字</span>：普通话</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">英语<span class="resume-language-fluency">：完全专业水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>关键字</span>：大学英语六级、技术文档写作、跨团队沟通</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">专业技能</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">数据仓库与建模<span class="resume-skill-level">：专家</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：维度建模、数据分层、指标体系、数据字典</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">大数据处理<span class="resume-skill-level">：高级</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：Spark、Flink、Kafka、Hive、ClickHouse</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">编程与开发<span class="resume-skill-level">：高级</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：Python、SQL、Scala、Shell、Java</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">调度与云平台<span class="resume-skill-level">：中级</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：Airflow、Kubernetes、Docker、AWS、阿里云</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">数据治理与质量<span class="resume-skill-level">：高级</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：元数据管理、数据质量、权限管理、成本优化</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">荣誉</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">年度技术创新奖</div>
+            <div class="resume-entry-organization">云启数据科技有限公司</div>
+          </div>
+          <div class="resume-entry-date">2024年1月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>表彰在实时数仓性能优化与数据质量体系建设中的突出贡献，核心报表时效提升 90% 以上。</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">优秀项目奖</div>
+            <div class="resume-entry-organization">星河金融信息服务有限公司</div>
+          </div>
+          <div class="resume-entry-date">2020年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>因监管报送数据链路稳定性提升与交付效率优化获得团队表彰。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">证书</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://aws.amazon.com/certification/">AWS 数据分析专项认证</a></div>
+            <div class="resume-entry-organization">亚马逊云科技</div>
+          </div>
+          <div class="resume-entry-date">2023年8月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.aliyun.com/certification">阿里云大数据分析师认证</a></div>
+            <div class="resume-entry-organization">阿里云</div>
+          </div>
+          <div class="resume-entry-date">2021年5月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">出版刊物</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.example.com/articles/realtime-data-quality">面向实时数仓的数据质量监控实践</a></div>
+            <div class="resume-entry-organization">中国数据工程实践</div>
+          </div>
+          <div class="resume-entry-date">2023年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>总结实时数仓中数据质量规则设计、告警分级与故障恢复的工程经验</p>
+            </li>
+            <li>
+              <p>介绍批流一体场景下的数据校验方法与成本控制策略</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="references" data-section="references">
+    <h2 class="resume-section-title">引荐</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="references-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="mailto:licheng.zhou@example.com">周立诚</a></div>
+            <div class="resume-entry-organization">前技术总监</div>
+          </div>
+          <div>+86 139 0013 9000</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>林雨辰在实时数仓与数据治理项目中展现出扎实的技术判断力和跨团队推动能力，能够将复杂业务问题转化为可落地的数据方案。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">项目</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.yunqi-data.cn/projects/realtime-analytics">实时用户行为分析平台</a></div>
+            <div class="resume-entry-description">面向营销与运营场景的实时用户行为分析平台</div>
+          </div>
+          <div class="resume-entry-date">2022年3月–2023年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>基于 Flink、Kafka 与 ClickHouse 构建从埋点采集到实时看板的数据链路</p>
+            </li>
+            <li>
+              <p>支持分钟级用户分群、漏斗转化与活动效果分析，服务多个业务团队</p>
+            </li>
+            <li>
+              <p>建立任务监控、数据质量校验与资源成本看板，提升平台可观测性</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>： 实时计算、用户行为、ClickHouse、数据质量</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.example.com/projects/ecommerce-warehouse">电商数仓分层重构</a></div>
+            <div class="resume-entry-description">对原有离线数仓进行分层重构与指标口径统一</div>
+          </div>
+          <div class="resume-entry-date">2020年1月–2021年10月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>梳理客户、商品、订单与营销主题域，设计 ODS、DWD、DWS 与 ADS 分层模型</p>
+            </li>
+            <li>
+              <p>统一核心指标口径并建设公共维度，减少重复开发与数据口径争议</p>
+            </li>
+            <li>
+              <p>通过分区治理与任务合并降低批处理资源消耗，提升数据产出稳定性</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>： 数据仓库、维度建模、Spark、指标治理</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">兴趣爱好</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">开源社区</span>：数据工具文档、社区分享</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">运动</span>：长跑、羽毛球</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">阅读</span>：技术书籍、历史</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">志愿服务</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.example.org/open-data-community">开源数据工程社区</a></div>
+            <div class="resume-entry-organization">文档贡献者</div>
+          </div>
+          <div class="resume-entry-date">2021年5月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>参与开源数据工具中文文档翻译与示例整理</p>
+            </li>
+            <li>
+              <p>协助组织线上技术分享，推动数据工程实践经验交流</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

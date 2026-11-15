@@ -1,0 +1,276 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Marco Ferrari}{}
+\title{Responsabile Marketing | Strategia, Brand e Crescita Digitale}
+\phone[mobile]{+39 347 123 4567}
+\email{marco.ferrari.marketing@gmail.com}
+\homepage{https://www.marcoferrari-marketing.it}
+
+\address{Via Torino 45, Milano, Lombardia, Italia, 20123}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/marco-ferrari-marketing}{@marco-ferrari-marketing} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@marcoferrari\_mkt}{@marcoferrari\_mkt} {} {} {} • {} {} {} 
+{\small \faInstagram}\ \href{https://www.instagram.com/marcoferrari.mkt}{@marcoferrari.mkt}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{Responsabile Marketing con oltre 8 anni di esperienza nella definizione e nell'esecuzione di strategie di marketing B2C e B2B. Specializzato in gestione del brand, marketing digitale, e-commerce e analisi delle performance.
+%
+\begin{itemize}
+\item Ho guidato team cross-funzionali e budget fino a 1,2 milioni di euro, ottenendo crescita misurabile in traffico, conversioni e vendite.
+\item Competenze solide in SEO/SEM, campagne Meta e Google, CRM, marketing dei contenuti e dashboard KPI.
+\item Abituato a lavorare con vendite, prodotto e agenzie esterne per trasformare dati e insight in piani di marketing concreti.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2013–lug 2015}
+        {Laurea magistrale, Marketing e Comunicazione d'Impresa, Punteggio: 110/110 e lode}
+        {Università Commerciale Luigi Bocconi}
+        {\url{https://www.unibocconi.it}}
+        {}
+        {\begin{itemize}
+\item Formazione avanzata in strategia di marketing, branding e analisi dei dati
+\item Tesi su modelli di attribuzione per il marketing omnicanale
+\item Esperienza pratica tramite case study con aziende del settore retail e food
+\end{itemize}
+\textbf{Corsi}: Marketing Strategico, Comportamento del Consumatore, Ricerche di Mercato, Gestione del Brand, Comunicazione Integrata, Marketing Digitale, Analisi dei Dati per il Marketing}
+
+\cventry{set 2010–lug 2013}
+        {Laurea triennale, Economia e Management, Punteggio: 108/110}
+        {Università degli Studi di Padova}
+        {\url{https://www.unipd.it}}
+        {}
+        {\begin{itemize}
+\item Solide basi economiche e manageriali
+\item Approfondimento di statistica e analisi quantitative applicate al business
+\end{itemize}
+\textbf{Corsi}: Economia Aziendale, Statistica, Diritto Privato, Marketing, Organizzazione Aziendale}
+\section{Esperienza professionale}
+
+\cventry{mar 2022–Presente}
+        {Responsabile Marketing}
+        {Lumina Retail Italia}
+        {\url{https://www.luminaretail.it}}
+        {}
+        {\begin{itemize}
+\item Guido il piano marketing annuale per 3 linee di prodotto, con un budget di 1,2 milioni di euro
+\item Coordino un team di 6 persone tra brand, digital, contenuti e CRM
+\item Ho aumentato del 28\% il traffico organico e del 19\% il tasso di conversione e-commerce in 18 mesi
+\item Ho introdotto un modello di attribuzione multi-touch e dashboard mensili per il monitoraggio delle performance
+\item Collaboro con vendite, prodotto e agenzie esterne per allineare campagne, promozioni e lancio di nuovi prodotti
+\end{itemize}
+\textbf{Parole chiave}: Strategia di marketing, Gestione del brand, E-commerce, Analisi dati, Team leadership}
+
+\cventry{giu 2019–feb 2022}
+        {Specialista Marketing Senior}
+        {VerdeVita Food}
+        {\url{https://www.verdevitafood.it}}
+        {}
+        {\begin{itemize}
+\item Ho sviluppato campagne digitali integrate su Meta, Google e piattaforme di content discovery
+\item Ho gestito il calendario editoriale e la produzione di contenuti per blog, newsletter e social media
+\item Ho contribuito a un incremento del 35\% delle vendite online nel segmento biologico
+\item Ho coordinato ricerche di mercato e test A/B per ottimizzare landing page e materiali promozionali
+\item Ho lavorato con il team CRM per segmentare il database e migliorare il tasso di apertura delle email
+\end{itemize}
+\textbf{Parole chiave}: Campagne digitali, Marketing dei contenuti, SEO/SEM, Email marketing, Test A/B}
+
+\cventry{set 2016–mag 2019}
+        {Specialista Marketing}
+        {TecnoNova Soluzioni}
+        {\url{https://www.tecnonovasoluzioni.it}}
+        {}
+        {\begin{itemize}
+\item Ho supportato la creazione di materiali commerciali, presentazioni e casi studio per il team vendite
+\item Ho gestito la presenza social e il sito web aziendale, con focus su generazione di lead B2B
+\item Ho organizzato webinar ed eventi di settore, raccogliendo oltre 800 contatti qualificati
+\item Ho monitorato KPI di campagna e preparato report periodici per la direzione
+\end{itemize}
+\textbf{Parole chiave}: Generazione di lead, Marketing B2B, Eventi, Social media, Reporting}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: Certificazione C1, Uso quotidiano professionale}
+\cvline{Francese}{Competenza professionale limitata \hfill \textbf{Parole chiave}: Conversazione base}
+\section{Competenze}
+
+\cvline{Marketing Digitale}{Esperto \hfill \textbf{Parole chiave}: SEO/SEM, Google Ads, Meta Ads, Marketing dei contenuti, Social media}
+\cvline{Analisi e Performance}{Avanzato \hfill \textbf{Parole chiave}: Google Analytics 4, Looker Studio, Dashboard KPI, Test A/B, Modelli di attribuzione}
+\cvline{Brand e Comunicazione}{Avanzato \hfill \textbf{Parole chiave}: Posizionamento del brand, Copywriting, Relazioni pubbliche digitali, Gestione agenzie}
+\cvline{CRM e Automazione}{Intermedio \hfill \textbf{Parole chiave}: HubSpot, Mailchimp, Segmentazione, Automazione marketing}
+\cvline{Leadership e Team Management}{Avanzato \hfill \textbf{Parole chiave}: Gestione budget, Mentoring, Gestione progetti, Gestione stakeholder}
+\section{Premi}
+
+\cventry{nov 2023}
+        {Associazione Italiana Marketing}
+        {Premio Eccellenza Marketing 2023}
+        {}
+        {}
+        {Riconoscimento per la campagna omnicanale "Lumina Casa Green", selezionata per impatto su brand awareness e sostenibilità.}
+
+\cventry{ott 2021}
+        {Digital Marketing Awards Italia}
+        {Migliore Campagna Digitale - Retail}
+        {}
+        {}
+        {Premio assegnato alla campagna "VerdeVita a Tavola" per creatività, risultati di vendita e integrazione tra canali online e offline.}
+\section{Certificazioni}
+
+\cventry{mag 2023}
+        {Google}
+        {Certificazione Google Analytics 4}
+        {\url{https://skillshop.withgoogle.com/}}
+        {}
+        {}
+
+\cventry{set 2022}
+        {HubSpot Academy}
+        {Certificazione HubSpot Content Marketing}
+        {\url{https://academy.hubspot.com/courses/content-marketing}}
+        {}
+        {}
+
+\cventry{apr 2021}
+        {Meta}
+        {Certificazione Meta Digital Marketing Associate}
+        {\url{https://www.facebook.com/business/learn/certification}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{feb 2024}
+        {Il ruolo dei dati nella strategia di marketing omnicanale}
+        {Marketing Oggi}
+        {\url{https://www.marketingoggi.it/articoli/dati-marketing-omnicanale}}
+        {}
+        {\begin{itemize}
+\item Analisi dei modelli di attribuzione e delle metriche chiave per collegare investimenti marketing e risultati di business
+\item Casi pratici di dashboard e governance dei dati per team marketing e vendite
+\end{itemize}}
+\section{Progetti}
+
+\cventry{mar 2021–ott 2021}
+        {Campagna integrata per il rilancio della linea biologica VerdeVita con focus su sostenibilità e stagionalità.}
+        {Campagna Nazionale Rilancio VerdeVita}
+        {\url{https://www.verdevitafood.it/campagne/rilancio}}
+        {}
+        {\begin{itemize}
+\item Ho coordinato creatività, media planning e contenuti per TV digitale, social, newsletter e punto vendita
+\item Ho gestito un budget di 450.000 euro e un aumento del 35\% delle vendite online della linea
+\item Ho impostato test creativi e report settimanali per ottimizzare il ritorno della spesa pubblicitaria
+\end{itemize}
+\textbf{Parole chiave}: Campagna integrata, Sostenibilità, Media planning, Retail}
+
+\cventry{gen 2023–dic 2023}
+        {Progetto di consolidamento dei dati cliente per personalizzare campagne e migliorare la customer experience.}
+        {Customer Data Platform Lumina Retail}
+        {\url{https://www.luminaretail.it/progetti/customer-data-platform}}
+        {}
+        {\begin{itemize}
+\item Ho definito i requisiti marketing e i casi d'uso per la segmentazione dinamica del cliente
+\item Ho collaborato con IT e CRM per integrare dati da e-commerce, negozi e assistenza clienti
+\item Ho introdotto journey personalizzate con un incremento del 22\% nel tasso di riattivazione
+\end{itemize}
+\textbf{Parole chiave}: Customer experience, Segmentazione, Automazione marketing, Data strategy}
+\section{Interessi}
+
+\cvline{Tecnologia e Innovazione}{Intelligenza artificiale, Marketing analytics, Prodotti digitali}
+\cvline{Sostenibilità}{Consumo consapevole, Economia circolare}
+\cvline{Sport all'aperto}{Corsa, Ciclismo, Trekking}
+\cvline{Lettura}{Saggi di marketing, Narrativa contemporanea}
+\section{Volontariato}
+
+\cventry{gen 2020–Presente}
+        {Mentor per giovani marketer}
+        {Fondazione Marketing per il Bene Comune}
+        {\url{https://www.marketingperilbenecomune.it}}
+        {}
+        {\begin{itemize}
+\item Affianco studenti e giovani professionisti nello sviluppo di competenze di marketing strategico e digitale
+\item Partecipo a incontri di orientamento e workshop su personal branding e ricerca del lavoro
+\item Collaboro all'organizzazione di eventi formativi gratuiti per associazioni no profit
+\end{itemize}}
+    
+\end{document}

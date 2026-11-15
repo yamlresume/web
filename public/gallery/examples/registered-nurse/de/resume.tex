@@ -1,0 +1,251 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for German language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-german.html
+\usepackage[ngerman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Anna Schneider}{}
+\title{Gesundheits- und Krankenpflegerin mit Schwerpunkt Intensivpflege}
+\phone[mobile]{+49 221 9876543}
+\email{anna.schneider@pflege-rheinland.de}
+\homepage{https://pflege-anna-schneider.de}
+
+\address{Venloer Straße 42, Köln, Nordrhein-Westfalen, Deutschland, 50672}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/anna-schneider-pflege}{@anna-schneider-pflege} {} {} {} • {} {} {} 
+{\small \faInstagram}\ \href{https://www.instagram.com/annapflegt}{@annapflegt}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basisinformationen}
+
+\cvline{}{Examierte Gesundheits- und Krankenpflegerin mit über sechs Jahren Erfahrung in der stationären Akut- und Intensivpflege. Ich verbinde fachliche Sicherheit mit einer empathischen, patientenorientierten Haltung und arbeite strukturiert, auch in belastenden Situationen.
+%
+\begin{itemize}
+\item Eigenständige Versorgung und Überwachung intensivpflichtiger Patientinnen und Patienten inklusive Beatmungs- und Medikamentenmanagement
+\item Erfahrung in der Anleitung von Auszubildenden sowie in der Umsetzung von Qualitäts- und Hygienestandards
+\item Sicher im Umgang mit digitaler Pflegedokumentation und interprofessioneller Zusammenarbeit
+\end{itemize}}
+\section{Ausbildung}
+
+\cventry{Sept. 2015–Aug. 2019}
+        {Bachelor, Pflegewissenschaft, Punkte: 1,7}
+        {Hochschule für Gesundheit Bochum}
+        {\url{https://www.hsg-bochum.de}}
+        {}
+        {\begin{itemize}
+\item Duales Studium mit integrierten Praxisphasen in Akut- und Langzeitpflege
+\item Schwerpunkt auf evidenzbasierter Pflege und Patientenorientierung
+\item Bachelorarbeit zum Thema Delirprävention in der Intensivpflege
+\end{itemize}
+\textbf{Kurse}: Pflegewissenschaftliche Grundlagen, Anatomie und Physiologie, Klinische Pflege, Pflegemanagement, Qualitätsmanagement, Ethik in der Pflege, Gesundheitsförderung}
+\section{Berufserfahrung}
+
+\cventry{März 2021–Heute}
+        {Gesundheits- und Krankenpflegerin – Intensivstation}
+        {Universitätsklinikum Rheinbach}
+        {\url{https://www.uniklinikum-rheinbach.de}}
+        {}
+        {\begin{itemize}
+\item Überwachung und Versorgung von Patientinnen und Patienten mit respiratorischer Insuffizienz, Sepsis und postoperativen Komplikationen
+\item Bedienung und Überwachung von Beatmungsgeräten, Perfusoren und invasivem Monitoring
+\item Anleitung neuer Kolleginnen und Kollegen sowie Auszubildender im Stationsalltag
+\item Mitwirkung bei der Weiterentwicklung des Pflegekonzepts und der digitalen Dokumentation
+\end{itemize}
+\textbf{Schlüsselwörter}: Intensivpflege, Beatmung, Monitoring, Notfallmanagement, Anleitung}
+
+\cventry{Sept. 2019–Feb. 2021}
+        {Gesundheits- und Krankenpflegerin}
+        {Klinikum St. Elisabeth Köln}
+        {\url{https://www.klinikum-st-elisabeth-koeln.de}}
+        {}
+        {\begin{itemize}
+\item Ganzheitliche Pflege und Betreuung internistischer und chirurgischer Patientinnen und Patienten
+\item Vorbereitung und Nachsorge bei diagnostischen und therapeutischen Eingriffen
+\item Durchführung der Pflegedokumentation und Mitwirkung bei der Pflegevisite
+\item Beratung von Angehörigen und Patienten zu Nachsorge und Hilfsmitteln
+\end{itemize}
+\textbf{Schlüsselwörter}: Akutpflege, Patientenaufklärung, Pflegedokumentation, Angehörigenberatung}
+\section{Sprachen}
+
+\cvline{Deutsch}{Muttersprache oder zweisprachig \hfill \textbf{Schlüsselwörter}: Muttersprache}
+\cvline{Englisch}{Verhandlungssichere Kenntnisse \hfill \textbf{Schlüsselwörter}: C1, Fachliteratur, Internationale Kommunikation}
+\cvline{Spanisch}{Gute Kenntnisse \hfill \textbf{Schlüsselwörter}: Grundkenntnisse}
+\section{Fähigkeiten}
+
+\cvline{Intensivpflege}{Experte \hfill \textbf{Schlüsselwörter}: Beatmung, Invasives Monitoring, Sepsisversorgung, Delirprävention}
+\cvline{Pflegeprozess}{Erfahren \hfill \textbf{Schlüsselwörter}: Pflegedokumentation, Pflegevisite, Case Management, Entlassmanagement}
+\cvline{Notfallmanagement}{Erfahren \hfill \textbf{Schlüsselwörter}: ACLS, Reanimation, Notfallmedikation, Teamkommunikation}
+\cvline{Kommunikation}{Erfahren \hfill \textbf{Schlüsselwörter}: Angehörigengespräche, Interprofessionell, Patientenedukation, Konfliktlösung}
+\cvline{Qualität und Hygiene}{Fortgeschritten \hfill \textbf{Schlüsselwörter}: Hygienestandards, Qualitätssicherung, Audits, CIRS}
+\section{Auszeichnungen}
+
+\cventry{Dez. 2023}
+        {Universitätsklinikum Rheinbach}
+        {Mitarbeiterin des Jahres 2023}
+        {}
+        {}
+        {Auszeichnung für herausragendes Engagement in der Intensivpflege und in der Anleitung neuer Mitarbeitender.}
+\section{Zertifikate}
+
+\cventry{Juni 2023}
+        {Deutsche Krankenhausakademie}
+        {Fachweiterbildung Intensiv- und Anästhesiepflege}
+        {\url{https://www.dka.de/fachweiterbildung}}
+        {}
+        {}
+
+\cventry{Sept. 2022}
+        {European Resuscitation Council}
+        {Advanced Cardiac Life Support (ACLS)}
+        {\url{https://www.erc.edu/courses/acls}}
+        {}
+        {}
+
+\cventry{März 2022}
+        {Universitätsklinikum Rheinbach}
+        {Hygienebeauftragte in der Pflege}
+        {}
+        {}
+        {}
+\section{Veröffentlichungen}
+
+\cventry{Mai 2024}
+        {Delirprävention in der Intensivpflege – Eine Bestandsaufnahme}
+        {Pflegezeitschrift}
+        {\url{https://www.pflegezeitschrift.de/artikel/delirpraevention}}
+        {}
+        {\begin{itemize}
+\item Überblick über aktuelle Studien und Leitlinien zur Delirprävention
+\item Praxisnahe Empfehlungen für die pflegerische Versorgung auf Intensivstationen
+\item Diskussion der Rolle von Angehörigen und interprofessionellen Teams
+\end{itemize}}
+\section{Projekte}
+
+\cventry{Jan. 2023–Nov. 2023}
+        {Projekt zur Umstellung der papierbasierten Pflegedokumentation auf ein digitales System}
+        {Einführung der digitalen Pflegedokumentation}
+        {}
+        {}
+        {\begin{itemize}
+\item Analyse bestehender Dokumentationsabläufe und Erstellung eines Anforderungskatalogs
+\item Schulung von über 40 Pflegekräften im Umgang mit der neuen Software
+\item Begleitung der Pilotphase und Auswertung von Anwenderfeedback
+\end{itemize}
+\textbf{Schlüsselwörter}: Digitalisierung, Pflegedokumentation, Schulung}
+
+\cventry{Apr. 2022–Dez. 2022}
+        {Multiprofessionelles Programm zur Früherkennung und Prävention von Delirien}
+        {Delirpräventionsprogramm Station 4B}
+        {}
+        {}
+        {\begin{itemize}
+\item Einführung eines standardisierten Screenings bei allen über 65-jährigen Patienten
+\item Entwicklung von Schulungsmaterialien für Pflege und Medizin
+\item Reduktion der Delirinzidenz um 18 Prozent im Projektzeitraum
+\end{itemize}
+\textbf{Schlüsselwörter}: Delirprävention, Screening, Multiprofessionell}
+\section{Interessen}
+
+\cvline{Sport}{Klettern, Laufen, Yoga}
+\cvline{Lesen}{Fachliteratur, Romane}
+\section{Ehrenamtliche Tätigkeiten}
+
+\cventry{Jan. 2020–Dez. 2023}
+        {Ehrenamtliche Sanitätshelferin}
+        {Deutsches Rotes Kreuz Köln}
+        {\url{https://www.drk-koeln.de}}
+        {}
+        {\begin{itemize}
+\item Absicherung von Veranstaltungen und Unterstützung bei der Ersten Hilfe
+\item Betreuung von Verletzten und Koordination der Übergabe an den Rettungsdienst
+\end{itemize}}
+    
+
+\cventry{Mai 2022–Heute}
+        {Mitglied im Ausschuss Pflegequalität}
+        {Pflegekammer Nordrhein-Westfalen}
+        {}
+        {}
+        {\begin{itemize}
+\item Mitwirkung an Stellungnahmen zu pflegefachlichen Standards
+\item Austausch mit Kolleginnen und Kollegen aus Klinik, Pflegeheim und ambulantem Dienst
+\end{itemize}}
+    
+\end{document}

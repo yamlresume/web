@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Ingrid Kvamme Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Ingrid Kvamme</h1>
+    <p class="resume-headline">Forretningsanalytiker med lidenskap for datadrevet beslutningstaking</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:ingrid.kvamme@example.no" class="resume-contact-link">ingrid.kvamme@example.no</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+47 401 23 456</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.ingridkvamme.no" class="resume-contact-link">https://www.ingridkvamme.no</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Storgata 12, Oslo, Oslo, Norge, 0155</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/ingridkvamme" class="resume-contact-link">@ingridkvamme</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Medium</span>: <a href="https://medium.com/@ingridkvamme" class="resume-contact-link">@ingridkvamme</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Grunnleggende informasjon</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>Forretningsanalytiker med over 6 års erfaring fra finans- og energibransjen</p>
+          </li>
+          <li>
+            <p>Sterk kompetanse innen kravanalyse, prosesskartlegging og datadrevet beslutningsstøtte</p>
+          </li>
+          <li>
+            <p>Erfaren med å lede interessentworkshops og oversette forretningsbehov til tekniske løsninger</p>
+          </li>
+          <li>
+            <p>Dokumentert evne til å levere innsikter som reduserer kostnader og øker kundetilfredsheten</p>
+          </li>
+          <li>
+            <p>Trives i tverrfaglige team og jobber strukturert med både strategi og detaljer</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Utdanning</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nhh.no">Norges Handelshøyskole</a></div>
+            <div class="resume-entry-organization">Master, Økonomi og administrasjon, Poeng: 3.8</div>
+          </div>
+          <div class="resume-entry-date">aug. 2014–juni 2016</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Fordypet meg i strategisk analyse og datadrevet beslutningstaking</p>
+            </li>
+            <li>
+              <p>Gjennomførte masteroppgave om digitalisering i finanssektoren</p>
+            </li>
+            <li>
+              <p>Oppnådde toppkarakterer i fagene forretningsanalyse og prosjektledelse</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Kurs</span>: Strategisk analyse, Finansregnskap, Markedsanalyse, Statistikk for økonomer, Prosjektledelse, Forretningsanalyse, Datamodellering, Beslutningsstøtte</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.uib.no">Universitetet i Bergen</a></div>
+            <div class="resume-entry-organization">Bachelor, Samfunnsøkonomi, Poeng: 3.6</div>
+          </div>
+          <div class="resume-entry-date">aug. 2011–juni 2014</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Bygget et solid fundament i økonomisk teori og statistisk metode</p>
+            </li>
+            <li>
+              <p>Deltok i studentprosjekt om bærekraftig forretningsmodellering</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Kurs</span>: Mikroøkonomi, Makroøkonomi, Statistikk, Matematikk for økonomer, Bedriftsøkonomi, Samfunnsanalyse</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Arbeidserfaring</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.equinor.com">Equinor ASA</a></div>
+            <div class="resume-entry-organization">Senior forretningsanalytiker</div>
+          </div>
+          <div class="resume-entry-date">mars 2022–Nå</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Leder kravanalyse for digitale løsninger i fornybar divisjon</p>
+            </li>
+            <li>
+              <p>Kartlegger og forbedrer forretningsprosesser på tvers av forretningsområder</p>
+            </li>
+            <li>
+              <p>Utvikler dashboards i Power BI som gir ledelsen sanntidsinnsikt</p>
+            </li>
+            <li>
+              <p>Fasiliterer workshops med interessenter for å prioritere krav og gevinster</p>
+            </li>
+            <li>
+              <p>Samarbeider tett med utviklingsteam i smidige leveranser</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: Kravanalyse, Prosessforbedring, Power BI, Agile, Interessenthåndtering</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.dnb.no">DNB Bank ASA</a></div>
+            <div class="resume-entry-organization">Forretningsanalytiker</div>
+          </div>
+          <div class="resume-entry-date">aug. 2019–feb. 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Analyserte kunde- og transaksjonsdata for å identifisere forbedringsområder</p>
+            </li>
+            <li>
+              <p>Utarbeidet kravspesifikasjoner for digitale banktjenester</p>
+            </li>
+            <li>
+              <p>Gjennomførte brukerintervjuer og kartla kundereiser</p>
+            </li>
+            <li>
+              <p>Bygget SQL-spørringer og rapporter for produktteam</p>
+            </li>
+            <li>
+              <p>Bidro til å redusere manuelt arbeid med 30 % i kredittprosessen</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: SQL, Kundereise, Kravspesifikasjon, Dataanalyse, Bank</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.statkraft.no">Statkraft AS</a></div>
+            <div class="resume-entry-organization">Junior forretningsanalytiker</div>
+          </div>
+          <div class="resume-entry-date">aug. 2016–juli 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Støttet analyse av markedsdata og energipriser</p>
+            </li>
+            <li>
+              <p>Laget rapporter og presentasjoner for ledelsen</p>
+            </li>
+            <li>
+              <p>Deltok i prosjekt med implementering av ny innkjøpsløsning</p>
+            </li>
+            <li>
+              <p>Dokumenterte forretningsprosesser og identifiserte flaskehalser</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: Markedsanalyse, Rapportering, Prosesskartlegging, Excel</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Språk</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Norsk<span class="resume-language-fluency">: Morsmål eller tospråklig nivå</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Nøkkelord</span>: Morsmål</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Engelsk<span class="resume-language-fluency">: Fullt profesjonelt nivå</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Nøkkelord</span>: TOEFL 105</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Tysk<span class="resume-language-fluency">: Begrenset arbeidskunnskap</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Nøkkelord</span>: Goethe B1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Ferdigheter</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Forretningsanalyse<span class="resume-skill-level">: Avansert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: Kravanalyse, Prosesskartlegging, Interessentanalyse, Gap-analyse, Gevinstrealisering</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Dataanalyse<span class="resume-skill-level">: Avansert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: SQL, Power BI, Tableau, Excel, Python</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Prosjektledelse<span class="resume-skill-level">: Viderekommen</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: Agile, Scrum, Kanban, Jira, Confluence</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Kommunikasjon<span class="resume-skill-level">: Avansert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: Workshopfasilitering, Presentasjoner, Dokumentasjon, Forretningsnorsk, Engelsk</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Utmerkelser</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Årets analytiker</div>
+            <div class="resume-entry-organization">Den norske dataforening</div>
+          </div>
+          <div class="resume-entry-date">nov. 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Tildelt for fremragende arbeid med datadrevet prosessforbedring i Equinor</p>
+            </li>
+            <li>
+              <p>Anerkjent for å ha ledet et tverrfaglig prosjekt som reduserte rapporteringstiden med 40 %</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Sertifikater</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.iiba.org/certification/cbap/">Certified Business Analysis Professional (CBAP)</a></div>
+            <div class="resume-entry-organization">IIBA</div>
+          </div>
+          <div class="resume-entry-date">sep. 2021</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://learn.microsoft.com/en-us/certifications/power-bi-data-analyst-associate/">Microsoft Certified: Power BI Data Analyst Associate</a></div>
+            <div class="resume-entry-organization">Microsoft</div>
+          </div>
+          <div class="resume-entry-date">jan. 2023</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Publikasjoner</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.magma.no/datadrevet-forretningsutvikling-i-norske-banker">Datadrevet forretningsutvikling i norske banker</a></div>
+            <div class="resume-entry-organization">Magma – Econas tidsskrift for økonomi og ledelse</div>
+          </div>
+          <div class="resume-entry-date">juni 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Artikkelen utforsker hvordan banker kan bruke dataanalyse til å forbedre kundeopplevelsen</p>
+            </li>
+            <li>
+              <p>Presenterer funn fra et samarbeidsprosjekt mellom DNB og NHH</p>
+            </li>
+            <li>
+              <p>Diskuterer utfordringer og muligheter ved datadrevet forretningsutvikling</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Prosjekter</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Kundeinnsikt 360</div>
+            <div class="resume-entry-description">Et analyseprosjekt for å samle kundeinnsikt på tvers av forretningsområder</div>
+          </div>
+          <div class="resume-entry-date">jan. 2023–des. 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ledet kartlegging av datakilder og definerte nøkkeltall for kundeopplevelse</p>
+            </li>
+            <li>
+              <p>Utviklet et Power BI-dashboard som samlet innsikt fra fem forretningsområder</p>
+            </li>
+            <li>
+              <p>Fasiliterte workshoper med ledelsen for å prioritere tiltak basert på innsikten</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: Kundereise, Dataplattform, Power BI, Innsikt</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Prosesskartlegging av kredittflyt</div>
+            <div class="resume-entry-description">Kartlegging og forenkling av kredittprosessen i DNB</div>
+          </div>
+          <div class="resume-entry-date">feb. 2020–okt. 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Dokumenterte nåværende prosess og identifiserte flaskehalser og manuelle trinn</p>
+            </li>
+            <li>
+              <p>Foreslo automatiseringstiltak som reduserte behandlingstiden med 25 %</p>
+            </li>
+            <li>
+              <p>Presenterte anbefalinger for ledelsen og fulgte opp implementering</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: Prosessforbedring, Lean, Kreditt, Automatisering</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interesser</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Friluftsliv</span>: Fjellturer, Ski, Fiske, Padling</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Musikk</span>: Gitar, Konserter, Jazz</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Frivillig arbeid</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ue.no">Ungt Entreprenørskap Norge</a></div>
+            <div class="resume-entry-organization">Mentor</div>
+          </div>
+          <div class="resume-entry-date">sep. 2020–Nå</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Veileder unge gründere i forretningsmodellering og markedsanalyse</p>
+            </li>
+            <li>
+              <p>Deltar i dommerpanel for lokale konkurranser</p>
+            </li>
+            <li>
+              <p>Bidrar til å styrke entreprenørskapskompetansen blant ungdom</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

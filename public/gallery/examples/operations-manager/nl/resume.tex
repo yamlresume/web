@@ -1,0 +1,288 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Dutch language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-dutch.html
+\usepackage[dutch]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Sanne de Vries}{}
+\title{Operations Manager met focus op logistiek en procesverbetering}
+\phone[mobile]{+31 6 1234 5678}
+\email{sanne.devries@example.nl}
+\homepage{https://www.sannedevries.nl}
+
+\address{Keizersgracht 123, Amsterdam, Noord-Holland, Nederland, 1015 CJ}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/sannedevries}{@sannedevries}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basis Informatie}
+
+\cvline{}{Operations Manager met meer dan acht jaar ervaring in logistiek, productie en distributie. Ik combineer analytisch inzicht met daadkrachtig leiderschap en weet operationele prestaties duurzaam te verbeteren.
+%
+\begin{itemize}
+\item Stuurt multidisciplinaire teams aan van 10 tot 50 medewerkers en creëert een cultuur van eigenaarschap en continue verbetering.
+\item Realiseert aantoonbare resultaten op het gebied van doorlooptijd, kwaliteit, kosten en klanttevredenheid.
+\item Werkt datagedreven met KPI's, Lean-principes en moderne plannings- en magazijnsystemen.
+\item Communiceert helder met stakeholders van werkvloer tot directie en vertaalt strategie naar uitvoerbare plannen.
+\end{itemize}}
+\section{Opleidingen}
+
+\cventry{sep 2010–jul 2014}
+        {Bachelor, Logistiek en Economie, Score: 8.1}
+        {Hogeschool van Amsterdam}
+        {\url{https://www.hva.nl}}
+        {}
+        {\begin{itemize}
+\item Opgedaan in operationeel management, logistieke processen en financiële sturing.
+\item Afstudeeronderzoek naar voorraadoptimalisatie bij een regionale distributeur.
+\end{itemize}
+\textbf{Cursussen}: Supply Chain Management, Operationeel Management, Statistiek voor Logistiek, Projectmanagement, Financieel Management, Transporteconomie}
+
+\cventry{sep 2014–jul 2016}
+        {Master, Transport, Infrastructuur en Logistiek, Score: 8.4}
+        {Technische Universiteit Delft}
+        {\url{https://www.tudelft.nl}}
+        {}
+        {\begin{itemize}
+\item Verdieping in transportnetwerken, simulatie en ketenregie.
+\item Scriptie over datagedreven capaciteitsplanning in de foodsector.
+\end{itemize}
+\textbf{Cursussen}: Transportnetwerken, Simulatie van Logistieke Systemen, Ketenregie, Operationeel Onderzoek, Duurzame Mobiliteit}
+\section{Werkervaring}
+
+\cventry{jan 2021–Heden}
+        {Operations Manager}
+        {FreshFlow Distributie}
+        {\url{https://www.freshflowdistributie.nl}}
+        {}
+        {\begin{itemize}
+\item Leidt een operationeel team van 45 medewerkers verdeeld over planning, magazijn en transport.
+\item Verantwoordelijk voor dagelijkse aansturing, veiligheid, kwaliteit en leverbetrouwbaarheid.
+\item Realiseerde een daling van 18\% in orderdoorlooptijd door herinrichting van pickroutes en planning.
+\item Stuurde op KPI's zoals OTIF, productiviteit, voorraadnauwkeurigheid en medewerkerstevredenheid.
+\item Beheerde een operationeel budget van EUR 6,5 miljoen en realiseerde 7\% kostenbesparing.
+\end{itemize}
+\textbf{Trefwoorden}: Operationele excellentie, Teamontwikkeling, KPI-sturing, Budgetverantwoordelijkheid}
+
+\cventry{mrt 2017–dec 2020}
+        {Teamleider Logistiek}
+        {Nexus Logistiek}
+        {\url{https://www.nexuslogistiek.nl}}
+        {}
+        {\begin{itemize}
+\item Gaf leiding aan drie teamleiders en 30 logistieke medewerkers in een 24/7 distributiecentrum.
+\item Introduceerde dagelijkse huddle- en visual management-rituelen voor snellere bijsturing.
+\item Verhoogde de forecastnauwkeurigheid met 12\% door samenwerking met sales en planning.
+\item Begeleidde een verhuizing naar een nieuw magazijn zonder verstoring van klantleveringen.
+\end{itemize}
+\textbf{Trefwoorden}: Procesverbetering, Verandermanagement, Leveranciersmanagement, Capaciteitsplanning}
+
+\cventry{sep 2016–feb 2017}
+        {Procesanalist Operations}
+        {Bureau Proceskracht}
+        {\url{https://www.bureauproceskracht.nl}}
+        {}
+        {\begin{itemize}
+\item Analyseerde order-, voorraad- en transportprocessen voor middelgrote productie- en retailklanten.
+\item Vertaalde data naar concrete verbeterplannen en begeleidde teams bij de implementatie.
+\item Ontwikkelde KPI-rapportages en standaardwerkwijzen voor operations en planning.
+\end{itemize}
+\textbf{Trefwoorden}: Data-analyse, Procesoptimalisatie, Rapportages, Standaardisatie}
+\section{Talen}
+
+\cvline{Nederlands}{Moedertaal of tweetalige vaardigheid \hfill \textbf{Trefwoorden}: Moedertaal}
+\cvline{Engels}{Volledige professionele vaardigheid \hfill \textbf{Trefwoorden}: C1, IELTS 7.5}
+\cvline{Duits}{Beperkte werkvaardigheid \hfill \textbf{Trefwoorden}: B1}
+\section{Vaardigheden}
+
+\cvline{Operationeel Management}{Expert \hfill \textbf{Trefwoorden}: Procesoptimalisatie, KPI-dashboards, Capaciteitsplanning, Budgetbeheer}
+\cvline{Supply Chain}{Geavanceerd \hfill \textbf{Trefwoorden}: Voorraadbeheer, Vraagvoorspelling, Leveranciersmanagement, Magazijnbeheersysteem}
+\cvline{Lean \& Six Sigma}{Geavanceerd \hfill \textbf{Trefwoorden}: Waardestroomanalyse, Kaizen, Oorzaakanalyse, DMAIC}
+\cvline{Data \& Rapportage}{Geavanceerd \hfill \textbf{Trefwoorden}: Excel, Power BI, SQL, Tableau}
+\cvline{Leiderschap}{Expert \hfill \textbf{Trefwoorden}: Coaching, Verandermanagement, Stakeholdermanagement, Teamontwikkeling}
+\section{Onderscheidingen}
+
+\cventry{nov 2022}
+        {FreshFlow Distributie}
+        {Lean Six Sigma Green Belt Project Award}
+        {}
+        {}
+        {\begin{itemize}
+\item Erkend voor een project dat de orderdoorlooptijd met 18\% verlaagde.
+\item Beoordeeld op meetbare impact, duurzaamheid van de oplossing en betrokkenheid van het team.
+\end{itemize}}
+
+\cventry{dec 2019}
+        {Nexus Logistiek}
+        {Beste Teamprestatie van het Jaar}
+        {}
+        {}
+        {\begin{itemize}
+\item Toegekend aan het logistieke team voor uitstekende leverbetrouwbaarheid tijdens piekperiodes.
+\item Gerealiseerd door strakke planning, heldere communicatie en sterke samenwerking.
+\end{itemize}}
+\section{Certificaten}
+
+\cventry{jun 2020}
+        {ASQ}
+        {Lean Six Sigma Green Belt}
+        {\url{https://asq.org/cert/lean-six-sigma-green-belt}}
+        {}
+        {}
+
+\cventry{feb 2019}
+        {AXELOS}
+        {PRINCE2 Foundation}
+        {\url{https://www.axelos.com/certifications/prince2}}
+        {}
+        {}
+
+\cventry{okt 2021}
+        {ASCM}
+        {Certified Supply Chain Professional (CSCP)}
+        {\url{https://www.ascm.org/credentials/cscp/}}
+        {}
+        {}
+\section{Publicaties}
+
+\cventry{mrt 2023}
+        {Van voorraadkosten naar klantwaarde: datagedreven operations in de foodsector}
+        {Logistiek Magazine}
+        {\url{https://www.logistiekmagazine.nl/artikelen/datagedreven-operations}}
+        {}
+        {\begin{itemize}
+\item Praktijkartikel over het verbinden van voorraadsturing aan klantwaarde en servicegraden.
+\item Gaat in op KPI-keuzes, forecastverbetering en samenwerking tussen operations en commercie.
+\end{itemize}}
+\section{Projecten}
+
+\cventry{mrt 2022–nov 2022}
+        {Uitrol van een warehouse management systeem voor magazijn, planning en transport.}
+        {Implementatie nieuw WMS}
+        {\url{https://www.freshflowdistributie.nl/projecten/wms}}
+        {}
+        {\begin{itemize}
+\item Leidde de operationele implementatie van een nieuw WMS binnen een live omgeving.
+\item Betrok teamleiders en key users bij procesontwerp, testen en training.
+\item Realiseerde een hogere voorraadnauwkeurigheid en kortere inwerktijd voor nieuwe medewerkers.
+\end{itemize}
+\textbf{Trefwoorden}: WMS, Implementatie, Procesontwerp, Training}
+
+\cventry{jan 2023–jun 2023}
+        {Herinrichting van pickroutes en pickmethoden om doorlooptijd en kwaliteit te verbeteren.}
+        {Procesoptimalisatie orderpicking}
+        {\url{https://www.freshflowdistributie.nl/projecten/orderpicking}}
+        {}
+        {\begin{itemize}
+\item Analyseerde pickdata en observeerde werkprocessen op de werkvloer.
+\item Testte nieuwe routeplanning en artikelplaatsing in een pilot.
+\item Verlaagde de gemiddelde picktijd met 14\% en verminderde orderfouten.
+\end{itemize}
+\textbf{Trefwoorden}: Orderpicking, Lean, Data-analyse, Kwaliteit}
+\section{Interesses}
+
+\cvline{Duurzaamheid}{Circulaire logistiek, Energiebesparing}
+\cvline{Sport}{Hardlopen, Roeien, Wielrennen}
+\cvline{Maatschappelijke impact}{Voedselbank, Kennisoverdracht}
+\section{Vrijwilligerswerk}
+
+\cventry{feb 2018–Heden}
+        {Logistiek Coördinator}
+        {Voedselbank Amsterdam}
+        {\url{https://www.voedselbankamsterdam.nl}}
+        {}
+        {\begin{itemize}
+\item Coördineert wekelijks de aanvoer, sortering en verdeling van voedingsmiddelen.
+\item Stemt planning af met vrijwilligers, winkels en partnerorganisaties.
+\item Verbeterde de sorteerprocessen en zorgde voor betrouwbare leveringen aan lokale uitgiftepunten.
+\end{itemize}}
+    
+
+\cventry{sep 2019–jun 2021}
+        {Projectvrijwilliger}
+        {Stichting Duurzame Stad}
+        {\url{https://www.duurzamestad.nl}}
+        {}
+        {\begin{itemize}
+\item Ondersteunde een project voor efficiëntere stadsdistributie en minder lege kilometers.
+\item Verzamelde data, maakte analyses en hielp bij de vertaling naar aanbevelingen voor de gemeente.
+\end{itemize}}
+    
+\end{document}

@@ -1,0 +1,236 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK JP}{
+  \setCJKmainfont{Noto Serif CJK JP}
+}{}
+\IfFontExistsTF{Noto Sans CJK JP}{
+  \setCJKsansfont{Noto Sans CJK JP}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{佐藤 健太}{}
+\title{QAエンジニア / テスト自動化スペシャリスト}
+\phone[mobile]{+81 90-1234-5678}
+\email{kenta.sato@example.com}
+\homepage{https://kenta-sato.dev}
+
+\address{日本、東京都、渋谷区、東京都渋谷区神宮前1-2-3、150-0001}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/kenta-sato}{@kenta-sato} {} {} {} • {} {} {} 
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/kenta-sato}{@kenta-sato} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/kenta\_sato\_qa}{@kenta\_sato\_qa}}
+
+\begin{document}
+
+\maketitle
+
+\section{基本情報}
+
+\cvline{}{\begin{itemize}
+\item 5年以上のWebアプリケーションおよびモバイルアプリの品質保証経験を持つQAエンジニア
+\item テスト自動化フレームワークの設計・構築・運用に精通し、テスト実行時間を50\%削減
+\item テスト計画、テスト設計、テスト実行、不具合管理まで一連のテストプロセスをリード
+\item アジャイル開発環境でのテスト戦略立案と品質指標の可視化を推進
+\item チームメンバーの育成とテスト文化の醸成に貢献
+\end{itemize}}
+\section{学歴}
+
+\cventry{2014年4月～2018年3月}
+        {学士、情報工学、成績：3.7/4.0}
+        {東京工業大学}
+        {\url{https://www.titech.ac.jp/}}
+        {}
+        {\begin{itemize}
+\item ソフトウェア開発の基礎からテスト手法まで幅広く学習
+\item 卒業研究ではWebアプリケーションの自動テストに関する研究に従事
+\item グループワークを通じてチーム開発とコミュニケーション能力を向上
+\end{itemize}
+\textbf{コース}：ソフトウェア工学、データ構造とアルゴリズム、データベースシステム、コンピュータネットワーク、オペレーティングシステム、ソフトウェアテスト論}
+\section{職歴}
+
+\cventry{2021年4月～現在}
+        {シニアQAエンジニア}
+        {株式会社サンプルテック}
+        {\url{https://www.sampletech.co.jp}}
+        {}
+        {\begin{itemize}
+\item 大規模ECサイトの品質保証をリードし、テスト自動化率を80\%まで向上
+\item SeleniumとCypressを用いたE2Eテストフレームワークを設計・構築
+\item CI/CDパイプラインに自動テストを組み込み、リグレッション時間を60\%短縮
+\item テスト計画の策定からリリース判定まで品質管理プロセスを統括
+\item ジュニアQAエンジニア3名のメンタリングと育成を担当
+\end{itemize}
+\textbf{キーワード}：テスト自動化、Selenium、Cypress、CI/CD、品質管理}
+
+\cventry{2018年4月～2021年3月}
+        {QAエンジニア}
+        {株式会社テストシステム}
+        {\url{https://www.test-system.co.jp}}
+        {}
+        {\begin{itemize}
+\item 受託開発プロジェクトにてWebアプリケーションのテスト設計・実行を担当
+\item テストケース作成と不具合管理をJIRA/TestRailを用いて効率化
+\item APIテスト自動化をPostmanとRestAssuredで実装
+\item テスト観点の整理とレビューを通じてテスト品質を向上
+\item 顧客向けの品質レポート作成と品質説明を実施
+\end{itemize}
+\textbf{キーワード}：テスト設計、JIRA、TestRail、APIテスト、Postman}
+\section{言語}
+
+\cvline{日本語}{ネイティブ・母国語レベル}
+\cvline{英語}{完全な実務レベル \hfill \textbf{キーワード}：TOEIC 900、技術文書読解}
+\section{スキル}
+
+\cvline{テスト自動化}{エキスパート \hfill \textbf{キーワード}：Selenium、Cypress、Playwright、Appium、Jest}
+\cvline{プログラミング}{上級 \hfill \textbf{キーワード}：Python、Java、JavaScript、TypeScript、SQL}
+\cvline{テスト管理}{上級 \hfill \textbf{キーワード}：JIRA、TestRail、Zephyr、qTest}
+\cvline{パフォーマンステスト}{中級 \hfill \textbf{キーワード}：JMeter、Gatling、Locust}
+\cvline{クラウド・DevOps}{中級 \hfill \textbf{キーワード}：AWS、Azure、Docker、Kubernetes、GitHub Actions}
+\section{受賞・表彰}
+
+\cventry{2022年12月}
+        {株式会社サンプルテック}
+        {品質改善賞}
+        {}
+        {}
+        {テスト自動化の推進とリグレッション時間の大幅削減により、開発生産性の向上に貢献したとして表彰。}
+\section{資格・免状}
+
+\cventry{2021年6月}
+        {ISTQB}
+        {ISTQB Certified Tester Advanced Level}
+        {\url{https://www.istqb.org/certifications/advanced-level-test-automation-engineering}}
+        {}
+        {}
+
+\cventry{2022年3月}
+        {AWS}
+        {AWS Certified Developer - Associate}
+        {\url{https://aws.amazon.com/certification/certified-developer-associate/}}
+        {}
+        {}
+\section{出版・著作}
+
+\cventry{2023年9月}
+        {テスト自動化における保守性向上の取り組み}
+        {テスト自動化研究会 技術ブログ}
+        {\url{https://example.com/blog/test-automation-maintainability}}
+        {}
+        {\begin{itemize}
+\item テストコードの保守性を高めるための設計原則と実践手法を解説
+\item Page Object Modelの活用とテストデータ管理のベストプラクティスを紹介
+\item 自動テストの持続的な運用に向けたチーム体制の重要性を論じる
+\end{itemize}}
+\section{プロジェクト}
+
+\cventry{2022年1月～2022年8月}
+        {Playwrightを用いたE2Eテスト自動化フレームワーク}
+        {E2Eテスト自動化フレームワーク構築}
+        {\url{https://github.com/kenta-sato/e2e-framework}}
+        {}
+        {\begin{itemize}
+\item 複数ブラウザ対応のE2Eテストフレームワークを設計・実装
+\item テスト実行の並列化とレポート自動生成を実現
+\item CI/CDとの連携によりリグレッション時間を60\%削減
+\end{itemize}
+\textbf{キーワード}：Playwright、TypeScript、CI/CD、自動テスト}
+\section{興味・関心}
+
+\cvline{技術コミュニティ}{テスト自動化研究会、勉強会登壇、OSS貢献}
+\cvline{趣味}{旅行、読書、写真撮影}
+\section{ボランティア活動}
+
+\cventry{2020年4月～2023年3月}
+        {メンター}
+        {テスト自動化研究会}
+        {\url{https://example.com/test-automation-community}}
+        {}
+        {\begin{itemize}
+\item テスト自動化に興味を持つエンジニア向けの勉強会を企画・運営
+\item メンタリングを通じて実践的なテスト自動化スキルの向上を支援
+\item コミュニティ全体のテスト技術向上に貢献
+\end{itemize}}
+    
+\end{document}

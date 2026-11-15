@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Marte Solberg Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Marte Solberg</h1>
+    <p class="resume-headline">Operasjonssjef med erfaring fra logistikk, HMS og forbedringsarbeid</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:marte.solberg@example.no" class="resume-contact-link">marte.solberg@example.no</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+47 928 45 112</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.martesolberg.no" class="resume-contact-link">https://www.martesolberg.no</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Storgata 18, Oslo, Oslo, Norge, 0155</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/marte-solberg" class="resume-contact-link">@marte-solberg</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Grunnleggende informasjon</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>Erfaren operasjonssjef med over 10 års ledererfaring fra logistikk, service og industri.</p>
+          </li>
+          <li>
+            <p>Dokumentert resultat med å øke driftsregularitet, redusere kostnader og bygge velfungerende tverrfaglige team.</p>
+          </li>
+          <li>
+            <p>Sterk i KPI-oppfølging, budsjettansvar, HMS, kontinuerlig forbedring og samarbeid med leverandører og kunder.</p>
+          </li>
+          <li>
+            <p>Strukturert og løsningsorientert leder som trives med å gjøre komplekse driftsprosesser enkle, målbare og skalerbare.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Utdanning</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.bi.no">Handelshøyskolen BI</a></div>
+            <div class="resume-entry-organization">Master, Strategisk ledelse, Poeng: 4,3/5</div>
+          </div>
+          <div class="resume-entry-date">aug. 2014–juni 2016</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Fordypning i strategisk styring, operativ excellence og endringsledelse.</p>
+            </li>
+            <li>
+              <p>Gjennomførte casebaserte prosjekter med fokus på kostnadsstyring og prosessforbedring.</p>
+            </li>
+            <li>
+              <p>Utviklet analyse- og beslutningsgrunnlag for ledergrupper i praksisnære prosjekter.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Kurs</span>: Strategisk økonomistyring, Operasjons- og kvalitetsledelse, Prosjektledelse, Organisasjon og ledelse, Forhandlinger og beslutninger, Bærekraftig verdikjedestyring</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.uio.no">Universitetet i Oslo</a></div>
+            <div class="resume-entry-organization">Bachelor, Økonomi og administrasjon, Poeng: 4,1/5</div>
+          </div>
+          <div class="resume-entry-date">aug. 2011–juni 2014</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Solid grunnlag i økonomi, analyse og bedriftsadministrasjon.</p>
+            </li>
+            <li>
+              <p>Arbeidet med kvantitative analyser og presentasjon av beslutningsgrunnlag.</p>
+            </li>
+            <li>
+              <p>Deltok aktivt i studentprosjekter om effektiv ressursbruk og organisasjonsutvikling.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Kurs</span>: Mikroøkonomi, Bedriftsøkonomi, Statistikk og analyse, Markedsføring, Regnskap og budsjettering</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Arbeidserfaring</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nordviklogistikk.no">Nordvik Logistikk AS</a></div>
+            <div class="resume-entry-organization">Operasjonssjef</div>
+          </div>
+          <div class="resume-entry-date">jan. 2021–Nå</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Leder den daglige driften for et terminal- og distribusjonsnett med 85 ansatte og årlig omsetning på 420 MNOK.</p>
+            </li>
+            <li>
+              <p>Ansvar for produksjonsplanlegging, bemanning, HMS, kvalitet og leverandøroppfølging på tvers av fem lokasjoner.</p>
+            </li>
+            <li>
+              <p>Reduserte avvikskostnader med 18 prosent og økte leveringspresisjonen fra 92 til 97 prosent på 18 måneder.</p>
+            </li>
+            <li>
+              <p>Innførte ukentlig driftsdialog med KPI-er for sikkerhet, kvalitet, kostnad og trivsel.</p>
+            </li>
+            <li>
+              <p>Bygget lederteam og innførte kompetanseplan som reduserte gjennomtrekk blant operativt personell med 25 prosent.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: Driftsledelse, Logistikk, HMS, KPI-oppfølging, Bemanningsplanlegging, Kontinuerlig forbedring, Budsjettansvar, Leverandøroppfølging</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.fjordservice.no">Fjordservice Gruppen AS</a></div>
+            <div class="resume-entry-organization">Driftsleder</div>
+          </div>
+          <div class="resume-entry-date">mars 2017–des. 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ledet drift av kundeservice og feltoperasjoner med 45 ansatte og ansvar for døgnkontinuerlig bemanning.</p>
+            </li>
+            <li>
+              <p>Utviklet bemanningsmodell som reduserte overtidsbruk med 22 prosent og forbedret responstid med 15 prosent.</p>
+            </li>
+            <li>
+              <p>Drev systematisk HMS-arbeid, gjennomførte risikovurderinger og fulgte opp avvik og læringstiltak.</p>
+            </li>
+            <li>
+              <p>Forhandlet rammeavtaler med underleverandører og oppnådde årlige besparelser på 6,5 MNOK.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: Driftsstyring, Kundeservice, Bemanning, HMS, Risikostyring, Rammeavtaler, Responstid</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.osloindustriservice.no">Oslo Industriservice AS</a></div>
+            <div class="resume-entry-organization">Produksjonsleder</div>
+          </div>
+          <div class="resume-entry-date">aug. 2013–feb. 2017</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ledet produksjon og vedlikehold for en fabrikk med 30 ansatte og to skift.</p>
+            </li>
+            <li>
+              <p>Implementerte Lean-prinsipper og standardiserte arbeidsprosesser, noe som økte OEE fra 71 til 82 prosent.</p>
+            </li>
+            <li>
+              <p>Hadde budsjettansvar for drift, vedlikehold og innkjøp på 55 MNOK.</p>
+            </li>
+            <li>
+              <p>Samarbeidet med fagforeninger og verneombud for å sikre god medvirkning og lavt sykefravær.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: Produksjonsledelse, Lean, Vedlikehold, OEE, Budsjett, Arbeidsmiljø</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Språk</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Norsk<span class="resume-language-fluency">: Morsmål eller tospråklig nivå</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Nøkkelord</span>: Morsmål</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Engelsk<span class="resume-language-fluency">: Fullt profesjonelt nivå</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Nøkkelord</span>: C1, Forretningsengelsk</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Tysk<span class="resume-language-fluency">: Begrenset arbeidskunnskap</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Nøkkelord</span>: Grunnleggende</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Ferdigheter</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Operasjonsledelse<span class="resume-skill-level">: Ekspert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: Driftsstyring, Bemanningsplanlegging, KPI-oppfølging, HMS, Målstyring, Lederutvikling</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Logistikk og verdikjede<span class="resume-skill-level">: Avansert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: Lagerstyring, Transportplanlegging, Innkjøp, Leverandøroppfølging, Leveringspresisjon, Varelagerstyring</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Forbedringsarbeid<span class="resume-skill-level">: Avansert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: Lean, Six Sigma, Prosesskartlegging, Rotårsaksanalyse, Standardisering, Kontinuerlig forbedring</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Økonomi og styring<span class="resume-skill-level">: Avansert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: Budsjettering, Kostnadskontroll, Avviksanalyse, Investeringskalkyler, Rapportering</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Prosjektledelse<span class="resume-skill-level">: Avansert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: Prosjektstyring, Endringsledelse, Interessentanalyse, Risikostyring, Gevinstrealisering</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Systemer og verktøy<span class="resume-skill-level">: Viderekommen</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: SAP, Power BI, Excel, Microsoft Dynamics 365, Jira, SharePoint</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Utmerkelser</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Årets operasjonsleder</div>
+            <div class="resume-entry-organization">Nordvik Logistikk AS</div>
+          </div>
+          <div class="resume-entry-date">nov. 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Tildelt for dokumenterte resultater innen driftsforbedring, lederutvikling og HMS.</p>
+            </li>
+            <li>
+              <p>Anerkjent for å ha bygget et sterkt tverrfaglig lederteam og økt medarbeidertilfredsheten.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Forbedringsprisen</div>
+            <div class="resume-entry-organization">Fjordservice Gruppen AS</div>
+          </div>
+          <div class="resume-entry-date">mai 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Tildelt for et vellykket forbedringsprosjekt som reduserte responstid og overtidsbruk.</p>
+            </li>
+            <li>
+              <p>Prosjektet ble trukket frem som beste praksis for tverrfaglig driftsutvikling.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Sertifikater</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.norskleansenter.no">Lean Six Sigma Green Belt</a></div>
+            <div class="resume-entry-organization">Norsk Lean Senter</div>
+          </div>
+          <div class="resume-entry-date">mai 2022</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.peoplecert.org">PRINCE2 Foundation</a></div>
+            <div class="resume-entry-organization">PeopleCert</div>
+          </div>
+          <div class="resume-entry-date">sep. 2021</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.arbeidsmiljosenteret.no">HMS-kurs for ledere</a></div>
+            <div class="resume-entry-organization">Arbeidsmiljøsenteret</div>
+          </div>
+          <div class="resume-entry-date">feb. 2020</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Prosjekter</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nordviklogistikk.no/prosjekter/digital-bemanning">Digital bemanningsplanlegging</a></div>
+            <div class="resume-entry-description">Innføring av digitalt bemanningsverktøy for fem terminaler med mål om bedre ressursutnyttelse og lavere overtid.</div>
+          </div>
+          <div class="resume-entry-date">feb. 2022–aug. 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Kartla bemanningsbehov og etablerte felles planleggingsprosess på tvers av lokasjoner.</p>
+            </li>
+            <li>
+              <p>Innførte verktøy og opplærte 40 ledere og planleggere i nye rutiner.</p>
+            </li>
+            <li>
+              <p>Oppnådde 14 prosent lavere overtidsbruk og 9 prosent høyere produktivitet i pilotperioden.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: Bemanningsplanlegging, Digitalisering, Prosessforbedring, Endringsledelse</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.fjordservice.no/prosjekter/lean-lager">Lean-program for lageravdeling</a></div>
+            <div class="resume-entry-description">Forbedringsprogram for lager og utlasteri med fokus på flyt, standardisering og sikkerhet.</div>
+          </div>
+          <div class="resume-entry-date">mars 2018–nov. 2018</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Gjennomførte verdistrømsanalyse og identifiserte flaskehalser i vareflyten.</p>
+            </li>
+            <li>
+              <p>Standardiserte arbeidsinstrukser og innførte tavlemøter for daglig styring.</p>
+            </li>
+            <li>
+              <p>Reduserte gjennomsnittlig ordrebehandlingstid med 19 prosent og HMS-avvik med 30 prosent.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: Lean, Verdistrømsanalyse, Standardisering, HMS, Lagerstyring</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interesser</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Friluftsliv</span>: Fjellturer, Padling, Langrenn, Sykkel</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Styrearbeid og mentorering</span>: Mentorordning, Næringslivsforum, Foreldreutvalg</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Frivillig arbeid</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.oslonaring.no">Oslo Næringsforening</a></div>
+            <div class="resume-entry-organization">Mentor for unge ledere</div>
+          </div>
+          <div class="resume-entry-date">sep. 2019–Nå</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Mentorerer unge ledere i operativ drift, prioritering og lederutvikling.</p>
+            </li>
+            <li>
+              <p>Bidrar i fagforum for bærekraftig logistikk og kompetanseutvikling.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="volunteer-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.folkehjelp.no">Norsk Folkehjelp</a></div>
+            <div class="resume-entry-organization">Operativ frivillig</div>
+          </div>
+          <div class="resume-entry-date">apr. 2015–des. 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Deltok i beredskapsøvelser og støtteoppdrag ved større arrangementer i Oslo.</p>
+            </li>
+            <li>
+              <p>Gjennomførte førstehjelpskurs og bidro til trygg gjennomføring av lokale arrangementer.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

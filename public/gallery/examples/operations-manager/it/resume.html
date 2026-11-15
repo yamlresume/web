@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Lorenzo Bianchi Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Lorenzo Bianchi</h1>
+    <p class="resume-headline">Responsabile Operativo | Logistica e Miglioramento Continuo</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:lorenzo.bianchi@example.com" class="resume-contact-link">lorenzo.bianchi@example.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+39 347 123 4567</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.lorenzobianchi.it" class="resume-contact-link">https://www.lorenzobianchi.it</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Via Torino 45, Milano, Lombardia, Italia, 20123</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/lorenzo-bianchi-ops" class="resume-contact-link">@lorenzo-bianchi-ops</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Medium</span>: <a href="https://medium.com/@lorenzobianchi" class="resume-contact-link">@lorenzobianchi</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Informazioni personali</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>Responsabile Operativo con oltre 8 anni di esperienza nella gestione di processi logistici, produzione e filiera logistica in contesti industriali e retail.</p>
+          </li>
+          <li>
+            <p>Comprovata capacità di guidare team multidisciplinari, ridurre i costi operativi e migliorare l&#39;efficienza attraverso metodologie Lean Six Sigma e decisioni basate sui dati.</p>
+          </li>
+          <li>
+            <p>Esperienza nella pianificazione della domanda, gestione dei fornitori, ottimizzazione delle scorte e implementazione di sistemi ERP e WMS.</p>
+          </li>
+          <li>
+            <p>Orientato ai risultati, con solide competenze nella gestione del cambiamento, nella negoziazione e nel miglioramento continuo.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Formazione</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.polimi.it/">Politecnico di Milano</a></div>
+            <div class="resume-entry-organization">Laurea magistrale, Ingegneria Gestionale, Punteggio: 108/110</div>
+          </div>
+          <div class="resume-entry-date">set 2011–lug 2013</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Approfondimento di modelli di pianificazione, controllo di gestione e operations management</p>
+            </li>
+            <li>
+              <p>Progetto di tesi sull&#39;ottimizzazione dei flussi logistici in un&#39;azienda manifatturiera</p>
+            </li>
+            <li>
+              <p>Partecipazione a laboratori su Lean Six Sigma e simulazione di processi produttivi</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Gestione della Produzione e dei Servizi, Logistica e Supply Chain Management, Sistemi Informativi Aziendali, Ricerca Operativa, Economia e Organizzazione Aziendale, Gestione dei Progetti</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.unibo.it/">Università di Bologna</a></div>
+            <div class="resume-entry-organization">Laurea triennale, Ingegneria Industriale, Punteggio: 105/110</div>
+          </div>
+          <div class="resume-entry-date">set 2008–lug 2011</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Basi solide di analisi quantitativa e gestione industriale</p>
+            </li>
+            <li>
+              <p>Esperienza di tirocinio in un reparto di pianificazione della produzione</p>
+            </li>
+            <li>
+              <p>Sviluppo di competenze nella risoluzione di problemi e nel lavoro di squadra</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Statistica, Ricerca Operativa, Tecnologie Meccaniche, Sistemi di Produzione, Economia Aziendale</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Esperienza professionale</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.logisticaadriatica.it">Logistica Adriatica S.p.A.</a></div>
+            <div class="resume-entry-organization">Responsabile Operativo</div>
+          </div>
+          <div class="resume-entry-date">gen 2020–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Direzione di 4 responsabili di area e 45 operatori distribuiti su 3 magazzini, con gestione di un budget operativo annuo di 8 milioni di euro.</p>
+            </li>
+            <li>
+              <p>Riduzione del 18% dei costi di movimentazione e del 12% degli scarti tramite progetti Lean Six Sigma e riorganizzazione dei flussi.</p>
+            </li>
+            <li>
+              <p>Implementazione di un nuovo WMS integrato con SAP, con miglioramento della precisione delle scorte dal 92% al 98,5%.</p>
+            </li>
+            <li>
+              <p>Definizione di KPI settimanali su produttività, puntualità delle consegne e sicurezza, con reportistica Power BI per il management.</p>
+            </li>
+            <li>
+              <p>Coordinamento di fornitori di trasporto e logistica, con rinegoziazione dei contratti e riduzione del 9% delle tariffe.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Filiera logistica, Lean Six Sigma, WMS, SAP, KPI, Budget, Sicurezza, Negoziazione</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.gruppomeccanicaverona.it">Gruppo Meccanica Verona S.r.l.</a></div>
+            <div class="resume-entry-organization">Responsabile di Produzione</div>
+          </div>
+          <div class="resume-entry-date">mar 2016–dic 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Gestione di 2 linee produttive e di un team di 28 persone, con pianificazione della domanda e della capacità produttiva.</p>
+            </li>
+            <li>
+              <p>Introduzione di cicli di pianificazione settimanale e strumenti di visual management, con aumento dell&#39;OEE dal 68% al 78%.</p>
+            </li>
+            <li>
+              <p>Riduzione dei fermi macchina del 15% attraverso manutenzione preventiva e analisi delle cause profonde.</p>
+            </li>
+            <li>
+              <p>Collaborazione con ufficio acquisti e qualità per ridurre i reclami clienti del 20%.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Produzione, OEE, Manutenzione, Pianificazione, Qualità, Visual Management, Team</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.retailitalia.it">Retail Italia S.r.l.</a></div>
+            <div class="resume-entry-organization">Coordinatore Logistico</div>
+          </div>
+          <div class="resume-entry-date">giu 2013–feb 2016</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Gestione della distribuzione verso 120 punti vendita, con pianificazione delle rotte e ottimizzazione dei carichi.</p>
+            </li>
+            <li>
+              <p>Riduzione del 14% dei costi di trasporto tramite consolidamento delle spedizioni e accordi con vettori.</p>
+            </li>
+            <li>
+              <p>Implementazione di procedure di controllo inventariale e riduzione delle differenze di stock dal 3,2% all&#39;1,1%.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Distribuzione, Trasporti, Inventario, Ottimizzazione, Retail</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Lingue</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Italiano<span class="resume-language-fluency">: Madrelingua o bilingue</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: Madrelingua</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Inglese<span class="resume-language-fluency">: Competenza professionale completa</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: IELTS 8.0, Inglese commerciale</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Francese<span class="resume-language-fluency">: Competenza professionale limitata</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: DELF B1, Conversazione</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Competenze</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Gestione Operativa<span class="resume-skill-level">: Esperto</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Pianificazione operativa, Gestione budget, KPI, Miglioramento continuo, Gestione fornitori</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Filiera Logistica<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Logistica, Gestione scorte, Pianificazione domanda, Trasporti, Magazzino</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Lean Six Sigma<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: DMAIC, Kaizen, 5S, Mappatura flusso valore, Analisi cause profonde</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Sistemi e Strumenti<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: SAP, WMS, Power BI, Excel avanzato, Tableau</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Leadership<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Gestione team, Negoziazione, Gestione del cambiamento, Comunicazione</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Premi</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Premio Eccellenza Operativa</div>
+            <div class="resume-entry-organization">Logistica Adriatica S.p.A.</div>
+          </div>
+          <div class="resume-entry-date">nov 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Riconoscimento per aver guidato il progetto di riorganizzazione del magazzino centrale, con riduzione dei costi del 18% e miglioramento della puntualità delle consegne al 97%.</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Premio Miglior Progetto di Miglioramento</div>
+            <div class="resume-entry-organization">Gruppo Meccanica Verona S.r.l.</div>
+          </div>
+          <div class="resume-entry-date">giu 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Premio per il progetto di manutenzione preventiva che ha ridotto i fermi macchina del 15% e aumentato l&#39;OEE dal 68% al 78%.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.iassc.org/">Lean Six Sigma Green Belt</a></div>
+            <div class="resume-entry-organization">IASSC</div>
+          </div>
+          <div class="resume-entry-date">mar 2018</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ascm.org/">Certified Supply Chain Professional (CSCP)</a></div>
+            <div class="resume-entry-organization">ASCM</div>
+          </div>
+          <div class="resume-entry-date">giu 2020</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.sap.com/training-certification.html">SAP S/4HANA Supply Chain</a></div>
+            <div class="resume-entry-organization">SAP</div>
+          </div>
+          <div class="resume-entry-date">set 2022</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Pubblicazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.logisticamanagement.it/">Digitalizzare la filiera logistica: un modello operativo per le PMI italiane</a></div>
+            <div class="resume-entry-organization">Logistica Management</div>
+          </div>
+          <div class="resume-entry-date">apr 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Articolo sull&#39;adozione di WMS e analytics nelle PMI manifatturiere</p>
+            </li>
+            <li>
+              <p>Modello di governance per progetti di digitalizzazione logistica</p>
+            </li>
+            <li>
+              <p>Casi studio di tre aziende del Nord Italia</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Progetti</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.logisticaadriatica.it/progetti/zero-scorte">Progetto Zero Scorte</a></div>
+            <div class="resume-entry-description">Riorganizzazione dei flussi di approvvigionamento e delle scorte di sicurezza per una rete di tre magazzini.</div>
+          </div>
+          <div class="resume-entry-date">gen 2022–dic 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Analisi ABC/XYZ e ridefinizione dei punti di riordino</p>
+            </li>
+            <li>
+              <p>Riduzione del 22% del capitale immobilizzato in scorte</p>
+            </li>
+            <li>
+              <p>Miglioramento del livello di servizio dal 94% al 98%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Scorte, ABC/XYZ, Livello di servizio, WMS</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.logisticaadriatica.it/progetti/rete-nord">Rete Distributiva Nord Italia</a></div>
+            <div class="resume-entry-description">Ottimizzazione della rete di distribuzione e dei contratti con i vettori per il canale retail.</div>
+          </div>
+          <div class="resume-entry-date">feb 2021–nov 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Mappatura dei flussi e ridefinizione delle rotte</p>
+            </li>
+            <li>
+              <p>Riduzione del 12% dei costi di trasporto</p>
+            </li>
+            <li>
+              <p>Miglioramento della puntualità delle consegne al 96%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Distribuzione, Trasporti, Retail, Ottimizzazione</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interessi</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Corsa</span>: Maratona, Trail, Mezza maratona</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Vela</span>: Regate, Costiera, Equipaggio</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Lettura</span>: Saggistica, Economia, Storia</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Volontariato</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.bancoalimentare.it/">Fondazione Banco Alimentare Lombardia</a></div>
+            <div class="resume-entry-organization">Coordinatore Volontari</div>
+          </div>
+          <div class="resume-entry-date">set 2018–lug 2024</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Coordinamento di 20 volontari durante le raccolte alimentari</p>
+            </li>
+            <li>
+              <p>Pianificazione turni e gestione delle relazioni con i punti vendita</p>
+            </li>
+            <li>
+              <p>Supporto nella logistica di stoccaggio e distribuzione delle derrate</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

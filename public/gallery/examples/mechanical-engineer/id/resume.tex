@@ -1,0 +1,262 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Indonesian (Bahasa Indonesia) language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-indonesian.html
+\usepackage[indonesian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Arif Prasetyo}{}
+\title{Insinyur Mesin Senior | Spesialis Manufaktur \& Otomasi}
+\phone[mobile]{+62 812-3456-7890}
+\email{arif.prasetyo.engineer@gmail.com}
+\homepage{https://www.arifprasetyo.id}
+
+\address{Jl. Cikini Raya No. 42, Menteng, Jakarta Pusat, DKI Jakarta, Indonesia, 10330}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/arif-prasetyo-me}{@arif-prasetyo-me} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/arifprasetyo-me}{@arifprasetyo-me}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informasi Dasar}
+
+\cvline{}{Insinyur mesin dengan pengalaman lebih dari 8 tahun di industri manufaktur otomotif dan kedirgantaraan, berfokus pada perancangan mesin, optimasi proses produksi, dan implementasi otomasi.
+%
+\begin{itemize}
+\item Menguasai CAD/CAE, analisis struktural, dan metodologi Lean Six Sigma untuk meningkatkan efisiensi lini produksi.
+\item Berpengalaman memimpin proyek perbaikan proses lintas fungsi dengan penghematan biaya terukur dan peningkatan kualitas produk.
+\item Terbiasa bekerja dengan standar ISO 9001, APQP, PPAP, serta keselamatan kerja K3 di lingkungan manufaktur.
+\end{itemize}}
+\section{Pendidikan}
+
+\cventry{Agu 2013–Agu 2017}
+        {Sarjana, Teknik Mesin, Nilai: 3.72}
+        {Institut Teknologi Bandung}
+        {\url{https://www.itb.ac.id}}
+        {}
+        {\begin{itemize}
+\item Menyelesaikan tugas akhir tentang optimasi desain rangka mesin press menggunakan analisis elemen hingga.
+\item Aktif dalam tim robotika kampus dan kompetisi perancangan mesin tingkat nasional.
+\item Memperoleh pemahaman kuat dalam perancangan komponen, pemilihan material, dan proses produksi.
+\end{itemize}
+\textbf{Mata Kuliah}: Mekanika Fluida, Termodinamika, Perpindahan Panas, Kinematika dan Dinamika, Perancangan Mesin, Proses Manufaktur, Material Teknik, Getaran Mekanis}
+\section{Pengalaman Kerja}
+
+\cventry{Mar 2021–Sekarang}
+        {Insinyur Mesin Senior}
+        {PT Astra Otoparts Tbk}
+        {\url{https://www.astra-otoparts.com}}
+        {}
+        {\begin{itemize}
+\item Memimpin perancangan dan perbaikan fixture serta tooling untuk lini produksi komponen rem dengan target efisiensi 12\%.
+\item Mengimplementasikan proyek otomasi berbasis PLC dan robotik untuk mengurangi waktu siklus dan kesalahan operator.
+\item Melakukan analisis kegagalan komponen menggunakan metode root cause analysis dan finite element analysis.
+\item Mengoordinasikan tim lintas fungsi dalam validasi proses, APQP, PPAP, dan audit standar ISO 9001.
+\item Membimbing tiga insinyur junior dalam praktik desain untuk manufaktur dan keselamatan kerja.
+\end{itemize}
+\textbf{Kata Kunci}: Desain Manufaktur, Otomasi Produksi, Lean Manufacturing, CAD/CAE, ISO 9001}
+
+\cventry{Jun 2018–Feb 2021}
+        {Insinyur Proses Produksi}
+        {PT Komatsu Indonesia}
+        {\url{https://www.komatsu.com}}
+        {}
+        {\begin{itemize}
+\item Menganalisis dan mengoptimalkan proses permesinan komponen alat berat untuk meningkatkan throughput sebesar 15\%.
+\item Mengembangkan program CNC dan standar operasional untuk mengurangi scrap rate pada komponen kritis.
+\item Memimpin kaizen mingguan bersama tim produksi dan maintenance untuk mengurangi downtime mesin.
+\item Menyusun laporan analisis kapasitas, time study, dan rekomendasi investasi peralatan produksi.
+\end{itemize}
+\textbf{Kata Kunci}: CNC Programming, Lean Manufacturing, Six Sigma, Time Study, Perbaikan Berkelanjutan}
+
+\cventry{Sep 2017–Mei 2018}
+        {Insinyur Muda Perawatan}
+        {PT Dirgantara Indonesia}
+        {\url{https://www.indonesian-aerospace.com}}
+        {}
+        {\begin{itemize}
+\item Mendukung perawatan preventif dan korektif komponen struktur pesawat sesuai manual dan standar keselamatan.
+\item Melakukan inspeksi dimensional dan dokumentasi hasil perawatan untuk audit kualitas internal.
+\item Berkolaborasi dengan teknisi senior dalam analisis kerusakan dan penyusunan prosedur perbaikan.
+\end{itemize}
+\textbf{Kata Kunci}: Maintenance, Inspeksi Kualitas, Struktur Pesawat, K3}
+\section{Bahasa}
+
+\cvline{Indonesia}{Bahasa Ibu / Bilingual \hfill \textbf{Kata Kunci}: Bahasa ibu}
+\cvline{Inggris}{Tingkat Profesional Penuh \hfill \textbf{Kata Kunci}: TOEFL iBT 105, IELTS 7.0}
+\section{Keahlian}
+
+\cvline{Desain Mekanik}{Ahli \hfill \textbf{Kata Kunci}: SolidWorks, CATIA, AutoCAD, GD\&T, Finite Element Analysis}
+\cvline{Manufaktur \& Produksi}{Mahir \hfill \textbf{Kata Kunci}: Lean Manufacturing, Six Sigma, CNC Programming, APQP, PPAP}
+\cvline{Analisis Teknik}{Mahir \hfill \textbf{Kata Kunci}: ANSYS, MATLAB, Thermofluids, Root Cause Analysis, DOE}
+\cvline{Manajemen Proyek}{Menengah \hfill \textbf{Kata Kunci}: MS Project, Scrum, Budgeting, Vendor Management}
+\section{Penghargaan}
+
+\cventry{Nov 2023}
+        {PT Astra Otoparts Tbk}
+        {Penghargaan Inovasi Manufaktur Terbaik}
+        {}
+        {}
+        {Diberikan atas keberhasilan memimpin proyek otomasi lini perakitan komponen rem yang meningkatkan produktivitas dan menurunkan biaya operasional.}
+
+\cventry{Des 2020}
+        {PT Komatsu Indonesia}
+        {Karyawan Terbaik Tahun 2020}
+        {}
+        {}
+        {Diakui karena kontribusi dalam optimasi proses permesinan dan penurunan scrap rate pada komponen kritis.}
+\section{Sertifikat}
+
+\cventry{Mei 2019}
+        {Dassault Systèmes}
+        {Certified SolidWorks Professional}
+        {\url{https://www.solidworks.com/certification}}
+        {}
+        {}
+
+\cventry{Okt 2020}
+        {ASQ}
+        {Six Sigma Green Belt}
+        {\url{https://asq.org/cert/six-sigma-green-belt}}
+        {}
+        {}
+
+\cventry{Feb 2018}
+        {Kementerian Ketenagakerjaan Republik Indonesia}
+        {Ahli K3 Umum}
+        {\url{https://kemnaker.go.id}}
+        {}
+        {}
+\section{Publikasi}
+
+\cventry{Apr 2022}
+        {Analisis Pengurangan Waktu Setup Mesin CNC pada Produksi Komponen Otomotif}
+        {Jurnal Teknik Mesin Indonesia}
+        {\url{https://doi.org/10.1234/jtmi.2022.012}}
+        {}
+        {\begin{itemize}
+\item Membahas pendekatan lean manufacturing dan standardisasi tooling untuk mengurangi waktu setup mesin CNC.
+\item Menyajikan data time study dan dampak pengurangan waktu setup terhadap kapasitas produksi.
+\item Merekomendasikan praktik terbaik untuk implementasi perbaikan berkelanjutan di lantai produksi.
+\end{itemize}}
+\section{Proyek}
+
+\cventry{Jan 2022–Jun 2023}
+        {Proyek otomasi lini perakitan komponen rem yang mencakup desain fixture, integrasi PLC, dan validasi proses produksi.
+}
+        {Sistem Otomasi Lini Perakitan Komponen Rem}
+        {}
+        {}
+        {\begin{itemize}
+\item Merancang fixture dan mekanisme feeding untuk mengurangi waktu siklus perakitan.
+\item Mengintegrasikan sistem PLC dan sensor untuk meningkatkan konsistensi kualitas produk.
+\item Menghasilkan penghematan biaya tahunan dan penurunan cacat produk.
+\end{itemize}
+\textbf{Kata Kunci}: Otomasi Lini Produksi, PLC, Fixture Design, Validasi Proses}
+
+\cventry{Feb 2020–Des 2020}
+        {Proyek rekayasa ulang rangka mesin press untuk meningkatkan kekakuan struktur dan mengurangi berat material.
+}
+        {Optimasi Desain Rangka Mesin Press 120 Ton}
+        {}
+        {}
+        {\begin{itemize}
+\item Melakukan analisis elemen hingga untuk mengevaluasi tegangan dan deformasi rangka.
+\item Mengusulkan perubahan geometri dan material yang menurunkan berat tanpa mengorbankan kekuatan.
+\item Memvalidasi desain melalui pengujian prototipe dan simulasi beban kerja.
+\end{itemize}
+\textbf{Kata Kunci}: Desain Rangka, Optimasi Struktur, Finite Element Analysis, Pengurangan Biaya}
+\section{Minat}
+
+\cvline{Olahraga}{Futsal, Bersepeda, Panjat Tebing}
+\cvline{Musik}{Gitar, Keyboard}
+\cvline{Otomotif}{Restorasi Motor Klasik, Touring}
+\section{Kegiatan Sukarela}
+
+\cventry{Jan 2021–Sekarang}
+        {Mentor Teknis}
+        {Persatuan Insinyur Indonesia Komisariat Jakarta}
+        {\url{https://pii.or.id}}
+        {}
+        {\begin{itemize}
+\item Membimbing mahasiswa teknik mesin dalam perancangan proyek akhir dan persiapan karier industri.
+\item Menjadi narasumber lokakarya tentang CAD, manufaktur lean, dan keselamatan kerja.
+\item Mendukung kegiatan komunitas insinyur muda untuk meningkatkan kompetensi teknis dan profesionalisme.
+\end{itemize}}
+    
+\end{document}

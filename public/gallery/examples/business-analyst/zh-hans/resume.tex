@@ -1,0 +1,302 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{陈思远}{}
+\title{资深业务分析师 | 数字化转型与数据驱动决策}
+\phone[mobile]{+86 21 6888 0136}
+\email{siyuan.chen@example.com}
+\homepage{https://www.siyuanchen-analytics.com}
+
+\address{中国，上海市，上海，浦东新区世纪大道 100 号，200120}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/siyuan-chen-ba}{@siyuan-chen-ba} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@siyuan.chen}{@siyuan.chen} {} {} {} • {} {} {} 
+{\small \faZhihu}\ \href{https://www.zhihu.com/people/siyuan-chen-ba}{@陈思远}}
+
+\begin{document}
+
+\maketitle
+
+\section{简介}
+
+\cvline{}{\begin{itemize}
+\item 9 年金融科技与供应链领域业务分析经验，擅长需求调研、流程建模、数据洞察与跨部门协同。
+\item 主导 10+ 个数字化项目，覆盖业务蓝图、需求规格、UAT 测试与上线复盘，推动流程效率提升 25\% 以上。
+\item 熟练使用 SQL、Tableau、Power BI、Jira 与 Confluence，能够将复杂业务问题转化为可执行方案。
+\item 具备优秀的利益相关方管理与沟通能力，善于在业务、产品、技术与运营团队之间建立高效协作。
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2012年9月–2016年6月}
+        {学士，信息管理与信息系统，成绩：3.8/4.0}
+        {上海财经大学}
+        {\url{https://www.sufe.edu.cn}}
+        {}
+        {\begin{itemize}
+\item 系统学习信息系统规划、数据库设计与业务流程优化
+\item 获校级优秀学生奖学金，毕业设计聚焦企业数据治理与流程分析
+\end{itemize}
+\textbf{课程}：管理信息系统、数据库原理与应用、运筹学、统计学、业务流程管理、项目管理、数据分析基础、经济学原理}
+\section{工作经历}
+
+\cventry{2021年7月至今}
+        {高级业务分析师}
+        {星瀚数字科技（上海）有限公司}
+        {\url{https://www.xinghan-digital.com}}
+        {}
+        {\begin{itemize}
+\item 负责金融科技产品线的业务分析与需求管理，覆盖客户尽调、风控审批与运营监控等核心流程
+\item 主导 6 个跨部门数字化项目，输出业务蓝图、需求规格说明书、流程模型与 UAT 方案
+\item 建立需求优先级评估机制，协调产品、研发、风控与运营团队，按期交付率提升至 95\%
+\item 设计经营分析看板与关键指标口径，支持管理层进行月度经营复盘与资源调配
+\item 组织用户访谈与工作坊，沉淀需求模板与业务术语库，缩短新成员上手周期 30\%
+\end{itemize}
+\textbf{关键字}：需求管理、流程建模、利益相关方沟通、数据看板、金融科技}
+
+\cventry{2018年4月–2021年6月}
+        {业务分析师}
+        {云帆供应链管理有限公司}
+        {\url{https://www.yunfan-supply.com}}
+        {}
+        {\begin{itemize}
+\item 深入采购、仓储与物流业务，梳理订单履约全链路流程并识别效率瓶颈
+\item 完成 20+ 份业务需求文档与流程现状图，推动仓储作业标准化和异常处理机制落地
+\item 与数据团队合作搭建库存周转、履约时效与成本分析报表，辅助运营策略调整
+\item 参与 ERP 系统升级项目，负责需求澄清、测试用例评审与上线培训
+\item 通过流程优化将订单异常处理时长缩短 18\%，库存盘点差异率降低 12\%
+\end{itemize}
+\textbf{关键字}：供应链、流程优化、ERP、需求文档、数据分析}
+
+\cventry{2016年7月–2018年3月}
+        {数据分析师}
+        {睿联市场咨询有限公司}
+        {\url{https://www.ruilian-consulting.com}}
+        {}
+        {\begin{itemize}
+\item 为零售与消费品客户提供市场研究、用户洞察与经营分析支持
+\item 使用 SQL 与 Excel 清洗和分析调研数据，撰写行业分析与客户洞察报告
+\item 参与 15+ 个咨询项目，负责访谈纪要、问卷设计、数据验证与汇报材料制作
+\item 与项目经理共同向客户汇报关键发现，提出可落地的业务改进建议
+\end{itemize}
+\textbf{关键字}：市场研究、用户洞察、SQL、报告撰写、零售行业}
+\section{语言}
+
+\cvline{中文}{母语或双语水平 \hfill \textbf{关键字}：普通话二级甲等、商务写作}
+\cvline{英语}{完全专业水平 \hfill \textbf{关键字}：CET-6、商务沟通、英文报告撰写}
+\cvline{日语}{初级水平 \hfill \textbf{关键字}：JLPT N4、基础商务会话}
+\section{专业技能}
+
+\cvline{业务分析}{专家 \hfill \textbf{关键字}：需求调研与访谈、业务流程建模、需求规格说明书、用户故事与用例、UAT 测试管理、利益相关方管理}
+\cvline{数据分析}{高级 \hfill \textbf{关键字}：SQL、Tableau、Power BI、Excel 高级分析、指标体系设计、A/B 测试基础}
+\cvline{产品与项目}{高级 \hfill \textbf{关键字}：Jira、Confluence、Visio、敏捷开发、项目计划与跟踪、风险与变更管理}
+\cvline{行业知识}{高级 \hfill \textbf{关键字}：金融科技、供应链管理、零售与消费品、数字化转型、数据治理}
+\section{荣誉}
+
+\cventry{2023年12月}
+        {星瀚数字科技（上海）有限公司}
+        {年度优秀员工}
+        {}
+        {}
+        {表彰在金融科技业务分析项目中的突出贡献，主导需求管理机制建设并推动跨部门协作效率提升。}
+
+\cventry{2020年11月}
+        {云帆供应链管理有限公司}
+        {业务分析卓越奖}
+        {}
+        {}
+        {因供应链流程优化项目表现优异获奖，项目实现订单异常处理时长缩短 18\%。}
+\section{证书}
+
+\cventry{2022年9月}
+        {国际商业分析协会（IIBA）}
+        {国际商业分析专业人士认证（CBAP）}
+        {\url{https://www.iiba.org/certification/cbap}}
+        {}
+        {}
+
+\cventry{2021年6月}
+        {美国项目管理协会（PMI）}
+        {项目管理专业人士认证（PMP）}
+        {\url{https://www.pmi.org/certifications/project-management-pmp}}
+        {}
+        {}
+
+\cventry{2020年8月}
+        {谷歌}
+        {谷歌数据分析专业证书}
+        {\url{https://grow.google/certificates/data-analytics/}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2023年5月}
+        {数据驱动的业务流程优化实践}
+        {企业管理评论}
+        {\url{https://www.qyglpl.com/article/2023/data-driven-process-optimization}}
+        {}
+        {\begin{itemize}
+\item 结合供应链与金融科技项目案例，总结从业务问题识别到指标落地的分析方法
+\item 提出以流程数据、用户反馈与经营指标相结合的需求优先级评估框架
+\end{itemize}}
+\section{引荐}
+
+\cventry{\emaillink[min.zhou@example.com]{min.zhou@example.com}}
+        {星瀚数字科技产品总监}
+        {周敏}
+        {+86 21 6888 0142}
+        {}
+        {陈思远具备扎实的业务分析能力与出色的跨部门沟通能力，能够快速理解复杂业务并推动方案落地。}
+
+\cventry{\emaillink[hao.li@example.com]{hao.li@example.com}}
+        {云帆供应链运营负责人}
+        {李昊}
+        {+86 21 5566 0189}
+        {}
+        {在供应链流程优化项目中展现出严谨的分析思维和较强的推动力，是团队值得信赖的业务伙伴。}
+\section{项目}
+
+\cventry{2019年3月–2020年10月}
+        {面向采购、仓储与物流团队的履约全链路可视化与异常预警平台}
+        {供应链履约可视化平台}
+        {\url{https://www.yunfan-supply.com/projects/visibility-platform}}
+        {}
+        {\begin{itemize}
+\item 负责业务需求调研、流程现状梳理与需求规格编写
+\item 设计订单履约、库存周转与异常处理等核心指标口径
+\item 协调研发与运营完成 UAT 测试及上线培训
+\item 上线后订单异常平均处理时长缩短 18\%
+\end{itemize}
+\textbf{关键字}：供应链、可视化、异常预警、需求分析}
+
+\cventry{2022年2月–2023年8月}
+        {覆盖客户准入、风险评级与审批协同的尽调流程数字化项目}
+        {客户尽调流程数字化}
+        {\url{https://www.xinghan-digital.com/projects/kyc-digital}}
+        {}
+        {\begin{itemize}
+\item 访谈风控、合规与客户经理，梳理尽调流程痛点与合规要求
+\item 输出业务蓝图、用户故事、流程模型与验收标准
+\item 设计审批时效与退回率等运营指标，支持持续优化
+\item 项目上线后平均审批周期缩短 22\%
+\end{itemize}
+\textbf{关键字}：金融科技、客户尽调、流程数字化、合规}
+
+\cventry{2017年3月–2017年12月}
+        {基于调研与销售数据的零售客户分群与经营策略分析项目}
+        {零售客户洞察分析}
+        {\url{https://www.ruilian-consulting.com/projects/retail-insight}}
+        {}
+        {\begin{itemize}
+\item 设计问卷与访谈提纲，完成多城市消费者调研数据清洗
+\item 使用 SQL 与 Excel 进行客户分群、交叉分析与趋势洞察
+\item 撰写客户洞察报告并向客户管理层汇报策略建议
+\end{itemize}
+\textbf{关键字}：零售、客户洞察、市场研究、数据分析}
+\section{兴趣爱好}
+
+\cvline{行业研究}{数字化转型、商业分析、组织效能}
+\cvline{运动}{马拉松、游泳、徒步}
+\cvline{创作}{商业写作、摄影、播客}
+\section{志愿服务}
+
+\cventry{2020年9月–2024年6月}
+        {公益导师}
+        {上海青年商业分析社区}
+        {\url{https://www.shyba-community.org}}
+        {}
+        {\begin{itemize}
+\item 为高校学生与初入职场者提供商业分析职业发展与案例辅导
+\item 参与组织需求分析工作坊与行业分享活动
+\item 协助社区沉淀案例库与导师制流程
+\end{itemize}}
+    
+\end{document}

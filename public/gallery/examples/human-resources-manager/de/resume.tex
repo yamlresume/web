@@ -1,0 +1,293 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for German language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-german.html
+\usepackage[ngerman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Dr. Katharina Vogel}{}
+\title{Senior HR Managerin – Personalentwicklung, Arbeitsrecht \& Change}
+\phone[mobile]{+49 30 5487 2190}
+\email{katharina.vogel@hr-vogel.de}
+\homepage{https://www.katharina-vogel-hr.de}
+
+\address{Friedrichstraße 112, Berlin, Berlin, Deutschland, 10117}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/katharina-vogel-hr}{@katharina-vogel-hr} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@katharina.vogel.hr}{@katharina.vogel.hr}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basisinformationen}
+
+\cvline{}{Senior HR Managerin mit über zehn Jahren Erfahrung in der Personalarbeit mittelständischer und wachsender Technologieunternehmen. Schwerpunkte: strategische Personalentwicklung, Arbeitsrecht, Employer Branding und die Begleitung von Veränderungsprozessen.
+%
+\begin{itemize}
+\item Erfolgreiche Leitung eines HR-Teams von bis zu acht Personen und Verantwortung für rund 450 Mitarbeitende
+\item Aufbau datenbasierter HR-Prozesse, Einführung von SAP SuccessFactors und Personio
+\item Enge Zusammenarbeit mit Geschäftsführung, Betriebsrat und Führungskräften zur Stärkung einer werteorientierten Unternehmenskultur
+\item Ausgeprägte Kommunikationsstärke, diplomatisches Geschick und hohe Umsetzungsorientierung
+\end{itemize}}
+\section{Ausbildung}
+
+\cventry{Okt. 2010–Sept. 2013}
+        {Master, Personalmanagement und Arbeitsrecht, Punkte: 1,7}
+        {Humboldt-Universität zu Berlin}
+        {\url{https://www.hu-berlin.de}}
+        {}
+        {\begin{itemize}
+\item Schwerpunkt auf strategischer Personalarbeit und arbeitsrechtlichen Fragestellungen
+\item Praxisprojekte zu Talentmanagement und Mitarbeiterbindung
+\item Ausgezeichnete Studienleistungen und stipendierte Forschungsarbeit
+\end{itemize}
+\textbf{Kurse}: Arbeitsrecht im Personalwesen, Strategisches Personalmanagement, Organisationspsychologie, Vergütungsmanagement, Change Management, Arbeitsmarktpolitik}
+
+\cventry{Okt. 2007–Sept. 2010}
+        {Bachelor, Betriebswirtschaftslehre, Punkte: 1,9}
+        {Universität Hamburg}
+        {\url{https://www.uni-hamburg.de}}
+        {}
+        {\begin{itemize}
+\item Fundierte betriebswirtschaftliche Grundlagen mit personalwirtschaftlichem Schwerpunkt
+\item Teilnahme an Fallstudien zu Personalstrategie und Organisationsentwicklung
+\end{itemize}
+\textbf{Kurse}: Personalwirtschaft, Organisation und Führung, Wirtschaftsrecht, Statistik, Kosten- und Leistungsrechnung}
+\section{Berufserfahrung}
+
+\cventry{Apr. 2021–Heute}
+        {Senior HR Managerin / Personalleiterin}
+        {Nordlicht Technologies GmbH}
+        {\url{https://www.nordlicht-technologies.de}}
+        {}
+        {\begin{itemize}
+\item Strategische und operative Leitung der Personalabteilung für rund 450 Mitarbeitende an drei Standorten
+\item Weiterentwicklung der Personalstrategie entlang von Unternehmenswachstum, Internationalisierung und hybriden Arbeitsmodellen
+\item Führung und Entwicklung eines Teams aus HR Business Partnern, Recruiting und Personaladministration
+\item Verantwortung für arbeitsrechtliche Fragestellungen, Betriebsratszusammenarbeit und Compliance im Personalbereich
+\item Einführung von SAP SuccessFactors und Personio zur Professionalisierung von Personalprozessen und HR-Reporting
+\item Aufbau eines Employer-Branding-Programms zur Stärkung der Arbeitgeberattraktivität im Technologieumfeld
+\end{itemize}
+\textbf{Schlüsselwörter}: Personalstrategie, Arbeitsrecht, Change Management, Employer Branding, Führungskräfteentwicklung}
+
+\cventry{Aug. 2017–März 2021}
+        {HR Managerin}
+        {Berlin Digital Services AG}
+        {\url{https://www.berlin-digital-services.de}}
+        {}
+        {\begin{itemize}
+\item Betreuung von Führungskräften und Mitarbeitenden in allen personalrelevanten Themen über den gesamten Employee Lifecycle
+\item Verantwortung für Recruiting, Onboarding und Personalentwicklung in einem dynamischen Digitalumfeld
+\item Mitwirkung an der Neuausrichtung von Vergütungsstrukturen und Leistungsbeurteilungsprozessen
+\item Zusammenarbeit mit dem Betriebsrat bei organisatorischen Veränderungen und personellen Einzelmaßnahmen
+\item Einführung standardisierter HR-Kennzahlen und regelmäßiger Personalberichte für die Geschäftsführung
+\end{itemize}
+\textbf{Schlüsselwörter}: Recruiting, Onboarding, Personalentwicklung, Betriebsrat, HR-Reporting}
+
+\cventry{Juni 2014–Juli 2017}
+        {HR Business Partner}
+        {Hanseatic Consulting GmbH}
+        {\url{https://www.hanseatic-consulting.de}}
+        {}
+        {\begin{itemize}
+\item Beratung von Fachbereichen zu Personalplanung, Talentmanagement und organisatorischen Fragestellungen
+\item Begleitung von Reorganisationsprojekten und Entwicklung passender Personalmaßnahmen
+\item Unterstützung bei Arbeitsvertragsgestaltung, Zielvereinbarungen und Konfliktlösungen
+\item Mitaufbau eines strukturierten Onboarding- und Mentoring-Programms
+\end{itemize}
+\textbf{Schlüsselwörter}: Talentmanagement, Vergütung, Arbeitsverträge, Konfliktmanagement, Projektarbeit}
+\section{Sprachen}
+
+\cvline{Deutsch}{Muttersprache oder zweisprachig \hfill \textbf{Schlüsselwörter}: Muttersprache}
+\cvline{Englisch}{Verhandlungssichere Kenntnisse \hfill \textbf{Schlüsselwörter}: Business English, C1}
+\cvline{Französisch}{Gute Kenntnisse \hfill \textbf{Schlüsselwörter}: B1, DELF}
+\section{Fähigkeiten}
+
+\cvline{Recruiting \& Employer Branding}{Experte \hfill \textbf{Schlüsselwörter}: Talent Acquisition, Active Sourcing, Interviewführung, Candidate Experience, Onboarding}
+\cvline{Arbeitsrecht \& Compliance}{Erfahren \hfill \textbf{Schlüsselwörter}: Betriebsverfassungsrecht, Arbeitsvertragsgestaltung, Kündigungsrecht, Personalaktenführung, Datenschutz}
+\cvline{Personalentwicklung \& Führung}{Erfahren \hfill \textbf{Schlüsselwörter}: Führungskräftecoaching, Mitarbeitergespräche, Talentmanagement, Nachfolgeplanung, Weiterbildungsplanung}
+\cvline{HR-Systeme \& Analytics}{Erfahren \hfill \textbf{Schlüsselwörter}: SAP SuccessFactors, Personio, HR-Kennzahlen, Power BI, Reporting}
+\cvline{Change Management \& Kommunikation}{Erfahren \hfill \textbf{Schlüsselwörter}: Change-Kommunikation, Workshop-Moderation, Stakeholder-Management, Konfliktmanagement, Betriebsratskommunikation}
+\section{Auszeichnungen}
+
+\cventry{Nov. 2020}
+        {Berlin Digital Services AG}
+        {HR Excellence Award}
+        {}
+        {}
+        {\begin{itemize}
+\item Auszeichnung für die erfolgreiche Einführung eines integrierten Onboarding-Programms
+\item Würdigung der messbaren Verbesserung von Time-to-Hire und Mitarbeiterbindung
+\end{itemize}}
+
+\cventry{Mai 2022}
+        {Nordlicht Technologies GmbH}
+        {Top-Arbeitgeber-Zertifizierung}
+        {}
+        {}
+        {\begin{itemize}
+\item Mitverantwortung für die Zertifizierung als attraktiver Arbeitgeber im Technologieumfeld
+\item Besondere Anerkennung für Diversität, Entwicklungsperspektiven und flexible Arbeitsmodelle
+\end{itemize}}
+\section{Zertifikate}
+
+\cventry{Juni 2019}
+        {Society for Human Resource Management}
+        {SHRM Certified Professional (SHRM-CP)}
+        {\url{https://www.shrm.org/certification}}
+        {}
+        {}
+
+\cventry{Sept. 2021}
+        {Haufe Akademie}
+        {Fachzertifikat Arbeitsrecht im Personalwesen}
+        {\url{https://www.haufe-akademie.de}}
+        {}
+        {}
+
+\cventry{März 2022}
+        {Hasso-Plattner-Institut}
+        {Design Thinking Facilitator}
+        {\url{https://hpi.de}}
+        {}
+        {}
+\section{Veröffentlichungen}
+
+\cventry{Sept. 2022}
+        {Hybrides Arbeiten: Leitfaden für moderne Personalarbeit}
+        {Personalwirtschaft Verlag}
+        {\url{https://www.personalwirtschaft.de}}
+        {}
+        {\begin{itemize}
+\item Praxisnaher Leitfaden zur Gestaltung hybrider Arbeitsmodelle
+\item Handlungsempfehlungen für Führung, Zusammenarbeit und Mitarbeiterbindung
+\item Fallbeispiele aus mittelständischen Technologieunternehmen
+\end{itemize}}
+\section{Referenzen}
+
+\cventry{\emaillink[martin.seidel@nordlicht-technologies.de]{martin.seidel@nordlicht-technologies.de}}
+        {Geschäftsführer, Nordlicht Technologies GmbH}
+        {Dr. Martin Seidel}
+        {+49 30 5487 2100}
+        {}
+        {Frau Dr. Vogel hat unsere Personalarbeit strategisch neu ausgerichtet und durch klare Prozesse, transparente Kommunikation und eine starke Führungskräfteentwicklung nachhaltig geprägt. Sie verbindet arbeitsrechtliche Sicherheit mit unternehmerischem Denken.}
+\section{Projekte}
+
+\cventry{März 2019–Dez. 2023}
+        {Ein unternehmensweites Mentoring-Programm zur gezielten Förderung von Frauen in Führungspositionen.}
+        {Mentoring-Programm Female Leaders}
+        {\url{https://www.nordlicht-technologies.de/karriere/female-leaders}}
+        {}
+        {\begin{itemize}
+\item Konzeption und Steuerung eines strukturierten Mentoring-Programms mit externen Coachings
+\item Aufbau von Tandempartnerschaften zwischen Nachwuchsführungskräften und erfahrenen Führungspersönlichkeiten
+\item Regelmäßige Erfolgsmessung über Teilnehmerfeedback, Beförderungsquoten und Retention
+\item Aktive Einbindung der Geschäftsführung und des Betriebsrats
+\end{itemize}
+\textbf{Schlüsselwörter}: Mentoring, Diversity, Führungskräfteentwicklung}
+
+\cventry{Jan. 2022–Dez. 2022}
+        {Aufbau eines Dashboards zur Visualisierung zentraler HR-Kennzahlen für Geschäftsführung und Führungskräfte.}
+        {HR-Analytics-Dashboard}
+        {}
+        {}
+        {\begin{itemize}
+\item Definition relevanter Kennzahlen zu Fluktuation, Recruiting, Krankheit und Personalentwicklung
+\item Entwicklung standardisierter Reports in Power BI auf Basis bereinigter Personaldaten
+\item Schulung von Führungskräften zur datenbasierten Personalsteuerung
+\item Verbesserung der Entscheidungsgrundlagen im monatlichen Management-Review
+\end{itemize}
+\textbf{Schlüsselwörter}: HR-Kennzahlen, Power BI, Reporting, Datenqualität}
+\section{Interessen}
+
+\cvline{Berufliches Engagement}{Diversity \& Inclusion, Mentoring, Bildungsgerechtigkeit}
+\cvline{Ausgleich}{Laufen, Yoga, Wandern}
+\section{Ehrenamtliche Tätigkeiten}
+
+\cventry{Jan. 2019–Heute}
+        {Mentorin für Geflüchtete}
+        {Berliner Netzwerk für berufliche Integration e.V.}
+        {\url{https://www.berufliche-integration-berlin.de}}
+        {}
+        {\begin{itemize}
+\item Unterstützung von Geflüchteten bei der beruflichen Orientierung und Bewerbung
+\item Durchführung von Bewerbungstrainings und Einzelcoachings
+\item Vernetzung mit Unternehmen und Bildungsträgern
+\item Mitwirkung an Veranstaltungen zur interkulturellen Öffnung des Arbeitsmarkts
+\end{itemize}}
+    
+\end{document}

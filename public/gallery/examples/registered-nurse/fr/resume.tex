@@ -1,0 +1,227 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Camille Lefèvre}{}
+\title{Infirmière diplômée d'État}
+\phone[mobile]{+33 6 12 34 56 78}
+\email{camille.lefevre@example.fr}
+\homepage{https://www.camille-lefevre-infirmiere.fr}
+
+\address{45 Rue de la République, Lyon, Auvergne-Rhône-Alpes, France, 69003}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/camille-lefevre}{@camille-lefevre} {} {} {} • {} {} {} 
+{\small \faInstagram}\ \href{https://www.instagram.com/camille.infirmiere}{@camille.infirmiere}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{\begin{itemize}
+\item Infirmière diplômée d'État avec 5 ans d'expérience en milieu hospitalier, spécialisée en soins généraux et urgences
+\item Excellente capacité à travailler en équipe pluridisciplinaire et à communiquer avec les patients et leurs familles
+\item Maîtrise des protocoles de soins, de l'hygiène hospitalière et de la gestion des dossiers patients informatisés
+\item Reconnue pour son sens de l'écoute, sa rigueur et sa réactivité face aux situations d'urgence
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2017–juil. 2020}
+        {Licence, Soins Infirmiers, Score : Mention Bien}
+        {Institut de Formation en Soins Infirmiers (IFSI) de Lyon}
+        {\url{https://www.ifsi-lyon.fr}}
+        {}
+        {\begin{itemize}
+\item Formation complète aux soins infirmiers, incluant stages en hôpital, EHPAD et soins à domicile
+\item Acquisition de compétences techniques et relationnelles pour la prise en charge globale du patient
+\item Participation à des projets de recherche en soins infirmiers
+\end{itemize}
+\textbf{Cours} : Sciences infirmières, Anatomie et physiologie, Pharmacologie, Soins d'urgence, Hygiène hospitalière, Relation d'aide, Santé publique, Stages cliniques}
+\section{Expérience professionnelle}
+
+\cventry{mars 2023–Present}
+        {Infirmière diplômée d'État}
+        {CHU de Lyon - Hôpital Édouard Herriot}
+        {\url{https://www.chu-lyon.fr}}
+        {}
+        {\begin{itemize}
+\item Prise en charge de patients en service de médecine polyvalente (30 lits)
+\item Réalisation des soins techniques : prises de sang, injections, pansements, sondages
+\item Gestion des dossiers patients informatisés et coordination avec les médecins et aides-soignants
+\item Éducation thérapeutique des patients et de leurs familles
+\item Participation à la démarche qualité et à la lutte contre les infections nosocomiales
+\end{itemize}
+\textbf{Mots-clés} : Soins généraux, Médecine polyvalente, Éducation thérapeutique, Dossier patient informatisé}
+
+\cventry{sept. 2020–févr. 2023}
+        {Infirmière diplômée d'État}
+        {Clinique de la Sauvegarde}
+        {\url{https://www.clinique-sauvegarde.fr}}
+        {}
+        {\begin{itemize}
+\item Soins infirmiers en service de chirurgie orthopédique (25 lits)
+\item Préparation et suivi des patients avant et après opération
+\item Administration des traitements antalgiques et surveillance post-opératoire
+\item Collaboration avec les chirurgiens, kinésithérapeutes et équipes de rééducation
+\item Accompagnement des patients dans leur parcours de soins et de rééducation
+\end{itemize}
+\textbf{Mots-clés} : Chirurgie orthopédique, Soins post-opératoires, Gestion de la douleur, Rééducation}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEIC 850, Communication médicale}
+\cvline{Espagnol}{Niveau élémentaire}
+\section{Compétences}
+
+\cvline{Soins infirmiers}{Expert \hfill \textbf{Mots-clés} : Prise de constantes, Injections, Pansements, Sondages, Prélèvements sanguins}
+\cvline{Urgences}{Avancé \hfill \textbf{Mots-clés} : Gestion du stress, Protocoles d'urgence, AFGSU 2}
+\cvline{Relation d'aide}{Avancé \hfill \textbf{Mots-clés} : Écoute active, Communication, Éducation thérapeutique}
+\cvline{Informatique médicale}{Intermédiaire \hfill \textbf{Mots-clés} : DPI, Logiciel Hôpital, Microsoft Office}
+\section{Récompenses}
+
+\cventry{juil. 2020}
+        {IFSI de Lyon}
+        {Prix d'excellence en soins infirmiers}
+        {}
+        {}
+        {Récompense décernée pour la qualité des soins prodigués lors des stages et l'implication dans la formation.}
+\section{Certificats}
+
+\cventry{sept. 2021}
+        {CESU de Lyon}
+        {AFGSU 2 - Attestation de Formation aux Gestes et Soins d'Urgence}
+        {\url{https://www.cesu-lyon.fr}}
+        {}
+        {}
+
+\cventry{janv. 2022}
+        {Hospices Civils de Lyon}
+        {Formation aux bonnes pratiques d'hygiène}
+        {\url{https://www.chu-lyon.fr/formation-hygiene}}
+        {}
+        {}
+
+\cventry{juin 2023}
+        {Université Claude Bernard Lyon 1}
+        {Certification en éducation thérapeutique du patient}
+        {\url{https://www.univ-lyon1.fr}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{oct. 2022}
+        {Prise en charge infirmière de la douleur post-opératoire : une revue de la littérature}
+        {Congrès National des Infirmiers}
+        {\url{https://www.congres-infirmiers.fr}}
+        {}
+        {\begin{itemize}
+\item Poster présenté lors du congrès annuel
+\item Analyse des pratiques et recommandations pour l'amélioration de la prise en charge
+\end{itemize}}
+\section{Projets}
+
+\cventry{janv. 2023–juin 2023}
+        {Mise en place d'un protocole d'évaluation systématique de la douleur en service de chirurgie orthopédique}
+        {Projet d'amélioration de la prise en charge des patients douloureux}
+        {\url{https://www.chu-lyon.fr/projet-douleur}}
+        {}
+        {\begin{itemize}
+\item Élaboration d'un outil d'évaluation de la douleur (EVA) et formation des équipes
+\item Réduction de 30\% des douleurs non contrôlées signalées
+\end{itemize}
+\textbf{Mots-clés} : Douleur, Qualité, Protocole}
+\section{Centres d'intérêt}
+
+\cvline{Sports}{Randonnée, Yoga, Natation}
+\cvline{Culture}{Lecture, Cinéma, Musique}
+\section{Bénévolat}
+
+\cventry{janv. 2021–Present}
+        {Infirmière bénévole}
+        {Croix-Rouge française - Unité locale de Lyon}
+        {\url{https://www.croix-rouge.fr}}
+        {}
+        {\begin{itemize}
+\item Participation à des maraudes et à des consultations infirmières pour personnes précaires
+\item Réalisation de soins de base, prévention et orientation vers les structures de soins
+\item Sensibilisation aux gestes de premiers secours
+\end{itemize}}
+    
+\end{document}

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Daan van den Berg Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Daan van den Berg</h1>
+    <p class="resume-headline">Werktuigbouwkundig ingenieur met focus op precisietechniek en duurzame productontwikkeling</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:daan.vandenberg@example.nl" class="resume-contact-link">daan.vandenberg@example.nl</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+31 6 12345678</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.daanvandenberg.nl" class="resume-contact-link">https://www.daanvandenberg.nl</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Oudegracht 123, Utrecht, Utrecht, Nederland, 3512 AB</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/daanvandenberg" class="resume-contact-link">@daanvandenberg</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/daanvandenberg" class="resume-contact-link">@daanvandenberg</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Basis Informatie</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>Ervaren werktuigbouwkundig ingenieur met een masterdiploma van de TU Delft en meer dan vijf jaar ervaring in de hightech- en maakindustrie.</p>
+          </li>
+          <li>
+            <p>Sterk in het ontwerpen en valideren van complexe mechanische systemen, van concept tot productie, met oog voor kosten, kwaliteit en duurzaamheid.</p>
+          </li>
+          <li>
+            <p>Bedreven in CAD (SolidWorks, CATIA V5, Siemens NX), FEM-analyse (ANSYS) en data-gedreven optimalisatie met MATLAB en Python.</p>
+          </li>
+          <li>
+            <p>Teamspeler met uitstekende communicatieve vaardigheden en ervaring in multidisciplinaire projecten volgens Agile/Scrum en Lean-principes.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Opleidingen</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.tudelft.nl">Technische Universiteit Delft</a></div>
+            <div class="resume-entry-organization">Master, Werktuigbouwkunde, Score: 8.2/10</div>
+          </div>
+          <div class="resume-entry-date">sep 2017–jul 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Afgestudeerd op het ontwerp en de validatie van een compacte warmtewisselaar voor industriële koelsystemen.</p>
+            </li>
+            <li>
+              <p>Specialisatie in precisietechniek, materiaalkunde en geavanceerde simulatiemethoden.</p>
+            </li>
+            <li>
+              <p>Projecten uitgevoerd in samenwerking met ASML, Demcon en VDL.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cursussen</span>: Mechanica van Materialen, Numerieke Stromingsleer, Precisietechniek, Productietechniek, Systeemontwerp, Regeltechniek</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hu.nl">Hogeschool Utrecht</a></div>
+            <div class="resume-entry-organization">Bachelor, Werktuigbouwkunde, Score: 8.0</div>
+          </div>
+          <div class="resume-entry-date">sep 2013–jul 2017</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Breed opgeleide werktuigbouwkundige met praktijkervaring in ontwerp, productie en onderhoud.</p>
+            </li>
+            <li>
+              <p>Minor in Duurzame Energie en stage bij Fokker Technologies.</p>
+            </li>
+            <li>
+              <p>Actief lid van de studievereniging en deelnemer aan nationale ontwerpwedstrijden.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cursussen</span>: Sterkteleer, Warmteleer, CAD-Technieken, Productieprocessen, Elektrotechniek, Projectmatig Werken</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Werkervaring</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.asml.com">ASML</a></div>
+            <div class="resume-entry-organization">Senior Werktuigbouwkundig Ingenieur</div>
+          </div>
+          <div class="resume-entry-date">jan 2022–Heden</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Verantwoordelijk voor het mechanisch ontwerp en de integratie van precisiemodules voor geavanceerde lithografiesystemen.</p>
+            </li>
+            <li>
+              <p>Uitvoeren van FEM-analyses en tolerantieanalyses om de stabiliteit en nauwkeurigheid van systemen te waarborgen.</p>
+            </li>
+            <li>
+              <p>Samenwerken met elektronica-, software- en productie-engineeringteams in een multidisciplinaire omgeving.</p>
+            </li>
+            <li>
+              <p>Begeleiden van junior ingenieurs en bijdragen aan continue verbetering van ontwerpprocessen.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Precisietechniek, FEM-analyse, Cleanroom, Systeemtechniek</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.vdlgroep.com">VDL Enabling Technologies Group</a></div>
+            <div class="resume-entry-organization">Werktuigbouwkundig Ingenieur</div>
+          </div>
+          <div class="resume-entry-date">sep 2019–dec 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ontworpen van machineonderdelen en assemblages voor de halfgeleider- en medische industrie.</p>
+            </li>
+            <li>
+              <p>Opgesteld van technische specificaties, tolerantieanalyses en productierapporten.</p>
+            </li>
+            <li>
+              <p>Begeleid van prototyping en serieproductie bij interne en externe leveranciers.</p>
+            </li>
+            <li>
+              <p>Verantwoordelijk voor kwaliteitsverbeteringen en kostenreductie binnen lopende projecten.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Machinebouw, GD&amp;T, Prototyping, Kwaliteitsbeheer</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.fokker.com">Fokker Technologies</a></div>
+            <div class="resume-entry-organization">Stagiair Werktuigbouwkunde</div>
+          </div>
+          <div class="resume-entry-date">feb 2016–jul 2016</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ondersteund bij het ontwerp en de analyse van lichte vliegtuigcomponenten.</p>
+            </li>
+            <li>
+              <p>Uitgevoerd van materiaalonderzoek en het opstellen van testprotocollen.</p>
+            </li>
+            <li>
+              <p>Gerapporteerd over resultaten aan het engineeringteam en de stagebegeleider.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Luchtvaart, Materiaalkunde, Testen, Rapportage</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Talen</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Nederlands<span class="resume-language-fluency">: Moedertaal of tweetalige vaardigheid</span></div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Engels<span class="resume-language-fluency">: Volledige professionele vaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: TOEFL 110, IELTS 7.5</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Duits<span class="resume-language-fluency">: Beperkte werkvaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: Goethe B1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Vaardigheden</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Werktuigbouwkundig Ontwerp<span class="resume-skill-level">: Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: SolidWorks, CATIA V5, Siemens NX, GD&amp;T, DFM</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Simulatie en Analyse<span class="resume-skill-level">: Geavanceerd</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: ANSYS, FEM, MATLAB, Python, CFD</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Productie en Prototyping<span class="resume-skill-level">: Geavanceerd</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: 3D-printen, CNC-frezen, Lasersnijden, Assemblage</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Projectmanagement<span class="resume-skill-level">: Intermediair</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Agile, Scrum, Lean Six Sigma, IPMA</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Onderscheidingen</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Beste Afstudeerproject Werktuigbouwkunde</div>
+            <div class="resume-entry-organization">Technische Universiteit Delft</div>
+          </div>
+          <div class="resume-entry-date">jul 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Toegekend voor het ontwerp van een compacte, energiezuinige warmtewisselaar met een verbeterde warmteoverdracht van 18%.</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Innovatieprijs VDL Groep</div>
+            <div class="resume-entry-organization">VDL Groep</div>
+          </div>
+          <div class="resume-entry-date">nov 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Prijs voor een kostenbesparend ontwerp van een module voor de halfgeleiderindustrie, met een reductie van assemblagekosten van 12%.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificaten</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.solidworks.com/certification">Certified SolidWorks Professional (CSWP)</a></div>
+            <div class="resume-entry-organization">Dassault Systèmes</div>
+          </div>
+          <div class="resume-entry-date">mrt 2020</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://asq.org/cert/lean-six-sigma-green-belt">Lean Six Sigma Green Belt</a></div>
+            <div class="resume-entry-organization">ASQ</div>
+          </div>
+          <div class="resume-entry-date">jun 2021</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ipma.nl">Projectmanagement IPMA-D</a></div>
+            <div class="resume-entry-organization">IPMA Nederland</div>
+          </div>
+          <div class="resume-entry-date">sep 2022</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Publicaties</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.tvvl.nl">Optimalisatie van warmtewisselaars voor compacte industriële systemen</a></div>
+            <div class="resume-entry-organization">TVVL Magazine</div>
+          </div>
+          <div class="resume-entry-date">mei 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Beschrijft een methode om warmtewisselaars te optimaliseren met behulp van CFD en experimenteel onderzoek.</p>
+            </li>
+            <li>
+              <p>Toont een verbetering van de warmteoverdracht en een reductie van het drukverlies in industriële koelsystemen.</p>
+            </li>
+            <li>
+              <p>Gepresenteerd op de TVVL Innovatiedag 2021.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Projecten</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.tudelft.nl">Compacte Warmtewisselaar</a></div>
+            <div class="resume-entry-description">Ontwerp en validatie van een compacte warmtewisselaar voor industriële koelsystemen.</div>
+          </div>
+          <div class="resume-entry-date">sep 2018–jun 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ontworpen in SolidWorks en geanalyseerd met ANSYS Fluent.</p>
+            </li>
+            <li>
+              <p>Verbeterde warmteoverdracht met 18% en verlaagde drukval met 10%.</p>
+            </li>
+            <li>
+              <p>Prototype getest in het laboratorium van de TU Delft.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Warmteoverdracht, CFD, SolidWorks, Prototyping</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hu.nl">Modulaire Robotarm</a></div>
+            <div class="resume-entry-description">Ontwikkeling van een modulaire robotarm voor flexibele productietoepassingen.</div>
+          </div>
+          <div class="resume-entry-date">feb 2018–aug 2018</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ontworpen van een robotarm met verwisselbare grijpers en een bereik van 1,2 meter.</p>
+            </li>
+            <li>
+              <p>Geïntegreerd van sensoren en een eenvoudige besturing met Python.</p>
+            </li>
+            <li>
+              <p>Gepresenteerd op de Techniekbeurs Utrecht 2018.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Robotica, Modulair Ontwerp, Python, Sensoren</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interesses</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Techniek en Innovatie</span>: 3D-printen, Robotica, Duurzame Energie</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Sport en Buitenleven</span>: Wielrennen, Wandelen, Zeilen</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Vrijwilligerswerk</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.techniekpromotie.nl">Stichting Techniekpromotie</a></div>
+            <div class="resume-entry-organization">Techniekmentor</div>
+          </div>
+          <div class="resume-entry-date">sep 2020–Heden</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Begeleiden van middelbare scholieren bij techniekprojecten en het ontwerpen van eenvoudige machines.</p>
+            </li>
+            <li>
+              <p>Organiseren van workshops over 3D-printen en duurzame energie.</p>
+            </li>
+            <li>
+              <p>Bijdragen aan het vergroten van interesse in techniek en werktuigbouwkunde onder jongeren.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

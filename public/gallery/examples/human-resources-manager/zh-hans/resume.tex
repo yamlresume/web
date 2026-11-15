@@ -1,0 +1,261 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{陈晓华}{}
+\title{人力资源经理 | 10年人力资源管理经验 | 擅长组织发展与员工关系}
+\phone[mobile]{+86 138 1234 5678}
+\email{chen.xiaohua@example.com}
+\homepage{https://www.linkedin.com/in/chenxiaohua}
+
+\address{中国，上海，上海，上海市浦东新区世纪大道100号，200120}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/chenxiaohua}{@chenxiaohua} {} {} {} • {} {} {} 
+{\small \faZhihu}\ \href{https://www.zhihu.com/people/chenxiaohua}{@chenxiaohua}}
+
+\begin{document}
+
+\maketitle
+
+\section{简介}
+
+\cvline{}{\begin{itemize}
+\item 拥有10年人力资源管理经验，擅长招聘、绩效管理、员工关系和组织发展
+\item 曾领导10人HR团队，支持公司从500人扩张至2000人规模
+\item 熟悉中国劳动法律法规，成功处理多起复杂员工关系案例
+\item 具备出色的沟通协调能力和数据分析能力，推动HR数字化转型
+\item 持有人力资源管理师一级证书和国际人力资源管理师认证
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2008年9月–2011年6月}
+        {硕士，人力资源管理，成绩：3.8/4.0}
+        {复旦大学}
+        {\url{https://www.fudan.edu.cn}}
+        {}
+        {\begin{itemize}
+\item 系统学习人力资源管理理论与实务，成绩优异
+\item 参与多项企业咨询项目，积累实战经验
+\item 毕业论文获评优秀，主题为“新生代员工敬业度研究”
+\end{itemize}
+\textbf{课程}：组织行为学、人力资源管理、劳动关系与劳动法、薪酬管理、绩效管理、招聘与配置、培训与开发、战略人力资源管理}
+\section{工作经历}
+
+\cventry{2018年3月至今}
+        {人力资源经理}
+        {华信科技有限公司}
+        {\url{https://www.huaxin-tech.com}}
+        {}
+        {\begin{itemize}
+\item 全面负责人力资源部门工作，管理10人团队，支持公司2000余名员工
+\item 主导年度招聘计划，年均招聘300+人，关键岗位到岗率95\%
+\item 设计并实施绩效管理体系，推动OKR与KPI结合，员工绩效提升20\%
+\item 建立员工关系沟通机制，员工满意度从75\%提升至88\%
+\item 优化薪酬福利体系，完成年度薪酬调研和调薪方案，保持市场竞争力
+\end{itemize}
+\textbf{关键字}：人才招聘、绩效管理、员工关系、组织发展、薪酬福利}
+
+\cventry{2013年7月–2018年2月}
+        {人力资源主管}
+        {恒通集团}
+        {\url{https://www.hengtong-group.com}}
+        {}
+        {\begin{itemize}
+\item 负责集团总部及下属子公司招聘工作，年均完成150+岗位招聘
+\item 搭建培训体系，组织新员工入职培训和管理技能培训，覆盖500+人次
+\item 参与薪酬体系改革，完成岗位价值评估和薪酬宽带设计
+\item 处理员工关系日常事务，包括劳动合同管理、员工投诉和劳动纠纷
+\item 协助HRD完成组织架构调整和人才盘点项目
+\end{itemize}
+\textbf{关键字}：招聘、培训、薪酬、员工关系}
+
+\cventry{2011年7月–2013年6月}
+        {人力资源专员}
+        {云创网络科技有限公司}
+        {\url{https://www.yunchuang.net}}
+        {}
+        {\begin{itemize}
+\item 负责招聘渠道维护、简历筛选、面试安排和入职办理
+\item 管理员工档案和人事系统，确保数据准确完整
+\item 协助组织员工活动和福利发放，提升员工归属感
+\item 参与制定公司规章制度和员工手册
+\end{itemize}
+\textbf{关键字}：招聘、员工入职、档案管理}
+\section{语言}
+
+\cvline{中文}{母语或双语水平 \hfill \textbf{关键字}：普通话、粤语}
+\cvline{英语}{完全专业水平 \hfill \textbf{关键字}：CET-6、商务英语}
+\section{专业技能}
+
+\cvline{人力资源管理}{专家 \hfill \textbf{关键字}：人才招聘、绩效管理、薪酬福利、员工关系、组织发展、劳动法}
+\cvline{领导力}{高级 \hfill \textbf{关键字}：团队建设、跨部门协作、决策能力、沟通协调}
+\cvline{数据分析}{中级 \hfill \textbf{关键字}：Excel、HRIS、数据报表、人力分析}
+\section{荣誉}
+
+\cventry{2019年12月}
+        {华信科技有限公司}
+        {年度优秀员工}
+        {}
+        {}
+        {表彰在人力资源管理和组织发展方面的杰出贡献，特别是在员工满意度提升项目中的突出表现。}
+
+\cventry{2020年12月}
+        {华信科技有限公司}
+        {最佳团队领导奖}
+        {}
+        {}
+        {带领HR团队获得年度最佳团队称号，团队在招聘效率、员工服务等方面表现优异。}
+\section{证书}
+
+\cventry{2016年5月}
+        {中国人力资源和社会保障部}
+        {人力资源管理师（一级）}
+        {\url{https://www.mohrss.gov.cn}}
+        {}
+        {}
+
+\cventry{2018年11月}
+        {国际人力资源管理协会}
+        {国际人力资源管理师 (IPMA-CP)}
+        {\url{https://www.ipma-hr.org}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2021年8月}
+        {数字化转型下的人力资源管理创新}
+        {《人力资源》杂志}
+        {\url{https://www.hrjournal.com/article/1234}}
+        {}
+        {探讨数字化时代HR如何利用技术提升员工体验和组织效能，结合案例分析提出实施路径。}
+\section{项目}
+
+\cventry{2020年4月–2020年12月}
+        {该项目旨在通过系统性的调研和干预，提升员工敬业度和满意度，打造积极的组织氛围。}
+        {员工满意度提升项目}
+        {}
+        {}
+        {\begin{itemize}
+\item 领导跨部门团队，通过问卷调查和焦点小组识别员工满意度关键因素
+\item 制定并实施改进措施，包括弹性工作制、职业发展通道和即时激励
+\item 项目结束后员工满意度提升15\%，离职率下降8\%
+\end{itemize}
+\textbf{关键字}：员工满意度、组织氛围、调研}
+
+\cventry{2019年6月–2020年3月}
+        {推动人力资源管理的数字化升级，提升运营效率和员工体验。}
+        {HR数字化转型}
+        {}
+        {}
+        {\begin{itemize}
+\item 主导HRIS系统选型与实施，整合招聘、考勤、薪酬和绩效模块
+\item 实现员工自助服务和线上审批，HR事务处理效率提升40\%
+\item 建立人力资源数据看板，为管理层提供决策支持
+\end{itemize}
+\textbf{关键字}：HRIS、数字化、流程优化}
+\section{兴趣爱好}
+
+\cvline{阅读}{管理书籍、心理学、历史}
+\cvline{运动}{瑜伽、跑步、羽毛球}
+\section{志愿服务}
+
+\cventry{2019年1月至今}
+        {志愿者讲师}
+        {上海市人力资源管理协会}
+        {\url{https://www.shhra.org}}
+        {}
+        {\begin{itemize}
+\item 定期为中小企业提供人力资源管理公益培训，分享招聘、绩效管理等方面的实践经验
+\item 参与协会组织的行业调研和标准制定工作
+\item 担任高校HR专业学生的职业发展导师
+\end{itemize}}
+    
+\end{document}

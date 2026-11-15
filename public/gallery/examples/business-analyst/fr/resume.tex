@@ -1,0 +1,221 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Camille Lefebvre}{}
+\title{Analyste d'Affaires Senior | Expert en Transformation Digitale}
+\phone[mobile]{+33 6 12 34 56 78}
+\email{camille.lefebvre@email.fr}
+\homepage{https://www.camille-lefebvre.fr}
+
+\address{25 Rue de la Paix, Paris, Île-de-France, France, 75002}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/camille-lefebvre}{@camille-lefebvre} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/camillelefebvre}{@camillelefebvre}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{\begin{itemize}
+\item Analyste d'affaires avec 8 ans d'expérience dans la conduite de projets de transformation digitale.
+\item Expertise en modélisation des processus métier (BPMN, UML) et en analyse fonctionnelle.
+\item Maîtrise des outils d'analyse de données (SQL, Power BI, Tableau) et des méthodologies agiles.
+\item Forte capacité à collaborer avec les équipes techniques et métier pour aligner les solutions sur les besoins business.
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2014–juil. 2016}
+        {Master, Analyse d'Affaires et Systèmes d'Information, Score : Mention Très Bien}
+        {Université Paris-Dauphine}
+        {\url{https://www.dauphine.psl.eu}}
+        {}
+        {\begin{itemize}
+\item Formation approfondie en analyse fonctionnelle et modélisation des processus.
+\item Projets pratiques en collaboration avec des entreprises partenaires.
+\item Mémoire sur l'impact de la transformation digitale sur les PME.
+\end{itemize}
+\textbf{Cours} : Modélisation des processus métier, Gestion de projet agile, Systèmes d'information décisionnels, Analyse de données, Architecture des SI, Management de l'innovation, Droit des affaires, Communication professionnelle}
+\section{Expérience professionnelle}
+
+\cventry{janv. 2021–Present}
+        {Analyste d'Affaires Senior}
+        {BNP Paribas}
+        {\url{https://www.bnpparibas.fr}}
+        {}
+        {\begin{itemize}
+\item Pilotage de l'analyse fonctionnelle pour le projet de refonte du portail client, en collaboration avec les équipes métier et IT.
+\item Rédaction des spécifications fonctionnelles détaillées (SFG) et des cahiers de recette.
+\item Animation d'ateliers de cadrage et de priorisation avec les parties prenantes.
+\item Modélisation des processus métier en BPMN et création de maquettes fonctionnelles.
+\item Suivi des indicateurs de performance et reporting mensuel auprès du comité de direction.
+\end{itemize}
+\textbf{Mots-clés} : BPMN, Analyse fonctionnelle, Agile, JIRA, Confluence}
+
+\cventry{sept. 2016–déc. 2020}
+        {Analyste d'Affaires}
+        {Capgemini}
+        {\url{https://www.capgemini.com/fr-fr/}}
+        {}
+        {\begin{itemize}
+\item Participation à des missions de conseil en transformation digitale pour des clients du secteur bancaire et de l'assurance.
+\item Analyse des besoins métier et rédaction des user stories.
+\item Coordination entre les équipes de développement et les utilisateurs finaux.
+\item Réalisation de tests fonctionnels et validation des livrables.
+\item Contribution à l'amélioration continue des processus internes.
+\end{itemize}
+\textbf{Mots-clés} : User stories, UML, Tests fonctionnels, Scrum, SQL}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEIC 950}
+\cvline{Espagnol}{Niveau de travail limité}
+\section{Compétences}
+
+\cvline{Analyse et Modélisation}{Expert \hfill \textbf{Mots-clés} : BPMN, UML, Analyse fonctionnelle, Cartographie des processus}
+\cvline{Gestion de Projet}{Avancé \hfill \textbf{Mots-clés} : Agile, Scrum, JIRA, Confluence, MS Project}
+\cvline{Analyse de Données}{Avancé \hfill \textbf{Mots-clés} : SQL, Power BI, Tableau, Excel avancé}
+\cvline{Outils Bureautiques}{Expert \hfill \textbf{Mots-clés} : Excel, PowerPoint, Word, Visio}
+\section{Récompenses}
+
+\cventry{juin 2019}
+        {Capgemini}
+        {Prix de l'Innovation}
+        {}
+        {}
+        {Récompense pour la conception d'un outil interne d'analyse des besoins clients.}
+\section{Certificats}
+
+\cventry{mars 2022}
+        {IIBA}
+        {Certified Business Analysis Professional (CBAP)}
+        {\url{https://www.iiba.org/certification/cbap/}}
+        {}
+        {}
+
+\cventry{nov. 2020}
+        {Scrum.org}
+        {Professional Scrum Master I}
+        {\url{https://www.scrum.org/professional-scrum-master-i-certification}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{avr. 2021}
+        {L'analyse d'affaires à l'ère du digital : bonnes pratiques et outils}
+        {Journal du Management}
+        {\url{https://www.journaldumanagement.fr/analyse-affaires-digital}}
+        {}
+        {Article présentant les méthodes et outils clés pour réussir la transformation digitale des organisations.}
+\section{Projets}
+
+\cventry{janv. 2021–déc. 2022}
+        {Analyse des besoins, rédaction des spécifications fonctionnelles et coordination avec les équipes de développement pour la refonte du portail client.
+}
+        {Refonte du portail client}
+        {\url{https://www.bnpparibas.fr/portail-client}}
+        {}
+        {Projet de modernisation du portail client de BNP Paribas.
+\textbf{Mots-clés} : BPMN, Agile, UX}
+
+\cventry{mars 2020–août 2020}
+        {Conception et mise en place d'un tableau de bord interactif sous Power BI pour visualiser les KPIs métier et faciliter la prise de décision.
+}
+        {Outil de pilotage des indicateurs}
+        {}
+        {}
+        {Développement d'un tableau de bord Power BI pour le suivi des indicateurs de performance.
+\textbf{Mots-clés} : Power BI, SQL, KPIs}
+\section{Centres d'intérêt}
+
+\cvline{Lecture}{Romans, Essais, Biographies}
+\cvline{Randonnée}{Montagne, Nature}
+\cvline{Photographie}{Voyage, Portrait}
+\section{Bénévolat}
+
+\cventry{sept. 2020–Present}
+        {Mentore}
+        {Association Femmes du Numérique}
+        {\url{https://www.femmesdunumerique.fr}}
+        {}
+        {Accompagnement de jeunes femmes dans leur orientation vers les métiers du numérique, animation d'ateliers et partage d'expérience.}
+    
+\end{document}

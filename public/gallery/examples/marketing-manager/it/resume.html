@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Marco Ferrari Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Marco Ferrari</h1>
+    <p class="resume-headline">Responsabile Marketing | Strategia, Brand e Crescita Digitale</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:marco.ferrari.marketing@gmail.com" class="resume-contact-link">marco.ferrari.marketing@gmail.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+39 347 123 4567</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.marcoferrari-marketing.it" class="resume-contact-link">https://www.marcoferrari-marketing.it</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Via Torino 45, Milano, Lombardia, Italia, 20123</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/marco-ferrari-marketing" class="resume-contact-link">@marco-ferrari-marketing</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Medium</span>: <a href="https://medium.com/@marcoferrari_mkt" class="resume-contact-link">@marcoferrari_mkt</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Instagram</span>: <a href="https://www.instagram.com/marcoferrari.mkt" class="resume-contact-link">@marcoferrari.mkt</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Informazioni personali</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <p>Responsabile Marketing con oltre 8 anni di esperienza nella definizione e nell&#39;esecuzione di strategie di marketing B2C e B2B. Specializzato in gestione del brand, marketing digitale, e-commerce e analisi delle performance.</p>
+        <ul>
+          <li>
+            <p>Ho guidato team cross-funzionali e budget fino a 1,2 milioni di euro, ottenendo crescita misurabile in traffico, conversioni e vendite.</p>
+          </li>
+          <li>
+            <p>Competenze solide in SEO/SEM, campagne Meta e Google, CRM, marketing dei contenuti e dashboard KPI.</p>
+          </li>
+          <li>
+            <p>Abituato a lavorare con vendite, prodotto e agenzie esterne per trasformare dati e insight in piani di marketing concreti.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Formazione</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.unibocconi.it">Università Commerciale Luigi Bocconi</a></div>
+            <div class="resume-entry-organization">Laurea magistrale, Marketing e Comunicazione d&#39;Impresa, Punteggio: 110/110 e lode</div>
+          </div>
+          <div class="resume-entry-date">set 2013–lug 2015</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Formazione avanzata in strategia di marketing, branding e analisi dei dati</p>
+            </li>
+            <li>
+              <p>Tesi su modelli di attribuzione per il marketing omnicanale</p>
+            </li>
+            <li>
+              <p>Esperienza pratica tramite case study con aziende del settore retail e food</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Marketing Strategico, Comportamento del Consumatore, Ricerche di Mercato, Gestione del Brand, Comunicazione Integrata, Marketing Digitale, Analisi dei Dati per il Marketing</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.unipd.it">Università degli Studi di Padova</a></div>
+            <div class="resume-entry-organization">Laurea triennale, Economia e Management, Punteggio: 108/110</div>
+          </div>
+          <div class="resume-entry-date">set 2010–lug 2013</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Solide basi economiche e manageriali</p>
+            </li>
+            <li>
+              <p>Approfondimento di statistica e analisi quantitative applicate al business</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Economia Aziendale, Statistica, Diritto Privato, Marketing, Organizzazione Aziendale</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Esperienza professionale</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.luminaretail.it">Lumina Retail Italia</a></div>
+            <div class="resume-entry-organization">Responsabile Marketing</div>
+          </div>
+          <div class="resume-entry-date">mar 2022–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Guido il piano marketing annuale per 3 linee di prodotto, con un budget di 1,2 milioni di euro</p>
+            </li>
+            <li>
+              <p>Coordino un team di 6 persone tra brand, digital, contenuti e CRM</p>
+            </li>
+            <li>
+              <p>Ho aumentato del 28% il traffico organico e del 19% il tasso di conversione e-commerce in 18 mesi</p>
+            </li>
+            <li>
+              <p>Ho introdotto un modello di attribuzione multi-touch e dashboard mensili per il monitoraggio delle performance</p>
+            </li>
+            <li>
+              <p>Collaboro con vendite, prodotto e agenzie esterne per allineare campagne, promozioni e lancio di nuovi prodotti</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Strategia di marketing, Gestione del brand, E-commerce, Analisi dati, Team leadership</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.verdevitafood.it">VerdeVita Food</a></div>
+            <div class="resume-entry-organization">Specialista Marketing Senior</div>
+          </div>
+          <div class="resume-entry-date">giu 2019–feb 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ho sviluppato campagne digitali integrate su Meta, Google e piattaforme di content discovery</p>
+            </li>
+            <li>
+              <p>Ho gestito il calendario editoriale e la produzione di contenuti per blog, newsletter e social media</p>
+            </li>
+            <li>
+              <p>Ho contribuito a un incremento del 35% delle vendite online nel segmento biologico</p>
+            </li>
+            <li>
+              <p>Ho coordinato ricerche di mercato e test A/B per ottimizzare landing page e materiali promozionali</p>
+            </li>
+            <li>
+              <p>Ho lavorato con il team CRM per segmentare il database e migliorare il tasso di apertura delle email</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Campagne digitali, Marketing dei contenuti, SEO/SEM, Email marketing, Test A/B</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.tecnonovasoluzioni.it">TecnoNova Soluzioni</a></div>
+            <div class="resume-entry-organization">Specialista Marketing</div>
+          </div>
+          <div class="resume-entry-date">set 2016–mag 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ho supportato la creazione di materiali commerciali, presentazioni e casi studio per il team vendite</p>
+            </li>
+            <li>
+              <p>Ho gestito la presenza social e il sito web aziendale, con focus su generazione di lead B2B</p>
+            </li>
+            <li>
+              <p>Ho organizzato webinar ed eventi di settore, raccogliendo oltre 800 contatti qualificati</p>
+            </li>
+            <li>
+              <p>Ho monitorato KPI di campagna e preparato report periodici per la direzione</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Generazione di lead, Marketing B2B, Eventi, Social media, Reporting</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Lingue</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Italiano<span class="resume-language-fluency">: Madrelingua o bilingue</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: Madrelingua</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Inglese<span class="resume-language-fluency">: Competenza professionale completa</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: Certificazione C1, Uso quotidiano professionale</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Francese<span class="resume-language-fluency">: Competenza professionale limitata</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: Conversazione base</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Competenze</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Marketing Digitale<span class="resume-skill-level">: Esperto</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: SEO/SEM, Google Ads, Meta Ads, Marketing dei contenuti, Social media</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Analisi e Performance<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Google Analytics 4, Looker Studio, Dashboard KPI, Test A/B, Modelli di attribuzione</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Brand e Comunicazione<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Posizionamento del brand, Copywriting, Relazioni pubbliche digitali, Gestione agenzie</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">CRM e Automazione<span class="resume-skill-level">: Intermedio</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: HubSpot, Mailchimp, Segmentazione, Automazione marketing</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Leadership e Team Management<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Gestione budget, Mentoring, Gestione progetti, Gestione stakeholder</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Premi</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Premio Eccellenza Marketing 2023</div>
+            <div class="resume-entry-organization">Associazione Italiana Marketing</div>
+          </div>
+          <div class="resume-entry-date">nov 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Riconoscimento per la campagna omnicanale &quot;Lumina Casa Green&quot;, selezionata per impatto su brand awareness e sostenibilità.</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Migliore Campagna Digitale - Retail</div>
+            <div class="resume-entry-organization">Digital Marketing Awards Italia</div>
+          </div>
+          <div class="resume-entry-date">ott 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Premio assegnato alla campagna &quot;VerdeVita a Tavola&quot; per creatività, risultati di vendita e integrazione tra canali online e offline.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://skillshop.withgoogle.com/">Certificazione Google Analytics 4</a></div>
+            <div class="resume-entry-organization">Google</div>
+          </div>
+          <div class="resume-entry-date">mag 2023</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://academy.hubspot.com/courses/content-marketing">Certificazione HubSpot Content Marketing</a></div>
+            <div class="resume-entry-organization">HubSpot Academy</div>
+          </div>
+          <div class="resume-entry-date">set 2022</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.facebook.com/business/learn/certification">Certificazione Meta Digital Marketing Associate</a></div>
+            <div class="resume-entry-organization">Meta</div>
+          </div>
+          <div class="resume-entry-date">apr 2021</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Pubblicazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.marketingoggi.it/articoli/dati-marketing-omnicanale">Il ruolo dei dati nella strategia di marketing omnicanale</a></div>
+            <div class="resume-entry-organization">Marketing Oggi</div>
+          </div>
+          <div class="resume-entry-date">feb 2024</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Analisi dei modelli di attribuzione e delle metriche chiave per collegare investimenti marketing e risultati di business</p>
+            </li>
+            <li>
+              <p>Casi pratici di dashboard e governance dei dati per team marketing e vendite</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Progetti</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.verdevitafood.it/campagne/rilancio">Campagna Nazionale Rilancio VerdeVita</a></div>
+            <div class="resume-entry-description">Campagna integrata per il rilancio della linea biologica VerdeVita con focus su sostenibilità e stagionalità.</div>
+          </div>
+          <div class="resume-entry-date">mar 2021–ott 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ho coordinato creatività, media planning e contenuti per TV digitale, social, newsletter e punto vendita</p>
+            </li>
+            <li>
+              <p>Ho gestito un budget di 450.000 euro e un aumento del 35% delle vendite online della linea</p>
+            </li>
+            <li>
+              <p>Ho impostato test creativi e report settimanali per ottimizzare il ritorno della spesa pubblicitaria</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Campagna integrata, Sostenibilità, Media planning, Retail</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.luminaretail.it/progetti/customer-data-platform">Customer Data Platform Lumina Retail</a></div>
+            <div class="resume-entry-description">Progetto di consolidamento dei dati cliente per personalizzare campagne e migliorare la customer experience.</div>
+          </div>
+          <div class="resume-entry-date">gen 2023–dic 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ho definito i requisiti marketing e i casi d&#39;uso per la segmentazione dinamica del cliente</p>
+            </li>
+            <li>
+              <p>Ho collaborato con IT e CRM per integrare dati da e-commerce, negozi e assistenza clienti</p>
+            </li>
+            <li>
+              <p>Ho introdotto journey personalizzate con un incremento del 22% nel tasso di riattivazione</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Customer experience, Segmentazione, Automazione marketing, Data strategy</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interessi</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Tecnologia e Innovazione</span>: Intelligenza artificiale, Marketing analytics, Prodotti digitali</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Sostenibilità</span>: Consumo consapevole, Economia circolare</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Sport all&#39;aperto</span>: Corsa, Ciclismo, Trekking</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Lettura</span>: Saggi di marketing, Narrativa contemporanea</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Volontariato</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.marketingperilbenecomune.it">Fondazione Marketing per il Bene Comune</a></div>
+            <div class="resume-entry-organization">Mentor per giovani marketer</div>
+          </div>
+          <div class="resume-entry-date">gen 2020–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Affianco studenti e giovani professionisti nello sviluppo di competenze di marketing strategico e digitale</p>
+            </li>
+            <li>
+              <p>Partecipo a incontri di orientamento e workshop su personal branding e ricerca del lavoro</p>
+            </li>
+            <li>
+              <p>Collaboro all&#39;organizzazione di eventi formativi gratuiti per associazioni no profit</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

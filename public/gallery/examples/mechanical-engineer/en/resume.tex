@@ -1,0 +1,295 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Daniel R. Whitaker}{}
+\title{Senior Mechanical Engineer | Product Design \& Manufacturing}
+\phone[mobile]{(512) 555-0147}
+\email{daniel.whitaker@example.com}
+\homepage{https://www.danielwhitaker-engineering.com}
+
+\address{4821 Cedar Ridge Drive, Austin, Texas, United States, 78731}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/daniel-whitaker-me}{@daniel-whitaker-me} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/dwhitaker-eng}{@dwhitaker-eng}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{\begin{itemize}
+\item Senior mechanical engineer with 10+ years of experience in product design, analysis, and manufacturing for automotive and industrial systems
+\item Proven record of taking concepts from requirements through CAD, prototype validation, and production launch
+\item Strong background in GD\&T, FEA, DFM, and root-cause analysis; comfortable leading cross-functional teams and suppliers
+\item Committed to designing reliable, cost-effective, and sustainable mechanical solutions for demanding operating environments
+\end{itemize}}
+\section{Education}
+
+\cventry{Aug 2012–May 2014}
+        {Master, Mechanical Engineering, Score: 3.9}
+        {University of Texas at Austin}
+        {\url{https://www.utexas.edu}}
+        {}
+        {\begin{itemize}
+\item Focused on design optimization, simulation, and advanced manufacturing methods
+\item Completed thesis on lightweight structural mounts for electric vehicle powertrains
+\item Served as graduate teaching assistant for the senior capstone design course
+\end{itemize}
+\textbf{Courses}: Advanced Thermodynamics, Finite Element Methods, Mechanical Vibrations, Design for Manufacturing, Robotics and Automation, Computational Fluid Dynamics}
+
+\cventry{Aug 2008–May 2012}
+        {Bachelor, Mechanical Engineering, Score: 3.8}
+        {Texas A\&M University}
+        {\url{https://www.tamu.edu}}
+        {}
+        {\begin{itemize}
+\item Built a strong foundation in mechanics, materials, and product design
+\item Led a Formula SAE team project focused on chassis and suspension improvements
+\item Graduated with honors and completed an industry internship in automotive manufacturing
+\end{itemize}
+\textbf{Courses}: Statics and Dynamics, Materials Science, Machine Design, Manufacturing Processes, Heat Transfer, Instrumentation and Measurement}
+\section{Work}
+
+\cventry{Jan 2020–Present}
+        {Senior Mechanical Engineer}
+        {Apex Mechanical Systems}
+        {\url{https://www.apexmechsystems.com}}
+        {}
+        {\begin{itemize}
+\item Lead mechanical design for industrial actuation and enclosure platforms, owning requirements, architecture, detailed CAD, and production release
+\item Drive FEA, thermal, and tolerance stack-up analyses to validate performance, reliability, and safety margins before prototype builds
+\item Partner with electrical, software, manufacturing, and supply-chain teams to launch cost-effective designs into low- and high-volume production
+\item Mentor junior engineers and standardize design-review, DFMEA, and drawing-check processes across the mechanical team
+\end{itemize}
+\textbf{Keywords}: Product Development, GD\&T, FEA, DFM, Supplier Qualification}
+
+\cventry{Jun 2016–Dec 2019}
+        {Mechanical Design Engineer}
+        {NovaDrive Powertrain}
+        {\url{https://www.novadrivepowertrain.com}}
+        {}
+        {\begin{itemize}
+\item Designed aluminum and steel powertrain components for hybrid and electric drivetrains, from concept through validation and launch
+\item Created 3D CAD models, detailed drawings, and tolerance analyses using SolidWorks and Creo in a PLM-controlled environment
+\item Led root-cause investigations for durability and NVH issues, implementing design and process corrective actions with suppliers
+\item Supported prototype builds, dyno testing, and production trials, reducing component mass by 12\% without compromising strength
+\end{itemize}
+\textbf{Keywords}: Powertrain, SolidWorks, Tolerance Analysis, NVH, Validation Testing}
+
+\cventry{Jul 2014–May 2016}
+        {Manufacturing Engineer}
+        {Cascade Robotics}
+        {\url{https://www.cascaderobotics.com}}
+        {}
+        {\begin{itemize}
+\item Owned manufacturing processes for precision-machined and sheet-metal assemblies used in collaborative robot systems
+\item Developed work instructions, fixtures, and inspection plans; improved first-pass yield from 88\% to 96\% on a key assembly line
+\item Applied Lean and Six Sigma methods to reduce cycle time, scrap, and variability while maintaining tight dimensional tolerances
+\item Collaborated with design engineering on DFM reviews and ECO implementation for new product introductions
+\end{itemize}
+\textbf{Keywords}: Lean Manufacturing, Six Sigma, CNC Machining, Fixture Design, Process Improvement}
+\section{Languages}
+
+\cvline{English}{Native or Bilingual Proficiency \hfill \textbf{Keywords}: Technical writing, Public speaking}
+\cvline{Spanish}{Limited Working Proficiency \hfill \textbf{Keywords}: Conversational Spanish, Supplier communication}
+\cvline{German}{Elementary Proficiency \hfill \textbf{Keywords}: Basic conversation}
+\section{Skills}
+
+\cvline{Mechanical Design}{Expert \hfill \textbf{Keywords}: SolidWorks, Creo, AutoCAD, GD\&T, DFM, Tolerance Analysis}
+\cvline{Analysis \& Simulation}{Advanced \hfill \textbf{Keywords}: ANSYS, Abaqus, FEA, CFD, Thermal Analysis, MATLAB}
+\cvline{Manufacturing \& Quality}{Advanced \hfill \textbf{Keywords}: Lean Manufacturing, Six Sigma, CNC Machining, Injection Molding, SPC, Root Cause Analysis}
+\cvline{Project Leadership}{Advanced \hfill \textbf{Keywords}: Cross-functional Teams, Agile, Vendor Management, Budgeting, Risk Mitigation}
+\cvline{Software \& Automation}{Intermediate \hfill \textbf{Keywords}: Python, LabVIEW, PLC Programming, Minitab, Jira}
+\section{Awards}
+
+\cventry{Nov 2023}
+        {Apex Mechanical Systems}
+        {Engineering Excellence Award}
+        {}
+        {}
+        {Recognized for leading the redesign of a high-volume actuation platform that reduced field failures by 35\% and lowered manufacturing cost by 18\%.}
+
+\cventry{Mar 2019}
+        {NovaDrive Powertrain}
+        {Innovation Patent Award}
+        {}
+        {}
+        {Awarded for a lightweight mounting concept that improved durability and simplified assembly for an electric-drive module.}
+\section{Certificates}
+
+\cventry{Jun 2019}
+        {Texas Board of Professional Engineers}
+        {Professional Engineer (PE) License}
+        {\url{https://engineers.texas.gov}}
+        {}
+        {}
+
+\cventry{Feb 2015}
+        {Dassault Systèmes}
+        {Certified SolidWorks Professional (CSWP)}
+        {\url{https://www.solidworks.com/certification}}
+        {}
+        {}
+
+\cventry{Sep 2017}
+        {ASQ}
+        {Six Sigma Green Belt}
+        {\url{https://asq.org/certification}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Apr 2021}
+        {Design Optimization of Lightweight Powertrain Mounts for Electric Vehicles}
+        {Journal of Mechanical Design}
+        {\url{https://asmedigitalcollection.asme.org/mechanicaldesign}}
+        {}
+        {\begin{itemize}
+\item Presents a topology-optimization workflow for aluminum-intensive mounts that balances stiffness, durability, and mass
+\item Validates simulation results with physical testing and discusses implications for NVH and assembly
+\item Provides practical guidance for engineers designing lightweight structural components in electrified powertrains
+\end{itemize}}
+\section{Projects}
+
+\cventry{Jan 2022–Aug 2022}
+        {Aluminum-intensive mount designed to reduce mass while meeting durability and NVH targets.}
+        {Lightweight EV Powertrain Mount}
+        {\url{https://www.apexmechsystems.com/projects/ev-mount}}
+        {}
+        {\begin{itemize}
+\item Led concept generation, CAD, FEA, and prototype validation for a next-generation powertrain mount
+\item Reduced mass by 22\% versus the incumbent design while improving stiffness and fatigue life
+\item Worked with casting and machining suppliers to transition the design into production
+\end{itemize}
+\textbf{Keywords}: Lightweighting, Topology Optimization, Fatigue, Casting}
+
+\cventry{Mar 2018–Nov 2018}
+        {Retrofit of a manual powertrain assembly cell with semi-automated fixtures and error-proofing.}
+        {Automated Assembly Cell Retrofit}
+        {\url{https://www.novadrivepowertrain.com/projects/assembly-cell}}
+        {}
+        {\begin{itemize}
+\item Specified fixtures, sensors, and PLC logic to reduce operator error and improve cycle time
+\item Collaborated with controls and safety teams to commission the cell and validate capability
+\item Achieved a 20\% throughput gain and a 30\% reduction in rework during the first quarter after launch
+\end{itemize}
+\textbf{Keywords}: Automation, Fixture Design, PLC, Process Validation}
+
+\cventry{Sep 2013–May 2014}
+        {Laboratory test stand for evaluating solar thermal collector efficiency under controlled conditions.}
+        {Solar Thermal Collector Test Stand}
+        {\url{https://www.utexas.edu}}
+        {}
+        {\begin{itemize}
+\item Designed and built instrumentation, plumbing, and data-acquisition hardware for a graduate research project
+\item Calibrated sensors and analyzed thermal performance across varying flow rates and irradiance levels
+\item Documented results in a thesis chapter and presented findings to the research group
+\end{itemize}
+\textbf{Keywords}: Thermal Systems, Instrumentation, Data Acquisition, Testing}
+\section{Interests}
+
+\cvline{Mountain Biking}{Trail Riding, Bike Maintenance, Endurance Training}
+\cvline{Woodworking}{Furniture Design, Hand Tools, Joinery}
+\cvline{Robotics}{FIRST Mentoring, Arduino, ROS}
+\section{Volunteer}
+
+\cventry{Sep 2017–Present}
+        {Engineering Mentor}
+        {FIRST Robotics Competition}
+        {\url{https://www.firstinspires.org/robotics/frc}}
+        {}
+        {\begin{itemize}
+\item Mentor a high-school robotics team on mechanical design, fabrication, and competition strategy
+\item Guide students through CAD, prototyping, and design reviews, reinforcing safe and iterative engineering practices
+\item Help organize shop training and regional event preparation for a team of 30+ students
+\end{itemize}}
+    
+
+\cventry{Jan 2015–Dec 2016}
+        {Project Volunteer}
+        {Engineers Without Borders USA}
+        {\url{https://www.ewb-usa.org}}
+        {}
+        {\begin{itemize}
+\item Supported a clean-water project by helping design and test a small-scale pumping and filtration system
+\item Assisted with technical documentation, supplier coordination, and community feedback sessions
+\item Participated in fundraising and outreach activities to sustain the chapter's project pipeline
+\end{itemize}}
+    
+\end{document}

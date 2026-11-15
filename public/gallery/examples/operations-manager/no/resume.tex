@@ -1,0 +1,277 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Marte Solberg}{}
+\title{Operasjonssjef med erfaring fra logistikk, HMS og forbedringsarbeid}
+\phone[mobile]{+47 928 45 112}
+\email{marte.solberg@example.no}
+\homepage{https://www.martesolberg.no}
+
+\address{Storgata 18, Oslo, Oslo, Norge, 0155}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/marte-solberg}{@marte-solberg}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{\begin{itemize}
+\item Erfaren operasjonssjef med over 10 års ledererfaring fra logistikk, service og industri.
+\item Dokumentert resultat med å øke driftsregularitet, redusere kostnader og bygge velfungerende tverrfaglige team.
+\item Sterk i KPI-oppfølging, budsjettansvar, HMS, kontinuerlig forbedring og samarbeid med leverandører og kunder.
+\item Strukturert og løsningsorientert leder som trives med å gjøre komplekse driftsprosesser enkle, målbare og skalerbare.
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2014–juni 2016}
+        {Master, Strategisk ledelse, Poeng: 4,3/5}
+        {Handelshøyskolen BI}
+        {\url{https://www.bi.no}}
+        {}
+        {\begin{itemize}
+\item Fordypning i strategisk styring, operativ excellence og endringsledelse.
+\item Gjennomførte casebaserte prosjekter med fokus på kostnadsstyring og prosessforbedring.
+\item Utviklet analyse- og beslutningsgrunnlag for ledergrupper i praksisnære prosjekter.
+\end{itemize}
+\textbf{Kurs}: Strategisk økonomistyring, Operasjons- og kvalitetsledelse, Prosjektledelse, Organisasjon og ledelse, Forhandlinger og beslutninger, Bærekraftig verdikjedestyring}
+
+\cventry{aug. 2011–juni 2014}
+        {Bachelor, Økonomi og administrasjon, Poeng: 4,1/5}
+        {Universitetet i Oslo}
+        {\url{https://www.uio.no}}
+        {}
+        {\begin{itemize}
+\item Solid grunnlag i økonomi, analyse og bedriftsadministrasjon.
+\item Arbeidet med kvantitative analyser og presentasjon av beslutningsgrunnlag.
+\item Deltok aktivt i studentprosjekter om effektiv ressursbruk og organisasjonsutvikling.
+\end{itemize}
+\textbf{Kurs}: Mikroøkonomi, Bedriftsøkonomi, Statistikk og analyse, Markedsføring, Regnskap og budsjettering}
+\section{Arbeidserfaring}
+
+\cventry{jan. 2021–Nå}
+        {Operasjonssjef}
+        {Nordvik Logistikk AS}
+        {\url{https://www.nordviklogistikk.no}}
+        {}
+        {\begin{itemize}
+\item Leder den daglige driften for et terminal- og distribusjonsnett med 85 ansatte og årlig omsetning på 420 MNOK.
+\item Ansvar for produksjonsplanlegging, bemanning, HMS, kvalitet og leverandøroppfølging på tvers av fem lokasjoner.
+\item Reduserte avvikskostnader med 18 prosent og økte leveringspresisjonen fra 92 til 97 prosent på 18 måneder.
+\item Innførte ukentlig driftsdialog med KPI-er for sikkerhet, kvalitet, kostnad og trivsel.
+\item Bygget lederteam og innførte kompetanseplan som reduserte gjennomtrekk blant operativt personell med 25 prosent.
+\end{itemize}
+\textbf{Nøkkelord}: Driftsledelse, Logistikk, HMS, KPI-oppfølging, Bemanningsplanlegging, Kontinuerlig forbedring, Budsjettansvar, Leverandøroppfølging}
+
+\cventry{mars 2017–des. 2020}
+        {Driftsleder}
+        {Fjordservice Gruppen AS}
+        {\url{https://www.fjordservice.no}}
+        {}
+        {\begin{itemize}
+\item Ledet drift av kundeservice og feltoperasjoner med 45 ansatte og ansvar for døgnkontinuerlig bemanning.
+\item Utviklet bemanningsmodell som reduserte overtidsbruk med 22 prosent og forbedret responstid med 15 prosent.
+\item Drev systematisk HMS-arbeid, gjennomførte risikovurderinger og fulgte opp avvik og læringstiltak.
+\item Forhandlet rammeavtaler med underleverandører og oppnådde årlige besparelser på 6,5 MNOK.
+\end{itemize}
+\textbf{Nøkkelord}: Driftsstyring, Kundeservice, Bemanning, HMS, Risikostyring, Rammeavtaler, Responstid}
+
+\cventry{aug. 2013–feb. 2017}
+        {Produksjonsleder}
+        {Oslo Industriservice AS}
+        {\url{https://www.osloindustriservice.no}}
+        {}
+        {\begin{itemize}
+\item Ledet produksjon og vedlikehold for en fabrikk med 30 ansatte og to skift.
+\item Implementerte Lean-prinsipper og standardiserte arbeidsprosesser, noe som økte OEE fra 71 til 82 prosent.
+\item Hadde budsjettansvar for drift, vedlikehold og innkjøp på 55 MNOK.
+\item Samarbeidet med fagforeninger og verneombud for å sikre god medvirkning og lavt sykefravær.
+\end{itemize}
+\textbf{Nøkkelord}: Produksjonsledelse, Lean, Vedlikehold, OEE, Budsjett, Arbeidsmiljø}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: C1, Forretningsengelsk}
+\cvline{Tysk}{Begrenset arbeidskunnskap \hfill \textbf{Nøkkelord}: Grunnleggende}
+\section{Ferdigheter}
+
+\cvline{Operasjonsledelse}{Ekspert \hfill \textbf{Nøkkelord}: Driftsstyring, Bemanningsplanlegging, KPI-oppfølging, HMS, Målstyring, Lederutvikling}
+\cvline{Logistikk og verdikjede}{Avansert \hfill \textbf{Nøkkelord}: Lagerstyring, Transportplanlegging, Innkjøp, Leverandøroppfølging, Leveringspresisjon, Varelagerstyring}
+\cvline{Forbedringsarbeid}{Avansert \hfill \textbf{Nøkkelord}: Lean, Six Sigma, Prosesskartlegging, Rotårsaksanalyse, Standardisering, Kontinuerlig forbedring}
+\cvline{Økonomi og styring}{Avansert \hfill \textbf{Nøkkelord}: Budsjettering, Kostnadskontroll, Avviksanalyse, Investeringskalkyler, Rapportering}
+\cvline{Prosjektledelse}{Avansert \hfill \textbf{Nøkkelord}: Prosjektstyring, Endringsledelse, Interessentanalyse, Risikostyring, Gevinstrealisering}
+\cvline{Systemer og verktøy}{Viderekommen \hfill \textbf{Nøkkelord}: SAP, Power BI, Excel, Microsoft Dynamics 365, Jira, SharePoint}
+\section{Utmerkelser}
+
+\cventry{nov. 2023}
+        {Nordvik Logistikk AS}
+        {Årets operasjonsleder}
+        {}
+        {}
+        {\begin{itemize}
+\item Tildelt for dokumenterte resultater innen driftsforbedring, lederutvikling og HMS.
+\item Anerkjent for å ha bygget et sterkt tverrfaglig lederteam og økt medarbeidertilfredsheten.
+\end{itemize}}
+
+\cventry{mai 2019}
+        {Fjordservice Gruppen AS}
+        {Forbedringsprisen}
+        {}
+        {}
+        {\begin{itemize}
+\item Tildelt for et vellykket forbedringsprosjekt som reduserte responstid og overtidsbruk.
+\item Prosjektet ble trukket frem som beste praksis for tverrfaglig driftsutvikling.
+\end{itemize}}
+\section{Sertifikater}
+
+\cventry{mai 2022}
+        {Norsk Lean Senter}
+        {Lean Six Sigma Green Belt}
+        {\url{https://www.norskleansenter.no}}
+        {}
+        {}
+
+\cventry{sep. 2021}
+        {PeopleCert}
+        {PRINCE2 Foundation}
+        {\url{https://www.peoplecert.org}}
+        {}
+        {}
+
+\cventry{feb. 2020}
+        {Arbeidsmiljøsenteret}
+        {HMS-kurs for ledere}
+        {\url{https://www.arbeidsmiljosenteret.no}}
+        {}
+        {}
+\section{Prosjekter}
+
+\cventry{feb. 2022–aug. 2022}
+        {Innføring av digitalt bemanningsverktøy for fem terminaler med mål om bedre ressursutnyttelse og lavere overtid.}
+        {Digital bemanningsplanlegging}
+        {\url{https://www.nordviklogistikk.no/prosjekter/digital-bemanning}}
+        {}
+        {\begin{itemize}
+\item Kartla bemanningsbehov og etablerte felles planleggingsprosess på tvers av lokasjoner.
+\item Innførte verktøy og opplærte 40 ledere og planleggere i nye rutiner.
+\item Oppnådde 14 prosent lavere overtidsbruk og 9 prosent høyere produktivitet i pilotperioden.
+\end{itemize}
+\textbf{Nøkkelord}: Bemanningsplanlegging, Digitalisering, Prosessforbedring, Endringsledelse}
+
+\cventry{mars 2018–nov. 2018}
+        {Forbedringsprogram for lager og utlasteri med fokus på flyt, standardisering og sikkerhet.}
+        {Lean-program for lageravdeling}
+        {\url{https://www.fjordservice.no/prosjekter/lean-lager}}
+        {}
+        {\begin{itemize}
+\item Gjennomførte verdistrømsanalyse og identifiserte flaskehalser i vareflyten.
+\item Standardiserte arbeidsinstrukser og innførte tavlemøter for daglig styring.
+\item Reduserte gjennomsnittlig ordrebehandlingstid med 19 prosent og HMS-avvik med 30 prosent.
+\end{itemize}
+\textbf{Nøkkelord}: Lean, Verdistrømsanalyse, Standardisering, HMS, Lagerstyring}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fjellturer, Padling, Langrenn, Sykkel}
+\cvline{Styrearbeid og mentorering}{Mentorordning, Næringslivsforum, Foreldreutvalg}
+\section{Frivillig arbeid}
+
+\cventry{sep. 2019–Nå}
+        {Mentor for unge ledere}
+        {Oslo Næringsforening}
+        {\url{https://www.oslonaring.no}}
+        {}
+        {\begin{itemize}
+\item Mentorerer unge ledere i operativ drift, prioritering og lederutvikling.
+\item Bidrar i fagforum for bærekraftig logistikk og kompetanseutvikling.
+\end{itemize}}
+    
+
+\cventry{apr. 2015–des. 2021}
+        {Operativ frivillig}
+        {Norsk Folkehjelp}
+        {\url{https://www.folkehjelp.no}}
+        {}
+        {\begin{itemize}
+\item Deltok i beredskapsøvelser og støtteoppdrag ved større arrangementer i Oslo.
+\item Gjennomførte førstehjelpskurs og bidro til trygg gjennomføring av lokale arrangementer.
+\end{itemize}}
+    
+\end{document}

@@ -1,0 +1,272 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Luca Moretti}{}
+\title{Ingegnere del Software Senior | Architetto Cloud}
+\phone[mobile]{+39 333 123 4567}
+\email{luca.moretti@email.it}
+\homepage{https://lucamoretti.dev}
+
+\address{Via Roma 42, Milano, Lombardia, Italia, 20121}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/lucamoretti}{@lucamoretti} {} {} {} • {} {} {} 
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/lucamoretti}{@lucamoretti}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{\begin{itemize}
+\item Ingegnere del software con oltre 8 anni di esperienza nella progettazione e sviluppo di applicazioni web scalabili e sistemi distribuiti.
+\item Specializzato in architetture cloud-native, microservizi e sviluppo full-stack con particolare attenzione alla qualità del codice e alle best practice.
+\item Esperienza consolidata nella leadership tecnica di team di sviluppo, nella mentorship e nella collaborazione con stakeholder di prodotto.
+\item Appassionato di innovazione, automazione e miglioramento continuo dei processi di ingegneria del software.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2013–lug 2015}
+        {Laurea magistrale, Ingegneria Informatica, Punteggio: 110/110 e lode}
+        {Politecnico di Milano}
+        {\url{https://www.polimi.it}}
+        {}
+        {\begin{itemize}
+\item Percorso di eccellenza focalizzato su architetture software, sistemi distribuiti e ingegneria del software.
+\item Tesi sperimentale su microservizi e orchestrazione di container in ambienti cloud.
+\item Partecipazione a progetti di ricerca applicata con aziende partner.
+\end{itemize}
+\textbf{Corsi}: Architetture Software, Sistemi Distribuiti, Basi di Dati Avanzate, Ingegneria del Software, Sicurezza Informatica, Machine Learning}
+
+\cventry{set 2010–lug 2013}
+        {Laurea triennale, Informatica, Punteggio: 108/110}
+        {Università degli Studi di Bologna}
+        {\url{https://www.unibo.it}}
+        {}
+        {\begin{itemize}
+\item Solida formazione di base in informatica, algoritmi e programmazione.
+\item Progetto di laurea su applicazioni web dinamiche.
+\end{itemize}
+\textbf{Corsi}: Programmazione, Algoritmi e Strutture Dati, Reti di Calcolatori, Sistemi Operativi, Basi di Dati}
+\section{Esperienza professionale}
+
+\cventry{mar 2020–Presente}
+        {Ingegnere del Software Senior}
+        {TechNova S.p.A.}
+        {\url{https://www.technova.it}}
+        {}
+        {\begin{itemize}
+\item Guida tecnica di un team di 6 sviluppatori nella progettazione di una piattaforma SaaS per la gestione documentale.
+\item Definizione dell'architettura a microservizi su Kubernetes con deployment automatizzati tramite GitOps.
+\item Riduzione del 40\% del time-to-market grazie all'introduzione di pipeline CI/CD e test automatizzati.
+\item Collaborazione con product manager e designer per tradurre i requisiti in soluzioni tecniche scalabili.
+\item Mentorship di sviluppatori junior e definizione di standard di codice e code review.
+\end{itemize}
+\textbf{Parole chiave}: Microservizi, Kubernetes, CI/CD, Leadership, Architettura}
+
+\cventry{gen 2017–feb 2020}
+        {Ingegnere del Software}
+        {Digitalia Labs}
+        {\url{https://www.digitalialabs.com}}
+        {}
+        {\begin{itemize}
+\item Sviluppo di applicazioni web full-stack con React, Node.js e PostgreSQL.
+\item Implementazione di API RESTful e integrazione con servizi di terze parti.
+\item Ottimizzazione delle performance del frontend riducendo i tempi di caricamento del 30\%.
+\item Adozione di pratiche Agile e partecipazione attiva a sprint planning e retrospettive.
+\end{itemize}
+\textbf{Parole chiave}: React, Node.js, PostgreSQL, Agile, REST}
+
+\cventry{set 2015–dic 2016}
+        {Sviluppatore Backend}
+        {WebSolutions Italia}
+        {\url{https://www.websolutions.it}}
+        {}
+        {\begin{itemize}
+\item Sviluppo di backend in Java e Spring Boot per piattaforme e-commerce.
+\item Progettazione e ottimizzazione di query SQL su database Oracle.
+\item Implementazione di test unitari e di integrazione con JUnit e Mockito.
+\end{itemize}
+\textbf{Parole chiave}: Java, Spring Boot, SQL, Oracle, Testing}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 8.0, Business English}
+\cvline{Francese}{Competenza professionale limitata}
+\section{Competenze}
+
+\cvline{Sviluppo Backend}{Esperto \hfill \textbf{Parole chiave}: Java, Python, Node.js, Spring Boot, RESTful API, Microservizi}
+\cvline{Cloud e DevOps}{Avanzato \hfill \textbf{Parole chiave}: AWS, Kubernetes, Docker, Terraform, CI/CD, GitLab CI}
+\cvline{Frontend}{Avanzato \hfill \textbf{Parole chiave}: React, TypeScript, JavaScript, HTML5, CSS3, Redux}
+\cvline{Database}{Avanzato \hfill \textbf{Parole chiave}: PostgreSQL, MySQL, MongoDB, Redis}
+\cvline{Metodologie}{Esperto \hfill \textbf{Parole chiave}: Agile, Scrum, TDD, Code Review, Mentorship}
+\section{Premi}
+
+\cventry{nov 2021}
+        {TechNova S.p.A.}
+        {Premio Innovazione Tecnologica}
+        {}
+        {}
+        {Riconoscimento per il contributo alla modernizzazione dell'architettura della piattaforma aziendale e per la riduzione dei costi operativi del 25\%.}
+
+\cventry{giu 2015}
+        {Politecnico di Milano}
+        {Premio Miglior Articolo}
+        {}
+        {}
+        {Premio assegnato alla tesi magistrale su orchestrazione di microservizi in ambienti cloud.}
+\section{Certificazioni}
+
+\cventry{mar 2022}
+        {Amazon Web Services}
+        {AWS Certified Solutions Architect – Professional}
+        {\url{https://aws.amazon.com/certification/certified-solutions-architect-professional/}}
+        {}
+        {}
+
+\cventry{set 2021}
+        {Cloud Native Computing Foundation}
+        {Certified Kubernetes Administrator (CKA)}
+        {\url{https://www.cncf.io/certification/cka/}}
+        {}
+        {}
+
+\cventry{mag 2020}
+        {Scrum.org}
+        {Professional Scrum Master I}
+        {\url{https://www.scrum.org/professional-scrum-certifications}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{ott 2020}
+        {Architetture a Microservizi per Applicazioni Enterprise}
+        {Rivista Italiana di Ingegneria del Software}
+        {\url{https://www.risi.it/articoli/microservizi-enterprise}}
+        {}
+        {\begin{itemize}
+\item Analisi delle principali sfide nella migrazione da monoliti a microservizi.
+\item Presentazione di un caso di studio reale con benefici e lezioni apprese.
+\item Linee guida per l'adozione di Kubernetes e pratiche DevOps.
+\end{itemize}}
+\section{Progetti}
+
+\cventry{gen 2021–Presente}
+        {Applicazione open-source per la gestione di note collaborative in tempo reale.}
+        {CloudNotes}
+        {\url{https://github.com/lucamoretti/cloudnotes}}
+        {}
+        {\begin{itemize}
+\item Sviluppata con React, Node.js e WebSocket per la sincronizzazione in tempo reale.
+\item Deployment su AWS EKS con pipeline CI/CD automatizzata.
+\item Oltre 500 stelle su GitHub e utilizzata da team di sviluppo in tutto il mondo.
+\end{itemize}
+\textbf{Parole chiave}: React, Node.js, WebSocket, AWS}
+
+\cventry{mar 2019–dic 2019}
+        {Dashboard per il monitoraggio delle metriche di sviluppo software.}
+        {DevMetrics}
+        {\url{https://github.com/lucamoretti/devmetrics}}
+        {}
+        {\begin{itemize}
+\item Integrazione con API di GitHub e GitLab per raccogliere metriche su commit, PR e issue.
+\item Visualizzazione interattiva con React e Chart.js.
+\item Utilizzata internamente da Digitalia Labs per migliorare i processi Agile.
+\end{itemize}
+\textbf{Parole chiave}: React, Chart.js, GitHub API, Agile}
+\section{Interessi}
+
+\cvline{Tecnologia}{Intelligenza Artificiale, Open Source, Cloud Computing}
+\cvline{Sport}{Corsa, Ciclismo, Nuoto}
+\cvline{Musica}{Chitarra, Jazz}
+\section{Volontariato}
+
+\cventry{set 2018–Presente}
+        {Mentor Tecnico}
+        {Coding Girls Italia}
+        {\url{https://www.codinggirlsitalia.it}}
+        {}
+        {\begin{itemize}
+\item Mentor volontario in programmi di coding per ragazze delle scuole superiori.
+\item Organizzazione di workshop su sviluppo web e carriere nel settore tecnologico.
+\item Supporto alla creazione di progetti finali e orientamento professionale.
+\end{itemize}}
+    
+\end{document}

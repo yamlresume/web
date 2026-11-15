@@ -1,0 +1,219 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Marco Bianchi}{}
+\title{Ingegnere Meccanico Senior specializzato in progettazione e produzione}
+\phone[mobile]{+39 02 1234 5678}
+\email{marco.bianchi@example.it}
+\homepage{https://www.marcobianchi-ingegnere.it}
+
+\address{Via Roma 45, Milano, Lombardia, Italia, 20121}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/marcobianchi-mech}{@marcobianchi-mech}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{\begin{itemize}
+\item Ingegnere meccanico con oltre 8 anni di esperienza nella progettazione e nello sviluppo di componenti e sistemi meccanici.
+\item Specializzato in progettazione CAD 3D, analisi FEM e ottimizzazione di prodotti per i settori automotive e industriale.
+\item Esperienza nella gestione di progetti dalla fase di concept fino alla produzione, collaborando con team multifunzionali.
+\item Forte orientamento al problem solving, alla qualità e al miglioramento continuo, con conoscenza delle metodologie Lean e Six Sigma.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2012–lug 2017}
+        {Laurea magistrale, Ingegneria Meccanica, Punteggio: 110/110 e lode}
+        {Politecnico di Milano}
+        {\url{https://www.polimi.it}}
+        {}
+        {\begin{itemize}
+\item Formazione solida in progettazione meccanica, con focus su calcolo strutturale e simulazione numerica.
+\item Tesi sperimentale sulla ottimizzazione topologica di componenti per riduzione di peso.
+\end{itemize}
+\textbf{Corsi}: Progettazione Meccanica Assistita dal Calcolo, Analisi agli Elementi Finiti, Tecnologie di Produzione, Dinamica dei Sistemi Meccanici, Materiali per l'Ingegneria, Gestione della Produzione Industriale}
+\section{Esperienza professionale}
+
+\cventry{mar 2020–Presente}
+        {Ingegnere Meccanico Senior}
+        {Meccanica Avanzata S.p.A.}
+        {\url{https://www.meccanicaavanzata.it}}
+        {}
+        {\begin{itemize}
+\item Responsabile della progettazione e dello sviluppo di nuovi componenti meccanici per macchine industriali.
+\item Coordinamento di un team di 5 ingegneri e disegnatori, con gestione delle attività di progettazione e validazione.
+\item Implementazione di metodologie di analisi FEM per la verifica strutturale e termica dei componenti.
+\item Collaborazione con il reparto produzione per ottimizzare i processi di fabbricazione e ridurre i costi.
+\item Gestione di progetti chiave, rispettando tempi e budget, con reportistica periodica alla direzione tecnica.
+\end{itemize}
+\textbf{Parole chiave}: Progettazione meccanica, Analisi FEM, Gestione progetti, Produzione snella, SolidWorks}
+
+\cventry{set 2017–feb 2020}
+        {Ingegnere di Progettazione}
+        {Ingegneria Dinamica S.r.l.}
+        {\url{https://www.ingegneriadinamica.it}}
+        {}
+        {\begin{itemize}
+\item Progettazione di componenti meccanici e assiemi utilizzando CAD 3D (SolidWorks e CATIA).
+\item Esecuzione di analisi strutturali e termiche con software FEM per validare i progetti.
+\item Redazione di documentazione tecnica, disegni costruttivi e specifiche di prodotto.
+\item Supporto al reparto qualità per l'analisi dei difetti e l'implementazione di azioni correttive.
+\item Partecipazione a progetti di miglioramento continuo e riduzione dei costi.
+\end{itemize}
+\textbf{Parole chiave}: CAD 3D, CATIA, Analisi strutturale, Disegno tecnico, Qualità}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: Certificazione C1, Inglese tecnico}
+\section{Competenze}
+
+\cvline{Progettazione Meccanica}{Esperto \hfill \textbf{Parole chiave}: SolidWorks, CATIA, AutoCAD, Disegno tecnico, Tolleranze}
+\cvline{Analisi e Simulazione}{Avanzato \hfill \textbf{Parole chiave}: Analisi FEM, ANSYS, Calcolo strutturale, Termica}
+\cvline{Gestione Progetti}{Avanzato \hfill \textbf{Parole chiave}: Pianificazione, Coordinamento team, Metodologie Lean, Six Sigma}
+\cvline{Produzione e Materiali}{Intermedio \hfill \textbf{Parole chiave}: Tecnologie di produzione, Metallurgia, Controllo qualità, Manifattura additiva}
+\section{Premi}
+
+\cventry{nov 2022}
+        {Associazione Italiana di Meccanica}
+        {Premio Innovazione Tecnica}
+        {}
+        {}
+        {Riconoscimento per il contributo allo sviluppo di un componente meccanico innovativo che ha ridotto i costi di produzione del 15\%.}
+\section{Certificazioni}
+
+\cventry{giu 2019}
+        {Dassault Systèmes}
+        {Certified SolidWorks Professional}
+        {\url{https://www.solidworks.com/certification}}
+        {}
+        {}
+
+\cventry{ott 2023}
+        {Project Management Institute}
+        {Project Management Professional (PMP)}
+        {\url{https://www.pmi.org/certifications/project-management-pmp}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{apr 2021}
+        {Ottimizzazione topologica di componenti meccanici per la riduzione di peso}
+        {Rivista Italiana di Ingegneria Meccanica}
+        {\url{https://www.riim.it/articoli/ottimizzazione-topologica}}
+        {}
+        {\begin{itemize}
+\item Studio sull'applicazione dell'ottimizzazione topologica per la progettazione di componenti leggeri e resistenti.
+\item Analisi dei risultati ottenuti tramite simulazioni FEM e validazione sperimentale.
+\end{itemize}}
+\section{Progetti}
+
+\cventry{gen 2021–dic 2022}
+        {Progettazione e prototipazione di un sistema di trasmissione ad alta efficienza per macchine industriali.}
+        {Sviluppo di un nuovo sistema di trasmissione}
+        {\url{https://www.meccanicaavanzata.it/progetti/trasmissione}}
+        {}
+        {\begin{itemize}
+\item Progettazione meccanica del sistema, inclusi ingranaggi, alberi e supporti.
+\item Analisi FEM per la verifica delle sollecitazioni e della durata.
+\item Realizzazione di prototipi e test di validazione.
+\item Riduzione del 20\% delle perdite energetiche rispetto al sistema precedente.
+\end{itemize}
+\textbf{Parole chiave}: Trasmissione, Ingranaggi, Prototipazione, Analisi FEM}
+\section{Interessi}
+
+\cvline{Motori e Veicoli}{Formula 1, Restauro auto d'epoca, Meccatronica}
+\cvline{Tecnologie Emergenti}{Stampa 3D, Materiali compositi, Automazione industriale}
+\section{Volontariato}
+
+\cventry{set 2018–Presente}
+        {Mentor Tecnico}
+        {Associazione Ingegneri Meccanici Italiani}
+        {\url{https://www.aimi.it}}
+        {}
+        {\begin{itemize}
+\item Supporto a studenti e giovani ingegneri nello sviluppo di competenze pratiche di progettazione meccanica.
+\item Organizzazione di workshop su CAD, FEM e metodologie di progettazione.
+\item Partecipazione a eventi di orientamento e divulgazione tecnica.
+\end{itemize}}
+    
+\end{document}

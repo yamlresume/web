@@ -1,0 +1,233 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Luca Bianchi}{}
+\title{QA Engineer}
+\phone[mobile]{+39 333 123 4567}
+\email{luca.bianchi@example.com}
+\homepage{https://www.lucabianchi.it}
+
+\address{Via Roma 1, Milano, Lombardia, Italia, 20100}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/lucabianchi}{@lucabianchi} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/lucabianchi}{@lucabianchi}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{\begin{itemize}
+\item QA Engineer con oltre 5 anni di esperienza nella verifica e validazione di software
+\item Specializzato in test manuali e automatizzati, con solida conoscenza di metodologie Agile
+\item Esperto nell'utilizzo di strumenti come Selenium, JUnit, TestNG e Jenkins
+\item Capacità di analisi dei requisiti e scrittura di test case dettagliati
+\item Forte attenzione ai dettagli e orientamento alla qualità del prodotto
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2018–lug 2020}
+        {Laurea magistrale, Ingegneria Informatica, Punteggio: 110/110}
+        {Politecnico di Milano}
+        {\url{https://www.polimi.it}}
+        {}
+        {\begin{itemize}
+\item Approfondimento delle metodologie di testing e quality assurance
+\item Partecipazione a progetti di gruppo per lo sviluppo di software di qualità
+\item Tesi sperimentale su tecniche di test automatico per applicazioni web
+\end{itemize}
+\textbf{Corsi}: Ingegneria del Software, Sistemi di Qualità, Metodi Formali per il Software, Testing e Verifica del Software, Architetture Software, Sicurezza Informatica}
+\section{Esperienza professionale}
+
+\cventry{gen 2021–Presente}
+        {Senior QA Engineer}
+        {TechQuality S.p.A.}
+        {\url{https://www.techquality.it}}
+        {}
+        {\begin{itemize}
+\item Responsabile della strategia di test per un'importante piattaforma e-commerce
+\item Progettazione e implementazione di suite di test automatici con Selenium e TestNG
+\item Coordinamento di un team di 3 QA Engineer junior
+\item Collaborazione con i team di sviluppo per l'analisi dei difetti e il miglioramento continuo
+\item Riduzione del 30\% dei difetti in produzione grazie a test di regressione automatizzati
+\end{itemize}
+\textbf{Parole chiave}: Automazione dei test, Selenium, TestNG, Jenkins, Agile, Qualità del software}
+
+\cventry{set 2018–dic 2020}
+        {QA Engineer}
+        {SoftwareTest Italia}
+        {\url{https://www.softwaretestitalia.it}}
+        {}
+        {\begin{itemize}
+\item Esecuzione di test manuali e automatici su applicazioni web e mobile
+\item Scrittura di test case e piani di test basati sui requisiti funzionali
+\item Utilizzo di JIRA per la gestione dei difetti e la reportistica
+\item Partecipazione a sprint review e daily stand-up in ambiente Agile
+\item Collaborazione con sviluppatori per la risoluzione di bug critici
+\end{itemize}
+\textbf{Parole chiave}: Test manuale, Test automatico, JIRA, Selenium, Postman, Agile}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 7.5, Inglese commerciale}
+\section{Competenze}
+
+\cvline{Test Automation}{Esperto \hfill \textbf{Parole chiave}: Selenium, TestNG, JUnit, Cucumber, Jenkins, Postman}
+\cvline{Test Manuale}{Avanzato \hfill \textbf{Parole chiave}: Analisi dei requisiti, Scrittura di test case, Test di regressione, Test di integrazione, Test di sistema}
+\cvline{Metodologie}{Avanzato \hfill \textbf{Parole chiave}: Agile, Scrum, Kanban, TDD, BDD}
+\cvline{Strumenti}{Avanzato \hfill \textbf{Parole chiave}: JIRA, Confluence, Git, SQL, Docker}
+\section{Premi}
+
+\cventry{dic 2022}
+        {TechQuality S.p.A.}
+        {Premio Qualità 2022}
+        {}
+        {}
+        {Riconoscimento per l'eccellenza nella implementazione di processi di test automatizzati che hanno portato a una riduzione significativa dei difetti in produzione.}
+\section{Certificazioni}
+
+\cventry{mar 2021}
+        {ISTQB}
+        {ISTQB Certified Tester - Advanced Level}
+        {\url{https://www.istqb.org/certifications/advanced-level}}
+        {}
+        {}
+
+\cventry{giu 2020}
+        {Selenium Academy}
+        {Certified Selenium Professional}
+        {\url{https://www.seleniumacademy.com/certification}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{set 2021}
+        {Automazione dei test per applicazioni web moderne}
+        {Rivista Italiana di Qualità del Software}
+        {\url{https://www.qa-rivista.it/articoli/automazione-test-web}}
+        {}
+        {\begin{itemize}
+\item Articolo che esplora le migliori pratiche per l'automazione dei test in ambienti Agile
+\item Discussione di casi di studio e strumenti consigliati
+\end{itemize}}
+\section{Progetti}
+
+\cventry{gen 2022–giu 2022}
+        {Framework di test automatizzato per applicazioni web basato su Selenium e TestNG}
+        {Framework di Automazione dei Test}
+        {\url{https://github.com/lucabianchi/test-framework}}
+        {}
+        {\begin{itemize}
+\item Sviluppo di un framework modulare per test automatici riutilizzabili
+\item Integrazione con Jenkins per l'esecuzione continua dei test
+\item Riduzione del tempo di esecuzione dei test del 40\%
+\end{itemize}
+\textbf{Parole chiave}: Selenium, TestNG, Jenkins, Automazione}
+
+\cventry{mar 2021–ago 2021}
+        {Dashboard per il monitoraggio delle metriche di qualità del software}
+        {Dashboard per le Metriche di Qualità}
+        {}
+        {}
+        {\begin{itemize}
+\item Creazione di una dashboard interattiva per visualizzare i risultati dei test
+\item Integrazione con JIRA per il recupero automatico dei dati sui difetti
+\item Miglioramento della visibilità sulla qualità del prodotto per il team
+\end{itemize}
+\textbf{Parole chiave}: Dashboard, Metriche, JIRA, Qualità}
+\section{Interessi}
+
+\cvline{Sport}{Corsa, Nuoto, Escursionismo}
+\cvline{Tecnologia}{Open Source, Intelligenza Artificiale, Scrittura di blog}
+\section{Volontariato}
+
+\cventry{set 2021–Presente}
+        {Mentore QA}
+        {Associazione Qualità Italia}
+        {\url{https://www.qualityitalia.it}}
+        {}
+        {\begin{itemize}
+\item Volontariato come mentor per giovani QA Engineer
+\item Organizzazione di workshop su test automation e quality assurance
+\item Supporto nella preparazione alle certificazioni ISTQB
+\end{itemize}}
+    
+\end{document}

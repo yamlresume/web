@@ -1,0 +1,235 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Marco Bianchi}{}
+\title{Analista Finanziario Senior}
+\phone[mobile]{+39 345 678 9012}
+\email{marco.bianchi@finanza.it}
+\homepage{https://www.marcobianchi.it}
+
+\address{Via della Moscova, 18, Milano, Lombardia, Italia, 20121}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/marcobianchi}{@marcobianchi}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{\begin{itemize}
+\item Analista finanziario con oltre 7 anni di esperienza nella valutazione d'azienda, modellizzazione finanziaria e analisi di bilancio.
+\item Specializzato in settore bancario e assicurativo, con una solida conoscenza degli standard IFRS e dei mercati finanziari.
+\item Esperto nell'uso di Excel, VBA, Python e SQL per l'analisi dati e l'automazione di processi di reporting.
+\item Capacità di comunicare efficacemente risultati complessi a stakeholder senior e team cross-funzionali.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2014–lug 2016}
+        {Laurea magistrale, Finanza, Punteggio: 110/110 con lode}
+        {Università Commerciale Luigi Bocconi}
+        {\url{https://www.unibocconi.it}}
+        {}
+        {\begin{itemize}
+\item Approfondita conoscenza della teoria finanziaria e delle applicazioni pratiche.
+\item Sviluppo di competenze analitiche attraverso progetti di gruppo e casi di studio reali.
+\item Partecipazione a competizioni di finanza e seminari con professionisti del settore.
+\end{itemize}
+\textbf{Corsi}: Finanza Aziendale, Mercati e Strumenti Finanziari, Analisi degli Investimenti, Risk Management, Economia dei Mercati Mobiliari, Bilancio e Analisi di Bilancio, Finanza Internazionale, Metodi Quantitativi per la Finanza}
+\section{Esperienza professionale}
+
+\cventry{gen 2021–Presente}
+        {Analista Finanziario Senior}
+        {Banca Intesa Sanpaolo}
+        {\url{https://www.intesasanpaolo.com}}
+        {}
+        {\begin{itemize}
+\item Responsabile della modellizzazione finanziaria per operazioni di M\&A e valutazioni strategiche.
+\item Coordinamento di un team di 3 analisti junior nella preparazione di report per il Consiglio di Amministrazione.
+\item Sviluppo di modelli DCF e analisi di comparabili per aziende del settore bancario e assicurativo.
+\item Automazione dei processi di reporting mensile tramite Python e SQL, riducendo i tempi del 40\%.
+\end{itemize}
+\textbf{Parole chiave}: M\&A, Modelli DCF, Analisi comparabili, Reporting, Python}
+
+\cventry{set 2018–dic 2020}
+        {Analista Finanziario}
+        {Generali Assicurazioni}
+        {\url{https://www.generali.com}}
+        {}
+        {\begin{itemize}
+\item Analisi di bilancio e monitoraggio dei KPI finanziari per il segmento assicurativo.
+\item Preparazione di previsioni finanziarie e scenari di stress test per il risk management.
+\item Collaborazione con il team di controllo di gestione per l'ottimizzazione dei costi.
+\item Redazione di report trimestrali per il top management e gli investitori.
+\end{itemize}
+\textbf{Parole chiave}: Analisi di bilancio, KPI, Previsioni, Stress test, IFRS}
+
+\cventry{set 2016–ago 2018}
+        {Analista Finanziario Junior}
+        {Deloitte Italia}
+        {\url{https://www2.deloitte.com/it/it.html}}
+        {}
+        {\begin{itemize}
+\item Supporto a progetti di due diligence finanziaria per acquisizioni nel settore industriale.
+\item Costruzione di modelli finanziari e analisi di sensitività per valutazioni d'azienda.
+\item Preparazione di presentazioni e report per clienti e team interni.
+\item Utilizzo avanzato di Excel e PowerPoint per l'analisi e la comunicazione dei risultati.
+\end{itemize}
+\textbf{Parole chiave}: Due diligence, Valutazione, Excel, PowerPoint, Analisi di sensitività}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 8.0, Business English}
+\cvline{Francese}{Competenza professionale limitata \hfill \textbf{Parole chiave}: DELF B2}
+\section{Competenze}
+
+\cvline{Modellizzazione Finanziaria}{Esperto \hfill \textbf{Parole chiave}: Excel, VBA, Python, SQL, Power BI}
+\cvline{Analisi di Bilancio}{Avanzato \hfill \textbf{Parole chiave}: IFRS, Contabilità, KPI, Rendicontazione}
+\cvline{Valutazione d'Azienda}{Avanzato \hfill \textbf{Parole chiave}: DCF, Comparabili, M\&A, LBO}
+\cvline{Gestione del Rischio}{Intermedio \hfill \textbf{Parole chiave}: VaR, Stress test, Basilea III, Risk management}
+\cvline{Strumenti Software}{Avanzato \hfill \textbf{Parole chiave}: Bloomberg, Reuters, SAP, Tableau}
+\section{Premi}
+
+\cventry{lug 2016}
+        {Università Bocconi}
+        {Premio Eccellenza Accademica}
+        {}
+        {}
+        {Riconoscimento per il miglior rendimento accademico del corso di laurea magistrale in Finanza.}
+
+\cventry{dic 2022}
+        {Banca Intesa Sanpaolo}
+        {Top Performer dell'anno}
+        {}
+        {}
+        {Premio assegnato per il contributo eccezionale al progetto di analisi finanziaria strategica.}
+\section{Certificazioni}
+
+\cventry{giu 2019}
+        {CFA Institute}
+        {CFA Livello I}
+        {\url{https://www.cfainstitute.org}}
+        {}
+        {}
+
+\cventry{mar 2020}
+        {Corporate Finance Institute}
+        {Financial Modeling \& Valuation Analyst (FMVA)}
+        {\url{https://corporatefinanceinstitute.com}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{nov 2021}
+        {L'impatto della digitalizzazione sul settore bancario italiano}
+        {Rivista di Finanza}
+        {\url{https://www.rivistadifinanza.it/articolo}}
+        {}
+        {Analisi delle trasformazioni digitali e dei nuovi modelli di business nel settore bancario.}
+\section{Progetti}
+
+\cventry{gen 2022–apr 2022}
+        {Progetto di valutazione di un'azienda target nel settore energetico}
+        {Analisi di valutazione per acquisizione}
+        {\url{https://www.marcobianchi.it/progetti/valutazione-energia}}
+        {}
+        {\begin{itemize}
+\item Costruzione di un modello DCF, analisi comparabili e redazione di un report per il management.
+\item Presentazione dei risultati al comitato investimenti.
+\end{itemize}
+\textbf{Parole chiave}: DCF, M\&A, Energia}
+\section{Interessi}
+
+\cvline{Investimenti}{Azioni, Obbligazioni, ETF}
+\cvline{Lettura}{Economia, Storia, Biografie}
+\cvline{Sport}{Tennis, Corsa, Sci}
+\section{Volontariato}
+
+\cventry{set 2019–giu 2020}
+        {Volontario}
+        {Insegnanti per l'Italia}
+        {\url{https://www.insegnantiperitalia.it}}
+        {}
+        {\begin{itemize}
+\item Insegnamento di educazione finanziaria a studenti delle scuole superiori.
+\item Sviluppo di materiali didattici interattivi per la comprensione dei concetti base di finanza.
+\end{itemize}}
+    
+\end{document}

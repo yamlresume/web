@@ -1,0 +1,263 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for German language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-german.html
+\usepackage[ngerman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Katharina Vogel}{}
+\title{Finanzanalystin für Unternehmensbewertung und Risikomanagement}
+\phone[mobile]{+49 30 5557 2814}
+\email{katharina.vogel@finanzanalyse-vogel.de}
+\homepage{https://www.katharina-vogel-finance.de}
+
+\address{Friedrichstraße 112, Berlin, Berlin, Deutschland, 10117}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/katharina-vogel-finance}{@katharina-vogel-finance} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/katharinavogel}{@katharinavogel}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basisinformationen}
+
+\cvline{}{Finanzanalystin mit über sechs Jahren Erfahrung in der Bewertung börsennotierter Unternehmen, der Erstellung integrierter Finanzmodelle und der fundierten Entscheidungsunterstützung für Investmentteams.
+%
+\begin{itemize}
+\item Spezialisiert auf DCF-Bewertungen, Kennzahlenanalyse und Szenarioplanung
+\item Sicher im Umgang mit Bloomberg Terminal, Capital IQ und Power BI
+\item Starke Kommunikationsfähigkeiten bei der Aufbereitung komplexer Finanzdaten für Management und Investoren
+\end{itemize}}
+\section{Ausbildung}
+
+\cventry{Okt. 2015–Sept. 2017}
+        {Master, Betriebswirtschaftslehre, Punkte: 1,7}
+        {Humboldt-Universität zu Berlin}
+        {\url{https://www.hu-berlin.de/}}
+        {}
+        {\begin{itemize}
+\item Schwerpunkt Finanzierung und Kapitalmärkte
+\item Masterarbeit zur Bewertung von Wachstumsunternehmen mittels Multiplikatorverfahren
+\end{itemize}
+\textbf{Kurse}: Unternehmensfinanzierung, Investitionsrechnung, Statistik und Ökonometrie, Kapitalmarkttheorie, Rechnungslegung nach IFRS, Risikomanagement}
+
+\cventry{Okt. 2012–Sept. 2015}
+        {Bachelor, Volkswirtschaftslehre, Punkte: 2,1}
+        {Universität Mannheim}
+        {\url{https://www.uni-mannheim.de/}}
+        {}
+        {\begin{itemize}
+\item Grundlagen in Volkswirtschaftslehre, Statistik und Finanzmathematik
+\item Teilnahme am Börsenseminar der Fakultät
+\end{itemize}
+\textbf{Kurse}: Mikroökonomie, Makroökonomie, Finanzwissenschaft, Mathematik für Wirtschaftswissenschaften}
+\section{Berufserfahrung}
+
+\cventry{März 2021–Heute}
+        {Senior Finanzanalystin}
+        {Nordstern Capital GmbH}
+        {\url{https://www.nordstern-capital.de}}
+        {}
+        {\begin{itemize}
+\item Erstellung integrierter Finanzmodelle für europäische mittelgroße Unternehmen zur Unterstützung von Investmententscheidungen
+\item Durchführung von DCF-, Multiplikator- und Sum-of-the-Parts-Bewertungen
+\item Analyse von Quartalsberichten, Geschäftsberichten und Kapitalmarktkommunikation
+\item Präsentation von Anlageempfehlungen im Anlageausschuss
+\item Betreuung von zwei Junior-Analystinnen
+\end{itemize}
+\textbf{Schlüsselwörter}: Unternehmensbewertung, Finanzmodellierung, DCF-Analyse, Anlageausschuss}
+
+\cventry{Jan. 2018–Feb. 2021}
+        {Finanzanalystin}
+        {Hanseatic Asset Management AG}
+        {\url{https://www.hanseatic-am.de}}
+        {}
+        {\begin{itemize}
+\item Erstellung monatlicher Portfolioreports und Performanceanalysen für institutionelle Kunden
+\item Pflege und Weiterentwicklung von Bewertungsmodellen für Aktien und Anleihen
+\item Durchführung von Branchen- und Wettbewerbsanalysen
+\item Unterstützung des Risikocontrollings bei der Überwachung von Markt- und Kreditrisiken
+\item Automatisierung wiederkehrender Auswertungen mit Excel VBA und Python
+\end{itemize}
+\textbf{Schlüsselwörter}: Portfolioanalyse, Performancemessung, Risikocontrolling, Excel VBA}
+\section{Sprachen}
+
+\cvline{Deutsch}{Muttersprache oder zweisprachig \hfill \textbf{Schlüsselwörter}: Muttersprache}
+\cvline{Englisch}{Verhandlungssichere Kenntnisse \hfill \textbf{Schlüsselwörter}: Verhandlungssicher, TOEFL 112}
+\cvline{Französisch}{Gute Kenntnisse \hfill \textbf{Schlüsselwörter}: Grundkenntnisse}
+\section{Fähigkeiten}
+
+\cvline{Finanzanalyse}{Experte \hfill \textbf{Schlüsselwörter}: Unternehmensbewertung, DCF-Modellierung, Kennzahlenanalyse, Szenarioanalyse}
+\cvline{Datenanalyse und Tools}{Erfahren \hfill \textbf{Schlüsselwörter}: Excel, Python, Power BI, Bloomberg Terminal, Capital IQ}
+\cvline{Risikomanagement}{Erfahren \hfill \textbf{Schlüsselwörter}: Marktrisiko, Kreditrisiko, Stresstests, Limitkontrolle}
+\cvline{Kommunikation}{Erfahren \hfill \textbf{Schlüsselwörter}: Anlageempfehlungen, Berichtswesen, Präsentationen}
+\section{Auszeichnungen}
+
+\cventry{Apr. 2017}
+        {CFA Society Germany}
+        {CFA Institute Research Challenge}
+        {}
+        {}
+        {\begin{itemize}
+\item Regionaler Finalist mit einer Anlageempfehlung für ein deutsches Industrieunternehmen
+\end{itemize}}
+
+\cventry{Juli 2016}
+        {Humboldt-Universität zu Berlin}
+        {Preis für herausragende Studienleistungen}
+        {}
+        {}
+        {\begin{itemize}
+\item Auszeichnung für herausragende akademische Leistungen im Masterstudium
+\end{itemize}}
+\section{Zertifikate}
+
+\cventry{Feb. 2025}
+        {CFA Institute}
+        {CFA Level II Candidate}
+        {\url{https://www.cfainstitute.org/programs/cfa-program}}
+        {}
+        {}
+
+\cventry{Nov. 2022}
+        {Global Association of Risk Professionals}
+        {Financial Risk Manager (FRM) Part I}
+        {\url{https://www.garp.org/frm}}
+        {}
+        {}
+
+\cventry{Juni 2023}
+        {Microsoft}
+        {Microsoft Certified: Power BI Data Analyst Associate}
+        {\url{https://learn.microsoft.com/credentials/certifications/power-bi-data-analyst-associate/}}
+        {}
+        {}
+\section{Veröffentlichungen}
+
+\cventry{Sept. 2017}
+        {Bewertung von Wachstumsunternehmen in Niedrigzinsphasen}
+        {Humboldt-Universität zu Berlin}
+        {\url{https://www.hu-berlin.de/forschung/publikationen}}
+        {}
+        {\begin{itemize}
+\item Masterarbeit zur Anwendung von Multiplikator- und DCF-Verfahren auf Technologieunternehmen
+\item Analyse der Sensitivität von Bewertungsergebnissen gegenüber Zins- und Wachstumsannahmen
+\end{itemize}}
+\section{Projekte}
+
+\cventry{Jan. 2023–Juni 2023}
+        {Interaktives Power-BI-Dashboard zur Analyse von Kennzahlen und Zahlungsströmen europäischer Aktien}
+        {Finanzkennzahlen-Dashboard}
+        {\url{https://github.com/katharinavogel/finanz-dashboard}}
+        {}
+        {\begin{itemize}
+\item Automatisierte Aufbereitung von Finanzdaten aus öffentlichen Geschäftsberichten
+\item Visualisierung von Umsatzwachstum, Margen, Verschuldung und freiem Cashflow
+\item Entwicklung eines Bewertungsmodells zur schnellen Vergleichbarkeit von Unternehmen
+\end{itemize}
+\textbf{Schlüsselwörter}: Power BI, Datenvisualisierung, Finanzkennzahlen}
+
+\cventry{Feb. 2022–Nov. 2022}
+        {Python-basiertes Modell zur Berechnung von Value-at-Risk und Stressszenarien}
+        {Risikomodell für Aktienportfolios}
+        {}
+        {}
+        {\begin{itemize}
+\item Simulation historischer und hypothetischer Marktschocks
+\item Berechnung von Value-at-Risk, Expected Shortfall und Portfolio-Rückgängen
+\item Erstellung eines automatisierten Berichts für das Risikocontrolling
+\end{itemize}
+\textbf{Schlüsselwörter}: Python, Value-at-Risk, Stresstests}
+\section{Interessen}
+
+\cvline{Kapitalmärkte}{Aktienanalyse, Makroökonomie, Nachhaltige Geldanlagen}
+\cvline{Ehrenamt}{Finanzbildung, Mentoring}
+\cvline{Sport}{Laufen, Rudern, Wandern}
+\section{Ehrenamtliche Tätigkeiten}
+
+\cventry{Sept. 2019–Heute}
+        {Ehrenamtliche Finanzbildungsreferentin}
+        {Finanzbildung für Alle e.V.}
+        {\url{https://www.finanzbildung-fuer-alle.de}}
+        {}
+        {\begin{itemize}
+\item Durchführung von Schulungen zu Budgetplanung, Altersvorsorge und Geldanlage für junge Erwachsene
+\item Entwicklung von leicht verständlichen Lernmaterialien in deutscher Sprache
+\item Unterstützung bei der Organisation regionaler Finanzbildungsveranstaltungen
+\end{itemize}}
+    
+\end{document}

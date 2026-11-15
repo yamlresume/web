@@ -1,0 +1,252 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{陈浩}{}
+\title{资深财务分析师}
+\phone[mobile]{+86 138 0013 8000}
+\email{chenhao@example.com}
+\homepage{https://www.chenhao-finance.com}
+
+\address{中国，北京市，北京，北京市朝阳区建国路88号，100022}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/chenhao-finance}{@chenhao-finance} {} {} {} • {} {} {} 
+{\small \faZhihu}\ \href{https://www.zhihu.com/people/chenhao-finance}{@chenhao-finance}}
+
+\begin{document}
+
+\maketitle
+
+\section{简介}
+
+\cvline{}{\begin{itemize}
+\item 拥有6年金融行业经验，专注于财务分析、估值建模和投资研究
+\item 精通财务报表分析、现金流折现模型和可比公司分析
+\item 熟练使用Excel、Python和SQL进行数据处理和自动化报告
+\item 具备出色的沟通能力和团队协作精神，能够高效地向管理层汇报分析结果
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2018年9月–2020年7月}
+        {硕士，金融学，成绩：3.9/4.0}
+        {清华大学五道口金融学院}
+        {\url{https://www.pbcsf.tsinghua.edu.cn/}}
+        {}
+        {\begin{itemize}
+\item 深入研究公司金融与资产定价理论，参与多项实证研究项目
+\item 担任金融分析协会副会长，组织行业讲座和案例竞赛
+\item 毕业论文获评优秀，主题为“基于机器学习的信用风险预测模型”
+\end{itemize}
+\textbf{课程}：高级公司金融、投资组合管理、金融计量经济学、衍生品定价、固定收益证券、财务报表分析}
+
+\cventry{2014年9月–2018年7月}
+        {学士，金融学，成绩：3.8/4.0}
+        {北京大学光华管理学院}
+        {\url{https://www.gsm.pku.edu.cn/}}
+        {}
+        {\begin{itemize}
+\item 连续三年获得校级奖学金，GPA排名前10\%
+\item 参与全国大学生金融建模大赛，获得团体二等奖
+\item 担任学生会学术部部长，组织多场职业发展活动
+\end{itemize}
+\textbf{课程}：微观经济学、宏观经济学、会计学原理、公司财务、投资学、统计学、计量经济学}
+\section{工作经历}
+
+\cventry{2020年8月至今}
+        {高级财务分析师}
+        {中信证券股份有限公司}
+        {\url{https://www.citics.com}}
+        {}
+        {\begin{itemize}
+\item 负责覆盖科技和消费行业的股票研究，撰写深度研究报告，为机构投资者提供投资建议
+\item 构建和维护财务模型（DCF、可比公司分析、敏感性分析），预测公司未来3-5年财务表现
+\item 主导季度财报电话会议，分析财务数据并回答投资者提问
+\item 与内部销售团队合作，进行路演和客户拜访，提升研究产品的市场影响力
+\item 指导初级分析师，审核其财务模型和报告，确保分析质量
+\end{itemize}
+\textbf{关键字}：财务建模、股票研究、估值分析、行业研究}
+
+\cventry{2018年7月–2020年7月}
+        {财务分析师}
+        {普华永道中天会计师事务所}
+        {\url{https://www.pwccn.com}}
+        {}
+        {\begin{itemize}
+\item 参与多个大型企业的年度审计项目，负责财务报表分析和内部控制测试
+\item 协助客户完成IPO前的财务尽职调查，识别关键风险并提出改进建议
+\item 使用数据分析工具（Alteryx、Tableau）对财务数据进行可视化，提高审计效率
+\item 与团队成员协作，按时交付高质量的审计工作底稿和报告
+\end{itemize}
+\textbf{关键字}：财务审计、尽职调查、数据分析、内部控制}
+\section{语言}
+
+\cvline{中文}{母语或双语水平 \hfill \textbf{关键字}：普通话}
+\cvline{英语}{完全专业水平 \hfill \textbf{关键字}：CET-6、TOEFL 105、商务英语}
+\section{专业技能}
+
+\cvline{财务分析}{专家 \hfill \textbf{关键字}：财务报表分析、估值建模、现金流折现、可比公司分析、敏感性分析}
+\cvline{数据分析}{高级 \hfill \textbf{关键字}：Excel VBA、Python、SQL、Tableau、Bloomberg Terminal}
+\cvline{行业研究}{高级 \hfill \textbf{关键字}：科技行业、消费行业、宏观经济、竞争分析}
+\cvline{沟通与领导}{高级 \hfill \textbf{关键字}：报告撰写、团队管理、客户演示}
+\section{荣誉}
+
+\cventry{2016年10月}
+        {北京大学}
+        {国家奖学金}
+        {}
+        {}
+        {因学业成绩优异和综合素质突出，获得国家奖学金（全校前5\%）。}
+
+\cventry{2018年7月}
+        {北京大学光华管理学院}
+        {优秀毕业生}
+        {}
+        {}
+        {因学业成绩和课外活动表现突出，被评为优秀毕业生。}
+\section{证书}
+
+\cventry{2021年6月}
+        {CFA Institute}
+        {CFA Level II}
+        {\url{https://www.cfainstitute.org}}
+        {}
+        {}
+
+\cventry{2019年12月}
+        {中国注册会计师协会}
+        {注册会计师（CPA）}
+        {\url{https://www.cicpa.org.cn}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2020年5月}
+        {基于机器学习的信用风险预测模型研究}
+        {金融研究}
+        {\url{https://www.jryj.org.cn}}
+        {}
+        {\begin{itemize}
+\item 本文构建了基于随机森林和XGBoost的信用风险预测模型，并使用中国上市公司数据进行实证检验
+\item 研究发现机器学习模型在预测准确率和稳定性上优于传统Logistic回归模型
+\item 论文被引用超过50次，并获得清华大学优秀硕士论文奖
+\end{itemize}}
+\section{项目}
+
+\cventry{2021年3月–2021年9月}
+        {一个基于Python的自动化财务分析工具，用于批量处理科技公司财报数据}
+        {科技行业财务分析平台}
+        {\url{https://github.com/chenhao-finance/tech-finance-analysis}}
+        {}
+        {\begin{itemize}
+\item 使用Python和pandas从SEC EDGAR和Wind数据库抓取财务数据
+\item 自动计算关键财务指标（ROE、ROIC、毛利率、自由现金流等）并生成可视化报告
+\item 支持自定义估值模型，可一键生成DCF和可比公司分析
+\item 项目开源后获得200+ GitHub stars，被多家机构分析师使用
+\end{itemize}
+\textbf{关键字}：Python、财务分析、自动化、数据可视化}
+\section{兴趣爱好}
+
+\cvline{运动}{网球、游泳、徒步}
+\cvline{阅读}{金融史、传记、科技趋势}
+\section{志愿服务}
+
+\cventry{2019年9月–2021年12月}
+        {金融素养志愿者}
+        {中国金融教育发展基金会}
+        {\url{https://www.cfdf.org.cn}}
+        {}
+        {\begin{itemize}
+\item 参与“金融知识进社区”公益活动，为老年人讲解理财知识和防诈骗技巧
+\item 编写通俗易懂的金融知识手册，累计发放500余份
+\item 组织大学生志愿者培训，提升团队的金融素养和服务能力
+\end{itemize}}
+    
+\end{document}

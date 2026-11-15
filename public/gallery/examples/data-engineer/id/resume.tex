@@ -1,0 +1,269 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Indonesian (Bahasa Indonesia) language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-indonesian.html
+\usepackage[indonesian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Rizky Pratama Nugroho}{}
+\title{Insinyur Data Senior yang membangun platform data modern dan andal}
+\phone[mobile]{+62 812-3456-7890}
+\email{rizky.pratama@example.com}
+\homepage{https://rizkypratama.dev}
+
+\address{Jl. Gatot Subroto No. 88, Kuningan Barat, Jakarta Selatan, DKI Jakarta, Indonesia, 12710}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/rizkypnugroho}{@rizkypnugroho} {} {} {} • {} {} {} 
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/rizkypnugroho}{@rizkypnugroho} {} {} {} • {} {} {} 
+{\small \faStackOverflow}\ \href{https://stackoverflow.com/users/9876543/rizky-nugroho}{@rizky-nugroho}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informasi Dasar}
+
+\cvline{}{\begin{itemize}
+\item Insinyur Data dengan pengalaman lebih dari 7 tahun dalam merancang, membangun, dan mengoperasikan platform data modern.
+\item Ahli dalam pipeline ETL/ELT, pemodelan data dimensional, tata kelola data, dan optimasi performa kueri.
+\item Terbiasa bekerja dengan Apache Airflow, dbt, Spark, Kafka, Snowflake, BigQuery, dan ekosistem cloud.
+\item Pemimpin teknis yang kolaboratif, berorientasi dampak bisnis, dan berpengalaman membimbing engineer junior.
+\end{itemize}}
+\section{Pendidikan}
+
+\cventry{Agu 2014–Jul 2018}
+        {Sarjana, Teknik Informatika, Nilai: 3.72}
+        {Institut Teknologi Bandung}
+        {\url{https://www.itb.ac.id}}
+        {}
+        {\begin{itemize}
+\item Fokus pada basis data, sistem terdistribusi, dan rekayasa perangkat lunak.
+\item Menyelesaikan tugas akhir tentang optimasi kueri pada gudang data kolumnar.
+\item Aktif dalam organisasi mahasiswa dan kompetisi analitik data.
+\end{itemize}
+\textbf{Mata Kuliah}: Struktur Data dan Algoritma, Basis Data, Sistem Terdistribusi, Rekayasa Perangkat Lunak, Statistika Terapan, Pembelajaran Mesin, Komputasi Awan, Pemrograman Fungsional}
+\section{Pengalaman Kerja}
+
+\cventry{Feb 2022–Sekarang}
+        {Insinyur Data Senior}
+        {PT Cakrawala Data Nusantara}
+        {\url{https://cakrawaladata.co.id}}
+        {}
+        {\begin{itemize}
+\item Merancang dan memelihara arsitektur data lakehouse untuk mendukung analitik dan pelaporan lintas divisi.
+\item Membangun pipeline ETL/ELT dengan Apache Airflow, dbt, dan Spark untuk memproses lebih dari 2 TB data harian.
+\item Mengoptimalkan model data di Snowflake dan BigQuery sehingga waktu kueri analitik turun 40 persen.
+\item Menerapkan praktik tata kelola data, katalog data, dan kontrol kualitas data bersama tim platform.
+\item Memimpin tiga insinyur data junior dan melakukan code review untuk menjaga standar rekayasa data.
+\end{itemize}
+\textbf{Kata Kunci}: Data Lakehouse, Apache Airflow, dbt, Apache Spark, Snowflake, BigQuery, Tata Kelola Data, Kualitas Data}
+
+\cventry{Mar 2019–Jan 2022}
+        {Insinyur Data}
+        {PT Solusi Analitik Prima}
+        {\url{https://solusianalitik.co.id}}
+        {}
+        {\begin{itemize}
+\item Mengembangkan data warehouse dan pipeline batch untuk kebutuhan business intelligence klien ritel dan keuangan.
+\item Membangun integrasi data dari PostgreSQL, MySQL, dan API pihak ketiga menggunakan Python dan Apache Airflow.
+\item Membuat model dbt dan dokumentasi data untuk meningkatkan konsistensi metrik bisnis.
+\item Berkolaborasi dengan analis data dan manajer produk dalam perancangan KPI serta dashboard operasional.
+\item Menurunkan biaya pemrosesan data 25 persen melalui optimasi job dan partisi tabel.
+\end{itemize}
+\textbf{Kata Kunci}: Data Warehouse, Apache Airflow, Python, dbt, PostgreSQL, Business Intelligence, ETL, Optimasi Kueri}
+
+\cventry{Agu 2018–Feb 2019}
+        {Analis Data}
+        {PT Insight Digital Indonesia}
+        {\url{https://insightdigital.co.id}}
+        {}
+        {\begin{itemize}
+\item Mengumpulkan, membersihkan, dan menganalisis data penjualan untuk mendukung pengambilan keputusan manajemen.
+\item Membuat dashboard Tableau dan laporan otomatis dengan SQL untuk tim pemasaran dan operasional.
+\item Menyusun dokumentasi metrik dan membantu validasi data sebelum dipublikasikan ke pemangku kepentingan.
+\end{itemize}
+\textbf{Kata Kunci}: SQL, Tableau, Analisis Data, Dashboard, Pelaporan}
+\section{Bahasa}
+
+\cvline{Indonesia}{Bahasa Ibu / Bilingual \hfill \textbf{Kata Kunci}: Bahasa ibu, Komunikasi profesional}
+\cvline{Inggris}{Tingkat Profesional Penuh \hfill \textbf{Kata Kunci}: IELTS 7.5, Presentasi teknis}
+\section{Keahlian}
+
+\cvline{Rekayasa Data}{Ahli \hfill \textbf{Kata Kunci}: Apache Airflow, Apache Spark, dbt, Apache Kafka, Python, SQL}
+\cvline{Basis Data dan Pemodelan}{Mahir \hfill \textbf{Kata Kunci}: Snowflake, Google BigQuery, PostgreSQL, Data Warehouse, Data Modeling, Kualitas Data}
+\cvline{Cloud dan Infrastruktur}{Mahir \hfill \textbf{Kata Kunci}: Google Cloud Platform, AWS, Terraform, Docker, Kubernetes, CI/CD}
+\cvline{Analitik dan Visualisasi}{Menengah \hfill \textbf{Kata Kunci}: Power BI, Tableau, Metabase, Pandas, PySpark, Looker}
+\section{Penghargaan}
+
+\cventry{Des 2023}
+        {PT Cakrawala Data Nusantara}
+        {Karyawan Terbaik Tahun 2023}
+        {}
+        {}
+        {Diberikan atas kontribusi dalam modernisasi platform data perusahaan dan kepemimpinan teknis tim rekayasa data.}
+
+\cventry{Okt 2019}
+        {Asosiasi Data Indonesia}
+        {Juara 2 Hackathon Data Nasional}
+        {}
+        {}
+        {Diberikan atas pencapaian tim dalam membangun solusi analitik prediktif untuk optimasi rantai pasok.}
+\section{Sertifikat}
+
+\cventry{Mei 2023}
+        {Google Cloud}
+        {Google Cloud Professional Data Engineer}
+        {\url{https://cloud.google.com/certification/data-engineer}}
+        {}
+        {}
+
+\cventry{Sep 2022}
+        {Amazon Web Services}
+        {AWS Certified Data Analytics - Specialty}
+        {\url{https://aws.amazon.com/certification/certified-data-analytics-specialty/}}
+        {}
+        {}
+
+\cventry{Jan 2024}
+        {dbt Labs}
+        {dbt Analytics Engineering Certification}
+        {\url{https://www.getdbt.com/certifications/analytics-engineering-certification}}
+        {}
+        {}
+\section{Publikasi}
+
+\cventry{Nov 2021}
+        {Arsitektur Data Lakehouse untuk Analitik Real-Time di Perusahaan Digital}
+        {Jurnal Sistem Informasi Indonesia}
+        {\url{https://doi.org/10.1234/jsii.2021.0123}}
+        {}
+        {\begin{itemize}
+\item Membahas rancangan data lakehouse untuk kebutuhan analitik real-time.
+\item Menguraikan strategi ingestion, pemodelan, tata kelola, dan kualitas data.
+\item Memberikan studi kasus penerapan pada perusahaan digital di Indonesia.
+\end{itemize}}
+\section{Referensi}
+
+\cventry{\emaillink[dewi.anggraini@cakrawaladata.co.id]{dewi.anggraini@cakrawaladata.co.id}}
+        {Head of Data Engineering, PT Cakrawala Data Nusantara}
+        {Dewi Anggraini}
+        {+62 811-9876-5432}
+        {}
+        {Dewi Anggraini memimpin tim Data Engineering di PT Cakrawala Data Nusantara dan dapat memberikan keterangan mengenai kinerja teknis, kepemimpinan, serta kontribusi Rizky selama bekerja.}
+\section{Proyek}
+
+\cventry{Mar 2023–Sep 2023}
+        {Membangun pipeline streaming untuk menyediakan metrik operasional near real-time bagi tim gudang dan logistik.}
+        {Pipeline Data Real-Time untuk Dashboard Operasional}
+        {\url{https://github.com/rizkypnugroho/realtime-ops-pipeline}}
+        {}
+        {\begin{itemize}
+\item Mengintegrasikan Apache Kafka, Spark Structured Streaming, dan BigQuery untuk aliran data berlatensi rendah.
+\item Menerapkan monitoring, alerting, dan idempotensi pipeline agar kualitas data tetap terjaga.
+\item Menyusun runbook dan dokumentasi arsitektur untuk tim operasi data.
+\end{itemize}
+\textbf{Kata Kunci}: Apache Kafka, Spark Streaming, BigQuery, Observability, Kualitas Data}
+
+\cventry{Jun 2021–Des 2021}
+        {Memodernisasi gudang data legacy menjadi model dimensional yang lebih skalabel dan mudah dipelihara.}
+        {Modernisasi Data Warehouse Perusahaan Ritel}
+        {\url{https://github.com/rizkypnugroho/retail-dw-modernization}}
+        {}
+        {\begin{itemize}
+\item Memigrasikan tabel legacy ke Snowflake dengan strategi cutover bertahap.
+\item Membangun model dbt dan test kualitas data untuk dimensi pelanggan, produk, dan penjualan.
+\item Mendokumentasikan lineage data dan metrik bisnis bersama tim analitik.
+\end{itemize}
+\textbf{Kata Kunci}: Snowflake, dbt, Data Warehouse, Data Modeling, Migrasi Data}
+\section{Minat}
+
+\cvline{Open Source}{Apache Airflow, dbt, Apache Kafka}
+\cvline{Olahraga}{Lari, Bersepeda, Bulu Tangkis}
+\cvline{Musik}{Gitar, Piano}
+\section{Kegiatan Sukarela}
+
+\cventry{Jan 2021–Sekarang}
+        {Mentor Data Engineering}
+        {Komunitas Data Jakarta}
+        {\url{https://datakomunitas.id}}
+        {}
+        {\begin{itemize}
+\item Menjadi mentor dalam program belajar data engineering untuk pemula dan profesional yang beralih karier.
+\item Membantu peserta membangun proyek portofolio pipeline data dan memberikan umpan balik teknis.
+\item Turut menyelenggarakan lokakarya tentang Airflow, dbt, dan praktik terbaik kualitas data.
+\end{itemize}}
+    
+\end{document}

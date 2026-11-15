@@ -1,0 +1,257 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Spanish language
+% \usepackage[spanish]{babel} has some conflicting issues with moderncv
+% so we have to use enable the following options to make it work
+%
+% ref:
+% - https://tex.stackexchange.com/a/140161/36007
+\usepackage[spanish,es-lcroman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Alejandro Vega Moreno}{}
+\title{Ingeniero de IA especializado en visión por computador, NLP y MLOps}
+\phone[mobile]{+34 612 345 678}
+\email{alejandro.vega.moreno@gmail.com}
+\homepage{https://alejandrovega.dev}
+
+\address{Calle de Serrano 45, 4º B, Madrid, Comunidad de Madrid, España, 28001}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/alejandrovega-ai}{@alejandrovega-ai} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/alejandrovega-ai}{@alejandrovega-ai} {} {} {} • {} {} {} 
+{\small \faStackOverflow}\ \href{https://stackoverflow.com/users/1234567/alejandro-vega}{@alejandro-vega}}
+
+\begin{document}
+
+\maketitle
+
+\section{Información básica}
+
+\cvline{}{Ingeniero de IA con más de 6 años de experiencia diseñando, desplegando y monitorizando sistemas de aprendizaje automático en producción. Especializado en visión por computador, procesamiento de lenguaje natural y MLOps, con impacto medible en eficiencia operativa y experiencias de cliente.
+%
+\begin{itemize}
+\item Lideré el ciclo completo de modelos de IA, desde la exploración de datos hasta el despliegue en cloud y la monitorización continua.
+\item Experiencia con Python, PyTorch, TensorFlow, Kubernetes y plataformas de datos en AWS y Azure.
+\item Colaborador técnico y mentor, con comunicación clara entre equipos de negocio, producto e ingeniería.
+\end{itemize}}
+\section{Educación}
+
+\cventry{sept 2017–jul 2019}
+        {Maestría, Inteligencia Artificial, Puntuación: 9,2/10}
+        {Universidad Politécnica de Madrid}
+        {\url{https://www.upm.es}}
+        {}
+        {\begin{itemize}
+\item Formación orientada a la investigación aplicada y al desarrollo de sistemas inteligentes en entornos reales.
+\item Trabajo final centrado en detección de anomalías con modelos híbridos y despliegue en cloud.
+\end{itemize}
+\textbf{Cursos}: Aprendizaje Automático Avanzado, Visión por Computador, Procesamiento de Lenguaje Natural, Sistemas de Recomendación, Computación Distribuida, Ética y Gobernanza de la IA}
+
+\cventry{sept 2013–jun 2017}
+        {Licenciatura, Ingeniería Informática, Puntuación: 8,7/10}
+        {Universidad de Sevilla}
+        {\url{https://www.us.es}}
+        {}
+        {\begin{itemize}
+\item Base sólida en programación, bases de datos, estadística y desarrollo de software.
+\item Participación en proyectos académicos de análisis de datos y automatización de procesos.
+\end{itemize}
+\textbf{Cursos}: Algoritmos y Estructuras de Datos, Bases de Datos, Ingeniería del Software, Estadística, Sistemas Operativos, Redes de Computadores}
+\section{Experiencia laboral}
+
+\cventry{mar 2022 hasta la fecha}
+        {Ingeniero de IA Senior}
+        {Nexo IA Labs}
+        {\url{https://www.nexoia.es}}
+        {}
+        {\begin{itemize}
+\item Diseñé y desplegué modelos de visión por computador y NLP para productos de análisis documental y atención al cliente.
+\item Lideré la implantación de pipelines MLOps con MLflow, Docker y Kubernetes, reduciendo el tiempo de puesta en producción de modelos en un 40\%.
+\item Definí métricas de calidad, deriva de datos y monitorización de modelos, mejorando la fiabilidad de los sistemas en producción.
+\item Colaboré con producto y negocio para priorizar casos de uso de IA según impacto y viabilidad técnica.
+\item Mentoricé a ingenieros junior y promoví buenas prácticas de experimentación, revisión de código y documentación.
+\end{itemize}
+\textbf{Palabras clave}: Visión por computador, MLOps, PyTorch, AWS, Liderazgo técnico}
+
+\cventry{sept 2019–feb 2022}
+        {Ingeniero de Aprendizaje Automático}
+        {DataMente Soluciones}
+        {\url{https://www.datamente.es}}
+        {}
+        {\begin{itemize}
+\item Desarrollé modelos predictivos para segmentación de clientes, previsión de demanda y detección de fraude.
+\item Construí APIs con FastAPI y servicios de inferencia escalables sobre AWS, integrados con plataformas internas de datos.
+\item Automaticé procesos de entrenamiento y validación con Airflow, reduciendo tareas manuales repetitivas.
+\item Realicé análisis exploratorios y presentaciones ejecutivas para equipos no técnicos, traduciendo resultados en decisiones de negocio.
+\end{itemize}
+\textbf{Palabras clave}: Machine Learning, FastAPI, AWS, Airflow, Analítica predictiva}
+\section{Idiomas}
+
+\cvline{Español}{Competencia nativa o bilingüe \hfill \textbf{Palabras clave}: Nativo}
+\cvline{Inglés}{Competencia profesional plena \hfill \textbf{Palabras clave}: TOEIC 940, C1 acreditado}
+\cvline{Catalán}{Competencia profesional plena \hfill \textbf{Palabras clave}: Nivel C2, Uso profesional}
+\section{Competencias}
+
+\cvline{Aprendizaje automático}{Experto \hfill \textbf{Palabras clave}: Python, PyTorch, TensorFlow, scikit-learn, XGBoost}
+\cvline{Procesamiento de lenguaje}{Avanzado \hfill \textbf{Palabras clave}: Transformers, BERT, LLMs, spaCy, RAG}
+\cvline{Visión por computador}{Avanzado \hfill \textbf{Palabras clave}: OpenCV, YOLO, Segmentación, CNN, TensorRT}
+\cvline{MLOps e infraestructura}{Avanzado \hfill \textbf{Palabras clave}: Docker, Kubernetes, MLflow, Airflow, CI/CD}
+\cvline{Datos y cloud}{Avanzado \hfill \textbf{Palabras clave}: AWS SageMaker, Azure ML, Spark, SQL, Snowflake}
+\cvline{Desarrollo de software}{Avanzado \hfill \textbf{Palabras clave}: Python, FastAPI, Git, C++, Pruebas unitarias}
+\section{Premios}
+
+\cventry{may 2024}
+        {Nexo IA Labs}
+        {Premio a la Innovación en IA}
+        {}
+        {}
+        {Reconocimiento interno por el diseño de un sistema de visión artificial que redujo los errores de clasificación documental en un 35\%.}
+
+\cventry{jul 2019}
+        {Universidad Politécnica de Madrid}
+        {Mejor proyecto de fin de máster}
+        {}
+        {}
+        {Galardón al proyecto de detección temprana de anomalías en series temporales mediante modelos híbridos y despliegue en cloud.}
+\section{Certificados}
+
+\cventry{abr 2023}
+        {Amazon Web Services}
+        {AWS Certified Machine Learning - Specialty}
+        {\url{https://aws.amazon.com/certification/certified-machine-learning-specialty/}}
+        {}
+        {}
+
+\cventry{nov 2021}
+        {Scrum.org}
+        {Professional Scrum Master I}
+        {\url{https://www.scrum.org/professional-scrum-certifications/professional-scrum-master-i-certification}}
+        {}
+        {}
+\section{Publicaciones}
+
+\cventry{oct 2022}
+        {Detección temprana de anomalías en series temporales con modelos híbridos}
+        {Revista Iberoamericana de Inteligencia Artificial}
+        {\url{https://revista.iberoai.org/articulos/deteccion-anomalias-series-temporales}}
+        {}
+        {\begin{itemize}
+\item Propone una combinación de modelos estadísticos y redes neuronales para detectar anomalías en datos industriales.
+\item Evalúa el enfoque en conjuntos de datos reales y analiza su robustez ante ruido y cambios de distribución.
+\end{itemize}}
+\section{Proyectos}
+
+\cventry{feb 2023–nov 2023}
+        {Asistente conversacional para consultas sobre documentación clínica mediante recuperación aumentada.}
+        {Asistente clínico con RAG}
+        {\url{https://github.com/alejandrovega-ai/asistente-clinico-rag}}
+        {}
+        {\begin{itemize}
+\item Implementé un pipeline de ingestión, indexación vectorial y recuperación de documentos médicos.
+\item Añadí evaluación de respuestas y trazas para reducir alucinaciones y mejorar la trazabilidad.
+\item Desplegué el servicio con FastAPI, Docker y una base vectorial gestionada en cloud.
+\end{itemize}
+\textbf{Palabras clave}: RAG, LLMs, FastAPI, Búsqueda vectorial}
+
+\cventry{may 2021–ene 2022}
+        {Sistema de inspección visual automática para detectar defectos en línea de producción.}
+        {Visión artificial para control de calidad}
+        {\url{https://github.com/alejandrovega-ai/vision-calidad}}
+        {}
+        {\begin{itemize}
+\item Entrené modelos de detección y segmentación con imágenes industriales etiquetadas por expertos.
+\item Optimicé la inferencia con TensorRT para cumplir requisitos de latencia en planta.
+\item Diseñé un panel de revisión humana para validar casos ambiguos y retroalimentar el modelo.
+\end{itemize}
+\textbf{Palabras clave}: Visión por computador, YOLO, TensorRT, Control de calidad}
+\section{Intereses}
+
+\cvline{Deporte}{Escalada, Ciclismo, Senderismo}
+\cvline{Música}{Guitarra, Jazz, Producción musical}
+\cvline{Divulgación tecnológica}{Meetups, Mentoría, Artículos técnicos}
+\section{Voluntariado}
+
+\cventry{ene 2021–dic 2024}
+        {Mentor y ponente}
+        {Comunidad IA España}
+        {\url{https://www.comunidadia.es}}
+        {}
+        {\begin{itemize}
+\item Mentoricé a profesionales en transición hacia roles de IA y aprendizaje automático.
+\item Impartí charlas sobre MLOps, evaluación de modelos y despliegue responsable de IA.
+\item Colaboré en la organización de encuentros técnicos y talleres prácticos para la comunidad.
+\end{itemize}}
+    
+\end{document}

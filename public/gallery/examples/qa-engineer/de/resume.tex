@@ -1,0 +1,215 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for German language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-german.html
+\usepackage[ngerman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Lena Müller}{}
+\title{QA Engineer}
+\phone[mobile]{+49 30 12345678}
+\email{lena.mueller@posteo.de}
+\homepage{https://www.lena-mueller-qa.de}
+
+\address{Musterstraße 12, Berlin, Berlin, Deutschland, 10115}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/lena-mueller-qa}{@lena-mueller-qa} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/lena-mueller}{@lena-mueller}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basisinformationen}
+
+\cvline{}{QA Engineer mit über 8 Jahren Erfahrung in der Qualitätssicherung von Web- und Cloud-Anwendungen. Spezialisiert auf Testautomatisierung, Testmanagement und agile Entwicklungsmethoden.
+%
+\begin{itemize}
+\item Entwicklung und Umsetzung von Teststrategien für komplexe Systeme
+\item Automatisierung von Regressionstests mit Python, Selenium und Cypress
+\item Enge Zusammenarbeit mit Entwicklungsteams zur Sicherstellung hoher Softwarequalität
+\item Zertifiziert nach ISTQB Advanced Level und Certified Scrum Master
+\end{itemize}}
+\section{Ausbildung}
+
+\cventry{Okt. 2014–Sept. 2016}
+        {Master, Informatik, Punkte: 1.7}
+        {Technische Universität Berlin}
+        {\url{https://www.tu.berlin.de/}}
+        {}
+        {\begin{itemize}
+\item Schwerpunkt auf Softwaretechnik und Qualitätssicherung
+\item Masterarbeit über modellbasiertes Testen
+\end{itemize}
+\textbf{Kurse}: Softwarequalität, Testmanagement, Automatisiertes Testen, Programmierparadigmen, Datenbanksysteme}
+\section{Berufserfahrung}
+
+\cventry{Jan. 2020–Heute}
+        {Senior QA Engineer}
+        {SAP SE}
+        {\url{https://www.sap.com/}}
+        {}
+        {\begin{itemize}
+\item Leitung des QA-Teams für die SAP S/4HANA Cloud
+\item Entwicklung und Implementierung von Teststrategien für komplexe Microservices
+\item Automatisierung von Regressionstests mit Python und Selenium
+\item Zusammenarbeit mit Entwicklern und Product Ownern in agilen Sprints
+\end{itemize}
+\textbf{Schlüsselwörter}: Testautomatisierung, Selenium, Python, Agile, Microservices}
+
+\cventry{Juli 2016–Dez. 2019}
+        {QA Engineer}
+        {Zalando SE}
+        {\url{https://www.zalando.de/}}
+        {}
+        {\begin{itemize}
+\item Manuelles und automatisiertes Testen von Webanwendungen und APIs
+\item Erstellung von Testplänen und Testfällen basierend auf Anforderungen
+\item Durchführung von Performance- und Lasttests mit JMeter
+\item Fehlerverfolgung und -management mit JIRA
+\end{itemize}
+\textbf{Schlüsselwörter}: Manuelles Testen, API-Testing, JMeter, JIRA, Agile}
+\section{Sprachen}
+
+\cvline{Deutsch}{Muttersprache oder zweisprachig \hfill \textbf{Schlüsselwörter}: Muttersprache}
+\cvline{Englisch}{Verhandlungssichere Kenntnisse \hfill \textbf{Schlüsselwörter}: C1, Business Fluent}
+\section{Fähigkeiten}
+
+\cvline{Testautomatisierung}{Experte \hfill \textbf{Schlüsselwörter}: Selenium, Cypress, Playwright, Robot Framework}
+\cvline{Programmiersprachen}{Erfahren \hfill \textbf{Schlüsselwörter}: Python, Java, JavaScript, SQL}
+\cvline{Testmanagement}{Erfahren \hfill \textbf{Schlüsselwörter}: ISTQB, Teststrategie, Risikobasiertes Testen, Testplanung}
+\cvline{Agile Methoden}{Experte \hfill \textbf{Schlüsselwörter}: Scrum, Kanban, SAFe, Continuous Integration}
+\section{Auszeichnungen}
+
+\cventry{Dez. 2021}
+        {SAP SE}
+        {QA Team of the Year}
+        {}
+        {}
+        {Auszeichnung für herausragende Leistungen bei der Einführung einer automatisierten Testsuite, die die Testabdeckung um 40\% erhöhte.}
+\section{Zertifikate}
+
+\cventry{März 2017}
+        {ISTQB}
+        {ISTQB Certified Tester Foundation Level}
+        {\url{https://www.istqb.org/certifications/certified-tester-foundation-level}}
+        {}
+        {}
+
+\cventry{Juni 2019}
+        {ISTQB}
+        {ISTQB Advanced Level Test Manager}
+        {\url{https://www.istqb.org/certifications/advanced-level-test-manager}}
+        {}
+        {}
+
+\cventry{Nov. 2020}
+        {Scrum Alliance}
+        {Certified Scrum Master}
+        {\url{https://www.scrumalliance.org/certifications}}
+        {}
+        {}
+\section{Projekte}
+
+\cventry{Jan. 2021–Heute}
+        {Ein leichtgewichtiges Python-Framework für API-Tests}
+        {Open-Source Testframework}
+        {\url{https://github.com/lena-mueller/testframework}}
+        {}
+        {\begin{itemize}
+\item Entwicklung eines Open-Source-Tools zur Vereinfachung von API-Tests
+\item Integration mit pytest und Unterstützung von Datengetriebenen Tests
+\item Über 500 Sterne auf GitHub
+\end{itemize}
+\textbf{Schlüsselwörter}: Python, API, Testing}
+\section{Interessen}
+
+\cvline{Technologie}{Open Source, Künstliche Intelligenz, Cloud Computing}
+\cvline{Sport}{Laufen, Yoga, Wandern}
+\section{Ehrenamtliche Tätigkeiten}
+
+\cventry{März 2018–Heute}
+        {Mentorin für Softwaretesting}
+        {Women in Tech Berlin}
+        {\url{https://www.women-in-tech-berlin.de/}}
+        {}
+        {\begin{itemize}
+\item Mentoring von Frauen, die in den Bereich Softwaretesting einsteigen möchten
+\item Organisation von Workshops zu Testautomatisierung und ISTQB-Zertifizierung
+\item Unterstützung bei der Karriereentwicklung
+\end{itemize}}
+    
+\end{document}

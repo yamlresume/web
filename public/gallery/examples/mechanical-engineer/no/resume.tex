@@ -1,0 +1,245 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Ingrid Solberg}{}
+\title{Maskiningeniør med fokus på produktutvikling og bærekraft}
+\phone[mobile]{+47 987 65 432}
+\email{ingrid.solberg@example.no}
+\homepage{https://www.ingridsolberg.no}
+
+\address{Storgata 42, Oslo, Oslo, Norge, 0182}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/ingridsolberg}{@ingridsolberg} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/ingridsolberg}{@ingridsolberg}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{\begin{itemize}
+\item Maskiningeniør med mastergrad fra NTNU og fem års erfaring fra produktutvikling, konstruksjon og teknisk prosjektledelse
+\item Erfaren med CAD, FEM-analyse og materialvalg for komponenter i krevende industrielle miljøer
+\item Dokumentert evne til å lede tverrfaglige team fra konsept til produksjon, med vekt på kvalitet, kostnad og bærekraft
+\item Sterk interesse for energieffektivisering, sirkulærøkonomi og digitale verktøy i ingeniørfaglig arbeid
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2017–juni 2022}
+        {Master, Maskinteknikk, Poeng: A+}
+        {Norges teknisk-naturvitenskapelige universitet}
+        {\url{https://www.ntnu.no}}
+        {}
+        {\begin{itemize}
+\item Fordypning i produktutvikling og beregningsmekanikk
+\item Masteroppgave om lette konstruksjoner i aluminium for offshore-applikasjoner
+\item Gjennomførte tverrfaglige prosjekter med fokus på bærekraftige materialvalg
+\end{itemize}
+\textbf{Kurs}: Konstruksjonsteknikk, Fasthetslære, Strømningslære, Termodynamikk, Materialteknologi, Produktutvikling, FEM-analyse, Prosjektledelse}
+\section{Arbeidserfaring}
+
+\cventry{jan. 2023–Nå}
+        {Senior maskiningeniør}
+        {Hydro Extrusion Norge AS}
+        {\url{https://www.hydro.com/no-NO/}}
+        {}
+        {\begin{itemize}
+\item Leder teknisk utvikling av ekstruderte aluminiumsprofiler for transport- og byggsektoren
+\item Ansvarlig for konstruksjonsberegninger, toleranseanalyser og validering av nye produkter
+\item Koordinerer tverrfaglige prosjekter mellom produksjon, kvalitet og leverandører
+\item Driver kontinuerlig forbedring av produksjonsprosesser med vekt på energibesparelse
+\end{itemize}
+\textbf{Nøkkelord}: Aluminium, Produktutvikling, FEM, Kvalitetssikring, Lean}
+
+\cventry{aug. 2020–des. 2022}
+        {Maskiningeniør}
+        {Aker Solutions AS}
+        {\url{https://www.akersolutions.com}}
+        {}
+        {\begin{itemize}
+\item Konstruerte og dimensjonerte mekaniske komponenter for undervannsinstallasjoner
+\item Utførte FEM- og utmattingsanalyser i samsvar med NORSOK-standarder
+\item Utarbeidet tekniske tegninger, spesifikasjoner og endringsnotater
+\item Deltok i verifikasjon, testing og oppfølging av leverandører
+\end{itemize}
+\textbf{Nøkkelord}: Undervannsteknologi, FEM-analyse, NORSOK, SolidWorks, Teknisk dokumentasjon}
+
+\cventry{juni 2019–aug. 2019}
+        {Prosjektingeniør (sommerjobb)}
+        {SINTEF Energi AS}
+        {\url{https://www.sintef.no/energi}}
+        {}
+        {\begin{itemize}
+\item Analyserte energibruk i industrielle prosesser og foreslo forbedringstiltak
+\item Utarbeidet simuleringsmodeller for varmegjenvinning i pilotanlegg
+\item Presenterte resultater for prosjektteam og eksterne samarbeidspartnere
+\end{itemize}
+\textbf{Nøkkelord}: Energiøkonomi, Varmegjenvinning, Simulering}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål, Bokmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: C1, Teknisk engelsk}
+\cvline{Tysk}{Grunnleggende nivå \hfill \textbf{Nøkkelord}: A2}
+\section{Ferdigheter}
+
+\cvline{Mekanisk konstruksjon}{Ekspert \hfill \textbf{Nøkkelord}: SolidWorks, Siemens NX, AutoCAD, Teknisk tegning, Toleranseanalyse}
+\cvline{Beregning og analyse}{Avansert \hfill \textbf{Nøkkelord}: ANSYS Mechanical, Abaqus, FEM-analyse, Utmattingsanalyse, CFD}
+\cvline{Materialer og produksjon}{Avansert \hfill \textbf{Nøkkelord}: Aluminium, Stål, Kompositter, Additiv tilvirkning, Lean produksjon}
+\cvline{Prosjektledelse}{Avansert \hfill \textbf{Nøkkelord}: Tverrfaglig samarbeid, Teknisk dokumentasjon, Kvalitetssikring, Risikostyring, Bærekraftig design}
+\section{Utmerkelser}
+
+\cventry{juni 2022}
+        {NTNU}
+        {Beste masteroppgave i maskinteknikk}
+        {}
+        {}
+        {Tildelt for masteroppgaven om lette aluminiumskonstruksjoner for offshore-applikasjoner.}
+\section{Sertifikater}
+
+\cventry{mars 2021}
+        {Dassault Systèmes}
+        {Certified SolidWorks Professional}
+        {\url{https://www.solidworks.com/certification}}
+        {}
+        {}
+
+\cventry{nov. 2023}
+        {Project Management Institute}
+        {PMP – Project Management Professional}
+        {\url{https://www.pmi.org/certifications/project-management-pmp}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{sep. 2021}
+        {Energieffektivisering av varmepumper i norske næringsbygg}
+        {Norsk Energi}
+        {\url{https://www.norskenergi.no/}}
+        {}
+        {\begin{itemize}
+\item Undersøker hvordan varmepumper kan redusere energibehovet i næringsbygg
+\item Presenterer beregningsmodeller og anbefalte tiltak for eksisterende bygningsmasse
+\item Diskuterer lønnsomhet og bærekraftige installasjonsløsninger
+\end{itemize}}
+\section{Prosjekter}
+
+\cventry{jan. 2021–juni 2022}
+        {Utvikling av en lettvektsramme i aluminium for offshore-applikasjoner.}
+        {Bærekraftig lettvektramme for offshore}
+        {\url{https://www.ntnu.no/prosjekter/lettvektramme}}
+        {}
+        {\begin{itemize}
+\item Designet og optimaliserte rammekonstruksjonen med hensyn til styrke og vekt
+\item Gjennomførte FEM-analyse og utmattingsvurdering av kritiske knutepunkter
+\item Validerte konstruksjonen gjennom laboratorietester og dokumenterte resultatene
+\end{itemize}
+\textbf{Nøkkelord}: Lettvektsdesign, Aluminium, FEM-analyse, Offshore, Bærekraft}
+
+\cventry{juni 2019–aug. 2019}
+        {Analyse og forbedring av varmegjenvinning i et industrielt pilotanlegg.}
+        {Energioppgradering av pilotanlegg}
+        {\url{https://www.sintef.no/prosjekter/energioppgradering}}
+        {}
+        {\begin{itemize}
+\item Kartla energistrømmer og identifiserte tapskilder i prosessen
+\item Modellerte varmegjenvinning og foreslo tiltak med god lønnsomhet
+\item Bidro til teknisk rapport og anbefalinger for videre drift
+\end{itemize}
+\textbf{Nøkkelord}: Varmegjenvinning, Energianalyse, Simulering}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fjellturer, Langrenn, Kajakk}
+\cvline{Teknologi}{3D-printing, Arduino, Bærekraftig energi}
+\cvline{Musikk}{Gitar, Kor}
+\section{Frivillig arbeid}
+
+\cventry{sep. 2021–Nå}
+        {Fagansvarlig for bærekraft}
+        {Tekna – Teknisk-naturvitenskapelig forening}
+        {\url{https://www.tekna.no}}
+        {}
+        {\begin{itemize}
+\item Arrangerer faglige møter og workshops om bærekraftig ingeniørpraksis
+\item Bidrar med faglige innspill til studenter og nyutdannede ingeniører
+\item Koordinerer samarbeid mellom lokale bedrifter og foreningen
+\end{itemize}}
+    
+\end{document}

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Sanne de Vries Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Sanne de Vries</h1>
+    <p class="resume-headline">Senior Financieel Analist</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:sanne.de.vries@example.com" class="resume-contact-link">sanne.de.vries@example.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+31 6 12345678</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.sannedevries.nl" class="resume-contact-link">https://www.sannedevries.nl</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Keizersgracht 123, Amsterdam, Noord-Holland, Nederland, 1015 CJ</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/sannedevries" class="resume-contact-link">@sannedevries</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Twitter</span>: <a href="https://twitter.com/sannedevries" class="resume-contact-link">@sannedevries</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Basis Informatie</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>Ervaren financieel analist met meer dan 6 jaar ervaring in de bancaire sector.</p>
+          </li>
+          <li>
+            <p>Sterk in financiële modellering, budgettering en rapportage.</p>
+          </li>
+          <li>
+            <p>Bewezen trackrecord in het verbeteren van financiële processen en het ondersteunen van strategische besluitvorming.</p>
+          </li>
+          <li>
+            <p>Analytisch sterk, detailgericht en communicatief vaardig.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Opleidingen</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.uva.nl">Universiteit van Amsterdam</a></div>
+            <div class="resume-entry-organization">Master, Finance, Score: 8.5</div>
+          </div>
+          <div class="resume-entry-date">sep 2015–jul 2017</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Gespecialiseerd in corporate finance en investeringsstrategieën</p>
+            </li>
+            <li>
+              <p>Afstudeerscriptie over de impact van rentebeleid op bankprestaties</p>
+            </li>
+            <li>
+              <p>Cum laude afgestudeerd</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cursussen</span>: Corporate Finance, Investeringsanalyse, Financiële Modellering, Risk Management, Econometrie, Fusies en Overnames</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.eur.nl">Erasmus Universiteit Rotterdam</a></div>
+            <div class="resume-entry-organization">Bachelor, Economie, Score: 8.0</div>
+          </div>
+          <div class="resume-entry-date">sep 2012–jul 2015</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Basis gelegd voor financiële analyse en economisch denken</p>
+            </li>
+            <li>
+              <p>Actief lid van de studievereniging</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cursussen</span>: Micro-economie, Macro-economie, Statistiek, Financiële Rekenkunde, Boekhouden</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Werkervaring</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.rabobank.nl">Rabobank</a></div>
+            <div class="resume-entry-organization">Senior Financieel Analist</div>
+          </div>
+          <div class="resume-entry-date">jan 2021–Heden</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Verantwoordelijk voor financiële analyse en rapportage van de zakelijke bankdivisie</p>
+            </li>
+            <li>
+              <p>Ontwikkelen en onderhouden van financiële modellen voor budgettering en forecasting</p>
+            </li>
+            <li>
+              <p>Adviseren van senior management over kostenbesparingen en investeringsbeslissingen</p>
+            </li>
+            <li>
+              <p>Leiden van een team van 3 junior analisten</p>
+            </li>
+            <li>
+              <p>Geautomatiseerd rapporteringsproces, resulterend in 30% tijdswinst</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Financiële analyse, Budgettering, Forecasting, Teamleiding</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ing.com">ING Bank</a></div>
+            <div class="resume-entry-organization">Financieel Analist</div>
+          </div>
+          <div class="resume-entry-date">sep 2018–dec 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Analyseerde financiële prestaties van retail banking producten</p>
+            </li>
+            <li>
+              <p>Opgesteld van maandelijkse managementrapportages en variance analyses</p>
+            </li>
+            <li>
+              <p>Samengewerkt met productteams om winstgevendheid te verbeteren</p>
+            </li>
+            <li>
+              <p>Bouwde SQL-queries en Excel-modellen voor data-analyse</p>
+            </li>
+            <li>
+              <p>Bijgedragen aan digitalisering van financiële processen</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Rapportage, Variance analyse, SQL, Excel</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.deloitte.nl">Deloitte</a></div>
+            <div class="resume-entry-organization">Junior Financieel Analist</div>
+          </div>
+          <div class="resume-entry-date">sep 2017–aug 2018</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ondersteunde audit- en adviesteams bij financiële analyses</p>
+            </li>
+            <li>
+              <p>Voerde data-analyse uit voor cliënten in de financiële sector</p>
+            </li>
+            <li>
+              <p>Bereidde financiële rapportages en presentaties voor</p>
+            </li>
+            <li>
+              <p>Leerde werken met geavanceerde Excel- en BI-tools</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Audit, Data-analyse, Financiële rapportage</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Talen</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Nederlands<span class="resume-language-fluency">: Moedertaal of tweetalige vaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: Moedertaal</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Engels<span class="resume-language-fluency">: Volledige professionele vaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: C1</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Duits<span class="resume-language-fluency">: Beperkte werkvaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: B1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Vaardigheden</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Financiële Analyse<span class="resume-skill-level">: Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Financiële modellering, Budgettering, Forecasting, Waardering</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Data Analyse<span class="resume-skill-level">: Geavanceerd</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: SQL, Excel, Power BI, Python</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Risk Management<span class="resume-skill-level">: Geavanceerd</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Risicoanalyse, Compliance, Internal Controls</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Communicatie<span class="resume-skill-level">: Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Rapportage, Presentatie, Stakeholdermanagement</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Onderscheidingen</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Dean&#39;s List</div>
+            <div class="resume-entry-organization">Universiteit van Amsterdam</div>
+          </div>
+          <div class="resume-entry-date">jul 2016</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Toegekend aan studenten met uitstekende academische prestaties.</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Beste Afstudeerscriptie</div>
+            <div class="resume-entry-organization">Erasmus Universiteit Rotterdam</div>
+          </div>
+          <div class="resume-entry-date">dec 2017</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Prijs voor de beste masterscriptie binnen de faculteit Economie.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificaten</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.cfainstitute.org">CFA Level II</a></div>
+            <div class="resume-entry-organization">CFA Institute</div>
+          </div>
+          <div class="resume-entry-date">jun 2020</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://corporatefinanceinstitute.com">Financial Modeling &amp; Valuation Analyst (FMVA)</a></div>
+            <div class="resume-entry-organization">Corporate Finance Institute</div>
+          </div>
+          <div class="resume-entry-date">mrt 2019</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Publicaties</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.tijdschriftfinancieelmanagement.nl">De impact van rentebeleid op bankprestaties</a></div>
+            <div class="resume-entry-organization">Tijdschrift voor Financieel Management</div>
+          </div>
+          <div class="resume-entry-date">dec 2017</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Onderzoek naar de relatie tussen rentebeleid en winstgevendheid van banken</p>
+            </li>
+            <li>
+              <p>Gepresenteerd op de jaarlijkse conferentie van de European Finance Association</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Projecten</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.rabobank.nl/projecten/kostenoptimalisatie">Financieel Model voor Kostenoptimalisatie</a></div>
+            <div class="resume-entry-description">Een geïntegreerd financieel model voor kostenoptimalisatie binnen de zakelijke bankdivisie.</div>
+          </div>
+          <div class="resume-entry-date">jan 2022–jun 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ontwikkelde een geïntegreerd financieel model om kostenbesparingen te identificeren</p>
+            </li>
+            <li>
+              <p>Model gebruikte data van 10 afdelingen en resulteerde in 15% kostenreductie</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Financieel model, Kostenanalyse, Excel</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Dashboard voor Managementrapportage</div>
+            <div class="resume-entry-description">Een Power BI-dashboard voor real-time financiële rapportage aan het management.</div>
+          </div>
+          <div class="resume-entry-date">mrt 2021–sep 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Bouwde een Power BI-dashboard voor real-time financiële rapportage</p>
+            </li>
+            <li>
+              <p>Dashboard werd gebruikt door het managementteam voor maandelijkse reviews</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Power BI, Dashboard, Rapportage</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interesses</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Beleggen</span>: Aandelen, Obligaties, ETF-fondsen</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Hardlopen</span>: Marathons, Trailrunning</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Vrijwilligerswerk</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.financielecoaching.nl">Stichting Financiële Coaching</a></div>
+            <div class="resume-entry-organization">Vrijwillig Financieel Coach</div>
+          </div>
+          <div class="resume-entry-date">jan 2019–dec 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Bieden van financiële coaching aan gezinnen met schulden</p>
+            </li>
+            <li>
+              <p>Helpen bij het opstellen van budgetten en aflossingsplannen</p>
+            </li>
+            <li>
+              <p>Organiseren van workshops over financiële geletterdheid</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

@@ -1,0 +1,258 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{陈昊然}{}
+\title{人工智能工程师 | 大模型与机器学习}
+\phone[mobile]{+86 138 0013 8000}
+\email{chen.haoran.ai@example.com}
+\homepage{https://www.haoran-ai.com}
+
+\address{中国，北京市，北京，北京市海淀区中关村大街 27 号，100080}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/haoran-ai}{@haoran-ai} {} {} {} • {} {} {} 
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/haoran-chen-ai}{@haoran-chen-ai} {} {} {} • {} {} {} 
+{\small \faZhihu}\ \href{https://www.zhihu.com/people/haoran-ai}{@haoran-ai}}
+
+\begin{document}
+
+\maketitle
+
+\section{简介}
+
+\cvline{}{\begin{itemize}
+\item 人工智能工程师，专注大语言模型、RAG 与机器学习工程化，具备从数据、训练、评估到部署的全链路经验。
+\item 熟练使用 PyTorch、TensorFlow 与 Transformers，熟悉向量数据库、LangChain 和 MLOps，能够将算法原型转化为稳定服务。
+\item 有推荐系统、智能问答、文本理解等落地经验，注重模型效果、推理成本与线上稳定性。
+\item 具备跨团队协作与技术分享能力，持续关注生成式 AI、多模态与智能体方向。
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2016年9月–2019年6月}
+        {硕士，计算机科学与技术，成绩：3.9/4.0}
+        {清华大学}
+        {\url{https://www.tsinghua.edu.cn}}
+        {}
+        {\begin{itemize}
+\item 研究方向为自然语言处理与机器学习，参与实验室文本理解与知识抽取项目。
+\item 完成大规模文本分类与实体识别实验，发表 1 篇中文会议论文。
+\item 担任机器学习与数据结构课程助教，负责习题课与项目辅导。
+\end{itemize}
+\textbf{课程}：机器学习、深度学习、自然语言处理、计算机视觉、概率图模型、分布式系统、算法设计与分析}
+\section{工作经历}
+
+\cventry{2022年7月至今}
+        {高级人工智能工程师}
+        {云智科技有限公司}
+        {\url{https://www.yunzhi-ai.com}}
+        {}
+        {\begin{itemize}
+\item 负责企业级大模型应用平台的核心算法与工程架构，支持知识库问答、文档摘要和智能客服等场景。
+\item 设计 RAG 检索增强生成链路，优化文档切分、召回、重排与提示词策略，问答准确率提升 23\%。
+\item 主导 7B/13B 开源模型的领域微调与 LoRA 实验，建立离线评测与人工反馈闭环，降低幻觉率。
+\item 推动模型服务容器化与灰度发布，结合缓存、批处理与量化将推理成本降低约 35\%。
+\item 与产品、数据和后端团队协作，制定技术方案与迭代计划，指导 3 名初级算法工程师。
+\end{itemize}
+\textbf{关键字}：大语言模型、RAG、LoRA、PyTorch、MLOps、模型量化}
+
+\cventry{2019年7月–2022年6月}
+        {人工智能工程师}
+        {星图数据科技有限公司}
+        {\url{https://www.xingtu-data.com}}
+        {}
+        {\begin{itemize}
+\item 参与个性化推荐系统研发，负责特征工程、召回与排序模型迭代，提升点击率与转化率。
+\item 使用 TensorFlow 构建深度学习排序模型，设计离线训练与在线推理流程，支撑千万级用户请求。
+\item 搭建 A/B 实验与模型监控看板，分析关键指标并快速定位效果波动。
+\item 与数据平台团队合作优化 Spark 特征流水线，缩短模型训练数据准备时间。
+\end{itemize}
+\textbf{关键字}：推荐系统、TensorFlow、特征工程、Spark、A/B 实验}
+\section{语言}
+
+\cvline{中文}{母语或双语水平 \hfill \textbf{关键字}：普通话}
+\cvline{英语}{完全专业水平 \hfill \textbf{关键字}：CET-6、技术文档阅读、英文技术分享}
+\section{专业技能}
+
+\cvline{机器学习与深度学习}{专家 \hfill \textbf{关键字}：PyTorch、TensorFlow、Transformers、模型微调、强化学习}
+\cvline{大模型应用}{高级 \hfill \textbf{关键字}：LLM、RAG、LangChain、向量数据库、Prompt Engineering}
+\cvline{工程与部署}{高级 \hfill \textbf{关键字}：Python、Docker、Kubernetes、FastAPI、MLOps}
+\cvline{数据处理}{高级 \hfill \textbf{关键字}：SQL、Spark、Pandas、数据清洗}
+\section{荣誉}
+
+\cventry{2023年12月}
+        {云智科技有限公司}
+        {优秀员工奖}
+        {}
+        {}
+        {\begin{itemize}
+\item 因在大模型应用平台项目中的突出贡献获奖。
+\item 主导 RAG 链路优化与推理成本治理，推动平台在多个业务线落地。
+\end{itemize}}
+
+\cventry{2017年10月}
+        {清华大学}
+        {国家奖学金}
+        {}
+        {}
+        {\begin{itemize}
+\item 研究生阶段学业成绩与科研表现优异。
+\item 参与自然语言处理方向研究，完成多项实验与论文撰写工作。
+\end{itemize}}
+\section{证书}
+
+\cventry{2021年8月}
+        {Amazon Web Services}
+        {AWS Certified Machine Learning - Specialty}
+        {\url{https://aws.amazon.com/certification/certified-machine-learning-specialty/}}
+        {}
+        {}
+
+\cventry{2020年3月}
+        {Google}
+        {TensorFlow Developer Certificate}
+        {\url{https://www.tensorflow.org/certificate}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2021年10月}
+        {基于预训练语言模型的中文文本分类方法研究}
+        {中国计算机学会自然语言处理专委会会议}
+        {\url{https://doi.org/10.12345/nlp.2021.001}}
+        {}
+        {\begin{itemize}
+\item 研究预训练语言模型在中文文本分类任务中的迁移能力与微调策略。
+\item 通过对比实验分析不同预训练模型、数据增强与提示学习方法的效果。
+\item 在多个中文文本分类数据集上验证方法的有效性与稳定性。
+\end{itemize}}
+\section{项目}
+
+\cventry{2023年1月–2023年12月}
+        {基于 RAG 的企业知识库问答平台，支持文档解析、检索与答案生成。}
+        {企业知识库智能问答系统}
+        {\url{https://github.com/haoran-ai/enterprise-rag}}
+        {}
+        {\begin{itemize}
+\item 设计文档解析、向量化、召回、重排与生成一体化链路。
+\item 引入多路召回与答案引用，提升复杂问题的可追溯性与准确率。
+\item 建立离线评测集与线上反馈机制，持续优化提示词与模型策略。
+\end{itemize}
+\textbf{关键字}：RAG、大模型、向量检索、FastAPI}
+
+\cventry{2021年3月–2022年12月}
+        {面向客服对话的意图识别、情绪分析与质检辅助平台。}
+        {智能客服对话分析平台}
+        {\url{https://github.com/haoran-ai/dialog-insight}}
+        {}
+        {\begin{itemize}
+\item 构建对话文本清洗、意图分类与情绪识别流水线。
+\item 使用预训练模型提升小样本场景下的分类效果。
+\item 为质检团队提供可视化分析看板与高风险对话提醒。
+\end{itemize}
+\textbf{关键字}：NLP、意图识别、情绪分析、可视化}
+\section{兴趣爱好}
+
+\cvline{技术社区}{开源贡献、技术写作、学术分享}
+\cvline{运动}{长跑、羽毛球、徒步}
+\section{志愿服务}
+
+\cventry{2020年1月–2022年12月}
+        {人工智能方向志愿者}
+        {中国计算机学会青年计算机科技论坛}
+        {\url{https://www.ccf.org.cn}}
+        {}
+        {\begin{itemize}
+\item 参与人工智能主题论坛与技术沙龙的筹备与组织工作。
+\item 协助邀请讲者、整理活动资料并维护社区交流群。
+\item 推动高校学生与产业界工程师之间的技术交流。
+\end{itemize}}
+    
+\end{document}

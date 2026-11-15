@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Sophie Martin Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Sophie Martin</h1>
+    <p class="resume-headline">Responsable des Ressources Humaines</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:sophie.martin@example.fr" class="resume-contact-link">sophie.martin@example.fr</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+33 1 44 55 66 77</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.sophiemartin-rh.fr" class="resume-contact-link">https://www.sophiemartin-rh.fr</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>12 Rue de Rivoli, Paris, Île-de-France, France, 75001</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/sophiemartin" class="resume-contact-link">@sophiemartin</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Twitter</span>: <a href="https://twitter.com/sophiemartin_rh" class="resume-contact-link">@sophiemartin_rh</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Informations de base</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>Responsable RH avec plus de 10 ans d&#39;expérience dans la gestion des talents, le développement organisationnel et les relations sociales.</p>
+          </li>
+          <li>
+            <p>Expertise en recrutement, gestion de la paie, formation et droit du travail.</p>
+          </li>
+          <li>
+            <p>Capacité à aligner les stratégies RH sur les objectifs business et à accompagner le changement.</p>
+          </li>
+          <li>
+            <p>Leader collaboratif, reconnu pour son écoute et sa capacité à fédérer les équipes.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Formation</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.pantheonsorbonne.fr">Université Paris 1 Panthéon-Sorbonne</a></div>
+            <div class="resume-entry-organization">Master, Gestion des Ressources Humaines, Score : Mention Bien</div>
+          </div>
+          <div class="resume-entry-date">sept. 2008–juin 2010</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Formation approfondie en gestion des ressources humaines, droit social et développement organisationnel.</p>
+            </li>
+            <li>
+              <p>Projet de fin d&#39;études sur la fidélisation des talents dans le secteur technologique.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cours</span> : Droit du travail, Gestion de la paie, Psychologie du travail, Management des équipes, Stratégie RH</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Expérience professionnelle</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.techinnov.fr">TechInnov SA</a></div>
+            <div class="resume-entry-organization">Responsable des Ressources Humaines</div>
+          </div>
+          <div class="resume-entry-date">janv. 2018–Present</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Diriger une équipe de 5 personnes en charge du recrutement, de la formation et de la gestion administrative.</p>
+            </li>
+            <li>
+              <p>Élaborer et mettre en œuvre la politique RH en cohérence avec la stratégie de l&#39;entreprise.</p>
+            </li>
+            <li>
+              <p>Gérer les relations sociales et les négociations avec les partenaires sociaux.</p>
+            </li>
+            <li>
+              <p>Piloter la transformation digitale des processus RH (SIRH).</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : Recrutement, Relations sociales, SIRH, Management</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.groupe-alpha.fr">Groupe Alpha</a></div>
+            <div class="resume-entry-organization">Chargée de Recrutement</div>
+          </div>
+          <div class="resume-entry-date">mars 2012–déc. 2017</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Gérer le processus de recrutement de A à Z pour des profils variés (ingénieurs, commerciaux, fonctions support).</p>
+            </li>
+            <li>
+              <p>Développer des partenariats avec les écoles et les universités.</p>
+            </li>
+            <li>
+              <p>Mettre en place des indicateurs de performance pour le suivi des recrutements.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : Recrutement, Sourcing, Entretiens</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.cabinet-rh-conseil.fr">Cabinet RH Conseil</a></div>
+            <div class="resume-entry-organization">Consultante RH Junior</div>
+          </div>
+          <div class="resume-entry-date">sept. 2010–févr. 2012</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Accompagner les PME dans la structuration de leur fonction RH.</p>
+            </li>
+            <li>
+              <p>Réaliser des audits sociaux et proposer des plans d&#39;action.</p>
+            </li>
+            <li>
+              <p>Animer des formations sur le droit du travail et la gestion des talents.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : Conseil, Audit social, Formation</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Langues</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Français<span class="resume-language-fluency"> : Niveau natif ou bilingue</span></div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Anglais<span class="resume-language-fluency"> : Niveau professionnel complet</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Mots-clés</span> : TOEIC 950</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Espagnol<span class="resume-language-fluency"> : Niveau de travail limité</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Mots-clés</span> : DELF B1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Compétences</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Recrutement et Gestion des Talents<span class="resume-skill-level"> : Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Sourcing, Entretiens, Onboarding, Évaluation</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Droit du Travail et Relations Sociales<span class="resume-skill-level"> : Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Négociation, Conventions collectives, CSE</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Gestion de la Paie et Administration RH<span class="resume-skill-level"> : Avancé</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Paie, SIRH, Reporting</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Formation et Développement<span class="resume-skill-level"> : Avancé</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Plan de formation, E-learning, Compétences</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Récompenses</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Prix de l&#39;Innovation RH</div>
+            <div class="resume-entry-organization">Association Nationale des DRH</div>
+          </div>
+          <div class="resume-entry-date">2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Récompense pour la mise en place d&#39;un programme innovant de gestion des talents.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificats</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.shrm.org/certification">Certification SHRM-CP</a></div>
+            <div class="resume-entry-organization">SHRM</div>
+          </div>
+          <div class="resume-entry-date">2019</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.pantheonsorbonne.fr/formation/certificat-droit-travail">Certificat en Droit du Travail</a></div>
+            <div class="resume-entry-organization">Université Paris 1</div>
+          </div>
+          <div class="resume-entry-date">2015</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Publications</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.revues.org/rfg">L&#39;impact de la digitalisation sur la fonction RH</a></div>
+            <div class="resume-entry-organization">Revue Française de Gestion</div>
+          </div>
+          <div class="resume-entry-date">2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Article sur les transformations digitales des processus RH et leurs effets sur l&#39;organisation du travail.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Projets</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.techinnov.fr/projets/sirh">Déploiement d&#39;un SIRH</a></div>
+            <div class="resume-entry-description">Mise en place d&#39;un système d&#39;information RH pour 500 collaborateurs.</div>
+          </div>
+          <div class="resume-entry-date">janv. 2020–déc. 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Pilotage du projet de bout en bout.</p>
+            </li>
+            <li>
+              <p>Coordination avec les éditeurs et les équipes internes.</p>
+            </li>
+            <li>
+              <p>Formation des utilisateurs et accompagnement au changement.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : SIRH, Gestion de projet, Conduite du changement</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Centres d&#39;intérêt</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Sports</span> : Yoga, Randonnée</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Lecture</span> : Romans, Essais</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Bénévolat</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.rh-solidarite.fr">Association RH Solidarité</a></div>
+            <div class="resume-entry-organization">Bénévole</div>
+          </div>
+          <div class="resume-entry-date">sept. 2015–Present</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Accompagner des personnes en réinsertion professionnelle dans la rédaction de leur CV et la préparation d&#39;entretiens.</p>
+            </li>
+            <li>
+              <p>Animer des ateliers sur les compétences clés en RH.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

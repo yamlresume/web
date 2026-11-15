@@ -1,0 +1,284 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK HK}{
+  \setCJKmainfont{Noto Serif CJK HK}
+}{
+\IfFontExistsTF{Noto Serif CJK TC}{
+  \setCJKmainfont{Noto Serif CJK TC}
+}{}}
+\IfFontExistsTF{Noto Sans CJK HK}{
+  \setCJKsansfont{Noto Sans CJK HK}
+}{
+\IfFontExistsTF{Noto Sans CJK TC}{
+  \setCJKsansfont{Noto Sans CJK TC}
+}{}}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{陳家豪}{}
+\title{資深品質保證工程師 | 自動化測試專家}
+\phone[mobile]{+852 9123 4567}
+\email{kaho.chan@example.com}
+\homepage{https://www.kahochen.dev}
+
+\address{中國香港，香港島，香港，香港中環皇后大道中123號}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/kahochen}{@kahochen} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/kahochen}{@kahochen}}
+
+\begin{document}
+
+\maketitle
+
+\section{簡介}
+
+\cvline{}{\begin{itemize}
+\item 擁有超過 7 年品質保證及軟件測試經驗，專注於金融科技及電子商務領域
+\item 精通手動測試與自動化測試，熟練使用 Selenium、Appium、JMeter 及 Postman 等工具
+\item 具備紮實的程式能力（Python、Java、SQL），能開發穩健的自動化測試框架
+\item 熟悉敏捷開發流程，善於與跨職能團隊協作，推動品質文化
+\item 注重細節，具備優秀的問題分析與解決能力，致力於交付高品質軟件產品
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2014年9月–2018年7月}
+        {學士，計算機科學，成績：3.6/4.0}
+        {香港科技大學}
+        {\url{https://www.ust.hk}}
+        {}
+        {\begin{itemize}
+\item 主修計算機科學，成績優異，連續三年獲院長嘉許名單
+\item 畢業論文專注於自動化測試框架的效能優化
+\item 積極參與編程比賽及黑客松，獲得校內外多個獎項
+\end{itemize}
+\textbf{課程}：資料結構與演算法、軟件工程、資料庫系統、作業系統、計算機網絡、人機互動、網頁開發、移動應用開發}
+\section{工作經歷}
+
+\cventry{2021年3月至今}
+        {高級品質保證工程師}
+        {香港數碼銀行有限公司}
+        {\url{https://www.hkdigitalbank.com}}
+        {}
+        {\begin{itemize}
+\item 領導 5 人測試團隊，負責網上銀行及移動銀行應用程式的品質保證
+\item 設計並實現基於 Selenium 和 Appium 的自動化測試框架，覆蓋率提升至 85\%
+\item 建立持續整合/持續交付（CI/CD）流程中的自動化測試閘門，縮短回歸測試時間 60\%
+\item 與開發、產品及運維團隊緊密合作，推動敏捷開發中的測試左移實踐
+\item 制定測試策略、測試計劃及測試案例，確保符合金融監管要求
+\item 指導初級測試工程師，提升團隊整體技術水平
+\end{itemize}
+\textbf{關鍵字}：自動化測試、Selenium、Appium、CI/CD、敏捷開發、金融科技}
+
+\cventry{2018年8月–2021年2月}
+        {品質保證工程師}
+        {亞洲電子商務集團}
+        {\url{https://www.asiaecom.com}}
+        {}
+        {\begin{itemize}
+\item 負責電子商務平台（Web 及 Mobile）的功能測試、回歸測試及相容性測試
+\item 使用 Postman 及 RestAssured 進行 API 測試，確保前後端整合品質
+\item 利用 JMeter 執行效能測試，分析瓶頸並提出優化建議
+\item 管理缺陷生命周期，使用 JIRA 追蹤及驗證修復，缺陷關閉率達 98\%
+\item 參與需求評審及設計評審，提前識別潛在品質風險
+\item 編寫測試報告及品質指標，定期向管理層匯報
+\end{itemize}
+\textbf{關鍵字}：手動測試、API 測試、效能測試、JIRA、JMeter、電子商務}
+
+\cventry{2017年7月–2018年7月}
+        {初級測試分析師}
+        {創新軟件解決方案有限公司}
+        {\url{https://www.innovativesoft.com}}
+        {}
+        {\begin{itemize}
+\item 執行手動測試案例，涵蓋功能、UI 及使用者驗收測試
+\item 協助開發及維護測試案例庫，確保測試覆蓋率
+\item 使用 SQL 查詢驗證後端資料完整性
+\item 參與每日站立會議及衝刺評審，跟進測試進度
+\item 學習並應用自動化測試工具（Selenium WebDriver）
+\end{itemize}
+\textbf{關鍵字}：手動測試、SQL、測試案例、敏捷、Selenium}
+\section{語言}
+
+\cvline{粵語}{母語或雙語水平 \hfill \textbf{關鍵字}：母語}
+\cvline{英語}{完全專業水平 \hfill \textbf{關鍵字}：IELTS 7.5}
+\cvline{普通話}{完全專業水平 \hfill \textbf{關鍵字}：普通話水平測試二級甲等}
+\section{專業技能}
+
+\cvline{測試自動化}{專家 \hfill \textbf{關鍵字}：Selenium、Appium、Cypress、Playwright、RestAssured}
+\cvline{效能測試}{高級 \hfill \textbf{關鍵字}：JMeter、LoadRunner、Gatling、效能分析}
+\cvline{程式語言}{高級 \hfill \textbf{關鍵字}：Python、Java、SQL、JavaScript、Shell}
+\cvline{測試管理}{專家 \hfill \textbf{關鍵字}：JIRA、TestRail、Zephyr、缺陷管理、測試策略}
+\cvline{DevOps}{中級 \hfill \textbf{關鍵字}：Jenkins、GitLab CI、Docker、Git、Linux}
+\section{榮譽}
+
+\cventry{2022年12月}
+        {香港數碼銀行有限公司}
+        {最佳員工獎}
+        {}
+        {}
+        {表彰在自動化測試框架轉型項目中的卓越貢獻，顯著提升測試效率及產品品質。}
+
+\cventry{2020年11月}
+        {亞洲電子商務集團}
+        {傑出項目獎}
+        {}
+        {}
+        {於雙十一購物節品質保障項目中，帶領團隊實現零重大事故，確保平台穩定運行。}
+\section{證書}
+
+\cventry{2020年6月}
+        {ISTQB}
+        {ISTQB Certified Tester Advanced Level}
+        {\url{https://www.istqb.org/certifications/advanced-level}}
+        {}
+        {}
+
+\cventry{2021年9月}
+        {Amazon Web Services}
+        {AWS Certified Cloud Practitioner}
+        {\url{https://aws.amazon.com/certification/certified-cloud-practitioner/}}
+        {}
+        {}
+
+\cventry{2022年3月}
+        {Scrum Alliance}
+        {Certified ScrumMaster}
+        {\url{https://www.scrumalliance.org/}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2022年8月}
+        {自動化測試框架在金融系統中的實踐}
+        {香港電腦學會期刊}
+        {\url{https://www.hkcs.org.hk/journal/automation-testing}}
+        {}
+        {\begin{itemize}
+\item 探討如何設計可維護且高效的自動化測試框架
+\item 分享在金融監管環境下的測試策略與最佳實踐
+\item 分析自動化測試對回歸測試效率的影響
+\end{itemize}}
+\section{項目}
+
+\cventry{2023年1月–2023年6月}
+        {基於機器學習的測試案例自動生成工具}
+        {智能測試案例生成器}
+        {\url{https://github.com/kahochen/test-case-generator}}
+        {}
+        {\begin{itemize}
+\item 利用自然語言處理技術分析需求文檔，自動生成測試案例草稿
+\item 減少手動編寫測試案例時間約 40\%
+\item 支援與 TestRail 及 JIRA 整合
+\end{itemize}
+\textbf{關鍵字}：機器學習、NLP、測試自動化、Python}
+
+\cventry{2021年3月–2022年12月}
+        {為香港數碼銀行移動應用程式建立端到端自動化測試套件}
+        {移動銀行應用程式自動化測試套件}
+        {}
+        {}
+        {\begin{itemize}
+\item 使用 Appium 及 Python 開發跨平台（iOS/Android）自動化測試
+\item 整合至 Jenkins 流水線，每日自動執行超過 500 個測試案例
+\item 將回歸測試週期從 5 天縮短至 1 天
+\end{itemize}
+\textbf{關鍵字}：Appium、Python、Jenkins、移動測試}
+\section{興趣愛好}
+
+\cvline{開源貢獻}{Selenium、Appium、自動化測試}
+\cvline{戶外活動}{遠足、攝影、單車}
+\section{志願服務}
+
+\cventry{2019年9月至今}
+        {義工導師}
+        {香港電腦學會}
+        {\url{https://www.hkcs.org.hk}}
+        {}
+        {\begin{itemize}
+\item 為中學生舉辦編程及軟件測試工作坊，推廣科技教育
+\item 協助籌辦年度香港資訊科技大獎，擔任評審助理
+\item 參與社區數碼共融計劃，教導長者使用智能手機
+\end{itemize}}
+    
+\end{document}

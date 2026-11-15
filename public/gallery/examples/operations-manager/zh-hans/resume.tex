@@ -1,0 +1,295 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{李伟}{}
+\title{运营经理 | 供应链与流程优化}
+\phone[mobile]{+86 138 0013 8000}
+\email{liwei.ops@example.com}
+\homepage{https://www.liwei-ops.com}
+
+\address{中国，上海市，上海，浦东新区世纪大道100号，200120}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/liwei-ops}{@liwei-ops} {} {} {} • {} {} {} 
+{\small \faWeixin}\ \href{https://weixin.qq.com}{@liwei\_ops}}
+
+\begin{document}
+
+\maketitle
+
+\section{简介}
+
+\cvline{}{\begin{itemize}
+\item 8 年运营管理经验，覆盖订单履约、仓储配送、供应链协同与客户服务
+\item 擅长搭建 KPI 体系、推动流程标准化，并通过数据分析持续改善运营效率
+\item 具备跨部门项目管理经验，能够协调销售、采购、财务、IT 与第三方物流
+\item 注重团队建设与人才培养，善于在快节奏环境中推动目标落地
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2014年9月–2016年6月}
+        {硕士，工商管理，成绩：3.7}
+        {复旦大学}
+        {\url{https://www.fudan.edu.cn}}
+        {}
+        {\begin{itemize}
+\item 系统学习运营管理、供应链协同与财务分析，建立从业务到经营的全局视角
+\item 参与企业运营诊断项目，围绕库存周转、履约时效与成本结构提出改善方案
+\item 毕业论文聚焦区域配送网络优化，结合数据模型评估线路整合与承运商管理策略
+\end{itemize}
+\textbf{课程}：运营管理、供应链管理、财务管理、组织行为学、数据分析与决策、项目管理}
+
+\cventry{2010年9月–2014年6月}
+        {学士，物流管理，成绩：3.6}
+        {上海财经大学}
+        {\url{https://www.sufe.edu.cn}}
+        {}
+        {\begin{itemize}
+\item 夯实物流与供应链基础理论，熟悉仓储、运输、采购与库存管理流程
+\item 通过课程项目完成区域配送中心选址与库存策略分析
+\item 担任班级项目负责人，锻炼团队协作与沟通表达能力
+\end{itemize}
+\textbf{课程}：物流系统规划、仓储与库存管理、运输管理、采购管理、管理信息系统、统计学}
+\section{工作经历}
+
+\cventry{2021年1月至今}
+        {运营经理}
+        {星澜科技（上海）有限公司}
+        {\url{https://www.xinglan-tech.com}}
+        {}
+        {\begin{itemize}
+\item 统筹华东区运营团队，制定年度运营计划与预算，管理 35 人跨职能团队，覆盖订单、仓储、配送与客户服务
+\item 建立以履约时效、库存周转和运营成本为核心的 KPI 体系，推动月度经营分析，季度运营成本降低 12\%
+\item 主导仓储数字化升级与配送网络优化项目，将订单平均履约周期由 48 小时缩短至 30 小时
+\item 协调销售、采购、财务与第三方物流，完善供应商准入和考核机制，提升跨部门协同效率
+\item 搭建运营人才梯队，制定培训与轮岗计划，核心岗位留存率提升至 92\%
+\end{itemize}
+\textbf{关键字}：运营管理、流程优化、供应链协同、数据驱动、团队建设}
+
+\cventry{2016年7月–2020年12月}
+        {高级运营专员}
+        {恒远供应链管理有限公司}
+        {\url{https://www.hengyuan-supply.com}}
+        {}
+        {\begin{itemize}
+\item 负责华东区日常运营执行，管理订单处理、库存盘点、运输调度与异常客诉
+\item 优化库存补货模型与安全库存规则，库存周转天数下降 18\%，缺货率控制在 2\% 以内
+\item 参与承运商招标与绩效考核，整合区域配送线路，单票运输成本下降 9\%
+\item 使用 Excel、SQL 与 Tableau 搭建运营报表，推动数据驱动的日/周/月复盘机制
+\item 协同 IT 团队上线 WMS 与 TMS 模块，完成流程梳理、用户培训与上线支持
+\end{itemize}
+\textbf{关键字}：库存管理、运输调度、承运商管理、运营分析、WMS}
+
+\cventry{2014年1月–2014年6月}
+        {运营助理}
+        {博越商贸有限公司}
+        {\url{https://www.boyue-trade.com}}
+        {}
+        {\begin{itemize}
+\item 协助运营主管处理日常订单、发票与库存数据，确保系统记录准确
+\item 跟进客户订单交付进度，协调仓储与物流解决发货异常
+\item 参与月度库存盘点，整理差异报告并提出改进建议
+\end{itemize}
+\textbf{关键字}：订单处理、库存盘点、客户沟通}
+\section{语言}
+
+\cvline{中文}{母语或双语水平 \hfill \textbf{关键字}：普通话二级甲等}
+\cvline{英语}{完全专业水平 \hfill \textbf{关键字}：CET-6、商务谈判}
+\cvline{日语}{初级水平 \hfill \textbf{关键字}：JLPT N4}
+\section{专业技能}
+
+\cvline{运营管理}{专家 \hfill \textbf{关键字}：流程优化、成本控制、KPI体系、运营分析、跨部门协作}
+\cvline{供应链与仓储}{高级 \hfill \textbf{关键字}：库存管理、采购协同、物流配送、供应商管理}
+\cvline{数据分析}{高级 \hfill \textbf{关键字}：Excel、SQL、Tableau、Power BI}
+\cvline{项目管理}{高级 \hfill \textbf{关键字}：PMP、敏捷管理、风险管理、里程碑管理}
+\cvline{系统工具}{中级 \hfill \textbf{关键字}：SAP S/4HANA、WMS、TMS、Jira、Confluence}
+\section{荣誉}
+
+\cventry{2023年12月}
+        {星澜科技（上海）有限公司}
+        {年度优秀管理者}
+        {}
+        {}
+        {\begin{itemize}
+\item 因在华东区运营效率提升、成本优化与团队建设方面表现突出而获奖
+\item 主导的仓储数字化项目实现履约周期显著缩短，并形成可复制的运营标准
+\end{itemize}}
+
+\cventry{2019年11月}
+        {恒远供应链管理有限公司}
+        {流程优化金奖}
+        {}
+        {}
+        {\begin{itemize}
+\item 通过重构库存补货规则与配送线路，降低库存周转天数与单票运输成本
+\item 项目成果在华东区多个业务单元推广，带来持续的成本与时效改善
+\end{itemize}}
+\section{证书}
+
+\cventry{2019年6月}
+        {项目管理协会 PMI}
+        {PMP项目管理专业人士认证}
+        {\url{https://www.pmi.org/certifications/project-management-pmp}}
+        {}
+        {}
+
+\cventry{2018年3月}
+        {美国质量学会 ASQ}
+        {六西格玛绿带认证}
+        {\url{https://asq.org/cert/six-sigma-green-belt}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2022年8月}
+        {区域运营中的数字化仓储实践}
+        {现代物流管理}
+        {\url{https://www.logistics-review.com/articles/digital-warehouse}}
+        {}
+        {\begin{itemize}
+\item 分析 WMS 与自动化分拣设备在区域仓储场景中的落地路径
+\item 总结库位优化、波次拣选与库存准确性提升的实践经验
+\item 提出以数据看板驱动仓储持续改善的管理建议
+\end{itemize}}
+\section{项目}
+
+\cventry{2021年3月–2022年11月}
+        {通过 WMS 与自动化分拣设备提升仓储作业效率}
+        {华东区仓储数字化升级项目}
+        {\url{https://www.xinglan-tech.com/projects/warehouse-digitalization}}
+        {}
+        {\begin{itemize}
+\item 主导需求调研、流程设计与供应商选型，分三期完成 WMS 与自动化分拣设备上线
+\item 设计库位优化与波次拣选规则，拣货效率提升 35\%，库存准确率达到 99.5\%
+\item 建立项目里程碑与风险清单，协调 IT、仓储、财务与外部供应商按期交付
+\end{itemize}
+\textbf{关键字}：数字化仓储、WMS、自动化分拣、效率提升}
+
+\cventry{2019年4月–2020年12月}
+        {重构华东区城市配送路线与承运商组合}
+        {城市配送网络优化项目}
+        {\url{https://www.hengyuan-supply.com/projects/delivery-network}}
+        {}
+        {\begin{itemize}
+\item 基于历史订单与地理数据重构华东区配送分区，优化线路与波次安排
+\item 引入承运商月度评分机制，结合时效、破损率与成本进行动态分配
+\item 推动配送时效达成率由 88\% 提升至 96\%，单票成本下降 9\%
+\end{itemize}
+\textbf{关键字}：配送网络、路线优化、承运商管理、成本控制}
+\section{兴趣爱好}
+
+\cvline{运动健康}{马拉松、骑行、游泳}
+\cvline{阅读与研究}{运营管理、供应链创新、商业传记}
+\cvline{摄影}{城市风光、人文纪实}
+\section{志愿服务}
+
+\cventry{2022年3月至今}
+        {运营志愿者}
+        {上海青年企业家协会}
+        {\url{https://www.shyouth.org}}
+        {}
+        {\begin{itemize}
+\item 参与协会月度沙龙与行业交流活动的策划、报名管理和现场执行
+\item 协助整理会员企业运营案例，形成可复用的活动运营手册
+\end{itemize}}
+    
+
+\cventry{2018年9月–2021年6月}
+        {活动组织志愿者}
+        {社区公益服务中心}
+        {\url{https://www.community-service.org}}
+        {}
+        {\begin{itemize}
+\item 组织社区便民活动与物资捐赠，协调场地、物资与志愿者排班
+\item 建立活动复盘表，持续优化报名、签到与现场服务流程
+\end{itemize}}
+    
+\end{document}

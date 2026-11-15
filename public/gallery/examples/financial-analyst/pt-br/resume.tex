@@ -1,0 +1,257 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Brazilian Portuguese language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-portuguese.html
+\usepackage[brazilian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Mariana Costa Almeida}{}
+\title{Analista Financeiro Sênior em Planejamento e Análise}
+\phone[mobile]{+55 11 98765-4321}
+\email{mariana.almeida@financaspro.com.br}
+\homepage{https://www.marianaalmeida.com.br}
+
+\address{Av. Brigadeiro Faria Lima, 1234, São Paulo, São Paulo, Brasil, 01451-001}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/mariana-almeida-financas}{@mariana-almeida-financas} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@mariana.almeida}{@mariana.almeida}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informações Básicas}
+
+\cvline{}{\begin{itemize}
+\item Analista financeiro com mais de 6 anos de experiência em planejamento, orçamento, valuation e análise de performance.
+\item Forte atuação em modelos financeiros, projeções de fluxo de caixa e relatórios gerenciais para tomada de decisão.
+\item Experiência com Power BI, Excel avançado, SQL e SAP em ambientes corporativos de alta complexidade.
+\item Perfil analítico, colaborativo e orientado a resultados, com comunicação clara para públicos executivos.
+\end{itemize}}
+\section{Formação}
+
+\cventry{mar. de 2014–dez. de 2018}
+        {Bacharelado, Administração com ênfase em Finanças, Nota: 8.7/10}
+        {Universidade de São Paulo}
+        {\url{https://www.usp.br}}
+        {}
+        {\begin{itemize}
+\item Formação sólida em finanças corporativas, análise de investimentos e controle gerencial.
+\item Desenvolvimento de projetos acadêmicos com foco em valuation, orçamento e indicadores de desempenho.
+\item Participação em grupos de estudo e competições de finanças, com destaque para análise de empresas.
+\end{itemize}
+\textbf{Cursos}: Finanças Corporativas, Contabilidade Gerencial, Análise de Investimentos, Mercado de Capitais, Estatística Aplicada, Economia Brasileira, Gestão de Custos, Modelagem Financeira}
+\section{Experiência Profissional}
+
+\cventry{jan. de 2022–Atual}
+        {Analista Financeiro Sênior}
+        {Banco Horizonte S.A.}
+        {\url{https://www.bancohorizonte.com.br}}
+        {}
+        {\begin{itemize}
+\item Liderança do ciclo de planejamento financeiro anual, com consolidação de orçamento e projeções de longo prazo.
+\item Construção e revisão de modelos de valuation e análise de viabilidade para novas linhas de negócio.
+\item Elaboração de relatórios gerenciais mensais para diretoria, com análise de variações e recomendações.
+\item Automatização de rotinas de FP\&A com Power BI e SQL, reduzindo tempo de fechamento em 25\%.
+\item Parceria com áreas comerciais e controladoria para monitorar KPIs e apoiar decisões estratégicas.
+\end{itemize}
+\textbf{Palavras-chave}: Modelagem financeira, Valuation, Planejamento e Análise, Power BI, FP\&A}
+
+\cventry{fev. de 2019–dez. de 2021}
+        {Analista Financeiro Pleno}
+        {Gestora Atlas Investimentos}
+        {\url{https://www.atlasinvestimentos.com.br}}
+        {}
+        {\begin{itemize}
+\item Análise de performance de fundos e acompanhamento de indicadores de rentabilidade e risco.
+\item Preparação de relatórios mensais para investidores e comitê de investimentos.
+\item Desenvolvimento de modelos de fluxo de caixa e cenários macroeconômicos para suporte à alocação.
+\item Colaboração com equipe de riscos na revisão de premissas e consistência de dados.
+\item Apoio à due diligence financeira de ativos e empresas-alvo.
+\end{itemize}
+\textbf{Palavras-chave}: Análise de investimentos, Gestão de riscos, Fluxo de caixa, Relatórios gerenciais, Excel avançado}
+
+\cventry{jan. de 2018–jan. de 2019}
+        {Analista Financeiro Júnior}
+        {Consultoria Vértice}
+        {\url{https://www.consultoriavertice.com.br}}
+        {}
+        {\begin{itemize}
+\item Estruturação de planilhas financeiras e apoio à elaboração de business plans para clientes.
+\item Análise de demonstrativos financeiros e construção de indicadores de desempenho.
+\item Participação em projetos de reestruturação financeira e revisão de processos orçamentários.
+\item Elaboração de apresentações executivas com conclusões e recomendações para sócios.
+\end{itemize}
+\textbf{Palavras-chave}: Business plan, Análise financeira, Orçamento, Contabilidade, SAP}
+\section{Idiomas}
+
+\cvline{Português}{Nativo ou Bilíngue \hfill \textbf{Palavras-chave}: Língua materna}
+\cvline{Inglês}{Proficiência Profissional Fluente \hfill \textbf{Palavras-chave}: TOEFL 105, Reuniões internacionais}
+\cvline{Espanhol}{Proficiência Profissional Limitada \hfill \textbf{Palavras-chave}: Leitura técnica}
+\section{Competências}
+
+\cvline{Planejamento e Análise Financeira}{Especialista \hfill \textbf{Palavras-chave}: Orçamento, Forecast, FP\&A, Análise de variações}
+\cvline{Modelagem e Valuation}{Avançado \hfill \textbf{Palavras-chave}: DCF, Valuation, Cenários, Fluxo de caixa}
+\cvline{Business Intelligence}{Avançado \hfill \textbf{Palavras-chave}: Power BI, SQL, Excel avançado, Tableau}
+\cvline{Gestão de Riscos}{Intermediário \hfill \textbf{Palavras-chave}: Indicadores, Compliance, Controles internos}
+\section{Prêmios}
+
+\cventry{mar. de 2023}
+        {Banco Horizonte S.A.}
+        {Destaque em Planejamento Financeiro}
+        {}
+        {}
+        {\begin{itemize}
+\item Reconhecimento pela liderança do ciclo orçamentário anual e pela melhoria dos relatórios gerenciais para a diretoria.
+\end{itemize}}
+
+\cventry{dez. de 2018}
+        {Universidade de São Paulo}
+        {Prêmio de Excelência Acadêmica}
+        {}
+        {}
+        {\begin{itemize}
+\item Premiação concedida aos alunos com melhor desempenho acadêmico no curso de Administração com ênfase em Finanças.
+\end{itemize}}
+\section{Certificados}
+
+\cventry{abr. de 2021}
+        {Instituto Brasileiro de Valuation}
+        {Certificação CVA - Certified Valuation Analyst}
+        {\url{https://www.ibv.com.br/certificacao-cva}}
+        {}
+        {}
+
+\cventry{set. de 2022}
+        {Microsoft}
+        {Microsoft Certified: Power BI Data Analyst Associate}
+        {\url{https://learn.microsoft.com/credentials/power-bi-data-analyst-associate}}
+        {}
+        {}
+\section{Publicações}
+
+\cventry{jan. de 2024}
+        {Relatório de Cenário Macroeconômico 2024}
+        {Banco Horizonte S.A.}
+        {\url{https://www.bancohorizonte.com.br/relatorios/cenario-macroeconomico-2024}}
+        {}
+        {\begin{itemize}
+\item Análise de perspectivas econômicas, juros, inflação e impactos no planejamento financeiro corporativo.
+\item Relatório utilizado por áreas de negócio e diretoria para revisão de premissas orçamentárias.
+\end{itemize}}
+\section{Projetos}
+
+\cventry{fev. de 2023–set. de 2023}
+        {Painel gerencial para acompanhamento de receitas, despesas e KPIs financeiros.}
+        {Dashboard de Performance Financeira}
+        {\url{https://www.bancohorizonte.com.br/projetos/dashboard-financeiro}}
+        {}
+        {\begin{itemize}
+\item Desenvolvimento de dashboard em Power BI com indicadores de margem, custos e produtividade.
+\item Integração de bases SQL e SAP para atualização automatizada dos dados.
+\item Redução do tempo de preparação de relatórios mensais e maior confiabilidade das informações.
+\end{itemize}
+\textbf{Palavras-chave}: Power BI, KPIs, SQL, Automação}
+
+\cventry{mar. de 2022–nov. de 2022}
+        {Modelo financeiro para projeção de fluxo de caixa em diferentes cenários econômicos.}
+        {Modelo Preditivo de Fluxo de Caixa}
+        {\url{https://github.com/mariana-almeida-financas/modelo-fluxo-caixa}}
+        {}
+        {\begin{itemize}
+\item Estruturação de premissas de receita, custos e capital de giro para projeções de 12 a 36 meses.
+\item Criação de cenários base, otimista e pessimista para apoio ao comitê financeiro.
+\item Documentação do modelo e treinamento de usuários para manutenção autônoma.
+\end{itemize}
+\textbf{Palavras-chave}: Fluxo de caixa, Cenários, Modelagem, Excel}
+\section{Interesses}
+
+\cvline{Mercado Financeiro}{Investimentos, Macroeconomia, Fintechs}
+\cvline{Esportes}{Corrida, Ciclismo, Natação}
+\section{Voluntariado}
+
+\cventry{mar. de 2021–Atual}
+        {Mentora Voluntária de Educação Financeira}
+        {Instituto Finanças para Todos}
+        {\url{https://www.financasparatodos.org.br}}
+        {}
+        {\begin{itemize}
+\item Condução de oficinas de educação financeira para jovens e adultos em comunidades vulneráveis.
+\item Apoio na criação de materiais didáticos sobre orçamento pessoal, poupança e crédito consciente.
+\item Mentoria de projetos de planejamento financeiro familiar em parceria com organizações locais.
+\end{itemize}}
+    
+\end{document}

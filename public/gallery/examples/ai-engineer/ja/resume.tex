@@ -1,0 +1,280 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK JP}{
+  \setCJKmainfont{Noto Serif CJK JP}
+}{}
+\IfFontExistsTF{Noto Sans CJK JP}{
+  \setCJKsansfont{Noto Sans CJK JP}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{佐藤 健太}{}
+\title{AIエンジニア / 機械学習スペシャリスト}
+\phone[mobile]{+81 90-1234-5678}
+\email{kenta.sato.ai@example.com}
+\homepage{https://kentasato-ai.dev}
+
+\address{日本、東京都、渋谷区、東京都渋谷区神南1-2-3、150-0041}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/kenta-sato-ai}{@kenta-sato-ai} {} {} {} • {} {} {} 
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/kenta-sato-ai}{@kenta-sato-ai} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/kenta\_sato\_ai}{@kenta\_sato\_ai}}
+
+\begin{document}
+
+\maketitle
+
+\section{基本情報}
+
+\cvline{}{\begin{itemize}
+\item 機械学習と深層学習を活用したAIソリューションの設計・開発に7年以上従事
+\item 自然言語処理（NLP）とコンピュータビジョン分野の実務経験が豊富
+\item Python、PyTorch、TensorFlowを用いたモデル構築からMLOpsによる運用まで一貫して対応
+\item ビジネス課題を技術要件に落とし込み、クロスファンクショナルチームをリードした実績
+\item 論文執筆や技術コミュニティでの登壇を通じた知識共有に積極的
+\end{itemize}}
+\section{学歴}
+
+\cventry{2016年4月～2018年3月}
+        {修士、情報理工学系研究科 コンピュータ科学専攻、成績：3.9/4.0}
+        {東京大学}
+        {\url{https://www.u-tokyo.ac.jp}}
+        {}
+        {\begin{itemize}
+\item 機械学習とデータサイエンスを専攻し、理論と実践の両面を習得
+\item 修士論文では深層学習を用いた文書分類モデルに関する研究に従事
+\item 学内のAI研究プロジェクトに参加し、実データを用いたモデル開発を経験
+\end{itemize}
+\textbf{コース}：機械学習、深層学習、自然言語処理、コンピュータビジョン、データマイニング、アルゴリズム論、統計的学習理論}
+\section{職歴}
+
+\cventry{2021年4月～現在}
+        {シニアAIエンジニア}
+        {株式会社ニューロテック}
+        {\url{https://www.neurotech.co.jp}}
+        {}
+        {\begin{itemize}
+\item 大規模言語モデル（LLM）を活用した社内ナレッジ検索システムの企画・開発をリード
+\item 自然言語処理チームを率いて、顧客問い合わせの自動分類モデルを本番環境に導入
+\item MLOps基盤を構築し、モデルの継続的トレーニングとデプロイメントを自動化
+\item ジュニアエンジニアの育成とコードレビューを通じた品質向上に貢献
+\end{itemize}
+\textbf{キーワード}：LLM、自然言語処理、MLOps、Python、PyTorch、AWS、チームリード}
+
+\cventry{2018年4月～2021年3月}
+        {AIエンジニア}
+        {株式会社データサイエンスラボ}
+        {\url{https://www.dslab.co.jp}}
+        {}
+        {\begin{itemize}
+\item 製造業向けの画像検査AIシステムを開発し、検査工程の自動化を実現
+\item 需要予測モデルを構築し、在庫最適化によるコスト削減に貢献
+\item 顧客向けのレコメンデーションエンジンを設計・実装
+\item データ前処理からモデル評価までのパイプラインを整備
+\end{itemize}
+\textbf{キーワード}：コンピュータビジョン、需要予測、レコメンデーション、TensorFlow、scikit-learn、SQL}
+\section{言語}
+
+\cvline{日本語}{ネイティブ・母国語レベル \hfill \textbf{キーワード}：日本語ネイティブ}
+\cvline{英語}{完全な実務レベル \hfill \textbf{キーワード}：TOEIC 950、技術文書読解}
+\cvline{中国語}{限定的な実務レベル \hfill \textbf{キーワード}：HSK 4級}
+\section{スキル}
+
+\cvline{機械学習}{エキスパート \hfill \textbf{キーワード}：Python、PyTorch、TensorFlow、scikit-learn、pandas、NumPy}
+\cvline{自然言語処理}{上級 \hfill \textbf{キーワード}：Transformers、BERT、GPT、Hugging Face、spaCy、固有表現抽出}
+\cvline{コンピュータビジョン}{上級 \hfill \textbf{キーワード}：OpenCV、YOLO、ResNet、画像分類、物体検出}
+\cvline{MLOps}{上級 \hfill \textbf{キーワード}：Docker、Kubernetes、MLflow、AWS SageMaker、GCP Vertex AI、CI/CD}
+\cvline{データエンジニアリング}{中級 \hfill \textbf{キーワード}：SQL、Spark、Airflow、BigQuery、ETL}
+\cvline{ソフトウェア開発}{上級 \hfill \textbf{キーワード}：Python、Go、Git、REST API、マイクロサービス}
+\section{受賞・表彰}
+
+\cventry{2022年6月}
+        {人工知能学会}
+        {人工知能学会 優秀論文賞}
+        {}
+        {}
+        {\begin{itemize}
+\item 深層学習を用いた顧客行動予測に関する論文が評価され受賞
+\end{itemize}}
+
+\cventry{2020年12月}
+        {株式会社データサイエンスラボ}
+        {社内技術革新賞}
+        {}
+        {}
+        {\begin{itemize}
+\item 画像検査AIシステムの開発と事業貢献が認められ受賞
+\end{itemize}}
+\section{資格・免状}
+
+\cventry{2021年3月}
+        {アマゾン ウェブ サービス}
+        {AWS認定機械学習 - スペシャリスト}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{2022年9月}
+        {グーグル クラウド}
+        {グーグル クラウド プロフェッショナル 機械学習エンジニア}
+        {\url{https://cloud.google.com/certification/machine-learning-engineer}}
+        {}
+        {}
+\section{出版・著作}
+
+\cventry{2021年6月}
+        {深層学習を用いた顧客行動予測モデルの構築}
+        {人工知能学会全国大会}
+        {\url{https://www.ai-gakkai.or.jp/}}
+        {}
+        {\begin{itemize}
+\item 顧客の購買履歴と行動ログを活用した予測モデルを提案
+\item 従来手法と比較して予測精度が12\%向上したことを示した
+\end{itemize}}
+
+\cventry{2023年3月}
+        {大規模言語モデルによる社内文書検索の高度化}
+        {言語処理学会年次大会}
+        {\url{https://www.anlp.jp/}}
+        {}
+        {\begin{itemize}
+\item LLMを活用したセマンティック検索の実装と評価
+\item 検索精度とユーザビリティの両面で改善を確認
+\end{itemize}}
+\section{プロジェクト}
+
+\cventry{2022年1月～2023年6月}
+        {LLMを活用した社内文書のセマンティック検索システム}
+        {社内ナレッジ検索システム}
+        {\url{https://www.neurotech.co.jp/projects/knowledge-search}}
+        {}
+        {\begin{itemize}
+\item 自然言語による問い合わせに対して関連文書を返す検索基盤を構築
+\item ベクトルデータベースと埋め込みモデルを組み合わせたアーキテクチャを設計
+\item 社内の問い合わせ対応時間を約30\%削減
+\end{itemize}
+\textbf{キーワード}：LLM、セマンティック検索、ベクトルDB、RAG}
+
+\cventry{2019年4月～2020年12月}
+        {小売業向けの需要予測と在庫最適化を支援するAIプラットフォーム}
+        {需要予測AIプラットフォーム}
+        {\url{https://www.dslab.co.jp/projects/demand-forecast}}
+        {}
+        {\begin{itemize}
+\item 時系列データを用いた需要予測モデルを開発
+\item ダッシュボードによる可視化とアラート機能を実装
+\item 導入企業の在庫コストを平均15\%削減
+\end{itemize}
+\textbf{キーワード}：需要予測、時系列分析、在庫最適化、ダッシュボード}
+
+\cventry{2018年6月～2019年3月}
+        {製造業の生産ライン向け画像検査自動化システム}
+        {画像検査AIシステム}
+        {\url{https://www.dslab.co.jp/projects/vision-inspection}}
+        {}
+        {\begin{itemize}
+\item 畳み込みニューラルネットワークによる不良品検出モデルを構築
+\item エッジデバイス上でのリアルタイム推論を実現
+\item 検査員の作業負荷を軽減し、検出精度を95\%以上に向上
+\end{itemize}
+\textbf{キーワード}：画像認識、CNN、エッジAI、品質管理}
+\section{興味・関心}
+
+\cvline{技術}{機械学習、オープンソース、論文読解}
+\cvline{趣味}{ランニング、写真撮影、旅行}
+\section{ボランティア活動}
+
+\cventry{2020年4月～2023年3月}
+        {メンター}
+        {AI開発者コミュニティ「AI-Japan」}
+        {\url{https://www.ai-japan.dev}}
+        {}
+        {\begin{itemize}
+\item 機械学習を学ぶ学生や社会人に対してメンタリングを実施
+\item ハンズオン勉強会の企画・運営に参画
+\item コミュニティ内の技術相談やコードレビューを担当
+\end{itemize}}
+    
+\end{document}

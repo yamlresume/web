@@ -1,0 +1,262 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK TC}{
+  \setCJKmainfont{Noto Serif CJK TC}
+}{}
+\IfFontExistsTF{Noto Sans CJK TC}{
+  \setCJKsansfont{Noto Sans CJK TC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{林冠宇}{}
+\title{資深財務分析師｜企業財務、投資評價與風險分析}
+\phone[mobile]{+886 912 345 678}
+\email{kuanyu.lin@finmail.tw}
+\homepage{https://www.kuanyulin.finance}
+
+\address{中國臺灣，信義區，台北市，台北市信義區松高路 88 號 12 樓，110}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/kuanyu-lin-finance}{@kuanyu-lin-finance} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@kuanyu.finance}{@kuanyu.finance}}
+
+\begin{document}
+
+\maketitle
+
+\section{簡介}
+
+\cvline{}{\begin{itemize}
+\item 具備 6 年以上企業財務、投資分析與預算管理經驗，熟悉三表模型、DCF 評價與情境分析。
+\item 曾協助管理層完成年度預算、滾動預測與月度經營分析，支援定價、投資與資源配置決策。
+\item 擅長以 SQL、Python 與 Power BI 自動化財務資料流程，將報表編製時間縮短並提升資料品質。
+\item 具備跨部門溝通與簡報能力，能以財務數據轉譯營運洞察，推動成本優化與績效改善。
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2018年9月–2020年6月}
+        {碩士，財務管理學系，成績：3.9/4.0}
+        {國立政治大學}
+        {\url{https://www.nccu.edu.tw/}}
+        {}
+        {\begin{itemize}
+\item 碩士論文聚焦企業現金流量預測與資本結構，獲指導教授推薦投稿財務管理學刊。
+\item 擔任財務計量助教，協助批改作業與帶領個案討論，培養數據分析與溝通能力。
+\end{itemize}
+\textbf{課程}：高等財務管理、投資學專題、財務計量方法、企業評價與併購、衍生性金融商品}
+
+\cventry{2014年9月–2018年6月}
+        {學士，會計學系，成績：3.8/4.0}
+        {國立臺北大學}
+        {\url{https://www.ntpu.edu.tw/}}
+        {}
+        {\begin{itemize}
+\item 建立會計與財務報表分析基礎，熟悉 IFRS 與企業財務揭露規範。
+\item 參與校內投資研究社，負責產業研究與財務模型簡報。
+\end{itemize}
+\textbf{課程}：中級會計學、成本會計、審計學、財務報表分析、稅務法規}
+\section{工作經歷}
+
+\cventry{2023年3月至今}
+        {資深財務分析師}
+        {宏遠資本管理顧問股份有限公司}
+        {\url{https://www.hongyuancapital.com.tw}}
+        {}
+        {\begin{itemize}
+\item 負責消費與科技產業投資案之財務盡職調查、估值建模與投資備忘錄撰寫，累積評估案件金額逾新台幣 20 億元。
+\item 建立三表整合模型與敏感度分析，協助投資委員會評估成長情境、資本支出與退出報酬。
+\item 主導月度經營分析與滾動預測，追蹤營收、毛利率、現金流量與關鍵營運指標，提出改善建議。
+\item 與會計、法務及業務團隊協作，優化預算編製流程並將報表彙整時間縮短約 30\%。
+\end{itemize}
+\textbf{關鍵字}：財務建模、投資評價、盡職調查、預算管理、經營分析}
+
+\cventry{2020年7月–2023年2月}
+        {財務分析師}
+        {台灣數位金融科技股份有限公司}
+        {\url{https://www.twd-fintech.com.tw}}
+        {}
+        {\begin{itemize}
+\item 編製年度預算與季度滾動預測，涵蓋損益表、資產負債表與現金流量表，支援管理層資源配置決策。
+\item 建立產品別獲利分析與客戶終身價值模型，協助定價策略與行銷預算優化。
+\item 使用 SQL 與 Power BI 建置財務儀表板，整合 ERP 與 CRM 資料，提升月度結帳分析效率。
+\item 參與融資規劃與銀行關係維護，準備授信文件、財務預測與還款能力分析。
+\end{itemize}
+\textbf{關鍵字}：財務報表分析、現金流量預測、SQL、Power BI、融資規劃}
+\section{語言}
+
+\cvline{中文}{母語或雙語水平 \hfill \textbf{關鍵字}：繁體中文、商務寫作}
+\cvline{英語}{完全專業水平 \hfill \textbf{關鍵字}：TOEIC 950、英文簡報、財務報告撰寫}
+\section{專業技能}
+
+\cvline{財務分析與評價}{專家 \hfill \textbf{關鍵字}：三表模型、DCF 評價、情境分析、預算編製、管理層報告}
+\cvline{資料分析與自動化}{高級 \hfill \textbf{關鍵字}：Excel VBA、SQL、Python、Power BI、Tableau}
+\cvline{風險管理與法遵}{高級 \hfill \textbf{關鍵字}：信用風險、市場風險、內部控制、IFRS、法規遵循}
+\section{榮譽}
+
+\cventry{2024年1月}
+        {宏遠資本管理顧問股份有限公司}
+        {年度卓越分析獎}
+        {}
+        {}
+        {\begin{itemize}
+\item 表彰在投資案評估、財務建模與跨部門協作上的傑出表現。
+\item 協助團隊完成年度重點投資案，提升投資委員會決策效率。
+\end{itemize}}
+
+\cventry{2017年6月}
+        {國立臺北大學}
+        {書卷獎}
+        {}
+        {}
+        {\begin{itemize}
+\item 學期成績名列系上前 5\%，獲頒書卷獎。
+\end{itemize}}
+\section{證書}
+
+\cventry{2022年8月}
+        {CFA 協會}
+        {特許金融分析師（CFA）第二級通過}
+        {\url{https://www.cfainstitute.org/programs/cfa}}
+        {}
+        {}
+
+\cventry{2021年11月}
+        {全球風險管理專業協會}
+        {金融風險管理師（FRM）第一部分通過}
+        {\url{https://www.garp.org/frm}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2020年12月}
+        {台灣中小企業現金流量管理與財務韌性之實證研究}
+        {財務管理學刊}
+        {\url{https://www.twnfinancejournal.org/articles/2020-sme-cashflow}}
+        {}
+        {\begin{itemize}
+\item 探討中小企業現金流量管理對財務韌性與融資成本的影響。
+\item 使用台灣上市櫃與中小企業資料進行迴歸分析，提出營運資金管理建議。
+\end{itemize}}
+\section{項目}
+
+\cventry{2024年1月–2024年11月}
+        {整合預算編製、版本控管與差異分析的內部平台，協助財務團隊提升預測效率與資料透明度。}
+        {智慧預算編製平台}
+        {\url{https://www.hongyuancapital.com.tw/projects/budget-platform}}
+        {}
+        {\begin{itemize}
+\item 設計預算資料模型與權限流程，支援多部門協作與版本追蹤。
+\item 以 Power BI 建置預算執行儀表板，讓管理層即時掌握預算差異與現金流量狀況。
+\item 將人工彙整流程自動化，降低重複作業與人為錯誤。
+\end{itemize}
+\textbf{關鍵字}：預算自動化、資料視覺化、流程改善}
+
+\cventry{2022年3月–2022年12月}
+        {針對零售客戶建立信用風險監控儀表板，整合還款行為、額度使用與逾期指標。}
+        {零售業信用風險儀表板}
+        {\url{https://www.twd-fintech.com.tw/projects/credit-dashboard}}
+        {}
+        {\begin{itemize}
+\item 以 SQL 清理與整合客戶交易及還款資料，建立風險分群指標。
+\item 設計逾期預警規則與視覺化報表，協助風險團隊優先處理高風險帳戶。
+\item 與風險管理部門合作定義 KPI，提升監控頻率與決策反應速度。
+\end{itemize}
+\textbf{關鍵字}：信用風險、SQL、風險儀表板}
+\section{興趣愛好}
+
+\cvline{投資研究}{價值投資、總體經濟、產業分析}
+\cvline{戶外活動}{登山、馬拉松、攝影}
+\section{志願服務}
+
+\cventry{2021年9月至今}
+        {財務教育志工}
+        {台灣財務分析師協會}
+        {\url{https://www.tfaa.org.tw/}}
+        {}
+        {\begin{itemize}
+\item 參與偏鄉金融素養課程，設計預算管理與儲蓄規劃教材。
+\item 協助協會舉辦財務分析工作坊，擔任小組討論引導與簡報講師。
+\end{itemize}}
+    
+\end{document}

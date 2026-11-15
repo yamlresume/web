@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Camille Laurent Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Camille Laurent</h1>
+    <p class="resume-headline">Ingénieur en cybersécurité – Sécurité cloud et réponse à incident</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:camille.laurent@protonmail.com" class="resume-contact-link">camille.laurent@protonmail.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+33 6 45 78 12 96</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.camille-laurent.fr" class="resume-contact-link">https://www.camille-laurent.fr</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>14 rue de la Paix, Paris, Île-de-France, France, 75002</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/camille-laurent-cyber" class="resume-contact-link">@camille-laurent-cyber</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/camille-laurent" class="resume-contact-link">@camille-laurent</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Informations de base</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <p>Ingénieur en cybersécurité avec plus de huit ans d&#39;expérience dans la protection des infrastructures critiques, la sécurité cloud et la réponse à incident. Reconnu pour concevoir des architectures Zero Trust, automatiser les opérations de sécurité et accompagner les équipes dans une démarche de conformité durable.</p>
+        <ul>
+          <li>
+            <p>Expertise en sécurité cloud AWS/Azure, architecture Zero Trust et DevSecOps</p>
+          </li>
+          <li>
+            <p>Pilotage d&#39;opérations SOC, réponse à incident et analyse forensique</p>
+          </li>
+          <li>
+            <p>Maîtrise des référentiels ISO 27001, NIST CSF, RGPD et EBIOS RM</p>
+          </li>
+          <li>
+            <p>Encadrement technique, mentorat et communication auprès des parties prenantes</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Formation</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.esin-paris.fr">École Supérieure d&#39;Ingénierie Numérique de Paris</a></div>
+            <div class="resume-entry-organization">Master, Cybersécurité et systèmes d&#39;information, Score : Mention Bien</div>
+          </div>
+          <div class="resume-entry-date">sept. 2014–juin 2016</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Formation solide en sécurité des systèmes, cryptographie et gestion des risques</p>
+            </li>
+            <li>
+              <p>Projets pratiques sur la détection d&#39;intrusion et la sécurisation d&#39;applications web</p>
+            </li>
+            <li>
+              <p>Mémoire de fin d&#39;études consacré à la sécurité des environnements cloud multi-tenant</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cours</span> : Sécurité des réseaux et protocoles, Cryptographie appliquée, Analyse forensique, Gestion des risques et conformité, Sécurité des systèmes d&#39;exploitation, Développement sécurisé, Virtualisation et sécurité cloud, Droit du numérique et protection des données</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Expérience professionnelle</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.finsecure-paris.fr">FinSecure Paris</a></div>
+            <div class="resume-entry-organization">Ingénieur en cybersécurité senior – Sécurité cloud</div>
+          </div>
+          <div class="resume-entry-date">mars 2022–Present</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Pilotage de la stratégie de sécurité cloud pour un groupe bancaire de 4 000 collaborateurs</p>
+            </li>
+            <li>
+              <p>Conception d&#39;architectures Zero Trust sur AWS et Azure, avec automatisation des contrôles par IaC</p>
+            </li>
+            <li>
+              <p>Réduction de 35 % des incidents critiques grâce au déploiement d&#39;une plateforme SOAR et à la chasse aux menaces</p>
+            </li>
+            <li>
+              <p>Encadrement d&#39;une équipe de quatre ingénieurs et animation du comité de sécurité applicative</p>
+            </li>
+            <li>
+              <p>Mise en conformité RGPD, ISO 27001 et NIST CSF, en lien avec les auditeurs externes</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : Sécurité cloud, Zero Trust, SOAR, RGPD, ISO 27001, Mentorat</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.cloudnova.fr">CloudNova</a></div>
+            <div class="resume-entry-organization">Analyste SOC et réponse à incident</div>
+          </div>
+          <div class="resume-entry-date">janv. 2019–févr. 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Surveillance 24/7 des infrastructures cloud et qualification des alertes SIEM pour 60 clients</p>
+            </li>
+            <li>
+              <p>Investigation et réponse aux incidents de sécurité, de la détection à la remédiation</p>
+            </li>
+            <li>
+              <p>Mise en place de playbooks SOAR et enrichissement des alertes via le renseignement sur les menaces</p>
+            </li>
+            <li>
+              <p>Réalisation d&#39;analyses forensiques et rédaction de rapports post-incident</p>
+            </li>
+            <li>
+              <p>Participation à des tests d&#39;intrusion internes et à des revues de configuration</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : SOC, SIEM, SOAR, Forensique, Réponse à incident, Tests d&#39;intrusion</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.santeaxe.fr">Groupe SantéAxe</a></div>
+            <div class="resume-entry-organization">Administrateur sécurité réseaux</div>
+          </div>
+          <div class="resume-entry-date">sept. 2016–déc. 2018</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Administration des équipements de sécurité réseau : pare-feu, proxy, IDS/IPS et VPN</p>
+            </li>
+            <li>
+              <p>Durcissement des systèmes et application des politiques de contrôle d&#39;accès</p>
+            </li>
+            <li>
+              <p>Supervision des vulnérabilités et coordination des campagnes de correctifs</p>
+            </li>
+            <li>
+              <p>Sensibilisation des utilisateurs à l&#39;hygiène numérique et aux risques de phishing</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : Pare-feu, IDS/IPS, VPN, Durcissement, Vulnérabilités, Sensibilisation</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Langues</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Français<span class="resume-language-fluency"> : Niveau natif ou bilingue</span></div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Anglais<span class="resume-language-fluency"> : Niveau professionnel complet</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Mots-clés</span> : TOEIC 940</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Espagnol<span class="resume-language-fluency"> : Niveau de travail limité</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Mots-clés</span> : Niveau B1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Compétences</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Sécurité des réseaux<span class="resume-skill-level"> : Avancé</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Pare-feu, IDS/IPS, VPN, Segmentation, 802.1X</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Sécurité cloud<span class="resume-skill-level"> : Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : AWS, Azure, GCP, Zero Trust, CASB, CSPM</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Opérations de sécurité<span class="resume-skill-level"> : Avancé</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : SIEM, SOAR, EDR, XDR, MITRE ATT&amp;CK, Renseignement sur les menaces</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Gouvernance et conformité<span class="resume-skill-level"> : Avancé</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : ISO 27001, NIST CSF, RGPD, EBIOS RM, SOC 2</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Sécurité applicative<span class="resume-skill-level"> : Avancé</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : OWASP Top 10, SAST, DAST, DevSecOps, IaC</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Programmation et automatisation<span class="resume-skill-level"> : Avancé</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Python, Bash, PowerShell, Terraform, Ansible, Docker, Kubernetes</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Récompenses</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Prix d&#39;excellence en cybersécurité</div>
+            <div class="resume-entry-organization">École Supérieure d&#39;Ingénierie Numérique de Paris</div>
+          </div>
+          <div class="resume-entry-date">nov. 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Récompense décernée pour un projet de détection automatisée des menaces dans les environnements cloud</p>
+            </li>
+            <li>
+              <p>Distinction attribuée parmi 120 candidats pour l&#39;impact opérationnel et la qualité de la recherche</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificats</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.isc2.org/Certifications/CISSP">CISSP – Professionnel certifié en sécurité des systèmes d&#39;information</a></div>
+            <div class="resume-entry-organization">ISC2</div>
+          </div>
+          <div class="resume-entry-date">mars 2024</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://aws.amazon.com/certification/certified-security-specialty/">Certification AWS Security – Spécialité sécurité cloud</a></div>
+            <div class="resume-entry-organization">Amazon Web Services</div>
+          </div>
+          <div class="resume-entry-date">juin 2023</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.comptia.org/certifications/security">CompTIA Security+ – Certification en cybersécurité</a></div>
+            <div class="resume-entry-organization">CompTIA</div>
+          </div>
+          <div class="resume-entry-date">sept. 2021</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-4">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://pecb.com/en/education-and-certification-for-individuals/iso-iec-27001/iso-iec-27001-lead-implementer">ISO/IEC 27001 Lead Implementer – Mise en œuvre d&#39;un SMSI</a></div>
+            <div class="resume-entry-organization">PECB</div>
+          </div>
+          <div class="resume-entry-date">avr. 2022</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Publications</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.rfcyber.fr/articles/detection-intrusions-apprentissage-automatique">Détection des intrusions par apprentissage automatique en environnement cloud</a></div>
+            <div class="resume-entry-organization">Revue Française de Cybersécurité</div>
+          </div>
+          <div class="resume-entry-date">févr. 2024</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Étude comparative de modèles supervisés pour la détection d&#39;anomalies réseau dans des environnements multi-cloud</p>
+            </li>
+            <li>
+              <p>Proposition d&#39;un pipeline de réduction du bruit et d&#39;enrichissement des alertes pour les équipes SOC</p>
+            </li>
+            <li>
+              <p>Retours d&#39;expérience sur le déploiement en production et mesure du taux de faux positifs</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Projets</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/camille-laurent/soar-incident-response">Plateforme SOAR de réponse à incident</a></div>
+            <div class="resume-entry-description">Plateforme open source d&#39;automatisation de la qualification des alertes et de la réponse aux incidents.</div>
+          </div>
+          <div class="resume-entry-date">janv. 2023–déc. 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Développement de playbooks Python pour l&#39;enrichissement et la remédiation automatique</p>
+            </li>
+            <li>
+              <p>Intégration avec SIEM, EDR et solutions de ticketing via API REST</p>
+            </li>
+            <li>
+              <p>Réduction du temps moyen de réponse de 40 % sur un périmètre de 200 serveurs</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : SOAR, Python, Automatisation, API REST, SIEM</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Centres d&#39;intérêt</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Cybersécurité offensive</span> : CTF, Chasse aux vulnérabilités, Rétro-ingénierie</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Sport</span> : Escalade, Course à pied</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Musique</span> : Guitare, MAO</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Bénévolat</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.cybersensibilisation.fr">Association CyberSensibilisation France</a></div>
+            <div class="resume-entry-organization">Mentor et formateur en cybersécurité</div>
+          </div>
+          <div class="resume-entry-date">sept. 2019–juin 2024</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Animation d&#39;ateliers de sensibilisation auprès de collégiens, lycéens et demandeurs d&#39;emploi</p>
+            </li>
+            <li>
+              <p>Conception de supports pédagogiques sur le phishing, les mots de passe et la protection des données</p>
+            </li>
+            <li>
+              <p>Accompagnement de jeunes professionnels dans leur préparation aux métiers de la cybersécurité</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

@@ -1,0 +1,244 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK JP}{
+  \setCJKmainfont{Noto Serif CJK JP}
+}{}
+\IfFontExistsTF{Noto Sans CJK JP}{
+  \setCJKsansfont{Noto Sans CJK JP}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{高橋 美咲}{}
+\title{オペレーションズマネージャー / 業務改善・組織運営スペシャリスト}
+\phone[mobile]{+81 90-1234-5678}
+\email{misaki.takahashi@crest-ops.co.jp}
+\homepage{https://www.misaki-takahashi.jp}
+
+\address{日本、東京都、渋谷区、神宮前1-2-3 グリーンヒルズビル 8F、150-0001}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/misaki-takahashi-ops}{@misaki-takahashi-ops} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/misaki\_ops}{@misaki\_ops}}
+
+\begin{document}
+
+\maketitle
+
+\section{基本情報}
+
+\cvline{}{\begin{itemize}
+\item オペレーションズマネージャーとして8年以上、業務プロセス設計・KPI管理・チームマネジメントに従事。
+\item 物流・サービス業界で、受注処理、在庫管理、顧客対応、予算管理の改善を主導。
+\item データに基づく意思決定と部門横断の合意形成を得意とし、生産性向上と組織定着の両立を実現。
+\item 変化の激しい環境でも、現場と経営をつなぐ橋渡し役として成果を創出。
+\end{itemize}}
+\section{学歴}
+
+\cventry{2013年4月～2017年3月}
+        {学士、経営学部 経営学科、成績：3.6/4.0}
+        {中央大学}
+        {\url{https://www.chuo-u.ac.jp/}}
+        {}
+        {\begin{itemize}
+\item 経営学を基盤に、組織運営・業務改善・データ分析を横断的に学びました。
+\item ゼミでは小売業の店舗オペレーション改善をテーマに現地調査と提案を行いました。
+\item グループワークを通じて、関係者調整と合意形成の実践経験を積みました。
+\end{itemize}
+\textbf{コース}：経営組織論、マーケティング論、生産管理論、財務会計論、ビジネス統計学、情報システム論、ロジスティクス概論、プロジェクトマネジメント}
+\section{職歴}
+
+\cventry{2021年4月～現在}
+        {オペレーションズマネージャー}
+        {株式会社クレスト・オペレーションズ}
+        {\url{https://www.crest-ops.co.jp}}
+        {}
+        {\begin{itemize}
+\item 全社の業務運用を統括し、8名のチームをマネジメント。月次KPIの設計・運用により、問い合わせ対応時間を前年比32\%短縮。
+\item 受注処理・請求・在庫管理のプロセスを再設計し、手作業工数を月120時間削減。
+\item 部門横断の定例会議を再編し、施策の意思決定スピードを約1.5倍に改善。
+\item 予算策定から執行管理までを担当し、年間約4.2億円の運営予算を適正化。
+\item 採用・育成・評価制度の運用に携わり、チーム定着率を15ポイント向上。
+\end{itemize}
+\textbf{キーワード}：業務改善、KPI管理、チームマネジメント、予算管理、プロセス設計、採用・育成}
+
+\cventry{2017年4月～2021年3月}
+        {シニアオペレーションスペシャリスト}
+        {株式会社ノヴァ・ロジスティクス}
+        {\url{https://www.nova-logistics.co.jp}}
+        {}
+        {\begin{itemize}
+\item 物流センターの日次オペレーションを担当し、出荷精度99.7\%を安定的に維持。
+\item 需要予測とシフト最適化を導入し、繁忙期の残業時間を前年比25\%削減。
+\item 顧客問い合わせの一次対応フローを標準化し、平均解決時間を40分から18分に短縮。
+\item 新規顧客オンボーディングを年間12社担当し、立ち上げ遅延ゼロを達成。
+\end{itemize}
+\textbf{キーワード}：物流オペレーション、需要予測、シフト最適化、品質管理、顧客対応、標準化}
+\section{言語}
+
+\cvline{日本語}{ネイティブ・母国語レベル}
+\cvline{英語}{完全な実務レベル \hfill \textbf{キーワード}：TOEIC 920、ビジネス英会話、英文メール作成}
+\section{スキル}
+
+\cvline{オペレーション管理}{エキスパート \hfill \textbf{キーワード}：業務プロセス設計、KPI設計・運用、予算管理、在庫管理、品質管理、リスク管理}
+\cvline{プロジェクトマネジメント}{上級 \hfill \textbf{キーワード}：要件定義、スケジュール管理、ステークホルダー調整、変更管理、ドキュメント作成}
+\cvline{データ分析・ツール活用}{上級 \hfill \textbf{キーワード}：Excel、Google Workspace、Salesforce、Tableau、Power BI、Slack}
+\cvline{リーダーシップ}{エキスパート \hfill \textbf{キーワード}：チームビルディング、採用・面接、育成・評価、組織設計、1on1}
+\section{受賞・表彰}
+
+\cventry{2023年3月}
+        {株式会社クレスト・オペレーションズ}
+        {年間最優秀マネージャー賞}
+        {}
+        {}
+        {全社の業務改善とチーム運営の成果が評価され、年間最優秀マネージャー賞を受賞。問い合わせ対応時間の短縮と運営予算の適正化に貢献しました。}
+
+\cventry{2020年12月}
+        {株式会社ノヴァ・ロジスティクス}
+        {業務改善表彰 最優秀賞}
+        {}
+        {}
+        {物流センターのシフト最適化と需要予測精度向上の取り組みが評価され、業務改善表彰の最優秀賞を受賞しました。}
+\section{資格・免状}
+
+\cventry{2022年6月}
+        {プロジェクトマネジメント協会（PMI）}
+        {PMP（プロジェクトマネジメント・プロフェッショナル）}
+        {\url{https://www.pmi.org/certifications/project-management-pmp}}
+        {}
+        {}
+
+\cventry{2019年11月}
+        {日本商工会議所}
+        {日商簿記2級}
+        {\url{https://www.kentei.ne.jp/bookkeeping}}
+        {}
+        {}
+
+\cventry{2016年8月}
+        {マイクロソフト}
+        {Microsoft Office Specialist Excel エキスパート}
+        {\url{https://learn.microsoft.com/ja-jp/certifications/mos-excel-expert/}}
+        {}
+        {}
+\section{出版・著作}
+
+\cventry{2022年9月}
+        {物流オペレーションにおける需要予測精度向上の実践}
+        {日本ロジスティクスシステム学会}
+        {\url{https://www.jlsa.jp/}}
+        {}
+        {物流センターでの需要予測とシフト最適化の実践事例をまとめ、繁忙期の労務負荷削減と出荷精度向上の手法を解説しました。}
+\section{プロジェクト}
+
+\cventry{2022年1月～2022年8月}
+        {社内問い合わせの分類・一次回答を自動化し、運用チームの対応負荷を軽減するプロジェクト。}
+        {社内問い合わせ対応の自動化プロジェクト}
+        {\url{https://www.crest-ops.co.jp/case/automation}}
+        {}
+        {\begin{itemize}
+\item 問い合わせログの分析から頻出カテゴリを特定し、FAQと自動応答フローを設計
+\item ノーコードツールとチャットボットを組み合わせ、一次回答率を68\%まで向上
+\item 運用定着のための社内研修とマニュアル整備を実施
+\end{itemize}
+\textbf{キーワード}：業務自動化、チャットボット、FAQ設計、プロセス改善}
+\section{興味・関心}
+
+\cvline{業務改善}{プロセス可視化、生産性向上}
+\cvline{読書}{経営書、歴史小説}
+\cvline{ランニング}{フルマラソン、週末ジョギング}
+\cvline{旅行}{国内旅行、温泉巡り}
+\section{ボランティア活動}
+
+\cventry{2019年6月～現在}
+        {運営ボランティア}
+        {NPO法人 地域キャリア支援ネットワーク}
+        {\url{https://www.career-support-network.jp/}}
+        {}
+        {\begin{itemize}
+\item 若年層向けキャリア相談会の企画・運営を担当
+\item 企業ボランティアの募集と日程調整、当日の進行を担当
+\item 参加者アンケートの分析をもとに、相談会のプログラムを改善
+\end{itemize}}
+    
+\end{document}

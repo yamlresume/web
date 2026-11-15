@@ -1,0 +1,246 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Jordan Ellis}{}
+\title{QA Engineer | Test Automation \& Quality Assurance}
+\phone[mobile]{(415) 555-0132}
+\email{jordan.ellis@example.com}
+\homepage{https://jordanellis.dev}
+
+\address{4521 Innovation Way, San Jose, California, United States, 95112}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/jordanellis-qa}{@jordanellis-qa} {} {} {} • {} {} {} 
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/jordanellisqa}{@jordanellisqa} {} {} {} • {} {} {} 
+{\small \faStackOverflow}\ \href{https://stackoverflow.com/users/12345678/jordan-ellis}{@jordan-ellis}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{\begin{itemize}
+\item Detail-oriented QA Engineer with 6+ years of experience designing and executing comprehensive test strategies for web and mobile applications.
+\item Skilled in test automation using Selenium, Cypress, Playwright, and REST Assured, with a strong focus on reducing release cycles and improving defect detection.
+\item Proven ability to collaborate with cross-functional teams, translate requirements into test cases, and drive quality improvements throughout the SDLC.
+\item Experienced in manual testing, API testing, performance testing, and CI/CD integration, with a commitment to continuous learning and process optimization.
+\end{itemize}}
+\section{Education}
+
+\cventry{Sep 2014–Jun 2018}
+        {Bachelor, Computer Science, Score: 3.7}
+        {University of California, Davis}
+        {\url{https://www.ucdavis.edu}}
+        {}
+        {\begin{itemize}
+\item Graduated with honors and a strong foundation in software engineering principles.
+\item Completed coursework focused on testing methodologies, quality assurance, and software development life cycles.
+\item Led a capstone project on automated regression testing for a campus web portal.
+\end{itemize}
+\textbf{Courses}: Data Structures and Algorithms, Software Engineering, Database Systems, Web Development, Operating Systems, Computer Networks, Introduction to Software Testing}
+\section{Work}
+
+\cventry{Jan 2022–Present}
+        {Senior QA Engineer}
+        {BrightWave Technologies}
+        {\url{https://www.brightwave-tech.com}}
+        {}
+        {\begin{itemize}
+\item Lead QA efforts for a suite of SaaS products, defining test strategies and ensuring high-quality releases.
+\item Built and maintained automated test suites using Cypress and Playwright, increasing regression coverage by 45\%.
+\item Integrated automated tests into CI/CD pipelines with GitHub Actions, reducing release validation time from 3 days to 8 hours.
+\item Mentored junior QA engineers, conducted code reviews, and established testing best practices across the team.
+\item Collaborated with product managers and developers to review requirements and identify risks early in the development cycle.
+\end{itemize}
+\textbf{Keywords}: Test Automation, Cypress, Playwright, CI/CD, Mentoring}
+
+\cventry{Mar 2019–Dec 2021}
+        {QA Engineer}
+        {Nova Retail Systems}
+        {\url{https://www.novaretailsystems.com}}
+        {}
+        {\begin{itemize}
+\item Designed and executed manual and automated test cases for web and mobile retail applications.
+\item Developed API test suites using Postman and REST Assured, validating microservices and third-party integrations.
+\item Reduced production defects by 30\% through improved regression testing and defect triage processes.
+\item Participated in Agile ceremonies and contributed to sprint planning, estimation, and continuous improvement.
+\item Maintained test documentation and reported quality metrics to stakeholders using Jira and Confluence.
+\end{itemize}
+\textbf{Keywords}: Manual Testing, API Testing, Postman, Jira, Regression Testing}
+
+\cventry{Jul 2018–Feb 2019}
+        {Junior QA Analyst}
+        {CloudSprint Inc.}
+        {\url{https://www.cloudsprint.io}}
+        {}
+        {\begin{itemize}
+\item Executed test cases for cloud-based applications and documented defects with clear reproduction steps.
+\item Assisted in the creation of test plans and test scripts based on business requirements.
+\item Performed smoke, functional, and regression testing during release cycles.
+\item Worked closely with senior QA engineers to learn automation frameworks and testing tools.
+\end{itemize}
+\textbf{Keywords}: Test Cases, Bug Tracking, SQL, Agile}
+\section{Languages}
+
+\cvline{English}{Native or Bilingual Proficiency \hfill \textbf{Keywords}: Technical Writing, Public Speaking}
+\cvline{Spanish}{Limited Working Proficiency \hfill \textbf{Keywords}: DELE B2, Conversational}
+\section{Skills}
+
+\cvline{Test Automation}{Expert \hfill \textbf{Keywords}: Selenium, Cypress, Playwright, Appium, REST Assured}
+\cvline{Manual Testing}{Advanced \hfill \textbf{Keywords}: Test Planning, Regression Testing, Exploratory Testing, User Acceptance Testing}
+\cvline{Performance Testing}{Intermediate \hfill \textbf{Keywords}: JMeter, LoadRunner, Gatling}
+\cvline{DevOps \& Tools}{Advanced \hfill \textbf{Keywords}: Jenkins, GitHub Actions, Docker, Git, Jira}
+\cvline{Programming}{Advanced \hfill \textbf{Keywords}: Python, JavaScript, Java, SQL, Bash}
+\section{Awards}
+
+\cventry{Nov 2023}
+        {BrightWave Technologies}
+        {Quality Champion Award}
+        {}
+        {}
+        {Recognized for outstanding contributions to test automation and quality process improvements, leading to a 40\% reduction in escaped defects.}
+\section{Certificates}
+
+\cventry{Aug 2019}
+        {ISTQB}
+        {ISTQB Certified Tester Foundation Level}
+        {\url{https://www.istqb.org/certifications}}
+        {}
+        {}
+
+\cventry{Feb 2021}
+        {Selenium Academy}
+        {Certified Selenium Professional}
+        {\url{https://www.seleniumacademy.com}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Apr 2023}
+        {Automating Accessibility Checks in CI Pipelines}
+        {Ministry of Testing}
+        {\url{https://www.ministryoftesting.com/articles/automating-accessibility-checks}}
+        {}
+        {\begin{itemize}
+\item Discusses strategies for integrating accessibility testing into automated CI/CD workflows.
+\item Covers tools such as axe-core, Pa11y, and Lighthouse.
+\item Provides practical examples for reducing accessibility defects in web applications.
+\end{itemize}}
+\section{Projects}
+
+\cventry{Jan 2021–May 2021}
+        {Open-source test suite for e-commerce checkout flows}
+        {OpenCart QA Test Suite}
+        {\url{https://github.com/jordanellis-qa/opencart-qa-suite}}
+        {}
+        {\begin{itemize}
+\item Developed a Selenium-based test suite covering cart, checkout, and payment workflows.
+\item Implemented Page Object Model and data-driven testing with Pytest.
+\item Configured GitHub Actions to run tests on every pull request.
+\end{itemize}
+\textbf{Keywords}: Selenium, Python, Pytest, Page Object Model}
+
+\cventry{Sep 2022–Feb 2023}
+        {Lightweight framework for validating API contracts across microservices}
+        {API Contract Testing Framework}
+        {\url{https://github.com/jordanellis-qa/api-contract-testing}}
+        {}
+        {\begin{itemize}
+\item Built a reusable framework using Python and JSON Schema to validate API request/response contracts.
+\item Integrated with Postman and Newman for CI execution.
+\item Reduced integration defects by catching schema mismatches early.
+\end{itemize}
+\textbf{Keywords}: API Testing, JSON Schema, Python, Postman}
+\section{Interests}
+
+\cvline{Open Source}{Testing, Automation, Community}
+\cvline{Outdoor Activities}{Hiking, Cycling, Photography}
+\section{Volunteer}
+
+\cventry{Feb 2020–Present}
+        {Workshop Volunteer}
+        {Bay Area Quality Assurance Association}
+        {\url{https://www.baqaa.org}}
+        {}
+        {\begin{itemize}
+\item Volunteer workshop facilitator for introductory test automation sessions.
+\item Helped organize quarterly meetups and mentored attendees new to QA.
+\item Contributed to the association's knowledge-sharing initiatives.
+\end{itemize}}
+    
+\end{document}

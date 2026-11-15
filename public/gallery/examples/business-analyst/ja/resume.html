@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>佐藤 健太 Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">佐藤 健太</h1>
+    <p class="resume-headline">シニアビジネスアナリスト</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:kenta.sato@example.jp" class="resume-contact-link">kenta.sato@example.jp</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+81 90-1234-5678</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.kenta-sato.jp" class="resume-contact-link">https://www.kenta-sato.jp</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>日本、東京都、港区、東京都港区虎ノ門1-2-3、105-0001</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/kenta-sato-ba" class="resume-contact-link">@kenta-sato-ba</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/kentasato-ba" class="resume-contact-link">@kentasato-ba</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">基本情報</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <p>6年以上の経験を持つビジネスアナリストとして、金融・製薬・小売業界の業務改革を支援。
+          業務要件定義、現行業務の可視化、課題分析、改善施策の立案から実行までを一貫して担当。
+          ステークホルダー間の合意形成を重視し、業務プロセス改善とシステム導入を橋渡しする。</p>
+        <ul>
+          <li>
+            <p>要件定義・業務設計・データ分析・プロジェクト推進を横断的に経験</p>
+          </li>
+          <li>
+            <p>エグゼクティブから現場担当者まで、多様な関係者との円滑なコミュニケーションを強みとする</p>
+          </li>
+          <li>
+            <p>データドリブンな意思決定を支援し、業務効率化と売上貢献に寄与</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">学歴</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.waseda.jp/">早稲田大学</a></div>
+            <div class="resume-entry-organization">学士、経済学、成績：3.7/4.0</div>
+          </div>
+          <div class="resume-entry-date">2012年4月～2016年3月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>経済学と統計学を中心に、データに基づく意思決定と業務分析の基礎を習得。
+            ゼミでは地域経済のデータ分析プロジェクトに参加し、調査設計から発表までを担当。
+            学内外のプロジェクトで、関係者との調整や論点整理の実践経験を積む。</p>
+        </div>
+        <div class="resume-labeled-list"><span>コース</span>：ミクロ経済学、マクロ経済学、計量経済学、統計学、経営情報システム、業務分析入門</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">職歴</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.next-solutions.co.jp">株式会社ネクストソリューションズ</a></div>
+            <div class="resume-entry-organization">シニアビジネスアナリスト</div>
+          </div>
+          <div class="resume-entry-date">2021年4月～現在</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>金融機関向けの勘定系周辺システム刷新プロジェクトで、業務要件定義から受入テストまでをリード</p>
+            </li>
+            <li>
+              <p>現行業務フローの可視化と課題整理を行い、約30の改善施策を立案、うち20件を実現</p>
+            </li>
+            <li>
+              <p>業務部門・IT部門・外部ベンダー間の調整役として、要件の合意形成と変更管理を推進</p>
+            </li>
+            <li>
+              <p>データ分析に基づくKPI設計を支援し、問い合わせ対応時間を前年比25%削減</p>
+            </li>
+            <li>
+              <p>ジュニアメンバー2名の育成を担当し、要件定義書や業務マニュアルの品質標準化を推進</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>キーワード</span>：要件定義、業務プロセス改善、ステークホルダー調整、金融システム、データ分析</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.digitalbridge.co.jp">株式会社デジタルブリッジ</a></div>
+            <div class="resume-entry-organization">ビジネスアナリスト</div>
+          </div>
+          <div class="resume-entry-date">2018年4月～2021年3月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>製薬業界向けの販売管理システム導入で、業務ヒアリング、要件定義、テスト設計を担当</p>
+            </li>
+            <li>
+              <p>全社横断の業務プロセス標準化プロジェクトに参画し、部門間の業務ルール統一を支援</p>
+            </li>
+            <li>
+              <p>営業データを活用したダッシュボードを設計し、月次報告の作成工数を約40%削減</p>
+            </li>
+            <li>
+              <p>海外拠点との要件調整に参加し、英語での会議運営とドキュメント作成を担当</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>キーワード</span>：販売管理、業務標準化、ダッシュボード、海外拠点調整、テスト設計</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.global-pharma.co.jp">グローバル製薬株式会社</a></div>
+            <div class="resume-entry-organization">システム企画担当</div>
+          </div>
+          <div class="resume-entry-date">2016年4月～2018年3月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>社内システムの企画・運用担当として、現場の課題ヒアリングと改善提案を実施</p>
+            </li>
+            <li>
+              <p>基幹システム更新プロジェクトで、業務要件の整理とベンダー選定資料の作成を支援</p>
+            </li>
+            <li>
+              <p>社内問い合わせ窓口の運営を通じ、業務マニュアルの整備と教育資料の作成を推進</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>キーワード</span>：システム企画、運用改善、ベンダー管理、業務マニュアル</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">言語</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">日本語<span class="resume-language-fluency">：ネイティブ・母国語レベル</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>キーワード</span>：日本語ネイティブ</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">英語<span class="resume-language-fluency">：完全な実務レベル</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>キーワード</span>：TOEIC 910、海外拠点との会議運営</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">スキル</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">ビジネス分析<span class="resume-skill-level">：エキスパート</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>キーワード</span>：要件定義、業務プロセス改善、課題分析、合意形成、業務設計</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">データ分析<span class="resume-skill-level">：上級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>キーワード</span>：SQL、Excel、Tableau、Python、統計分析</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">プロジェクトマネジメント<span class="resume-skill-level">：上級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>キーワード</span>：進捗管理、リスク管理、ステークホルダー管理、変更管理</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">ツール<span class="resume-skill-level">：上級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>キーワード</span>：JIRA、Confluence、Visio、Figma、Power BI</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">受賞・表彰</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">社内優秀プロジェクト賞</div>
+            <div class="resume-entry-organization">株式会社ネクストソリューションズ</div>
+          </div>
+          <div class="resume-entry-date">2023年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>金融機関向けシステム刷新プロジェクトにおいて、要件定義の品質と関係者調整の貢献が評価され受賞。</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">業務改善提案優秀賞</div>
+            <div class="resume-entry-organization">株式会社デジタルブリッジ</div>
+          </div>
+          <div class="resume-entry-date">2020年3月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>営業報告業務の自動化提案が全社表彰され、部門横断の改善活動に発展。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">資格・免状</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.iiba.org/certification/cbap">ビジネス分析士（CBAP）</a></div>
+            <div class="resume-entry-organization">国際ビジネス分析協会（IIBA）</div>
+          </div>
+          <div class="resume-entry-date">2022年6月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ipa.go.jp/shiken">基本情報技術者試験</a></div>
+            <div class="resume-entry-organization">情報処理推進機構</div>
+          </div>
+          <div class="resume-entry-date">2017年11月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.pmi.org/certifications/project-management-pmp">PMP（プロジェクトマネジメント・プロフェッショナル）</a></div>
+            <div class="resume-entry-organization">プロジェクトマネジメント協会（PMI）</div>
+          </div>
+          <div class="resume-entry-date">2021年9月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">出版・著作</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.jbaa.or.jp/">業務要件定義における合意形成の実践</a></div>
+            <div class="resume-entry-organization">日本ビジネスアナリシス協会</div>
+          </div>
+          <div class="resume-entry-date">2022年10月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>複数部門が関与するシステム刷新プロジェクトにおける合意形成プロセスを整理</p>
+            </li>
+            <li>
+              <p>要件の優先順位付けと意思決定の可視化手法を実践事例として紹介</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">プロジェクト</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.next-solutions.co.jp/projects/crm-renewal">顧客管理システム刷新プロジェクト</a></div>
+            <div class="resume-entry-description">金融機関向け顧客管理システムの刷新プロジェクト</div>
+          </div>
+          <div class="resume-entry-date">2021年5月～2023年10月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>現行業務の可視化、要件定義、テスト設計、受入テストを担当</p>
+            </li>
+            <li>
+              <p>業務部門とIT部門の合意形成を支援し、リリース後の問い合わせ対応時間を25%削減</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>キーワード</span>： 顧客管理、要件定義、業務改善</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.digitalbridge.co.jp/projects/data-platform">全社データ基盤構築プロジェクト</a></div>
+            <div class="resume-entry-description">製薬業界向けの全社データ基盤構築プロジェクト</div>
+          </div>
+          <div class="resume-entry-date">2020年1月～2020年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>データ活用要件の整理とKPI設計を支援</p>
+            </li>
+            <li>
+              <p>営業データの可視化により、月次報告の作成工数を40%削減</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>キーワード</span>： データ基盤、KPI設計、可視化</div>
+      </div>
+      <div class="resume-entry" id="projects-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.global-pharma.co.jp/projects/sales-process">営業プロセス改善プロジェクト</a></div>
+            <div class="resume-entry-description">営業部門の業務プロセス改善プロジェクト</div>
+          </div>
+          <div class="resume-entry-date">2017年6月～2018年2月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>営業担当者の業務ヒアリングと現場観察を通じ、非効率な作業を特定</p>
+            </li>
+            <li>
+              <p>業務マニュアルと教育資料を整備し、新入社員の立ち上がり期間を短縮</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>キーワード</span>： 営業プロセス、業務マニュアル、現場改善</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">興味・関心</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">読書</span>：ビジネス書、経済小説、データ分析</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">スポーツ</span>：ランニング、フットサル、登山</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">旅行</span>：国内旅行、海外旅行、地域文化</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">ボランティア活動</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.jbaa.or.jp/">日本ビジネスアナリシス協会 学生支援委員会</a></div>
+            <div class="resume-entry-organization">メンター</div>
+          </div>
+          <div class="resume-entry-date">2022年4月～現在</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>ビジネスアナリストを目指す学生向けに、要件定義や業務分析の基礎を指導</p>
+            </li>
+            <li>
+              <p>勉強会やキャリア相談を企画・運営し、参加者の実践スキル向上を支援</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

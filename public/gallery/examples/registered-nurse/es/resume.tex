@@ -1,0 +1,248 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Spanish language
+% \usepackage[spanish]{babel} has some conflicting issues with moderncv
+% so we have to use enable the following options to make it work
+%
+% ref:
+% - https://tex.stackexchange.com/a/140161/36007
+\usepackage[spanish,es-lcroman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Lucía Fernández Morales}{}
+\title{Enfermera Registrada | Urgencias y Cuidados Críticos}
+\phone[mobile]{+34 612 345 678}
+\email{lucia.fernandez@enfermeria.es}
+\homepage{https://www.luciafernandez-enfermeria.es}
+
+\address{Calle de la Salud 45, 3.º B, Madrid, Comunidad de Madrid, España, 28012}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/lucia-fernandez-enfermeria}{@lucia-fernandez-enfermeria} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/lucia\_enfermera}{@lucia\_enfermera}}
+
+\begin{document}
+
+\maketitle
+
+\section{Información básica}
+
+\cvline{}{Enfermera registrada con más de siete años de experiencia en hospitales de alta complejidad, especializada en urgencias, cuidados críticos y atención centrada en la persona.
+%
+\begin{itemize}
+\item Valoración integral del paciente y ejecución de cuidados de enfermería basados en evidencia.
+\item Experiencia en triaje, monitorización hemodinámica, soporte vital avanzado y administración segura de medicamentos.
+\item Coordinación con equipos multidisciplinares y comunicación clara con pacientes y familias.
+\item Compromiso con la seguridad del paciente, la formación continua y la mejora de protocolos asistenciales.
+\end{itemize}}
+\section{Educación}
+
+\cventry{sept 2014–jun 2018}
+        {Licenciatura, Enfermería, Puntuación: 8,7/10}
+        {Universidad Complutense de Madrid}
+        {\url{https://www.ucm.es}}
+        {}
+        {\begin{itemize}
+\item Formación generalista con prácticas clínicas en hospitalización, urgencias y atención primaria.
+\item Trabajo de fin de grado sobre la prevención de infecciones asociadas a la atención sanitaria.
+\item Participación en simulacros de soporte vital y en programas de educación para la salud.
+\end{itemize}
+\textbf{Cursos}: Fundamentos de Enfermería, Fisiología Humana, Farmacología Clínica, Cuidados Intensivos, Salud Pública, Ética y Legislación Sanitaria, Enfermería Materno-Infantil, Urgencias y Emergencias}
+\section{Experiencia laboral}
+
+\cventry{ene 2021 hasta la fecha}
+        {Enfermera de Urgencias}
+        {Hospital Universitario La Paz}
+        {\url{https://www.comunidad.madrid/hospital/lapaz}}
+        {}
+        {\begin{itemize}
+\item Realización de triaje inicial y clasificación de pacientes según prioridad asistencial en un servicio con más de 300 urgencias diarias.
+\item Ejecución de cuidados de enfermería en pacientes críticos: monitorización, canalización de vías, administración de fármacos y apoyo en soporte vital avanzado.
+\item Coordinación con médicos, técnicos y auxiliares para garantizar una atención rápida, segura y humanizada.
+\item Registro riguroso de datos clínicos y educación al paciente y a la familia sobre el plan de cuidados y los signos de alarma.
+\end{itemize}
+\textbf{Palabras clave}: Triaje, Urgencias, RCP avanzada, Monitorización, Registro clínico}
+
+\cventry{sept 2018–dic 2020}
+        {Enfermera de Hospitalización}
+        {Hospital Clínico San Carlos}
+        {\url{https://www.comunidad.madrid/hospital/clinicosancarlos}}
+        {}
+        {\begin{itemize}
+\item Atención integral a pacientes adultos en unidades de medicina interna y cirugía, con una media de 12 pacientes por turno.
+\item Administración segura de medicamentos, curas, sondajes y control de signos vitales conforme a los protocolos del centro.
+\item Colaboración en la preparación del paciente para pruebas diagnósticas e intervenciones quirúrgicas.
+\item Educación sanitaria a pacientes y cuidadores para favorecer la continuidad de cuidados y la adherencia al tratamiento.
+\end{itemize}
+\textbf{Palabras clave}: Cuidados postoperatorios, Administración de medicamentos, Educación al paciente, Seguridad del paciente, Trabajo en equipo}
+\section{Idiomas}
+
+\cvline{Español}{Competencia nativa o bilingüe}
+\cvline{Inglés}{Competencia profesional plena \hfill \textbf{Palabras clave}: B2-C1, Inglés sanitario}
+\cvline{Francés}{Competencia limitada de trabajo \hfill \textbf{Palabras clave}: A2}
+\section{Competencias}
+
+\cvline{Cuidados de Enfermería}{Experto \hfill \textbf{Palabras clave}: Valoración del paciente, Cuidados básicos, Curas y vendajes, Sondajes, Control de signos vitales}
+\cvline{Urgencias y Emergencias}{Avanzado \hfill \textbf{Palabras clave}: Triaje Manchester, RCP avanzada, Manejo de vías, Monitorización}
+\cvline{Gestión Clínica}{Intermedio \hfill \textbf{Palabras clave}: Historia clínica electrónica, Registro de datos, Coordinación de equipos, Mejora de protocolos}
+\cvline{Educación Sanitaria}{Avanzado \hfill \textbf{Palabras clave}: Educación al paciente, Promoción de la salud, Adherencia al tratamiento, Comunicación clínica}
+\section{Premios}
+
+\cventry{dic 2023}
+        {Hospital Universitario La Paz}
+        {Premio a la Excelencia Asistencial}
+        {}
+        {}
+        {Reconocimiento por la mejora del protocolo de comunicación en el triaje de urgencias y por la formación de nuevos profesionales.}
+
+\cventry{jun 2018}
+        {Universidad Complutense de Madrid}
+        {Mejor Expediente de Enfermería}
+        {}
+        {}
+        {Distinción otorgada al expediente académico con mayor calificación de la promoción en el Grado en Enfermería.}
+\section{Certificados}
+
+\cventry{mar 2022}
+        {Sociedad Española de Medicina de Urgencias y Emergencias}
+        {Soporte Vital Avanzado (SVA)}
+        {\url{https://www.semes.org}}
+        {}
+        {}
+
+\cventry{may 2021}
+        {Grupo Español de Triaje}
+        {Curso de Triaje Manchester}
+        {\url{https://www.triajemanchester.es}}
+        {}
+        {}
+
+\cventry{oct 2020}
+        {Hospital Universitario La Paz}
+        {Enfermería de Urgencias y Emergencias}
+        {\url{https://www.comunidad.madrid/hospital/lapaz}}
+        {}
+        {}
+\section{Publicaciones}
+
+\cventry{nov 2023}
+        {Protocolo de actuación en triaje de urgencias pediátricas}
+        {Revista Española de Enfermería de Urgencias}
+        {\url{https://www.enfermeriaurgencias.es/articulos/triaje-pediatrico}}
+        {}
+        {\begin{itemize}
+\item Artículo basado en la experiencia del servicio de urgencias del Hospital Universitario La Paz.
+\item Propone criterios de valoración rápida y comunicación estructurada entre enfermería y pediatría.
+\item Incluye indicadores de calidad para evaluar la adherencia al protocolo.
+\end{itemize}}
+\section{Referencias}
+
+\cventry{\emaillink[marta.ruiz@salud.madrid.org]{marta.ruiz@salud.madrid.org}}
+        {Supervisora de Urgencias}
+        {Dra. Marta Ruiz Salgado}
+        {+34 915 123 456}
+        {}
+        {Lucía destaca por su criterio clínico, su capacidad de priorización y su trato cercano con pacientes y familias. Es una profesional fiable y comprometida con la mejora continua.}
+\section{Proyectos}
+
+\cventry{feb 2022–nov 2022}
+        {Programa comunitario para mejorar el autocuidado de personas con diabetes tipo 2.}
+        {Programa de educación para la salud en diabetes}
+        {\url{https://www.madrid.es/salud/diabetes}}
+        {}
+        {\begin{itemize}
+\item Diseño de talleres sobre alimentación, ejercicio y control de la glucemia.
+\item Coordinación con atención primaria y asociaciones de pacientes.
+\item Evaluación de la satisfacción y de la adherencia a las recomendaciones.
+\end{itemize}
+\textbf{Palabras clave}: Educación sanitaria, Diabetes, Atención primaria, Autocuidado}
+\section{Intereses}
+
+\cvline{Voluntariado sanitario}{Cruz Roja, Primeros auxilios, Formación}
+\cvline{Deporte}{Natación, Carrera, Yoga}
+\cvline{Lectura}{Divulgación científica, Novela histórica}
+\section{Voluntariado}
+
+\cventry{jun 2016–sept 2019}
+        {Voluntaria de Socorros y Emergencias}
+        {Cruz Roja Española}
+        {\url{https://www.cruzroja.es}}
+        {}
+        {\begin{itemize}
+\item Participación en dispositivos preventivos y atención de primeros auxilios en eventos públicos.
+\item Formación a nuevos voluntarios en soporte vital básico y manejo inicial de emergencias.
+\item Colaboración en campañas de promoción de la salud y donación de sangre.
+\end{itemize}}
+    
+\end{document}

@@ -1,0 +1,286 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{张伟}{}
+\title{高级机械工程师 | 汽车行业 | 10年经验}
+\phone[mobile]{+86 138 1234 5678}
+\email{zhangwei.mech@qq.com}
+\homepage{https://www.linkedin.com/in/zhangwei-mech}
+
+\address{中国，上海市，上海，上海市浦东新区世纪大道100号，200120}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/zhangwei-mech}{@zhangwei-mech} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/zhangwei-mech}{@zhangwei-mech}}
+
+\begin{document}
+
+\maketitle
+
+\section{简介}
+
+\cvline{}{\begin{itemize}
+\item 机械工程硕士，10年汽车行业机械设计与开发经验，熟悉从概念设计到量产的全流程。
+\item 精通SolidWorks、CATIA、AutoCAD等CAD软件，熟练使用ANSYS、Abaqus进行有限元分析。
+\item 擅长汽车零部件结构设计、轻量化优化、公差分析及GD\&T，具备丰富的项目管理经验。
+\item 具备良好的团队协作和沟通能力，曾领导5人团队完成多个重点项目，获得上海市科技进步二等奖。
+\item 持续学习新技术，关注新能源汽车和智能制造领域，致力于推动机械设计的创新与优化。
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2010年9月–2013年6月}
+        {硕士，机械工程，成绩：3.8/4.0}
+        {上海交通大学}
+        {\url{https://www.sjtu.edu.cn}}
+        {}
+        {\begin{itemize}
+\item 研究方向为汽车轻量化设计与结构优化，参与国家自然科学基金项目。
+\item 发表2篇EI论文，获得校级优秀硕士论文。
+\item 担任助教，辅导本科生机械设计课程。
+\end{itemize}
+\textbf{课程}：高等机械设计、有限元分析、热力学与流体力学、机器人学、控制工程、材料科学与工程、先进制造技术、汽车系统动力学}
+
+\cventry{2006年9月–2010年6月}
+        {学士，机械设计制造及其自动化，成绩：3.6/4.0}
+        {华中科技大学}
+        {\url{https://www.hust.edu.cn}}
+        {}
+        {\begin{itemize}
+\item 连续三年获得校级奖学金，担任机械创新协会会长。
+\item 参加全国大学生机械创新设计大赛，获湖北省一等奖。
+\item 毕业设计为“小型机器人机械臂设计”，获优秀毕业设计。
+\end{itemize}
+\textbf{课程}：机械原理、机械设计、工程力学、电工电子技术、微机原理与接口技术、工程材料、互换性与技术测量、机械制造技术基础}
+\section{工作经历}
+
+\cventry{2018年7月至今}
+        {高级机械工程师}
+        {上海汽车集团股份有限公司}
+        {\url{https://www.saicmotor.com}}
+        {}
+        {\begin{itemize}
+\item 负责新能源汽车电池包结构设计与优化，主导完成3款车型的电池包开发，实现减重15\%并满足碰撞安全要求。
+\item 使用CATIA进行3D建模和2D图纸绘制，运用ANSYS进行静力学、模态和疲劳分析，优化结构设计。
+\item 制定GD\&T方案，与供应商进行技术沟通，确保零部件制造质量，降低生产成本10\%。
+\item 领导5人跨部门团队，协调设计、仿真、工艺和采购，确保项目按时交付。
+\item 编写技术文档和设计规范，培训新员工，提升团队整体设计能力。
+\end{itemize}
+\textbf{关键字}：电池包设计、轻量化、CATIA、ANSYS、GD\&T、项目管理}
+
+\cventry{2013年7月–2018年6月}
+        {机械工程师}
+        {博世汽车部件（苏州）有限公司}
+        {\url{https://www.bosch.com.cn}}
+        {}
+        {\begin{itemize}
+\item 负责动力总成零部件的机械设计，包括变速箱壳体、支架和连接件，年产量超50万件。
+\item 使用SolidWorks进行详细设计，完成公差分析和尺寸链计算，确保装配精度。
+\item 参与DFMEA和PFMEA分析，识别设计风险并制定改进措施，产品不良率降低20\%。
+\item 与德国总部团队协作，引入新设计标准，优化产品结构，缩短开发周期15\%。
+\item 获得博世全球创新奖提名，连续两年被评为优秀员工。
+\end{itemize}
+\textbf{关键字}：动力总成、SolidWorks、公差分析、DFMEA、制造工艺}
+\section{语言}
+
+\cvline{中文}{母语或双语水平}
+\cvline{英语}{完全专业水平 \hfill \textbf{关键字}：CET-6、TOEFL 105、技术文档写作}
+\section{专业技能}
+
+\cvline{CAD软件}{专家 \hfill \textbf{关键字}：SolidWorks、CATIA、AutoCAD、Creo、NX}
+\cvline{仿真分析}{高级 \hfill \textbf{关键字}：ANSYS、Abaqus、HyperMesh、MATLAB、Simulink}
+\cvline{机械设计}{专家 \hfill \textbf{关键字}：结构设计、轻量化、公差分析、GD\&T、材料选型}
+\cvline{项目管理}{中级 \hfill \textbf{关键字}：PMP、Agile、跨部门协作、风险管理}
+\cvline{编程与工具}{中级 \hfill \textbf{关键字}：Python、C++、MATLAB、Git}
+\section{荣誉}
+
+\cventry{2020年12月}
+        {上海市人民政府}
+        {上海市科技进步二等奖}
+        {}
+        {}
+        {因在新能源汽车电池包轻量化设计方面的突出贡献，作为主要完成人获奖。}
+
+\cventry{2019年12月}
+        {上海汽车集团股份有限公司}
+        {上汽集团优秀员工}
+        {}
+        {}
+        {年度绩效排名前5\%，表彰在电池包开发项目中的卓越领导和团队协作。}
+\section{证书}
+
+\cventry{2021年6月}
+        {上海市人力资源和社会保障局}
+        {高级机械工程师职称}
+        {}
+        {}
+        {}
+
+\cventry{2018年9月}
+        {项目管理协会（PMI）}
+        {PMP认证}
+        {}
+        {}
+        {}
+
+\cventry{2015年3月}
+        {Dassault Systèmes}
+        {SolidWorks认证专家}
+        {}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2019年5月}
+        {基于有限元分析的汽车悬架结构优化设计}
+        {机械工程学报}
+        {\url{https://doi.org/10.3901/JME.2019.05.001}}
+        {}
+        {\begin{itemize}
+\item 提出一种基于响应面法的悬架结构优化方法，实现减重12\%并提高疲劳寿命。
+\item 通过ANSYS仿真和台架试验验证，结果误差小于5\%。
+\item 被引次数超过30次，获期刊年度优秀论文。
+\end{itemize}}
+
+\cventry{2017年11月}
+        {轻量化材料在汽车车身中的应用研究}
+        {汽车工程}
+        {\url{https://doi.org/10.19562/j.chinasae.qcgc.2017.11.001}}
+        {}
+        {\begin{itemize}
+\item 对比分析高强钢、铝合金和碳纤维复合材料在车身中的应用效果。
+\item 提出多材料混合车身设计方案，实现减重20\%的同时满足碰撞安全法规。
+\item 为后续车型开发提供材料选型依据。
+\end{itemize}}
+\section{项目}
+
+\cventry{2020年1月–2021年12月}
+        {针对纯电动车型的电池包进行结构设计、轻量化和安全优化。}
+        {新能源汽车电池包结构设计与优化}
+        {\url{https://www.saicmotor.com/tech/battery}}
+        {}
+        {\begin{itemize}
+\item 设计电池包上下壳体、模组支架和冷却板，满足IP67防护等级和振动疲劳要求。
+\item 采用拓扑优化和尺寸优化方法，实现电池包减重15\%，能量密度提升8\%。
+\item 通过CAE仿真和物理试验验证，顺利通过国标GB 38031碰撞安全测试。
+\item 项目投产后，年产量达10万台，新增产值超5亿元。
+\end{itemize}
+\textbf{关键字}：电池包、轻量化、拓扑优化、碰撞安全}
+
+\cventry{2018年3月–2019年12月}
+        {对某轿车底盘进行轻量化设计，采用铝合金和液压成型技术。}
+        {某车型底盘轻量化项目}
+        {}
+        {}
+        {\begin{itemize}
+\item 重新设计前副车架和后扭力梁，采用铝合金材料，减重25\%。
+\item 使用HyperMesh进行网格划分和优化，通过Abaqus进行强度刚度分析。
+\item 协调供应商完成样件制造和台架试验，满足耐久性要求。
+\item 项目成果应用于两款车型，年节约成本约2000万元。
+\end{itemize}
+\textbf{关键字}：底盘、铝合金、液压成型、轻量化}
+\section{兴趣爱好}
+
+\cvline{技术}{3D打印、机器人技术、智能制造}
+\cvline{户外}{徒步、摄影、骑行}
+\section{志愿服务}
+
+\cventry{2016年1月–2020年12月}
+        {技术讲师}
+        {中国机械工程学会}
+        {\url{https://www.cmes.org}}
+        {}
+        {\begin{itemize}
+\item 作为志愿者讲师，为高校学生和初入职场工程师讲授机械设计实践课程。
+\item 组织“机械创新设计”工作坊，累计培训学员超过500人。
+\item 参与学会年度学术会议的组织工作，负责分会场协调。
+\end{itemize}}
+    
+\end{document}

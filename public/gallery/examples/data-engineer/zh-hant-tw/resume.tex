@@ -1,0 +1,283 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK TC}{
+  \setCJKmainfont{Noto Serif CJK TC}
+}{}
+\IfFontExistsTF{Noto Sans CJK TC}{
+  \setCJKsansfont{Noto Sans CJK TC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{林彥廷}{}
+\title{資深資料工程師｜資料平台與即時資料管線}
+\phone[mobile]{+886 912 345 678}
+\email{yanting.lin@dataops.tw}
+\homepage{https://www.yantinglin.dev}
+
+\address{中國臺灣，臺北市，臺北市，信義區松仁路 88 號，110}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/yanting-lin-data}{@yanting-lin-data} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/yantinglin}{@yantinglin}}
+
+\begin{document}
+
+\maketitle
+
+\section{簡介}
+
+\cvline{}{\begin{itemize}
+\item 具備 10 年以上資料與軟體工程經驗，其中 8 年專注於資料平台、ETL/ELT 與即時串流管線設計。
+\item 熟悉 Python、SQL、Spark、Airflow、Kafka 與 dbt，能將複雜業務需求轉化為可維運的資料產品。
+\item 具備雲端資料倉儲與湖倉架構實戰經驗，曾協助企業降低 40\% 資料處理成本並提升資料交付效率。
+\item 重視資料品質、可觀測性與跨團隊協作，樂於推動資料治理與工程最佳實踐。
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2012年9月–2014年7月}
+        {碩士，資訊工程學系，成績：3.9/4.0}
+        {國立臺灣大學}
+        {\url{https://www.ntu.edu.tw/}}
+        {}
+        {\begin{itemize}
+\item 專注於分散式資料處理與資料庫系統研究，畢業論文探討即時串流查詢最佳化。
+\item 擔任資料庫課程助教，協助學生理解關聯式與 NoSQL 資料模型。
+\item 參與產學合作專案，建置校內研究資料交換平台。
+\end{itemize}
+\textbf{課程}：資料庫系統、分散式系統、資料探勘、雲端計算、大數據分析、機器學習}
+
+\cventry{2008年9月–2012年6月}
+        {學士，資訊工程學系，成績：3.7/4.0}
+        {國立清華大學}
+        {\url{https://www.nthu.edu.tw/}}
+        {}
+        {\begin{itemize}
+\item 奠定程式設計、演算法與系統設計基礎。
+\item 參與系學會資訊組，維護活動報名與資料統計系統。
+\end{itemize}
+\textbf{課程}：資料結構、演算法、作業系統、計算機網路、軟體工程}
+\section{工作經歷}
+
+\cventry{2020年3月至今}
+        {資深資料工程師}
+        {瀚宇金融科技股份有限公司}
+        {}
+        {}
+        {\begin{itemize}
+\item 主導企業級資料湖倉平台建置，整合 20+ 業務系統，支援每日 5 TB 以上批次與串流資料。
+\item 設計以 Airflow、dbt 與 Spark 為核心的 ELT 流程，將資料交付週期由 3 天縮短至 4 小時。
+\item 建立資料品質監控與告警機制，涵蓋完整性、即時性與一致性檢查，降低線上資料事故 60\%。
+\item 推動資料治理規範與指標字典，與資料分析、風控及產品團隊協作定義核心資料資產。
+\item 帶領 4 人資料工程小組，負責技術選型、程式碼審查與初階工程師培育。
+\end{itemize}
+\textbf{關鍵字}：資料湖倉、Apache Spark、Airflow、dbt、Kafka、資料治理}
+
+\cventry{2016年8月–2020年2月}
+        {資料工程師}
+        {遠景電信數據股份有限公司}
+        {}
+        {}
+        {\begin{itemize}
+\item 建置電信用戶行為資料管線，處理每日百萬級事件資料並匯入雲端資料倉儲。
+\item 使用 Python 與 SQL 開發批次 ETL 作業，支援行銷名單、流失預測與個人化推薦。
+\item 導入 Kafka 與 Spark Streaming 處理即時流量資料，提供近即時營運儀表板。
+\item 優化資料分割與查詢策略，降低 BigQuery 掃描量與月結成本約 35\%。
+\item 與資料科學家合作特徵工程流程，提升模型訓練資料準備效率。
+\end{itemize}
+\textbf{關鍵字}：Python、SQL、Kafka、Spark Streaming、BigQuery、ETL}
+
+\cventry{2014年7月–2016年7月}
+        {軟體工程師}
+        {凌雲資訊服務股份有限公司}
+        {}
+        {}
+        {\begin{itemize}
+\item 開發政府與企業資料交換系統，負責資料轉檔、排程與監控模組。
+\item 使用 Java 與 Oracle 資料庫實作批次匯入流程，確保跨系統資料一致性。
+\item 協助建立系統監控與錯誤重試機制，提升批次作業穩定度。
+\end{itemize}
+\textbf{關鍵字}：Java、Oracle、ETL、Shell}
+\section{語言}
+
+\cvline{中文}{母語或雙語水平 \hfill \textbf{關鍵字}：母語}
+\cvline{英語}{完全專業水平 \hfill \textbf{關鍵字}：TOEIC 950、技術文件閱讀與撰寫}
+\cvline{日語}{有限工作水平 \hfill \textbf{關鍵字}：JLPT N3}
+\section{專業技能}
+
+\cvline{資料工程}{專家 \hfill \textbf{關鍵字}：Python、SQL、Apache Spark、Airflow、dbt、Kafka}
+\cvline{雲端與基礎設施}{高級 \hfill \textbf{關鍵字}：AWS、GCP、Terraform、Docker、Kubernetes}
+\cvline{資料倉儲與湖倉}{高級 \hfill \textbf{關鍵字}：Snowflake、BigQuery、Databricks、Redshift}
+\cvline{程式設計}{高級 \hfill \textbf{關鍵字}：Python、Scala、Java、Bash}
+\cvline{資料治理與可觀測性}{高級 \hfill \textbf{關鍵字}：Data Quality、Lineage、Metadata、Monitoring}
+\section{榮譽}
+
+\cventry{2023年12月}
+        {瀚宇金融科技股份有限公司}
+        {年度資料創新獎}
+        {}
+        {}
+        {表彰在資料湖倉平台與即時風控資料管線專案中的卓越貢獻，專案協助降低資料延遲並提升決策效率。}
+
+\cventry{2019年11月}
+        {遠景電信數據股份有限公司}
+        {最佳跨團隊協作獎}
+        {}
+        {}
+        {肯定在即時流量分析專案中整合資料工程、資料科學與行銷團隊的協作表現。}
+\section{證書}
+
+\cventry{2022年6月}
+        {Amazon Web Services}
+        {AWS Certified Data Analytics - Specialty}
+        {\url{https://aws.amazon.com/certification/certified-data-analytics-specialty/}}
+        {}
+        {}
+
+\cventry{2021年9月}
+        {Google Cloud}
+        {Google Cloud Professional Data Engineer}
+        {\url{https://cloud.google.com/learn/certification/data-engineer}}
+        {}
+        {}
+
+\cventry{2024年3月}
+        {Databricks}
+        {Databricks Certified Data Engineer Professional}
+        {\url{https://www.databricks.com/learn/certification/data-engineer-professional}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2023年5月}
+        {以 Lakehouse 架構打造可觀測資料平台}
+        {iThome 技術專欄}
+        {\url{https://www.ithome.com.tw/}}
+        {}
+        {\begin{itemize}
+\item 探討湖倉架構在金融業資料整合與治理上的實務經驗。
+\item 分享資料品質監控、血緣追蹤與成本優化策略。
+\end{itemize}}
+\section{項目}
+
+\cventry{2022年1月–2023年12月}
+        {支援金融交易風控的即時事件處理與特徵計算平台}
+        {即時風控資料管線}
+        {\url{https://github.com/yantinglin/realtime-risk-pipeline}}
+        {}
+        {\begin{itemize}
+\item 使用 Kafka、Spark Structured Streaming 與 Redis 建置毫秒級事件處理流程。
+\item 設計可回溯的特徵版本管理與延遲監控，支援風控模型即時推論。
+\item 將規則更新到上線的週期由兩週縮短至兩天。
+\end{itemize}
+\textbf{關鍵字}：Kafka、Spark、Redis、風控}
+
+\cventry{2021年3月–2022年10月}
+        {集中管理資料品質規則、告警與健康度儀表板}
+        {資料品質監控平台}
+        {\url{https://github.com/yantinglin/data-quality-hub}}
+        {}
+        {\begin{itemize}
+\item 建立可配置的資料品質規則引擎，支援空值、重複、分布偏移與時效檢查。
+\item 整合 Airflow 與 Prometheus，提供自動告警與 SLA 報表。
+\item 覆蓋 150+ 核心資料表，協助團隊提前發現重大資料異常。
+\end{itemize}
+\textbf{關鍵字}：Data Quality、Airflow、Prometheus、Observability}
+\section{興趣愛好}
+
+\cvline{開源社群}{Apache Airflow、dbt、技術寫作}
+\cvline{戶外活動}{登山、慢跑、攝影}
+\section{志願服務}
+
+\cventry{2021年1月至今}
+        {志工講者與工作坊導師}
+        {臺灣資料工程社群}
+        {\url{https://www.meetup.com/taiwan-data-engineering/}}
+        {}
+        {\begin{itemize}
+\item 定期分享資料管線設計、資料品質與雲端成本優化主題。
+\item 協助規劃初學者資料工程工作坊，指導學員完成端到端專案。
+\item 參與社群年會籌備，推動產學交流與知識分享。
+\end{itemize}}
+    
+\end{document}

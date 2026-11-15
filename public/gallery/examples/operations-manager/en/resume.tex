@@ -1,0 +1,260 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Jordan A. Mitchell}{}
+\title{Operations Manager | Process Improvement \& Supply Chain Strategy}
+\phone[mobile]{(312) 555-0148}
+\email{jordan.mitchell.ops@gmail.com}
+\homepage{https://www.jordanmitchellops.com}
+
+\address{415 West Randolph Street, Chicago, Illinois, United States, 60607}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/jordan-a-mitchell-ops}{@jordan-a-mitchell-ops} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@jordan.mitchell.ops}{@jordan.mitchell.ops}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{\begin{itemize}
+\item Operations leader with 10+ years of experience across fulfillment, distribution, and retail supply chain operations
+\item Proven record of improving safety, quality, delivery, and cost through Lean tools, data-driven labor planning, and frontline coaching
+\item Managed teams of 100+ associates and 6 supervisors in high-volume, multi-shift environments
+\item Strong business partner to transportation, inventory, customer service, and sales teams; comfortable owning P\&L and KPI targets
+\item Known for building accountable teams, stabilizing peak-season execution, and turning operational metrics into action
+\end{itemize}}
+\section{Education}
+
+\cventry{Aug 2011–May 2015}
+        {Bachelor, Business Administration, Score: 3.7}
+        {University of Illinois Urbana-Champaign}
+        {\url{https://illinois.edu}}
+        {}
+        {\begin{itemize}
+\item Graduated with honors and a concentration in operations and supply chain management
+\item Completed a capstone project on distribution network design for a regional retailer
+\item Served as vice president of the supply chain student association
+\end{itemize}
+\textbf{Courses}: Operations Management, Supply Chain Management, Statistics for Business, Managerial Accounting, Organizational Behavior, Business Analytics, Project Management, Logistics and Transportation}
+\section{Work}
+
+\cventry{Mar 2021–Present}
+        {Operations Manager}
+        {Meridian Fulfillment Partners}
+        {\url{https://www.meridianfulfillment.com}}
+        {}
+        {\begin{itemize}
+\item Lead daily operations for a 180,000-square-foot fulfillment center with 120+ associates across receiving, inventory, picking, packing, and shipping
+\item Reduced order cycle time by 18\% and overtime spend by 22\% through labor scheduling, cross-training, and daily tiered huddles
+\item Own labor, supplies, and equipment budgets; delivered \$1.4M in annual savings through vendor consolidation and process controls
+\item Partner with transportation, customer service, and sales to achieve 99.2\% on-time shipment and 99.8\% inventory accuracy
+\item Coach six supervisors and build a safety-first culture with standardized work, root-cause analysis, and visible KPI boards
+\end{itemize}
+\textbf{Keywords}: Fulfillment Operations, P\&L Management, Labor Planning, Lean Six Sigma, Inventory Control, Safety Compliance}
+
+\cventry{Jun 2017–Feb 2021}
+        {Operations Supervisor}
+        {Lakeshore Distribution Co.}
+        {\url{https://www.lakeshoredistribution.com}}
+        {}
+        {\begin{itemize}
+\item Supervised 35 associates across two shifts in a high-volume distribution center serving retail and e-commerce customers
+\item Improved picking accuracy from 98.6\% to 99.7\% by redesigning zone assignments and implementing daily quality audits
+\item Led a WMS wave-planning rollout that increased cases shipped per labor hour by 14\%
+\item Maintained OSHA compliance and reduced recordable incidents by 30\% through training, ergonomic improvements, and safety observations
+\item Coordinated peak-season staffing plans and temporary labor onboarding for 60+ seasonal associates
+\end{itemize}
+\textbf{Keywords}: Distribution Operations, Warehouse Management, Quality Audits, Continuous Improvement, Team Leadership}
+
+\cventry{Aug 2015–May 2017}
+        {Operations Analyst}
+        {Cobalt Retail Supply}
+        {\url{https://www.cobaltretailsupply.com}}
+        {}
+        {\begin{itemize}
+\item Analyzed demand forecasts, inventory turns, and transportation costs to support weekly operations planning
+\item Built Excel and SQL dashboards that gave managers real-time visibility into fill rate, backorders, and labor productivity
+\item Supported RFQ and carrier scorecard processes, helping reduce inbound freight cost by 9\%
+\item Documented standard operating procedures and trained associates on new inventory-control workflows
+\end{itemize}
+\textbf{Keywords}: Data Analysis, Inventory Planning, SQL, Excel, Freight Optimization}
+\section{Languages}
+
+\cvline{English}{Native or Bilingual Proficiency \hfill \textbf{Keywords}: Business communication, Public speaking}
+\cvline{Spanish}{Limited Working Proficiency \hfill \textbf{Keywords}: Team support, Operational instructions}
+\section{Skills}
+
+\cvline{Operations Leadership}{Expert \hfill \textbf{Keywords}: Team Development, P\&L Ownership, Labor Planning, KPI Management, Change Management}
+\cvline{Process Improvement}{Advanced \hfill \textbf{Keywords}: Lean Six Sigma, 5S, Root Cause Analysis, Standard Work, Value Stream Mapping}
+\cvline{Supply Chain \& Inventory}{Advanced \hfill \textbf{Keywords}: Demand Planning, Inventory Accuracy, Warehouse Management, Cross-Docking, Supplier Management}
+\cvline{Data \& Systems}{Intermediate \hfill \textbf{Keywords}: SQL, Excel, Tableau, WMS, ERP}
+\cvline{Safety \& Compliance}{Advanced \hfill \textbf{Keywords}: OSHA, Workers Compensation, Audit Readiness, Risk Mitigation}
+\section{Awards}
+
+\cventry{Nov 2023}
+        {Meridian Fulfillment Partners}
+        {Operational Excellence Award}
+        {}
+        {}
+        {Recognized for leading a cross-functional initiative that reduced fulfillment cycle time by 18\% while improving on-time shipment performance during peak season.}
+
+\cventry{Jun 2020}
+        {Lakeshore Distribution Co.}
+        {Leadership Impact Award}
+        {}
+        {}
+        {Awarded for developing frontline supervisors and improving associate engagement scores by 15 points across two shifts.}
+\section{Certificates}
+
+\cventry{Sep 2022}
+        {Association for Supply Chain Management}
+        {Certified Supply Chain Professional (CSCP)}
+        {\url{https://www.ascm.org/certification-credentials/cscp/}}
+        {}
+        {}
+
+\cventry{Apr 2019}
+        {Institute of Industrial and Systems Engineers}
+        {Lean Six Sigma Green Belt}
+        {\url{https://www.iise.org/lean-six-sigma/}}
+        {}
+        {}
+
+\cventry{Jan 2018}
+        {National Safety Council}
+        {OSHA 30-Hour General Industry}
+        {\url{https://www.nsc.org/workplace/training-and-courses/oshacourses}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Oct 2024}
+        {Five Levers for a More Resilient Fulfillment Operation}
+        {Supply Chain Management Review}
+        {\url{https://www.scmr.com/}}
+        {}
+        {\begin{itemize}
+\item Outlines practical operating routines for stabilizing peak-season throughput
+\item Covers labor modeling, inventory accuracy, cross-training, and daily management systems
+\end{itemize}}
+\section{Projects}
+
+\cventry{Feb 2022–Jul 2022}
+        {Redesigned pick paths, storage zones, and staging areas to improve flow and reduce travel time in a 180,000-square-foot facility.}
+        {Warehouse Layout Optimization}
+        {}
+        {}
+        {\begin{itemize}
+\item Reduced average pick travel distance by 21\% and improved lines picked per hour by 12\%
+\item Collaborated with safety, inventory control, and frontline teams to phase changes without service disruption
+\item Documented new slotting rules and trained supervisors on sustained execution
+\end{itemize}
+\textbf{Keywords}: Facility Layout, Slotting, Lean, Productivity}
+
+\cventry{Aug 2023–Dec 2023}
+        {Built a flexible staffing and cross-training model for a 40\% volume surge across receiving, picking, and packing.}
+        {Peak Season Labor Model}
+        {}
+        {}
+        {\begin{itemize}
+\item Forecasted labor demand by function and shift using historical volume, productivity, and absenteeism data
+\item Reduced agency labor spend by 16\% while maintaining 99\%+ on-time shipment
+\item Created daily staffing dashboards adopted by operations and finance partners
+\end{itemize}
+\textbf{Keywords}: Labor Modeling, Peak Planning, Cross-Training, Forecasting}
+\section{Interests}
+
+\cvline{Supply Chain Innovation}{Warehouse Automation, Robotics, Sustainability}
+\cvline{Community \& Mentoring}{Career Coaching, Food Security, Youth Sports}
+\cvline{Personal Wellbeing}{Cycling, Hiking, Cooking}
+\section{Volunteer}
+
+\cventry{Mar 2018–Present}
+        {Operations Volunteer}
+        {Greater Chicago Food Depository}
+        {\url{https://www.chicagofoodbank.org/}}
+        {}
+        {\begin{itemize}
+\item Support weekly food sorting, inventory checks, and distribution events for partner agencies
+\item Help train new volunteers on safe material handling and warehouse flow
+\item Contributed to a repacking initiative that increased volunteer throughput by 20\%
+\end{itemize}}
+    
+\end{document}

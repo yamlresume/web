@@ -1,0 +1,250 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Dutch language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-dutch.html
+\usepackage[dutch]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Sanne de Vries}{}
+\title{QA Engineer met passie voor kwaliteit en testautomatisering}
+\phone[mobile]{+31 6 12345678}
+\email{sanne.devries@example.com}
+\homepage{https://sannedevries.nl}
+
+\address{Keizersgracht 123, Amsterdam, Noord-Holland, Nederland, 1015 CJ}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/sannedevries}{@sannedevries} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/sannedevries}{@sannedevries}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basis Informatie}
+
+\cvline{}{\begin{itemize}
+\item Ervaren QA Engineer met een sterke focus op testautomatisering en kwaliteitsborging binnen Agile teams
+\item Expert in het opzetten van schaalbare testframeworks en het integreren van testen in CI/CD-pipelines
+\item Analytisch en detailgericht, met ruime ervaring in API-testen, performance testing en testmanagement
+\item Teamspeler die bruggen slaat tussen development, operations en productmanagement om kwaliteit continu te verbeteren
+\end{itemize}}
+\section{Opleidingen}
+
+\cventry{sep 2014–jul 2018}
+        {Bachelor, Informatica, Score: 7.8}
+        {Technische Universiteit Delft}
+        {\url{https://www.tudelft.nl}}
+        {}
+        {\begin{itemize}
+\item Sterke basis gelegd in softwareontwikkeling, algoritmen en kwaliteitszorg
+\item Praktijkervaring opgedaan met testmethodieken en geautomatiseerde tests
+\item Samenwerkingsvaardigheden ontwikkeld via groepsprojecten en presentaties
+\end{itemize}
+\textbf{Cursussen}: Datastructuren en Algoritmen, Software Engineering, Databases, Netwerken, Besturingssystemen, Testen van Software, Projectmanagement, Webtechnologie}
+\section{Werkervaring}
+
+\cventry{mrt 2022–Heden}
+        {Senior QA Engineer}
+        {ING}
+        {\url{https://www.ing.com}}
+        {}
+        {\begin{itemize}
+\item Verantwoordelijk voor de kwaliteitsstrategie van de mobiele bankieren-app en online bankieren
+\item Opgezet en onderhouden van een schaalbaar testautomatiseringsframework met Cypress en TypeScript
+\item Geïntegreerd van geautomatiseerde tests in CI/CD-pipelines, wat leidde tot 40\% snellere releases
+\item Begeleiden van junior QA-engineers en het verzorgen van kennissessies over testautomatisering
+\item Samenwerken met productowners en ontwikkelaars om acceptatiecriteria en testscenario's te definiëren
+\end{itemize}
+\textbf{Trefwoorden}: Testautomatisering, Selenium, Cypress, API-testen, CI/CD, Agile, Scrum, Kwaliteitszorg}
+
+\cventry{jun 2019–feb 2022}
+        {QA Engineer}
+        {Adyen}
+        {\url{https://www.adyen.com}}
+        {}
+        {\begin{itemize}
+\item Ontworpen en uitgevoerd van teststrategieën voor de checkout-omgeving en betaaloplossingen
+\item Geautomatiseerd van regressietests met Postman, Java en Python, resulterend in 60\% minder handmatig testwerk
+\item Uitgevoerd van performance tests met JMeter en Gatling om schaalbaarheid en betrouwbaarheid te waarborgen
+\item Actief bijgedragen aan Agile ceremonies en continue verbetering van het testproces
+\item Gerapporteerd van kwaliteitsrisico's en testresultaten aan stakeholders
+\end{itemize}
+\textbf{Trefwoorden}: Teststrategie, Postman, Java, Python, Prestatietesten, Regressietesten}
+
+\cventry{sep 2018–mei 2019}
+        {Junior QA Engineer}
+        {Coolblue}
+        {\url{https://www.coolblue.nl}}
+        {}
+        {\begin{itemize}
+\item Uitgevoerd van handmatige en geautomatiseerde testcases voor de webshop en mobiele app
+\item Vastleggen en opvolgen van bugs in JIRA, in nauwe samenwerking met ontwikkelaars
+\item Deelgenomen aan Scrum-sprints en bijgedragen aan het verbeteren van de Definition of Done
+\item Opgesteld van testdocumentatie en testrapportages
+\end{itemize}
+\textbf{Trefwoorden}: Handmatig testen, Testcases, Bugtracking, JIRA, Scrum}
+\section{Talen}
+
+\cvline{Nederlands}{Moedertaal of tweetalige vaardigheid}
+\cvline{Engels}{Volledige professionele vaardigheid \hfill \textbf{Trefwoorden}: Cambridge C1, IELTS 7.5}
+\cvline{Duits}{Beperkte werkvaardigheid \hfill \textbf{Trefwoorden}: Goethe B1}
+\section{Vaardigheden}
+
+\cvline{Testautomatisering}{Expert \hfill \textbf{Trefwoorden}: Selenium, Cypress, Playwright, Cucumber, Robot Framework}
+\cvline{API-testen}{Geavanceerd \hfill \textbf{Trefwoorden}: Postman, REST Assured, Swagger, GraphQL, SoapUI}
+\cvline{Prestatietesten}{Intermediair \hfill \textbf{Trefwoorden}: JMeter, Gatling, LoadRunner, K6}
+\cvline{Testmanagement}{Geavanceerd \hfill \textbf{Trefwoorden}: Teststrategie, Testplanning, Risicobeheer, ISTQB, TMMi}
+\cvline{Programmeertalen}{Geavanceerd \hfill \textbf{Trefwoorden}: Java, Python, JavaScript, SQL, Bash}
+\cvline{DevOps}{Intermediair \hfill \textbf{Trefwoorden}: Jenkins, GitLab CI, Docker, Kubernetes, Azure DevOps}
+\section{Onderscheidingen}
+
+\cventry{nov 2023}
+        {ING}
+        {QA Innovatie Award}
+        {}
+        {}
+        {Uitgereikt voor het ontwikkelen van een innovatief testautomatiseringsframework dat de release-snelheid en kwaliteit van de mobiele bankieren-app aanzienlijk verbeterde.}
+\section{Certificaten}
+
+\cventry{mrt 2021}
+        {ISTQB}
+        {ISTQB Certified Tester Advanced Level}
+        {\url{https://www.istqb.org}}
+        {}
+        {}
+
+\cventry{sep 2020}
+        {Scrum Alliance}
+        {Certified ScrumMaster}
+        {\url{https://www.scrumalliance.org}}
+        {}
+        {}
+\section{Publicaties}
+
+\cventry{jan 2023}
+        {Testautomatisering in Agile teams: van strategie naar uitvoering}
+        {ING Tech Blog}
+        {\url{https://www.ing.com/techblog/testautomatisering}}
+        {}
+        {\begin{itemize}
+\item Beschrijft een praktische aanpak voor het opzetten van testautomatisering binnen Agile teams
+\item Deelt lessen uit de praktijk over tooling, samenwerking en continue verbetering
+\item Geeft concrete handvatten voor het integreren van tests in CI/CD-pipelines
+\end{itemize}}
+\section{Projecten}
+
+\cventry{jan 2022–dec 2022}
+        {Een schaalbaar testautomatiseringsframework voor de mobiele bankieren-app.}
+        {Testautomatiseringsframework voor ING Bankieren}
+        {\url{https://github.com/ing/test-framework}}
+        {}
+        {\begin{itemize}
+\item Ontworpen van een modulair framework met Cypress en TypeScript voor end-to-end tests
+\item Geïntegreerd van tests in de CI/CD-pipeline met automatische rapportage
+\item Gerealiseerd van een onderhoudbare testsuite die de regressietijd met 50\% verkortte
+\end{itemize}
+\textbf{Trefwoorden}: Cypress, TypeScript, CI/CD, Appium, API-testen}
+
+\cventry{mrt 2020–nov 2021}
+        {Een geautomatiseerde performance teststraat voor de checkout-omgeving.}
+        {Performance teststraat voor Adyen Checkout}
+        {\url{https://github.com/adyen/performance-suite}}
+        {}
+        {\begin{itemize}
+\item Opgezet van gedistribueerde load tests met JMeter en Gatling
+\item Geautomatiseerd van testuitvoering en rapportage in Kubernetes
+\item Gevisualiseerd van resultaten in Grafana voor snelle analyse en bijsturing
+\end{itemize}
+\textbf{Trefwoorden}: JMeter, Gatling, Kubernetes, Grafana}
+\section{Interesses}
+
+\cvline{Hardlopen}{Marathon, Trailrunning, Intervaltraining}
+\cvline{Fotografie}{Portretfotografie, Landschapsfotografie, Lightroom}
+\cvline{Reizen}{Azië, Europa, Wandelen}
+\section{Vrijwilligerswerk}
+
+\cventry{sep 2019–jun 2023}
+        {Vrijwilliger Programmeerles}
+        {CodeUur}
+        {\url{https://www.codeuur.nl}}
+        {}
+        {\begin{itemize}
+\item Verzorgd van programmeerlessen aan basisschoolkinderen om hen kennis te laten maken met technologie
+\item Begeleid van leerlingen bij het bouwen van eenvoudige games en websites
+\item Bijgedragen aan het enthousiasmeren van kinderen voor STEM-onderwijs
+\end{itemize}}
+    
+\end{document}

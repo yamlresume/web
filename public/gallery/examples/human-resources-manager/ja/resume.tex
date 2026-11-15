@@ -1,0 +1,221 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK JP}{
+  \setCJKmainfont{Noto Serif CJK JP}
+}{}
+\IfFontExistsTF{Noto Sans CJK JP}{
+  \setCJKsansfont{Noto Sans CJK JP}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{佐藤 美咲}{}
+\title{人事マネージャー | 組織開発・人材育成の専門家}
+\phone[mobile]{+81 90-1234-5678}
+\email{misaki.sato@example.com}
+\homepage{https://www.misaki-sato-hr.com}
+
+\address{日本、東京、東京都、千代田区千代田1-1、100-0001}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/misaki-sato-hr}{@misaki-sato-hr} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/misaki\_hr}{@misaki\_hr}}
+
+\begin{document}
+
+\maketitle
+
+\section{基本情報}
+
+\cvline{}{\begin{itemize}
+\item 人事歴10年以上の経験を持つ人事マネージャー。採用から育成、評価制度の設計・運用まで幅広く担当。
+\item 組織開発とエンゲージメント向上に注力し、データドリブンな人事施策を推進。
+\item グローバル環境での人事業務経験あり。英語でのコミュニケーションも可能。
+\item 労働法や社会保険に関する深い知識を持ち、労務リスク管理にも強み。
+\end{itemize}}
+\section{学歴}
+
+\cventry{2010年4月～2014年3月}
+        {学士、経営学部 マネジメント学科、成績：3.8/4.0}
+        {青山学院大学}
+        {\url{https://www.aoyama.ac.jp}}
+        {}
+        {\begin{itemize}
+\item 人事管理や組織行動学を中心に履修し、理論と実践の両面から人材マネジメントを学ぶ
+\item ゼミでは企業の人事制度に関する研究を行い、卒業論文を執筆
+\item 学内のキャリア支援ボランティアに参加し、学生の就職活動をサポート
+\end{itemize}
+\textbf{コース}：人事管理論、組織行動学、労働法、産業心理学、統計学、マーケティング}
+\section{職歴}
+
+\cventry{2020年1月～現在}
+        {人事マネージャー}
+        {株式会社テクノロジーソリューションズ}
+        {\url{https://www.tech-sol.co.jp}}
+        {}
+        {\begin{itemize}
+\item 人事部門のマネージャーとして、採用・育成・評価・労務の全般を統括
+\item 年間50名以上の採用をリードし、採用プロセスの効率化と候補者体験の向上を実現
+\item 新評価制度（OKR＋360度評価）を設計・導入し、組織のパフォーマンスを向上
+\item 従業員エンゲージメント調査を実施し、離職率を15\%低減
+\item 労務管理のデジタル化を推進し、業務効率を30\%改善
+\end{itemize}
+\textbf{キーワード}：採用、育成、評価制度、労務管理、組織開発}
+
+\cventry{2014年4月～2019年12月}
+        {人事スペシャリスト}
+        {株式会社グローバル商事}
+        {\url{https://www.global-shoji.co.jp}}
+        {}
+        {\begin{itemize}
+\item 新卒・中途採用を担当し、年間30名以上の採用を実現
+\item 研修プログラムの企画・運営を行い、新入社員の早期戦力化を支援
+\item 給与計算・社会保険手続きなどの労務業務を正確かつ迅速に処理
+\item 人事データの分析を行い、経営層へのレポーティングを実施
+\end{itemize}
+\textbf{キーワード}：採用、研修、給与計算、社会保険}
+\section{言語}
+
+\cvline{日本語}{ネイティブ・母国語レベル \hfill \textbf{キーワード}：漢字検定1級、日本語教育能力検定}
+\cvline{英語}{完全な実務レベル \hfill \textbf{キーワード}：TOEIC 950、英検1級}
+\section{スキル}
+
+\cvline{人事戦略}{エキスパート \hfill \textbf{キーワード}：採用計画、人材育成、組織設計、パフォーマンス管理}
+\cvline{労務管理}{上級 \hfill \textbf{キーワード}：労働法、社会保険、給与計算、就業規則}
+\cvline{データ分析}{中級 \hfill \textbf{キーワード}：Excel、HR分析、統計}
+\cvline{コミュニケーション}{エキスパート \hfill \textbf{キーワード}：交渉、プレゼンテーション、ファシリテーション}
+\section{受賞・表彰}
+
+\cventry{2022年12月}
+        {株式会社テクノロジーソリューションズ}
+        {年間最優秀人事賞}
+        {}
+        {}
+        {人事改革プロジェクトのリーダーとして、採用・育成・評価制度の刷新に貢献し、組織のエンゲージメントスコアを20\%向上させた。}
+\section{資格・免状}
+
+\cventry{2018年8月}
+        {厚生労働省}
+        {社会保険労務士}
+        {\url{https://www.mhlw.go.jp}}
+        {}
+        {}
+
+\cventry{2019年11月}
+        {厚生労働省}
+        {キャリアコンサルタント}
+        {\url{https://www.mhlw.go.jp}}
+        {}
+        {}
+\section{出版・著作}
+
+\cventry{2023年6月}
+        {次世代人事戦略：データドリブンな人材マネジメント}
+        {日本の人事部}
+        {\url{https://www.jinji-bu.jp}}
+        {}
+        {人事データ分析を活用した採用・育成の最適化について寄稿。データに基づく意思決定の重要性と具体的な手法を解説。}
+\section{プロジェクト}
+
+\cventry{2022年4月～2023年3月}
+        {プロジェクトの詳細説明。評価制度の設計からシステム選定、運用開始までを一貫して担当。}
+        {人事評価システム刷新プロジェクト}
+        {\url{https://www.tech-sol.co.jp/projects/hr-system}}
+        {}
+        {評価制度の見直しとシステム導入をリード。360度評価とOKRを組み合わせた新評価制度を設計し、クラウド人事システムを導入。
+\textbf{キーワード}：評価制度、人事システム、プロジェクトマネジメント}
+\section{興味・関心}
+
+\cvline{読書}{ビジネス書、心理学、歴史小説}
+\cvline{旅行}{国内旅行、海外旅行、温泉}
+\cvline{ヨガ}{ヨガインストラクター資格、瞑想}
+\section{ボランティア活動}
+
+\cventry{2019年4月～現在}
+        {キャリアアドバイザー}
+        {NPO法人 若者キャリア支援協会}
+        {\url{https://www.example-npo.org}}
+        {}
+        {大学生や若年求職者向けのキャリア相談を実施。履歴書添削や面接対策を通じて、就職活動を支援。}
+    
+\end{document}

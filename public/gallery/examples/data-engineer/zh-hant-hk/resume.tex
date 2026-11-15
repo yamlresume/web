@@ -1,0 +1,268 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK HK}{
+  \setCJKmainfont{Noto Serif CJK HK}
+}{
+\IfFontExistsTF{Noto Serif CJK TC}{
+  \setCJKmainfont{Noto Serif CJK TC}
+}{}}
+\IfFontExistsTF{Noto Sans CJK HK}{
+  \setCJKsansfont{Noto Sans CJK HK}
+}{
+\IfFontExistsTF{Noto Sans CJK TC}{
+  \setCJKsansfont{Noto Sans CJK TC}
+}{}}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{陳家豪}{}
+\title{資深數據工程師}
+\phone[mobile]{+852 9123 4567}
+\email{kaho.chan@example.com}
+\homepage{https://kahochan.dev}
+
+\address{中國香港，香港島，香港，中環皇后大道中99號}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/kahochan-data}{@kahochan-data} {} {} {} • {} {} {} 
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/kahochan-data}{@kahochan-data}}
+
+\begin{document}
+
+\maketitle
+
+\section{簡介}
+
+\cvline{}{資深數據工程師，擁有超過八年設計與建置現代數據平台嘅經驗，專注於即時數據管道、數據倉儲同雲端數據架構。擅長將複雜業務需求轉化為可擴展、可靠且易維護嘅數據解決方案。
+%
+\begin{itemize}
+\item 精通 Python、SQL、Spark 及 dbt，熟悉 Kafka、Airflow 同 Snowflake 等現代數據工具鏈
+\item 曾領導跨職能團隊完成多個大型數據遷移及實時分析項目，平均延遲降低 40\%
+\item 重視數據品質、可觀測性同成本效益，致力推動數據治理最佳實踐
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2012年9月–2016年6月}
+        {學士，計算機科學，成績：3.7}
+        {香港科技大學}
+        {\url{https://www.ust.hk}}
+        {}
+        {\begin{itemize}
+\item 主修計算機科學，副修統計學，畢業成績優異
+\item 畢業論文探討分散式資料處理框架於金融風險分析之應用
+\item 曾獲院長嘉許名單及多項獎學金
+\end{itemize}
+\textbf{課程}：資料結構與演算法、資料庫系統、分散式系統、大數據分析、雲端運算、機器學習導論}
+\section{工作經歷}
+
+\cventry{2021年3月至今}
+        {高級數據工程師}
+        {智慧數據科技有限公司}
+        {\url{https://www.smartdata-tech.hk}}
+        {}
+        {\begin{itemize}
+\item 帶領四人數據工程團隊，設計及維護每日處理超過 5 TB 數據嘅雲端數據平台
+\item 主導由傳統數據倉儲遷移至 Snowflake 嘅項目，查詢效能提升 3 倍，年度成本節省約 25\%
+\item 建立基於 Airflow 同 dbt 嘅 ELT 管道，實現數據血緣追蹤同自動化測試，數據事故減少 60\%
+\item 與數據科學團隊緊密合作，交付實時推薦系統所需嘅特徵管道，模型上線時間由數週縮短至數日
+\end{itemize}
+\textbf{關鍵字}：數據架構、Snowflake、Airflow、dbt、團隊領導}
+
+\cventry{2017年7月–2021年2月}
+        {數據工程師}
+        {金融雲端服務有限公司}
+        {\url{https://www.fincloud.hk}}
+        {}
+        {\begin{itemize}
+\item 負責建置及優化銀行交易數據嘅批處理管道，每日處理超過 2 億筆記錄
+\item 使用 Spark 及 Kafka 開發近實時風險監控數據流，將欺詐偵測延遲由小時級降至分鐘級
+\item 設計分區及壓縮策略，使數據湖儲存成本降低 35\%，同時維持查詢效能
+\item 參與數據治理委員會，制定數據品質指標及元數據管理標準
+\end{itemize}
+\textbf{關鍵字}：Spark、Kafka、數據湖、風險監控、數據治理}
+
+\cventry{2016年8月–2017年6月}
+        {數據分析師}
+        {初創分析有限公司}
+        {\url{https://www.startup-analytics.hk}}
+        {}
+        {\begin{itemize}
+\item 為零售客戶建立銷售及庫存儀表板，支援每日營運決策
+\item 以 Python 及 SQL 自動化報表流程，每週節省約 15 小時人手工作
+\item 協助設計 A/B 測試框架，分析促銷活動成效並提出優化建議
+\end{itemize}
+\textbf{關鍵字}：Python、SQL、數據視覺化、A/B 測試}
+\section{語言}
+
+\cvline{粵語}{母語或雙語水平}
+\cvline{英語}{完全專業水平 \hfill \textbf{關鍵字}：IELTS 8.0}
+\cvline{普通話}{完全專業水平}
+\section{專業技能}
+
+\cvline{數據工程}{專家 \hfill \textbf{關鍵字}：Python、SQL、Spark、Kafka、Airflow、dbt}
+\cvline{雲端平台}{高級 \hfill \textbf{關鍵字}：AWS、GCP、Snowflake、BigQuery、Docker、Kubernetes}
+\cvline{數據治理}{高級 \hfill \textbf{關鍵字}：數據品質、元數據管理、數據血緣、隱私合規、成本優化}
+\section{榮譽}
+
+\cventry{2022年12月}
+        {智慧數據科技有限公司}
+        {年度最佳數據項目}
+        {}
+        {}
+        {表揚在 Snowflake 遷移項目中展現卓越技術領導力，顯著提升平台效能並降低營運成本。}
+
+\cventry{2015年6月}
+        {香港科技大學}
+        {院長嘉許名單}
+        {}
+        {}
+        {因學術成績優異而獲頒，每學年僅頒授予成績排名前 10\% 的學生。}
+\section{證書}
+
+\cventry{2022年8月}
+        {Amazon Web Services}
+        {AWS Certified Data Analytics – Specialty}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{2020年11月}
+        {Google Cloud}
+        {Google Professional Data Engineer}
+        {\url{https://cloud.google.com/certification/data-engineer}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2016年6月}
+        {分散式資料處理框架於金融風險分析之應用}
+        {香港科技大學計算機科學系}
+        {\url{https://hdl.handle.net/123456789/1234}}
+        {}
+        {\begin{itemize}
+\item 探討 Apache Spark 及 Flink 於即時風險計算嘅效能比較
+\item 提出基於微批次嘅優化策略，將延遲降低約 30\%
+\end{itemize}}
+\section{項目}
+
+\cventry{2023年1月–2023年8月}
+        {基於 Kafka、Spark Structured Streaming 及 Redis 嘅實時欺詐偵測系統}
+        {實時欺詐偵測管道}
+        {\url{https://github.com/kahochan-data/fraud-pipeline}}
+        {}
+        {\begin{itemize}
+\item 設計及實作每秒處理 5,000 筆交易嘅串流管道，端到端延遲低於 2 秒
+\item 整合機器學習模型評分服務，實現自動化風險決策
+\item 建立監控及告警機制，確保管道可用性達 99.9\%
+\end{itemize}
+\textbf{關鍵字}：Kafka、Spark、Redis、實時數據}
+
+\cventry{2022年3月–2022年12月}
+        {以 dbt 及 Great Expectations 為核心嘅數據品質測試框架}
+        {數據品質自動化框架}
+        {\url{https://github.com/kahochan-data/dq-framework}}
+        {}
+        {\begin{itemize}
+\item 提供宣告式數據品質規則，支援欄位級及表級驗證
+\item 自動產生數據品質報告並整合至 CI/CD 流程
+\item 於三個業務團隊推行，數據事故平均修復時間縮短 50\%
+\end{itemize}
+\textbf{關鍵字}：dbt、Great Expectations、CI/CD、數據品質}
+\section{興趣愛好}
+
+\cvline{運動}{龍舟、遠足、游泳}
+\cvline{音樂}{結他、爵士樂}
+\section{志願服務}
+
+\cventry{2019年9月至今}
+        {導師及講者}
+        {香港數據工程師社群}
+        {\url{https://www.hkde.community}}
+        {}
+        {\begin{itemize}
+\item 定期舉辦數據工程工作坊，分享雲端數據架構及管道設計經驗
+\item 指導初入行工程師，協助他們建立實戰項目及職涯規劃
+\item 籌辦年度數據馬拉松，吸引超過 200 名參加者
+\end{itemize}}
+    
+\end{document}

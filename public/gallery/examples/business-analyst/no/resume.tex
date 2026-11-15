@@ -1,0 +1,262 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Ingrid Kvamme}{}
+\title{Forretningsanalytiker med lidenskap for datadrevet beslutningstaking}
+\phone[mobile]{+47 401 23 456}
+\email{ingrid.kvamme@example.no}
+\homepage{https://www.ingridkvamme.no}
+
+\address{Storgata 12, Oslo, Oslo, Norge, 0155}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/ingridkvamme}{@ingridkvamme} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@ingridkvamme}{@ingridkvamme}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{\begin{itemize}
+\item Forretningsanalytiker med over 6 års erfaring fra finans- og energibransjen
+\item Sterk kompetanse innen kravanalyse, prosesskartlegging og datadrevet beslutningsstøtte
+\item Erfaren med å lede interessentworkshops og oversette forretningsbehov til tekniske løsninger
+\item Dokumentert evne til å levere innsikter som reduserer kostnader og øker kundetilfredsheten
+\item Trives i tverrfaglige team og jobber strukturert med både strategi og detaljer
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2014–juni 2016}
+        {Master, Økonomi og administrasjon, Poeng: 3.8}
+        {Norges Handelshøyskole}
+        {\url{https://www.nhh.no}}
+        {}
+        {\begin{itemize}
+\item Fordypet meg i strategisk analyse og datadrevet beslutningstaking
+\item Gjennomførte masteroppgave om digitalisering i finanssektoren
+\item Oppnådde toppkarakterer i fagene forretningsanalyse og prosjektledelse
+\end{itemize}
+\textbf{Kurs}: Strategisk analyse, Finansregnskap, Markedsanalyse, Statistikk for økonomer, Prosjektledelse, Forretningsanalyse, Datamodellering, Beslutningsstøtte}
+
+\cventry{aug. 2011–juni 2014}
+        {Bachelor, Samfunnsøkonomi, Poeng: 3.6}
+        {Universitetet i Bergen}
+        {\url{https://www.uib.no}}
+        {}
+        {\begin{itemize}
+\item Bygget et solid fundament i økonomisk teori og statistisk metode
+\item Deltok i studentprosjekt om bærekraftig forretningsmodellering
+\end{itemize}
+\textbf{Kurs}: Mikroøkonomi, Makroøkonomi, Statistikk, Matematikk for økonomer, Bedriftsøkonomi, Samfunnsanalyse}
+\section{Arbeidserfaring}
+
+\cventry{mars 2022–Nå}
+        {Senior forretningsanalytiker}
+        {Equinor ASA}
+        {\url{https://www.equinor.com}}
+        {}
+        {\begin{itemize}
+\item Leder kravanalyse for digitale løsninger i fornybar divisjon
+\item Kartlegger og forbedrer forretningsprosesser på tvers av forretningsområder
+\item Utvikler dashboards i Power BI som gir ledelsen sanntidsinnsikt
+\item Fasiliterer workshops med interessenter for å prioritere krav og gevinster
+\item Samarbeider tett med utviklingsteam i smidige leveranser
+\end{itemize}
+\textbf{Nøkkelord}: Kravanalyse, Prosessforbedring, Power BI, Agile, Interessenthåndtering}
+
+\cventry{aug. 2019–feb. 2022}
+        {Forretningsanalytiker}
+        {DNB Bank ASA}
+        {\url{https://www.dnb.no}}
+        {}
+        {\begin{itemize}
+\item Analyserte kunde- og transaksjonsdata for å identifisere forbedringsområder
+\item Utarbeidet kravspesifikasjoner for digitale banktjenester
+\item Gjennomførte brukerintervjuer og kartla kundereiser
+\item Bygget SQL-spørringer og rapporter for produktteam
+\item Bidro til å redusere manuelt arbeid med 30 \% i kredittprosessen
+\end{itemize}
+\textbf{Nøkkelord}: SQL, Kundereise, Kravspesifikasjon, Dataanalyse, Bank}
+
+\cventry{aug. 2016–juli 2019}
+        {Junior forretningsanalytiker}
+        {Statkraft AS}
+        {\url{https://www.statkraft.no}}
+        {}
+        {\begin{itemize}
+\item Støttet analyse av markedsdata og energipriser
+\item Laget rapporter og presentasjoner for ledelsen
+\item Deltok i prosjekt med implementering av ny innkjøpsløsning
+\item Dokumenterte forretningsprosesser og identifiserte flaskehalser
+\end{itemize}
+\textbf{Nøkkelord}: Markedsanalyse, Rapportering, Prosesskartlegging, Excel}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: TOEFL 105}
+\cvline{Tysk}{Begrenset arbeidskunnskap \hfill \textbf{Nøkkelord}: Goethe B1}
+\section{Ferdigheter}
+
+\cvline{Forretningsanalyse}{Avansert \hfill \textbf{Nøkkelord}: Kravanalyse, Prosesskartlegging, Interessentanalyse, Gap-analyse, Gevinstrealisering}
+\cvline{Dataanalyse}{Avansert \hfill \textbf{Nøkkelord}: SQL, Power BI, Tableau, Excel, Python}
+\cvline{Prosjektledelse}{Viderekommen \hfill \textbf{Nøkkelord}: Agile, Scrum, Kanban, Jira, Confluence}
+\cvline{Kommunikasjon}{Avansert \hfill \textbf{Nøkkelord}: Workshopfasilitering, Presentasjoner, Dokumentasjon, Forretningsnorsk, Engelsk}
+\section{Utmerkelser}
+
+\cventry{nov. 2023}
+        {Den norske dataforening}
+        {Årets analytiker}
+        {}
+        {}
+        {\begin{itemize}
+\item Tildelt for fremragende arbeid med datadrevet prosessforbedring i Equinor
+\item Anerkjent for å ha ledet et tverrfaglig prosjekt som reduserte rapporteringstiden med 40 \%
+\end{itemize}}
+\section{Sertifikater}
+
+\cventry{sep. 2021}
+        {IIBA}
+        {Certified Business Analysis Professional (CBAP)}
+        {\url{https://www.iiba.org/certification/cbap/}}
+        {}
+        {}
+
+\cventry{jan. 2023}
+        {Microsoft}
+        {Microsoft Certified: Power BI Data Analyst Associate}
+        {\url{https://learn.microsoft.com/en-us/certifications/power-bi-data-analyst-associate/}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{juni 2021}
+        {Datadrevet forretningsutvikling i norske banker}
+        {Magma – Econas tidsskrift for økonomi og ledelse}
+        {\url{https://www.magma.no/datadrevet-forretningsutvikling-i-norske-banker}}
+        {}
+        {\begin{itemize}
+\item Artikkelen utforsker hvordan banker kan bruke dataanalyse til å forbedre kundeopplevelsen
+\item Presenterer funn fra et samarbeidsprosjekt mellom DNB og NHH
+\item Diskuterer utfordringer og muligheter ved datadrevet forretningsutvikling
+\end{itemize}}
+\section{Prosjekter}
+
+\cventry{jan. 2023–des. 2023}
+        {Et analyseprosjekt for å samle kundeinnsikt på tvers av forretningsområder}
+        {Kundeinnsikt 360}
+        {}
+        {}
+        {\begin{itemize}
+\item Ledet kartlegging av datakilder og definerte nøkkeltall for kundeopplevelse
+\item Utviklet et Power BI-dashboard som samlet innsikt fra fem forretningsområder
+\item Fasiliterte workshoper med ledelsen for å prioritere tiltak basert på innsikten
+\end{itemize}
+\textbf{Nøkkelord}: Kundereise, Dataplattform, Power BI, Innsikt}
+
+\cventry{feb. 2020–okt. 2020}
+        {Kartlegging og forenkling av kredittprosessen i DNB}
+        {Prosesskartlegging av kredittflyt}
+        {}
+        {}
+        {\begin{itemize}
+\item Dokumenterte nåværende prosess og identifiserte flaskehalser og manuelle trinn
+\item Foreslo automatiseringstiltak som reduserte behandlingstiden med 25 \%
+\item Presenterte anbefalinger for ledelsen og fulgte opp implementering
+\end{itemize}
+\textbf{Nøkkelord}: Prosessforbedring, Lean, Kreditt, Automatisering}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fjellturer, Ski, Fiske, Padling}
+\cvline{Musikk}{Gitar, Konserter, Jazz}
+\section{Frivillig arbeid}
+
+\cventry{sep. 2020–Nå}
+        {Mentor}
+        {Ungt Entreprenørskap Norge}
+        {\url{https://www.ue.no}}
+        {}
+        {\begin{itemize}
+\item Veileder unge gründere i forretningsmodellering og markedsanalyse
+\item Deltar i dommerpanel for lokale konkurranser
+\item Bidrar til å styrke entreprenørskapskompetansen blant ungdom
+\end{itemize}}
+    
+\end{document}

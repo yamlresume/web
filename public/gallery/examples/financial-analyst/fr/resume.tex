@@ -1,0 +1,260 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Camille Moreau}{}
+\title{Analyste financière senior spécialisée en valorisation et pilotage budgétaire}
+\phone[mobile]{+33 1 44 55 66 77}
+\email{camille.moreau@example.fr}
+\homepage{https://www.camille-moreau.fr}
+
+\address{24 rue de la Banque, Paris, Île-de-France, France, 75002}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/camille-moreau-finance}{@camille-moreau-finance} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/camillem\_finance}{@camillem\_finance}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{Analyste financière senior avec plus de 8 ans d'expérience en analyse de performance, modélisation financière et pilotage budgétaire. Solide expertise en valorisation d'entreprises, reporting consolidé et accompagnement des décisions d'investissement.
+%
+\begin{itemize}
+\item Élaboration de modèles financiers robustes (DCF, comparables, scénarios)
+\item Analyse de rentabilité, de trésorerie et des risques financiers
+\item Préparation de reportings destinés à la direction générale et aux investisseurs
+\item Maîtrise d'Excel, Power BI, SQL et Python pour l'automatisation des analyses
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2015–juin 2017}
+        {Master, Finance, Score : Mention Très Bien}
+        {Université Paris-Dauphine}
+        {\url{https://dauphine.psl.eu/}}
+        {}
+        {\begin{itemize}
+\item Formation axée sur la valorisation, les marchés financiers et la décision d'investissement
+\item Réalisation d'un mémoire sur l'impact des taux bas sur les stratégies de financement
+\item Projet de fin d'études : valorisation d'une entreprise cotée du secteur industriel
+\end{itemize}
+\textbf{Cours} : Finance de marché, Évaluation d'entreprise, Analyse financière approfondie, Gestion de portefeuille, Modélisation stochastique, Audit financier, Fiscalité des entreprises, Contrôle de gestion}
+
+\cventry{sept. 2012–juin 2015}
+        {Licence, Économie, Score : Mention Bien}
+        {Université de Bordeaux}
+        {\url{https://www.u-bordeaux.fr/}}
+        {}
+        {\begin{itemize}
+\item Acquisition des fondamentaux en économie, statistiques et comptabilité
+\item Premier projet d'analyse financière sur une entreprise locale
+\end{itemize}
+\textbf{Cours} : Microéconomie, Macroéconomie, Statistiques appliquées, Comptabilité générale, Mathématiques financières, Économie internationale}
+\section{Expérience professionnelle}
+
+\cventry{mars 2021–Present}
+        {Analyste Financier Senior}
+        {Groupe Axium}
+        {\url{https://www.axium-finance.fr}}
+        {}
+        {\begin{itemize}
+\item Pilote la modélisation financière et le processus budgétaire annuel pour un périmètre de 120 M€ de chiffre d'affaires
+\item Réalise les analyses de variance, les prévisions de trésorerie et les scénarios de performance trimestriels
+\item Prépare les supports de comité d'audit et les reportings mensuels à destination du comité exécutif
+\item Coordonne les échanges avec les auditeurs externes et les équipes contrôle de gestion
+\item Contribue à l'amélioration continue des outils de pilotage et à l'automatisation des reportings
+\end{itemize}
+\textbf{Mots-clés} : Modélisation financière, Prévisions, Reporting, Audit}
+
+\cventry{sept. 2017–févr. 2021}
+        {Analyste Financier}
+        {Société Financière Bellecour}
+        {\url{https://www.bellecour-finance.fr}}
+        {}
+        {\begin{itemize}
+\item Construit des modèles de valorisation pour des opérations de croissance externe et des revues stratégiques
+\item Analyse les états financiers, la rentabilité par activité et les indicateurs clés de performance
+\item Participe à la due diligence financière de trois acquisitions et à la préparation des mémorandums d'investissement
+\item Automatise la production de tableaux de bord mensuels sous Excel et Power BI
+\end{itemize}
+\textbf{Mots-clés} : Valorisation, Due diligence, Capital-investissement, Analyse financière, Tableaux de bord}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue \hfill \textbf{Mots-clés} : Langue maternelle}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEIC 950, CFA Level II}
+\cvline{Espagnol}{Niveau de travail limité \hfill \textbf{Mots-clés} : Conversation professionnelle}
+\section{Compétences}
+
+\cvline{Modélisation financière}{Expert \hfill \textbf{Mots-clés} : Valorisation DCF, Modèles trois états, Scénarios, Analyse de sensibilité}
+\cvline{Analyse financière}{Avancé \hfill \textbf{Mots-clés} : Analyse de rentabilité, Ratios financiers, Analyse de risques, Due diligence}
+\cvline{Outils bureautiques}{Expert \hfill \textbf{Mots-clés} : Excel avancé, Power BI, VBA, SQL}
+\cvline{Data et automatisation}{Avancé \hfill \textbf{Mots-clés} : Python, Pandas, Power Query, Tableau}
+\section{Récompenses}
+
+\cventry{juin 2017}
+        {Université Paris-Dauphine}
+        {Prix d'excellence en finance}
+        {}
+        {}
+        {Distinction remise pour les résultats académiques et la qualité du mémoire de Master en finance.}
+
+\cventry{sept. 2014}
+        {Université de Bordeaux}
+        {Bourse d'études au mérite}
+        {}
+        {}
+        {Bourse attribuée aux étudiants ayant obtenu les meilleurs résultats de leur promotion.}
+\section{Certificats}
+
+\cventry{sept. 2023}
+        {CFA Institute}
+        {CFA Niveau II}
+        {\url{https://www.cfainstitute.org/}}
+        {}
+        {}
+
+\cventry{mars 2019}
+        {Autorité des marchés financiers}
+        {Certification AMF}
+        {\url{https://www.amf-france.org/}}
+        {}
+        {}
+
+\cventry{janv. 2020}
+        {Microsoft}
+        {Certification Excel Expert}
+        {\url{https://learn.microsoft.com/fr-fr/certifications/}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{nov. 2022}
+        {L'impact des taux bas sur la valorisation des entreprises}
+        {Revue Finance \& Stratégie}
+        {\url{https://www.finance-strategie.fr/publications/taux-bas-valorisation}}
+        {}
+        {\begin{itemize}
+\item Analyse des effets persistants des taux d'intérêt bas sur les primes de risque et les multiples de valorisation
+\item Étude de cas sur des entreprises européennes du secteur industriel
+\end{itemize}}
+\section{Projets}
+
+\cventry{janv. 2022–juin 2022}
+        {Conception d'un tableau de bord consolidé pour suivre le budget, les écarts et les prévisions de trésorerie.}
+        {Tableau de bord de pilotage budgétaire}
+        {\url{https://www.axium-finance.fr/projets/tableau-bord}}
+        {}
+        {\begin{itemize}
+\item Centralisation des données de trois entités dans un modèle unique
+\item Automatisation des actualisations mensuelles avec Power Query et Power BI
+\item Réduction du temps de préparation du reporting de 40 \%
+\end{itemize}
+\textbf{Mots-clés} : Pilotage budgétaire, Power BI, Automatisation, Prévisions}
+
+\cventry{mars 2021–sept. 2021}
+        {Construction d'un modèle DCF et d'une analyse par comparables pour préparer une opération de cession.}
+        {Modèle de valorisation d'une PME industrielle}
+        {\url{https://www.axium-finance.fr/projets/valorisation-pme}}
+        {}
+        {\begin{itemize}
+\item Élaboration de scénarios de croissance et de marges sur cinq ans
+\item Analyse de sensibilité au coût du capital et au taux de croissance perpétuelle
+\item Présentation des conclusions au comité d'investissement
+\end{itemize}
+\textbf{Mots-clés} : Valorisation, DCF, Analyse de sensibilité, PME}
+\section{Centres d'intérêt}
+
+\cvline{Finance durable}{Investissement ESG, Obligations vertes, Transition énergétique}
+\cvline{Sports}{Course à pied, Tennis, Randonnée}
+\cvline{Lecture}{Économie, Histoire financière, Essais}
+\section{Bénévolat}
+
+\cventry{sept. 2019–juin 2023}
+        {Bénévole formatrice}
+        {Association Éducation Financière Citoyenne}
+        {\url{https://www.education-financiere-citoyenne.fr/}}
+        {}
+        {\begin{itemize}
+\item Animation d'ateliers de sensibilisation à la gestion budgétaire auprès de jeunes adultes
+\item Conception de supports pédagogiques sur l'épargne, le crédit et les choix d'investissement
+\item Participation à l'organisation d'une journée annuelle dédiée à l'éducation financière
+\end{itemize}}
+    
+\end{document}

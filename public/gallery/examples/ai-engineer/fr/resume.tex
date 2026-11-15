@@ -1,0 +1,262 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Claire Moreau}{}
+\title{Ingénieur en Intelligence Artificielle | Apprentissage profond et MLOps}
+\phone[mobile]{+33 6 45 78 12 34}
+\email{claire.moreau@example.com}
+\homepage{https://clairemoreau.ai}
+
+\address{24 rue de l'Innovation, Paris, Île-de-France, France, 75011}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/clairemoreau-ai}{@clairemoreau-ai} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/clairemoreau}{@clairemoreau} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@clairemoreau}{@clairemoreau}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{Ingénieur en intelligence artificielle avec plus de 7 ans d'expérience dans la conception, l'entraînement et le déploiement de modèles d'apprentissage automatique à grande échelle. Spécialisée en vision par ordinateur et traitement du langage naturel, avec une expertise solide en MLOps et en industrialisation de solutions IA.
+%
+\begin{itemize}
+\item Conception de pipelines de données et d'entraînement reproductibles avec Python, PyTorch et TensorFlow
+\item Déploiement de modèles en production sur AWS et GCP avec Docker, Kubernetes et MLflow
+\item Encadrement d'équipes pluridisciplinaires et vulgarisation des concepts IA auprès des parties prenantes
+\item Veille technologique active et contribution à des projets open source
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2017–juil. 2019}
+        {Master, Intelligence Artificielle et Science des Données, Score : 16.5/20}
+        {Université Paris-Saclay}
+        {\url{https://www.universite-paris-saclay.fr}}
+        {}
+        {\begin{itemize}
+\item Formation spécialisée en apprentissage profond, vision artificielle et traitement du langage
+\item Projet de fin d'études sur la détection d'anomalies industrielles par autoencodeurs
+\item Stage de recherche au sein de l'équipe IA de l'université
+\end{itemize}
+\textbf{Cours} : Apprentissage automatique, Vision par ordinateur, Traitement du langage naturel, Optimisation convexe, Statistiques bayésiennes, Systèmes distribués, MLOps et cloud computing}
+
+\cventry{sept. 2014–juin 2017}
+        {Licence, Mathématiques et Informatique, Score : 15.8/20}
+        {Université de Bordeaux}
+        {\url{https://www.u-bordeaux.fr}}
+        {}
+        {\begin{itemize}
+\item Solide base en algorithmique, probabilités et statistiques
+\item Initiation à la programmation scientifique et aux bases de données
+\end{itemize}}
+\section{Expérience professionnelle}
+
+\cventry{janv. 2022–Present}
+        {Ingénieur IA Senior}
+        {NovaMind AI}
+        {\url{https://www.novamind.ai}}
+        {}
+        {\begin{itemize}
+\item Direction technique de la plateforme de vision par ordinateur pour le contrôle qualité industriel
+\item Conception et entraînement de modèles de détection d'anomalies avec PyTorch et TensorFlow
+\item Mise en place de pipelines MLOps reproductibles sur AWS SageMaker et Kubernetes
+\item Encadrement de trois ingénieurs juniors et animation de revues de code
+\item Collaboration avec les équipes produit et métier pour prioriser les cas d'usage à fort impact
+\end{itemize}
+\textbf{Mots-clés} : Apprentissage profond, Vision par ordinateur, MLOps, Python}
+
+\cventry{sept. 2019–déc. 2021}
+        {Ingénieur en Apprentissage Automatique}
+        {DataForge Conseil}
+        {\url{https://www.dataforge-conseil.fr}}
+        {}
+        {\begin{itemize}
+\item Développement de modèles de traitement du langage naturel pour l'analyse de documents clients
+\item Industrialisation de solutions de scoring et de recommandation avec Scikit-learn et Docker
+\item Automatisation des workflows de données avec Airflow et Spark sur Google Cloud Platform
+\item Rédaction de documentation technique et accompagnement des équipes métier dans l'adoption des modèles
+\end{itemize}
+\textbf{Mots-clés} : NLP, Scikit-learn, Cloud, Docker}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEIC 950, Présentations techniques}
+\cvline{Espagnol}{Niveau de travail limité \hfill \textbf{Mots-clés} : Espagnol des affaires}
+\section{Compétences}
+
+\cvline{Apprentissage automatique}{Expert \hfill \textbf{Mots-clés} : Python, PyTorch, TensorFlow, Scikit-learn, XGBoost}
+\cvline{Traitement du langage naturel}{Avancé \hfill \textbf{Mots-clés} : Transformers, Hugging Face, spaCy, RAG, LangChain}
+\cvline{MLOps et Cloud}{Avancé \hfill \textbf{Mots-clés} : Docker, Kubernetes, AWS SageMaker, MLflow, CI/CD}
+\cvline{Science des données}{Avancé \hfill \textbf{Mots-clés} : Pandas, NumPy, SQL, Spark, Airflow}
+\section{Récompenses}
+
+\cventry{nov. 2023}
+        {NovaMind AI}
+        {Prix de l'innovation en IA}
+        {}
+        {}
+        {Récompense décernée pour la conception d'un système de détection d'anomalies industrielles réduisant les faux positifs de 35 \%.}
+
+\cventry{juil. 2019}
+        {Université Paris-Saclay}
+        {Meilleur mémoire de Master}
+        {}
+        {}
+        {Distinction attribuée pour un mémoire sur les autoencodeurs variationnels appliqués à la maintenance prédictive.}
+\section{Certificats}
+
+\cventry{mars 2022}
+        {AWS}
+        {AWS Certified Machine Learning – Specialty}
+        {\url{https://aws.amazon.com/certification/certified-machine-learning-specialty/}}
+        {}
+        {}
+
+\cventry{juin 2021}
+        {Google}
+        {TensorFlow Developer Certificate}
+        {\url{https://www.tensorflow.org/certificate}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{oct. 2023}
+        {Vers des modèles de vision robustes pour la détection d'anomalies industrielles}
+        {Revue Française d'Intelligence Artificielle}
+        {\url{https://www.rfia.fr/article/modeles-vision-robustes}}
+        {}
+        {\begin{itemize}
+\item Étude de la robustesse des modèles de vision face aux variations d'éclairage et de capteurs
+\item Évaluation comparative de plusieurs architectures convolutives sur des jeux de données industriels
+\item Proposition d'une stratégie d'augmentation de données adaptée aux environnements de production
+\end{itemize}}
+\section{Références}
+
+\cventry{\emaillink[sophie.bernard@novamind.ai]{sophie.bernard@novamind.ai}}
+        {Directrice de l'ingénierie IA}
+        {Sophie Bernard}
+        {+33 1 23 45 67 89}
+        {}
+        {Claire allie une excellente maîtrise technique à une vraie capacité de leadership. Elle a su structurer notre plateforme MLOps et faire monter en compétence toute l'équipe.}
+\section{Projets}
+
+\cventry{févr. 2023–août 2023}
+        {Plateforme de recherche augmentée par génération pour documents techniques}
+        {Assistant documentaire RAG}
+        {\url{https://github.com/clairemoreau/rag-assistant}}
+        {}
+        {\begin{itemize}
+\item Indexation vectorielle de documents techniques avec FAISS et embeddings spécialisés
+\item Chaîne de génération augmentée avec LangChain et un modèle LLM open source
+\item Interface de question-réponse avec citations des sources et gestion des droits d'accès
+\end{itemize}
+\textbf{Mots-clés} : RAG, LangChain, LLM, FAISS}
+
+\cventry{mars 2021–nov. 2021}
+        {Système de vision industrielle pour la détection précoce de défauts}
+        {Détection d'anomalies sur chaîne de production}
+        {\url{https://github.com/clairemoreau/anomaly-detection}}
+        {}
+        {\begin{itemize}
+\item Entraînement d'autoencodeurs convolutifs sur des images de pièces industrielles
+\item Mise en place d'un tableau de bord de suivi des alertes et des performances du modèle
+\item Réduction du taux de rebut de 12 \% lors du pilote sur une ligne de production
+\end{itemize}
+\textbf{Mots-clés} : Vision, Autoencodeurs, Industrie 4.0}
+\section{Centres d'intérêt}
+
+\cvline{Sport}{Escalade, Course à pied, Yoga}
+\cvline{Culture}{Photographie, Lecture, Musique classique}
+\cvline{Communauté}{Éthique de l'IA, Open Source}
+\section{Bénévolat}
+
+\cventry{sept. 2021–Present}
+        {Mentore}
+        {Women in AI France}
+        {\url{https://www.womeninai.co/fr}}
+        {}
+        {\begin{itemize}
+\item Accompagnement de femmes en reconversion vers les métiers de l'IA
+\item Animation d'ateliers pratiques sur Python, la science des données et les entretiens techniques
+\item Participation à des actions de sensibilisation dans des écoles et universités
+\end{itemize}}
+    
+\end{document}

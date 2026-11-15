@@ -1,0 +1,267 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for German language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-german.html
+\usepackage[ngerman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Maximilian Brandt}{}
+\title{Senior Business Analyst mit Fokus auf Prozessoptimierung, Datenanalyse und Anforderungsmanagement}
+\phone[mobile]{+49 30 12345678}
+\email{maximilian.brandt@example.de}
+\homepage{https://www.maximilian-brandt.de}
+
+\address{Friedrichstraße 123, Berlin, Berlin, Deutschland, 10115}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/maximilian-brandt-ba}{@maximilian-brandt-ba} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/mbrandt-analytics}{@mbrandt-analytics}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basisinformationen}
+
+\cvline{}{Senior Business Analyst mit über fünf Jahren Erfahrung in der Analyse, Gestaltung und Optimierung von Geschäftsprozessen. Schwerpunkt auf der Übersetzung fachlicher Anforderungen in umsetzbare IT-Lösungen sowie auf datengetriebener Entscheidungsunterstützung.
+%
+\begin{itemize}
+\item Erhebung, Priorisierung und Dokumentation von Anforderungen mit Stakeholdern aus Fach- und IT-Bereichen
+\item Modellierung von Ist- und Soll-Prozessen mit BPMN und UML
+\item Entwicklung von Kennzahlensystemen und Dashboards mit SQL, Power BI und Tableau
+\item Moderation von Workshops, agilem Requirements Engineering und professioneller Stakeholder-Kommunikation
+\end{itemize}}
+\section{Ausbildung}
+
+\cventry{Okt. 2018–Sept. 2020}
+        {Master, Wirtschaftsinformatik, Punkte: 1,7}
+        {Humboldt-Universität zu Berlin}
+        {\url{https://www.hu-berlin.de}}
+        {}
+        {\begin{itemize}
+\item Fokus auf der Verbindung von betriebswirtschaftlichen Fragestellungen und IT-Lösungen
+\item Praxisprojekte zu Process Mining, Reporting und Anforderungsanalyse
+\item Masterarbeit zu datengetriebener Prozessoptimierung im Finanzdienstleistungssektor
+\end{itemize}
+\textbf{Kurse}: Geschäftsprozessmodellierung, Datenbanken und Datenmanagement, Business Intelligence, Anforderungsmanagement, Projektmanagement, Wirtschaftsrecht}
+
+\cventry{Okt. 2014–Sept. 2018}
+        {Bachelor, Betriebswirtschaftslehre, Punkte: 1,9}
+        {Technische Universität München}
+        {\url{https://www.tum.de}}
+        {}
+        {\begin{itemize}
+\item Grundlagen in Betriebswirtschaft, Statistik und quantitativer Analyse
+\item Erste Projekte zu Kennzahlenanalyse und Prozessdokumentation
+\end{itemize}
+\textbf{Kurse}: Statistik, Finanzwirtschaft, Marketing, Operations Management, Wirtschaftsinformatik, Controlling}
+\section{Berufserfahrung}
+
+\cventry{März 2022–Heute}
+        {Senior Business Analyst}
+        {Nordstern Consulting GmbH}
+        {\url{https://www.nordstern-consulting.de}}
+        {}
+        {\begin{itemize}
+\item Leitung der Anforderungsanalyse für digitale Transformationsprojekte in den Bereichen Finanzdienstleistungen und E-Commerce
+\item Übersetzung komplexer Fachanforderungen in User Stories, Prozessmodelle und Akzeptanzkriterien
+\item Moderation von Workshops mit Stakeholdern aus Fachbereichen, IT und Management
+\item Steuerung von Backlog-Priorisierung und fachlicher Qualitätssicherung in agilen Projektteams
+\item Mentoring von zwei Junior Business Analysts und Etablierung einheitlicher Dokumentationsstandards
+\end{itemize}
+\textbf{Schlüsselwörter}: Anforderungsmanagement, Prozessoptimierung, Stakeholder-Management, Agile Methoden, Datenanalyse}
+
+\cventry{Juli 2020–Feb. 2022}
+        {Business Analyst}
+        {FinTech Solutions AG}
+        {\url{https://www.fintech-solutions.de}}
+        {}
+        {\begin{itemize}
+\item Analyse und Dokumentation von Geschäftsprozessen im Online-Kreditgeschäft
+\item Erstellung von Lasten- und Pflichtenheften sowie Pflege von Anforderungsspezifikationen
+\item Entwicklung von SQL-Auswertungen und Power-BI-Reports für das Produktmanagement
+\item Unterstützung bei Testfällen, Abnahmetests und der Einführung neuer Softwarefunktionen
+\item Zusammenarbeit mit Compliance und Revision zur Sicherstellung regulatorischer Anforderungen
+\end{itemize}
+\textbf{Schlüsselwörter}: Anforderungsanalyse, SQL, Power BI, Testmanagement, Scrum}
+
+\cventry{Okt. 2018–Juni 2020}
+        {Junior Business Analyst}
+        {Handelshaus Weber GmbH}
+        {\url{https://www.handelshaus-weber.de}}
+        {}
+        {\begin{itemize}
+\item Erstellung von Prozessdokumentationen und Auswertungen für Einkauf und Logistik
+\item Pflege von Excel-basierten Reports und Vorbereitung von Management-Präsentationen
+\item Unterstützung bei der Einführung eines neuen Warenwirtschaftssystems
+\item Aufnahme von Anwenderfeedback und Ableitung von Verbesserungsmaßnahmen
+\end{itemize}
+\textbf{Schlüsselwörter}: Excel, BPMN, Prozessdokumentation, Reporting}
+\section{Sprachen}
+
+\cvline{Deutsch}{Muttersprache oder zweisprachig \hfill \textbf{Schlüsselwörter}: Muttersprache, Verhandlungssicher}
+\cvline{Englisch}{Verhandlungssichere Kenntnisse \hfill \textbf{Schlüsselwörter}: C1, Business English}
+\cvline{Französisch}{Gute Kenntnisse \hfill \textbf{Schlüsselwörter}: B1, Grundkenntnisse}
+\section{Fähigkeiten}
+
+\cvline{Business Analyse}{Experte \hfill \textbf{Schlüsselwörter}: Anforderungsmanagement, Prozessmodellierung, BPMN, UML, User Stories}
+\cvline{Datenanalyse \& Reporting}{Erfahren \hfill \textbf{Schlüsselwörter}: SQL, Power BI, Tableau, Excel, Python (Pandas)}
+\cvline{Projektmanagement \& Agile}{Erfahren \hfill \textbf{Schlüsselwörter}: Scrum, Kanban, Jira, Confluence, Stakeholder-Kommunikation}
+\cvline{Domänenwissen}{Erfahren \hfill \textbf{Schlüsselwörter}: Finanzdienstleistungen, E-Commerce, Regulatorik, SAP ERP}
+\section{Auszeichnungen}
+
+\cventry{Juli 2020}
+        {Humboldt-Universität zu Berlin}
+        {Preis für das beste Praxisprojekt}
+        {}
+        {}
+        {Ausgezeichnet für die Entwicklung eines datengetriebenen Dashboard-Konzepts zur Steuerung von Vertriebsprozessen im Rahmen des Masterstudiums.}
+\section{Zertifikate}
+
+\cventry{Feb. 2023}
+        {IIBA}
+        {Certified Business Analysis Professional (CBAP)}
+        {\url{https://www.iiba.org/certification/cbap}}
+        {}
+        {}
+
+\cventry{Nov. 2021}
+        {Scrum.org}
+        {Professional Scrum Master I}
+        {\url{https://www.scrum.org/professional-scrum-certifications/professional-scrum-master-i}}
+        {}
+        {}
+
+\cventry{Apr. 2022}
+        {Microsoft}
+        {Microsoft Certified: Power BI Data Analyst Associate}
+        {\url{https://learn.microsoft.com/en-us/certifications/power-bi-data-analyst-associate/}}
+        {}
+        {}
+\section{Veröffentlichungen}
+
+\cventry{März 2023}
+        {Anforderungsmanagement in regulierten Märkten}
+        {Business Analysis Journal}
+        {\url{https://www.business-analysis-journal.de/anforderungsmanagement-regulierte-maerkte}}
+        {}
+        {\begin{itemize}
+\item Praxisorientierter Beitrag zu Methoden der Anforderungserhebung in regulierten Finanzmärkten
+\item Fokus auf Traceability, Stakeholder-Alignment und dokumentierte Entscheidungswege
+\end{itemize}}
+\section{Projekte}
+
+\cventry{Jan. 2023–Aug. 2023}
+        {Analyse und Neugestaltung eines CRM-Prozesses für einen Finanzdienstleister}
+        {CRM-Prozessanalyse und Reporting}
+        {\url{https://www.nordstern-consulting.de/projekte/crm-prozessanalyse}}
+        {}
+        {\begin{itemize}
+\item Aufnahme und Priorisierung von Anforderungen mit Fach- und IT-Abteilungen
+\item Modellierung des Soll-Prozesses in BPMN und Ableitung von User Stories
+\item Entwicklung eines Power-BI-Dashboards zur Steuerung von Leads und Abschlüssen
+\end{itemize}
+\textbf{Schlüsselwörter}: CRM, BPMN, Power BI, Anforderungsmanagement}
+
+\cventry{März 2022–Dez. 2022}
+        {Konzeption eines Kennzahlensystems für Vertrieb und Kundenservice}
+        {Datengetriebene Vertriebssteuerung}
+        {\url{https://www.nordstern-consulting.de/projekte/vertriebssteuerung}}
+        {}
+        {\begin{itemize}
+\item Definition von KPIs und Datenanforderungen gemeinsam mit dem Controlling
+\item Erstellung von Auswertungen und Self-Service-Reports in Tableau
+\item Schulung von Fachanwendern im Umgang mit den neuen Reporting-Standards
+\end{itemize}
+\textbf{Schlüsselwörter}: KPI, Tableau, Datenmodellierung, Reporting}
+\section{Interessen}
+
+\cvline{Datenvisualisierung}{Tableau, Power BI, Infografiken}
+\cvline{Sport}{Laufen, Radsport, Wandern}
+\cvline{Musik}{Klavier, Jazz}
+\section{Ehrenamtliche Tätigkeiten}
+
+\cventry{Jan. 2022–Heute}
+        {Mentor für Nachwuchs-Business-Analysten}
+        {Business Analysts Berlin e.V.}
+        {\url{https://www.ba-berlin.de}}
+        {}
+        {\begin{itemize}
+\item Begleitung von Berufseinsteigern bei der Entwicklung praktischer Analysefähigkeiten
+\item Organisation von Workshops zu Anforderungsmanagement und Stakeholder-Kommunikation
+\item Mitwirkung an Netzwerkveranstaltungen für die Berliner Business-Analyse-Community
+\end{itemize}}
+    
+\end{document}

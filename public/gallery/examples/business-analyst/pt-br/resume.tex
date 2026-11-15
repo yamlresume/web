@@ -1,0 +1,266 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Brazilian Portuguese language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-portuguese.html
+\usepackage[brazilian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Mariana Costa Almeida}{}
+\title{Analista de Negócios Sênior | Transformação Digital e Dados}
+\phone[mobile]{+55 11 98765-4321}
+\email{mariana.almeida@exemplo.com.br}
+\homepage{https://www.marianaalmeida.com.br}
+
+\address{Av. Paulista, 1578, Bela Vista, São Paulo, SP, Brasil, 01310-200}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/mariana-costa-almeida}{@mariana-costa-almeida} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@marianacalmeida}{@marianacalmeida}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informações Básicas}
+
+\cvline{}{Analista de negócios sênior com mais de 8 anos de experiência em projetos de transformação digital, melhoria de processos e produtos digitais nos setores financeiro e de serviços.
+%
+\begin{itemize}
+\item Especialista em levantamento e priorização de requisitos, modelagem de processos (BPMN) e tradução de necessidades de negócio em soluções técnica e comercialmente viáveis.
+\item Experiência com análise de dados, definição de indicadores-chave e painéis executivos em SQL e Power BI para apoiar decisões e acompanhar resultados.
+\item Forte atuação com partes interessadas multidisciplinares, facilitação de oficinas, gestão de backlog e metodologias ágeis (Scrum e Kanban).
+\end{itemize}}
+\section{Formação}
+
+\cventry{fev. de 2012–dez. de 2016}
+        {Bacharelado, Administração de Empresas, Nota: 8.7/10}
+        {Universidade de São Paulo}
+        {\url{https://www.usp.br}}
+        {}
+        {\begin{itemize}
+\item Formação sólida em gestão, processos e tecnologia, com ênfase em análise de negócios e melhoria contínua.
+\item Desenvolvimento de projetos acadêmicos de mapeamento de processos e avaliação de indicadores de desempenho.
+\end{itemize}
+\textbf{Cursos}: Economia de Empresas, Estatística Aplicada, Gestão de Processos, Sistemas de Informação, Finanças Corporativas, Pesquisa Operacional}
+
+\cventry{jan. de 2018–dez. de 2019}
+        {Mestrado, Gestão de Projetos e Inteligência de Negócios, Nota: 9.1/10}
+        {Fundação Getulio Vargas}
+        {\url{https://www.fgv.br}}
+        {}
+        {\begin{itemize}
+\item Aprofundamento em gestão de projetos, governança de dados e inteligência de negócios aplicados à tomada de decisão.
+\end{itemize}
+\textbf{Cursos}: Gestão de Projetos, Governança de Dados, Inteligência de Negócios, Análise de Decisão, Metodologias Ágeis}
+\section{Experiência Profissional}
+
+\cventry{mar. de 2021–Atual}
+        {Analista de Negócios Sênior}
+        {Nexo Soluções Digitais}
+        {\url{https://www.nexosolucoes.com.br}}
+        {}
+        {\begin{itemize}
+\item Liderança de iniciativas de transformação digital para áreas de crédito, cobrança e atendimento, com foco em eficiência operacional e experiência do cliente.
+\item Condução de oficinas de descoberta, entrevistas com usuários e análise de dados para priorizar requisitos e construir roteiros alinhados aos objetivos de negócio.
+\item Especificação de histórias de usuário, critérios de aceite e fluxos BPMN, apoiando times de desenvolvimento e QA durante todo o ciclo de entrega.
+\item Acompanhamento de indicadores-chave e elaboração de painéis em Power BI para reporte executivo e identificação de oportunidades de melhoria.
+\end{itemize}
+\textbf{Palavras-chave}: Levantamento de requisitos, Modelagem de processos, BPMN, Power BI, SQL, Gestão de partes interessadas}
+
+\cventry{jan. de 2018–fev. de 2021}
+        {Analista de Negócios}
+        {Banco Horizonte}
+        {\url{https://www.bancohorizonte.com.br}}
+        {}
+        {\begin{itemize}
+\item Atuação na análise e melhoria de processos de entrada de clientes, reduzindo o tempo médio de abertura de conta e retrabalho operacional.
+\item Levantamento de requisitos funcionais e não funcionais junto às áreas de negócio, conformidade e tecnologia.
+\item Apoio na implantação de práticas ágeis, gestão de backlog e documentação de regras de negócio em Confluence.
+\item Realização de testes de aceitação e acompanhamento de indicadores de qualidade das entregas.
+\end{itemize}
+\textbf{Palavras-chave}: Análise de dados, Metodologias ágeis, Melhoria contínua, Documentação funcional, Testes de aceitação}
+
+\cventry{jan. de 2017–dez. de 2017}
+        {Analista de Processos Júnior}
+        {Consultoria Ponte Sul}
+        {\url{https://www.consultoriapontesul.com.br}}
+        {}
+        {\begin{itemize}
+\item Mapeamento de processos AS-IS e proposição de fluxos TO-BE para rotinas administrativas e financeiras.
+\item Elaboração de documentação funcional, casos de uso e relatórios de acompanhamento para clientes do setor de serviços.
+\item Suporte à implantação de melhorias e treinamento de usuários em novas rotinas e ferramentas.
+\end{itemize}
+\textbf{Palavras-chave}: AS-IS/TO-BE, Casos de uso, Processos, Treinamento}
+\section{Idiomas}
+
+\cvline{Português}{Nativo ou Bilíngue \hfill \textbf{Palavras-chave}: Nativo}
+\cvline{Inglês}{Proficiência Profissional Fluente \hfill \textbf{Palavras-chave}: TOEIC 920}
+\cvline{Espanhol}{Proficiência Profissional Limitada \hfill \textbf{Palavras-chave}: Leitura técnica}
+\section{Competências}
+
+\cvline{Análise de Negócios}{Especialista \hfill \textbf{Palavras-chave}: BPMN, Histórias de usuário, Casos de uso, AS-IS/TO-BE, Gestão de partes interessadas}
+\cvline{Dados e BI}{Avançado \hfill \textbf{Palavras-chave}: SQL, Power BI, Excel avançado, Tableau, Indicadores}
+\cvline{Metodologias Ágeis}{Avançado \hfill \textbf{Palavras-chave}: Scrum, Kanban, Backlog, Jira}
+\cvline{Ferramentas}{Avançado \hfill \textbf{Palavras-chave}: Jira, Confluence, Visio, Figma, Google Workspace}
+\section{Prêmios}
+
+\cventry{nov. de 2022}
+        {Nexo Soluções Digitais}
+        {Prêmio de Excelência em Projetos}
+        {}
+        {}
+        {Reconhecimento pelo desempenho na condução de projetos estratégicos de transformação digital, com destaque para a redução de custos operacionais e a melhoria da satisfação dos clientes.}
+
+\cventry{dez. de 2016}
+        {Universidade de São Paulo}
+        {Destaque Acadêmico}
+        {}
+        {}
+        {Reconhecimento acadêmico por desempenho de destaque no curso de Administração de Empresas.}
+\section{Certificados}
+
+\cventry{ago. de 2023}
+        {IIBA}
+        {Certified Business Analysis Professional (CBAP)}
+        {\url{https://www.iiba.org/certification/cbap/}}
+        {}
+        {}
+
+\cventry{mai. de 2022}
+        {Scrum.org}
+        {Professional Scrum Product Owner I}
+        {\url{https://www.scrum.org/professional-scrum-product-owner-certifications}}
+        {}
+        {}
+
+\cventry{set. de 2021}
+        {Microsoft}
+        {Microsoft Certified: Power BI Data Analyst Associate}
+        {\url{https://learn.microsoft.com/en-us/certifications/power-bi-data-analyst-associate/}}
+        {}
+        {}
+\section{Publicações}
+
+\cventry{jun. de 2023}
+        {Gestão de requisitos em projetos de transformação digital}
+        {Revista Brasileira de Gestão e Inovação}
+        {\url{https://www.revistabgi.com.br/artigos/gestao-de-requisitos-em-projetos-de-transformacao-digital}}
+        {}
+        {\begin{itemize}
+\item Artigo sobre práticas de levantamento, priorização e rastreabilidade de requisitos em iniciativas de transformação digital.
+\item Discussão de indicadores de sucesso e lições aprendidas em projetos dos setores financeiro e de serviços.
+\end{itemize}}
+\section{Projetos}
+
+\cventry{abr. de 2022–out. de 2022}
+        {Redesenho da jornada de entrada de clientes, com pesquisa qualitativa, mapeamento de pontos de dor e priorização de melhorias.}
+        {Mapeamento da Jornada do Cliente}
+        {}
+        {}
+        {\begin{itemize}
+\item Condução de entrevistas e oficinas com áreas de negócio, atendimento e tecnologia.
+\item Mapeamento da jornada atual e proposição de melhorias com foco em autoatendimento e redução de etapas manuais.
+\item Definição de indicadores de sucesso e acompanhamento dos resultados após a implantação.
+\end{itemize}
+\textbf{Palavras-chave}: Jornada do cliente, Desenho de serviços, BPMN}
+
+\cventry{fev. de 2023–jul. de 2023}
+        {Painel gerencial para acompanhamento de indicadores operacionais e financeiros, utilizado pela diretoria na tomada de decisão.}
+        {Painel Executivo de Indicadores}
+        {}
+        {}
+        {\begin{itemize}
+\item Levantamento de requisitos e definição de indicadores-chave junto às áreas de negócio.
+\item Modelagem de dados em SQL e construção de visualizações no Power BI.
+\item Documentação de regras de negócio e treinamento de usuários-chave.
+\end{itemize}
+\textbf{Palavras-chave}: Power BI, Indicadores-chave, SQL, Governança de dados}
+\section{Interesses}
+
+\cvline{Educação e Mentoria}{Mentoria, Palestras, Cursos}
+\cvline{Bem-estar}{Corrida, Yoga, Culinária}
+\section{Voluntariado}
+
+\cventry{mar. de 2022–Atual}
+        {Mentora de Jovens Analistas}
+        {Instituto Ponte para o Futuro}
+        {\url{https://www.ponteparaofuturo.org.br}}
+        {}
+        {\begin{itemize}
+\item Mentoria de jovens em início de carreira em análise de negócios, com orientação sobre requisitos, processos e comunicação com partes interessadas.
+\item Participação em encontros de carreira e revisão de currículos para candidatos de baixa renda.
+\end{itemize}}
+    
+\end{document}

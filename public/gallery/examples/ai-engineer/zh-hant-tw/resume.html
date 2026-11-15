@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-hant-tw">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>林彥廷 Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">林彥廷</h1>
+    <p class="resume-headline">資深人工智慧工程師 | 大型語言模型與 MLOps 專家</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:yenting.lin.ai@example.com" class="resume-contact-link">yenting.lin.ai@example.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+886 912 345 678</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.yentinglin.dev" class="resume-contact-link">https://www.yentinglin.dev</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>中國臺灣，台北市，台北市，台北市大安區復興南路一段390號，106</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/yentinglin-ai" class="resume-contact-link">@yentinglin-ai</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/yenting-lin-ai" class="resume-contact-link">@yenting-lin-ai</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Medium</span>: <a href="https://medium.com/@yentinglin.ai" class="resume-contact-link">@yentinglin.ai</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">簡介</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>具備 8 年以上人工智慧與機器學習實務經驗，專精大型語言模型、檢索增強生成與 MLOps。</p>
+          </li>
+          <li>
+            <p>曾領導 5 人跨功能團隊，將 LLM 應用導入企業知識管理、客服與文件摘要流程，提升作業效率 40%。</p>
+          </li>
+          <li>
+            <p>熟悉從資料清洗、模型訓練、評估、部署到監控的端到端流程，並具備雲端與地端混合部署經驗。</p>
+          </li>
+          <li>
+            <p>樂於將技術轉化為可落地的產品價值，擅長跨部門溝通、技術文件撰寫與團隊知識傳承。</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">教育背景</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ntu.edu.tw">國立臺灣大學</a></div>
+            <div class="resume-entry-organization">碩士，資訊工程學系，成績：4.1/4.3</div>
+          </div>
+          <div class="resume-entry-date">2015年9月–2017年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>研究主題聚焦於深度學習與自然語言處理，完成以注意力機制為基礎的文字分類研究。</p>
+            </li>
+            <li>
+              <p>擔任課程助教，協助機器學習與資料結構課程之教學與作業批改。</p>
+            </li>
+            <li>
+              <p>與實驗室團隊合作發表 2 篇研討會論文，培養獨立研究與團隊協作能力。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>課程</span>：機器學習、深度學習、自然語言處理、電腦視覺、資料探勘、演算法設計與分析、分散式系統、大數據分析</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nthu.edu.tw">國立清華大學</a></div>
+            <div class="resume-entry-organization">學士，資訊工程學系，成績：3.9/4.3</div>
+          </div>
+          <div class="resume-entry-date">2011年9月–2015年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>奠定紮實的資訊工程基礎，並選修人工智慧與資料探勘相關課程。</p>
+            </li>
+            <li>
+              <p>參與校內專題競賽，以影像辨識應用獲得佳作。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>課程</span>：資料結構、演算法、作業系統、資料庫系統、線性代數、機率與統計、計算機網路、程式設計</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">工作經歷</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.cloudwise-ai.tw">雲智科技股份有限公司</a></div>
+            <div class="resume-entry-organization">資深人工智慧工程師</div>
+          </div>
+          <div class="resume-entry-date">2022年1月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>領導 5 人 AI 團隊，規劃與交付企業級大型語言模型應用，服務超過 20 家企業客戶。</p>
+            </li>
+            <li>
+              <p>設計檢索增強生成（RAG）架構，整合向量資料庫與內部知識庫，將問答準確率提升至 92%。</p>
+            </li>
+            <li>
+              <p>建置 MLOps 流程，使用 MLflow、Docker 與 Kubernetes 管理模型版本、部署與監控，縮短上線時間 50%。</p>
+            </li>
+            <li>
+              <p>建立模型評估與護欄機制，降低幻覺與敏感資訊外洩風險，並制定內部 AI 使用規範。</p>
+            </li>
+            <li>
+              <p>與產品、資料工程及資安團隊協作，將需求轉化為可執行技術方案，並培育 3 位初階工程師。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：大型語言模型、檢索增強生成、MLOps、團隊領導、模型評估</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.brightdata-ai.tw">睿智數據股份有限公司</a></div>
+            <div class="resume-entry-organization">機器學習工程師</div>
+          </div>
+          <div class="resume-entry-date">2019年3月–2021年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>開發客戶流失預測與推薦系統，透過特徵工程與集成學習，將預測準確率提升 18%。</p>
+            </li>
+            <li>
+              <p>使用 PyTorch 與 TensorFlow 建立深度學習模型，並以 Airflow 與 Spark 處理每日百萬筆資料。</p>
+            </li>
+            <li>
+              <p>將模型封裝為 RESTful API 並部署至 AWS，支援即時推論與批次預測場景。</p>
+            </li>
+            <li>
+              <p>參與 Agile 開發流程，負責技術文件撰寫、程式碼審查與跨團隊知識分享。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：機器學習、PyTorch、Spark、AWS、RESTful API</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.digitintelligence.tw">數字智能股份有限公司</a></div>
+            <div class="resume-entry-organization">資料科學家</div>
+          </div>
+          <div class="resume-entry-date">2017年7月–2019年2月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>分析行銷與營運數據，建立視覺化儀表板與自動化報表，協助管理層制定決策。</p>
+            </li>
+            <li>
+              <p>運用統計檢定與 A/B 測試評估行銷活動成效，提出優化建議並帶來 12% 轉換率成長。</p>
+            </li>
+            <li>
+              <p>建置資料清理與特徵管線，提升資料品質與分析效率，減少 30% 手動處理時間。</p>
+            </li>
+            <li>
+              <p>與業務與產品團隊密切合作，將數據洞察轉化為具體營運策略。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：資料分析、A/B 測試、SQL、視覺化、統計建模</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">語言</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">中文<span class="resume-language-fluency">：母語或雙語水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：繁體中文、母語</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">英語<span class="resume-language-fluency">：完全專業水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：TOEIC 950、技術文件撰寫、國際團隊協作</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">專業技能</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">機器學習與深度學習<span class="resume-skill-level">：專家</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：Python、PyTorch、TensorFlow、scikit-learn、XGBoost</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">自然語言處理<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：Transformers、Hugging Face、LangChain、RAG、Fine-tuning</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">MLOps 與雲端部署<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：Docker、Kubernetes、MLflow、AWS SageMaker、GCP Vertex AI</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">資料工程<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：SQL、Spark、Airflow、Kafka、BigQuery</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">程式設計<span class="resume-skill-level">：專家</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：Python、Go、TypeScript、Shell、C++</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">榮譽</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">最佳應用論文獎</div>
+            <div class="resume-entry-organization">台灣人工智慧學會</div>
+          </div>
+          <div class="resume-entry-date">2023年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>以「檢索增強生成於企業知識問答之應用」獲得最佳應用論文獎。</p>
+            </li>
+            <li>
+              <p>論文提出混合稀疏與稠密檢索策略，有效提升長文件問答的召回率與準確率。</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">年度傑出工程師</div>
+            <div class="resume-entry-organization">雲智科技股份有限公司</div>
+          </div>
+          <div class="resume-entry-date">2023年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>表彰在大型語言模型產品化與 MLOps 流程建置上的卓越貢獻。</p>
+            </li>
+            <li>
+              <p>帶領團隊完成 3 項企業級 AI 專案，並顯著提升客戶滿意度。</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">證書</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://aws.amazon.com/certification/certified-machine-learning-specialty/">AWS Certified Machine Learning – Specialty</a></div>
+            <div class="resume-entry-organization">Amazon Web Services</div>
+          </div>
+          <div class="resume-entry-date">2022年3月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nvidia.com/en-us/training/certification/">NVIDIA Certified Associate – AI Infrastructure</a></div>
+            <div class="resume-entry-organization">NVIDIA</div>
+          </div>
+          <div class="resume-entry-date">2023年8月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://cloud.google.com/certification/machine-learning-engineer">Google Cloud Professional Machine Learning Engineer</a></div>
+            <div class="resume-entry-organization">Google Cloud</div>
+          </div>
+          <div class="resume-entry-date">2024年1月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">出版刊物</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.taiwanai.org.tw/proceedings/2023">以檢索增強生成提升企業知識問答準確率之研究</a></div>
+            <div class="resume-entry-organization">2023 台灣人工智慧年會論文集</div>
+          </div>
+          <div class="resume-entry-date">2023年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>提出結合 BM25 與向量檢索的混合式 RAG 架構，改善長尾問題的檢索品質。</p>
+            </li>
+            <li>
+              <p>實驗顯示在企業內部知識庫上，回答準確率較基線模型提升 15%。</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="publications-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ics.org.tw/journal/2022">輕量化 Transformer 於邊緣裝置之推論加速</a></div>
+            <div class="resume-entry-organization">中華民國資訊學會通訊</div>
+          </div>
+          <div class="resume-entry-date">2022年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>探討知識蒸餾與量化技術在邊緣裝置上的效能與精度權衡。</p>
+            </li>
+            <li>
+              <p>提出適用於資源受限環境的推論優化流程，降低延遲 35%。</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">項目</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/yentinglin-ai/enterprise-rag">企業知識庫問答系統</a></div>
+            <div class="resume-entry-description">基於檢索增強生成的企業內部知識問答平台</div>
+          </div>
+          <div class="resume-entry-date">2023年1月–2023年8月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>整合 Elasticsearch 與向量資料庫，支援文件上傳、切塊、嵌入與檢索。</p>
+            </li>
+            <li>
+              <p>設計多輪對話與引用來源機制，提升回答可信度與可追溯性。</p>
+            </li>
+            <li>
+              <p>以 FastAPI 與 Docker 部署，支援權限控管與使用量監控。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>： RAG、LLM、Elasticsearch、FastAPI</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/yentinglin-ai/intent-classifier">智慧客服意圖分類平台</a></div>
+            <div class="resume-entry-description">支援多語系與多標籤的客服意圖分類服務</div>
+          </div>
+          <div class="resume-entry-date">2021年3月–2021年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>使用 BERT 與多標籤分類架構，處理客服來文意圖與緊急程度預測。</p>
+            </li>
+            <li>
+              <p>建立資料標註流程與模型監控指標，持續改善分類表現。</p>
+            </li>
+            <li>
+              <p>將模型部署為微服務，提供即時 API 與批次推論功能。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>： NLP、BERT、FastAPI、Docker</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">興趣愛好</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">開源社群</span>：貢獻套件、技術演講、社群經營</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">戶外活動</span>：登山、馬拉松、攝影</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">志願服務</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.twdsa.org">台灣資料科學協會</a></div>
+            <div class="resume-entry-organization">志工講師</div>
+          </div>
+          <div class="resume-entry-date">2021年9月–2023年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>定期開設機器學習入門與 Python 資料分析工作坊，累計指導超過 200 位學員。</p>
+            </li>
+            <li>
+              <p>協助協會規劃年度資料科學年會，負責議程安排與講者邀請。</p>
+            </li>
+            <li>
+              <p>參與偏鄉程式教育計畫，設計適合高中生的 AI 體驗課程。</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

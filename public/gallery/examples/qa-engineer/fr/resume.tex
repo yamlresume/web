@@ -1,0 +1,258 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Camille Moreau}{}
+\title{Ingénieur QA senior spécialisé en automatisation des tests}
+\phone[mobile]{+33 6 12 34 56 78}
+\email{camille.moreau@example.fr}
+\homepage{https://www.camille-moreau-qa.fr}
+
+\address{24 rue des Ateliers, Paris, Île-de-France, France, 75011}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/camille-moreau-qa}{@camille-moreau-qa} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/camillemoreau-qa}{@camillemoreau-qa} {} {} {} • {} {} {} 
+{\small \faGitlab}\ \href{https://gitlab.com/camillemoreau-qa}{@camillemoreau-qa}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{Ingénieur QA senior avec plus de 8 ans d'expérience dans la conception, l'automatisation et le pilotage de stratégies de test pour des applications web et des API critiques.
+%
+\begin{itemize}
+\item Expertise en tests fonctionnels, d'intégration, de régression et de performance
+\item Maîtrise de Cypress, Playwright, Selenium, Postman, JMeter et des pipelines CI/CD
+\item Solide culture qualité : ISTQB, métriques, gestion des risques et amélioration continue
+\item Leadership technique, mentorat et collaboration étroite avec les équipes produit et développement
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2015–juil. 2017}
+        {Master, Ingénierie logicielle et qualité, Score : 16/20}
+        {Université Paris-Dauphine}
+        {\url{https://www.dauphine.psl.eu/}}
+        {}
+        {\begin{itemize}
+\item Formation solide en assurance qualité logicielle et en conduite de projets de test
+\item Projets universitaires centrés sur l'automatisation, la non-régression et la mesure de la qualité
+\item Pratique des méthodes agiles et de la collaboration avec les équipes de développement
+\end{itemize}
+\textbf{Cours} : Fondamentaux des tests logiciels, Automatisation des tests fonctionnels, Gestion de la qualité et métriques, Architecture des systèmes d'information, Méthodes agiles et Scrum, Tests de performance et charge}
+\section{Expérience professionnelle}
+
+\cventry{mars 2021–Present}
+        {Ingénieur QA senior}
+        {HexaFinance}
+        {\url{https://www.hexafinance.fr}}
+        {}
+        {\begin{itemize}
+\item Pilotage de la stratégie de test multi-produits sur des applications web et des API bancaires critiques
+\item Conception et maintenance de suites automatisées avec Cypress, Playwright et REST Assured
+\item Réduction de 35 \% des défauts détectés en production grâce à une meilleure couverture des scénarios à risque
+\item Mise en place de tests d'API contractuels et de contrôles de régression intégrés aux pipelines GitLab CI
+\item Animation de revues de qualité, définition des métriques et accompagnement des équipes produit
+\item Mentorat de deux ingénieurs QA juniors et diffusion des bonnes pratiques d'automatisation
+\end{itemize}
+\textbf{Mots-clés} : Automatisation, Cypress, API REST, CI/CD, Qualité logicielle, Mentorat}
+
+\cventry{janv. 2018–févr. 2021}
+        {Ingénieur QA}
+        {Novatech Santé}
+        {\url{https://www.novatech-sante.fr}}
+        {}
+        {\begin{itemize}
+\item Rédaction des plans de test, des cas de test et des jeux de données pour des applications de santé réglementées
+\item Exécution de campagnes de tests fonctionnels, de non-régression et d'intégration
+\item Développement de tests automatisés avec Selenium WebDriver et Robot Framework
+\item Suivi rigoureux des anomalies dans Jira et coordination des corrections avec les développeurs
+\item Participation active aux cérémonies Scrum et aux revues de sprint
+\item Contribution à la traçabilité des exigences et à la préparation des livraisons
+\end{itemize}
+\textbf{Mots-clés} : Tests manuels, Selenium, Jira, Zephyr, SQL, Agile}
+
+\cventry{sept. 2017–déc. 2017}
+        {Analyste QA junior}
+        {Atelier Logiciel}
+        {\url{https://www.atelier-logiciel.fr}}
+        {}
+        {\begin{itemize}
+\item Analyse des exigences fonctionnelles et traduction en scénarios de test vérifiables
+\item Création et exécution de tests fonctionnels sur une application de gestion interne
+\item Documentation des résultats, des anomalies et des écarts par rapport aux spécifications
+\item Collaboration avec les équipes support et développement pour qualifier les incidents
+\end{itemize}
+\textbf{Mots-clés} : Tests fonctionnels, Postman, Documentation, Reporting}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEIC 920, Documentation technique}
+\cvline{Espagnol}{Niveau de travail limité \hfill \textbf{Mots-clés} : Conversation professionnelle}
+\section{Compétences}
+
+\cvline{Tests automatisés}{Expert \hfill \textbf{Mots-clés} : Cypress, Playwright, Selenium WebDriver, Robot Framework, Cucumber}
+\cvline{Tests d'API et intégration}{Avancé \hfill \textbf{Mots-clés} : Postman, REST Assured, Swagger, SoapUI}
+\cvline{Tests de performance}{Avancé \hfill \textbf{Mots-clés} : JMeter, Gatling, k6, Analyse de charge}
+\cvline{Gestion de la qualité}{Expert \hfill \textbf{Mots-clés} : Stratégie de test, Plans de test, Gestion des anomalies, Métriques qualité, ISTQB}
+\cvline{Outils et DevOps}{Avancé \hfill \textbf{Mots-clés} : Jira, Xray, GitLab CI, Docker, Jenkins}
+\cvline{Méthodes}{Avancé \hfill \textbf{Mots-clés} : Agile, Scrum, BDD, TDD, Revues de code}
+\section{Récompenses}
+
+\cventry{juin 2023}
+        {HexaFinance}
+        {Prix de l'excellence qualité}
+        {}
+        {}
+        {Récompense attribuée pour la refonte de la stratégie de test et la réduction significative des défauts en production.}
+\section{Certificats}
+
+\cventry{avr. 2018}
+        {ISTQB}
+        {Certification ISTQB niveau fondation}
+        {\url{https://www.istqb.org/certifications/foundation-level}}
+        {}
+        {}
+
+\cventry{nov. 2020}
+        {iSQI}
+        {Testeur agile certifié}
+        {\url{https://www.isqi.org/certified-agile-tester}}
+        {}
+        {}
+
+\cventry{sept. 2022}
+        {ISTQB}
+        {ISTQB ingénieur automatisation des tests}
+        {\url{https://www.istqb.org/certifications/test-automation-engineer}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{févr. 2023}
+        {Automatiser les tests sans sacrifier la maintenabilité}
+        {Blog Qualité \& Logiciel}
+        {\url{https://www.qualite-logiciel.fr/articles/automatiser-tests-maintenabilite}}
+        {}
+        {Article pratique sur les bonnes pratiques d'automatisation des tests, la conception de suites robustes et la réduction de la dette de test.}
+\section{Projets}
+
+\cventry{janv. 2022–juin 2023}
+        {Tableau de bord de pilotage de la qualité logicielle pour les équipes produit.}
+        {QualiDash}
+        {\url{https://github.com/camillemoreau-qa/qualidash}}
+        {}
+        {\begin{itemize}
+\item Centralisation des métriques de test, des anomalies et des tendances de qualité
+\item Visualisation des risques par fonctionnalité et suivi de la couverture automatisée
+\item Réduction du temps de préparation des bilans qualité hebdomadaires
+\end{itemize}
+\textbf{Mots-clés} : Qualité, Métriques, Automatisation, Reporting}
+
+\cventry{mars 2023–déc. 2023}
+        {Bibliothèque interne de scénarios réutilisables pour les tests d'API REST.}
+        {TestAPIFactory}
+        {}
+        {}
+        {\begin{itemize}
+\item Factorisation des appels, assertions et jeux de données pour accélérer l'écriture des tests
+\item Intégration dans plusieurs pipelines CI avec exécution parallèle
+\item Documentation et formation des équipes à l'utilisation de la bibliothèque
+\end{itemize}
+\textbf{Mots-clés} : API REST, Tests automatisés, CI/CD, Documentation}
+\section{Centres d'intérêt}
+
+\cvline{Technologie}{Automatisation, Logiciel libre, Veille technologique}
+\cvline{Sport}{Escalade, Running, Yoga}
+\cvline{Culture}{Lecture, Photographie, Cuisine}
+\section{Bénévolat}
+
+\cventry{sept. 2020–juin 2023}
+        {Bénévole formateur en tests logiciels}
+        {Testeurs Solidaires}
+        {\url{https://www.testeurs-solidaires.fr}}
+        {}
+        {\begin{itemize}
+\item Animation d'ateliers d'initiation aux tests logiciels pour des personnes en reconversion
+\item Accompagnement méthodologique sur la rédaction de cas de test et la gestion des anomalies
+\item Création de supports pédagogiques accessibles et adaptés aux débutants
+\end{itemize}}
+    
+\end{document}

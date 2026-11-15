@@ -1,0 +1,244 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Camille Moreau}{}
+\title{Ingénieur mécanique senior spécialisé en conception énergétique}
+\phone[mobile]{+33 6 12 34 56 78}
+\email{camille.moreau@example.fr}
+\homepage{https://www.camillemoreau-ingenierie.fr}
+
+\address{24 rue des Ateliers, Lyon, Auvergne-Rhône-Alpes, France, 69003}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/camille-moreau-meca}{@camille-moreau-meca} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/camillemeca}{@camillemeca}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{\begin{itemize}
+\item Ingénieur mécanique avec plus de 8 ans d'expérience dans la conception, la simulation et l'industrialisation de systèmes mécaniques et thermiques.
+\item Expertise en CAO 3D, calcul de structures, CFD et gestion de projets industriels, du cahier des charges à la mise en production.
+\item Solide expérience en environnement réglementé, coordination de fournisseurs et amélioration continue de la performance produit.
+\item Reconnu pour la rigueur technique, la communication transversale et la capacité à transformer des besoins clients en solutions fiables.
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2012–juil. 2017}
+        {Master, Génie mécanique, Score : 3.7/4.0}
+        {INSA Lyon}
+        {\url{https://www.insa-lyon.fr}}
+        {}
+        {\begin{itemize}
+\item Formation d'ingénieur généraliste orientée conception mécanique, énergétique et industrialisation.
+\item Projets d'équipe sur des systèmes de transmission, des échangeurs thermiques et des bancs d'essai instrumentés.
+\item Mémoire de fin d'études consacré à l'optimisation topologique de pièces mécaniques allégées.
+\end{itemize}
+\textbf{Cours} : Résistance des matériaux, Thermodynamique appliquée, Mécanique des fluides, Conception assistée par ordinateur, Fabrication mécanique, Vibrations et dynamique des structures, Science des matériaux, Automatique et systèmes embarqués}
+\section{Expérience professionnelle}
+
+\cventry{avr. 2021–Present}
+        {Ingénieur mécanique senior}
+        {Voltaire Énergie}
+        {\url{https://www.voltaire-energie.fr}}
+        {}
+        {\begin{itemize}
+\item Piloter la conception mécanique de modules de récupération de chaleur pour des sites industriels et des réseaux de chaleur urbains.
+\item Coordonner les études thermiques, les calculs de résistance et la sélection des matériaux avec les équipes procédés et électriques.
+\item Gérer les revues de conception, les analyses de risques et la documentation technique jusqu'à la réception client.
+\item Encadrer deux ingénieurs juniors et animer les échanges avec les fournisseurs stratégiques.
+\end{itemize}
+\textbf{Mots-clés} : Conception mécanique, Thermique, CAO, Gestion de projet, Validation}
+
+\cventry{sept. 2017–mars 2021}
+        {Ingénieur mécanique}
+        {Atelier Aérotech}
+        {\url{https://www.atelier-aerotech.fr}}
+        {}
+        {\begin{itemize}
+\item Concevoir des ensembles mécaniques et des supports de fixation pour des équipements aéronautiques.
+\item Réaliser des simulations statiques et modales sous ANSYS afin de valider les choix de conception.
+\item Collaborer avec l'atelier de fabrication pour optimiser les tolérances, les matériaux et les coûts de production.
+\item Participer aux essais de qualification et rédiger les rapports techniques associés.
+\end{itemize}
+\textbf{Mots-clés} : Aéronautique, ANSYS, Tolérancement, Essais, Fabrication}
+
+\cventry{févr. 2016–août 2016}
+        {Ingénieur mécanique stagiaire}
+        {Groupe Mécallia}
+        {\url{https://www.groupe-mecallia.fr}}
+        {}
+        {\begin{itemize}
+\item Contribuer à la refonte d'un banc d'essai de pompes industrielles.
+\item Modéliser les pièces sous SolidWorks et produire les plans de fabrication.
+\item Analyser les résultats d'essais et proposer des améliorations de montage.
+\end{itemize}
+\textbf{Mots-clés} : SolidWorks, Pompes, Banc d'essai, Analyse}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue \hfill \textbf{Mots-clés} : Langue maternelle}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEIC 920, Rédaction technique}
+\cvline{Espagnol}{Niveau de travail limité \hfill \textbf{Mots-clés} : Conversation professionnelle}
+\section{Compétences}
+
+\cvline{Conception mécanique}{Expert \hfill \textbf{Mots-clés} : SolidWorks, CATIA V5, Tolérancement, RDM, DFM}
+\cvline{Simulation numérique}{Avancé \hfill \textbf{Mots-clés} : ANSYS, CFD, Thermique, Fatigue, Matériaux composites}
+\cvline{Gestion de projet}{Avancé \hfill \textbf{Mots-clés} : Planification, Budget, Fournisseurs, Agile, Documentation}
+\cvline{Industrialisation}{Intermédiaire \hfill \textbf{Mots-clés} : Lean, Prototypage, Essais, Qualité, Amélioration continue}
+\section{Récompenses}
+
+\cventry{juin 2023}
+        {Association Française de Mécanique}
+        {Prix de l'innovation mécanique}
+        {}
+        {}
+        {Distinction remise pour un module compact de récupération de chaleur réduisant les pertes thermiques de 18 \% sur une ligne de production.}
+\section{Certificats}
+
+\cventry{nov. 2019}
+        {Dassault Systèmes}
+        {Certification professionnelle SolidWorks}
+        {\url{https://www.solidworks.com/certification}}
+        {}
+        {}
+
+\cventry{mai 2022}
+        {IASSC}
+        {Ceinture verte Lean Six Sigma}
+        {\url{https://www.iassc.org}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{oct. 2022}
+        {Optimisation thermique des échangeurs à plaques pour réseaux de chaleur}
+        {Revue Française de Génie Mécanique}
+        {\url{https://www.rfgm.fr/articles/echangeurs-plaques}}
+        {}
+        {\begin{itemize}
+\item Article présentant une méthode de dimensionnement d'échangeurs à plaques intégrant les contraintes de maintenance.
+\item Résultats issus d'une campagne de mesures sur trois sites industriels et d'un modèle CFD validé.
+\end{itemize}}
+\section{Projets}
+
+\cventry{janv. 2022–sept. 2023}
+        {Module compact de récupération de chaleur destiné aux procédés industriels.}
+        {Récupérateur de chaleur industriel}
+        {\url{https://www.voltaire-energie.fr/projets/recuperateur}}
+        {}
+        {\begin{itemize}
+\item Conception mécanique complète d'un échangeur air-eau modulaire.
+\item Intégration des contraintes de maintenance, d'isolation et de sécurité.
+\item Validation par calculs thermomécaniques et essais sur banc.
+\end{itemize}
+\textbf{Mots-clés} : Thermique, Échangeur, Industrie, Modélisation}
+
+\cventry{mars 2019–févr. 2020}
+        {Banc instrumenté pour caractériser le rendement et la fiabilité de pompes industrielles.}
+        {Banc d'essai pour pompes à haut rendement}
+        {}
+        {}
+        {\begin{itemize}
+\item Définition de l'architecture mécanique, des capteurs et de la chaîne d'acquisition.
+\item Réalisation des plans, du dossier de fabrication et du protocole d'essai.
+\item Réduction du temps de qualification des pompes de 25 \%.
+\end{itemize}
+\textbf{Mots-clés} : Banc d'essai, Instrumentation, Pompes, Essais}
+\section{Centres d'intérêt}
+
+\cvline{Sports}{Randonnée, Escalade, Cyclisme}
+\cvline{Musique}{Guitare, Jazz}
+\cvline{Fabrication}{Impression 3D, Menuiserie}
+\section{Bénévolat}
+
+\cventry{sept. 2018–Present}
+        {Bénévole technique}
+        {Ingénieurs Sans Frontières France}
+        {\url{https://www.isf-france.org}}
+        {}
+        {\begin{itemize}
+\item Apporter un appui technique à des projets d'accès à l'eau et d'énergie rurale.
+\item Participer à la revue de plans, au dimensionnement d'équipements et à la formation des équipes locales.
+\item Contribuer à la documentation et au retour d'expérience des missions.
+\end{itemize}}
+    
+\end{document}

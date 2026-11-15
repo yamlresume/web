@@ -1,0 +1,241 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Marcus T. Ellington}{}
+\title{Financial Analyst | FP\&A, Valuation, and Data-Driven Forecasting}
+\phone[mobile]{(415) 555-0182}
+\email{marcus.ellington@finmail.com}
+\homepage{https://www.marcusellington.com}
+
+\address{1200 Market Street, Suite 400, San Francisco, California, United States, 94102}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/marcus-ellington}{@marcus-ellington} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/marcus-ellington}{@marcus-ellington}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{\begin{itemize}
+\item Financial analyst with 6+ years of experience in FP\&A, investment research, and financial modeling across technology and consumer sectors
+\item Skilled at building driver-based forecasts, analyzing variances, and translating complex data into clear recommendations for senior leadership
+\item Proven record of improving forecast accuracy, automating recurring reporting, and partnering with cross-functional teams to support strategic decisions
+\item Comfortable working across the full analytics stack, from SQL and Python analysis to executive-ready dashboards and investment memos
+\end{itemize}}
+\section{Education}
+
+\cventry{Aug 2014–May 2018}
+        {Bachelor, Economics, Score: 3.9/4.0}
+        {University of California, Berkeley}
+        {\url{https://www.berkeley.edu}}
+        {}
+        {\begin{itemize}
+\item Built a strong foundation in valuation, accounting, and quantitative analysis
+\item Completed capstone research on capital structure decisions in technology firms
+\item Developed proficiency in Excel, Python, and statistical modeling through coursework and projects
+\end{itemize}
+\textbf{Courses}: Corporate Finance, Financial Accounting, Econometrics, Investments, Microeconomic Theory, Data Analysis with Python, Business Valuation, Risk Management}
+
+\cventry{Aug 2018–May 2019}
+        {Master, Finance, Score: 3.8/4.0}
+        {Boston College}
+        {\url{https://www.bc.edu}}
+        {}
+        {\begin{itemize}
+\item Focused on corporate finance, valuation, and investment analysis
+\item Completed a practicum valuing a mid-cap SaaS company using DCF and comparable company analysis
+\item Collaborated with a five-person team to present investment recommendations to faculty and industry judges
+\end{itemize}
+\textbf{Courses}: Financial Modeling, Investment Analysis, Corporate Valuation, Econometrics, Portfolio Management}
+\section{Work}
+
+\cventry{Jun 2021–Present}
+        {Senior Financial Analyst}
+        {Alder Ridge Capital}
+        {\url{https://www.alderridgecapital.com}}
+        {}
+        {\begin{itemize}
+\item Lead FP\&A for a \$180M revenue portfolio, owning monthly forecasts, annual budgets, and long-range plans for three business units
+\item Build and maintain three-statement models, scenario analyses, and KPI dashboards used by the CFO and investment committee
+\item Improved forecast accuracy from ±12\% to ±4\% by redesigning driver-based revenue and headcount models
+\item Automate recurring reporting with SQL, Python, and Power BI, reducing close-cycle reporting time by 10 hours per month
+\item Partner with sales, product, and accounting teams to explain variances and support pricing, hiring, and investment decisions
+\end{itemize}
+\textbf{Keywords}: FP\&A, Forecasting, Three-Statement Modeling, Variance Analysis, Power BI}
+
+\cventry{Jul 2019–May 2021}
+        {Financial Analyst}
+        {Northstar Equity Research}
+        {\url{https://www.northstarequityresearch.com}}
+        {}
+        {\begin{itemize}
+\item Conducted equity research and valuation for mid-cap technology and consumer companies, supporting a \$2.4B AUM portfolio
+\item Built DCF, comparable company, and precedent transaction models; prepared investment memos and quarterly earnings reviews
+\item Analyzed results, updated estimates, and communicated risks and catalysts to portfolio managers and research leadership
+\item Maintained sector databases and automated data pulls using Python and Excel VBA
+\end{itemize}
+\textbf{Keywords}: Equity Research, Valuation, DCF Modeling, Earnings Analysis, Excel VBA}
+\section{Languages}
+
+\cvline{English}{Native or Bilingual Proficiency}
+\cvline{Spanish}{Full Professional Proficiency \hfill \textbf{Keywords}: Financial reporting, Client presentations}
+\section{Skills}
+
+\cvline{Financial Modeling}{Expert \hfill \textbf{Keywords}: Three-Statement Modeling, DCF, Comparable Companies, Scenario Analysis, Budgeting}
+\cvline{Data Analysis}{Advanced \hfill \textbf{Keywords}: SQL, Python, Pandas, Power BI, Tableau, Excel VBA}
+\cvline{FP\&A}{Advanced \hfill \textbf{Keywords}: Forecasting, Variance Analysis, KPI Reporting, Headcount Planning, Long-Range Planning}
+\cvline{Communication}{Expert \hfill \textbf{Keywords}: Executive Presentations, Cross-Functional Collaboration, Investment Memos, Stakeholder Management}
+\section{Awards}
+
+\cventry{May 2019}
+        {Boston College}
+        {Outstanding Graduate Student Award}
+        {}
+        {}
+        {Awarded to the top graduating student in the Master of Finance program for academic excellence and leadership in collaborative coursework.}
+\section{Certificates}
+
+\cventry{Mar 2022}
+        {Corporate Finance Institute}
+        {Financial Modeling \& Valuation Analyst (FMVA)}
+        {\url{https://corporatefinanceinstitute.com/certifications/fmva/}}
+        {}
+        {}
+
+\cventry{Jan 2023}
+        {Microsoft}
+        {Microsoft Certified: Data Analyst Associate}
+        {\url{https://learn.microsoft.com/en-us/credentials/certifications/data-analyst-associate/}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Oct 2023}
+        {Improving Forecast Accuracy with Driver-Based Planning}
+        {Finance Leadership Journal}
+        {\url{https://www.financeleadershipjournal.com/articles/driver-based-planning}}
+        {}
+        {\begin{itemize}
+\item Article covering practical approaches to driver-based forecasting, variance analysis, and forecast governance
+\item Draws on experience redesigning revenue and headcount models for a multi-business-unit portfolio
+\end{itemize}}
+\section{Projects}
+
+\cventry{Jan 2023–Apr 2023}
+        {Interactive dashboard for monitoring revenue drivers, forecast accuracy, and variance explanations.}
+        {Revenue Forecasting Dashboard}
+        {\url{https://github.com/marcus-ellington/revenue-forecast-dashboard}}
+        {}
+        {\begin{itemize}
+\item Built a Power BI dashboard connected to SQL models to track bookings, pipeline, and revenue by segment
+\item Added variance views that let finance and sales leaders drill into forecast misses by region and product
+\item Reduced manual variance commentary preparation from two days to under four hours
+\end{itemize}
+\textbf{Keywords}: Power BI, SQL, Forecasting, Variance Analysis}
+
+\cventry{Mar 2022–Jun 2022}
+        {Python and Excel model for benchmarking SaaS growth, retention, and margin metrics across public companies.}
+        {SaaS Benchmarking Model}
+        {\url{https://github.com/marcus-ellington/saas-benchmarking-model}}
+        {}
+        {\begin{itemize}
+\item Collected and normalized public-company data for 40+ SaaS businesses
+\item Calculated growth, gross margin, net revenue retention, and rule-of-40 metrics for comparative analysis
+\item Presented findings on operating efficiency and growth durability to an internal research team
+\end{itemize}
+\textbf{Keywords}: SaaS Metrics, Python, Excel, Benchmarking}
+\section{Interests}
+
+\cvline{Investing}{Value Investing, ETF Research, Personal Finance}
+\cvline{Outdoors}{Trail Running, Cycling, Photography}
+\section{Volunteer}
+
+\cventry{Sep 2020–Present}
+        {Volunteer Financial Coach}
+        {Bay Area Financial Literacy Coalition}
+        {\url{https://www.bayareafinancialliteracy.org}}
+        {}
+        {\begin{itemize}
+\item Coach low-income households on budgeting, debt reduction, and savings strategies through monthly one-on-one sessions
+\item Develop plain-language workshop materials on credit, banking, and retirement basics
+\item Track participant progress and adapt coaching plans to individual financial goals
+\end{itemize}}
+    
+\end{document}

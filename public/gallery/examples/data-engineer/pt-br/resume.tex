@@ -1,0 +1,255 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Brazilian Portuguese language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-portuguese.html
+\usepackage[brazilian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Mariana Costa Almeida}{}
+\title{Engenheira de Dados Sênior | Plataformas de Dados e Analytics}
+\phone[mobile]{+55 11 98765-4321}
+\email{mariana.costa.almeida@example.com}
+\homepage{https://marianaalmeida.dev}
+
+\address{Rua dos Pinheiros, 450, Apto 82, São Paulo, SP, Brasil, 05422-000}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/mariana-costa-almeida}{@mariana-costa-almeida} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/mariana-costa-data}{@mariana-costa-data}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informações Básicas}
+
+\cvline{}{\begin{itemize}
+\item Engenheira de dados com mais de 6 anos de experiência na construção de plataformas de dados escaláveis, confiáveis e orientadas a impacto de negócio
+\item Especialista em pipelines batch e streaming, modelagem analítica, qualidade de dados e governança em ambientes de nuvem
+\item Experiência com Apache Spark, Airflow, dbt, Kafka, AWS, Databricks e ferramentas modernas de lakehouse
+\item Atuação colaborativa com times de produto, ciência de dados, BI e engenharia para traduzir necessidades analíticas em soluções robustas
+\item Forte compromisso com boas práticas de engenharia, observabilidade, automação e mentoria técnica
+\end{itemize}}
+\section{Formação}
+
+\cventry{mar. de 2014–dez. de 2018}
+        {Bacharelado, Ciência da Computação, Nota: 8.7/10}
+        {Universidade de São Paulo}
+        {\url{https://www.usp.br}}
+        {}
+        {\begin{itemize}
+\item Formação sólida em fundamentos de computação, bancos de dados e engenharia de software
+\item Desenvolvimento de projetos acadêmicos com foco em processamento e análise de grandes volumes de dados
+\item Participação em grupos de estudo de ciência de dados e computação distribuída
+\end{itemize}
+\textbf{Cursos}: Estruturas de Dados, Algoritmos e Complexidade, Bancos de Dados, Engenharia de Software, Sistemas Distribuídos, Estatística Aplicada, Aprendizado de Máquina, Computação em Nuvem}
+
+\cventry{mar. de 2019–dez. de 2020}
+        {Mestrado, Ciência de Dados, Nota: 9.1/10}
+        {Insper}
+        {\url{https://www.insper.edu.br}}
+        {}
+        {\begin{itemize}
+\item Especialização em arquitetura de dados, modelagem analítica e pipelines escaláveis
+\item Projeto de conclusão sobre qualidade de dados em plataformas de analytics em tempo real
+\item Desenvolvimento de soluções com foco em impacto de negócio e boas práticas de engenharia
+\end{itemize}
+\textbf{Cursos}: Engenharia de Dados, Estatística para Ciência de Dados, Aprendizado de Máquina, Visualização de Dados, Governança de Dados}
+\section{Experiência Profissional}
+
+\cventry{fev. de 2022–Atual}
+        {Engenheira de Dados Sênior}
+        {Nubank}
+        {\url{https://nubank.com.br}}
+        {}
+        {\begin{itemize}
+\item Liderança técnica na construção e evolução de pipelines de dados batch e streaming para produtos de crédito e risco
+\item Modelagem de dados analíticos em lakehouse com Apache Iceberg, Spark e dbt, apoiando times de analytics e ciência de dados
+\item Implementação de contratos de dados, testes automatizados e monitoramento de qualidade com foco em confiabilidade
+\item Otimização de custos e performance em AWS, reduzindo tempo de processamento e consumo de recursos
+\item Mentoria de engenheiras e engenheiros de dados júnior e colaboração com produto, engenharia e negócio
+\end{itemize}
+\textbf{Palavras-chave}: Apache Spark, Apache Airflow, dbt, Kafka, AWS, Data Quality, Lakehouse}
+
+\cventry{jan. de 2020–jan. de 2022}
+        {Engenheira de Dados}
+        {iFood}
+        {\url{https://www.ifood.com.br}}
+        {}
+        {\begin{itemize}
+\item Desenvolvimento de pipelines ETL e ELT para ingestão de dados de pedidos, entregadores e restaurantes
+\item Construção de modelos dimensionais e tabelas analíticas para dashboards de operações e growth
+\item Automação de orquestração com Airflow e padronização de transformações com SQL e Python
+\item Atuação em iniciativas de observabilidade de dados, catálogo e linhagem para maior confiabilidade
+\item Parceria com times de BI e produto para traduzir necessidades analíticas em soluções escaláveis
+\end{itemize}
+\textbf{Palavras-chave}: ETL, ELT, SQL, Python, Airflow, Data Warehouse}
+
+\cventry{mar. de 2019–dez. de 2019}
+        {Analista de Dados Júnior}
+        {Itaú Unibanco}
+        {\url{https://www.itau.com.br}}
+        {}
+        {\begin{itemize}
+\item Manutenção e evolução de rotinas de carga de dados para relatórios regulatórios e gerenciais
+\item Criação de consultas SQL e scripts Python para tratamento, validação e consolidação de dados
+\item Apoio à documentação de processos, regras de negócio e dicionários de dados
+\item Colaboração com áreas de risco e finanças para garantir consistência das informações
+\end{itemize}
+\textbf{Palavras-chave}: SQL, Python, Dados Financeiros, Relatórios, Qualidade de Dados}
+\section{Idiomas}
+
+\cvline{Português}{Nativo ou Bilíngue \hfill \textbf{Palavras-chave}: Comunicação técnica}
+\cvline{Inglês}{Proficiência Profissional Fluente \hfill \textbf{Palavras-chave}: TOEFL iBT 108, Inglês para negócios}
+\cvline{Espanhol}{Proficiência Profissional Limitada \hfill \textbf{Palavras-chave}: Leitura técnica}
+\section{Competências}
+
+\cvline{Engenharia de Dados}{Especialista \hfill \textbf{Palavras-chave}: Apache Spark, Apache Airflow, dbt, Apache Kafka, Databricks, Apache Iceberg, Modelagem de Dados, Data Quality}
+\cvline{Nuvem e Infraestrutura}{Avançado \hfill \textbf{Palavras-chave}: AWS, Terraform, Docker, Kubernetes, Amazon S3, AWS Glue, Snowflake}
+\cvline{Programação e Analytics}{Avançado \hfill \textbf{Palavras-chave}: Python, SQL, Scala, PySpark, Git, Power BI, Looker}
+\section{Prêmios}
+
+\cventry{nov. de 2023}
+        {Nubank}
+        {Prêmio de Excelência em Engenharia de Dados}
+        {}
+        {}
+        {Reconhecimento por liderança técnica na modernização da plataforma de dados de risco, com ganhos de confiabilidade e redução de custos operacionais.}
+\section{Certificados}
+
+\cventry{mar. de 2023}
+        {Amazon Web Services}
+        {AWS Certified Data Analytics - Specialty}
+        {\url{https://aws.amazon.com/certification/certified-data-analytics-specialty/}}
+        {}
+        {}
+
+\cventry{ago. de 2022}
+        {Google Cloud}
+        {Google Cloud Professional Data Engineer}
+        {\url{https://cloud.google.com/learn/certification/data-engineer}}
+        {}
+        {}
+\section{Publicações}
+
+\cventry{ago. de 2023}
+        {Construindo uma Plataforma de Dados Confiável em Escala}
+        {Blog de Engenharia do Nubank}
+        {\url{https://medium.com/@mariana.costa.almeida/plataforma-de-dados-confiavel}}
+        {}
+        {\begin{itemize}
+\item Artigo sobre práticas de contratos de dados, testes automatizados e observabilidade em pipelines críticos
+\item Discussão de arquitetura lakehouse, governança e métricas de confiabilidade para times de engenharia
+\end{itemize}}
+\section{Referências}
+
+\cventry{\emaillink[ricardo.menezes@insper.edu.br]{ricardo.menezes@insper.edu.br}}
+        {Professor de Ciência de Dados}
+        {Prof. Ricardo Menezes}
+        {+55 11 91234-5678}
+        {}
+        {Mariana combina rigor técnico, visão de negócio e capacidade de liderança. Seu trabalho em plataformas de dados trouxe ganhos concretos de confiabilidade e eficiência para equipes multidisciplinares.}
+\section{Projetos}
+
+\cventry{mai. de 2023–nov. de 2023}
+        {Plataforma de streaming para ingestão, enriquecimento e scoring de eventos transacionais}
+        {Pipeline em Tempo Real para Detecção de Fraudes}
+        {\url{https://github.com/mariana-costa-data/fraud-streaming-pipeline}}
+        {}
+        {\begin{itemize}
+\item Arquitetura com Kafka, Spark Structured Streaming e armazenamento em lakehouse para análise de eventos em near real time
+\item Implementação de regras de qualidade, alertas e monitoramento de latência e throughput
+\item Integração com modelos de machine learning para apoio à decisão em risco e prevenção a fraudes
+\end{itemize}
+\textbf{Palavras-chave}: Kafka, Spark Streaming, Lakehouse, Fraude, Data Quality}
+\section{Interesses}
+
+\cvline{Corrida}{Corrida de rua, Meia maratona, Trilhas}
+\cvline{Comunidade}{Mentoria, Palestras, Open Source}
+\cvline{Música}{Violão, MPB, Jazz}
+\section{Voluntariado}
+
+\cventry{mar. de 2021–Atual}
+        {Mentora Voluntária}
+        {Data Girls Brasil}
+        {\url{https://www.datagirlsbrasil.org.br}}
+        {}
+        {\begin{itemize}
+\item Mentoria de mulheres em transição de carreira para dados, com foco em SQL, Python e projetos práticos
+\item Participação em eventos e rodas de conversa sobre carreira em engenharia de dados
+\item Apoio na revisão de currículos e preparação para entrevistas técnicas
+\end{itemize}}
+    
+\end{document}

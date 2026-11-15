@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Luca Moretti Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Luca Moretti</h1>
+    <p class="resume-headline">Ingegnere AI senior specializzato in apprendimento automatico e MLOps</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:luca.moretti.ai@gmail.com" class="resume-contact-link">luca.moretti.ai@gmail.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+39 347 892 1456</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.lucamoretti.ai" class="resume-contact-link">https://www.lucamoretti.ai</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Via Alessandro Volta 42, Milano, Lombardia, Italia, 20154</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/lucamoretti-ai" class="resume-contact-link">@lucamoretti-ai</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/lucamoretti" class="resume-contact-link">@lucamoretti</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Informazioni personali</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <p>Ingegnere AI con oltre 7 anni di esperienza nella progettazione e nel deployment di sistemi di apprendimento automatico scalabili. Specializzato in modelli di linguaggio, visione artificiale e pipeline MLOps in ambienti cloud.</p>
+        <ul>
+          <li>
+            <p>Guida tecnica di team distribuiti e mentorship di giovani ingegneri.</p>
+          </li>
+          <li>
+            <p>Forte orientamento ai risultati, alla qualità del codice e all&#39;impatto di business.</p>
+          </li>
+          <li>
+            <p>Esperienza end-to-end: dalla raccolta dati alla messa in produzione e monitoraggio.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Formazione</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.polimi.it">Politecnico di Milano</a></div>
+            <div class="resume-entry-organization">Laurea magistrale, Ingegneria Informatica, Punteggio: 110/110 con lode</div>
+          </div>
+          <div class="resume-entry-date">set 2017–lug 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Tesi magistrale su modelli transformer per il rilevamento di anomalie in serie temporali industriali.</p>
+            </li>
+            <li>
+              <p>Progetto di gruppo con azienda manifatturiera per la manutenzione predittiva.</p>
+            </li>
+            <li>
+              <p>Media ponderata elevata e attività di tutoraggio per corsi di programmazione.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Apprendimento automatico e riconoscimento di pattern, Elaborazione del linguaggio naturale, Visione artificiale, Sistemi distribuiti e cloud computing, Ottimizzazione e ricerca operativa, Architetture dei calcolatori</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.unibo.it">Università di Bologna</a></div>
+            <div class="resume-entry-organization">Laurea triennale, Ingegneria Informatica, Punteggio: 108/110</div>
+          </div>
+          <div class="resume-entry-date">set 2014–lug 2017</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Solida base in matematica applicata, algoritmi e sviluppo software.</p>
+            </li>
+            <li>
+              <p>Progetto finale su sistemi di raccomandazione basati su filtraggio collaborativo.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Algoritmi e strutture dati, Basi di dati, Reti di calcolatori, Probabilità e statistica, Programmazione orientata agli oggetti</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Esperienza professionale</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.neuralislabs.it">Neuralis Labs</a></div>
+            <div class="resume-entry-organization">Ingegnere AI Senior</div>
+          </div>
+          <div class="resume-entry-date">gen 2022–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Progettazione e implementazione di una piattaforma di modelli di linguaggio per l&#39;assistenza clienti, con riduzione del 35% dei tempi di risposta.</p>
+            </li>
+            <li>
+              <p>Responsabile tecnico di un team di 6 ingegneri AI e data scientist, con mentorship e revisione del codice.</p>
+            </li>
+            <li>
+              <p>Definizione di architetture MLOps su Kubernetes e AWS per training, deployment e monitoraggio continuo.</p>
+            </li>
+            <li>
+              <p>Collaborazione con product manager e stakeholder per tradurre requisiti di business in soluzioni AI misurabili.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: LLM, MLOps, Kubernetes, AWS, NLP</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.datamind.it">DataMind Italia</a></div>
+            <div class="resume-entry-organization">Ingegnere Machine Learning</div>
+          </div>
+          <div class="resume-entry-date">mar 2020–dic 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Sviluppo di modelli di visione artificiale per il controllo qualità in linea di produzione, con accuratezza superiore al 96%.</p>
+            </li>
+            <li>
+              <p>Creazione di pipeline di dati automatiche con Python, Airflow e Spark su Azure.</p>
+            </li>
+            <li>
+              <p>Implementazione di test A/B e monitoraggio delle performance dei modelli in produzione.</p>
+            </li>
+            <li>
+              <p>Documentazione tecnica e trasferimento di conoscenza ai team operativi.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Computer Vision, Python, Apache Airflow, Azure, Test A/B</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.aurorarobotics.it">Aurora Robotics</a></div>
+            <div class="resume-entry-organization">Scienziato dei Dati</div>
+          </div>
+          <div class="resume-entry-date">set 2019–feb 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Analisi di dati sensoriali per robot collaborativi e sviluppo di modelli predittivi per la manutenzione.</p>
+            </li>
+            <li>
+              <p>Prototipazione di algoritmi di rilevamento anomalie con scikit-learn e PyTorch.</p>
+            </li>
+            <li>
+              <p>Presentazione dei risultati a team tecnici e non tecnici.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Data Science, PyTorch, Scikit-learn, Anomaly Detection</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Lingue</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Italiano<span class="resume-language-fluency">: Madrelingua o bilingue</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: Madrelingua</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Inglese<span class="resume-language-fluency">: Competenza professionale completa</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: IELTS 8.0, C1</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Francese<span class="resume-language-fluency">: Competenza professionale limitata</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: DELF B1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Competenze</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Apprendimento automatico<span class="resume-skill-level">: Esperto</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: PyTorch, TensorFlow, Scikit-learn, XGBoost, Reti neurali</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">MLOps<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Docker, Kubernetes, MLflow, Kubeflow, CI/CD</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Elaborazione del linguaggio naturale<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Transformer, LLM, Hugging Face, RAG, Fine-tuning</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Cloud e infrastrutture<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: AWS, Azure, GCP, Terraform, Serverless</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Data Engineering<span class="resume-skill-level">: Intermedio</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: SQL, Spark, Airflow, Kafka, Snowflake</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Premi</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Premio Innovazione AI</div>
+            <div class="resume-entry-organization">Associazione Italiana per l&#39;Intelligenza Artificiale</div>
+          </div>
+          <div class="resume-entry-date">nov 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Riconoscimento per il progetto di assistenza clienti basato su modelli linguistici, selezionato tra oltre 120 candidature nazionali.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://aws.amazon.com/certification/">AWS Certified Machine Learning - Specialty</a></div>
+            <div class="resume-entry-organization">Amazon Web Services</div>
+          </div>
+          <div class="resume-entry-date">feb 2023</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.tensorflow.org/certificate">TensorFlow Developer Certificate</a></div>
+            <div class="resume-entry-organization">Google</div>
+          </div>
+          <div class="resume-entry-date">giu 2021</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Pubblicazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://doi.org/10.1000/aiia.2022.042">Modelli transformer per il rilevamento di anomalie industriali</a></div>
+            <div class="resume-entry-organization">Atti del Congresso Italiano di Intelligenza Artificiale</div>
+          </div>
+          <div class="resume-entry-date">set 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Studio su architetture transformer applicate a serie temporali multivariate per la manutenzione predittiva.</p>
+            </li>
+            <li>
+              <p>Confronto con modelli tradizionali e analisi dell&#39;impatto della qualità dei dati.</p>
+            </li>
+            <li>
+              <p>Dataset e codice resi disponibili alla comunità scientifica.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Progetti</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/lucamoretti/visionqc">VisionQC</a></div>
+            <div class="resume-entry-description">Sistema di controllo qualità visivo basato su deep learning per linee di produzione industriali</div>
+          </div>
+          <div class="resume-entry-date">apr 2021–nov 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Rilevamento automatico di difetti superficiali con reti convoluzionali e segmentazione semantica.</p>
+            </li>
+            <li>
+              <p>Integrazione con telecamere industriali e dashboard di monitoraggio in tempo reale.</p>
+            </li>
+            <li>
+              <p>Riduzione dei falsi negativi del 28% rispetto al sistema precedente.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Computer Vision, Deep Learning, PyTorch, FastAPI</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/lucamoretti/doc-assistant">Assistente Documentale</a></div>
+            <div class="resume-entry-description">Assistente conversazionale con RAG per la ricerca semantica su documenti aziendali</div>
+          </div>
+          <div class="resume-entry-date">feb 2023–ago 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Pipeline di ingestion, chunking e indicizzazione vettoriale di documenti PDF e testuali.</p>
+            </li>
+            <li>
+              <p>Integrazione di modelli LLM con controllo delle citazioni e mitigazione delle allucinazioni.</p>
+            </li>
+            <li>
+              <p>Interfaccia web e API per l&#39;uso da parte dei team interni.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: RAG, LLM, Vector Database, LangChain, Python</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interessi</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Tecnologia</span>: Open source, Robotica, Intelligenza artificiale</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Sport</span>: Corsa, Ciclismo, Arrampicata</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Musica</span>: Chitarra, Jazz</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Volontariato</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.poliai.it">PoliAi</a></div>
+            <div class="resume-entry-organization">Mentore AI</div>
+          </div>
+          <div class="resume-entry-date">ott 2021–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Mentorship per studenti universitari su progetti di machine learning e carriera nel settore AI.</p>
+            </li>
+            <li>
+              <p>Organizzazione di workshop su Python, PyTorch e buone pratiche MLOps.</p>
+            </li>
+            <li>
+              <p>Supporto alla community con revisione di progetti open source.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

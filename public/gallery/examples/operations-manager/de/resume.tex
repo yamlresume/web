@@ -1,0 +1,236 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for German language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-german.html
+\usepackage[ngerman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Dr. Julia Schneider}{}
+\title{Operations Manager | Prozessoptimierung \& Supply Chain}
+\phone[mobile]{+49 89 12345678}
+\email{julia.schneider@example.com}
+\homepage{https://www.julia-schneider.de}
+
+\address{Maximilianstraße 12, München, Bayern, Deutschland, 80333}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/julia-schneider-ops}{@julia-schneider-ops} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/j\_schneider\_ops}{@j\_schneider\_ops}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basisinformationen}
+
+\cvline{}{\begin{itemize}
+\item Operations Manager mit über 10 Jahren Erfahrung in der Optimierung von Produktions- und Logistikprozessen
+\item Nachweisliche Erfolge bei der Steigerung der Effizienz und Senkung der Betriebskosten durch Lean-Management und Six Sigma
+\item Expertise in der Führung interdisziplinärer Teams und der Umsetzung strategischer Projekte
+\item Fundierte Kenntnisse in SAP ERP, Supply Chain Management und kontinuierlicher Verbesserung (KVP)
+\end{itemize}}
+\section{Ausbildung}
+
+\cventry{Okt. 2010–Sept. 2012}
+        {Master, Wirtschaftsingenieurwesen, Punkte: 1,8}
+        {Technische Universität München}
+        {\url{https://www.tum.de}}
+        {}
+        {\begin{itemize}
+\item Schwerpunkt auf der Optimierung von Wertschöpfungsketten und betrieblichen Prozessen
+\item Praktische Erfahrung durch Projekte mit Industriepartnern, z. B. zur Lagerhaltungsoptimierung
+\item Ausgezeichnet mit dem Preis der Fakultät für herausragende Masterarbeit
+\end{itemize}
+\textbf{Kurse}: Produktionsmanagement, Logistik und Supply Chain Management, Operations Research, Qualitätsmanagement, Projektmanagement, Controlling und Finanzen}
+\section{Berufserfahrung}
+
+\cventry{Jan. 2020–Heute}
+        {Senior Operations Manager}
+        {Nordlicht Logistik GmbH}
+        {\url{https://www.nordlicht-logistik.de}}
+        {}
+        {\begin{itemize}
+\item Leitung der Betriebsabteilung mit 45 Mitarbeitern und Verantwortung für ein Budget von 8 Mio. EUR
+\item Einführung eines neuen Lagerverwaltungssystems (WMS) zur Steigerung der Lagerumschlagsgeschwindigkeit um 25 \%
+\item Implementierung von Lean-Management-Prinzipien, wodurch die Durchlaufzeiten um 15 \% reduziert wurden
+\item Aufbau eines KPI-Dashboards zur Echtzeitüberwachung der operativen Leistung
+\end{itemize}
+\textbf{Schlüsselwörter}: Lagerverwaltung, Lean Management, Budgetverantwortung, KPI-Reporting}
+
+\cventry{März 2017–Dez. 2019}
+        {Operations Manager}
+        {TechFlow Solutions AG}
+        {\url{https://www.techflow-solutions.de}}
+        {}
+        {\begin{itemize}
+\item Verantwortung für die Auftragsabwicklung und Produktionsplanung in einem internationalen Umfeld
+\item Optimierung der Lieferkette durch Einführung von S\&OP-Prozessen, Reduzierung der Lieferzeiten um 20 \%
+\item Führung eines Teams von 20 Mitarbeitern und Einführung regelmäßiger Schulungen zu Qualitätsstandards
+\item Zusammenarbeit mit Zulieferern zur Sicherstellung der Materialverfügbarkeit und Kostensenkung
+\end{itemize}
+\textbf{Schlüsselwörter}: Produktionsplanung, S\&OP, Lieferkettenoptimierung, Qualitätsmanagement}
+
+\cventry{Juli 2014–Feb. 2017}
+        {Operations Manager}
+        {Rhein-Main Produktion GmbH}
+        {\url{https://www.rhein-main-produktion.de}}
+        {}
+        {\begin{itemize}
+\item Steuerung der täglichen Betriebsabläufe in einem Produktionswerk mit 120 Mitarbeitern
+\item Einführung von Kanban-Systemen zur Bestandsreduzierung um 30 \%
+\item Durchführung von Wertstromanalysen und Ableitung von Maßnahmen zur Effizienzsteigerung
+\item Enge Zusammenarbeit mit der Geschäftsleitung zur Entwicklung langfristiger Betriebsstrategien
+\end{itemize}
+\textbf{Schlüsselwörter}: Kanban, Wertstromanalyse, Betriebssteuerung, Effizienzsteigerung}
+\section{Sprachen}
+
+\cvline{Deutsch}{Muttersprache oder zweisprachig \hfill \textbf{Schlüsselwörter}: Muttersprache}
+\cvline{Englisch}{Verhandlungssichere Kenntnisse \hfill \textbf{Schlüsselwörter}: TOEFL iBT 110, Verhandlungsführung}
+\section{Fähigkeiten}
+
+\cvline{Prozessoptimierung}{Experte \hfill \textbf{Schlüsselwörter}: Lean Management, Six Sigma, Wertstromanalyse, KVP, Kanban}
+\cvline{Supply Chain Management}{Erfahren \hfill \textbf{Schlüsselwörter}: S\&OP, Lieferkettenoptimierung, Lagerverwaltung, Beschaffung}
+\cvline{Teamführung}{Erfahren \hfill \textbf{Schlüsselwörter}: Mitarbeiterentwicklung, Konfliktmanagement, Changemanagement, Coaching}
+\cvline{SAP ERP}{Erfahren \hfill \textbf{Schlüsselwörter}: SAP MM, SAP PP, SAP WM}
+\cvline{Projektmanagement}{Erfahren \hfill \textbf{Schlüsselwörter}: PMP, Agile Methoden, Stakeholder-Management, Risikomanagement}
+\section{Auszeichnungen}
+
+\cventry{Nov. 2022}
+        {Nordlicht Logistik GmbH}
+        {Best Operations Excellence Award}
+        {}
+        {}
+        {Auszeichnung für die erfolgreiche Implementierung eines ganzheitlichen Lean-Management-Programms, das zu einer jährlichen Kosteneinsparung von 1,2 Mio. EUR führte.}
+
+\cventry{Okt. 2012}
+        {Technische Universität München}
+        {Preis der Fakultät für herausragende Masterarbeit}
+        {}
+        {}
+        {Für die Masterarbeit zum Thema "Optimierung von Lagerhaltungsstrategien mittels simulationsbasierter Analyse".}
+\section{Zertifikate}
+
+\cventry{Juni 2016}
+        {TÜV Rheinland}
+        {Lean Six Sigma Green Belt}
+        {\url{https://www.tuv.com/lean-six-sigma}}
+        {}
+        {}
+
+\cventry{Sept. 2018}
+        {Project Management Institute}
+        {Project Management Professional (PMP)}
+        {\url{https://www.pmi.org/certifications/project-management-pmp}}
+        {}
+        {}
+
+\cventry{März 2015}
+        {SAP SE}
+        {SAP Certified Application Associate - Supply Chain}
+        {\url{https://www.sap.com/certification}}
+        {}
+        {}
+\section{Projekte}
+
+\cventry{März 2021–Nov. 2021}
+        {Implementierung eines modernen WMS zur Optimierung der Lagerprozesse}
+        {Einführung eines WMS}
+        {\url{https://www.nordlicht-logistik.de/projekte/wms}}
+        {}
+        {\begin{itemize}
+\item Auswahl und Einführung eines neuen Warehouse-Management-Systems bei Nordlicht Logistik
+\item Analyse der bestehenden Prozesse und Definition von Anforderungen
+\item Schulung der Mitarbeiter und Begleitung der Inbetriebnahme
+\item Erzielung einer 25\%igen Steigerung der Lagerumschlagsgeschwindigkeit
+\end{itemize}
+\textbf{Schlüsselwörter}: WMS, Logistik, Prozessoptimierung}
+\section{Interessen}
+
+\cvline{Sport}{Laufen, Radfahren, Wandern}
+\cvline{Logistik und Technologie}{Industrie 4.0, Automatisierung, Nachhaltigkeit}
+\section{Ehrenamtliche Tätigkeiten}
+
+\cventry{Jan. 2019–Heute}
+        {Ehrenamtlicher Fachgruppenleiter}
+        {Bundesverband Materialwirtschaft, Einkauf und Logistik e.V. (BME)}
+        {\url{https://www.bme.de}}
+        {}
+        {\begin{itemize}
+\item Leitung der regionalen Fachgruppe München zum Thema "Digitale Supply Chain"
+\item Organisation von Fachvorträgen und Networking-Events für über 100 Mitglieder
+\item Förderung des Wissensaustauschs zwischen Industrie und Wissenschaft
+\end{itemize}}
+    
+\end{document}

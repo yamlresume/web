@@ -1,0 +1,274 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK TC}{
+  \setCJKmainfont{Noto Serif CJK TC}
+}{}
+\IfFontExistsTF{Noto Sans CJK TC}{
+  \setCJKsansfont{Noto Sans CJK TC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{林雅婷}{}
+\title{營運經理｜跨部門流程優化與供應鏈管理}
+\phone[mobile]{+886 2 8765 4321}
+\email{yating.lin@example.com}
+\homepage{https://yatinglin-ops.tw}
+
+\address{中國臺灣，信義區，台北市，台北市信義區松高路 88 號 12 樓，110}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/yatinglin-ops}{@yatinglin-ops} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@yatinglin-ops}{@yatinglin-ops}}
+
+\begin{document}
+
+\maketitle
+
+\section{簡介}
+
+\cvline{}{\begin{itemize}
+\item 8 年以上零售與電商營運管理經驗，擅長從數據中找出流程瓶頸並推動跨部門改善。
+\item 曾帶領 30 人以上營運團隊，負責門市、倉儲、客服與物流的日常管理與關鍵指標達成。
+\item 熟悉預算規劃、供應鏈協調、標準作業流程建置與專案管理，能在快速變動環境中穩定交付成果。
+\item 具備良好溝通與問題解決能力，致力於提升客戶滿意度與營運效率。
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2012年9月–2014年6月}
+        {碩士，企業管理研究所，成績：3.9/4.0}
+        {國立臺灣大學}
+        {\url{https://www.ntu.edu.tw/}}
+        {}
+        {\begin{itemize}
+\item 專注於營運策略、供應鏈協調與數據驅動決策，完成多項企業實務專案。
+\item 擔任管理學院個案研究助教，協助整理零售與服務業營運案例。
+\item 畢業論文探討零售通路存貨管理與門市績效之關聯。
+\end{itemize}
+\textbf{課程}：營運管理、供應鏈管理、資料分析與決策、專案管理、財務管理}
+
+\cventry{2008年9月–2012年6月}
+        {學士，國際經營與貿易學系，成績：3.7/4.0}
+        {國立政治大學}
+        {\url{https://www.nccu.edu.tw/}}
+        {}
+        {\begin{itemize}
+\item 建立國際企業、行銷與作業管理基礎，並選修供應鏈相關課程。
+\item 參與商業個案競賽，負責營運流程與成本結構分析。
+\item 透過團隊專案培養跨領域溝通與簡報能力。
+\end{itemize}
+\textbf{課程}：國際企業管理、行銷管理、統計學、作業管理、經濟學}
+\section{工作經歷}
+
+\cventry{2021年3月至今}
+        {營運經理}
+        {誠品生活股份有限公司}
+        {\url{https://www.eslite.com/}}
+        {}
+        {\begin{itemize}
+\item 負責全台 12 間門市與電商倉儲的營運管理，帶領 35 人團隊，年度營業額約新台幣 8 億元。
+\item 建立門市營運儀表板與每日關鍵指標檢視機制，將缺貨率降低 18\%，訂單準時出貨率提升至 97\%。
+\item 主導跨部門流程改善專案，整合採購、物流與客服作業，縮短新品上架時間 25\%。
+\item 規劃年度營運預算與人力配置，控制人事與物流成本，連續兩年達成部門獲利目標。
+\end{itemize}
+\textbf{關鍵字}：零售營運、供應鏈管理、關鍵指標管理、流程改善、預算規劃}
+
+\cventry{2017年7月–2021年2月}
+        {營運副理}
+        {富邦媒體科技股份有限公司}
+        {\url{https://www.momoshop.com.tw/}}
+        {}
+        {\begin{itemize}
+\item 管理電商倉儲與配送作業，協調第三方物流夥伴，處理每日超過 5,000 筆訂單。
+\item 導入標準作業流程與教育訓練制度，降低新人上手時間 30\%，提升包裝與出貨準確率。
+\item 分析客訴與退換貨數據，推動包裝與配送流程優化，使客訴率下降 22\%。
+\item 與行銷、採購及客服團隊協作，支援雙 11、週年慶等大型促銷活動的營運準備。
+\end{itemize}
+\textbf{關鍵字}：電商營運、物流管理、標準作業流程、客訴分析、活動支援}
+
+\cventry{2014年8月–2017年6月}
+        {門市營運督導}
+        {統一超商股份有限公司}
+        {\url{https://www.7-11.com.tw/}}
+        {}
+        {\begin{itemize}
+\item 督導大台北地區 18 間門市，協助店長達成營業額、毛利與服務品質指標。
+\item 執行門市稽核與輔導，改善商品陳列、庫存盤點與食品安全作業。
+\item 規劃區域教育訓練與招募活動，提升門市人員留任率與服務標準一致性。
+\end{itemize}
+\textbf{關鍵字}：門市管理、營運督導、庫存管理、教育訓練、食品安全}
+\section{語言}
+
+\cvline{中文}{母語或雙語水平}
+\cvline{英語}{完全專業水平 \hfill \textbf{關鍵字}：多益 950 分、商業簡報}
+\cvline{日語}{有限工作水平 \hfill \textbf{關鍵字}：日文檢定 N2}
+\section{專業技能}
+
+\cvline{營運管理}{專家 \hfill \textbf{關鍵字}：流程改善、關鍵指標設定、標準作業流程、預算規劃、績效管理}
+\cvline{供應鏈與物流}{高級 \hfill \textbf{關鍵字}：供應鏈協調、倉儲管理、物流配送、庫存控管、第三方物流管理}
+\cvline{數據分析}{高級 \hfill \textbf{關鍵字}：試算表分析、商業智慧儀表板、資料庫查詢、營運報表、數據洞察}
+\cvline{專案與跨部門協作}{高級 \hfill \textbf{關鍵字}：專案管理、跨部門溝通、變革管理、風險控管、敏捷思維}
+\cvline{顧客服務}{高級 \hfill \textbf{關鍵字}：客訴處理、服務流程設計、滿意度調查、客戶關係管理、教育訓練}
+\section{榮譽}
+
+\cventry{2023年12月}
+        {誠品生活股份有限公司}
+        {年度卓越營運獎}
+        {}
+        {}
+        {表彰在門市營運效率與跨部門流程改善上的卓越貢獻，帶領團隊達成年度關鍵指標目標。}
+
+\cventry{2019年11月}
+        {富邦媒體科技股份有限公司}
+        {最佳流程改善提案獎}
+        {}
+        {}
+        {針對倉儲出貨流程提出改善方案，降低出貨錯誤率並提升作業效率。}
+\section{證書}
+
+\cventry{2020年8月}
+        {國際專案管理學會}
+        {國際專案管理師認證}
+        {\url{https://www.pmi.org/certifications/project-management-pmp}}
+        {}
+        {}
+
+\cventry{2018年5月}
+        {中華民國品質學會}
+        {精實六標準差綠帶認證}
+        {\url{https://www.csq.org.tw/}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2023年6月}
+        {零售門市營運指標化管理實務}
+        {經理人月刊}
+        {\url{https://www.managertoday.com.tw/}}
+        {}
+        {\begin{itemize}
+\item 分享如何透過關鍵指標與每日檢視機制，提升門市營運透明度與問題反應速度。
+\item 以零售與電商案例說明跨部門流程改善的推動方法與常見挑戰。
+\end{itemize}}
+\section{項目}
+
+\cventry{2022年1月–2022年9月}
+        {整合門市銷售、庫存與客訴資料的營運管理儀表板。}
+        {門市營運數位儀表板}
+        {\url{https://yatinglin-ops.tw/projects/ops-dashboard}}
+        {}
+        {\begin{itemize}
+\item 與資訊及資料團隊合作，定義營運關鍵指標與資料來源。
+\item 建立每日自動更新機制，讓門市主管即時掌握來客數、客單價與缺貨率。
+\item 上線後協助區域主管每週進行數據檢討，提升營運問題的反應速度。
+\end{itemize}
+\textbf{關鍵字}：營運儀表板、數據視覺化、關鍵指標管理、零售分析}
+
+\cventry{2019年3月–2019年12月}
+        {針對促銷期間出貨瓶頸進行流程重設與人力調度優化。}
+        {電商倉儲出貨流程優化}
+        {\url{https://yatinglin-ops.tw/projects/warehouse-flow}}
+        {}
+        {\begin{itemize}
+\item 分析訂單波動與揀貨動線，重新規劃尖峰時段的人力配置。
+\item 建立出貨檢查清單與異常回報機制，降低出貨錯誤率。
+\item 與物流夥伴協調配送時段，提升促銷期間訂單準時出貨比例。
+\end{itemize}
+\textbf{關鍵字}：電商營運、倉儲流程、人力調度、物流協調}
+\section{興趣愛好}
+
+\cvline{專業社群}{零售營運、供應鏈管理、數據分析}
+\cvline{個人興趣}{登山、閱讀、攝影、馬拉松}
+\section{志願服務}
+
+\cventry{2021年3月至今}
+        {營運管理志工講師}
+        {台灣連鎖暨加盟協會}
+        {\url{https://www.tcfa.org.tw/}}
+        {}
+        {\begin{itemize}
+\item 參與中小企業營運診斷志工服務，協助在地店家建立營運指標與庫存管理流程。
+\item 定期分享門市管理、客訴處理與流程改善實務，協助學員提升營運管理能力。
+\end{itemize}}
+    
+\end{document}

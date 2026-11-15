@@ -1,0 +1,251 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Brazilian Portuguese language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-portuguese.html
+\usepackage[brazilian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Lucas Martins Oliveira}{}
+\title{Engenheiro de Segurança Cibernética | OSCP | Cloud Security}
+\phone[mobile]{+55 11 98765-4321}
+\email{lucas.oliveira@cybersec.dev}
+\homepage{https://lucasoliveira.dev}
+
+\address{Av. Paulista, 1578, Bela Vista, São Paulo, SP, Brasil, 01310-200}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/lucas-martins-oliveira}{@lucas-martins-oliveira} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/lucas-moliveira}{@lucas-moliveira}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informações Básicas}
+
+\cvline{}{\begin{itemize}
+\item Engenheiro de segurança cibernética com mais de 8 anos de experiência em proteção de ambientes corporativos e cloud.
+\item Especialista em segurança ofensiva, resposta a incidentes e arquitetura de segurança em AWS e Azure.
+\item Certificado OSCP, CISSP e AWS Security Specialty, com forte atuação em conformidade (ISO 27001, LGPD, PCI DSS).
+\item Liderança técnica de equipes e implementação de programas de segurança desde a concepção até a operação.
+\end{itemize}}
+\section{Formação}
+
+\cventry{mar. de 2014–dez. de 2018}
+        {Bacharelado, Engenharia de Computação, Nota: 8.7/10}
+        {Universidade de São Paulo}
+        {\url{https://www.usp.br}}
+        {}
+        {\begin{itemize}
+\item Formação sólida em fundamentos de computação, redes e segurança da informação.
+\item Desenvolvimento de projetos práticos em segurança de aplicações e análise de vulnerabilidades.
+\item Participação em grupo de estudos de cibersegurança e competições de CTF.
+\end{itemize}
+\textbf{Cursos}: Segurança de Sistemas, Criptografia, Redes de Computadores, Sistemas Operacionais, Banco de Dados, Engenharia de Software, Computação em Nuvem, Inteligência Artificial}
+\section{Experiência Profissional}
+
+\cventry{jan. de 2022–Atual}
+        {Engenheiro de Segurança Cibernética Sênior}
+        {Banco Digital Aurora}
+        {\url{https://www.bancaurora.com.br}}
+        {}
+        {\begin{itemize}
+\item Liderança técnica na definição de arquitetura de segurança para serviços em cloud (AWS e Azure).
+\item Implementação de programa de threat modeling e revisão de segurança de aplicações.
+\item Condução de resposta a incidentes críticos e análise forense.
+\item Desenvolvimento de automação de controles de segurança com Terraform e Python.
+\item Mentoria de engenheiros júniores e disseminação da cultura de segurança.
+\end{itemize}
+\textbf{Palavras-chave}: Threat Modeling, Cloud Security, SIEM, Incident Response, Terraform}
+
+\cventry{fev. de 2019–dez. de 2021}
+        {Engenheiro de Segurança da Informação}
+        {Consultoria RiskTech}
+        {\url{https://www.risktech.com.br}}
+        {}
+        {\begin{itemize}
+\item Realização de testes de intrusão em aplicações web, APIs e infraestrutura.
+\item Avaliação de conformidade com ISO 27001, PCI DSS e LGPD.
+\item Implementação de soluções SIEM e correlação de eventos.
+\item Elaboração de relatórios técnicos e planos de remediação.
+\item Atuação em projetos de resposta a incidentes para clientes dos setores financeiro e saúde.
+\end{itemize}
+\textbf{Palavras-chave}: Penetration Testing, ISO 27001, SIEM, LGPD, Risk Assessment}
+
+\cventry{ago. de 2017–dez. de 2018}
+        {Estagiário de Segurança da Informação}
+        {TechSecure Soluções}
+        {\url{https://www.techsecure.com.br}}
+        {}
+        {\begin{itemize}
+\item Monitoramento de alertas de segurança e triagem inicial de incidentes.
+\item Apoio na configuração de firewalls e sistemas de detecção de intrusão.
+\item Documentação de procedimentos operacionais de segurança.
+\item Participação em simulações de phishing e conscientização de usuários.
+\end{itemize}
+\textbf{Palavras-chave}: Firewalls, IDS/IPS, Phishing, Monitoring}
+\section{Idiomas}
+
+\cvline{Português}{Nativo ou Bilíngue}
+\cvline{Inglês}{Proficiência Profissional Fluente \hfill \textbf{Palavras-chave}: TOEFL 105, Cambridge C1}
+\cvline{Espanhol}{Proficiência Profissional Limitada}
+\section{Competências}
+
+\cvline{Segurança Ofensiva}{Avançado \hfill \textbf{Palavras-chave}: Penetration Testing, Metasploit, Burp Suite, OSCP, Nmap}
+\cvline{Segurança em Cloud}{Avançado \hfill \textbf{Palavras-chave}: AWS Security, Azure Security, IAM, Terraform, Kubernetes Security}
+\cvline{Resposta a Incidentes}{Especialista \hfill \textbf{Palavras-chave}: SIEM, Splunk, Forensics, SOAR, Threat Hunting}
+\cvline{Redes e Infraestrutura}{Avançado \hfill \textbf{Palavras-chave}: Firewalls, VPN, IDS/IPS, TCP/IP, Zero Trust}
+\cvline{Governança e Conformidade}{Intermediário \hfill \textbf{Palavras-chave}: ISO 27001, LGPD, NIST, PCI DSS, Risk Assessment}
+\section{Prêmios}
+
+\cventry{nov. de 2023}
+        {Banco Digital Aurora}
+        {Profissional de Segurança do Ano}
+        {}
+        {}
+        {Reconhecimento pela liderança na implementação do programa de segurança em cloud e redução de 40\% nos incidentes críticos.}
+\section{Certificados}
+
+\cventry{jun. de 2021}
+        {Offensive Security}
+        {OSCP - Offensive Security Certified Professional}
+        {\url{https://www.offsec.com/certifications/oscp/}}
+        {}
+        {}
+
+\cventry{set. de 2022}
+        {ISC2}
+        {CISSP - Certified Information Systems Security Professional}
+        {\url{https://www.isc2.org/certifications/cissp}}
+        {}
+        {}
+
+\cventry{mar. de 2023}
+        {Amazon Web Services}
+        {AWS Certified Security - Specialty}
+        {\url{https://aws.amazon.com/certification/certified-security-specialty/}}
+        {}
+        {}
+
+\cventry{fev. de 2020}
+        {CompTIA}
+        {CompTIA Security+}
+        {\url{https://www.comptia.org/certifications/security}}
+        {}
+        {}
+\section{Publicações}
+
+\cventry{out. de 2023}
+        {Detecção de Intrusão em Ambientes Cloud-Native}
+        {Revista Brasileira de Segurança Cibernética}
+        {\url{https://www.revistabsc.com.br/artigos/deteccao-intrusao-cloud-native}}
+        {}
+        {Artigo sobre abordagens de detecção de intrusão em ambientes de contêineres e Kubernetes, com foco em machine learning e correlação de eventos.}
+\section{Projetos}
+
+\cventry{jan. de 2023–dez. de 2023}
+        {Plataforma open-source para agregação e correlação de indicadores de ameaça.}
+        {ThreatIntel BR}
+        {\url{https://github.com/lucas-moliveira/threatintel-br}}
+        {}
+        {Desenvolvimento de plataforma para coleta de feeds de threat intelligence e correlação com eventos de segurança; integração com SIEM e geração de alertas contextualizados.
+\textbf{Palavras-chave}: Threat Intelligence, Python, SIEM, Open Source}
+
+\cventry{abr. de 2022–out. de 2022}
+        {Ferramenta de análise forense de logs para ambientes Linux.}
+        {LogHunter}
+        {\url{https://github.com/lucas-moliveira/loghunter}}
+        {}
+        {Criação de ferramenta em Python para análise de logs de autenticação e detecção de comportamentos anômalos; redução do tempo de triagem em 30\%.
+\textbf{Palavras-chave}: Python, Forensics, Log Analysis, Linux}
+\section{Interesses}
+
+\cvline{Cibersegurança}{CTFs, Bug Bounty, Malware Analysis}
+\cvline{Esportes}{Corrida, Natação, Ciclismo}
+\cvline{Leitura}{Ficção Científica, Biografias}
+\section{Voluntariado}
+
+\cventry{mar. de 2020–Atual}
+        {Mentor e Palestrante}
+        {OWASP São Paulo Chapter}
+        {\url{https://owasp.org/www-chapter-sao-paulo/}}
+        {}
+        {\begin{itemize}
+\item Atuação como mentor em programas de capacitação em segurança de aplicações.
+\item Palestras sobre OWASP Top 10 e boas práticas de desenvolvimento seguro.
+\item Organização de encontros técnicos e workshops para a comunidade.
+\end{itemize}}
+    
+\end{document}

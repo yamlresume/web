@@ -1,0 +1,258 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Marius Ødegård}{}
+\title{Dataingeniør med erfaring innen skyplattformer og datapipelines}
+\phone[mobile]{+47 912 34 567}
+\email{marius.odegard@example.no}
+\homepage{https://mariusodegard.no}
+
+\address{Storgata 12, Oslo, Oslo, Norge, 0150}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/marius-odegard}{@marius-odegard} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/mariusodegard}{@mariusodegard}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{Dataingeniør med seks års erfaring fra å bygge skalerbare datapipelines, datavarehus og sanntidsløsninger. Sterk bakgrunn i Python, SQL, dbt, Airflow og skytjenester, med fokus på datakvalitet, automatisering og kostnadseffektivitet.
+%
+\begin{itemize}
+\item Utvikler og drifter satsvise og strømmende datapipelines for analyse og maskinlæring
+\item Erfaren med modellering av datavarehus og datakontrakter i tverrfaglige team
+\item Opptatt av robust dataobserverbarhet, dokumentasjon og kontinuerlig forbedring
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2015–juni 2017}
+        {Master, Informatikk, Poeng: 3,8/4,0}
+        {Universitetet i Oslo}
+        {\url{https://www.uio.no}}
+        {}
+        {\begin{itemize}
+\item Spesialisering i datahåndtering og distribuerte systemer
+\item Masteroppgave om strømmebehandling og datakvalitet i sanntid
+\end{itemize}
+\textbf{Kurs}: Distribuerte systemer, Databaser og datamodellering, Maskinlæring, Statistisk analyse, Skyarkitektur}
+
+\cventry{aug. 2012–juni 2015}
+        {Bachelor, Informatikk, Poeng: 3,6/4,0}
+        {Norges teknisk-naturvitenskapelige universitet}
+        {\url{https://www.ntnu.no}}
+        {}
+        {\begin{itemize}
+\item Grunnleggende og avansert programmering
+\item Prosjektarbeid i tverrfaglige team med fokus på data og systemutvikling
+\end{itemize}
+\textbf{Kurs}: Programmering i Python, Algoritmer og datastrukturer, Operativsystemer, Nettverk, Databasesystemer}
+\section{Arbeidserfaring}
+
+\cventry{mars 2021–Nå}
+        {Senior dataingeniør}
+        {Nordlys Data AS}
+        {\url{https://www.nordlysdata.no}}
+        {}
+        {\begin{itemize}
+\item Ledet utviklingen av en skybasert dataplattform på Azure for 40+ interne brukere
+\item Designet og implementert satsvise og strømmende datapipelines med Python, Databricks og Airflow
+\item Etablerte datakontrakter, datakvalitetstester og overvåking som reduserte dataincidenter med 45 \%
+\item Veiledet juniorutviklere og innførte kodestandarder og CI/CD for datajobber
+\end{itemize}
+\textbf{Nøkkelord}: Azure, Databricks, Airflow, Python, Datakvalitet}
+
+\cventry{aug. 2018–feb. 2021}
+        {Dataingeniør}
+        {Fjord Analyse AS}
+        {\url{https://www.fjordanalyse.no}}
+        {}
+        {\begin{itemize}
+\item Bygget datavarehus i Snowflake med dbt-modeller for salg, kunde og produkt
+\item Automatiserte daglige ETL-jobber med Airflow og Python, noe som sparte 15 timer per uke
+\item Samarbeidet med analyse- og produktteam om datakrav og selvbetjeningsløsninger
+\item Forbedret dokumentasjon og datakatalog for kritiske datakilder
+\end{itemize}
+\textbf{Nøkkelord}: Snowflake, dbt, ETL, SQL, Python}
+
+\cventry{aug. 2017–juli 2018}
+        {Dataanalytiker}
+        {Havblikk Energi AS}
+        {\url{https://www.havblikkenergi.no}}
+        {}
+        {\begin{itemize}
+\item Utviklet rapporter og dashbord for produksjon og vedlikehold
+\item Renset og modellerte sensordata fra vindturbiner
+\item Støttet datadrevne beslutninger med SQL, Python og Power BI
+\end{itemize}
+\textbf{Nøkkelord}: Power BI, SQL, Sensordata, Rapportering}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Norsk, Bokmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: C1, Teknisk dokumentasjon}
+\section{Ferdigheter}
+
+\cvline{Datapipelines}{Ekspert \hfill \textbf{Nøkkelord}: Python, SQL, Airflow, dbt, Spark}
+\cvline{Skyløsninger}{Avansert \hfill \textbf{Nøkkelord}: Azure, AWS, Snowflake, Databricks, Docker}
+\cvline{Datamodellering}{Avansert \hfill \textbf{Nøkkelord}: Dimensjonsmodellering, Datavarehus, Datakontrakter, Datakatalog}
+\cvline{Dataobserverbarhet}{Viderekommen \hfill \textbf{Nøkkelord}: Great Expectations, Overvåking, Datakvalitet, Logging}
+\section{Utmerkelser}
+
+\cventry{nov. 2023}
+        {Nordlys Data AS}
+        {Årets dataprosjekt}
+        {}
+        {}
+        {Tildelt for dataplattformen som ga betydelig raskere innsikt og lavere driftskostnader.}
+
+\cventry{juni 2017}
+        {Universitetet i Oslo}
+        {Beste masteroppgave i datahåndtering}
+        {}
+        {}
+        {Anerkjennelse for masteroppgaven om strømmebehandling og datakvalitet i sanntid.}
+\section{Sertifikater}
+
+\cventry{sep. 2022}
+        {Microsoft}
+        {Microsoft Certified: Azure Data Engineer Associate}
+        {\url{https://learn.microsoft.com/en-us/certifications/azure-data-engineer/}}
+        {}
+        {}
+
+\cventry{mai 2023}
+        {dbt Labs}
+        {dbt Analytics Engineering Certification}
+        {\url{https://www.getdbt.com/certifications/}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{nov. 2017}
+        {Strømmebehandling med fokus på datakvalitet i sanntid}
+        {Norsk informatikkonferanse}
+        {\url{https://www.nik.no}}
+        {}
+        {\begin{itemize}
+\item Presenterer en arkitektur for sanntidsdatakvalitet i strømmepipelines
+\item Diskuterer praktiske erfaringer fra energisektoren
+\end{itemize}}
+\section{Prosjekter}
+
+\cventry{jan. 2022–des. 2023}
+        {Åpen kildekode-prosjekt for datakvalitet i strømmepipelines}
+        {Sanntids datakvalitetsplattform}
+        {\url{https://github.com/mariusodegard/realtime-dq}}
+        {}
+        {\begin{itemize}
+\item Bygget med Python, Kafka og Great Expectations
+\item Automatiserte tester og varsling for kritiske datastrømmer
+\item Dokumenterte mønstre for datakontrakter og overvåking
+\end{itemize}
+\textbf{Nøkkelord}: Kafka, Python, Datakvalitet, Observerbarhet}
+
+\cventry{apr. 2021–okt. 2021}
+        {Intern portal for kuraterte datasett og dashbord}
+        {Selvbetjent analyseportal}
+        {\url{https://www.nordlysdata.no/cases/analyseportal}}
+        {}
+        {\begin{itemize}
+\item Utviklet metadata-API og søk i datakatalog
+\item Integrerte Power BI og Snowflake for enklere selvbetjening
+\end{itemize}
+\textbf{Nøkkelord}: Datakatalog, Power BI, API}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fjellturer, Langrenn, Kajakk}
+\cvline{Teknologi}{Åpen kildekode, Dataplattformer, Skyarkitektur}
+\section{Frivillig arbeid}
+
+\cventry{jan. 2022–Nå}
+        {Fagansvarlig for dataplattform}
+        {Dataforeningen Oslo}
+        {\url{https://www.dataforeningen.no}}
+        {}
+        {\begin{itemize}
+\item Arrangerer fagkvelder og workshops om datapipelines og skyarkitektur
+\item Bidrar til nettverksbygging mellom datafaglige miljøer i Oslo
+\end{itemize}}
+    
+\end{document}

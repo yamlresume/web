@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-hant-tw">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>林冠宇 Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">林冠宇</h1>
+    <p class="resume-headline">資深軟體測試工程師</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:kuanyu.lin@example.com" class="resume-contact-link">kuanyu.lin@example.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+886 912 345 678</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://kuanyulin.dev" class="resume-contact-link">https://kuanyulin.dev</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>中國臺灣，台北市，台北市，台北市信義區松仁路 100 號，110</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/kuanyulin" class="resume-contact-link">@kuanyulin</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/kuanyulin" class="resume-contact-link">@kuanyulin</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">簡介</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>擁有 8 年軟體測試經驗，專精於自動化測試框架設計與導入</p>
+          </li>
+          <li>
+            <p>熟悉 Web、API 與行動裝置應用程式測試，具備紮實的程式開發能力</p>
+          </li>
+          <li>
+            <p>擅長建立測試流程與品質指標，推動 CI/CD 與測試左移</p>
+          </li>
+          <li>
+            <p>具備跨團隊溝通與專案管理能力，能有效提升產品品質與交付效率</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">教育背景</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ntu.edu.tw">國立臺灣大學</a></div>
+            <div class="resume-entry-organization">學士，資訊工程學系，成績：3.9/4.0</div>
+          </div>
+          <div class="resume-entry-date">2012年9月–2016年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>主修資訊工程，奠定紮實的程式設計與系統分析基礎</p>
+            </li>
+            <li>
+              <p>專題研究聚焦於軟體測試與品質保證，獲得系上專題競賽優等</p>
+            </li>
+            <li>
+              <p>擔任系學會資訊組組長，負責系網維護與活動系統開發</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>課程</span>：資料結構、演算法、作業系統、資料庫系統、軟體工程、計算機網路、程式設計、離散數學</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">工作經歷</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.trendmicro.com">趨勢科技</a></div>
+            <div class="resume-entry-organization">資深品質保證工程師</div>
+          </div>
+          <div class="resume-entry-date">2020年1月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>負責雲端安全產品（CWPP）的整體測試策略規劃與執行，涵蓋功能、效能、安全性與相容性測試</p>
+            </li>
+            <li>
+              <p>主導建置以 Pytest 與 Selenium 為基礎的端到端自動化測試框架，將回歸測試時間從 3 天縮短至 4 小時</p>
+            </li>
+            <li>
+              <p>導入測試左移流程，與開發團隊協作於 CI/CD 管道中執行單元測試與整合測試，提升版本交付品質</p>
+            </li>
+            <li>
+              <p>建立品質指標與測試覆蓋率報告，定期向產品與工程團隊彙報，推動持續改善</p>
+            </li>
+            <li>
+              <p>指導 3 位初階測試工程師，協助其熟悉自動化測試與缺陷管理流程</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：自動化測試、雲端安全、Pytest、Selenium、CI/CD、測試策略</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.mediatek.com">聯發科技</a></div>
+            <div class="resume-entry-organization">品質保證工程師</div>
+          </div>
+          <div class="resume-entry-date">2016年7月–2019年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>負責行動晶片平台之相容性與效能測試，確保產品符合業界標準與客戶需求</p>
+            </li>
+            <li>
+              <p>設計並執行測試計畫，涵蓋 Android 相容性測試（CTS）、效能基準測試與功耗測試</p>
+            </li>
+            <li>
+              <p>開發自動化測試腳本（Java、Python），整合 Jenkins 以實現每日建置與測試</p>
+            </li>
+            <li>
+              <p>分析測試結果並追蹤缺陷，與硬體、軟體及客戶團隊協作解決問題</p>
+            </li>
+            <li>
+              <p>撰寫測試報告與技術文件，協助提升團隊測試效率與知識分享</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：嵌入式測試、效能測試、Android CTS、Java、Jenkins、缺陷追蹤</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">語言</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">中文<span class="resume-language-fluency">：母語或雙語水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：母語</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">英語<span class="resume-language-fluency">：完全專業水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：TOEIC 950、技術文件撰寫、跨國團隊溝通</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">專業技能</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">測試自動化<span class="resume-skill-level">：專家</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：Selenium、Cypress、Appium、Pytest、Python</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">效能與負載測試<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：JMeter、Locust、Gatling、k6</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">API 測試<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：Postman、REST Assured、Swagger、GraphQL</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">測試管理與流程<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：JIRA、TestRail、Agile、Scrum、CI/CD</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">程式與資料庫<span class="resume-skill-level">：中級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：Python、Java、SQL、Git、Docker</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">榮譽</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">年度卓越員工獎</div>
+            <div class="resume-entry-organization">趨勢科技</div>
+          </div>
+          <div class="resume-entry-date">2023年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>表揚在雲端安全產品測試自動化與品質流程改善上的傑出貢獻，成功將回歸測試時間縮短 90%。</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">黑客松最佳測試創新獎</div>
+            <div class="resume-entry-organization">台灣軟體測試社群</div>
+          </div>
+          <div class="resume-entry-date">2021年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>以「智慧型測試案例生成器」為題，運用機器學習分析使用者行為並自動產生高覆蓋率測試案例，獲得評審青睞。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">證書</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.istqb.org/certifications/advanced-level-test-manager">ISTQB 進階測試經理認證</a></div>
+            <div class="resume-entry-organization">ISTQB</div>
+          </div>
+          <div class="resume-entry-date">2021年3月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://aws.amazon.com/certification/certified-cloud-practitioner/">AWS 雲端從業人員認證</a></div>
+            <div class="resume-entry-organization">AWS</div>
+          </div>
+          <div class="resume-entry-date">2022年8月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.scrumalliance.org/get-certified/scrum-master-track/certified-scrummaster">認證 ScrumMaster</a></div>
+            <div class="resume-entry-organization">Scrum Alliance</div>
+          </div>
+          <div class="resume-entry-date">2020年6月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">出版刊物</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.softwaretesting.tw/articles/automation-framework-guide">建構高覆蓋率自動化測試框架的實務指南</a></div>
+            <div class="resume-entry-organization">軟體測試技術月刊</div>
+          </div>
+          <div class="resume-entry-date">2022年5月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>探討如何從零開始建構可維護、可擴展的自動化測試框架</p>
+            </li>
+            <li>
+              <p>分享實際案例與程式碼範例，涵蓋 Page Object Model 與資料驅動測試</p>
+            </li>
+            <li>
+              <p>提供測試覆蓋率與品質指標的衡量方法</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">項目</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/kuanyulin/cloud-security-test-framework">雲端安全產品自動化測試框架</a></div>
+            <div class="resume-entry-description">為雲端安全產品設計與實作端到端自動化測試框架</div>
+          </div>
+          <div class="resume-entry-date">2021年1月–2022年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>採用 Pytest 與 Selenium 建構模組化測試框架，支援多環境與多瀏覽器執行</p>
+            </li>
+            <li>
+              <p>整合 Docker 與 Jenkins，實現每日自動化回歸測試與報告產出</p>
+            </li>
+            <li>
+              <p>測試覆蓋率提升至 85%，缺陷漏檢率降低 40%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>： 自動化測試、Pytest、Selenium、Docker、Jenkins</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/kuanyulin/mobile-perf-tool">行動裝置效能測試工具</a></div>
+            <div class="resume-entry-description">開發輕量級行動裝置效能測試工具，用於監控 CPU、記憶體與電量消耗</div>
+          </div>
+          <div class="resume-entry-date">2019年3月–2019年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>使用 Python 與 ADB 開發效能資料收集與視覺化工具</p>
+            </li>
+            <li>
+              <p>支援多款 Android 裝置，協助團隊快速定位效能瓶頸</p>
+            </li>
+            <li>
+              <p>工具導入後，效能問題平均修復時間縮短 30%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>： 效能測試、Python、ADB、Android、資料視覺化</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">興趣愛好</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">登山</span>：百岳、健行、露營</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">攝影</span>：風景攝影、街拍</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">閱讀</span>：技術書籍、科幻小說</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">志願服務</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.softwaretesting.tw">台灣軟體測試社群</a></div>
+            <div class="resume-entry-organization">志工講者</div>
+          </div>
+          <div class="resume-entry-date">2021年1月–2023年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>定期於社群 meetup 分享自動化測試實務經驗與最佳實踐</p>
+            </li>
+            <li>
+              <p>協助籌辦年度軟體測試研討會，吸引超過 300 位參與者</p>
+            </li>
+            <li>
+              <p>參與開源測試工具推廣，翻譯技術文件並貢獻測試案例</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

@@ -1,0 +1,274 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Indonesian (Bahasa Indonesia) language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-indonesian.html
+\usepackage[indonesian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Rina Kartika Sari}{}
+\title{Analis Bisnis Senior}
+\phone[mobile]{+62 812-3456-7890}
+\email{rina.kartikasari@example.com}
+\homepage{https://www.rinakartika.id}
+
+\address{Jl. Jenderal Sudirman Kav. 52-53, SCBD, Jakarta Selatan, DKI Jakarta, Indonesia, 12190}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/rinakartikasari}{@rinakartikasari} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@rinakartikasari}{@rinakartikasari}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informasi Dasar}
+
+\cvline{}{Analis Bisnis dengan pengalaman lebih dari 7 tahun dalam memetakan kebutuhan bisnis, merancang proses, dan menerjemahkannya menjadi solusi digital yang terukur. Terbiasa memimpin diskusi dengan pemangku kepentingan lintas fungsi, menyusun dokumentasi kebutuhan, serta mendukung tim teknologi dan operasional agar solusi tepat waktu dan sesuai tujuan bisnis.
+%
+\begin{itemize}
+\item Berpengalaman dalam analisis proses, gap analysis, user story, dan pengujian penerimaan pengguna.
+\item Kuat dalam pengolahan data dengan SQL, Excel lanjutan, Power BI, dan Tableau untuk menghasilkan insight.
+\item Terampil memfasilitasi workshop, presentasi manajemen, dan manajemen perubahan di lingkungan Agile.
+\end{itemize}}
+\section{Pendidikan}
+
+\cventry{Agu 2012–Jul 2016}
+        {Sarjana, Manajemen Bisnis, Nilai: 3.72}
+        {Universitas Indonesia}
+        {\url{https://www.ui.ac.id}}
+        {}
+        {\begin{itemize}
+\item Memperoleh pemahaman kuat tentang strategi bisnis, proses operasional, dan pengelolaan proyek.
+\item Aktif dalam organisasi kemahasiswaan dan kompetisi studi kasus bisnis.
+\item Menyelesaikan tugas akhir tentang efisiensi proses layanan pelanggan di industri ritel.
+\end{itemize}
+\textbf{Mata Kuliah}: Analisis Proses Bisnis, Manajemen Proyek, Sistem Informasi Manajemen, Statistik Bisnis, Riset Operasi, Manajemen Keuangan, Perilaku Organisasi}
+\section{Pengalaman Kerja}
+
+\cventry{Mar 2021–Sekarang}
+        {Analis Bisnis Senior}
+        {PT Bank Nusantara Digital}
+        {\url{https://www.banknusantaradigital.co.id}}
+        {}
+        {\begin{itemize}
+\item Memimpin analisis kebutuhan untuk inisiatif transformasi kredit digital dengan nilai manfaat proses hingga 30\% lebih cepat.
+\item Menyusun BRD, FRD, user story, dan kriteria penerimaan yang digunakan oleh tim produk, teknologi, dan kepatuhan.
+\item Memfasilitasi workshop lintas fungsi dengan 20+ pemangku kepentingan untuk menyelaraskan prioritas dan ruang lingkup.
+\item Melakukan gap analysis terhadap proses onboarding nasabah dan merekomendasikan perbaikan alur yang menurunkan waktu tunggu.
+\item Mendukung pengujian penerimaan pengguna dan peluncuran fitur perbankan digital dengan tingkat adopsi yang terukur.
+\end{itemize}
+\textbf{Kata Kunci}: Analisis Proses Bisnis, Manajemen Pemangku Kepentingan, BRD dan FRD, Agile, SQL}
+
+\cventry{Jan 2018–Feb 2021}
+        {Analis Bisnis}
+        {PT Solusi Retail Indonesia}
+        {\url{https://www.solusiretail.co.id}}
+        {}
+        {\begin{itemize}
+\item Mengumpulkan dan mendokumentasikan kebutuhan bisnis untuk sistem inventori dan point of sale di 120+ gerai.
+\item Menganalisis data penjualan dan stok untuk mengidentifikasi peluang efisiensi serta mengurangi selisih stok.
+\item Menjadi penghubung antara tim operasional, vendor teknologi, dan manajemen dalam siklus pengembangan.
+\item Menyusun laporan kinerja bulanan dan dashboard KPI untuk mendukung pengambilan keputusan.
+\item Melakukan pelatihan pengguna dan pendampingan UAT pada setiap rilis fitur utama.
+\end{itemize}
+\textbf{Kata Kunci}: Inventori, Point of Sale, Dashboard KPI, UAT, Pelatihan Pengguna}
+
+\cventry{Agu 2016–Des 2017}
+        {Analis Data Junior}
+        {PT Karya Data Analitika}
+        {\url{https://www.karyadata.co.id}}
+        {}
+        {\begin{itemize}
+\item Mengolah dan membersihkan data operasional untuk kebutuhan pelaporan mingguan dan bulanan.
+\item Membuat kueri SQL untuk mengekstrak data dari basis data transaksi dan mendukung analisis kinerja.
+\item Menyusun visualisasi data sederhana untuk membantu tim manajemen memahami tren pelanggan.
+\item Berkolaborasi dengan analis senior dalam menyiapkan studi kelayakan dan rekomendasi proses.
+\end{itemize}
+\textbf{Kata Kunci}: SQL, Pembersihan Data, Visualisasi Data, Pelaporan}
+\section{Bahasa}
+
+\cvline{Indonesia}{Bahasa Ibu / Bilingual \hfill \textbf{Kata Kunci}: Bahasa ibu}
+\cvline{Inggris}{Tingkat Profesional Penuh \hfill \textbf{Kata Kunci}: IELTS 7.0, Presentasi bisnis}
+\section{Keahlian}
+
+\cvline{Analisis Bisnis}{Ahli \hfill \textbf{Kata Kunci}: BPMN, User Story, Gap Analysis, BRD, FRD, Process Mapping}
+\cvline{Data dan Pelaporan}{Mahir \hfill \textbf{Kata Kunci}: SQL, Power BI, Tableau, Excel Lanjutan, Metrik KPI}
+\cvline{Manajemen Proyek}{Mahir \hfill \textbf{Kata Kunci}: Agile, Scrum, Jira, Confluence, Manajemen Risiko}
+\cvline{Komunikasi dan Kolaborasi}{Ahli \hfill \textbf{Kata Kunci}: Workshop, Presentasi, Negosiasi, Manajemen Perubahan, Fasilitasi}
+\section{Penghargaan}
+
+\cventry{Des 2023}
+        {PT Bank Nusantara Digital}
+        {Analis Bisnis Terbaik}
+        {}
+        {}
+        {Diberikan atas kontribusi dalam mempercepat peluncuran fitur kredit digital dan meningkatkan kolaborasi lintas fungsi.}
+
+\cventry{Nov 2020}
+        {PT Solusi Retail Indonesia}
+        {Penghargaan Inovasi Proses}
+        {}
+        {}
+        {Diakui karena merancang perbaikan alur inventori yang menurunkan waktu rekonsiliasi stok.}
+\section{Sertifikat}
+
+\cventry{Nov 2022}
+        {IIBA}
+        {Certified Business Analysis Professional (CBAP)}
+        {\url{https://www.iiba.org/certification/cbap/}}
+        {}
+        {}
+
+\cventry{Jun 2021}
+        {Scrum.org}
+        {Professional Scrum Master I}
+        {\url{https://www.scrum.org/professional-scrum-certifications/psm-i}}
+        {}
+        {}
+
+\cventry{Sep 2023}
+        {Microsoft}
+        {Microsoft Power BI Data Analyst}
+        {\url{https://learn.microsoft.com/en-us/certifications/power-bi-data-analyst-associate/}}
+        {}
+        {}
+\section{Publikasi}
+
+\cventry{Apr 2023}
+        {Meningkatkan Efisiensi Proses Onboarding Nasabah Digital}
+        {Jurnal Sistem Informasi Indonesia}
+        {\url{https://jurnal-sii.example.id/artikel/onboarding-digital}}
+        {}
+        {\begin{itemize}
+\item Membahas pemetaan proses dan identifikasi titik hambatan pada onboarding nasabah digital.
+\item Menyoroti peran analis bisnis dalam menyelaraskan kebutuhan pengguna, kepatuhan, dan teknologi.
+\item Memberikan rekomendasi prioritas perbaikan berbasis data operasional.
+\end{itemize}}
+\section{Proyek}
+
+\cventry{Jan 2022–Nov 2022}
+        {Inisiatif untuk mempercepat proses pengajuan hingga persetujuan kredit nasabah digital.}
+        {Transformasi Proses Kredit Digital}
+        {\url{https://www.banknusantaradigital.co.id/proyek/kredit-digital}}
+        {}
+        {\begin{itemize}
+\item Memetakan proses as-is dan to-be bersama tim produk, risiko, dan kepatuhan.
+\item Menyusun user story dan kriteria penerimaan untuk fitur pengajuan kredit.
+\item Mendukung UAT dan peluncuran bertahap dengan pemantauan metrik waktu proses.
+\end{itemize}
+\textbf{Kata Kunci}: Kredit Digital, BPMN, User Story, UAT}
+
+\cventry{Mar 2020–Okt 2020}
+        {Dashboard untuk memantau retensi pelanggan dan efektivitas program loyalitas.}
+        {Dashboard Retensi Pelanggan}
+        {\url{https://www.solusiretail.co.id/proyek/dashboard-retensi}}
+        {}
+        {\begin{itemize}
+\item Mendefinisikan KPI retensi dan segmentasi pelanggan bersama tim pemasaran.
+\item Merancang kebutuhan data dan tata letak dashboard untuk pengguna manajerial.
+\item Memvalidasi hasil analisis dengan tim operasional dan pemasaran.
+\end{itemize}
+\textbf{Kata Kunci}: Retensi, KPI, Power BI, Segmentasi}
+\section{Minat}
+
+\cvline{Pengembangan Diri}{Membaca, Public Speaking, Penulisan}
+\cvline{Olahraga}{Lari, Yoga, Bersepeda}
+\cvline{Komunitas}{Relawan, Mentoring}
+\section{Kegiatan Sukarela}
+
+\cventry{Feb 2022–Sekarang}
+        {Mentor Relawan}
+        {Ikatan Analis Bisnis Indonesia}
+        {\url{https://www.iabi.or.id}}
+        {}
+        {\begin{itemize}
+\item Mendampingi analis bisnis junior dalam menyusun portofolio dan studi kasus.
+\item Menjadi pembicara pada sesi sharing tentang dokumentasi kebutuhan dan komunikasi pemangku kepentingan.
+\item Membantu penyelenggaraan workshop tahunan untuk anggota komunitas.
+\end{itemize}}
+    
+
+\cventry{Jul 2019–Des 2020}
+        {Fasilitator Relawan}
+        {Yayasan Literasi Digital Nusantara}
+        {\url{https://www.literasidigitalnusantara.org}}
+        {}
+        {\begin{itemize}
+\item Memfasilitasi pelatihan literasi data dasar untuk pelajar dan guru di Jakarta.
+\item Menyusun materi sederhana tentang pembacaan data dan visualisasi.
+\item Mengoordinasikan jadwal relawan dan evaluasi peserta.
+\end{itemize}}
+    
+\end{document}

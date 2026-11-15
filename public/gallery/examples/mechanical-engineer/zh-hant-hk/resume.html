@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-hant-hk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>陳家豪 Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">陳家豪</h1>
+    <p class="resume-headline">資深機械工程師 | 精密製造與產品研發</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:kaho.chan.eng@gmail.com" class="resume-contact-link">kaho.chan.eng@gmail.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+852 9123 4567</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.kahohan-engineering.com" class="resume-contact-link">https://www.kahohan-engineering.com</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>中國香港，九龍，香港，九龍紅磡海逸道 8 號海逸豪園 5 座 18 樓 B 室</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/kahochan-eng" class="resume-contact-link">@kahochan-eng</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/kahochan" class="resume-contact-link">@kahochan</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">簡介</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>八年以上機械設計與產品開發經驗，專注於精密傳動系統、消費電子結構件及電動車零部件</p>
+          </li>
+          <li>
+            <p>精通 SolidWorks、Creo 及 ANSYS，能獨立完成由概念設計、3D 建模、有限元分析至量產導入的完整流程</p>
+          </li>
+          <li>
+            <p>熟悉 CNC 加工、注塑成型、壓鑄及衝壓等製造工藝，善用 GD&amp;T 與 DFMEA 提升產品良率</p>
+          </li>
+          <li>
+            <p>曾帶領五人工程團隊，與香港、深圳及東莞供應商跨地域協作，成功將七款產品由原型推進至量產</p>
+          </li>
+        </ul>
+        <p><strong>專業理念</strong>：以數據驅動設計決策，在成本、性能與可製造性之間取得最佳平衡，並重視團隊知識傳承。</p>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">教育背景</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.polyu.edu.hk">香港理工大學</a></div>
+            <div class="resume-entry-organization">碩士，機械工程學，成績：優異</div>
+          </div>
+          <div class="resume-entry-date">2019年9月–2021年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>以兼讀形式完成碩士課程，論文主題為電動車電池模組液冷流道優化</p>
+            </li>
+            <li>
+              <p>在職期間將課堂所學的 CFD 方法應用於公司實際項目，獲部門嘉許</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>課程</span>：高等有限元分析、傳熱與流體數值模擬、先進製造技術、產品可靠性工程</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ust.hk">香港科技大學</a></div>
+            <div class="resume-entry-organization">學士，機械工程學，成績：3.62/4.0</div>
+          </div>
+          <div class="resume-entry-date">2014年9月–2018年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>主修機械工程，成績位列學系前 15%，連續三年獲頒院長嘉許名單</p>
+            </li>
+            <li>
+              <p>畢業設計「電動車電池冷卻模組」獲系內最佳設計獎</p>
+            </li>
+            <li>
+              <p>擔任學生機械人隊伍結構組組長，負責底盤與傳動機構設計</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>課程</span>：工程力學與材料科學、熱力學與流體力學、機械設計原理、電腦輔助設計與製造、有限元分析、控制系統與機電整合、製造工程與品質管理、畢業設計：電動車電池冷卻模組</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">工作經歷</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.chuntat-precision.com.hk">駿達精密科技有限公司</a></div>
+            <div class="resume-entry-organization">資深機械工程師</div>
+          </div>
+          <div class="resume-entry-date">2021年3月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>帶領五人研發小組，負責汽車傳動部件與消費電子精密結構件的設計及量產導入</p>
+            </li>
+            <li>
+              <p>主導電動車熱管理模組開發，透過 CFD 模擬優化流道設計，散熱效率提升 22%</p>
+            </li>
+            <li>
+              <p>建立 GD&amp;T 圖面規範與 DFMEA 流程，使新產品試產階段的設計變更減少 35%</p>
+            </li>
+            <li>
+              <p>與深圳及東莞供應商緊密協作，完成模具驗收、試產跟進及量產放行</p>
+            </li>
+            <li>
+              <p>推行 SolidWorks PDM 系統，縮短圖檔審批週期約 40%，並統一零件命名標準</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：精密傳動設計、熱管理系統、GD&amp;T、DFMEA、量產導入</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.asia-power-systems.com">亞洲動力系統有限公司</a></div>
+            <div class="resume-entry-organization">機械工程師</div>
+          </div>
+          <div class="resume-entry-date">2018年7月–2021年2月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>負責工業泵浦與齒輪箱的結構設計、2D 工程圖繪製及 BOM 維護</p>
+            </li>
+            <li>
+              <p>運用 ANSYS 進行靜力與模態分析，改善軸承座剛性，降低振動噪音 3.5 dB</p>
+            </li>
+            <li>
+              <p>參與舊機型成本優化項目，透過材料替代與結構簡化，每年節省約港幣 120 萬元</p>
+            </li>
+            <li>
+              <p>協助品質部門處理客訴，完成根因分析並提出八項設計改善對策</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：齒輪箱設計、ANSYS、成本優化、振動分析、BOM 管理</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">語言</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">粵語<span class="resume-language-fluency">：母語或雙語水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：母語</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">英語<span class="resume-language-fluency">：完全專業水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：IELTS 7.5、技術文件撰寫、客戶簡報</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">普通話<span class="resume-language-fluency">：完全專業水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：內地供應商協調</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">日語<span class="resume-language-fluency">：初級水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：JLPT N4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">專業技能</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">機械設計與建模<span class="resume-skill-level">：專家</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：SolidWorks、Creo、AutoCAD、3D 建模、工程圖繪製、公差分析</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">分析與模擬<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：ANSYS Mechanical、Abaqus、Fluent / CFD、熱傳分析、模態分析</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">製造工藝<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：CNC 加工、注塑成型、壓鑄、衝壓、模具驗收</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">品質與流程改善<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：GD&amp;T、DFMEA / PFMEA、ISO 9001、六西格瑪、8D 報告</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">項目管理<span class="resume-skill-level">：中級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：跨部門協作、供應商管理、風險評估、進度控管</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">榮譽</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">香港工程師學會最佳畢業設計獎</div>
+            <div class="resume-entry-organization">香港工程師學會</div>
+          </div>
+          <div class="resume-entry-date">2018年10月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>以「電動車電池冷卻模組輕量化設計」獲頒年度最佳畢業設計獎，評審肯定其在散熱效能、重量與製造成本之間取得的平衡。</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">年度傑出員工獎</div>
+            <div class="resume-entry-organization">駿達精密科技有限公司</div>
+          </div>
+          <div class="resume-entry-date">2023年1月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>表揚其在電動車熱管理模組項目中的技術領導與跨部門協調貢獻，為公司開拓新能源汽車客戶的關鍵人物。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">證書</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hkie.org.hk">註冊專業工程師（機械工程）</a></div>
+            <div class="resume-entry-organization">香港工程師學會</div>
+          </div>
+          <div class="resume-entry-date">2022年6月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hkpc.org">六西格瑪綠帶認證</a></div>
+            <div class="resume-entry-organization">香港生產力促進局</div>
+          </div>
+          <div class="resume-entry-date">2020年11月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.pmi.org">項目管理專業人士（PMP）</a></div>
+            <div class="resume-entry-organization">Project Management Institute</div>
+          </div>
+          <div class="resume-entry-date">2023年9月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">出版刊物</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hkie.org.hk/journal">電動車電池模組液冷流道之數值模擬與實驗驗證</a></div>
+            <div class="resume-entry-organization">香港工程師學會學報</div>
+          </div>
+          <div class="resume-entry-date">2021年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>以 CFD 模擬比較三種流道設計的散熱表現與壓降特性</p>
+            </li>
+            <li>
+              <p>實驗結果顯示蛇形流道在溫差均勻性與泵功耗之間取得最佳平衡</p>
+            </li>
+            <li>
+              <p>研究成果已應用於兩款量產車型的電池模組設計</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">項目</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.chuntat-precision.com.hk/projects/btms">電動車電池熱管理模組</a></div>
+            <div class="resume-entry-description">為本地電動車廠開發的液冷電池熱管理模組，涵蓋結構設計、流道優化與量產導入</div>
+          </div>
+          <div class="resume-entry-date">2022年1月–2023年8月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>以 CFD 模擬優化流道幾何，模組散熱能力提升 22%</p>
+            </li>
+            <li>
+              <p>採用鋁合金壓鑄配合攪拌摩擦焊，整體減重 15%</p>
+            </li>
+            <li>
+              <p>通過振動、氣密與耐壓測試，順利由原型推進至量產</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>： 電動車、液冷系統、CFD、壓鑄</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">智能倉儲輸送機構</div>
+            <div class="resume-entry-description">針對自動化倉儲系統設計的模組化輸送與分揀機構，可依場地彈性擴展</div>
+          </div>
+          <div class="resume-entry-date">2019年3月–2020年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>設計標準化鋁擠型框架與皮帶輸送模組，現場組裝時間縮短 30%</p>
+            </li>
+            <li>
+              <p>完成鏈條與軸承壽命計算，並以 ANSYS 驗證滿載工況下的結構強度</p>
+            </li>
+            <li>
+              <p>於客戶倉庫完成為期三個月的實地測試，分揀準確率達 99.5%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>： 自動化、輸送機構、模組化設計、結構分析</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">興趣愛好</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">運動</span>：公路單車、遠足、游泳</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">手作與創作</span>：3D 打印、木工、攝影</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">志願服務</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hkie.org.hk">香港工程師學會青年會員組</a></div>
+            <div class="resume-entry-organization">義務委員</div>
+          </div>
+          <div class="resume-entry-date">2020年9月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>籌辦「工程師周」校園分享活動，走訪十二間中學推廣工程學科</p>
+            </li>
+            <li>
+              <p>為基層學生設計 STEM 工作坊，教授 3D 打印與簡易機械設計</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="volunteer-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hkfyg.org.hk">香港青年協會</a></div>
+            <div class="resume-entry-organization">STEM 義務導師</div>
+          </div>
+          <div class="resume-entry-date">2019年1月–2021年8月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>每月為中三至中六學生提供機械設計入門課程，累計服務超過 200 名學生</p>
+            </li>
+            <li>
+              <p>指導學生隊伍參加本地機械人比賽，並獲最佳設計獎</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

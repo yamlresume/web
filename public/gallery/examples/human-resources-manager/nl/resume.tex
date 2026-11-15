@@ -1,0 +1,264 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Dutch language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-dutch.html
+\usepackage[dutch]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Sanne de Vries}{}
+\title{Senior HR-manager met focus op mens en cultuur}
+\phone[mobile]{+31 6 1234 5678}
+\email{sanne.devries@example.nl}
+\homepage{https://www.sannedevries.nl}
+
+\address{Prinsengracht 456, Amsterdam, Noord-Holland, Nederland, 1016 HK}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/sannedevries}{@sannedevries} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@sannedevries}{@sannedevries}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basis Informatie}
+
+\cvline{}{\begin{itemize}
+\item Senior HR-manager met meer dan tien jaar ervaring in strategisch HRM, talentmanagement en organisatieontwikkeling.
+\item Bewezen trackrecord in het vertalen van bedrijfsdoelen naar personeelsagenda's met meetbare impact op verloop, betrokkenheid en productiviteit.
+\item Sterk in stakeholdermanagement, arbeidsrecht en verandermanagement binnen complexe, internationale organisaties.
+\item Datagedreven en mensgericht; coacht leidinggevenden en bouwt HR-teams die proactief bijdragen aan de bedrijfsresultaten.
+\end{itemize}}
+\section{Opleidingen}
+
+\cventry{sep 2011–jun 2013}
+        {Master, Arbeids- en Organisatiepsychologie, Score: 8,2}
+        {Universiteit van Amsterdam}
+        {\url{https://www.uva.nl}}
+        {}
+        {\begin{itemize}
+\item Afgestudeerd op de relatie tussen leiderschapsstijl en betrokkenheid in hybride teams.
+\item Verdieping in arbeids- en organisatiepsychologie, onderzoeksmethoden en HR-analytics.
+\item Scriptie beoordeeld met een 8,7.
+\end{itemize}
+\textbf{Cursussen}: Arbeids- en organisatiepsychologie, Strategisch HRM, Onderzoeksmethoden, Verandermanagement, Arbeidsrecht}
+
+\cventry{sep 2007–jun 2011}
+        {Bachelor, Human Resource Management, Score: 8,5}
+        {Hogeschool van Amsterdam}
+        {\url{https://www.hva.nl}}
+        {}
+        {\begin{itemize}
+\item Breed fundament in HRM, arbeidsrecht en organisatiekunde.
+\item Stage bij een regionale zorgorganisatie op het gebied van werving en selectie.
+\end{itemize}
+\textbf{Cursussen}: Human Resource Management, Arbeidsrecht, Organisatiekunde, Communicatie, Personeelsplanning}
+\section{Werkervaring}
+
+\cventry{mrt 2021–Heden}
+        {Senior HR-manager}
+        {PeopleHub Nederland}
+        {\url{https://www.peoplehub.nl}}
+        {}
+        {\begin{itemize}
+\item Ontwikkelt en implementeert de HR-strategie voor een organisatie van 750 medewerkers.
+\item Stuurt een team van vijf HR-professionals aan en realiseert een jaarlijkse daling van 18\% in verloop.
+\item Adviseert directie en MT over organisatieontwikkeling, talentmanagement en arbeidsrechtelijke vraagstukken.
+\item Trekt het HR-analytics-programma en vertaalt data naar concrete interventies voor behoud en ontwikkeling.
+\end{itemize}
+\textbf{Trefwoorden}: HR-strategie, Talentmanagement, HR-analytics, Leiderschapsontwikkeling, Arbeidsrecht}
+
+\cventry{sep 2016–feb 2021}
+        {HR-manager}
+        {Van Dijk Retail Groep}
+        {\url{https://www.vandijkretail.nl}}
+        {}
+        {\begin{itemize}
+\item Verantwoordelijk voor HR-beleid, werving en selectie, onboarding en prestatiemanagement voor 12 vestigingen.
+\item Begeleidde een reorganisatie met behoud van 95\% van kritische functies.
+\item Introduceerde een medewerkersonderzoek met een respons van 89\% en koppelde resultaten aan verbeterplannen.
+\item Onderhandelde met vakbonden over CAO-afspraken en sociale plannen.
+\end{itemize}
+\textbf{Trefwoorden}: Reorganisatie, Werving en selectie, Medezeggenschap, CAO, Prestatiemanagement}
+
+\cventry{sep 2013–aug 2016}
+        {HR-adviseur}
+        {TalentWerk Advies}
+        {\url{https://www.talentwerkadvies.nl}}
+        {}
+        {\begin{itemize}
+\item Adviseerde operationele managers in logistiek en customer service over HR-vraagstukken.
+\item Ontwikkelde een onboardingprogramma dat de time-to-productivity met drie weken verkortte.
+\item Behandelde verzuim- en reintegratietrajecten in samenwerking met bedrijfsarts en leidinggevenden.
+\item Voerde HR-analyses uit en rapporteerde maandelijks over verzuim, verloop en bezetting.
+\end{itemize}
+\textbf{Trefwoorden}: Onboarding, Verzuimbegeleiding, HR-administratie, Adviesvaardigheden}
+\section{Talen}
+
+\cvline{Nederlands}{Moedertaal of tweetalige vaardigheid \hfill \textbf{Trefwoorden}: Moedertaal, Zakelijk schrijven}
+\cvline{Engels}{Volledige professionele vaardigheid \hfill \textbf{Trefwoorden}: TOEFL iBT 108, Zakelijke communicatie}
+\cvline{Duits}{Beperkte werkvaardigheid \hfill \textbf{Trefwoorden}: Goethe-Zertifikat B1}
+\section{Vaardigheden}
+
+\cvline{Strategisch HRM}{Expert \hfill \textbf{Trefwoorden}: HR-strategie, Organisatieontwikkeling, Personeelsplanning}
+\cvline{Talentmanagement}{Geavanceerd \hfill \textbf{Trefwoorden}: Werving en selectie, Onboarding, Successieplanning, Prestatiemanagement}
+\cvline{Arbeidsrecht en compliance}{Geavanceerd \hfill \textbf{Trefwoorden}: CAO, Arbeidsomstandigheden, Medezeggenschap, Privacy (AVG)}
+\cvline{Verandermanagement}{Geavanceerd \hfill \textbf{Trefwoorden}: Cultuurverandering, Stakeholdermanagement, Lean}
+\cvline{HR-analytics}{Intermediair \hfill \textbf{Trefwoorden}: Power BI, Excel, HR-dashboards, Data-gedreven besluitvorming}
+\cvline{Communicatie}{Expert \hfill \textbf{Trefwoorden}: Coaching, Onderhandelen, Presenteren, Adviesvaardigheden}
+\section{Onderscheidingen}
+
+\cventry{nov 2023}
+        {Nederlandse Vereniging voor Personeelsmanagement}
+        {HR Professional van het Jaar 2023}
+        {}
+        {}
+        {\begin{itemize}
+\item Prijswinnaar in de categorie strategisch HRM vanwege het programma Duurzame Inzetbaarheid.
+\item Jury prees de datagedreven aanpak en meetbare impact op verloop en betrokkenheid.
+\end{itemize}}
+\section{Certificaten}
+
+\cventry{mei 2020}
+        {SHRM}
+        {SHRM-SCP}
+        {\url{https://www.shrm.org/certification}}
+        {}
+        {}
+
+\cventry{okt 2019}
+        {FNV}
+        {Gecertificeerd Medezeggenschapsadviseur}
+        {\url{https://www.fnv.nl}}
+        {}
+        {}
+
+\cventry{mrt 2022}
+        {Coursera}
+        {HR Analytics Fundamentals}
+        {\url{https://www.coursera.org}}
+        {}
+        {}
+\section{Publicaties}
+
+\cventry{apr 2022}
+        {Wendbaar werken: van ambitie naar routines}
+        {Kluwer HRM}
+        {\url{https://www.kluwer.nl/hrm}}
+        {}
+        {\begin{itemize}
+\item Praktijkboek over het vertalen van strategische HR-doelen naar dagelijkse routines.
+\item Met casuïstiek uit retail, zorg en technologie.
+\end{itemize}}
+\section{Referenties}
+
+\cventry{\emaillink[m.jansen@peoplehub.nl]{m.jansen@peoplehub.nl}}
+        {Directeur HR bij PeopleHub Nederland}
+        {Marieke Jansen}
+        {+31 20 123 4567}
+        {}
+        {Sanne is een strategische en daadkrachtige HR-manager die complexe HR-vraagstukken vertaalt naar heldere plannen en meetbare resultaten. Zij combineert scherpe analyse met oprechte aandacht voor mensen en is een waardevolle sparringpartner voor elk managementteam.}
+\section{Projecten}
+
+\cventry{jan 2022–dec 2022}
+        {Organisatiebreed programma om werkplezier, vitaliteit en blijvende inzetbaarheid van medewerkers te versterken.}
+        {Programma Duurzame Inzetbaarheid}
+        {\url{https://www.peoplehub.nl/projecten/duurzame-inzetbaarheid}}
+        {}
+        {\begin{itemize}
+\item Ontwikkelde een meetbaar interventieportfolio voor 750 medewerkers.
+\item Realiseerde een daling van het verzuim met 1,8 procentpunt en een stijging van de betrokkenheidsscore met 12 punten.
+\item Werkte samen met bedrijfsarts, OR en lijnmanagement aan preventie en reintegratie.
+\end{itemize}
+\textbf{Trefwoorden}: Vitaliteit, Verzuimpreventie, Betrokkenheid, HR-analytics}
+\section{Interesses}
+
+\cvline{Vrijwilligerswerk}{Loopbaancoaching, Mentoring}
+\cvline{Sport}{Hardlopen, Wielrennen, Yoga}
+\cvline{Cultuur}{Literatuur, Musea, Toneel}
+\section{Vrijwilligerswerk}
+
+\cventry{sep 2018–Heden}
+        {Loopbaanmentor}
+        {Stichting LoopbaanLab}
+        {\url{https://www.loopbaanlab.nl}}
+        {}
+        {\begin{itemize}
+\item Begeleidt jaarlijks vijf professionals bij loopbaanvragen en re-integratie.
+\item Verzorgt workshops over personal branding en solliciteren.
+\item Draagt bij aan de ontwikkeling van laagdrempelige loopbaantools.
+\end{itemize}}
+    
+\end{document}

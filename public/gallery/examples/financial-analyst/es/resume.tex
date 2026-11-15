@@ -1,0 +1,152 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Laura Mendoza Ríos}{}
+\title{Analista Financiera Senior | Planificación y Análisis Financiero}
+\phone[mobile]{+34 612 345 678}
+\email{laura.mendoza@finanzas.es}
+\homepage{https://www.lauramendoza.es}
+
+\address{Calle de Alcalá 120, 4º B, Madrid, Comunidad de Madrid, Spain, 28009}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/laura-mendoza-finanzas}{@laura-mendoza-finanzas} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@lauramendoza}{@lauramendoza}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{\begin{itemize}
+\item Analista financiera con más de seis años de experiencia en planificación, análisis de desviaciones y valoración de empresas.
+\item Especializada en modelos financieros en Excel, SQL y Power BI para apoyar decisiones estratégicas y mejorar la rentabilidad.
+\item Experiencia en entornos de banca, inversión y consultoría, colaborando con equipos multidisciplinares y comités de dirección.
+\item Orientada a resultados, con sólida base contable y capacidad para comunicar información compleja de forma clara.
+\end{itemize}}
+\section{Education}
+
+\cventry{Sep 2018–Jul 2019}
+        {Master, Finanzas Cuantitativas, Score: 9.1/10}
+        {Universidad de Alcalá}
+        {\url{https://www.uah.es}}
+        {}
+        {\begin{itemize}
+\item Formación avanzada en valoración de activos, gestión de riesgos y modelización financiera.
+\item Trabajo de fin de máster sobre la prima de riesgo en empresas cotizadas del IBEX 35.
+\end{itemize}
+\textbf{Courses}: Derivados Financieros, Econometría Avanzada, Gestión de Carteras, Riesgos Financieros, Finanzas Corporativas}
+
+\cventry{Sep 2014–Jun 2018}
+        {Bachelor, Finanzas y Contabilidad, Score: 8.7/10}
+        {Universidad Carlos III de Madrid}
+        {\url{https://www.uc3m.es}}
+        {}
+        {\begin{itemize}
+\item Sólida base en contabilidad, finanzas corporativas y análisis de estados financieros.
+\item Participación en el CFA Research Challenge y en proyectos de análisis sectorial.
+\end{itemize}
+\textbf{Courses}: Análisis Financiero, Valoración de Empresas, Mercados de Capitales, Econometría Financiera, Contabilidad de Gestión, Gestión de Riesgos, Fiscalidad Empresarial}
+\section{Work}
+
+\cventry{Jan 2022–Present}
+        {Analista Financiera Senior}
+        {Banco Meridiano}
+        {\url{https://www.bancomeridiano.es}}
+        {}
+        {\begin{itemize}
+\item Lidero el proceso de planificación financiera anual y la elaboración de presupuestos para tres unidades de negocio.
+\item Desarrollo modelos financieros en Excel y Power BI para evaluar escenarios de inversión, rentabilidad y sensibilidad.
+\item Realizo análisis de desviaciones mensuales frente a presupuesto y presento recomendaciones al comité de dirección.
+\item Colaboro con Contabilidad, Riesgos y Inteligencia de Negocio para automatizar la consolidación de datos y reducir el tiempo de elaboración de informes en un 30\%.
+\end{itemize}
+\textbf{Keywords}: Planificación financiera, Modelado financiero, Power BI, Análisis de desviaciones, Presupuestos}
+
+\cventry{Sep 2019–Dec 2021}
+        {Analista Financiera}
+        {Inversiones Atlantic}
+        {\url{https://www.inversionesatlantic.com}}
+        {}
+        {\begin{itemize}
+\item Elaboré informes mensuales de rentabilidad y liquidez para una cartera de inversión de 120 millones de euros.
+\item Automaticé la extracción y validación de datos con SQL y Python, reduciendo errores manuales y tiempos de cierre.
+\item Apoyé la valoración de empresas mediante DCF, múltiplos comparables y análisis de sensibilidad.
+\item Participé en la diligencia debida financiera de dos operaciones de adquisición en el sector servicios.
+\end{itemize}
+\textbf{Keywords}: Valoración de empresas, DCF, SQL, Python, Diligencia debida}
+\end{document}

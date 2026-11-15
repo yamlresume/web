@@ -1,0 +1,222 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Ingrid Johansen}{}
+\title{HR-sjef}
+\phone[mobile]{+47 123 45 678}
+\email{ingrid.johansen@example.no}
+\homepage{https://www.linkedin.com/in/ingridjohansen}
+
+\address{Karl Johans gate 15, Oslo, Oslo, Norge, 0154}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/ingridjohansen}{@ingridjohansen} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/ingridhr}{@ingridhr}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{\begin{itemize}
+\item Erfaren HR-leder med over 10 års erfaring fra teknologi- og finanssektoren
+\item Sterk kompetanse innen rekruttering, organisasjonsutvikling og arbeidsrett
+\item Dokumentert evne til å bygge sterke team og fremme en positiv arbeidskultur
+\item Strategisk tenker med fokus på å koble HR-initiativer til forretningsmål
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2012–juni 2014}
+        {Master, Organisasjonspsykologi og ledelse, Poeng: 3.8}
+        {Universitetet i Oslo}
+        {\url{https://www.uio.no}}
+        {}
+        {\begin{itemize}
+\item Utviklet dyp forståelse for sammenhengen mellom HR-praksis og organisasjonens resultater
+\item Gjennomførte flere prosjekter knyttet til medarbeiderundersøkelser og kulturutvikling
+\item Fikk solid innføring i norsk arbeidsrett og tariffsystemer
+\end{itemize}
+\textbf{Kurs}: Arbeids- og organisasjonspsykologi, Ledelse og organisasjonsutvikling, HR-strategi, Arbeidsrett, Rekruttering og seleksjon, Lønns- og belønningssystemer}
+\section{Arbeidserfaring}
+
+\cventry{jan. 2020–Nå}
+        {HR-sjef}
+        {Telenor}
+        {\url{https://www.telenor.no}}
+        {}
+        {\begin{itemize}
+\item Ansvarlig for HR-strategi og -drift for 2500 ansatte i Norge
+\item Ledet arbeidet med å implementere ny HR-plattform (SAP SuccessFactors) og digitalisere HR-prosesser
+\item Utviklet og implementerte talentprogrammer som økte intern rekruttering med 25\%
+\item Rådgiver for ledergruppen innen organisasjonsutvikling, endringsledelse og arbeidsrett
+\item Forhandlet frem nye tariffavtaler og sikret god dialogs med fagforeningene
+\end{itemize}
+\textbf{Nøkkelord}: HR-strategi, Talentutvikling, Endringsledelse, Arbeidsrett, Digitalisering}
+
+\cventry{aug. 2016–des. 2019}
+        {HR-rådgiver}
+        {DNB}
+        {\url{https://www.dnb.no}}
+        {}
+        {\begin{itemize}
+\item Rekrutterte og onboardet over 100 kandidater årlig til roller innen IT og finans
+\item Utviklet kompetanseutviklingsprogrammer og gjennomførte lederopplæring i samarbeid med eksterne leverandører
+\item Veiledet ledere i personaloppfølging, konflikthåndtering og lønnsforhandlinger
+\item Bidro til å redusere sykefraværet gjennom målrettet HMS-arbeid og oppfølging
+\end{itemize}
+\textbf{Nøkkelord}: Rekruttering, Kompetanseutvikling, Lønnsforhandlinger, HMS, Lederveiledning}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: TOEFL 110, Forretningsengelsk}
+\section{Ferdigheter}
+
+\cvline{Rekruttering og seleksjon}{Ekspert \hfill \textbf{Nøkkelord}: Rekrutteringsstrategi, Intervjuteknikk, Assessment, Employer branding}
+\cvline{Arbeidsrett og compliance}{Avansert \hfill \textbf{Nøkkelord}: Arbeidsmiljøloven, Tariffavtaler, GDPR, Arbeidskontrakter}
+\cvline{Organisasjonsutvikling}{Avansert \hfill \textbf{Nøkkelord}: Endringsledelse, Medarbeiderundersøkelser, Kulturutvikling, Teamutvikling}
+\cvline{HR-systemer og analyse}{Viderekommen \hfill \textbf{Nøkkelord}: SAP SuccessFactors, Workday, Excel, HR-analyse}
+\section{Utmerkelser}
+
+\cventry{nov. 2022}
+        {Norsk HR-forening}
+        {Årets HR-leder}
+        {}
+        {}
+        {\begin{itemize}
+\item Tildelt for fremragende arbeid med å implementere en ny HR-strategi i Telenor
+\item Anerkjent for å ha økt medarbeidertilfredsheten med 20\% over to år
+\end{itemize}}
+\section{Sertifikater}
+
+\cventry{mars 2021}
+        {HR Certification Institute}
+        {Sertifisert HR-profesjonell (SPHR)}
+        {\url{https://www.hrci.org}}
+        {}
+        {}
+
+\cventry{juni 2018}
+        {International Project Management Association}
+        {IPMA Level C - Sertifisert prosjektleder}
+        {\url{https://www.ipma.world}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{apr. 2023}
+        {Fremtidens HR: Strategisk partnerskap i praksis}
+        {HR-Nytt}
+        {\url{https://www.hrnytt.no/artikkel/fremtidens-hr}}
+        {}
+        {\begin{itemize}
+\item Artikkel om hvordan HR kan bli en strategisk partner i norske virksomheter
+\item Diskuterer hvordan teknologi og data kan forbedre HR-prosesser
+\end{itemize}}
+\section{Prosjekter}
+
+\cventry{jan. 2021–des. 2021}
+        {Innføring av SAP SuccessFactors for 5000 ansatte}
+        {Implementering av ny HR-plattform}
+        {\url{https://www.telenor.no/hr-plattform}}
+        {}
+        {\begin{itemize}
+\item Ledet prosjektet med å implementere ny HR-plattform i Telenor
+\item Ansvarlig for behovsanalyse, leverandørvalg og utrulling
+\item Oppnådde 30\% reduksjon i administrasjonstid for HR-prosesser
+\end{itemize}
+\textbf{Nøkkelord}: SAP SuccessFactors, Prosjektledelse, Endringsledelse}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fjellturer, Ski, Fisking}
+\cvline{Litteratur}{Skjønnlitteratur, Biografier}
+\section{Frivillig arbeid}
+
+\cventry{sep. 2018–Nå}
+        {Mentor}
+        {Ungt Entreprenørskap}
+        {\url{https://www.ue.no}}
+        {}
+        {\begin{itemize}
+\item Fungerer som mentor for ungdomsskoleelever i entreprenørskapsprosjekter
+\item Veileder team i forretningsidéutvikling og presentasjonsteknikk
+\item Bidrar til å styrke unges kompetanse innen innovasjon og samarbeid
+\end{itemize}}
+    
+\end{document}

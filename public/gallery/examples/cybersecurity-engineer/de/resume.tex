@@ -1,0 +1,256 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for German language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-german.html
+\usepackage[ngerman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Lena Hartmann}{}
+\title{Senior IT-Sicherheitsingenieurin}
+\phone[mobile]{+49 30 12345678}
+\email{lena.hartmann@security-mail.de}
+\homepage{https://www.lhartmann.dev}
+
+\address{Friedrichstraße 123, Berlin, Berlin, Deutschland, 10117}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/lhartmann}{@lhartmann} {} {} {} • {} {} {} 
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/lhartmann}{@lhartmann}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basisinformationen}
+
+\cvline{}{\begin{itemize}
+\item Mehr als 7 Jahre Erfahrung in der IT-Sicherheit mit Fokus auf Angriffserkennung, Incident Response und Sicherheitsarchitekturen
+\item Fundierte Kenntnisse in Penetrationstests, Schwachstellenmanagement und der Absicherung von Cloud-Infrastrukturen
+\item Erfahrung mit SIEM-Systemen (Splunk, Wazuh), Firewalls und IDS/IPS sowie der Automatisierung von Sicherheitsprozessen
+\item Teamorientiert, analytisch und kommunikationsstark; gewohnt, komplexe Sicherheitsrisiken verständlich zu erklären
+\end{itemize}}
+\section{Ausbildung}
+
+\cventry{Okt. 2016–Sept. 2018}
+        {Master, IT-Sicherheit, Punkte: 1.3}
+        {Technische Universität Berlin}
+        {\url{https://www.tu.berlin}}
+        {}
+        {\begin{itemize}
+\item Schwerpunkt auf angewandter Kryptographie und der Absicherung verteilter Systeme
+\item Masterarbeit zum Thema "Erkennung von Advanced Persistent Threats mittels Machine Learning"
+\item Praktische Erfahrung durch Laborprojekte zu Penetrationstests und Sicherheitsarchitekturen
+\end{itemize}
+\textbf{Kurse}: Kryptographie und Sicherheitsprotokolle, Netzwerksicherheit und Firewalls, Secure Software Engineering, Incident Response und Forensik, Datenschutz und Compliance, Cloud Security und Virtualisierung}
+
+\cventry{Okt. 2012–Sept. 2016}
+        {Bachelor, Informatik, Punkte: 1.7}
+        {Hochschule für Technik und Wirtschaft Berlin}
+        {\url{https://www.htw-berlin.de}}
+        {}
+        {\begin{itemize}
+\item Grundlagen in Programmierung, Datenbanken und Netzwerktechnik
+\item Wahlpflichtmodule zu IT-Sicherheit und Systemadministration
+\end{itemize}}
+\section{Berufserfahrung}
+
+\cventry{Apr. 2020–Heute}
+        {Senior IT-Sicherheitsingenieurin}
+        {SAP SE}
+        {\url{https://www.sap.com}}
+        {}
+        {\begin{itemize}
+\item Leitung von Penetrationstests und Sicherheitsaudits für cloudbasierte Unternehmensanwendungen
+\item Entwicklung und Betrieb von SIEM-Regeln zur Erkennung von Angriffsmustern und Anomalien
+\item Durchführung von Incident-Response-Maßnahmen und forensischen Analysen bei Sicherheitsvorfällen
+\item Mitwirkung bei der Implementierung und Zertifizierung nach ISO 27001 und BSI-Grundschutz
+\item Automatisierung von Sicherheitsprüfungen mit Python und Terraform
+\end{itemize}
+\textbf{Schlüsselwörter}: Penetration Testing, SIEM, Incident Response, ISO 27001, Cloud Security}
+
+\cventry{Okt. 2018–März 2020}
+        {IT-Sicherheitsanalystin}
+        {Deutsche Telekom AG}
+        {\url{https://www.telekom.com}}
+        {}
+        {\begin{itemize}
+\item Überwachung und Analyse von Sicherheitsereignissen im 24/7-Security-Operations-Center
+\item Bearbeitung von Sicherheitsvorfällen nach definierten Playbooks und Eskalationsprozessen
+\item Durchführung von Schwachstellenanalysen und Bewertung von Risiken in Netzwerk- und Systemumgebungen
+\item Erstellung von Sicherheitsreports und Präsentationen für technische und nicht-technische Stakeholder
+\end{itemize}
+\textbf{Schlüsselwörter}: SOC, SIEM, Schwachstellenanalyse, Netzwerksicherheit, Incident Response}
+\section{Sprachen}
+
+\cvline{Deutsch}{Muttersprache oder zweisprachig \hfill \textbf{Schlüsselwörter}: Muttersprache}
+\cvline{Englisch}{Verhandlungssichere Kenntnisse \hfill \textbf{Schlüsselwörter}: Verhandlungssicher, TOEFL 110}
+\cvline{Französisch}{Gute Kenntnisse \hfill \textbf{Schlüsselwörter}: Grundkenntnisse}
+\section{Fähigkeiten}
+
+\cvline{Netzwerksicherheit}{Experte \hfill \textbf{Schlüsselwörter}: Firewalls, VPN, IDS/IPS, Wireshark, Netzwerksegmentierung}
+\cvline{Penetration Testing}{Erfahren \hfill \textbf{Schlüsselwörter}: Metasploit, Burp Suite, Nmap, OpenVAS, Nessus}
+\cvline{Incident Response}{Erfahren \hfill \textbf{Schlüsselwörter}: SIEM (Splunk, Wazuh), Forensik, Threat Hunting, Playbook-Entwicklung}
+\cvline{Cloud Security}{Fortgeschritten \hfill \textbf{Schlüsselwörter}: AWS, Azure, IAM, Kubernetes, Terraform}
+\cvline{Compliance und Datenschutz}{Erfahren \hfill \textbf{Schlüsselwörter}: ISO 27001, BSI-Grundschutz, DSGVO, Risikomanagement}
+\cvline{Programmierung und Automatisierung}{Erfahren \hfill \textbf{Schlüsselwörter}: Python, Bash, PowerShell, Git, CI/CD}
+\section{Auszeichnungen}
+
+\cventry{Nov. 2022}
+        {Bundesverband IT-Sicherheit e.V.}
+        {Cybersecurity Excellence Award}
+        {}
+        {}
+        {\begin{itemize}
+\item Auszeichnung für die erfolgreiche Einführung eines unternehmensweiten Threat-Intelligence-Programms
+\item Anerkennung für besonderes Engagement in der Nachwuchsförderung im Bereich IT-Sicherheit
+\end{itemize}}
+\section{Zertifikate}
+
+\cventry{Juni 2021}
+        {ISC2}
+        {Certified Information Systems Security Professional (CISSP)}
+        {\url{https://www.isc2.org}}
+        {}
+        {}
+
+\cventry{Nov. 2019}
+        {Offensive Security}
+        {Offensive Security Certified Professional (OSCP)}
+        {\url{https://www.offsec.com}}
+        {}
+        {}
+
+\cventry{März 2020}
+        {TÜV Rheinland}
+        {ISO/IEC 27001 Lead Auditor}
+        {\url{https://www.tuv.com}}
+        {}
+        {}
+\section{Veröffentlichungen}
+
+\cventry{Dez. 2019}
+        {Erkennung von Advanced Persistent Threats mittels Machine Learning}
+        {Zeitschrift für IT-Sicherheit}
+        {\url{https://www.zeitschrift-it-sicherheit.de/artikel/apt-ml}}
+        {}
+        {\begin{itemize}
+\item Analyse von Netzwerk- und Hostdaten zur frühzeitigen Erkennung komplexer Angriffsmuster
+\item Vergleich verschiedener Machine-Learning-Verfahren hinsichtlich Genauigkeit und False-Positive-Rate
+\item Praxisnahe Evaluation in einer virtualisierten Unternehmensumgebung
+\end{itemize}}
+\section{Projekte}
+
+\cventry{Jan. 2021–Dez. 2021}
+        {Zentraler Aufbau eines SOC zur Erkennung und Reaktion auf Sicherheitsvorfälle in einer hybriden Cloud-Umgebung.}
+        {Aufbau eines Security Operations Center (SOC)}
+        {}
+        {}
+        {\begin{itemize}
+\item Konzeption und Implementierung eines SOC für die zentrale Überwachung von Sicherheitsereignissen
+\item Integration von SIEM-, Ticketing- und Threat-Intelligence-Systemen
+\item Definition von Alarmierungs- und Eskalationsprozessen
+\end{itemize}
+\textbf{Schlüsselwörter}: SOC, SIEM, Threat Intelligence, Incident Response}
+
+\cventry{März 2019–Feb. 2020}
+        {Eine Plattform zur Sammlung, Normalisierung und Priorisierung von Threat-Intelligence-Daten aus verschiedenen Quellen.}
+        {Threat-Intelligence-Plattform}
+        {}
+        {}
+        {\begin{itemize}
+\item Entwicklung einer Plattform zur Aggregation und Auswertung von Threat-Intelligence-Feeds
+\item Automatisierte Anreicherung von Sicherheitsereignissen mit Kontextdaten
+\item Bereitstellung von Dashboards für das Sicherheitsteam
+\end{itemize}
+\textbf{Schlüsselwörter}: Threat Intelligence, Python, APIs, Elasticsearch}
+\section{Interessen}
+
+\cvline{Capture the Flag (CTF)}{HackTheBox, TryHackMe, CTF-Wettbewerbe}
+\cvline{Open Source}{Security-Tools, GitHub, Community}
+\cvline{Sport}{Laufen, Klettern, Radfahren}
+\section{Ehrenamtliche Tätigkeiten}
+
+\cventry{Jan. 2021–Heute}
+        {Mentorin für Nachwuchskräfte}
+        {Bundesverband IT-Sicherheit e.V.}
+        {\url{https://www.bv-it-sicherheit.de}}
+        {}
+        {\begin{itemize}
+\item Betreuung von Studierenden und Berufseinsteigern bei CTF-Wettbewerben und Sicherheitsprojekten
+\item Durchführung von Workshops zu Themen wie Penetration Testing und Incident Response
+\item Förderung des Austauschs zwischen Hochschulen und Industrie
+\end{itemize}}
+    
+\end{document}

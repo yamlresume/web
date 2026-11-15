@@ -1,0 +1,286 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Giulia Ferrari}{}
+\title{Data Scientist | Machine Learning e Analytics}
+\phone[mobile]{+39 347 123 4567}
+\email{giulia.ferrari@example.it}
+\homepage{https://www.giuliaferrari-data.it}
+
+\address{Via Giovanni Battista Pirelli 18, Milano, Lombardia, Italia, 20124}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/giulia-ferrari-data}{@giulia-ferrari-data} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/giuliaferrari}{@giuliaferrari} {} {} {} • {} {} {} 
+{\small \faStackOverflow}\ \href{https://stackoverflow.com/users/1234567/giulia-ferrari}{@giulia-ferrari}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{Data Scientist con oltre 7 anni di esperienza nella progettazione di modelli predittivi e soluzioni analitiche per i settori energia, bancario e pagamenti digitali.
+%
+\begin{itemize}
+\item Esperienza end-to-end: dalla raccolta dei requisiti alla messa in produzione e al monitoraggio di modelli.
+\item Solida base statistica e di apprendimento automatico, con attenzione alla validazione, all'interpretabilità e all'impatto di business.
+\item Capacità di comunicare risultati complessi a stakeholder tecnici e non tecnici, in italiano e in inglese.
+\item Approccio collaborativo, mentoria di junior e forte orientamento alla qualità del dato.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2015–lug 2017}
+        {Laurea magistrale, Data Science, Punteggio: 110/110 e lode}
+        {Università degli Studi di Milano-Bicocca}
+        {\url{https://www.unimib.it}}
+        {}
+        {\begin{itemize}
+\item Formazione avanzata in statistica, machine learning e gestione di grandi volumi di dati.
+\item Sviluppo di progetti applicativi con Python, R e SQL su casi reali di previsione e segmentazione.
+\item Particolare attenzione alla validazione dei modelli, alla comunicazione dei risultati e all'impatto organizzativo.
+\end{itemize}
+\textbf{Corsi}: Statistica Computazionale, Apprendimento Automatico, Basi di Dati e Data Warehousing, Analisi delle Serie Temporali, Data Mining, Visualizzazione dei Dati, Metodi Bayesiani, Etica e Governance dei Dati}
+
+\cventry{set 2012–lug 2015}
+        {Laurea triennale, Statistica e Informatica, Punteggio: 108/110}
+        {Università degli Studi di Milano}
+        {\url{https://www.unimi.it}}
+        {}
+        {\begin{itemize}
+\item Solide basi quantitativa e informatica per l'analisi dei dati.
+\item Esperienza pratica con dataset reali, pulizia dei dati e reportistica statistica.
+\end{itemize}
+\textbf{Corsi}: Statistica Descrittiva, Probabilità e Inferenza, Programmazione in Python, Basi di Dati Relazionali, Analisi Esplorativa dei Dati, Metodi di Campionamento}
+\section{Esperienza professionale}
+
+\cventry{mar 2022–Presente}
+        {Data Scientist Senior}
+        {Nexi Digital}
+        {\url{https://www.nexi.it}}
+        {}
+        {\begin{itemize}
+\item Guido un team di 4 data scientist nello sviluppo di modelli predittivi per il rilevamento delle frodi e la personalizzazione delle offerte.
+\item Progettato e implementato pipeline MLOps su AWS per l'addestramento, il versionamento e il monitoraggio continuo dei modelli.
+\item Ridotto del 18\% i falsi positivi nel sistema antifrode migliorando le regole di validazione e l'interpretabilità dei modelli.
+\item Collaborato con product manager, ingegneri e team compliance per tradurre requisiti di business in soluzioni dati misurabili.
+\item Mentorato due junior data scientist e promosso pratiche di code review e documentazione tecnica.
+\end{itemize}
+\textbf{Parole chiave}: Modelli predittivi, MLOps, Customer Analytics, Leadership tecnica}
+
+\cventry{gen 2019–feb 2022}
+        {Data Scientist}
+        {Enel X}
+        {\url{https://www.enelx.com/it/it}}
+        {}
+        {\begin{itemize}
+\item Sviluppato modelli di previsione della domanda energetica a livello giornaliero e orario, con riduzione dell'errore MAPE dal 12\% all'8\%.
+\item Realizzato segmentazioni clienti tramite clustering e analisi di sopravvivenza per campagne di retention mirate.
+\item Automatizzato la reportistica mensile con Airflow e Power BI, riducendo il tempo di preparazione da 3 giorni a 4 ore.
+\item Condotto test A/B e analisi causali per valutare l'impatto delle iniziative commerciali.
+\end{itemize}
+\textbf{Parole chiave}: Previsione della domanda, Customer Analytics, Test A/B, Airflow}
+
+\cventry{set 2017–gen 2019}
+        {Analista Dati}
+        {UniCredit}
+        {\url{https://www.unicredit.it}}
+        {}
+        {\begin{itemize}
+\item Analizzato portafogli creditizi e costruito dashboard per il monitoraggio degli indicatori di rischio.
+\item Sviluppato modelli statistici per la previsione di insolvenza e la valutazione del merito creditizio.
+\item Pulito e integrato dati provenienti da fonti eterogenee, migliorando la qualità e la coerenza delle analisi.
+\item Presentato risultati periodici ai team risk e business con report chiari e visualizzazioni efficaci.
+\end{itemize}
+\textbf{Parole chiave}: Rischio di credito, SQL, Dashboard, Statistica}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 8.0, C1}
+\cvline{Francese}{Competenza professionale limitata \hfill \textbf{Parole chiave}: DELF B1}
+\section{Competenze}
+
+\cvline{Apprendimento Automatico}{Esperto \hfill \textbf{Parole chiave}: Python, scikit-learn, TensorFlow, PyTorch, XGBoost}
+\cvline{Ingegneria dei Dati}{Avanzato \hfill \textbf{Parole chiave}: SQL, Spark, Airflow, dbt, Databricks}
+\cvline{Statistica Applicata}{Esperto \hfill \textbf{Parole chiave}: Test A/B, Inferenza causale, Serie temporali, Analisi di sopravvivenza}
+\cvline{Visualizzazione dei Dati}{Avanzato \hfill \textbf{Parole chiave}: Power BI, Tableau, Looker, Plotly, Streamlit}
+\cvline{Cloud e MLOps}{Avanzato \hfill \textbf{Parole chiave}: AWS, Azure, Docker, Kubernetes, MLflow}
+\cvline{Comunicazione dei Risultati}{Avanzato \hfill \textbf{Parole chiave}: Narrazione dei dati, Presentazioni executive, Documentazione tecnica, Facilitazione workshop}
+\section{Premi}
+
+\cventry{giu 2023}
+        {Associazione Italiana per l'Intelligenza Artificiale}
+        {Premio Innovazione Dati 2023}
+        {}
+        {}
+        {Riconoscimento per il progetto "Previsione della Domanda Energetica", selezionato tra le migliori applicazioni di intelligenza artificiale in ambito utilities.}
+
+\cventry{ott 2016}
+        {Università degli Studi di Milano-Bicocca}
+        {Borsa di Studio per Merito}
+        {}
+        {}
+        {Borsa di studio assegnata per eccellenza accademica durante il corso di laurea magistrale in Data Science.}
+\section{Certificazioni}
+
+\cventry{mag 2021}
+        {Google Cloud}
+        {Google Professional Data Engineer}
+        {\url{https://cloud.google.com/certification/data-engineer}}
+        {}
+        {}
+
+\cventry{nov 2020}
+        {Amazon Web Services}
+        {AWS Certified Machine Learning – Specialty}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{set 2022}
+        {Microsoft}
+        {Microsoft Certified: Azure Data Scientist Associate}
+        {\url{https://learn.microsoft.com/en-us/certifications/azure-data-scientist/}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{dic 2022}
+        {Modelli predittivi per la manutenzione di reti elettriche intelligenti}
+        {Rivista Italiana di Statistica Applicata}
+        {\url{https://doi.org/10.1234/risa.2022.12.004}}
+        {}
+        {\begin{itemize}
+\item Confronto tra modelli di serie temporali e apprendimento supervisionato per la manutenzione predittiva.
+\item Analisi dell'impatto delle variabili meteo e di carico sulla probabilità di guasto.
+\end{itemize}}
+
+\cventry{set 2021}
+        {Segmentazione dei clienti tramite apprendimento non supervisionato}
+        {Atti della Conferenza Italiana di Data Science}
+        {\url{https://doi.org/10.5678/cids.2021.09.012}}
+        {}
+        {\begin{itemize}
+\item Applicazione di clustering e riduzione della dimensionalità a dati di consumo energetico.
+\item Valutazione della stabilità dei segmenti e delle implicazioni per campagne di marketing.
+\end{itemize}}
+\section{Progetti}
+
+\cventry{mar 2021–dic 2021}
+        {Sistema di previsione della domanda energetica per un'azienda utilities, con modelli a livello giornaliero e orario.}
+        {Previsione della Domanda Energetica}
+        {\url{https://github.com/giuliaferrari/energy-demand-forecast}}
+        {}
+        {\begin{itemize}
+\item Costruito pipeline di feature engineering con dati storici, meteo e calendario.
+\item Confrontato Prophet, XGBoost e LSTM; selezionato il modello con il miglior errore in validazione temporale.
+\item Pubblicato dashboard interattiva per il monitoraggio delle previsioni e degli scostamenti.
+\end{itemize}
+\textbf{Parole chiave}: Serie temporali, Prophet, XGBoost, Airflow, Dashboard}
+
+\cventry{giu 2020–nov 2020}
+        {Analisi di recensioni e sondaggi per identificare i fattori chiave della soddisfazione clienti.}
+        {Analisi della Soddisfazione Clienti}
+        {\url{https://github.com/giuliaferrari/customer-satisfaction}}
+        {}
+        {\begin{itemize}
+\item Applicato NLP per estrarre topic e sentiment da recensioni in italiano.
+\item Integrato i risultati con dati transazionali per stimare l'impatto sulla soddisfazione.
+\item Presentato insight actionable al team customer experience.
+\end{itemize}
+\textbf{Parole chiave}: NLP, Topic modeling, Sentiment analysis, Power BI}
+\section{Interessi}
+
+\cvline{Sport}{Corsa, Sci, Yoga}
+\cvline{Musica}{Pianoforte, Jazz}
+\cvline{Divulgazione}{Mentoraggio, Open data, Scrittura tecnica}
+\section{Volontariato}
+
+\cventry{gen 2020–giu 2024}
+        {Mentor Data Science}
+        {Dati per il Bene Comune}
+        {\url{https://www.datiperilbenecomune.it}}
+        {}
+        {\begin{itemize}
+\item Supportato associazioni no profit nella definizione di indicatori e dashboard per misurare l'impatto sociale.
+\item Tenuto laboratori introduttivi su Python, analisi dati e visualizzazione per volontari e studenti.
+\item Contribuito alla pubblicazione di dataset aperti e linee guida per la qualità del dato.
+\end{itemize}}
+    
+\end{document}

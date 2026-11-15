@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Luca Bianchi Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Luca Bianchi</h1>
+    <p class="resume-headline">Data Engineer | Piattaforme Dati e Analytics Cloud</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:luca.bianchi.data@gmail.com" class="resume-contact-link">luca.bianchi.data@gmail.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+39 346 123 4567</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://lucabianchi.dev" class="resume-contact-link">https://lucabianchi.dev</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Via Tortona 31, Milano, Lombardia, Italia, 20144</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/luca-bianchi-data" class="resume-contact-link">@luca-bianchi-data</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/lucabianchi-data" class="resume-contact-link">@lucabianchi-data</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Informazioni personali</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <p>Data Engineer con oltre 9 anni di esperienza nella progettazione e nello sviluppo di piattaforme dati scalabili su cloud.
+          Specializzato in pipeline ETL/ELT, modellazione dei dati e orchestrazione con Apache Airflow e dbt.
+          Esperienza consolidata con AWS, Snowflake e BigQuery, maturata in contesti Agile e team interfunzionali.
+          Orientato alla qualità del dato, all&#39;automazione e al monitoraggio delle pipeline.
+          Appassionato di open source e della diffusione della cultura data-driven.</p>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Formazione</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.polimi.it">Politecnico di Milano</a></div>
+            <div class="resume-entry-organization">Laurea magistrale, Ingegneria Informatica, Punteggio: 110/110 e lode</div>
+          </div>
+          <div class="resume-entry-date">set 2014–lug 2016</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Tesi magistrale su architetture dati distribuite per l&#39;analisi di grandi volumi di dati</p>
+            </li>
+            <li>
+              <p>Approfondimento di basi di dati relazionali e NoSQL, modellazione dimensionale e processi ETL</p>
+            </li>
+            <li>
+              <p>Partecipazione a progetti di gruppo con metodologie Agile e presentazioni tecniche</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Basi di Dati e Sistemi Informativi, Ingegneria del Software, Sistemi Distribuiti, Machine Learning, Cloud Computing, Architetture dei Sistemi di Elaborazione, Sicurezza dei Sistemi Informatici</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.unimi.it">Università degli Studi di Milano</a></div>
+            <div class="resume-entry-organization">Laurea triennale, Ingegneria Informatica, Punteggio: 108/110</div>
+          </div>
+          <div class="resume-entry-date">set 2011–lug 2014</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Solida preparazione in programmazione, algoritmi e basi di dati</p>
+            </li>
+            <li>
+              <p>Esperienza pratica con Java, Python e SQL in progetti universitari</p>
+            </li>
+            <li>
+              <p>Sviluppo di competenze di analisi e problem solving</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Fondamenti di Programmazione, Algoritmi e Strutture Dati, Basi di Dati, Reti di Calcolatori, Sistemi Operativi, Analisi Matematica</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Esperienza professionale</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.fintechlabitalia.it">FintechLab Italia</a></div>
+            <div class="resume-entry-organization">Data Engineer Senior</div>
+          </div>
+          <div class="resume-entry-date">gen 2022–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Progettazione e implementazione di una piattaforma dati cloud-native su AWS con Snowflake e dbt</p>
+            </li>
+            <li>
+              <p>Orchestrazione di oltre 120 pipeline giornaliere con Apache Airflow, riducendo i tempi di elaborazione del 35%</p>
+            </li>
+            <li>
+              <p>Definizione di standard di qualità del dato e osservabilità con Great Expectations e monitoraggio su Grafana</p>
+            </li>
+            <li>
+              <p>Collaborazione con team prodotto e compliance per la modellazione di dati finanziari e reportistica regolamentare</p>
+            </li>
+            <li>
+              <p>Mentoring di due data engineer junior e revisione delle pull request</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Data Platform, Apache Airflow, dbt, Snowflake, AWS, Data Quality</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.retailanalytics.it">Retail Analytics S.p.A.</a></div>
+            <div class="resume-entry-organization">Data Engineer</div>
+          </div>
+          <div class="resume-entry-date">feb 2019–dic 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Sviluppo di pipeline ETL/ELT per l&#39;integrazione di dati da CRM, ERP e piattaforme e-commerce</p>
+            </li>
+            <li>
+              <p>Modellazione di un data warehouse su Google BigQuery con viste materializzate e partizionamento</p>
+            </li>
+            <li>
+              <p>Automazione dei flussi con Airflow e Python, con test automatici e deploy tramite CI/CD</p>
+            </li>
+            <li>
+              <p>Ottimizzazione delle query SQL e riduzione dei costi di elaborazione del 20%</p>
+            </li>
+            <li>
+              <p>Realizzazione di dashboard self-service in Looker per i team commerciale e marketing</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: ETL/ELT, Google BigQuery, Python, Apache Airflow, Looker, Data Warehouse</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.consulenzadatimilano.it">Consulenza Dati Milano</a></div>
+            <div class="resume-entry-organization">Business Intelligence Analyst</div>
+          </div>
+          <div class="resume-entry-date">set 2016–gen 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Raccolta dei requisiti e sviluppo di report e dashboard in Power BI per clienti del settore manifatturiero</p>
+            </li>
+            <li>
+              <p>Scrittura di query SQL complesse su SQL Server e PostgreSQL per analisi operative e direzionali</p>
+            </li>
+            <li>
+              <p>Supporto alla definizione di KPI e modelli dati con i referenti business</p>
+            </li>
+            <li>
+              <p>Documentazione dei processi di reporting e formazione degli utenti finali</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Power BI, SQL Server, PostgreSQL, KPI, Data Visualization</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Lingue</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Italiano<span class="resume-language-fluency">: Madrelingua o bilingue</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: Madrelingua</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Inglese<span class="resume-language-fluency">: Competenza professionale completa</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: IELTS 7.5, C1 Business English</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Francese<span class="resume-language-fluency">: Competenza professionale limitata</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: DELF B1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Competenze</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Data Engineering<span class="resume-skill-level">: Esperto</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Python, SQL, Apache Spark, PySpark, Apache Airflow, dbt, Kafka, ETL/ELT</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Cloud &amp; Data Warehouse<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: AWS, Snowflake, Google BigQuery, Azure, PostgreSQL, Docker, Kubernetes, Terraform</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Analytics &amp; BI<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Power BI, Tableau, Looker, Data Modeling, Data Quality, Data Governance</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Linguaggi e Strumenti<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Scala, Java, Bash, Git, Jira, Confluence, Agile/Scrum</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Premi</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Premio Data Innovation</div>
+            <div class="resume-entry-organization">Data Summit Italia</div>
+          </div>
+          <div class="resume-entry-date">nov 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Riconoscimento per il progetto di osservabilità delle pipeline dati che ha ridotto del 40% il tempo medio di risoluzione degli incidenti.</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Miglior Progetto Dati dell&#39;Anno</div>
+            <div class="resume-entry-organization">Retail Analytics S.p.A.</div>
+          </div>
+          <div class="resume-entry-date">dic 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Premio interno per la realizzazione del data warehouse su BigQuery e delle dashboard self-service per il team commerciale.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://aws.amazon.com/certification/certified-data-engineer-associate/">AWS Certified Data Engineer - Associate</a></div>
+            <div class="resume-entry-organization">Amazon Web Services</div>
+          </div>
+          <div class="resume-entry-date">mar 2024</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://cloud.google.com/learn/certification/data-engineer">Google Professional Data Engineer</a></div>
+            <div class="resume-entry-organization">Google Cloud</div>
+          </div>
+          <div class="resume-entry-date">giu 2022</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.getdbt.com/certifications/analytics-engineer/">dbt Analytics Engineering Certification</a></div>
+            <div class="resume-entry-organization">dbt Labs</div>
+          </div>
+          <div class="resume-entry-date">set 2023</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Pubblicazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ridata.it/articoli/osservabilita-pipeline-dati">Pipeline dati affidabili: pattern di osservabilità per team analytics</a></div>
+            <div class="resume-entry-organization">Rivista Italiana di Data Engineering</div>
+          </div>
+          <div class="resume-entry-date">apr 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Articolo tecnico su metriche di qualità, monitoraggio e gestione degli incidenti nelle pipeline dati</p>
+            </li>
+            <li>
+              <p>Condivisione di pattern applicabili con Airflow, dbt e Great Expectations</p>
+            </li>
+            <li>
+              <p>Casi pratici tratti da contesti fintech e retail</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Progetti</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/lucabianchi-data/data-quality-radar">Data Quality Radar</a></div>
+            <div class="resume-entry-description">Framework open source per il monitoraggio della qualità dei dati nelle pipeline Airflow.</div>
+          </div>
+          <div class="resume-entry-date">gen 2023–giu 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Progettazione di controlli di qualità riutilizzabili per tabelle Snowflake e BigQuery</p>
+            </li>
+            <li>
+              <p>Integrazione con Airflow per l&#39;esecuzione schedulata e la notifica degli alert</p>
+            </li>
+            <li>
+              <p>Documentazione e rilascio su PyPI con oltre 300 download mensili</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Data Quality, Great Expectations, Apache Airflow, Python</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/lucabianchi-data/analytics-hub">Self-Service Analytics Hub</a></div>
+            <div class="resume-entry-description">Piattaforma interna per l&#39;accesso governato ai dati e la creazione di dashboard self-service.</div>
+          </div>
+          <div class="resume-entry-date">mar 2021–nov 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Modellazione di dataset certificati in dbt e Snowflake per i team business</p>
+            </li>
+            <li>
+              <p>Definizione di ruoli e permessi per l&#39;accesso ai dati sensibili</p>
+            </li>
+            <li>
+              <p>Formazione di oltre 60 utenti su Looker e sulle best practice di analytics</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Analytics, Looker, Snowflake, dbt</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interessi</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Open Source</span>: Apache Airflow, dbt, Great Expectations</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Sport</span>: Ciclismo, Nuoto, Trekking</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Fotografia</span>: Paesaggio, Street photography</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Volontariato</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.womenintechitalia.it">Women in Tech Italia</a></div>
+            <div class="resume-entry-organization">Mentore Data Engineering</div>
+          </div>
+          <div class="resume-entry-date">set 2021–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Mentoring per donne che intraprendono percorsi di carriera nel data engineering</p>
+            </li>
+            <li>
+              <p>Supporto nella preparazione di colloqui tecnici e nella definizione di piani di crescita</p>
+            </li>
+            <li>
+              <p>Partecipazione a incontri di community e workshop su SQL e pipeline dati</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="volunteer-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.datasciencemilano.it">Data Science Milano</a></div>
+            <div class="resume-entry-organization">Volontario e speaker</div>
+          </div>
+          <div class="resume-entry-date">gen 2020–dic 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Organizzazione di meetup mensili su data engineering, analytics e machine learning</p>
+            </li>
+            <li>
+              <p>Interventi su orchestrazione di pipeline e data quality</p>
+            </li>
+            <li>
+              <p>Coordinamento di volontari e relazioni con speaker e sponsor</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

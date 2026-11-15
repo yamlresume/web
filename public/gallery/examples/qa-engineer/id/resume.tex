@@ -1,0 +1,229 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Indonesian (Bahasa Indonesia) language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-indonesian.html
+\usepackage[indonesian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Rizky Pratama}{}
+\title{QA Engineer dengan pengalaman dalam pengujian manual dan otomasi}
+\phone[mobile]{+62 812-3456-7890}
+\email{rizky.pratama.qa@gmail.com}
+\homepage{https://www.rizkypratama.dev}
+
+\address{Jl. Kebon Jeruk Raya No. 45, Jakarta Barat, DKI Jakarta, Indonesia, 11530}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/rizkypratama}{@rizkypratama} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/rizkypratama}{@rizkypratama}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informasi Dasar}
+
+\cvline{}{QA Engineer dengan pengalaman lebih dari 7 tahun dalam memastikan kualitas perangkat lunak melalui pengujian manual dan otomasi. Terbiasa merancang strategi pengujian, menulis test case, melakukan regression testing, serta mengelola defect menggunakan JIRA.
+%
+\begin{itemize}
+\item Berpengalaman mengotomasi pengujian web dan API menggunakan Selenium, Cypress, Playwright, dan Postman.
+\item Mampu berkolaborasi dengan tim product, developer, dan DevOps dalam lingkungan Agile/Scrum.
+\item Memiliki pemahaman kuat tentang SDLC, STLC, risk-based testing, dan continuous integration.
+\end{itemize}}
+\section{Pendidikan}
+
+\cventry{Sep 2014–Jul 2018}
+        {Sarjana, Teknik Informatika, Nilai: 3.65}
+        {Universitas Bina Nusantara}
+        {\url{https://www.binus.ac.id}}
+        {}
+        {\begin{itemize}
+\item Mempelajari rekayasa perangkat lunak, basis data, dan pengujian perangkat lunak secara mendalam.
+\item Menyelesaikan proyek akhir tentang otomasi pengujian aplikasi berbasis web.
+\item Aktif dalam organisasi kemahasiswaan dan kompetisi teknologi.
+\end{itemize}
+\textbf{Mata Kuliah}: Rekayasa Perangkat Lunak, Basis Data, Pemrograman Web, Jaringan Komputer, Sistem Operasi, Pengujian Perangkat Lunak}
+\section{Pengalaman Kerja}
+
+\cventry{Mar 2021–Sekarang}
+        {Senior QA Engineer}
+        {PT Solusi Digital Nusantara}
+        {\url{https://www.solusidigital.co.id}}
+        {}
+        {\begin{itemize}
+\item Memimpin tim QA beranggotakan 4 orang dalam pengujian platform SaaS dengan lebih dari 50.000 pengguna aktif.
+\item Merancang strategi pengujian end-to-end, test plan, dan test case untuk fitur baru serta regression suite.
+\item Mengotomasi 300+ skenario pengujian menggunakan Cypress dan Playwright, menurunkan waktu regression testing sebesar 60\%.
+\item Mengintegrasikan pengujian otomasi ke pipeline CI/CD Jenkins dan GitLab CI.
+\item Berkolaborasi dengan product manager dan developer untuk mempercepat siklus rilis dua mingguan.
+\item Melakukan mentoring dan knowledge sharing untuk QA junior.
+\end{itemize}
+\textbf{Kata Kunci}: Otomasi Pengujian, Cypress, Playwright, CI/CD, Kepemimpinan}
+
+\cventry{Agu 2018–Feb 2021}
+        {QA Engineer}
+        {PT Karya Teknologi Indonesia}
+        {\url{https://www.karyateknologi.co.id}}
+        {}
+        {\begin{itemize}
+\item Melakukan pengujian manual dan otomasi pada aplikasi web dan mobile.
+\item Menyusun test case berdasarkan user story dan acceptance criteria.
+\item Melakukan API testing menggunakan Postman dan validasi data menggunakan SQL.
+\item Melaporkan dan melacak defect di JIRA hingga tervalidasi.
+\item Berkontribusi pada peningkatan proses QA dan dokumentasi test.
+\end{itemize}
+\textbf{Kata Kunci}: Pengujian Manual, Selenium, Postman, SQL, Agile}
+\section{Bahasa}
+
+\cvline{Indonesia}{Bahasa Ibu / Bilingual \hfill \textbf{Kata Kunci}: Bahasa Ibu}
+\cvline{Inggris}{Tingkat Profesional Penuh \hfill \textbf{Kata Kunci}: TOEFL 580}
+\section{Keahlian}
+
+\cvline{Pengujian Manual}{Ahli \hfill \textbf{Kata Kunci}: Perancangan Test Case, Regression Testing, Exploratory Testing, User Acceptance Testing}
+\cvline{Otomasi Pengujian}{Mahir \hfill \textbf{Kata Kunci}: Selenium, Cypress, Playwright, Appium, Katalon Studio}
+\cvline{API \& Database}{Mahir \hfill \textbf{Kata Kunci}: Postman, REST API, SQL, MongoDB, GraphQL}
+\cvline{Alat \& Proses}{Mahir \hfill \textbf{Kata Kunci}: JIRA, TestRail, Git, Jenkins, Agile/Scrum}
+\section{Penghargaan}
+
+\cventry{Des 2022}
+        {PT Solusi Digital Nusantara}
+        {QA Team of the Year}
+        {}
+        {}
+        {Diberikan atas kontribusi dalam meningkatkan stabilitas rilis dan menurunkan defect produksi sebesar 35\% melalui inisiatif otomasi regression testing.}
+\section{Sertifikat}
+
+\cventry{Jun 2019}
+        {ISTQB}
+        {ISTQB Certified Tester Foundation Level}
+        {\url{https://www.istqb.org/certifications/certified-tester-foundation-level}}
+        {}
+        {}
+
+\cventry{Mar 2022}
+        {Scrum Alliance}
+        {Certified ScrumMaster}
+        {\url{https://www.scrumalliance.org/get-certified/scrum-master-track/certified-scrummaster}}
+        {}
+        {}
+
+\cventry{Sep 2021}
+        {Cypress.io}
+        {Cypress End-to-End Testing}
+        {\url{https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test}}
+        {}
+        {}
+\section{Publikasi}
+
+\cventry{Agu 2023}
+        {Meningkatkan Efektivitas Regression Testing melalui Otomasi Berbasis Risiko}
+        {Jurnal Teknologi Informasi Indonesia}
+        {\url{https://www.jti.ac.id/index.php/jti/article/view/12345}}
+        {}
+        {\begin{itemize}
+\item Membahas pendekatan otomasi regression testing berbasis risiko untuk aplikasi web berskala besar.
+\item Menunjukkan pengurangan waktu pengujian dan peningkatan cakupan test case.
+\end{itemize}}
+\section{Proyek}
+
+\cventry{Jan 2022–Nov 2022}
+        {Proyek otomasi pengujian end-to-end untuk platform e-commerce menggunakan Cypress dan TypeScript.}
+        {Otomasi Pengujian Platform E-Commerce}
+        {\url{https://github.com/rizkypratama/ecommerce-qa-automation}}
+        {}
+        {\begin{itemize}
+\item Mengotomasi alur kritis seperti login, pencarian produk, keranjang belanja, dan checkout.
+\item Menerapkan Page Object Model dan data-driven testing.
+\item Mengintegrasikan pengujian ke GitHub Actions.
+\end{itemize}
+\textbf{Kata Kunci}: Cypress, TypeScript, E-Commerce, CI/CD}
+\section{Minat}
+
+\cvline{Teknologi}{Otomasi Pengujian, Open Source, Kecerdasan Buatan}
+\cvline{Olahraga}{Lari, Bersepeda, Bulu Tangkis}
+\section{Kegiatan Sukarela}
+
+\cventry{Feb 2020–Sekarang}
+        {Mentor Pengujian Perangkat Lunak}
+        {Komunitas QA Indonesia}
+        {\url{https://www.qaindonesia.id}}
+        {}
+        {\begin{itemize}
+\item Menjadi mentor untuk QA junior dan mahasiswa melalui sesi belajar bulanan.
+\item Membantu menyusun materi pengujian manual dan otomasi.
+\item Berkontribusi pada forum diskusi dan webinar komunitas.
+\end{itemize}}
+    
+\end{document}

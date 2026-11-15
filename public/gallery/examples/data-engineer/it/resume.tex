@@ -1,0 +1,285 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Luca Bianchi}{}
+\title{Data Engineer | Piattaforme Dati e Analytics Cloud}
+\phone[mobile]{+39 346 123 4567}
+\email{luca.bianchi.data@gmail.com}
+\homepage{https://lucabianchi.dev}
+
+\address{Via Tortona 31, Milano, Lombardia, Italia, 20144}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/luca-bianchi-data}{@luca-bianchi-data} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/lucabianchi-data}{@lucabianchi-data}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{Data Engineer con oltre 9 anni di esperienza nella progettazione e nello sviluppo di piattaforme dati scalabili su cloud.
+Specializzato in pipeline ETL/ELT, modellazione dei dati e orchestrazione con Apache Airflow e dbt.
+Esperienza consolidata con AWS, Snowflake e BigQuery, maturata in contesti Agile e team interfunzionali.
+Orientato alla qualità del dato, all'automazione e al monitoraggio delle pipeline.
+Appassionato di open source e della diffusione della cultura data-driven.}
+\section{Formazione}
+
+\cventry{set 2014–lug 2016}
+        {Laurea magistrale, Ingegneria Informatica, Punteggio: 110/110 e lode}
+        {Politecnico di Milano}
+        {\url{https://www.polimi.it}}
+        {}
+        {\begin{itemize}
+\item Tesi magistrale su architetture dati distribuite per l'analisi di grandi volumi di dati
+\item Approfondimento di basi di dati relazionali e NoSQL, modellazione dimensionale e processi ETL
+\item Partecipazione a progetti di gruppo con metodologie Agile e presentazioni tecniche
+\end{itemize}
+\textbf{Corsi}: Basi di Dati e Sistemi Informativi, Ingegneria del Software, Sistemi Distribuiti, Machine Learning, Cloud Computing, Architetture dei Sistemi di Elaborazione, Sicurezza dei Sistemi Informatici}
+
+\cventry{set 2011–lug 2014}
+        {Laurea triennale, Ingegneria Informatica, Punteggio: 108/110}
+        {Università degli Studi di Milano}
+        {\url{https://www.unimi.it}}
+        {}
+        {\begin{itemize}
+\item Solida preparazione in programmazione, algoritmi e basi di dati
+\item Esperienza pratica con Java, Python e SQL in progetti universitari
+\item Sviluppo di competenze di analisi e problem solving
+\end{itemize}
+\textbf{Corsi}: Fondamenti di Programmazione, Algoritmi e Strutture Dati, Basi di Dati, Reti di Calcolatori, Sistemi Operativi, Analisi Matematica}
+\section{Esperienza professionale}
+
+\cventry{gen 2022–Presente}
+        {Data Engineer Senior}
+        {FintechLab Italia}
+        {\url{https://www.fintechlabitalia.it}}
+        {}
+        {\begin{itemize}
+\item Progettazione e implementazione di una piattaforma dati cloud-native su AWS con Snowflake e dbt
+\item Orchestrazione di oltre 120 pipeline giornaliere con Apache Airflow, riducendo i tempi di elaborazione del 35\%
+\item Definizione di standard di qualità del dato e osservabilità con Great Expectations e monitoraggio su Grafana
+\item Collaborazione con team prodotto e compliance per la modellazione di dati finanziari e reportistica regolamentare
+\item Mentoring di due data engineer junior e revisione delle pull request
+\end{itemize}
+\textbf{Parole chiave}: Data Platform, Apache Airflow, dbt, Snowflake, AWS, Data Quality}
+
+\cventry{feb 2019–dic 2021}
+        {Data Engineer}
+        {Retail Analytics S.p.A.}
+        {\url{https://www.retailanalytics.it}}
+        {}
+        {\begin{itemize}
+\item Sviluppo di pipeline ETL/ELT per l'integrazione di dati da CRM, ERP e piattaforme e-commerce
+\item Modellazione di un data warehouse su Google BigQuery con viste materializzate e partizionamento
+\item Automazione dei flussi con Airflow e Python, con test automatici e deploy tramite CI/CD
+\item Ottimizzazione delle query SQL e riduzione dei costi di elaborazione del 20\%
+\item Realizzazione di dashboard self-service in Looker per i team commerciale e marketing
+\end{itemize}
+\textbf{Parole chiave}: ETL/ELT, Google BigQuery, Python, Apache Airflow, Looker, Data Warehouse}
+
+\cventry{set 2016–gen 2019}
+        {Business Intelligence Analyst}
+        {Consulenza Dati Milano}
+        {\url{https://www.consulenzadatimilano.it}}
+        {}
+        {\begin{itemize}
+\item Raccolta dei requisiti e sviluppo di report e dashboard in Power BI per clienti del settore manifatturiero
+\item Scrittura di query SQL complesse su SQL Server e PostgreSQL per analisi operative e direzionali
+\item Supporto alla definizione di KPI e modelli dati con i referenti business
+\item Documentazione dei processi di reporting e formazione degli utenti finali
+\end{itemize}
+\textbf{Parole chiave}: Power BI, SQL Server, PostgreSQL, KPI, Data Visualization}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 7.5, C1 Business English}
+\cvline{Francese}{Competenza professionale limitata \hfill \textbf{Parole chiave}: DELF B1}
+\section{Competenze}
+
+\cvline{Data Engineering}{Esperto \hfill \textbf{Parole chiave}: Python, SQL, Apache Spark, PySpark, Apache Airflow, dbt, Kafka, ETL/ELT}
+\cvline{Cloud \& Data Warehouse}{Avanzato \hfill \textbf{Parole chiave}: AWS, Snowflake, Google BigQuery, Azure, PostgreSQL, Docker, Kubernetes, Terraform}
+\cvline{Analytics \& BI}{Avanzato \hfill \textbf{Parole chiave}: Power BI, Tableau, Looker, Data Modeling, Data Quality, Data Governance}
+\cvline{Linguaggi e Strumenti}{Avanzato \hfill \textbf{Parole chiave}: Scala, Java, Bash, Git, Jira, Confluence, Agile/Scrum}
+\section{Premi}
+
+\cventry{nov 2023}
+        {Data Summit Italia}
+        {Premio Data Innovation}
+        {}
+        {}
+        {Riconoscimento per il progetto di osservabilità delle pipeline dati che ha ridotto del 40\% il tempo medio di risoluzione degli incidenti.}
+
+\cventry{dic 2020}
+        {Retail Analytics S.p.A.}
+        {Miglior Progetto Dati dell'Anno}
+        {}
+        {}
+        {Premio interno per la realizzazione del data warehouse su BigQuery e delle dashboard self-service per il team commerciale.}
+\section{Certificazioni}
+
+\cventry{mar 2024}
+        {Amazon Web Services}
+        {AWS Certified Data Engineer - Associate}
+        {\url{https://aws.amazon.com/certification/certified-data-engineer-associate/}}
+        {}
+        {}
+
+\cventry{giu 2022}
+        {Google Cloud}
+        {Google Professional Data Engineer}
+        {\url{https://cloud.google.com/learn/certification/data-engineer}}
+        {}
+        {}
+
+\cventry{set 2023}
+        {dbt Labs}
+        {dbt Analytics Engineering Certification}
+        {\url{https://www.getdbt.com/certifications/analytics-engineer/}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{apr 2023}
+        {Pipeline dati affidabili: pattern di osservabilità per team analytics}
+        {Rivista Italiana di Data Engineering}
+        {\url{https://www.ridata.it/articoli/osservabilita-pipeline-dati}}
+        {}
+        {\begin{itemize}
+\item Articolo tecnico su metriche di qualità, monitoraggio e gestione degli incidenti nelle pipeline dati
+\item Condivisione di pattern applicabili con Airflow, dbt e Great Expectations
+\item Casi pratici tratti da contesti fintech e retail
+\end{itemize}}
+\section{Progetti}
+
+\cventry{gen 2023–giu 2023}
+        {Framework open source per il monitoraggio della qualità dei dati nelle pipeline Airflow.}
+        {Data Quality Radar}
+        {\url{https://github.com/lucabianchi-data/data-quality-radar}}
+        {}
+        {\begin{itemize}
+\item Progettazione di controlli di qualità riutilizzabili per tabelle Snowflake e BigQuery
+\item Integrazione con Airflow per l'esecuzione schedulata e la notifica degli alert
+\item Documentazione e rilascio su PyPI con oltre 300 download mensili
+\end{itemize}
+\textbf{Parole chiave}: Data Quality, Great Expectations, Apache Airflow, Python}
+
+\cventry{mar 2021–nov 2022}
+        {Piattaforma interna per l'accesso governato ai dati e la creazione di dashboard self-service.}
+        {Self-Service Analytics Hub}
+        {\url{https://github.com/lucabianchi-data/analytics-hub}}
+        {}
+        {\begin{itemize}
+\item Modellazione di dataset certificati in dbt e Snowflake per i team business
+\item Definizione di ruoli e permessi per l'accesso ai dati sensibili
+\item Formazione di oltre 60 utenti su Looker e sulle best practice di analytics
+\end{itemize}
+\textbf{Parole chiave}: Analytics, Looker, Snowflake, dbt}
+\section{Interessi}
+
+\cvline{Open Source}{Apache Airflow, dbt, Great Expectations}
+\cvline{Sport}{Ciclismo, Nuoto, Trekking}
+\cvline{Fotografia}{Paesaggio, Street photography}
+\section{Volontariato}
+
+\cventry{set 2021–Presente}
+        {Mentore Data Engineering}
+        {Women in Tech Italia}
+        {\url{https://www.womenintechitalia.it}}
+        {}
+        {\begin{itemize}
+\item Mentoring per donne che intraprendono percorsi di carriera nel data engineering
+\item Supporto nella preparazione di colloqui tecnici e nella definizione di piani di crescita
+\item Partecipazione a incontri di community e workshop su SQL e pipeline dati
+\end{itemize}}
+    
+
+\cventry{gen 2020–dic 2023}
+        {Volontario e speaker}
+        {Data Science Milano}
+        {\url{https://www.datasciencemilano.it}}
+        {}
+        {\begin{itemize}
+\item Organizzazione di meetup mensili su data engineering, analytics e machine learning
+\item Interventi su orchestrazione di pipeline e data quality
+\item Coordinamento di volontari e relazioni con speaker e sponsor
+\end{itemize}}
+    
+\end{document}

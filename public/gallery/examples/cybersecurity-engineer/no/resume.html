@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Silje Bakken Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Silje Bakken</h1>
+    <p class="resume-headline">Cybersikkerhetsingeniør | SOC, hendelseshåndtering og skysikkerhet</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:silje.bakken@protonmail.com" class="resume-contact-link">silje.bakken@protonmail.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+47 123 45 678</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://siljebakken.no" class="resume-contact-link">https://siljebakken.no</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Storgata 12, Oslo, Oslo, Norge, 0155</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/siljebakken" class="resume-contact-link">@siljebakken</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/siljebakken" class="resume-contact-link">@siljebakken</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Grunnleggende informasjon</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>Erfaren cybersikkerhetsingeniør med mastergrad i informasjonssikkerhet og 8 års erfaring fra SOC, hendelseshåndtering og sikkerhetsarkitektur.</p>
+          </li>
+          <li>
+            <p>Spesialisert i trusseldeteksjon, logganalyse og automatisering av sikkerhetsprosesser i Microsoft Sentinel, Splunk og QRadar.</p>
+          </li>
+          <li>
+            <p>Har ledet hendelsesrespons for kritisk infrastruktur og redusert responstid gjennom SOAR-playbooks og KQL-baserte deteksjoner.</p>
+          </li>
+          <li>
+            <p>Sterk på risikovurdering, MITRE ATT&amp;CK, sikkerhetsrevisjoner og samarbeid på tvers av teknologi-, drift- og ledelsesmiljøer.</p>
+          </li>
+          <li>
+            <p>Opptatt av å bygge en proaktiv sikkerhetskultur gjennom opplæring, mentorvirksomhet og tydelig dokumentasjon.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Utdanning</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ntnu.no">Norges teknisk-naturvitenskapelige universitet</a></div>
+            <div class="resume-entry-organization">Master, Informasjonssikkerhet, Poeng: A (5)</div>
+          </div>
+          <div class="resume-entry-date">aug. 2014–juni 2016</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Fordypning i kryptografi, nettverkssikkerhet og sikker systemutvikling</p>
+            </li>
+            <li>
+              <p>Gjennomførte masterprosjekt om trusseldeteksjon i kritisk infrastruktur</p>
+            </li>
+            <li>
+              <p>Utviklet praktisk erfaring med risikovurdering, sikkerhetsrevisjon og hendelseshåndtering</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Kurs</span>: Kryptografi og sikkerhetsprotokoller, Nettsikkerhet, Systemering av sikre systemer, Risikostyring og personvern, Digital etterforskning, Sikkerhetsarkitektur</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.uio.no">Universitetet i Oslo</a></div>
+            <div class="resume-entry-organization">Bachelor, Informatikk, Poeng: B (4)</div>
+          </div>
+          <div class="resume-entry-date">aug. 2011–juni 2014</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Solid grunnlag i programmering, systemforståelse og datanettverk</p>
+            </li>
+            <li>
+              <p>Arbeidet i prosjektgrupper med sikker utvikling og testing av programvare</p>
+            </li>
+            <li>
+              <p>Skrev bacheloroppgave om autentisering og tilgangskontroll i webløsninger</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Kurs</span>: Algoritmer og datastrukturer, Operativsystemer, Databaser, Nettverk, Programmering i Java, Diskret matematikk</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Arbeidserfaring</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nordiskenergisikkerhet.no">Nordisk Energisikkerhet AS</a></div>
+            <div class="resume-entry-organization">Senior cybersikkerhetsingeniør</div>
+          </div>
+          <div class="resume-entry-date">mars 2021–Nå</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Leder daglig SOC-drift for et energiselskap med kritisk infrastruktur og 24/7-overvåking</p>
+            </li>
+            <li>
+              <p>Utvikler og forvalter deteksjonsregler i Microsoft Sentinel og Splunk med fokus på OT- og IT-konvergens</p>
+            </li>
+            <li>
+              <p>Gjennomfører hendelsesrespons for komplekse hendelser, inkludert analyse, isolering og rapportering</p>
+            </li>
+            <li>
+              <p>Bygget SOAR-playbooks som reduserte manuell prioritering med 35 % og forkortet gjennomsnittlig responsstid</p>
+            </li>
+            <li>
+              <p>Fungerer som teknisk rådgiver i sikkerhetsarkitektur, risikovurderinger og leverandørrevisjoner</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: SOC, Microsoft Sentinel, Splunk, SOAR, OT-sikkerhet, Hendelseshåndtering</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.bergensikkerhet.no">Bergen Sikkerhetsrådgivning AS</a></div>
+            <div class="resume-entry-organization">Cybersikkerhetsingeniør</div>
+          </div>
+          <div class="resume-entry-date">aug. 2016–feb. 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Overvåket og analyserte sikkerhetshendelser for kunder i finans- og helsesektoren</p>
+            </li>
+            <li>
+              <p>Implementerte og vedlikeholdt SIEM-løsninger (QRadar, ArcSight) og utviklet egne korrelasjonsregler</p>
+            </li>
+            <li>
+              <p>Deltok i hendelsesrespons og digital etterforskning, inkludert innsamling av bevis og rapportering</p>
+            </li>
+            <li>
+              <p>Gjennomførte sårbarhetsanalyser og penetrasjonstester i samarbeid med eksterne konsulenter</p>
+            </li>
+            <li>
+              <p>Bidro til utvikling av sikkerhetspolicyer og opplæring av ansatte i sikker bevissthet</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: SIEM, QRadar, ArcSight, Sårbarhetsanalyse, Penetrasjonstesting, Digital etterforskning</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Språk</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Norsk<span class="resume-language-fluency">: Morsmål eller tospråklig nivå</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Nøkkelord</span>: Morsmål</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Engelsk<span class="resume-language-fluency">: Fullt profesjonelt nivå</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Nøkkelord</span>: TOEFL 110, IELTS 7.5</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Tysk<span class="resume-language-fluency">: Begrenset arbeidskunnskap</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Nøkkelord</span>: Grunnleggende</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Ferdigheter</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Sikkerhetsovervåking (SOC)<span class="resume-skill-level">: Ekspert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: Microsoft Sentinel, Splunk, QRadar, ArcSight, Logganalyse</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Trusseldeteksjon og hendelseshåndtering<span class="resume-skill-level">: Ekspert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: MITRE ATT&amp;CK, KQL, SOAR, Playbooks, Digital etterforskning</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Skysikkerhet<span class="resume-skill-level">: Avansert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: Azure Security, AWS Security, Zero Trust, Identity Management</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Risiko og samsvar<span class="resume-skill-level">: Avansert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: ISO 27001, GDPR, Risikovurdering, Sikkerhetsrevisjon</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Programmering og automatisering<span class="resume-skill-level">: Viderekommen</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Nøkkelord</span>: Python, PowerShell, Bash, KQL, REST API</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Utmerkelser</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Årets sikkerhetsprosjekt</div>
+            <div class="resume-entry-organization">Nordisk Energisikkerhet AS</div>
+          </div>
+          <div class="resume-entry-date">nov. 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Anerkjent for utvikling av en automatisert hendelsesresponsplattform som reduserte responstiden med 40 %.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Sertifikater</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.isc2.org/certifications/cissp">CISSP</a></div>
+            <div class="resume-entry-organization">(ISC)²</div>
+          </div>
+          <div class="resume-entry-date">juni 2020</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://learn.microsoft.com/en-us/certifications/azure-security-engineer/">Azure Security Engineer Associate</a></div>
+            <div class="resume-entry-organization">Microsoft</div>
+          </div>
+          <div class="resume-entry-date">sep. 2021</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.isaca.org/credentialing/cism">CISM</a></div>
+            <div class="resume-entry-organization">ISACA</div>
+          </div>
+          <div class="resume-entry-date">mars 2019</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Publikasjoner</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nisk.no/paper/2018">Detecting Advanced Persistent Threats in Critical Infrastructure</a></div>
+            <div class="resume-entry-organization">Norsk Informasjonssikkerhetskonferanse</div>
+          </div>
+          <div class="resume-entry-date">okt. 2018</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Presenterer en metode for å oppdage APT-angrep i OT-miljøer ved hjelp av maskinlæring og nettverksanalyse.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Prosjekter</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/siljebakken/ot-threat-detection">Sanntids trusseldeteksjon for OT-nettverk</a></div>
+            <div class="resume-entry-description">Et åpent kildekode-prosjekt for å detektere unormal aktivitet i industrielle kontrollsystemer.</div>
+          </div>
+          <div class="resume-entry-date">jan. 2020–des. 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Utviklet en deteksjonsmotor basert på Python og Scapy for å analysere Modbus- og DNP3-trafikk.</p>
+            </li>
+            <li>
+              <p>Implementerte varsling til Slack og Microsoft Teams ved mistenkelig aktivitet.</p>
+            </li>
+            <li>
+              <p>Testet løsningen i et simulert OT-miljø med gode resultater.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Nøkkelord</span>: OT-sikkerhet, Python, Scapy, Modbus, DNP3</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interesser</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Sport</span>: Fjellturer, Langrenn, Klatring</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Musikk</span>: Piano, Gitar</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Frivillig arbeid</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.wics.no">Women in Cybersecurity Norge</a></div>
+            <div class="resume-entry-organization">Mentor</div>
+          </div>
+          <div class="resume-entry-date">jan. 2019–Nå</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Mentorer unge kvinner som ønsker å starte karriere innen cybersikkerhet.</p>
+            </li>
+            <li>
+              <p>Holder workshopserier om SOC-drift og hendelseshåndtering.</p>
+            </li>
+            <li>
+              <p>Bidrar til å øke mangfoldet i sikkerhetsmiljøet.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

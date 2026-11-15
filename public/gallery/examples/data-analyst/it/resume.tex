@@ -1,0 +1,231 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Marco Bianchi}{}
+\title{Analista Dati Senior specializzato in Business Intelligence e Data Visualization}
+\phone[mobile]{+39 333 123 4567}
+\email{marco.bianchi@email.it}
+\homepage{https://www.marcobianchi.it}
+
+\address{Via Torino 15, Milano, Lombardia, Italia, 20121}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/marcobianchi}{@marcobianchi} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/marcobianchi}{@marcobianchi}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{\begin{itemize}
+\item Analista dati con oltre 6 anni di esperienza nell'analisi di grandi dataset, modellazione statistica e creazione di dashboard interattive.
+\item Esperto in Python, SQL e strumenti di BI come Power BI e Tableau, con solida conoscenza dei database relazionali e cloud (BigQuery, Snowflake).
+\item Capacità dimostrata di tradurre requisiti aziendali in soluzioni data-driven, collaborando con team multidisciplinari.
+\item Forte orientamento ai risultati, attenzione ai dettagli e passione per la comunicazione efficace degli insight.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2016–lug 2018}
+        {Laurea magistrale, Statistica e Data Science, Punteggio: 110/110 e lode}
+        {Politecnico di Milano}
+        {\url{https://www.polimi.it}}
+        {}
+        {\begin{itemize}
+\item Tesi sperimentale su modelli predittivi per la customer churn analysis.
+\item Progetto di gruppo per la creazione di una piattaforma di analisi dati in tempo reale.
+\end{itemize}
+\textbf{Corsi}: Analisi Statistica Multivariata, Machine Learning, Big Data Analytics, Database e Sistemi Informativi, Data Visualization, Serie Temporali}
+
+\cventry{set 2013–lug 2016}
+        {Laurea triennale, Economia e Statistica, Punteggio: 108/110}
+        {Università degli Studi di Bologna}
+        {\url{https://www.unibo.it}}
+        {}
+        {\begin{itemize}
+\item Fondamenti di statistica e analisi economica.
+\item Introduzione alla programmazione in R.
+\end{itemize}
+\textbf{Corsi}: Statistica Descrittiva, Probabilità, Econometria, Analisi dei Dati}
+\section{Esperienza professionale}
+
+\cventry{gen 2021–Presente}
+        {Data Analyst Senior}
+        {DataMind S.r.l.}
+        {\url{https://www.datamind.it}}
+        {}
+        {\begin{itemize}
+\item Responsabile dell'analisi dati per il reparto marketing, con focus su segmentazione clienti e ottimizzazione campagne.
+\item Sviluppo di dashboard interattive in Power BI per il monitoraggio KPI aziendali, utilizzate da oltre 50 utenti.
+\item Automazione di reportistica settimanale tramite Python e SQL, riducendo il tempo di produzione del 60\%.
+\item Collaborazione con data engineer per la definizione di pipeline ETL e data quality.
+\end{itemize}
+\textbf{Parole chiave}: Power BI, Python, SQL, ETL, Marketing Analytics}
+
+\cventry{set 2018–dic 2020}
+        {Data Analyst}
+        {Banca Nazionale del Lavoro}
+        {\url{https://www.bnl.it}}
+        {}
+        {\begin{itemize}
+\item Analisi di portafoglio crediti e monitoraggio rischi tramite modelli statistici in R e SQL.
+\item Creazione di report mensili per la direzione, con visualizzazione di metriche di performance e anomalie.
+\item Supporto alla migrazione dei dati verso un data warehouse cloud (BigQuery).
+\item Partecipazione a progetti di data governance e definizione di KPI.
+\end{itemize}
+\textbf{Parole chiave}: R, SQL, Risk Analysis, BigQuery, Reporting}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 8.0, Business English}
+\cvline{Francese}{Competenza professionale limitata \hfill \textbf{Parole chiave}: DELF B1}
+\section{Competenze}
+
+\cvline{Analisi Dati e Statistica}{Esperto \hfill \textbf{Parole chiave}: Python, R, SQL, Statistica inferenziale, A/B testing}
+\cvline{Business Intelligence}{Avanzato \hfill \textbf{Parole chiave}: Power BI, Tableau, Looker, Excel avanzato}
+\cvline{Database e Cloud}{Avanzato \hfill \textbf{Parole chiave}: PostgreSQL, MySQL, BigQuery, Snowflake}
+\cvline{Machine Learning}{Intermedio \hfill \textbf{Parole chiave}: scikit-learn, TensorFlow, Modelli predittivi}
+\cvline{Data Engineering}{Intermedio \hfill \textbf{Parole chiave}: ETL, Apache Airflow, dbt}
+\section{Premi}
+
+\cventry{nov 2022}
+        {DataMind S.r.l.}
+        {Premio Innovazione Dati}
+        {}
+        {}
+        {Riconoscimento per lo sviluppo di una soluzione di analytics predittiva che ha aumentato il tasso di conversione del 15\%.}
+\section{Certificazioni}
+
+\cventry{mar 2021}
+        {Google}
+        {Google Data Analytics Professional Certificate}
+        {\url{https://www.coursera.org/professional-certificates/google-data-analytics}}
+        {}
+        {}
+
+\cventry{giu 2022}
+        {Microsoft}
+        {Microsoft Certified: Data Analyst Associate}
+        {\url{https://learn.microsoft.com/en-us/certifications/data-analyst-associate/}}
+        {}
+        {}
+\section{Progetti}
+
+\cventry{gen 2022–mar 2022}
+        {Dashboard interattiva per l'analisi delle vendite retail.}
+        {Dashboard Vendite Interattiva}
+        {\url{https://github.com/marcobianchi/sales-dashboard}}
+        {}
+        {\begin{itemize}
+\item Sviluppata con Power BI e dataset pubblico di vendite.
+\item Include filtri dinamici, KPI e analisi trend.
+\item Pubblicata su Power BI Service per la condivisione.
+\end{itemize}
+\textbf{Parole chiave}: Power BI, Data Visualization, Retail}
+
+\cventry{set 2021–dic 2021}
+        {Modello predittivo per la previsione del churn.}
+        {Analisi Churn Clienti}
+        {\url{https://github.com/marcobianchi/churn-analysis}}
+        {}
+        {\begin{itemize}
+\item Utilizzo di Python e scikit-learn per la modellazione.
+\item Feature engineering e valutazione con cross-validation.
+\item Comunicazione dei risultati tramite report e presentazione.
+\end{itemize}
+\textbf{Parole chiave}: Python, Machine Learning, Churn}
+\section{Interessi}
+
+\cvline{Tecnologia}{Intelligenza Artificiale, Open Data, Cloud Computing}
+\cvline{Sport}{Corsa, Nuoto, Ciclismo}
+\section{Volontariato}
+
+\cventry{gen 2022–Presente}
+        {Mentor}
+        {Data Science Milano}
+        {\url{https://www.datasciencemilano.it}}
+        {}
+        {\begin{itemize}
+\item Mentor per aspiranti data analyst, con sessioni mensili su Python e SQL.
+\item Organizzazione di workshop su data visualization e carriera nel settore dati.
+\item Supporto alla community nella risoluzione di problemi pratici.
+\end{itemize}}
+    
+\end{document}

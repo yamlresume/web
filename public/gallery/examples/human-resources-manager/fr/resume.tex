@@ -1,0 +1,225 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Sophie Martin}{}
+\title{Responsable des Ressources Humaines}
+\phone[mobile]{+33 1 44 55 66 77}
+\email{sophie.martin@example.fr}
+\homepage{https://www.sophiemartin-rh.fr}
+
+\address{12 Rue de Rivoli, Paris, Île-de-France, France, 75001}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/sophiemartin}{@sophiemartin} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/sophiemartin\_rh}{@sophiemartin\_rh}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{\begin{itemize}
+\item Responsable RH avec plus de 10 ans d'expérience dans la gestion des talents, le développement organisationnel et les relations sociales.
+\item Expertise en recrutement, gestion de la paie, formation et droit du travail.
+\item Capacité à aligner les stratégies RH sur les objectifs business et à accompagner le changement.
+\item Leader collaboratif, reconnu pour son écoute et sa capacité à fédérer les équipes.
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2008–juin 2010}
+        {Master, Gestion des Ressources Humaines, Score : Mention Bien}
+        {Université Paris 1 Panthéon-Sorbonne}
+        {\url{https://www.pantheonsorbonne.fr}}
+        {}
+        {\begin{itemize}
+\item Formation approfondie en gestion des ressources humaines, droit social et développement organisationnel.
+\item Projet de fin d'études sur la fidélisation des talents dans le secteur technologique.
+\end{itemize}
+\textbf{Cours} : Droit du travail, Gestion de la paie, Psychologie du travail, Management des équipes, Stratégie RH}
+\section{Expérience professionnelle}
+
+\cventry{janv. 2018–Present}
+        {Responsable des Ressources Humaines}
+        {TechInnov SA}
+        {\url{https://www.techinnov.fr}}
+        {}
+        {\begin{itemize}
+\item Diriger une équipe de 5 personnes en charge du recrutement, de la formation et de la gestion administrative.
+\item Élaborer et mettre en œuvre la politique RH en cohérence avec la stratégie de l'entreprise.
+\item Gérer les relations sociales et les négociations avec les partenaires sociaux.
+\item Piloter la transformation digitale des processus RH (SIRH).
+\end{itemize}
+\textbf{Mots-clés} : Recrutement, Relations sociales, SIRH, Management}
+
+\cventry{mars 2012–déc. 2017}
+        {Chargée de Recrutement}
+        {Groupe Alpha}
+        {\url{https://www.groupe-alpha.fr}}
+        {}
+        {\begin{itemize}
+\item Gérer le processus de recrutement de A à Z pour des profils variés (ingénieurs, commerciaux, fonctions support).
+\item Développer des partenariats avec les écoles et les universités.
+\item Mettre en place des indicateurs de performance pour le suivi des recrutements.
+\end{itemize}
+\textbf{Mots-clés} : Recrutement, Sourcing, Entretiens}
+
+\cventry{sept. 2010–févr. 2012}
+        {Consultante RH Junior}
+        {Cabinet RH Conseil}
+        {\url{https://www.cabinet-rh-conseil.fr}}
+        {}
+        {\begin{itemize}
+\item Accompagner les PME dans la structuration de leur fonction RH.
+\item Réaliser des audits sociaux et proposer des plans d'action.
+\item Animer des formations sur le droit du travail et la gestion des talents.
+\end{itemize}
+\textbf{Mots-clés} : Conseil, Audit social, Formation}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEIC 950}
+\cvline{Espagnol}{Niveau de travail limité \hfill \textbf{Mots-clés} : DELF B1}
+\section{Compétences}
+
+\cvline{Recrutement et Gestion des Talents}{Expert \hfill \textbf{Mots-clés} : Sourcing, Entretiens, Onboarding, Évaluation}
+\cvline{Droit du Travail et Relations Sociales}{Expert \hfill \textbf{Mots-clés} : Négociation, Conventions collectives, CSE}
+\cvline{Gestion de la Paie et Administration RH}{Avancé \hfill \textbf{Mots-clés} : Paie, SIRH, Reporting}
+\cvline{Formation et Développement}{Avancé \hfill \textbf{Mots-clés} : Plan de formation, E-learning, Compétences}
+\section{Récompenses}
+
+\cventry{2021}
+        {Association Nationale des DRH}
+        {Prix de l'Innovation RH}
+        {}
+        {}
+        {Récompense pour la mise en place d'un programme innovant de gestion des talents.}
+\section{Certificats}
+
+\cventry{2019}
+        {SHRM}
+        {Certification SHRM-CP}
+        {\url{https://www.shrm.org/certification}}
+        {}
+        {}
+
+\cventry{2015}
+        {Université Paris 1}
+        {Certificat en Droit du Travail}
+        {\url{https://www.pantheonsorbonne.fr/formation/certificat-droit-travail}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{2020}
+        {L'impact de la digitalisation sur la fonction RH}
+        {Revue Française de Gestion}
+        {\url{https://www.revues.org/rfg}}
+        {}
+        {Article sur les transformations digitales des processus RH et leurs effets sur l'organisation du travail.}
+\section{Projets}
+
+\cventry{janv. 2020–déc. 2020}
+        {Mise en place d'un système d'information RH pour 500 collaborateurs.}
+        {Déploiement d'un SIRH}
+        {\url{https://www.techinnov.fr/projets/sirh}}
+        {}
+        {\begin{itemize}
+\item Pilotage du projet de bout en bout.
+\item Coordination avec les éditeurs et les équipes internes.
+\item Formation des utilisateurs et accompagnement au changement.
+\end{itemize}
+\textbf{Mots-clés} : SIRH, Gestion de projet, Conduite du changement}
+\section{Centres d'intérêt}
+
+\cvline{Sports}{Yoga, Randonnée}
+\cvline{Lecture}{Romans, Essais}
+\section{Bénévolat}
+
+\cventry{sept. 2015–Present}
+        {Bénévole}
+        {Association RH Solidarité}
+        {\url{https://www.rh-solidarite.fr}}
+        {}
+        {\begin{itemize}
+\item Accompagner des personnes en réinsertion professionnelle dans la rédaction de leur CV et la préparation d'entretiens.
+\item Animer des ateliers sur les compétences clés en RH.
+\end{itemize}}
+    
+\end{document}

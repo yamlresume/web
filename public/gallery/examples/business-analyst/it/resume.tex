@@ -1,0 +1,264 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Giulia Ferrari}{}
+\title{Business Analyst Senior | Trasformazione Digitale}
+\phone[mobile]{+39 02 9475 3281}
+\email{giulia.ferrari@analisibusiness.it}
+\homepage{https://www.giuliaferrari.it}
+
+\address{Via Alessandro Volta 18, Milano, Lombardia, Italia, 20154}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/giuliaferrari-ba}{@giuliaferrari-ba} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/giuliaferrari-ba}{@giuliaferrari-ba}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{Business analyst con oltre 7 anni di esperienza nella raccolta requisiti, modellazione dei processi e delivery di soluzioni digitali in ambito bancario e retail.
+%
+\begin{itemize}
+\item Esperta nella traduzione delle esigenze di business in user story, specifiche funzionali e flussi AS-IS/TO-BE, collaborando con stakeholder, product owner e team di sviluppo.
+\item Solida conoscenza di metodologie Agile/Scrum, analisi dei dati, SQL e strumenti di visualizzazione come Power BI e Tableau.
+\item Orientata ai risultati, con eccellenti capacità di comunicazione, facilitazione di workshop e gestione del cambiamento.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2014–lug 2016}
+        {Laurea magistrale, Economia e Management, Punteggio: 110/110 con lode}
+        {Università Bocconi}
+        {\url{https://www.unibocconi.it}}
+        {}
+        {\begin{itemize}
+\item Percorso focalizzato sulla gestione dei processi, analisi dei dati e trasformazione digitale.
+\item Tesi finale su modelli predittivi per l'ottimizzazione della customer experience nel retail.
+\end{itemize}
+\textbf{Corsi}: Analisi dei dati per il business, Sistemi informativi aziendali, Gestione dei processi aziendali, Ricerca operativa, Marketing analytics}
+
+\cventry{set 2011–lug 2014}
+        {Laurea triennale, Ingegneria Gestionale, Punteggio: 105/110}
+        {Politecnico di Milano}
+        {\url{https://www.polimi.it}}
+        {}
+        {\textbf{Corsi}: Economia aziendale, Statistica, Sistemi informativi, Ricerca operativa, Gestione della produzione}
+\section{Esperienza professionale}
+
+\cventry{gen 2021–Presente}
+        {Senior Business Analyst}
+        {Nexa Retail Italia}
+        {\url{https://www.nexaretail.it}}
+        {}
+        {\begin{itemize}
+\item Raccolta e prioritizzazione dei requisiti con stakeholder di business, operations e IT.
+\item Modellazione dei processi AS-IS/TO-BE e definizione dei requisiti funzionali per piattaforme retail.
+\item Coordinamento del backlog con product owner e team di sviluppo in ambiente Agile/Scrum.
+\item Definizione di KPI e dashboard Power BI per il monitoraggio delle performance operative.
+\end{itemize}
+\textbf{Parole chiave}: Raccolta requisiti, Agile/Scrum, Modellazione processi, Power BI, Stakeholder management}
+
+\cventry{mar 2018–dic 2020}
+        {Business Analyst}
+        {Banca Aurora}
+        {\url{https://www.bancaaurora.it}}
+        {}
+        {\begin{itemize}
+\item Analisi funzionale e redazione di specifiche per servizi di digital banking e portali self-service.
+\item Scrittura di user story, criteri di accettazione e documentazione di supporto al rilascio.
+\item Pianificazione ed esecuzione di test UAT con key user e supporto al team di sviluppo.
+\item Monitoraggio dei difetti e coordinamento delle attività di remediation con il business.
+\end{itemize}
+\textbf{Parole chiave}: Analisi funzionale, SQL, User story, Test UAT, Digital banking}
+
+\cventry{set 2016–feb 2018}
+        {Junior Business Analyst}
+        {Consulenza Sigma}
+        {\url{https://www.consulenzasigma.it}}
+        {}
+        {\begin{itemize}
+\item Supporto alla mappatura dei processi aziendali e alla produzione di documentazione funzionale.
+\item Creazione di report e analisi Excel per il monitoraggio delle attività progettuali.
+\item Partecipazione a workshop con il cliente per la raccolta e la validazione dei requisiti.
+\end{itemize}
+\textbf{Parole chiave}: Documentazione, BPMN, Excel avanzato, Reporting}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 7.5, Business English}
+\cvline{Francese}{Competenza professionale limitata \hfill \textbf{Parole chiave}: DELF B1}
+\section{Competenze}
+
+\cvline{Business Analysis}{Esperto \hfill \textbf{Parole chiave}: Raccolta requisiti, User story, BPMN, Analisi AS-IS/TO-BE, UAT}
+\cvline{Metodologie}{Avanzato \hfill \textbf{Parole chiave}: Agile, Scrum, Kanban, Waterfall, Design thinking}
+\cvline{Dati e Strumenti}{Avanzato \hfill \textbf{Parole chiave}: SQL, Power BI, Tableau, Jira, Confluence}
+\cvline{Soft Skills}{Esperto \hfill \textbf{Parole chiave}: Comunicazione, Facilitazione, Negoziazione, Problem solving, Leadership}
+\section{Premi}
+
+\cventry{nov 2022}
+        {Nexa Retail Italia}
+        {Premio Innovazione Digitale}
+        {}
+        {}
+        {Riconoscimento per il contributo alla riduzione del 20\% dei tempi di onboarding dei nuovi fornitori tramite la digitalizzazione dei processi.}
+
+\cventry{giu 2019}
+        {Banca Aurora}
+        {Best Team Project}
+        {}
+        {}
+        {Premio assegnato al team per il lancio di un portale self-service per oltre 150.000 clienti retail.}
+\section{Certificazioni}
+
+\cventry{mar 2023}
+        {IIBA}
+        {Certified Business Analysis Professional (CBAP)}
+        {\url{https://www.iiba.org/certification/cbap/}}
+        {}
+        {}
+
+\cventry{set 2021}
+        {Scrum.org}
+        {Professional Scrum Product Owner I}
+        {\url{https://www.scrum.org/professional-scrum-product-owner-certifications}}
+        {}
+        {}
+
+\cventry{mag 2022}
+        {Microsoft}
+        {Microsoft Certified: Power BI Data Analyst Associate}
+        {\url{https://learn.microsoft.com/en-us/certifications/power-bi-data-analyst-associate/}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{ott 2021}
+        {Modelli predittivi per la personalizzazione dell'offerta retail}
+        {FrancoAngeli Editore}
+        {\url{https://www.francoangeli.it/}}
+        {}
+        {\begin{itemize}
+\item Articolo tecnico sulla segmentazione della clientela e sull'uso di modelli predittivi per migliorare la customer experience.
+\item Analisi di casi di studio nel settore retail italiano.
+\end{itemize}}
+\section{Progetti}
+
+\cventry{feb 2019–nov 2020}
+        {Piattaforma web per la gestione in autonomia di operazioni bancarie quotidiane.}
+        {Portale Self-Service Clienti}
+        {\url{https://www.bancaaurora.it/self-service}}
+        {}
+        {\begin{itemize}
+\item Definizione dei requisiti funzionali e dei flussi utente per oltre 30 funzionalità.
+\item Coordinamento delle attività di UAT con 12 key user e supporto al team di sviluppo.
+\item Riduzione del 25\% delle chiamate al contact center nei primi sei mesi post-lancio.
+\end{itemize}
+\textbf{Parole chiave}: Digital banking, User experience, UAT, Self-service}
+
+\cventry{mar 2021–set 2021}
+        {Sistema di reporting direzionale per monitorare vendite, margini e rotazione delle scorte.}
+        {Dashboard Decisionale Retail}
+        {\url{https://www.nexaretail.it/progetti/dashboard-retail}}
+        {}
+        {\begin{itemize}
+\item Raccolta dei KPI con i responsabili di area e definizione del modello dati.
+\item Realizzazione di dashboard Power BI con aggiornamento giornaliero e controlli di qualità.
+\item Adozione da parte di 45 store manager e riduzione del tempo di reporting settimanale del 60\%.
+\end{itemize}
+\textbf{Parole chiave}: Power BI, KPI, Retail, Data visualization}
+\section{Interessi}
+
+\cvline{Sport}{Running, Yoga, Trekking}
+\cvline{Cultura}{Lettura, Fotografia, Viaggi}
+\section{Volontariato}
+
+\cventry{gen 2022–Presente}
+        {Mentor di analisi dati}
+        {Associazione Digital Skills Italia}
+        {\url{https://www.digitalskills.it}}
+        {}
+        {\begin{itemize}
+\item Mentoraggio di studenti e giovani professionisti su analisi dei dati e strumenti di business intelligence.
+\item Organizzazione di workshop su Power BI, SQL e storytelling con i dati.
+\item Supporto alla definizione di percorsi formativi orientati alle esigenze del mercato.
+\end{itemize}}
+    
+\end{document}

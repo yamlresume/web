@@ -1,0 +1,247 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Ingrid Solberg}{}
+\title{AI-ingeniør med spesialisering i maskinlæring og MLOps}
+\phone[mobile]{+47 912 34 567}
+\email{ingrid.solberg@example.no}
+\homepage{https://ingridsolberg.no}
+
+\address{Storgata 45, Oslo, Oslo, Norge, 0182}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/ingridsolberg}{@ingridsolberg} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/ingridsolberg}{@ingridsolberg}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{AI-ingeniør med seks års erfaring fra utvikling og produksjonssetting av maskinlæringsløsninger. Jeg kombinerer solid teoretisk bakgrunn med praktisk erfaring innen dyp læring, naturlig språkbehandling og skybasert MLOps.
+%
+\begin{itemize}
+\item Utvikler skalerbare AI-tjenester fra idé til produksjon, med fokus på robusthet, ytelse og kostnadseffektivitet
+\item Erfaren med å lede tekniske prosjekter og veilede utviklere i tverrfaglige team
+\item Brenner for ansvarlig AI, åpen kildekode og formidling av komplekse fagområder på en forståelig måte
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2016–juni 2018}
+        {Master, Kunstig intelligens, Poeng: 3,9/4,0}
+        {Norges teknisk-naturvitenskapelige universitet (NTNU)}
+        {\url{https://www.ntnu.no}}
+        {}
+        {\begin{itemize}
+\item Fordypning i maskinlæring, dyp læring og sannsynlige modeller
+\item Masteroppgave om effektiv trening av nevrale nettverk for norsk tekst
+\item Gjennomførte flere tverrfaglige prosjekter med industripartnere
+\end{itemize}
+\textbf{Kurs}: Maskinlæring, Dyp læring, Sannsynlighetsmodeller, Naturlig språkbehandling, Forsterket læring, Datavitenskap, Optimalisering, Statistikk}
+
+\cventry{aug. 2013–juni 2016}
+        {Bachelor, Informatikk, Poeng: 3,8/4,0}
+        {Universitetet i Oslo}
+        {\url{https://www.uio.no}}
+        {}
+        {\begin{itemize}
+\item Grunnleggende utdanning i informatikk med sterk vekt på algoritmer og programmering
+\item Tidlig erfaring med dataanalyse og vitenskapelig metode
+\item Aktiv i studentforeningen for teknologi og samfunn
+\end{itemize}
+\textbf{Kurs}: Algoritmer og datastrukturer, Programmering, Databaser, Operativsystemer, Statistikk, Lineær algebra}
+\section{Arbeidserfaring}
+
+\cventry{mars 2022–Nå}
+        {Senior AI-ingeniør}
+        {Fjord AI AS}
+        {\url{https://fjord.ai}}
+        {}
+        {\begin{itemize}
+\item Leder utviklingen av en norsk språkmodell for kundeservice, fra datainnsamling til produksjonssetting
+\item Designet MLOps-pipeline med automatisk trening, evaluering og utrulling på Kubernetes
+\item Reduserte inferenskostnadene med 35 prosent gjennom modellkomprimering og caching
+\item Veileder tre utviklere og bidrar til teknisk strategi for AI-plattformen
+\end{itemize}
+\textbf{Nøkkelord}: Maskinlæring, MLOps, LLM, Kubernetes}
+
+\cventry{aug. 2018–feb. 2022}
+        {AI-ingeniør}
+        {Schibsted}
+        {\url{https://www.schibsted.no}}
+        {}
+        {\begin{itemize}
+\item Utviklet anbefalingssystemer for nyhetsinnhold med fokus på relevans og mangfold
+\item Bygget datapipelines i Spark og Airflow for daglig prosessering av store datasett
+\item Samarbeidet med produktteam om A/B-testing og evaluering av modellkvalitet
+\item Bidro til å etablere selskapets retningslinjer for ansvarlig AI
+\end{itemize}
+\textbf{Nøkkelord}: Anbefalingssystemer, Spark, Airflow, A/B-testing}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: TOEFL 105}
+\cvline{Tysk}{Begrenset arbeidskunnskap \hfill \textbf{Nøkkelord}: Grunnleggende}
+\section{Ferdigheter}
+
+\cvline{Maskinlæring}{Ekspert \hfill \textbf{Nøkkelord}: Python, PyTorch, TensorFlow, Scikit-learn, Statistikk}
+\cvline{Dyp læring og NLP}{Avansert \hfill \textbf{Nøkkelord}: Transformers, LLM, Hugging Face, SpaCy, Embeddinger}
+\cvline{MLOps og sky}{Avansert \hfill \textbf{Nøkkelord}: Docker, Kubernetes, MLflow, Azure, AWS}
+\cvline{Dataengineering}{Viderekommen \hfill \textbf{Nøkkelord}: SQL, Spark, Kafka, Airflow}
+\cvline{Ledelse og formidling}{Avansert \hfill \textbf{Nøkkelord}: Prosjektledelse, Teknisk veiledning, Agile, Presentasjon}
+\section{Utmerkelser}
+
+\cventry{juni 2018}
+        {NTNU}
+        {Beste masteroppgave i kunstig intelligens}
+        {}
+        {}
+        {Tildelt for masteroppgaven «Effektiv trening av nevrale nettverk for norsk tekst» ved Institutt for datateknologi og informatikk.}
+\section{Sertifikater}
+
+\cventry{sep. 2022}
+        {Microsoft}
+        {Microsoft Certified: Azure AI Engineer Associate}
+        {\url{https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-engineer/}}
+        {}
+        {}
+
+\cventry{mai 2021}
+        {Amazon Web Services}
+        {AWS Certified Machine Learning – Specialty}
+        {\url{https://aws.amazon.com/certification/certified-machine-learning-specialty/}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{nov. 2023}
+        {Norsk språkmodell for kundedialog – erfaringer fra produksjon}
+        {NIKT 2023}
+        {\url{https://www.nikt.no}}
+        {}
+        {\begin{itemize}
+\item Deler erfaringer fra utvikling og drift av en produksjonssatt norsk språkmodell
+\item Beskriver evalueringsmetoder for relevans, trygghet og språkkvalitet
+\item Oppsummerer arkitekturvalg og kostnadsoptimalisering i sky
+\end{itemize}}
+\section{Prosjekter}
+
+\cventry{jan. 2023–okt. 2023}
+        {Åpen kildekode-basert språkmodell tilpasset norsk kundedialog}
+        {Norsk LLM for kundeservice}
+        {\url{https://github.com/ingridsolberg/norsk-llm}}
+        {}
+        {\begin{itemize}
+\item Finjusterte en åpen språkmodell på norsk kundedialog med personvernhensyn
+\item Bygget evalueringssett og automatiske tester for hallusinasjon og tone
+\item Implementerte sikkerhetsfiltre og menneskelig gjennomgang før produksjon
+\end{itemize}
+\textbf{Nøkkelord}: LLM, Norsk, Kundeservice, Personvern}
+
+\cventry{sep. 2020–juni 2021}
+        {Modell for å forutsi vedlikeholdsbehov på maritimt utstyr}
+        {Prediktivt vedlikehold for maritim sektor}
+        {\url{https://github.com/ingridsolberg/prediktivt-vedlikehold}}
+        {}
+        {\begin{itemize}
+\item Bearbeidet sensordata fra skip og bygget tidsseriemodeller for feilprediksjon
+\item Utviklet dashboards for vedlikeholdsteam og tekniske fagpersoner
+\item Reduserte antall uplanlagte stopp i piloten med 18 prosent
+\end{itemize}
+\textbf{Nøkkelord}: Tidsserier, Prediktivt vedlikehold, Sensorer, Maritim}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fjellturer, Skiløping, Kajakk}
+\cvline{Musikk}{Piano, Jazz}
+\cvline{Samfunn}{Åpen kildekode, Teknologiformidling}
+\section{Frivillig arbeid}
+
+\cventry{jan. 2020–Nå}
+        {Frivillig mentor}
+        {AI Norge}
+        {\url{https://www.ainorge.no}}
+        {}
+        {\begin{itemize}
+\item Veileder studenter og nyutdannede som ønsker å bygge erfaring med maskinlæring
+\item Holder workshops om praktisk AI-utvikling og ansvarlig bruk av data
+\item Bidrar til å arrangere månedlige fagkvelder og nettverksmøter
+\end{itemize}}
+    
+\end{document}

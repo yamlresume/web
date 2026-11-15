@@ -1,0 +1,278 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Lorenzo Bianchi}{}
+\title{Ingegnere della cybersicurezza}
+\phone[mobile]{+39 02 8765 4321}
+\email{lorenzo.bianchi@lorenzobianchi.it}
+\homepage{https://www.lorenzobianchi.it}
+
+\address{Via Torino 45, Milano, Lombardia, Italia, 20123}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/lorenzo-bianchi-cyber}{@lorenzo-bianchi-cyber} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/lorenzobianchi}{@lorenzobianchi}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{Professionista della sicurezza informatica con oltre otto anni di esperienza nella protezione di infrastrutture critiche e dati sensibili. Specializzato in monitoraggio, risposta agli incidenti e architetture Zero Trust, unisco competenze tecniche e visione del rischio per sostenere gli obiettivi aziendali.
+%
+\begin{itemize}
+\item Guido progetti di adeguamento a NIS2, GDPR e ISO 27001.
+\item Coordino team di analisti e collaboro con sviluppo, reparti operativi e ufficio legale.
+\item Progetto controlli preventivi e promuovo una cultura della sicurezza misurabile.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2014–lug 2016}
+        {Laurea magistrale, Ingegneria Informatica, Punteggio: 110/110 con lode}
+        {Politecnico di Milano}
+        {\url{https://www.polimi.it}}
+        {}
+        {\begin{itemize}
+\item Tesi magistrale sulla rilevazione di intrusioni in ambienti cloud tramite tecniche di apprendimento automatico.
+\item Approfondimento su crittografia applicata, sicurezza delle reti e gestione del rischio.
+\item Partecipazione a laboratori di hacking etico e progetti con aziende del territorio.
+\end{itemize}
+\textbf{Corsi}: Sicurezza dei sistemi informativi, Crittografia applicata, Architetture di rete e protocolli, Sistemi operativi e virtualizzazione, Gestione dei rischi informatici, Diritto delle nuove tecnologie}
+
+\cventry{set 2011–lug 2014}
+        {Laurea triennale, Ingegneria Informatica, Punteggio: 108/110}
+        {Università degli Studi di Bologna}
+        {\url{https://www.unibo.it}}
+        {}
+        {\begin{itemize}
+\item Basi solide di programmazione, algoritmi, reti e basi di dati.
+\item Progetto finale su un sistema di autenticazione a due fattori per applicazioni web.
+\item Esperienza in gruppi di lavoro e presentazioni tecniche.
+\end{itemize}
+\textbf{Corsi}: Fondamenti di programmazione, Algoritmi e strutture dati, Reti di calcolatori, Basi di dati, Sistemi operativi}
+\section{Esperienza professionale}
+
+\cventry{mar 2020–Presente}
+        {Ingegnere della cybersicurezza senior}
+        {Finanza Sicura S.p.A.}
+        {\url{https://www.finanzasicura.it}}
+        {}
+        {\begin{itemize}
+\item Guido un gruppo di sei analisti nella gestione di incidenti di sicurezza su scala nazionale.
+\item Ho progettato e implementato un modello di difesa Zero Trust per 4.000 dipendenti e 120 applicazioni.
+\item Ho ridotto del 35\% il tempo medio di rilevamento e contenimento delle minacce tramite regole SIEM e automazione SOAR.
+\item Coordino verifiche ISO 27001 e attività di adeguamento alla direttiva NIS2.
+\item Collaboro con i team di sviluppo per integrare controlli di sicurezza nella catena CI/CD.
+\end{itemize}
+\textbf{Parole chiave}: Gestione del rischio, SIEM, Zero Trust, Conformità, Risposta agli incidenti}
+
+\cventry{set 2016–feb 2020}
+        {Cybersecurity Analyst}
+        {CloudNova S.r.l.}
+        {\url{https://www.cloudnova.it}}
+        {}
+        {\begin{itemize}
+\item Monitoraggio continuo di eventi di sicurezza con SIEM, IDS/IPS e piattaforme EDR.
+\item Analisi di malware, phishing e tentativi di accesso anomalo, con redazione di rapporti tecnici.
+\item Gestione delle vulnerabilità e coordinamento delle correzioni con i gruppi infrastrutturali.
+\item Supporto nella definizione delle politiche di accesso e nella formazione del personale.
+\end{itemize}
+\textbf{Parole chiave}: Monitoraggio, Analisi delle minacce, Firewall, VPN, Vulnerabilità}
+
+\cventry{ott 2014–ago 2016}
+        {Specialista di rete junior}
+        {TecnoReti S.p.A.}
+        {\url{https://www.tecnoreti.it}}
+        {}
+        {\begin{itemize}
+\item Configurazione e manutenzione di apparati di rete, firewall e VPN tra sedi.
+\item Diagnosi e risoluzione di problemi di connettività e sicurezza per sedi distribuite.
+\item Collaborazione alla migrazione verso un'infrastruttura di rete segmentata.
+\end{itemize}
+\textbf{Parole chiave}: Networking, Troubleshooting, Cisco, Segmentazione}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 7.5, Livello C1}
+\cvline{Francese}{Competenza professionale limitata \hfill \textbf{Parole chiave}: DELF B1}
+\section{Competenze}
+
+\cvline{Sicurezza informatica}{Esperto \hfill \textbf{Parole chiave}: SIEM, IDS/IPS, Penetration testing, Threat hunting, Risposta agli incidenti}
+\cvline{Sicurezza cloud}{Avanzato \hfill \textbf{Parole chiave}: AWS, Azure, Kubernetes, IAM, Terraform}
+\cvline{Governance e conformità}{Avanzato \hfill \textbf{Parole chiave}: ISO 27001, NIS2, GDPR, Valutazione del rischio, Verifiche di conformità}
+\cvline{Programmazione e automazione}{Avanzato \hfill \textbf{Parole chiave}: Python, Bash, PowerShell, SQL}
+\section{Premi}
+
+\cventry{nov 2022}
+        {Associazione Italiana per la Sicurezza Informatica}
+        {Premio Innovazione in Cybersecurity}
+        {}
+        {}
+        {Riconoscimento per il progetto di una piattaforma di condivisione di indicatori di compromissione tra piccole e medie imprese italiane, con impatto misurabile sulla riduzione degli incidenti.}
+\section{Certificazioni}
+
+\cventry{giu 2021}
+        {ISC2}
+        {Certified Information Systems Security Professional (CISSP)}
+        {\url{https://www.isc2.org/certifications/cissp}}
+        {}
+        {}
+
+\cventry{ott 2022}
+        {Amazon Web Services}
+        {AWS Certified Security - Specialty}
+        {\url{https://aws.amazon.com/certification/certified-security-specialty/}}
+        {}
+        {}
+
+\cventry{apr 2023}
+        {TÜV Italia}
+        {ISO/IEC 27001 Lead Auditor}
+        {\url{https://www.tuv.com/italy/it/}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{set 2023}
+        {Difendere la supply chain software: modelli e pratiche}
+        {Rivista Italiana di Cybersecurity}
+        {\url{https://www.rivistaitalianacybersecurity.it/articoli/supply-chain}}
+        {}
+        {\begin{itemize}
+\item Analisi dei rischi legati a dipendenze software, fornitori e componenti open source.
+\item Proposta di un modello di valutazione e monitoraggio continuo della catena di fornitura.
+\item Casi di studio tratti da incidenti reali e indicazioni operative per le PMI.
+\end{itemize}}
+\section{Progetti}
+
+\cventry{gen 2021–dic 2021}
+        {Progetto open source per la condivisione di indicatori di compromissione tra piccole e medie imprese italiane.}
+        {Piattaforma condivisa di threat intelligence}
+        {\url{https://github.com/lorenzobianchi/threat-intel-condivisa}}
+        {}
+        {\begin{itemize}
+\item Raccolta e normalizzazione di indicatori di compromissione da fonti eterogenee.
+\item API per l'integrazione con SIEM e piattaforme di ticketing.
+\item Documentazione e laboratori per l'adozione da parte di organizzazioni con risorse limitate.
+\end{itemize}
+\textbf{Parole chiave}: Threat intelligence, STIX/TAXII, Open source}
+
+\cventry{feb 2019–lug 2019}
+        {Ambiente virtualizzato per esercitazioni su vulnerabilità web e di rete.}
+        {Laboratorio di penetration testing}
+        {\url{https://github.com/lorenzobianchi/pentest-lab}}
+        {}
+        {\begin{itemize}
+\item Configurazione di macchine vulnerabili e scenari di attacco controllati.
+\item Sperimentazione di tecniche di enumerazione, sfruttamento e post-sfruttamento.
+\item Redazione di report con raccomandazioni di correzione.
+\end{itemize}
+\textbf{Parole chiave}: Penetration testing, OWASP, Virtualizzazione}
+\section{Interessi}
+
+\cvline{Sicurezza informatica}{CTF, Ingegneria inversa, OSINT}
+\cvline{Sport}{Corsa, Nuoto, Ciclismo}
+\cvline{Lettura}{Saggistica, Fantascienza}
+\section{Volontariato}
+
+\cventry{mar 2019–Presente}
+        {Volontario e mentore}
+        {Security Without Borders Italia}
+        {\url{https://www.securitywithoutborders.it}}
+        {}
+        {\begin{itemize}
+\item Mentoring per giovani professionisti e studenti che si avvicinano alla sicurezza informatica.
+\item Organizzazione di laboratori pratici su phishing, igiene digitale e protezione dei dati.
+\item Supporto alla community nella gestione responsabile delle vulnerabilità.
+\end{itemize}}
+    
+
+\cventry{ott 2017–dic 2018}
+        {Formatore digitale}
+        {Associazione Informatica Solidale}
+        {\url{https://www.informaticasolidale.it}}
+        {}
+        {\begin{itemize}
+\item Corsi di alfabetizzazione digitale e sicurezza online per persone over 60.
+\item Creazione di materiali divulgativi semplici e accessibili.
+\item Collaborazione con biblioteche e centri civici del territorio.
+\end{itemize}}
+    
+\end{document}

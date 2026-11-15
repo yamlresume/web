@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>陈思远 Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">陈思远</h1>
+    <p class="resume-headline">资深业务分析师 | 数字化转型与数据驱动决策</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:siyuan.chen@example.com" class="resume-contact-link">siyuan.chen@example.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+86 21 6888 0136</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.siyuanchen-analytics.com" class="resume-contact-link">https://www.siyuanchen-analytics.com</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>中国，上海市，上海，浦东新区世纪大道 100 号，200120</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/siyuan-chen-ba" class="resume-contact-link">@siyuan-chen-ba</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Medium</span>: <a href="https://medium.com/@siyuan.chen" class="resume-contact-link">@siyuan.chen</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Zhihu</span>: <a href="https://www.zhihu.com/people/siyuan-chen-ba" class="resume-contact-link">@陈思远</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">简介</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>9 年金融科技与供应链领域业务分析经验，擅长需求调研、流程建模、数据洞察与跨部门协同。</p>
+          </li>
+          <li>
+            <p>主导 10+ 个数字化项目，覆盖业务蓝图、需求规格、UAT 测试与上线复盘，推动流程效率提升 25% 以上。</p>
+          </li>
+          <li>
+            <p>熟练使用 SQL、Tableau、Power BI、Jira 与 Confluence，能够将复杂业务问题转化为可执行方案。</p>
+          </li>
+          <li>
+            <p>具备优秀的利益相关方管理与沟通能力，善于在业务、产品、技术与运营团队之间建立高效协作。</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">教育背景</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.sufe.edu.cn">上海财经大学</a></div>
+            <div class="resume-entry-organization">学士，信息管理与信息系统，成绩：3.8/4.0</div>
+          </div>
+          <div class="resume-entry-date">2012年9月–2016年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>系统学习信息系统规划、数据库设计与业务流程优化</p>
+            </li>
+            <li>
+              <p>获校级优秀学生奖学金，毕业设计聚焦企业数据治理与流程分析</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>课程</span>：管理信息系统、数据库原理与应用、运筹学、统计学、业务流程管理、项目管理、数据分析基础、经济学原理</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">工作经历</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.xinghan-digital.com">星瀚数字科技（上海）有限公司</a></div>
+            <div class="resume-entry-organization">高级业务分析师</div>
+          </div>
+          <div class="resume-entry-date">2021年7月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>负责金融科技产品线的业务分析与需求管理，覆盖客户尽调、风控审批与运营监控等核心流程</p>
+            </li>
+            <li>
+              <p>主导 6 个跨部门数字化项目，输出业务蓝图、需求规格说明书、流程模型与 UAT 方案</p>
+            </li>
+            <li>
+              <p>建立需求优先级评估机制，协调产品、研发、风控与运营团队，按期交付率提升至 95%</p>
+            </li>
+            <li>
+              <p>设计经营分析看板与关键指标口径，支持管理层进行月度经营复盘与资源调配</p>
+            </li>
+            <li>
+              <p>组织用户访谈与工作坊，沉淀需求模板与业务术语库，缩短新成员上手周期 30%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>：需求管理、流程建模、利益相关方沟通、数据看板、金融科技</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.yunfan-supply.com">云帆供应链管理有限公司</a></div>
+            <div class="resume-entry-organization">业务分析师</div>
+          </div>
+          <div class="resume-entry-date">2018年4月–2021年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>深入采购、仓储与物流业务，梳理订单履约全链路流程并识别效率瓶颈</p>
+            </li>
+            <li>
+              <p>完成 20+ 份业务需求文档与流程现状图，推动仓储作业标准化和异常处理机制落地</p>
+            </li>
+            <li>
+              <p>与数据团队合作搭建库存周转、履约时效与成本分析报表，辅助运营策略调整</p>
+            </li>
+            <li>
+              <p>参与 ERP 系统升级项目，负责需求澄清、测试用例评审与上线培训</p>
+            </li>
+            <li>
+              <p>通过流程优化将订单异常处理时长缩短 18%，库存盘点差异率降低 12%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>：供应链、流程优化、ERP、需求文档、数据分析</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ruilian-consulting.com">睿联市场咨询有限公司</a></div>
+            <div class="resume-entry-organization">数据分析师</div>
+          </div>
+          <div class="resume-entry-date">2016年7月–2018年3月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>为零售与消费品客户提供市场研究、用户洞察与经营分析支持</p>
+            </li>
+            <li>
+              <p>使用 SQL 与 Excel 清洗和分析调研数据，撰写行业分析与客户洞察报告</p>
+            </li>
+            <li>
+              <p>参与 15+ 个咨询项目，负责访谈纪要、问卷设计、数据验证与汇报材料制作</p>
+            </li>
+            <li>
+              <p>与项目经理共同向客户汇报关键发现，提出可落地的业务改进建议</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>：市场研究、用户洞察、SQL、报告撰写、零售行业</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">语言</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">中文<span class="resume-language-fluency">：母语或双语水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>关键字</span>：普通话二级甲等、商务写作</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">英语<span class="resume-language-fluency">：完全专业水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>关键字</span>：CET-6、商务沟通、英文报告撰写</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">日语<span class="resume-language-fluency">：初级水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>关键字</span>：JLPT N4、基础商务会话</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">专业技能</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">业务分析<span class="resume-skill-level">：专家</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：需求调研与访谈、业务流程建模、需求规格说明书、用户故事与用例、UAT 测试管理、利益相关方管理</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">数据分析<span class="resume-skill-level">：高级</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：SQL、Tableau、Power BI、Excel 高级分析、指标体系设计、A/B 测试基础</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">产品与项目<span class="resume-skill-level">：高级</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：Jira、Confluence、Visio、敏捷开发、项目计划与跟踪、风险与变更管理</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">行业知识<span class="resume-skill-level">：高级</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：金融科技、供应链管理、零售与消费品、数字化转型、数据治理</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">荣誉</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">年度优秀员工</div>
+            <div class="resume-entry-organization">星瀚数字科技（上海）有限公司</div>
+          </div>
+          <div class="resume-entry-date">2023年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>表彰在金融科技业务分析项目中的突出贡献，主导需求管理机制建设并推动跨部门协作效率提升。</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">业务分析卓越奖</div>
+            <div class="resume-entry-organization">云帆供应链管理有限公司</div>
+          </div>
+          <div class="resume-entry-date">2020年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>因供应链流程优化项目表现优异获奖，项目实现订单异常处理时长缩短 18%。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">证书</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.iiba.org/certification/cbap">国际商业分析专业人士认证（CBAP）</a></div>
+            <div class="resume-entry-organization">国际商业分析协会（IIBA）</div>
+          </div>
+          <div class="resume-entry-date">2022年9月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.pmi.org/certifications/project-management-pmp">项目管理专业人士认证（PMP）</a></div>
+            <div class="resume-entry-organization">美国项目管理协会（PMI）</div>
+          </div>
+          <div class="resume-entry-date">2021年6月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://grow.google/certificates/data-analytics/">谷歌数据分析专业证书</a></div>
+            <div class="resume-entry-organization">谷歌</div>
+          </div>
+          <div class="resume-entry-date">2020年8月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">出版刊物</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.qyglpl.com/article/2023/data-driven-process-optimization">数据驱动的业务流程优化实践</a></div>
+            <div class="resume-entry-organization">企业管理评论</div>
+          </div>
+          <div class="resume-entry-date">2023年5月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>结合供应链与金融科技项目案例，总结从业务问题识别到指标落地的分析方法</p>
+            </li>
+            <li>
+              <p>提出以流程数据、用户反馈与经营指标相结合的需求优先级评估框架</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="references" data-section="references">
+    <h2 class="resume-section-title">引荐</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="references-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="mailto:min.zhou@example.com">周敏</a></div>
+            <div class="resume-entry-organization">星瀚数字科技产品总监</div>
+          </div>
+          <div>+86 21 6888 0142</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>陈思远具备扎实的业务分析能力与出色的跨部门沟通能力，能够快速理解复杂业务并推动方案落地。</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="references-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="mailto:hao.li@example.com">李昊</a></div>
+            <div class="resume-entry-organization">云帆供应链运营负责人</div>
+          </div>
+          <div>+86 21 5566 0189</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>在供应链流程优化项目中展现出严谨的分析思维和较强的推动力，是团队值得信赖的业务伙伴。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">项目</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.yunfan-supply.com/projects/visibility-platform">供应链履约可视化平台</a></div>
+            <div class="resume-entry-description">面向采购、仓储与物流团队的履约全链路可视化与异常预警平台</div>
+          </div>
+          <div class="resume-entry-date">2019年3月–2020年10月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>负责业务需求调研、流程现状梳理与需求规格编写</p>
+            </li>
+            <li>
+              <p>设计订单履约、库存周转与异常处理等核心指标口径</p>
+            </li>
+            <li>
+              <p>协调研发与运营完成 UAT 测试及上线培训</p>
+            </li>
+            <li>
+              <p>上线后订单异常平均处理时长缩短 18%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>： 供应链、可视化、异常预警、需求分析</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.xinghan-digital.com/projects/kyc-digital">客户尽调流程数字化</a></div>
+            <div class="resume-entry-description">覆盖客户准入、风险评级与审批协同的尽调流程数字化项目</div>
+          </div>
+          <div class="resume-entry-date">2022年2月–2023年8月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>访谈风控、合规与客户经理，梳理尽调流程痛点与合规要求</p>
+            </li>
+            <li>
+              <p>输出业务蓝图、用户故事、流程模型与验收标准</p>
+            </li>
+            <li>
+              <p>设计审批时效与退回率等运营指标，支持持续优化</p>
+            </li>
+            <li>
+              <p>项目上线后平均审批周期缩短 22%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>： 金融科技、客户尽调、流程数字化、合规</div>
+      </div>
+      <div class="resume-entry" id="projects-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ruilian-consulting.com/projects/retail-insight">零售客户洞察分析</a></div>
+            <div class="resume-entry-description">基于调研与销售数据的零售客户分群与经营策略分析项目</div>
+          </div>
+          <div class="resume-entry-date">2017年3月–2017年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>设计问卷与访谈提纲，完成多城市消费者调研数据清洗</p>
+            </li>
+            <li>
+              <p>使用 SQL 与 Excel 进行客户分群、交叉分析与趋势洞察</p>
+            </li>
+            <li>
+              <p>撰写客户洞察报告并向客户管理层汇报策略建议</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>： 零售、客户洞察、市场研究、数据分析</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">兴趣爱好</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">行业研究</span>：数字化转型、商业分析、组织效能</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">运动</span>：马拉松、游泳、徒步</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">创作</span>：商业写作、摄影、播客</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">志愿服务</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.shyba-community.org">上海青年商业分析社区</a></div>
+            <div class="resume-entry-organization">公益导师</div>
+          </div>
+          <div class="resume-entry-date">2020年9月–2024年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>为高校学生与初入职场者提供商业分析职业发展与案例辅导</p>
+            </li>
+            <li>
+              <p>参与组织需求分析工作坊与行业分享活动</p>
+            </li>
+            <li>
+              <p>协助社区沉淀案例库与导师制流程</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

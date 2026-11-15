@@ -1,0 +1,269 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Priya Raman}{}
+\title{Senior Data Engineer | Cloud Data Platforms \& Real-Time Pipelines}
+\phone[mobile]{(206) 555-0182}
+\email{priya.raman@outlook.com}
+\homepage{https://www.priyaraman.dev}
+
+\address{2210 Fremont Avenue N, Seattle, Washington, United States, 98103}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/priyaraman}{@priyaraman} {} {} {} • {} {} {} 
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/priyaraman}{@priyaraman} {} {} {} • {} {} {} 
+{\small \faStackOverflow}\ \href{https://stackoverflow.com/users/1234567/priya-raman}{@priya-raman}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{Data engineer with 7+ years of experience designing, building, and operating batch and streaming data pipelines. Skilled in cloud-native data platforms, data modeling, and data quality. Proven track record of translating business requirements into reliable, scalable data products.}
+\section{Education}
+
+\cventry{Sep 2015–Jun 2017}
+        {Master, Data Engineering, Score: 3.9}
+        {Seattle Polytechnic Institute}
+        {\url{https://www.seattlepoly.edu}}
+        {}
+        {\begin{itemize}
+\item Focused on distributed data processing, storage systems, and cloud-native architectures
+\item Completed a capstone on real-time streaming pipelines for urban mobility data
+\item Built hands-on experience with Spark, Kafka, and columnar data warehouses
+\end{itemize}
+\textbf{Courses}: Distributed Systems, Database Systems, Data Warehousing, Cloud Computing, Machine Learning for Data, Data Modeling, Stream Processing, Information Retrieval}
+
+\cventry{Sep 2011–Jun 2015}
+        {Bachelor, Computer Science, Score: 3.7}
+        {Cascade State University}
+        {\url{https://www.cascadestate.edu}}
+        {}
+        {\begin{itemize}
+\item Developed a strong foundation in algorithms, databases, and software engineering
+\item Completed coursework in statistics and data analysis
+\item Served as a teaching assistant for an introductory database course
+\end{itemize}
+\textbf{Courses}: Data Structures, Algorithms, Operating Systems, Computer Networks, Software Engineering, Statistics}
+\section{Work}
+
+\cventry{Jan 2021–Present}
+        {Senior Data Engineer}
+        {Aurora Data Labs}
+        {\url{https://www.auroradatalabs.com}}
+        {}
+        {\begin{itemize}
+\item Designed and maintained batch and streaming pipelines using Apache Spark, Kafka, Airflow, and dbt
+\item Led migration of legacy ETL workflows to a cloud-native lakehouse on Snowflake and Databricks
+\item Built data quality checks and lineage metadata to improve incident detection and root-cause analysis
+\item Partnered with analytics and product teams to define data models, SLAs, and delivery timelines
+\item Mentored junior engineers on pipeline design, testing, and operational best practices
+\end{itemize}
+\textbf{Keywords}: Apache Spark, Apache Kafka, Apache Airflow, dbt, Snowflake, Data Modeling, Data Quality, ETL/ELT}
+
+\cventry{Jul 2017–Dec 2020}
+        {Data Engineer}
+        {Pulse Retail Group}
+        {\url{https://www.pulseretail.com}}
+        {}
+        {\begin{itemize}
+\item Built and operated ELT pipelines for retail sales, inventory, and customer analytics
+\item Modeled warehouse layers in Amazon Redshift and automated transformations with Airflow
+\item Integrated third-party marketing and POS data into a unified reporting environment
+\item Improved pipeline reliability through monitoring, alerting, and automated data validation
+\item Supported Tableau dashboards used by merchandising and finance teams
+\end{itemize}
+\textbf{Keywords}: Python, SQL, AWS Glue, Amazon Redshift, Apache Airflow, Tableau, Data Warehousing}
+
+\cventry{Jun 2016–Aug 2016}
+        {Data Engineering Intern}
+        {Cascade Health Systems}
+        {\url{https://www.cascadehealth.org}}
+        {}
+        {\begin{itemize}
+\item Assisted with building SQL-based ETL jobs for clinical and operational reporting
+\item Profiled source data and documented data quality issues for remediation
+\item Automated recurring data extracts and validation checks with Python
+\end{itemize}
+\textbf{Keywords}: SQL, Python, ETL, Data Profiling}
+\section{Languages}
+
+\cvline{English}{Native or Bilingual Proficiency}
+\cvline{Tamil}{Native or Bilingual Proficiency}
+\cvline{Spanish}{Limited Working Proficiency \hfill \textbf{Keywords}: DELE B2}
+\section{Skills}
+
+\cvline{Data Engineering}{Expert \hfill \textbf{Keywords}: Apache Spark, Apache Kafka, Apache Airflow, dbt, Snowflake, Databricks, Data Modeling}
+\cvline{Cloud Platforms}{Advanced \hfill \textbf{Keywords}: AWS, Azure, Google Cloud, AWS Glue, Azure Data Factory, Google BigQuery}
+\cvline{Programming}{Advanced \hfill \textbf{Keywords}: Python, SQL, Scala, Java, Bash}
+\cvline{Databases}{Advanced \hfill \textbf{Keywords}: PostgreSQL, Amazon Redshift, Snowflake, MongoDB, Apache Cassandra}
+\cvline{Streaming \& Messaging}{Intermediate \hfill \textbf{Keywords}: Apache Kafka, Spark Structured Streaming, RabbitMQ, Avro, Schema Registry}
+\cvline{Analytics \& BI}{Intermediate \hfill \textbf{Keywords}: Tableau, Power BI, Looker, dbt, Data Quality}
+\section{Awards}
+
+\cventry{Mar 2023}
+        {Aurora Data Labs}
+        {Data Engineering Excellence Award}
+        {}
+        {}
+        {Recognized for leading the migration of legacy ETL workflows to a cloud-native lakehouse, reducing batch processing time by 40\%.}
+
+\cventry{Jun 2017}
+        {Seattle Polytechnic Institute}
+        {Outstanding Graduate Capstone}
+        {}
+        {}
+        {Awarded for a capstone project on real-time streaming pipelines for urban mobility data.}
+\section{Certificates}
+
+\cventry{Apr 2022}
+        {Google Cloud}
+        {Google Cloud Professional Data Engineer}
+        {\url{https://cloud.google.com/certification/data-engineer}}
+        {}
+        {}
+
+\cventry{Nov 2021}
+        {Amazon Web Services}
+        {AWS Certified Data Analytics - Specialty}
+        {\url{https://aws.amazon.com/certification/certified-data-analytics-specialty/}}
+        {}
+        {}
+
+\cventry{Mar 2023}
+        {Databricks}
+        {Databricks Certified Data Engineer Professional}
+        {\url{https://www.databricks.com/learn/certification/data-engineer-professional}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Oct 2020}
+        {Scalable Real-Time Ingestion Pipelines for Retail Analytics}
+        {International Journal of Data Engineering and Analytics}
+        {\url{https://www.ijdea.org/articles/scalable-real-time-ingestion-pipelines}}
+        {}
+        {\begin{itemize}
+\item Presents a reference architecture for low-latency ingestion using Kafka and Spark Structured Streaming
+\item Discusses schema evolution, exactly-once semantics, and operational monitoring
+\item Includes benchmarks from a production retail deployment
+\end{itemize}}
+\section{Projects}
+
+\cventry{Jan 2023–Present}
+        {An open-source toolkit for automated data lineage and quality checks across cloud data warehouses.}
+        {OpenLineage Data Quality Toolkit}
+        {\url{https://github.com/priyaraman/openlineage-dq}}
+        {}
+        {\begin{itemize}
+\item Built a Python library that integrates with Airflow and dbt to capture lineage metadata
+\item Added configurable data quality rules for freshness, volume, and schema drift
+\item Used by multiple internal teams to reduce incident detection time
+\end{itemize}
+\textbf{Keywords}: Data Quality, Data Lineage, Python, Airflow}
+
+\cventry{May 2022–Sep 2022}
+        {A reference lakehouse implementation for retail sales analytics using Delta Lake and Spark.}
+        {Retail Sales Lakehouse}
+        {\url{https://github.com/priyaraman/retail-lakehouse}}
+        {}
+        {\begin{itemize}
+\item Designed bronze, silver, and gold layers for ingestion, cleansing, and business aggregates
+\item Implemented incremental processing and partition pruning for large fact tables
+\item Published dashboards in Power BI for sales and inventory KPIs
+\end{itemize}
+\textbf{Keywords}: Delta Lake, Spark, Lakehouse, Analytics}
+\section{Interests}
+
+\cvline{Open Source}{Apache Airflow, dbt, Data Engineering}
+\cvline{Outdoor Activities}{Hiking, Cycling, Photography}
+\cvline{Music}{Jazz, Guitar}
+\section{Volunteer}
+
+\cventry{Jan 2022–Present}
+        {Volunteer Data Engineer}
+        {Civic Data Alliance}
+        {\url{https://www.civicdataalliance.org}}
+        {}
+        {\begin{itemize}
+\item Maintain data pipelines for a public transit open-data portal
+\item Collaborate with analysts to publish monthly ridership and accessibility datasets
+\item Mentor volunteers on SQL, Python, and data modeling best practices
+\end{itemize}}
+    
+\end{document}

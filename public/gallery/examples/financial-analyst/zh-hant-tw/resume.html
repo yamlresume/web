@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-hant-tw">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>林冠宇 Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">林冠宇</h1>
+    <p class="resume-headline">資深財務分析師｜企業財務、投資評價與風險分析</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:kuanyu.lin@finmail.tw" class="resume-contact-link">kuanyu.lin@finmail.tw</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+886 912 345 678</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.kuanyulin.finance" class="resume-contact-link">https://www.kuanyulin.finance</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>中國臺灣，信義區，台北市，台北市信義區松高路 88 號 12 樓，110</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/kuanyu-lin-finance" class="resume-contact-link">@kuanyu-lin-finance</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Medium</span>: <a href="https://medium.com/@kuanyu.finance" class="resume-contact-link">@kuanyu.finance</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">簡介</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>具備 6 年以上企業財務、投資分析與預算管理經驗，熟悉三表模型、DCF 評價與情境分析。</p>
+          </li>
+          <li>
+            <p>曾協助管理層完成年度預算、滾動預測與月度經營分析，支援定價、投資與資源配置決策。</p>
+          </li>
+          <li>
+            <p>擅長以 SQL、Python 與 Power BI 自動化財務資料流程，將報表編製時間縮短並提升資料品質。</p>
+          </li>
+          <li>
+            <p>具備跨部門溝通與簡報能力，能以財務數據轉譯營運洞察，推動成本優化與績效改善。</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">教育背景</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nccu.edu.tw/">國立政治大學</a></div>
+            <div class="resume-entry-organization">碩士，財務管理學系，成績：3.9/4.0</div>
+          </div>
+          <div class="resume-entry-date">2018年9月–2020年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>碩士論文聚焦企業現金流量預測與資本結構，獲指導教授推薦投稿財務管理學刊。</p>
+            </li>
+            <li>
+              <p>擔任財務計量助教，協助批改作業與帶領個案討論，培養數據分析與溝通能力。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>課程</span>：高等財務管理、投資學專題、財務計量方法、企業評價與併購、衍生性金融商品</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ntpu.edu.tw/">國立臺北大學</a></div>
+            <div class="resume-entry-organization">學士，會計學系，成績：3.8/4.0</div>
+          </div>
+          <div class="resume-entry-date">2014年9月–2018年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>建立會計與財務報表分析基礎，熟悉 IFRS 與企業財務揭露規範。</p>
+            </li>
+            <li>
+              <p>參與校內投資研究社，負責產業研究與財務模型簡報。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>課程</span>：中級會計學、成本會計、審計學、財務報表分析、稅務法規</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">工作經歷</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hongyuancapital.com.tw">宏遠資本管理顧問股份有限公司</a></div>
+            <div class="resume-entry-organization">資深財務分析師</div>
+          </div>
+          <div class="resume-entry-date">2023年3月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>負責消費與科技產業投資案之財務盡職調查、估值建模與投資備忘錄撰寫，累積評估案件金額逾新台幣 20 億元。</p>
+            </li>
+            <li>
+              <p>建立三表整合模型與敏感度分析，協助投資委員會評估成長情境、資本支出與退出報酬。</p>
+            </li>
+            <li>
+              <p>主導月度經營分析與滾動預測，追蹤營收、毛利率、現金流量與關鍵營運指標，提出改善建議。</p>
+            </li>
+            <li>
+              <p>與會計、法務及業務團隊協作，優化預算編製流程並將報表彙整時間縮短約 30%。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：財務建模、投資評價、盡職調查、預算管理、經營分析</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.twd-fintech.com.tw">台灣數位金融科技股份有限公司</a></div>
+            <div class="resume-entry-organization">財務分析師</div>
+          </div>
+          <div class="resume-entry-date">2020年7月–2023年2月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>編製年度預算與季度滾動預測，涵蓋損益表、資產負債表與現金流量表，支援管理層資源配置決策。</p>
+            </li>
+            <li>
+              <p>建立產品別獲利分析與客戶終身價值模型，協助定價策略與行銷預算優化。</p>
+            </li>
+            <li>
+              <p>使用 SQL 與 Power BI 建置財務儀表板，整合 ERP 與 CRM 資料，提升月度結帳分析效率。</p>
+            </li>
+            <li>
+              <p>參與融資規劃與銀行關係維護，準備授信文件、財務預測與還款能力分析。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：財務報表分析、現金流量預測、SQL、Power BI、融資規劃</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">語言</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">中文<span class="resume-language-fluency">：母語或雙語水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：繁體中文、商務寫作</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">英語<span class="resume-language-fluency">：完全專業水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：TOEIC 950、英文簡報、財務報告撰寫</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">專業技能</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">財務分析與評價<span class="resume-skill-level">：專家</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：三表模型、DCF 評價、情境分析、預算編製、管理層報告</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">資料分析與自動化<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：Excel VBA、SQL、Python、Power BI、Tableau</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">風險管理與法遵<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：信用風險、市場風險、內部控制、IFRS、法規遵循</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">榮譽</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">年度卓越分析獎</div>
+            <div class="resume-entry-organization">宏遠資本管理顧問股份有限公司</div>
+          </div>
+          <div class="resume-entry-date">2024年1月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>表彰在投資案評估、財務建模與跨部門協作上的傑出表現。</p>
+            </li>
+            <li>
+              <p>協助團隊完成年度重點投資案，提升投資委員會決策效率。</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">書卷獎</div>
+            <div class="resume-entry-organization">國立臺北大學</div>
+          </div>
+          <div class="resume-entry-date">2017年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>學期成績名列系上前 5%，獲頒書卷獎。</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">證書</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.cfainstitute.org/programs/cfa">特許金融分析師（CFA）第二級通過</a></div>
+            <div class="resume-entry-organization">CFA 協會</div>
+          </div>
+          <div class="resume-entry-date">2022年8月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.garp.org/frm">金融風險管理師（FRM）第一部分通過</a></div>
+            <div class="resume-entry-organization">全球風險管理專業協會</div>
+          </div>
+          <div class="resume-entry-date">2021年11月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">出版刊物</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.twnfinancejournal.org/articles/2020-sme-cashflow">台灣中小企業現金流量管理與財務韌性之實證研究</a></div>
+            <div class="resume-entry-organization">財務管理學刊</div>
+          </div>
+          <div class="resume-entry-date">2020年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>探討中小企業現金流量管理對財務韌性與融資成本的影響。</p>
+            </li>
+            <li>
+              <p>使用台灣上市櫃與中小企業資料進行迴歸分析，提出營運資金管理建議。</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">項目</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hongyuancapital.com.tw/projects/budget-platform">智慧預算編製平台</a></div>
+            <div class="resume-entry-description">整合預算編製、版本控管與差異分析的內部平台，協助財務團隊提升預測效率與資料透明度。</div>
+          </div>
+          <div class="resume-entry-date">2024年1月–2024年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>設計預算資料模型與權限流程，支援多部門協作與版本追蹤。</p>
+            </li>
+            <li>
+              <p>以 Power BI 建置預算執行儀表板，讓管理層即時掌握預算差異與現金流量狀況。</p>
+            </li>
+            <li>
+              <p>將人工彙整流程自動化，降低重複作業與人為錯誤。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>： 預算自動化、資料視覺化、流程改善</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.twd-fintech.com.tw/projects/credit-dashboard">零售業信用風險儀表板</a></div>
+            <div class="resume-entry-description">針對零售客戶建立信用風險監控儀表板，整合還款行為、額度使用與逾期指標。</div>
+          </div>
+          <div class="resume-entry-date">2022年3月–2022年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>以 SQL 清理與整合客戶交易及還款資料，建立風險分群指標。</p>
+            </li>
+            <li>
+              <p>設計逾期預警規則與視覺化報表，協助風險團隊優先處理高風險帳戶。</p>
+            </li>
+            <li>
+              <p>與風險管理部門合作定義 KPI，提升監控頻率與決策反應速度。</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>： 信用風險、SQL、風險儀表板</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">興趣愛好</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">投資研究</span>：價值投資、總體經濟、產業分析</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">戶外活動</span>：登山、馬拉松、攝影</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">志願服務</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.tfaa.org.tw/">台灣財務分析師協會</a></div>
+            <div class="resume-entry-organization">財務教育志工</div>
+          </div>
+          <div class="resume-entry-date">2021年9月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>參與偏鄉金融素養課程，設計預算管理與儲蓄規劃教材。</p>
+            </li>
+            <li>
+              <p>協助協會舉辦財務分析工作坊，擔任小組討論引導與簡報講師。</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

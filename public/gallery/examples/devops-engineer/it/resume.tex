@@ -1,0 +1,255 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Marco Bianchi}{}
+\title{Ingegnere DevOps specializzato in cloud e automazione}
+\phone[mobile]{+39 333 123 4567}
+\email{marco.bianchi@example.com}
+\homepage{https://www.marcobianchi.dev}
+
+\address{Via Alessandro Manzoni 15, Milano, Lombardia, Italia, 20121}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/marcobianchi-devops}{@marcobianchi-devops} {} {} {} • {} {} {} 
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/marco-bianchi-devops}{@marco-bianchi-devops} {} {} {} • {} {} {} 
+{\small \faStackOverflow}\ \href{https://stackoverflow.com/users/12345678/marco-bianchi}{@marco-bianchi}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{Ingegnere DevOps con oltre 7 anni di esperienza nella progettazione e gestione di infrastrutture cloud scalabili e sicure.
+%
+\begin{itemize}
+\item Esperto in automazione dei processi di build, deploy e monitoraggio su AWS e Kubernetes
+\item Forte orientamento alla cultura DevOps, al miglioramento continuo e all'affidabilità dei sistemi
+\item Competenze consolidate in Infrastructure as Code, CI/CD e osservabilità
+\item Abituato a collaborare in team Agile e a mentorare sviluppatori su pratiche SRE
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2010–lug 2012}
+        {Laurea magistrale, Ingegneria Informatica, Punteggio: 108/110}
+        {Politecnico di Milano}
+        {\url{https://www.polimi.it}}
+        {}
+        {\begin{itemize}
+\item Specializzazione in sistemi distribuiti e architetture cloud
+\item Tesi sperimentale su orchestrazione di container e scalabilità automatica
+\item Partecipazione a progetti di ricerca su affidabilità dei sistemi
+\end{itemize}
+\textbf{Corsi}: Sistemi Distribuiti, Cloud Computing, Sicurezza Informatica, Ingegneria del Software, Basi di Dati, Reti di Calcolatori, Architetture dei Sistemi Software}
+
+\cventry{set 2007–lug 2010}
+        {Laurea triennale, Ingegneria Informatica, Punteggio: 105/110}
+        {Università degli Studi di Bologna}
+        {\url{https://www.unibo.it}}
+        {}
+        {\begin{itemize}
+\item Solida preparazione di base in informatica e ingegneria del software
+\item Progetti di gruppo su sviluppo di applicazioni web e basi di dati
+\end{itemize}
+\textbf{Corsi}: Programmazione, Algoritmi e Strutture Dati, Sistemi Operativi, Basi di Dati, Reti di Calcolatori, Ingegneria del Software}
+\section{Esperienza professionale}
+
+\cventry{mar 2019–Presente}
+        {DevOps Engineer}
+        {TechNova S.p.A.}
+        {\url{https://www.technova.it}}
+        {}
+        {\begin{itemize}
+\item Progettazione e gestione di infrastrutture cloud su AWS con Terraform e Ansible
+\item Implementazione di pipeline CI/CD con Jenkins, GitLab CI e Argo CD per oltre 40 microservizi
+\item Migrazione di workload on-premise a Kubernetes (EKS) riducendo i costi operativi del 30\%
+\item Definizione di metriche SLO/SLI e dashboard di monitoraggio con Prometheus e Grafana
+\item Automazione di processi di sicurezza e compliance con Vault e OPA
+\end{itemize}
+\textbf{Parole chiave}: AWS, Terraform, Kubernetes, CI/CD, Prometheus}
+
+\cventry{giu 2016–feb 2019}
+        {Site Reliability Engineer}
+        {CloudSphere Italia}
+        {\url{https://www.cloudsphere.it}}
+        {}
+        {\begin{itemize}
+\item Gestione di piattaforme Kubernetes multi-tenant su GCP e Azure
+\item Riduzione del MTTR attraverso alerting proattivo e runbook automatizzati
+\item Sviluppo di operatori Kubernetes in Go per il self-service dei team di sviluppo
+\item Implementazione di policy di autoscaling e capacity planning
+\end{itemize}
+\textbf{Parole chiave}: GCP, Azure, Kubernetes, Go, SRE}
+
+\cventry{set 2012–mag 2016}
+        {Junior System Administrator}
+        {FinData Solutions S.r.l.}
+        {\url{https://www.findata.it}}
+        {}
+        {\begin{itemize}
+\item Amministrazione di sistemi Linux e Windows in ambienti ad alta disponibilità
+\item Automazione di attività ripetitive con script Bash e Python
+\item Gestione di backup, disaster recovery e monitoraggio con Nagios e Zabbix
+\item Supporto alla migrazione verso infrastrutture virtualizzate VMware
+\end{itemize}
+\textbf{Parole chiave}: Linux, Bash, Python, VMware, Nagios}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 8.0, TOEFL 115}
+\cvline{Tedesco}{Competenza professionale limitata \hfill \textbf{Parole chiave}: B1}
+\section{Competenze}
+
+\cvline{Cloud \& Infrastructure}{Esperto \hfill \textbf{Parole chiave}: AWS, GCP, Azure, Terraform, Ansible}
+\cvline{Container \& Orchestration}{Esperto \hfill \textbf{Parole chiave}: Kubernetes, Docker, Helm, Argo CD, EKS}
+\cvline{CI/CD \& Automation}{Avanzato \hfill \textbf{Parole chiave}: Jenkins, GitLab CI, GitHub Actions, Bash, Python}
+\cvline{Monitoring \& Observability}{Avanzato \hfill \textbf{Parole chiave}: Prometheus, Grafana, ELK Stack, Datadog, OpenTelemetry}
+\cvline{Security \& Compliance}{Intermedio \hfill \textbf{Parole chiave}: Vault, OPA, IAM, SOC 2, GDPR}
+\section{Premi}
+
+\cventry{nov 2021}
+        {TechNova S.p.A.}
+        {Premio Innovazione Tecnologica}
+        {}
+        {}
+        {Riconoscimento per il progetto di migrazione cloud che ha ridotto i costi infrastrutturali del 30\% e migliorato l'affidabilità dei servizi.}
+\section{Certificazioni}
+
+\cventry{mar 2022}
+        {Amazon Web Services}
+        {AWS Certified DevOps Engineer – Professional}
+        {\url{https://aws.amazon.com/certification/certified-devops-engineer-professional/}}
+        {}
+        {}
+
+\cventry{lug 2020}
+        {Cloud Native Computing Foundation}
+        {Certified Kubernetes Administrator (CKA)}
+        {\url{https://www.cncf.io/certification/cka/}}
+        {}
+        {}
+
+\cventry{feb 2021}
+        {HashiCorp}
+        {HashiCorp Certified: Terraform Associate}
+        {\url{https://www.hashicorp.com/certification/terraform-associate}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{apr 2020}
+        {Pratiche SRE per piattaforme Kubernetes multi-tenant}
+        {DevOps Italia Magazine}
+        {\url{https://www.devopsitalia.it/articoli/sre-kubernetes}}
+        {}
+        {\begin{itemize}
+\item Analisi delle strategie di osservabilità e gestione degli incidenti
+\item Case study su riduzione del MTTR e automazione dei runbook
+\end{itemize}}
+\section{Progetti}
+
+\cventry{gen 2021–dic 2022}
+        {Portale interno per il provisioning automatizzato di ambienti cloud}
+        {Piattaforma di self-service per team di sviluppo}
+        {\url{https://github.com/marcobianchi-devops/devportal}}
+        {}
+        {\begin{itemize}
+\item Progettazione di un portale basato su Backstage per l'accesso self-service a risorse cloud
+\item Integrazione con Terraform e Argo CD per il deploy automatico degli ambienti
+\item Riduzione del time-to-market dei team di sviluppo del 40\%
+\end{itemize}
+\textbf{Parole chiave}: Backstage, Terraform, Argo CD, Self-service}
+\section{Interessi}
+
+\cvline{Open Source}{Kubernetes, Terraform, Prometheus}
+\cvline{Sport}{Corsa, Ciclismo, Nuoto}
+\section{Volontariato}
+
+\cventry{gen 2018–Presente}
+        {Mentor e relatore}
+        {DevOps Milano}
+        {\url{https://www.devopsmilano.it}}
+        {}
+        {\begin{itemize}
+\item Mentoring per professionisti junior su pratiche DevOps e cloud
+\item Organizzazione di meetup tecnici e workshop su Kubernetes e Infrastructure as Code
+\item Relatore su temi di osservabilità e SRE
+\end{itemize}}
+    
+\end{document}

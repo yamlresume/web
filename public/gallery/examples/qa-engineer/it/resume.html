@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Luca Bianchi Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Luca Bianchi</h1>
+    <p class="resume-headline">QA Engineer</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:luca.bianchi@example.com" class="resume-contact-link">luca.bianchi@example.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+39 333 123 4567</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.lucabianchi.it" class="resume-contact-link">https://www.lucabianchi.it</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Via Roma 1, Milano, Lombardia, Italia, 20100</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/lucabianchi" class="resume-contact-link">@lucabianchi</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/lucabianchi" class="resume-contact-link">@lucabianchi</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Informazioni personali</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>QA Engineer con oltre 5 anni di esperienza nella verifica e validazione di software</p>
+          </li>
+          <li>
+            <p>Specializzato in test manuali e automatizzati, con solida conoscenza di metodologie Agile</p>
+          </li>
+          <li>
+            <p>Esperto nell&#39;utilizzo di strumenti come Selenium, JUnit, TestNG e Jenkins</p>
+          </li>
+          <li>
+            <p>Capacità di analisi dei requisiti e scrittura di test case dettagliati</p>
+          </li>
+          <li>
+            <p>Forte attenzione ai dettagli e orientamento alla qualità del prodotto</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Formazione</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.polimi.it">Politecnico di Milano</a></div>
+            <div class="resume-entry-organization">Laurea magistrale, Ingegneria Informatica, Punteggio: 110/110</div>
+          </div>
+          <div class="resume-entry-date">set 2018–lug 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Approfondimento delle metodologie di testing e quality assurance</p>
+            </li>
+            <li>
+              <p>Partecipazione a progetti di gruppo per lo sviluppo di software di qualità</p>
+            </li>
+            <li>
+              <p>Tesi sperimentale su tecniche di test automatico per applicazioni web</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Ingegneria del Software, Sistemi di Qualità, Metodi Formali per il Software, Testing e Verifica del Software, Architetture Software, Sicurezza Informatica</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Esperienza professionale</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.techquality.it">TechQuality S.p.A.</a></div>
+            <div class="resume-entry-organization">Senior QA Engineer</div>
+          </div>
+          <div class="resume-entry-date">gen 2021–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Responsabile della strategia di test per un&#39;importante piattaforma e-commerce</p>
+            </li>
+            <li>
+              <p>Progettazione e implementazione di suite di test automatici con Selenium e TestNG</p>
+            </li>
+            <li>
+              <p>Coordinamento di un team di 3 QA Engineer junior</p>
+            </li>
+            <li>
+              <p>Collaborazione con i team di sviluppo per l&#39;analisi dei difetti e il miglioramento continuo</p>
+            </li>
+            <li>
+              <p>Riduzione del 30% dei difetti in produzione grazie a test di regressione automatizzati</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Automazione dei test, Selenium, TestNG, Jenkins, Agile, Qualità del software</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.softwaretestitalia.it">SoftwareTest Italia</a></div>
+            <div class="resume-entry-organization">QA Engineer</div>
+          </div>
+          <div class="resume-entry-date">set 2018–dic 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Esecuzione di test manuali e automatici su applicazioni web e mobile</p>
+            </li>
+            <li>
+              <p>Scrittura di test case e piani di test basati sui requisiti funzionali</p>
+            </li>
+            <li>
+              <p>Utilizzo di JIRA per la gestione dei difetti e la reportistica</p>
+            </li>
+            <li>
+              <p>Partecipazione a sprint review e daily stand-up in ambiente Agile</p>
+            </li>
+            <li>
+              <p>Collaborazione con sviluppatori per la risoluzione di bug critici</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Test manuale, Test automatico, JIRA, Selenium, Postman, Agile</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Lingue</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Italiano<span class="resume-language-fluency">: Madrelingua o bilingue</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: Madrelingua</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Inglese<span class="resume-language-fluency">: Competenza professionale completa</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: IELTS 7.5, Inglese commerciale</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Competenze</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Test Automation<span class="resume-skill-level">: Esperto</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Selenium, TestNG, JUnit, Cucumber, Jenkins, Postman</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Test Manuale<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Analisi dei requisiti, Scrittura di test case, Test di regressione, Test di integrazione, Test di sistema</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Metodologie<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Agile, Scrum, Kanban, TDD, BDD</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Strumenti<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: JIRA, Confluence, Git, SQL, Docker</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Premi</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Premio Qualità 2022</div>
+            <div class="resume-entry-organization">TechQuality S.p.A.</div>
+          </div>
+          <div class="resume-entry-date">dic 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Riconoscimento per l&#39;eccellenza nella implementazione di processi di test automatizzati che hanno portato a una riduzione significativa dei difetti in produzione.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.istqb.org/certifications/advanced-level">ISTQB Certified Tester - Advanced Level</a></div>
+            <div class="resume-entry-organization">ISTQB</div>
+          </div>
+          <div class="resume-entry-date">mar 2021</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.seleniumacademy.com/certification">Certified Selenium Professional</a></div>
+            <div class="resume-entry-organization">Selenium Academy</div>
+          </div>
+          <div class="resume-entry-date">giu 2020</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Pubblicazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.qa-rivista.it/articoli/automazione-test-web">Automazione dei test per applicazioni web moderne</a></div>
+            <div class="resume-entry-organization">Rivista Italiana di Qualità del Software</div>
+          </div>
+          <div class="resume-entry-date">set 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Articolo che esplora le migliori pratiche per l&#39;automazione dei test in ambienti Agile</p>
+            </li>
+            <li>
+              <p>Discussione di casi di studio e strumenti consigliati</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Progetti</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/lucabianchi/test-framework">Framework di Automazione dei Test</a></div>
+            <div class="resume-entry-description">Framework di test automatizzato per applicazioni web basato su Selenium e TestNG</div>
+          </div>
+          <div class="resume-entry-date">gen 2022–giu 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Sviluppo di un framework modulare per test automatici riutilizzabili</p>
+            </li>
+            <li>
+              <p>Integrazione con Jenkins per l&#39;esecuzione continua dei test</p>
+            </li>
+            <li>
+              <p>Riduzione del tempo di esecuzione dei test del 40%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Selenium, TestNG, Jenkins, Automazione</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Dashboard per le Metriche di Qualità</div>
+            <div class="resume-entry-description">Dashboard per il monitoraggio delle metriche di qualità del software</div>
+          </div>
+          <div class="resume-entry-date">mar 2021–ago 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Creazione di una dashboard interattiva per visualizzare i risultati dei test</p>
+            </li>
+            <li>
+              <p>Integrazione con JIRA per il recupero automatico dei dati sui difetti</p>
+            </li>
+            <li>
+              <p>Miglioramento della visibilità sulla qualità del prodotto per il team</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Dashboard, Metriche, JIRA, Qualità</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interessi</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Sport</span>: Corsa, Nuoto, Escursionismo</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Tecnologia</span>: Open Source, Intelligenza Artificiale, Scrittura di blog</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Volontariato</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.qualityitalia.it">Associazione Qualità Italia</a></div>
+            <div class="resume-entry-organization">Mentore QA</div>
+          </div>
+          <div class="resume-entry-date">set 2021–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Volontariato come mentor per giovani QA Engineer</p>
+            </li>
+            <li>
+              <p>Organizzazione di workshop su test automation e quality assurance</p>
+            </li>
+            <li>
+              <p>Supporto nella preparazione alle certificazioni ISTQB</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

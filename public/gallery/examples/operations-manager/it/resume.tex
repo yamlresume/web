@@ -1,0 +1,273 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Lorenzo Bianchi}{}
+\title{Responsabile Operativo | Logistica e Miglioramento Continuo}
+\phone[mobile]{+39 347 123 4567}
+\email{lorenzo.bianchi@example.com}
+\homepage{https://www.lorenzobianchi.it}
+
+\address{Via Torino 45, Milano, Lombardia, Italia, 20123}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/lorenzo-bianchi-ops}{@lorenzo-bianchi-ops} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@lorenzobianchi}{@lorenzobianchi}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{\begin{itemize}
+\item Responsabile Operativo con oltre 8 anni di esperienza nella gestione di processi logistici, produzione e filiera logistica in contesti industriali e retail.
+\item Comprovata capacità di guidare team multidisciplinari, ridurre i costi operativi e migliorare l'efficienza attraverso metodologie Lean Six Sigma e decisioni basate sui dati.
+\item Esperienza nella pianificazione della domanda, gestione dei fornitori, ottimizzazione delle scorte e implementazione di sistemi ERP e WMS.
+\item Orientato ai risultati, con solide competenze nella gestione del cambiamento, nella negoziazione e nel miglioramento continuo.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2011–lug 2013}
+        {Laurea magistrale, Ingegneria Gestionale, Punteggio: 108/110}
+        {Politecnico di Milano}
+        {\url{https://www.polimi.it/}}
+        {}
+        {\begin{itemize}
+\item Approfondimento di modelli di pianificazione, controllo di gestione e operations management
+\item Progetto di tesi sull'ottimizzazione dei flussi logistici in un'azienda manifatturiera
+\item Partecipazione a laboratori su Lean Six Sigma e simulazione di processi produttivi
+\end{itemize}
+\textbf{Corsi}: Gestione della Produzione e dei Servizi, Logistica e Supply Chain Management, Sistemi Informativi Aziendali, Ricerca Operativa, Economia e Organizzazione Aziendale, Gestione dei Progetti}
+
+\cventry{set 2008–lug 2011}
+        {Laurea triennale, Ingegneria Industriale, Punteggio: 105/110}
+        {Università di Bologna}
+        {\url{https://www.unibo.it/}}
+        {}
+        {\begin{itemize}
+\item Basi solide di analisi quantitativa e gestione industriale
+\item Esperienza di tirocinio in un reparto di pianificazione della produzione
+\item Sviluppo di competenze nella risoluzione di problemi e nel lavoro di squadra
+\end{itemize}
+\textbf{Corsi}: Statistica, Ricerca Operativa, Tecnologie Meccaniche, Sistemi di Produzione, Economia Aziendale}
+\section{Esperienza professionale}
+
+\cventry{gen 2020–Presente}
+        {Responsabile Operativo}
+        {Logistica Adriatica S.p.A.}
+        {\url{https://www.logisticaadriatica.it}}
+        {}
+        {\begin{itemize}
+\item Direzione di 4 responsabili di area e 45 operatori distribuiti su 3 magazzini, con gestione di un budget operativo annuo di 8 milioni di euro.
+\item Riduzione del 18\% dei costi di movimentazione e del 12\% degli scarti tramite progetti Lean Six Sigma e riorganizzazione dei flussi.
+\item Implementazione di un nuovo WMS integrato con SAP, con miglioramento della precisione delle scorte dal 92\% al 98,5\%.
+\item Definizione di KPI settimanali su produttività, puntualità delle consegne e sicurezza, con reportistica Power BI per il management.
+\item Coordinamento di fornitori di trasporto e logistica, con rinegoziazione dei contratti e riduzione del 9\% delle tariffe.
+\end{itemize}
+\textbf{Parole chiave}: Filiera logistica, Lean Six Sigma, WMS, SAP, KPI, Budget, Sicurezza, Negoziazione}
+
+\cventry{mar 2016–dic 2019}
+        {Responsabile di Produzione}
+        {Gruppo Meccanica Verona S.r.l.}
+        {\url{https://www.gruppomeccanicaverona.it}}
+        {}
+        {\begin{itemize}
+\item Gestione di 2 linee produttive e di un team di 28 persone, con pianificazione della domanda e della capacità produttiva.
+\item Introduzione di cicli di pianificazione settimanale e strumenti di visual management, con aumento dell'OEE dal 68\% al 78\%.
+\item Riduzione dei fermi macchina del 15\% attraverso manutenzione preventiva e analisi delle cause profonde.
+\item Collaborazione con ufficio acquisti e qualità per ridurre i reclami clienti del 20\%.
+\end{itemize}
+\textbf{Parole chiave}: Produzione, OEE, Manutenzione, Pianificazione, Qualità, Visual Management, Team}
+
+\cventry{giu 2013–feb 2016}
+        {Coordinatore Logistico}
+        {Retail Italia S.r.l.}
+        {\url{https://www.retailitalia.it}}
+        {}
+        {\begin{itemize}
+\item Gestione della distribuzione verso 120 punti vendita, con pianificazione delle rotte e ottimizzazione dei carichi.
+\item Riduzione del 14\% dei costi di trasporto tramite consolidamento delle spedizioni e accordi con vettori.
+\item Implementazione di procedure di controllo inventariale e riduzione delle differenze di stock dal 3,2\% all'1,1\%.
+\end{itemize}
+\textbf{Parole chiave}: Distribuzione, Trasporti, Inventario, Ottimizzazione, Retail}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 8.0, Inglese commerciale}
+\cvline{Francese}{Competenza professionale limitata \hfill \textbf{Parole chiave}: DELF B1, Conversazione}
+\section{Competenze}
+
+\cvline{Gestione Operativa}{Esperto \hfill \textbf{Parole chiave}: Pianificazione operativa, Gestione budget, KPI, Miglioramento continuo, Gestione fornitori}
+\cvline{Filiera Logistica}{Avanzato \hfill \textbf{Parole chiave}: Logistica, Gestione scorte, Pianificazione domanda, Trasporti, Magazzino}
+\cvline{Lean Six Sigma}{Avanzato \hfill \textbf{Parole chiave}: DMAIC, Kaizen, 5S, Mappatura flusso valore, Analisi cause profonde}
+\cvline{Sistemi e Strumenti}{Avanzato \hfill \textbf{Parole chiave}: SAP, WMS, Power BI, Excel avanzato, Tableau}
+\cvline{Leadership}{Avanzato \hfill \textbf{Parole chiave}: Gestione team, Negoziazione, Gestione del cambiamento, Comunicazione}
+\section{Premi}
+
+\cventry{nov 2023}
+        {Logistica Adriatica S.p.A.}
+        {Premio Eccellenza Operativa}
+        {}
+        {}
+        {Riconoscimento per aver guidato il progetto di riorganizzazione del magazzino centrale, con riduzione dei costi del 18\% e miglioramento della puntualità delle consegne al 97\%.}
+
+\cventry{giu 2019}
+        {Gruppo Meccanica Verona S.r.l.}
+        {Premio Miglior Progetto di Miglioramento}
+        {}
+        {}
+        {Premio per il progetto di manutenzione preventiva che ha ridotto i fermi macchina del 15\% e aumentato l'OEE dal 68\% al 78\%.}
+\section{Certificazioni}
+
+\cventry{mar 2018}
+        {IASSC}
+        {Lean Six Sigma Green Belt}
+        {\url{https://www.iassc.org/}}
+        {}
+        {}
+
+\cventry{giu 2020}
+        {ASCM}
+        {Certified Supply Chain Professional (CSCP)}
+        {\url{https://www.ascm.org/}}
+        {}
+        {}
+
+\cventry{set 2022}
+        {SAP}
+        {SAP S/4HANA Supply Chain}
+        {\url{https://www.sap.com/training-certification.html}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{apr 2022}
+        {Digitalizzare la filiera logistica: un modello operativo per le PMI italiane}
+        {Logistica Management}
+        {\url{https://www.logisticamanagement.it/}}
+        {}
+        {\begin{itemize}
+\item Articolo sull'adozione di WMS e analytics nelle PMI manifatturiere
+\item Modello di governance per progetti di digitalizzazione logistica
+\item Casi studio di tre aziende del Nord Italia
+\end{itemize}}
+\section{Progetti}
+
+\cventry{gen 2022–dic 2022}
+        {Riorganizzazione dei flussi di approvvigionamento e delle scorte di sicurezza per una rete di tre magazzini.}
+        {Progetto Zero Scorte}
+        {\url{https://www.logisticaadriatica.it/progetti/zero-scorte}}
+        {}
+        {\begin{itemize}
+\item Analisi ABC/XYZ e ridefinizione dei punti di riordino
+\item Riduzione del 22\% del capitale immobilizzato in scorte
+\item Miglioramento del livello di servizio dal 94\% al 98\%
+\end{itemize}
+\textbf{Parole chiave}: Scorte, ABC/XYZ, Livello di servizio, WMS}
+
+\cventry{feb 2021–nov 2021}
+        {Ottimizzazione della rete di distribuzione e dei contratti con i vettori per il canale retail.}
+        {Rete Distributiva Nord Italia}
+        {\url{https://www.logisticaadriatica.it/progetti/rete-nord}}
+        {}
+        {\begin{itemize}
+\item Mappatura dei flussi e ridefinizione delle rotte
+\item Riduzione del 12\% dei costi di trasporto
+\item Miglioramento della puntualità delle consegne al 96\%
+\end{itemize}
+\textbf{Parole chiave}: Distribuzione, Trasporti, Retail, Ottimizzazione}
+\section{Interessi}
+
+\cvline{Corsa}{Maratona, Trail, Mezza maratona}
+\cvline{Vela}{Regate, Costiera, Equipaggio}
+\cvline{Lettura}{Saggistica, Economia, Storia}
+\section{Volontariato}
+
+\cventry{set 2018–lug 2024}
+        {Coordinatore Volontari}
+        {Fondazione Banco Alimentare Lombardia}
+        {\url{https://www.bancoalimentare.it/}}
+        {}
+        {\begin{itemize}
+\item Coordinamento di 20 volontari durante le raccolte alimentari
+\item Pianificazione turni e gestione delle relazioni con i punti vendita
+\item Supporto nella logistica di stoccaggio e distribuzione delle derrate
+\end{itemize}}
+    
+\end{document}

@@ -1,0 +1,262 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Dutch language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-dutch.html
+\usepackage[dutch]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Sanne de Vries}{}
+\title{Senior Financieel Analist}
+\phone[mobile]{+31 6 12345678}
+\email{sanne.de.vries@example.com}
+\homepage{https://www.sannedevries.nl}
+
+\address{Keizersgracht 123, Amsterdam, Noord-Holland, Nederland, 1015 CJ}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/sannedevries}{@sannedevries} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/sannedevries}{@sannedevries}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basis Informatie}
+
+\cvline{}{\begin{itemize}
+\item Ervaren financieel analist met meer dan 6 jaar ervaring in de bancaire sector.
+\item Sterk in financiële modellering, budgettering en rapportage.
+\item Bewezen trackrecord in het verbeteren van financiële processen en het ondersteunen van strategische besluitvorming.
+\item Analytisch sterk, detailgericht en communicatief vaardig.
+\end{itemize}}
+\section{Opleidingen}
+
+\cventry{sep 2015–jul 2017}
+        {Master, Finance, Score: 8.5}
+        {Universiteit van Amsterdam}
+        {\url{https://www.uva.nl}}
+        {}
+        {\begin{itemize}
+\item Gespecialiseerd in corporate finance en investeringsstrategieën
+\item Afstudeerscriptie over de impact van rentebeleid op bankprestaties
+\item Cum laude afgestudeerd
+\end{itemize}
+\textbf{Cursussen}: Corporate Finance, Investeringsanalyse, Financiële Modellering, Risk Management, Econometrie, Fusies en Overnames}
+
+\cventry{sep 2012–jul 2015}
+        {Bachelor, Economie, Score: 8.0}
+        {Erasmus Universiteit Rotterdam}
+        {\url{https://www.eur.nl}}
+        {}
+        {\begin{itemize}
+\item Basis gelegd voor financiële analyse en economisch denken
+\item Actief lid van de studievereniging
+\end{itemize}
+\textbf{Cursussen}: Micro-economie, Macro-economie, Statistiek, Financiële Rekenkunde, Boekhouden}
+\section{Werkervaring}
+
+\cventry{jan 2021–Heden}
+        {Senior Financieel Analist}
+        {Rabobank}
+        {\url{https://www.rabobank.nl}}
+        {}
+        {\begin{itemize}
+\item Verantwoordelijk voor financiële analyse en rapportage van de zakelijke bankdivisie
+\item Ontwikkelen en onderhouden van financiële modellen voor budgettering en forecasting
+\item Adviseren van senior management over kostenbesparingen en investeringsbeslissingen
+\item Leiden van een team van 3 junior analisten
+\item Geautomatiseerd rapporteringsproces, resulterend in 30\% tijdswinst
+\end{itemize}
+\textbf{Trefwoorden}: Financiële analyse, Budgettering, Forecasting, Teamleiding}
+
+\cventry{sep 2018–dec 2020}
+        {Financieel Analist}
+        {ING Bank}
+        {\url{https://www.ing.com}}
+        {}
+        {\begin{itemize}
+\item Analyseerde financiële prestaties van retail banking producten
+\item Opgesteld van maandelijkse managementrapportages en variance analyses
+\item Samengewerkt met productteams om winstgevendheid te verbeteren
+\item Bouwde SQL-queries en Excel-modellen voor data-analyse
+\item Bijgedragen aan digitalisering van financiële processen
+\end{itemize}
+\textbf{Trefwoorden}: Rapportage, Variance analyse, SQL, Excel}
+
+\cventry{sep 2017–aug 2018}
+        {Junior Financieel Analist}
+        {Deloitte}
+        {\url{https://www.deloitte.nl}}
+        {}
+        {\begin{itemize}
+\item Ondersteunde audit- en adviesteams bij financiële analyses
+\item Voerde data-analyse uit voor cliënten in de financiële sector
+\item Bereidde financiële rapportages en presentaties voor
+\item Leerde werken met geavanceerde Excel- en BI-tools
+\end{itemize}
+\textbf{Trefwoorden}: Audit, Data-analyse, Financiële rapportage}
+\section{Talen}
+
+\cvline{Nederlands}{Moedertaal of tweetalige vaardigheid \hfill \textbf{Trefwoorden}: Moedertaal}
+\cvline{Engels}{Volledige professionele vaardigheid \hfill \textbf{Trefwoorden}: C1}
+\cvline{Duits}{Beperkte werkvaardigheid \hfill \textbf{Trefwoorden}: B1}
+\section{Vaardigheden}
+
+\cvline{Financiële Analyse}{Expert \hfill \textbf{Trefwoorden}: Financiële modellering, Budgettering, Forecasting, Waardering}
+\cvline{Data Analyse}{Geavanceerd \hfill \textbf{Trefwoorden}: SQL, Excel, Power BI, Python}
+\cvline{Risk Management}{Geavanceerd \hfill \textbf{Trefwoorden}: Risicoanalyse, Compliance, Internal Controls}
+\cvline{Communicatie}{Expert \hfill \textbf{Trefwoorden}: Rapportage, Presentatie, Stakeholdermanagement}
+\section{Onderscheidingen}
+
+\cventry{jul 2016}
+        {Universiteit van Amsterdam}
+        {Dean's List}
+        {}
+        {}
+        {Toegekend aan studenten met uitstekende academische prestaties.}
+
+\cventry{dec 2017}
+        {Erasmus Universiteit Rotterdam}
+        {Beste Afstudeerscriptie}
+        {}
+        {}
+        {Prijs voor de beste masterscriptie binnen de faculteit Economie.}
+\section{Certificaten}
+
+\cventry{jun 2020}
+        {CFA Institute}
+        {CFA Level II}
+        {\url{https://www.cfainstitute.org}}
+        {}
+        {}
+
+\cventry{mrt 2019}
+        {Corporate Finance Institute}
+        {Financial Modeling \& Valuation Analyst (FMVA)}
+        {\url{https://corporatefinanceinstitute.com}}
+        {}
+        {}
+\section{Publicaties}
+
+\cventry{dec 2017}
+        {De impact van rentebeleid op bankprestaties}
+        {Tijdschrift voor Financieel Management}
+        {\url{https://www.tijdschriftfinancieelmanagement.nl}}
+        {}
+        {\begin{itemize}
+\item Onderzoek naar de relatie tussen rentebeleid en winstgevendheid van banken
+\item Gepresenteerd op de jaarlijkse conferentie van de European Finance Association
+\end{itemize}}
+\section{Projecten}
+
+\cventry{jan 2022–jun 2022}
+        {Een geïntegreerd financieel model voor kostenoptimalisatie binnen de zakelijke bankdivisie.}
+        {Financieel Model voor Kostenoptimalisatie}
+        {\url{https://www.rabobank.nl/projecten/kostenoptimalisatie}}
+        {}
+        {\begin{itemize}
+\item Ontwikkelde een geïntegreerd financieel model om kostenbesparingen te identificeren
+\item Model gebruikte data van 10 afdelingen en resulteerde in 15\% kostenreductie
+\end{itemize}
+\textbf{Trefwoorden}: Financieel model, Kostenanalyse, Excel}
+
+\cventry{mrt 2021–sep 2021}
+        {Een Power BI-dashboard voor real-time financiële rapportage aan het management.}
+        {Dashboard voor Managementrapportage}
+        {}
+        {}
+        {\begin{itemize}
+\item Bouwde een Power BI-dashboard voor real-time financiële rapportage
+\item Dashboard werd gebruikt door het managementteam voor maandelijkse reviews
+\end{itemize}
+\textbf{Trefwoorden}: Power BI, Dashboard, Rapportage}
+\section{Interesses}
+
+\cvline{Beleggen}{Aandelen, Obligaties, ETF-fondsen}
+\cvline{Hardlopen}{Marathons, Trailrunning}
+\section{Vrijwilligerswerk}
+
+\cventry{jan 2019–dec 2022}
+        {Vrijwillig Financieel Coach}
+        {Stichting Financiële Coaching}
+        {\url{https://www.financielecoaching.nl}}
+        {}
+        {\begin{itemize}
+\item Bieden van financiële coaching aan gezinnen met schulden
+\item Helpen bij het opstellen van budgetten en aflossingsplannen
+\item Organiseren van workshops over financiële geletterdheid
+\end{itemize}}
+    
+\end{document}

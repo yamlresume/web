@@ -1,0 +1,238 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Brazilian Portuguese language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-portuguese.html
+\usepackage[brazilian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Mariana Almeida Costa}{}
+\title{Enfermeira Registrada | Terapia Intensiva e Segurança do Paciente}
+\phone[mobile]{+55 11 98765-4321}
+\email{mariana.costa@enfermagem.com.br}
+\homepage{https://marianacosta-enfermagem.com.br}
+
+\address{Rua Cardoso de Almeida, 1234, Apto 56, São Paulo, SP, Brasil, 01215-000}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/mariana-almeida-costa-rn}{@mariana-almeida-costa-rn} {} {} {} • {} {} {} 
+{\small \faInstagram}\ \href{https://www.instagram.com/enf.marianacosta}{@enf.marianacosta}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informações Básicas}
+
+\cvline{}{\begin{itemize}
+\item Enfermeira registrada com mais de 6 anos de experiência em assistência hospitalar, atuando em unidades de terapia intensiva e clínica médica.
+\item Sólida formação em enfermagem clínica, com foco em segurança do paciente, prevenção de infecções e aplicação da Sistematização da Assistência de Enfermagem (SAE).
+\item Experiência na liderança de equipes de técnicos e auxiliares de enfermagem, elaboração de escalas, educação continuada e monitoramento de indicadores assistenciais.
+\item Comunicação clara e empática no cuidado ao paciente e à família, com atuação colaborativa em equipes multiprofissionais.
+\item Registro profissional ativo no COREN-SP, com prática alinhada às boas práticas de enfermagem e às normas de biossegurança.
+\end{itemize}}
+\section{Formação}
+
+\cventry{fev. de 2014–dez. de 2017}
+        {Bacharelado, Enfermagem, Nota: 8.7/10}
+        {Universidade de São Paulo}
+        {\url{https://www.usp.br}}
+        {}
+        {\begin{itemize}
+\item Formação generalista com ênfase em enfermagem clínica, saúde coletiva e gestão do cuidado.
+\item Desenvolvimento de competências para avaliação integral do paciente, raciocínio clínico e tomada de decisão baseada em evidências.
+\item Participação em projetos de extensão e atividades práticas em hospitais universitários.
+\end{itemize}
+\textbf{Cursos}: Anatomia Humana, Fisiologia, Farmacologia, Semiologia e Semiotécnica, Enfermagem em Terapia Intensiva, Saúde Coletiva, Gestão em Enfermagem, Bioética}
+\section{Experiência Profissional}
+
+\cventry{jan. de 2022–Atual}
+        {Enfermeira Assistencial}
+        {Hospital Israelita Albert Einstein}
+        {\url{https://www.einstein.br}}
+        {}
+        {\begin{itemize}
+\item Presto assistência de enfermagem a pacientes adultos em unidade de terapia intensiva, realizando avaliação clínica, administração de medicamentos, curativos complexos e monitorização hemodinâmica.
+\item Aplico protocolos institucionais de segurança do paciente, prevenção de infecção relacionada à assistência à saúde e notificação de eventos adversos.
+\item Lidero equipe de técnicos de enfermagem durante o turno, organizando escalas, distribuindo atividades e apoiando a tomada de decisão clínica.
+\item Participo de rondas multiprofissionais, discussões de casos e treinamentos de educação continuada voltados à qualidade do cuidado.
+\item Utilizo prontuário eletrônico e sistemas assistenciais para registro, auditoria e acompanhamento de indicadores.
+\end{itemize}
+\textbf{Palavras-chave}: Terapia Intensiva, Segurança do Paciente, SAE, Liderança de Equipe, Prontuário Eletrônico}
+
+\cventry{mar. de 2018–dez. de 2021}
+        {Enfermeira Assistencial}
+        {Hospital das Clínicas da FMUSP}
+        {\url{https://www.hc.fm.usp.br}}
+        {}
+        {\begin{itemize}
+\item Prestei cuidados de enfermagem a pacientes adultos e idosos em unidades de clínica médica e cuidados paliativos, com foco em conforto, dignidade e continuidade do cuidado.
+\item Realizei triagem, acolhimento, avaliação inicial, administração de medicamentos e orientação de alta hospitalar.
+\item Desenvolvi ações de educação em saúde para pacientes e familiares sobre prevenção de complicações, adesão ao tratamento e autocuidado.
+\item Colaborei com equipe multiprofissional na elaboração de planos de cuidado individualizados e na comunicação de intercorrências.
+\item Apoiei a supervisão de estagiários e novos colaboradores, contribuindo para a integração e capacitação da equipe.
+\end{itemize}
+\textbf{Palavras-chave}: Clínica Médica, Cuidados Paliativos, Educação em Saúde, Triagem}
+\section{Idiomas}
+
+\cvline{Português}{Nativo ou Bilíngue}
+\cvline{Inglês}{Proficiência Profissional Fluente \hfill \textbf{Palavras-chave}: TOEFL iBT 105, Leitura de artigos científicos}
+\cvline{Espanhol}{Proficiência Profissional Limitada \hfill \textbf{Palavras-chave}: DELE B1}
+\section{Competências}
+
+\cvline{Enfermagem Clínica}{Especialista \hfill \textbf{Palavras-chave}: Avaliação de Enfermagem, Administração de Medicamentos, Curativos Complexos, Cateterismo Vesical, Coleta de Exames}
+\cvline{Terapia Intensiva}{Avançado \hfill \textbf{Palavras-chave}: Ventilação Mecânica, Monitorização Hemodinâmica, Gasometria Arterial, Protocolos de Sepse, Suporte Avançado de Vida}
+\cvline{Segurança do Paciente}{Avançado \hfill \textbf{Palavras-chave}: Prevenção de Infecção, Higienização das Mãos, Notificação de Eventos, Auditoria de Prontuários}
+\cvline{Gestão e Liderança}{Avançado \hfill \textbf{Palavras-chave}: Escalas de Trabalho, Educação Continuada, Indicadores Assistenciais, Gestão de Conflitos}
+\cvline{Sistemas de Saúde}{Intermediário \hfill \textbf{Palavras-chave}: Prontuário Eletrônico, TASY, MV Soul}
+\section{Prêmios}
+
+\cventry{nov. de 2023}
+        {Hospital Israelita Albert Einstein}
+        {Prêmio de Excelência em Cuidado ao Paciente}
+        {}
+        {}
+        {Reconhecimento por desempenho consistente na assistência de enfermagem, comunicação empática com pacientes e familiares e compromisso com a segurança do paciente.}
+
+\cventry{dez. de 2017}
+        {Escola de Enfermagem da USP}
+        {Destaque Acadêmico em Enfermagem}
+        {}
+        {}
+        {Concedido a estudantes com alto desempenho acadêmico e envolvimento em atividades de extensão universitária.}
+\section{Certificados}
+
+\cventry{fev. de 2024}
+        {American Heart Association}
+        {Certificação em Suporte Básico de Vida (BLS)}
+        {\url{https://www.heart.org/en/courses/bls}}
+        {}
+        {}
+
+\cventry{dez. de 2021}
+        {Sociedade Brasileira de Terapia Intensiva}
+        {Especialização em Enfermagem em Terapia Intensiva}
+        {\url{https://www.sbti.org.br}}
+        {}
+        {}
+
+\cventry{ago. de 2020}
+        {Associação Brasileira de Enfermagem}
+        {Curso de Interpretação de Gasometria Arterial}
+        {\url{https://www.abennacional.org.br}}
+        {}
+        {}
+\section{Publicações}
+
+\cventry{jun. de 2021}
+        {Cuidados de Enfermagem na Prevenção de Lesões por Pressão em Pacientes Críticos}
+        {Revista Brasileira de Enfermagem}
+        {\url{https://www.scielo.br/j/reben/}}
+        {}
+        {\begin{itemize}
+\item Revisão integrativa sobre estratégias de prevenção de lesões por pressão em unidades de terapia intensiva.
+\item Discussão de protocolos assistenciais, avaliação de risco e indicadores de qualidade do cuidado.
+\end{itemize}}
+\section{Projetos}
+
+\cventry{mar. de 2022–dez. de 2023}
+        {Projeto multiprofissional para reduzir eventos adversos e fortalecer a cultura de segurança em unidades de internação.}
+        {Programa de Educação Continuada em Segurança do Paciente}
+        {\url{https://www.einstein.br/ensino-e-pesquisa}}
+        {}
+        {\begin{itemize}
+\item Desenvolvi materiais educativos e treinamentos sobre higienização das mãos, identificação segura do paciente e prevenção de quedas.
+\item Acompanhei indicadores assistenciais e apresentei resultados em reuniões de qualidade.
+\item Contribuí para a integração de novos colaboradores e para a padronização de condutas de enfermagem.
+\end{itemize}
+\textbf{Palavras-chave}: Segurança do Paciente, Educação Continuada, Indicadores de Qualidade}
+\section{Interesses}
+
+\cvline{Corrida de Rua}{Meia maratona, Treino funcional}
+\cvline{Leitura}{Literatura brasileira, Saúde pública}
+\cvline{Voluntariado}{Ações comunitárias, Educação em saúde}
+\section{Voluntariado}
+
+\cventry{mai. de 2019–nov. de 2023}
+        {Enfermeira Voluntária}
+        {Associação Brasileira de Enfermagem}
+        {\url{https://www.abennacional.org.br}}
+        {}
+        {\begin{itemize}
+\item Participei de ações comunitárias de promoção da saúde, prevenção de doenças e educação em saúde.
+\item Apoiei campanhas de vacinação, orientação sobre higiene e cuidados básicos com a saúde da família.
+\item Colaborei na organização de eventos científicos e atividades de atualização profissional.
+\end{itemize}}
+    
+\end{document}

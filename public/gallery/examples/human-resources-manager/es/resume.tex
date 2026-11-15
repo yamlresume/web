@@ -1,0 +1,297 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Spanish language
+% \usepackage[spanish]{babel} has some conflicting issues with moderncv
+% so we have to use enable the following options to make it work
+%
+% ref:
+% - https://tex.stackexchange.com/a/140161/36007
+\usepackage[spanish,es-lcroman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Lucía Ferrer Navarro}{}
+\title{Gerente de Recursos Humanos especializada en talento y cultura}
+\phone[mobile]{+34 910 555 274}
+\email{lucia.ferrer@example.com}
+\homepage{https://www.luciaferrer-hr.es}
+
+\address{Calle de Serrano 45, 4º B, Madrid, Comunidad de Madrid, España, 28001}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/luciaferrerhr}{@luciaferrerhr} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@luciaferrerhr}{@luciaferrerhr}}
+
+\begin{document}
+
+\maketitle
+
+\section{Información básica}
+
+\cvline{}{\begin{itemize}
+\item Gerente de Recursos Humanos con más de diez años de experiencia diseñando estrategias de talento, cultura y relaciones laborales en entornos retail y tecnológicos.
+\item Especializada en planificación de plantilla, desarrollo de liderazgo, analítica de personas y programas de bienestar que mejoran la retención y el compromiso.
+\item Experiencia liderando equipos multidisciplinares y acompañando procesos de transformación organizativa, cambio cultural y crecimiento internacional.
+\item Enfoque orientado a resultados, con capacidad para traducir necesidades de negocio en políticas de personas medibles y sostenibles.
+\end{itemize}}
+\section{Educación}
+
+\cventry{sept 2011–jul 2012}
+        {Maestría, Dirección de Recursos Humanos, Puntuación: 9.1}
+        {Universidad Complutense de Madrid}
+        {\url{https://www.ucm.es}}
+        {}
+        {\begin{itemize}
+\item Formación avanzada en dirección de personas, estrategia de talento y transformación organizativa.
+\item Trabajo final sobre modelos de retención y desarrollo de liderazgo en empresas de servicios.
+\end{itemize}
+\textbf{Cursos}: Gestión estratégica del talento, Derecho laboral y relaciones de trabajo, Psicología organizacional, Análisis de datos aplicado a RR. HH., Compensación y beneficios, Desarrollo organizacional}
+
+\cventry{sept 2007–jun 2011}
+        {Licenciatura, Relaciones Laborales y Recursos Humanos, Puntuación: 8.7}
+        {Universidad de Valencia}
+        {\url{https://www.uv.es}}
+        {}
+        {\begin{itemize}
+\item Base académica sólida en relaciones laborales, gestión de personas y marco normativo del empleo.
+\item Prácticas en departamento de personal y participación en proyectos de diagnóstico organizativo.
+\end{itemize}
+\textbf{Cursos}: Sociología del trabajo, Economía laboral, Gestión de la formación, Negociación colectiva, Derecho del trabajo}
+\section{Experiencia laboral}
+
+\cventry{feb 2020 hasta la fecha}
+        {Gerente de Recursos Humanos}
+        {Grupo Meridiano Retail}
+        {\url{https://www.grupomeridianoretail.es}}
+        {}
+        {\begin{itemize}
+\item Lidero la función de Recursos Humanos para una plantilla de 1.200 personas distribuidas en 85 tiendas y tres centros logísticos.
+\item Diseñé e implanté el plan estratégico de personas 2021-2024, alineado con los objetivos de crecimiento, digitalización y experiencia de cliente.
+\item Impulsé un modelo de analítica de personas que redujo la rotación voluntaria un 18 \% y mejoró el tiempo de cobertura de vacantes en un 25 \%.
+\item Coordino las relaciones laborales con los comités de empresa y la negociación de convenios, asegurando un clima social estable.
+\item Desarrollé programas de liderazgo, bienestar y diversidad reconocidos por la dirección general y por entidades del sector.
+\end{itemize}
+\textbf{Palabras clave}: Gestión del talento, Cultura organizacional, Relaciones laborales, Analítica de personas}
+
+\cventry{mar 2016–ene 2020}
+        {Responsable de Desarrollo de Talento}
+        {NeuroTech Solutions Iberia}
+        {\url{https://www.neurotechsolutions.es}}
+        {}
+        {\begin{itemize}
+\item Diseñé el modelo de selección por competencias y lideré la incorporación de 140 perfiles tecnológicos y comerciales.
+\item Implementé el ciclo de desempeño y los planes de desarrollo individual, con una cobertura del 92 \% de la plantilla.
+\item Puse en marcha el programa de marca empleadora, aumentando las candidaturas espontáneas un 35 \%.
+\item Coordiné formación técnica y de liderazgo para equipos distribuidos en España, Portugal e Italia.
+\end{itemize}
+\textbf{Palabras clave}: Selección, Formación, Evaluación del desempeño, Marca empleadora}
+
+\cventry{sept 2012–feb 2016}
+        {Especialista de Recursos Humanos}
+        {Consultora Alameda}
+        {\url{https://www.consultoraalameda.es}}
+        {}
+        {\begin{itemize}
+\item Gestioné procesos de reclutamiento, incorporación y administración de personal para clientes de servicios profesionales.
+\item Elaboré políticas de RR. HH., descripciones de puesto y procedimientos de gestión documental.
+\item Participé en proyectos de compensación, encuestas salariales y análisis de indicadores de plantilla.
+\end{itemize}
+\textbf{Palabras clave}: Reclutamiento, Incorporación, Políticas de RR. HH., Sistemas de RR. HH.}
+\section{Idiomas}
+
+\cvline{Español}{Competencia nativa o bilingüe \hfill \textbf{Palabras clave}: Español nativo, Comunicación escrita}
+\cvline{Inglés}{Competencia profesional plena \hfill \textbf{Palabras clave}: C1 certificado, Inglés de negocios}
+\cvline{Francés}{Competencia limitada de trabajo \hfill \textbf{Palabras clave}: DELF B1, Reuniones básicas}
+\section{Competencias}
+
+\cvline{Gestión del talento}{Experto \hfill \textbf{Palabras clave}: Planificación de plantilla, Selección por competencias, Desarrollo de carrera, Gestión del desempeño}
+\cvline{Relaciones laborales}{Avanzado \hfill \textbf{Palabras clave}: Negociación colectiva, Convenios colectivos, Prevención de riesgos, Disciplina laboral}
+\cvline{Analítica de personas}{Avanzado \hfill \textbf{Palabras clave}: Power BI, Excel avanzado, Encuestas de clima, Indicadores de RR. HH.}
+\cvline{Desarrollo organizacional}{Avanzado \hfill \textbf{Palabras clave}: Diseño organizativo, Gestión del cambio, Cultura corporativa, Comunicación interna}
+\cvline{Sistemas de RR. HH.}{Intermedio \hfill \textbf{Palabras clave}: Workday, SAP SuccessFactors, BambooHR, Factorial}
+\section{Premios}
+
+\cventry{nov 2019}
+        {Asociación Española de Dirección de Personas}
+        {Premio a la Excelencia en Gestión de Personas}
+        {}
+        {}
+        {\begin{itemize}
+\item Reconocimiento por el diseño e implantación de un modelo de desarrollo de liderazgo orientado a la retención del talento clave.
+\end{itemize}}
+
+\cventry{jun 2023}
+        {Grupo Meridiano Retail}
+        {Reconocimiento a la Mejor Iniciativa de Bienestar Laboral}
+        {}
+        {}
+        {\begin{itemize}
+\item Galardón interno por el programa de bienestar integral que mejoró la satisfacción laboral y redujo el absentismo.
+\end{itemize}}
+\section{Certificados}
+
+\cventry{oct 2021}
+        {Instituto de Analítica de Personas}
+        {Certificación Profesional en Analítica de Personas}
+        {\url{https://www.iap.es}}
+        {}
+        {}
+
+\cventry{may 2018}
+        {IE Business School}
+        {Experto en Dirección de Recursos Humanos}
+        {\url{https://www.ie.edu}}
+        {}
+        {}
+
+\cventry{sept 2015}
+        {Instituto Nacional de Seguridad y Salud en el Trabajo}
+        {Certificado en Prevención de Riesgos Laborales}
+        {\url{https://www.insst.es}}
+        {}
+        {}
+\section{Publicaciones}
+
+\cventry{mar 2023}
+        {El futuro del trabajo híbrido: claves para una cultura inclusiva}
+        {Revista Capital Humano}
+        {\url{https://www.capitalhumano.es}}
+        {}
+        {\begin{itemize}
+\item Artículo sobre modelos de trabajo híbrido, liderazgo flexible y prácticas de inclusión.
+\item Incluye recomendaciones para medir el impacto del trabajo híbrido en el compromiso y la productividad.
+\end{itemize}}
+
+\cventry{jul 2022}
+        {Analítica de personas para decisiones de talento}
+        {Harvard Deusto Business Review}
+        {\url{https://www.harvard-deusto.com}}
+        {}
+        {\begin{itemize}
+\item Publicación sobre el uso de indicadores de personas para priorizar inversiones en talento.
+\item Analiza casos prácticos de retención, absentismo y planificación de la sucesión.
+\end{itemize}}
+\section{Proyectos}
+
+\cventry{ene 2021–dic 2022}
+        {Programa de desarrollo y promoción interna para mandos intermedios de retail.}
+        {Programa Impulsa Talento}
+        {\url{https://www.grupomeridianoretail.es/impulsa-talento}}
+        {}
+        {\begin{itemize}
+\item Diseñé un itinerario de formación, mentoría y rotación interna para 60 personas con alto potencial.
+\item El 45 \% de las participantes promocionó a posiciones de responsabilidad en menos de 18 meses.
+\item El programa mejoró el indicador de movilidad interna y la satisfacción con el desarrollo de carrera.
+\end{itemize}
+\textbf{Palabras clave}: Desarrollo de talento, Promoción interna, Mentoría}
+
+\cventry{sept 2020–jun 2021}
+        {Marco de teletrabajo híbrido para oficinas centrales y equipos de soporte.}
+        {Modelo de Teletrabajo Sostenible}
+        {\url{https://www.grupomeridianoretail.es/teletrabajo}}
+        {}
+        {\begin{itemize}
+\item Lideré el diagnóstico, la negociación con la representación legal y el despliegue del modelo híbrido.
+\item Definí criterios de elegibilidad, dotación tecnológica y formación para líderes y equipos.
+\item El modelo aumentó la satisfacción con la flexibilidad y mantuvo la productividad de los equipos.
+\end{itemize}
+\textbf{Palabras clave}: Teletrabajo, Flexibilidad, Bienestar}
+\section{Intereses}
+
+\cvline{Bienestar y deporte}{Yoga, Senderismo, Carrera}
+\cvline{Mentoría y comunidad}{Mentoría de mujeres, Voluntariado, Formación continua}
+\cvline{Lectura y cultura}{Novela histórica, Pódcasts de gestión, Cine europeo}
+\section{Voluntariado}
+
+\cventry{mar 2019 hasta la fecha}
+        {Mentora de carrera profesional}
+        {Fundación Integra Talento}
+        {\url{https://www.fundacionintegra.org}}
+        {}
+        {\begin{itemize}
+\item Acompaño a personas en transición profesional en la definición de objetivos, marca personal y preparación de entrevistas.
+\item Participo en talleres de empleabilidad y sesiones de orientación para colectivos en riesgo de exclusión.
+\end{itemize}}
+    
+
+\cventry{ene 2017–feb 2019}
+        {Voluntaria en orientación laboral}
+        {Colegio de Graduados Sociales de Madrid}
+        {\url{https://www.graduadosocialmadrid.es}}
+        {}
+        {\begin{itemize}
+\item Ofrecí orientación laboral y revisión de currículos a personas desempleadas.
+\item Colaboré en jornadas de formación sobre búsqueda de empleo y competencias digitales.
+\end{itemize}}
+    
+\end{document}

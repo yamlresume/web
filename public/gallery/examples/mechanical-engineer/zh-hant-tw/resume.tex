@@ -1,0 +1,276 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK TC}{
+  \setCJKmainfont{Noto Serif CJK TC}
+}{}
+\IfFontExistsTF{Noto Sans CJK TC}{
+  \setCJKsansfont{Noto Sans CJK TC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{林冠宇}{}
+\title{資深機械工程師 | 產品開發與精密製造}
+\phone[mobile]{+886 912 345 678}
+\email{guanyu.lin.engineer@gmail.com}
+\homepage{https://www.linkedin.com/in/guanyu-lin-me}
+
+\address{中國臺灣，台北市，台北市，台北市內湖區瑞光路 168 號，114}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/guanyu-lin-me}{@guanyu-lin-me} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/guanyulin-me}{@guanyulin-me}}
+
+\begin{document}
+
+\maketitle
+
+\section{簡介}
+
+\cvline{}{資深機械工程師，具備十年以上產品開發、精密製造與熱管理系統整合經驗，熟悉從概念設計、工程分析、原型驗證到量產導入的完整流程。
+%
+\begin{itemize}
+\item 專精機構設計、電腦輔助工程分析與可製造性設計，能有效平衡性能、成本與量產需求
+\item 具備跨部門專案領導經驗，曾主導電動車電池模組與工業設備散熱方案開發
+\item 熟悉 ISO 9001、幾何尺寸與公差、FMEA 與供應商技術管理，擅長以數據驅動設計決策
+\item 重視團隊協作與技術傳承，能將複雜工程問題轉化為可執行方案
+\end{itemize}}
+\section{教育背景}
+
+\cventry{2014年9月–2016年6月}
+        {碩士，機械工程學系，成績：3.92/4.0}
+        {國立臺灣大學}
+        {\url{https://www.ntu.edu.tw/}}
+        {}
+        {\begin{itemize}
+\item 專攻熱流與精密機械設計，完成多項電腦輔助工程分析專題
+\item 碩士論文聚焦多孔介質散熱器性能優化，獲學院論文獎肯定
+\item 擔任研究助理，協助實驗設備建置與量測數據分析
+\end{itemize}
+\textbf{課程}：熱傳學、流體力學、有限元素分析、機械設計、精密製造、控制系統}
+
+\cventry{2010年9月–2014年6月}
+        {學士，動力機械工程學系，成績：3.78/4.0}
+        {國立清華大學}
+        {\url{https://www.nthu.edu.tw/}}
+        {}
+        {\begin{itemize}
+\item 建立紮實的機械工程基礎，並選修機電整合與產品設計課程
+\item 參與太陽能車隊，負責傳動系統設計與測試
+\end{itemize}
+\textbf{課程}：機械製造、材料力學、熱力學、機構學、自動控制}
+\section{工作經歷}
+
+\cventry{2021年3月至今}
+        {資深機械工程師}
+        {台灣精密動力科技股份有限公司}
+        {\url{https://www.tppowertech.com.tw}}
+        {}
+        {\begin{itemize}
+\item 主導電動車電池模組熱管理系統開發，從概念設計到量產導入，降低模組最高溫度約 12\%
+\item 建立機構設計審查流程與可製造性檢核表，縮短設計迭代時間並降低模具修改成本
+\item 與電子、韌體、製造及供應商品質團隊協作，完成多項跨國客戶專案
+\item 指導 3 位初階工程師，負責技術文件、圖面審核與實驗計畫規劃
+\end{itemize}
+\textbf{關鍵字}：熱管理系統、電池模組、機構設計、可製造性設計、專案領導}
+
+\cventry{2016年7月–2021年2月}
+        {機械工程師}
+        {鴻銳精密機械股份有限公司}
+        {\url{https://www.hongrui-precision.com.tw}}
+        {}
+        {\begin{itemize}
+\item 負責線性滑軌與傳動元件機構設計，完成多項客製化規格開發
+\item 執行有限元素分析與振動測試，改善產品剛性與使用壽命
+\item 協助新產品試產、治具設計與製程異常分析，提升良率約 8\%
+\item 撰寫設計規範與技術報告，支援業務與客戶技術討論
+\end{itemize}
+\textbf{關鍵字}：傳動元件、有限元素分析、振動測試、治具設計、良率改善}
+\section{語言}
+
+\cvline{普通話}{母語或雙語水平 \hfill \textbf{關鍵字}：母語}
+\cvline{英語}{完全專業水平 \hfill \textbf{關鍵字}：TOEIC 950、技術簡報、跨國專案溝通}
+\section{專業技能}
+
+\cvline{機構設計與產品開發}{專家 \hfill \textbf{關鍵字}：產品結構設計、傳動系統設計、散熱設計、組裝性設計、工程圖繪製}
+\cvline{電腦輔助工程}{高級 \hfill \textbf{關鍵字}：SolidWorks、Creo、ANSYS、有限元素分析、熱流模擬}
+\cvline{製造與品質工程}{高級 \hfill \textbf{關鍵字}：精密加工、射出成型、幾何尺寸與公差、失效模式分析、統計製程管制}
+\cvline{專案與團隊管理}{高級 \hfill \textbf{關鍵字}：跨部門協作、供應商管理、設計審查、技術文件、時程規劃}
+\section{榮譽}
+
+\cventry{2023年11月}
+        {台灣精密動力科技股份有限公司}
+        {年度優秀工程師獎}
+        {}
+        {}
+        {\begin{itemize}
+\item 表彰在電動車電池模組熱管理專案中的技術領導與跨部門協作貢獻
+\item 專案成功導入量產，並取得客戶年度品質評鑑優等
+\end{itemize}}
+
+\cventry{2016年6月}
+        {國立臺灣大學機械工程學系}
+        {碩士論文獎}
+        {}
+        {}
+        {\begin{itemize}
+\item 以多孔介質散熱器性能優化為主題，獲系上所頒發之學術研究獎
+\end{itemize}}
+\section{證書}
+
+\cventry{2016年7月}
+        {考試院}
+        {機械工程技師證書}
+        {\url{https://www.moex.gov.tw}}
+        {}
+        {}
+
+\cventry{2019年3月}
+        {Dassault Systèmes}
+        {SolidWorks 專業認證}
+        {\url{https://www.solidworks.com/certification}}
+        {}
+        {}
+
+\cventry{2021年8月}
+        {SGS Taiwan}
+        {ISO 9001 內部稽核員}
+        {\url{https://www.sgs.com.tw}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2020年6月}
+        {多孔介質散熱器之熱傳性能數值與實驗分析}
+        {中國機械工程學刊}
+        {\url{https://doi.org/10.1234/jcme.2020.5678}}
+        {}
+        {\begin{itemize}
+\item 建立多孔介質散熱器之三維熱流模型，並以實驗驗證模擬結果
+\item 探討孔徑、孔隙率與流量對熱阻與壓降的影響
+\item 提出兼顧散熱效能與泵浦功耗之設計參數建議
+\end{itemize}}
+\section{項目}
+
+\cventry{2022年1月–2023年12月}
+        {針對高能量密度電池模組開發液冷式熱管理系統，整合流道設計、結構強度與量產製造需求。}
+        {電動車電池模組熱管理系統}
+        {\url{https://www.tppowertech.com.tw/projects/ev-battery-thermal}}
+        {}
+        {\begin{itemize}
+\item 設計液冷板流道與導熱結構，改善電芯溫差與高溫熱點問題
+\item 使用 ANSYS Fluent 進行熱流模擬，並以環境測試驗證散熱性能
+\item 與供應商合作完成鋁擠型與摩擦攪拌銲接製程開發
+\item 建立 DFMEA 與關鍵尺寸管制計畫，支援量產品質監控
+\end{itemize}
+\textbf{關鍵字}：電動車、液冷散熱、電池模組、熱流模擬、量產導入}
+
+\cventry{2018年3月–2019年11月}
+        {建置機器人關節減速機之性能與耐久測試平台，用於評估背隙、效率與溫升特性。}
+        {工業機器人關節減速機測試平台}
+        {}
+        {}
+        {\begin{itemize}
+\item 規劃測試機台機構、治具與感測器配置
+\item 撰寫測試程序並分析背隙、傳動效率與溫升數據
+\item 依據測試結果提出減速機結構與潤滑改善建議
+\end{itemize}
+\textbf{關鍵字}：機器人、減速機、測試平台、機構設計}
+\section{興趣愛好}
+
+\cvline{戶外活動}{登山、自行車、露營}
+\cvline{音樂與閱讀}{吉他、爵士樂、工程史}
+\section{志願服務}
+
+\cventry{2019年3月–2022年12月}
+        {志工講師}
+        {台灣機械工程學會青年委員會}
+        {\url{https://www.csme.org.tw}}
+        {}
+        {\begin{itemize}
+\item 參與高中職工程教育推廣，講授機械設計與 3D 建模基礎
+\item 協助規劃產業參訪與青年工程師交流活動
+\item 指導學生專題團隊參加全國機械設計競賽
+\end{itemize}}
+    
+\end{document}

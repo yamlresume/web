@@ -1,0 +1,289 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK HK}{
+  \setCJKmainfont{Noto Serif CJK HK}
+}{
+\IfFontExistsTF{Noto Serif CJK TC}{
+  \setCJKmainfont{Noto Serif CJK TC}
+}{}}
+\IfFontExistsTF{Noto Sans CJK HK}{
+  \setCJKsansfont{Noto Sans CJK HK}
+}{
+\IfFontExistsTF{Noto Sans CJK TC}{
+  \setCJKsansfont{Noto Sans CJK TC}
+}{}}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{陳家豪}{}
+\title{資深機械工程師 | 精密製造與產品研發}
+\phone[mobile]{+852 9123 4567}
+\email{kaho.chan.eng@gmail.com}
+\homepage{https://www.kahohan-engineering.com}
+
+\address{中國香港，九龍，香港，九龍紅磡海逸道 8 號海逸豪園 5 座 18 樓 B 室}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/kahochan-eng}{@kahochan-eng} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/kahochan}{@kahochan}}
+
+\begin{document}
+
+\maketitle
+
+\section{簡介}
+
+\cvline{}{\begin{itemize}
+\item 八年以上機械設計與產品開發經驗，專注於精密傳動系統、消費電子結構件及電動車零部件
+\item 精通 SolidWorks、Creo 及 ANSYS，能獨立完成由概念設計、3D 建模、有限元分析至量產導入的完整流程
+\item 熟悉 CNC 加工、注塑成型、壓鑄及衝壓等製造工藝，善用 GD\&T 與 DFMEA 提升產品良率
+\item 曾帶領五人工程團隊，與香港、深圳及東莞供應商跨地域協作，成功將七款產品由原型推進至量產
+\end{itemize}
+\textbf{專業理念}：以數據驅動設計決策，在成本、性能與可製造性之間取得最佳平衡，並重視團隊知識傳承。}
+\section{教育背景}
+
+\cventry{2019年9月–2021年11月}
+        {碩士，機械工程學，成績：優異}
+        {香港理工大學}
+        {\url{https://www.polyu.edu.hk}}
+        {}
+        {\begin{itemize}
+\item 以兼讀形式完成碩士課程，論文主題為電動車電池模組液冷流道優化
+\item 在職期間將課堂所學的 CFD 方法應用於公司實際項目，獲部門嘉許
+\end{itemize}
+\textbf{課程}：高等有限元分析、傳熱與流體數值模擬、先進製造技術、產品可靠性工程}
+
+\cventry{2014年9月–2018年6月}
+        {學士，機械工程學，成績：3.62/4.0}
+        {香港科技大學}
+        {\url{https://www.ust.hk}}
+        {}
+        {\begin{itemize}
+\item 主修機械工程，成績位列學系前 15\%，連續三年獲頒院長嘉許名單
+\item 畢業設計「電動車電池冷卻模組」獲系內最佳設計獎
+\item 擔任學生機械人隊伍結構組組長，負責底盤與傳動機構設計
+\end{itemize}
+\textbf{課程}：工程力學與材料科學、熱力學與流體力學、機械設計原理、電腦輔助設計與製造、有限元分析、控制系統與機電整合、製造工程與品質管理、畢業設計：電動車電池冷卻模組}
+\section{工作經歷}
+
+\cventry{2021年3月至今}
+        {資深機械工程師}
+        {駿達精密科技有限公司}
+        {\url{https://www.chuntat-precision.com.hk}}
+        {}
+        {\begin{itemize}
+\item 帶領五人研發小組，負責汽車傳動部件與消費電子精密結構件的設計及量產導入
+\item 主導電動車熱管理模組開發，透過 CFD 模擬優化流道設計，散熱效率提升 22\%
+\item 建立 GD\&T 圖面規範與 DFMEA 流程，使新產品試產階段的設計變更減少 35\%
+\item 與深圳及東莞供應商緊密協作，完成模具驗收、試產跟進及量產放行
+\item 推行 SolidWorks PDM 系統，縮短圖檔審批週期約 40\%，並統一零件命名標準
+\end{itemize}
+\textbf{關鍵字}：精密傳動設計、熱管理系統、GD\&T、DFMEA、量產導入}
+
+\cventry{2018年7月–2021年2月}
+        {機械工程師}
+        {亞洲動力系統有限公司}
+        {\url{https://www.asia-power-systems.com}}
+        {}
+        {\begin{itemize}
+\item 負責工業泵浦與齒輪箱的結構設計、2D 工程圖繪製及 BOM 維護
+\item 運用 ANSYS 進行靜力與模態分析，改善軸承座剛性，降低振動噪音 3.5 dB
+\item 參與舊機型成本優化項目，透過材料替代與結構簡化，每年節省約港幣 120 萬元
+\item 協助品質部門處理客訴，完成根因分析並提出八項設計改善對策
+\end{itemize}
+\textbf{關鍵字}：齒輪箱設計、ANSYS、成本優化、振動分析、BOM 管理}
+\section{語言}
+
+\cvline{粵語}{母語或雙語水平 \hfill \textbf{關鍵字}：母語}
+\cvline{英語}{完全專業水平 \hfill \textbf{關鍵字}：IELTS 7.5、技術文件撰寫、客戶簡報}
+\cvline{普通話}{完全專業水平 \hfill \textbf{關鍵字}：內地供應商協調}
+\cvline{日語}{初級水平 \hfill \textbf{關鍵字}：JLPT N4}
+\section{專業技能}
+
+\cvline{機械設計與建模}{專家 \hfill \textbf{關鍵字}：SolidWorks、Creo、AutoCAD、3D 建模、工程圖繪製、公差分析}
+\cvline{分析與模擬}{高級 \hfill \textbf{關鍵字}：ANSYS Mechanical、Abaqus、Fluent / CFD、熱傳分析、模態分析}
+\cvline{製造工藝}{高級 \hfill \textbf{關鍵字}：CNC 加工、注塑成型、壓鑄、衝壓、模具驗收}
+\cvline{品質與流程改善}{高級 \hfill \textbf{關鍵字}：GD\&T、DFMEA / PFMEA、ISO 9001、六西格瑪、8D 報告}
+\cvline{項目管理}{中級 \hfill \textbf{關鍵字}：跨部門協作、供應商管理、風險評估、進度控管}
+\section{榮譽}
+
+\cventry{2018年10月}
+        {香港工程師學會}
+        {香港工程師學會最佳畢業設計獎}
+        {}
+        {}
+        {以「電動車電池冷卻模組輕量化設計」獲頒年度最佳畢業設計獎，評審肯定其在散熱效能、重量與製造成本之間取得的平衡。}
+
+\cventry{2023年1月}
+        {駿達精密科技有限公司}
+        {年度傑出員工獎}
+        {}
+        {}
+        {表揚其在電動車熱管理模組項目中的技術領導與跨部門協調貢獻，為公司開拓新能源汽車客戶的關鍵人物。}
+\section{證書}
+
+\cventry{2022年6月}
+        {香港工程師學會}
+        {註冊專業工程師（機械工程）}
+        {\url{https://www.hkie.org.hk}}
+        {}
+        {}
+
+\cventry{2020年11月}
+        {香港生產力促進局}
+        {六西格瑪綠帶認證}
+        {\url{https://www.hkpc.org}}
+        {}
+        {}
+
+\cventry{2023年9月}
+        {Project Management Institute}
+        {項目管理專業人士（PMP）}
+        {\url{https://www.pmi.org}}
+        {}
+        {}
+\section{出版刊物}
+
+\cventry{2021年12月}
+        {電動車電池模組液冷流道之數值模擬與實驗驗證}
+        {香港工程師學會學報}
+        {\url{https://www.hkie.org.hk/journal}}
+        {}
+        {\begin{itemize}
+\item 以 CFD 模擬比較三種流道設計的散熱表現與壓降特性
+\item 實驗結果顯示蛇形流道在溫差均勻性與泵功耗之間取得最佳平衡
+\item 研究成果已應用於兩款量產車型的電池模組設計
+\end{itemize}}
+\section{項目}
+
+\cventry{2022年1月–2023年8月}
+        {為本地電動車廠開發的液冷電池熱管理模組，涵蓋結構設計、流道優化與量產導入}
+        {電動車電池熱管理模組}
+        {\url{https://www.chuntat-precision.com.hk/projects/btms}}
+        {}
+        {\begin{itemize}
+\item 以 CFD 模擬優化流道幾何，模組散熱能力提升 22\%
+\item 採用鋁合金壓鑄配合攪拌摩擦焊，整體減重 15\%
+\item 通過振動、氣密與耐壓測試，順利由原型推進至量產
+\end{itemize}
+\textbf{關鍵字}：電動車、液冷系統、CFD、壓鑄}
+
+\cventry{2019年3月–2020年12月}
+        {針對自動化倉儲系統設計的模組化輸送與分揀機構，可依場地彈性擴展}
+        {智能倉儲輸送機構}
+        {}
+        {}
+        {\begin{itemize}
+\item 設計標準化鋁擠型框架與皮帶輸送模組，現場組裝時間縮短 30\%
+\item 完成鏈條與軸承壽命計算，並以 ANSYS 驗證滿載工況下的結構強度
+\item 於客戶倉庫完成為期三個月的實地測試，分揀準確率達 99.5\%
+\end{itemize}
+\textbf{關鍵字}：自動化、輸送機構、模組化設計、結構分析}
+\section{興趣愛好}
+
+\cvline{運動}{公路單車、遠足、游泳}
+\cvline{手作與創作}{3D 打印、木工、攝影}
+\section{志願服務}
+
+\cventry{2020年9月至今}
+        {義務委員}
+        {香港工程師學會青年會員組}
+        {\url{https://www.hkie.org.hk}}
+        {}
+        {\begin{itemize}
+\item 籌辦「工程師周」校園分享活動，走訪十二間中學推廣工程學科
+\item 為基層學生設計 STEM 工作坊，教授 3D 打印與簡易機械設計
+\end{itemize}}
+    
+
+\cventry{2019年1月–2021年8月}
+        {STEM 義務導師}
+        {香港青年協會}
+        {\url{https://www.hkfyg.org.hk}}
+        {}
+        {\begin{itemize}
+\item 每月為中三至中六學生提供機械設計入門課程，累計服務超過 200 名學生
+\item 指導學生隊伍參加本地機械人比賽，並獲最佳設計獎
+\end{itemize}}
+    
+\end{document}

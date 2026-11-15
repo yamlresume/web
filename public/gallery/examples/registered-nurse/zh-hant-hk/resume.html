@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-hant-hk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>陳嘉怡 Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">陳嘉怡</h1>
+    <p class="resume-headline">註冊護士｜內科及老人科護理</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:chankayi.rn@gmail.com" class="resume-contact-link">chankayi.rn@gmail.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+852 9123 4567</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.linkedin.com/in/chankayi-rn" class="resume-contact-link">https://www.linkedin.com/in/chankayi-rn</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>中國香港，九龍，香港，九龍旺角彌敦道 700 號</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/chankayi-rn" class="resume-contact-link">@chankayi-rn</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Medium</span>: <a href="https://medium.com/@chankayi.rn" class="resume-contact-link">@chankayi.rn</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">簡介</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <p>具備五年內科及老人科臨床經驗的註冊護士，專注於病人評估、藥物管理、感染控制及出院規劃。能在高壓環境中保持細心、冷靜，並與跨專業團隊緊密合作。</p>
+        <ul>
+          <li>
+            <p>熟悉香港公立醫院臨床流程及電子健康紀錄系統</p>
+          </li>
+          <li>
+            <p>擅長與長者、家屬及照顧者溝通，提供適切健康教育</p>
+          </li>
+          <li>
+            <p>曾參與病房質素改善項目，提升跌倒預防及壓瘡護理成效</p>
+          </li>
+          <li>
+            <p>持有 BLS、ACLS 及感染控制相關證書</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">教育背景</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://nursing.hku.hk/">香港大學護理學院</a></div>
+            <div class="resume-entry-organization">學士，護理學，成績：3.6/4.0</div>
+          </div>
+          <div class="resume-entry-date">2016年9月–2020年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>完成超過 1,000 小時臨床實習，涵蓋內科、外科、急症室及社區護理</p>
+            </li>
+            <li>
+              <p>畢業論文探討長者跌倒風險評估工具在病房中的應用</p>
+            </li>
+            <li>
+              <p>獲選為護理學院臨床傑出表現學生</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>課程</span>：基礎護理學、內科護理學、外科護理學、老人科護理、急症及創傷護理、藥理學、感染控制、社區健康護理</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">工作經歷</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ha.org.hk/qmh">瑪麗醫院</a></div>
+            <div class="resume-entry-organization">註冊護士（內科及老人科）</div>
+          </div>
+          <div class="resume-entry-date">2022年1月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>負責內科及老人科病房約 30 名病人的日常護理，包括生命表徵監測、藥物管理及傷口護理</p>
+            </li>
+            <li>
+              <p>進行入院評估、跌倒風險及壓瘡風險篩查，制定個人化護理計劃</p>
+            </li>
+            <li>
+              <p>與醫生、物理治療師、職業治療師及社工協作，安排出院規劃及社區支援</p>
+            </li>
+            <li>
+              <p>指導新入職護士及護士學生，提供臨床技巧及感染控制培訓</p>
+            </li>
+            <li>
+              <p>參與病房質素改善小組，推行跌倒預防及手部衛生依從性提升計劃</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：內科護理、老人科護理、出院規劃、臨床評估、感染控制</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ha.org.hk/qeh">伊利沙伯醫院</a></div>
+            <div class="resume-entry-organization">註冊護士（急症室）</div>
+          </div>
+          <div class="resume-entry-date">2020年7月–2021年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>於急症室分流站進行初步評估及生命表徵監測，按病情優先次序安排診治</p>
+            </li>
+            <li>
+              <p>協助醫生進行急救、縫合、石膏固定及小型手術程序</p>
+            </li>
+            <li>
+              <p>處理靜脈輸液、藥物注射、血液樣本採集及化驗安排</p>
+            </li>
+            <li>
+              <p>向病人及家屬解釋治療流程，提供離院護理指示及社區資源轉介</p>
+            </li>
+            <li>
+              <p>參與急症室感染控制及災難應變演練</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：急症護理、病人分流、急救護理、靜脈治療、災難應變</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">語言</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">粵語<span class="resume-language-fluency">：母語或雙語水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：母語</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">英語<span class="resume-language-fluency">：完全專業水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：IELTS 7.5、臨床英語溝通</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">普通話<span class="resume-language-fluency">：有限工作水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：基本會話</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">專業技能</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">臨床護理<span class="resume-skill-level">：專家</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：病人評估、藥物管理、傷口護理、靜脈治療、生命表徵監測</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">老人科及復康護理<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：跌倒風險評估、壓瘡預防、失智症護理、出院規劃、照顧者支援</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">感染控制<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：手部衛生、隔離措施、醫療廢物處理、個人防護裝備</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">醫療資訊系統<span class="resume-skill-level">：中級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：電子健康紀錄、臨床資訊系統、病歷管理、數據記錄</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">溝通與團隊協作<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：跨專業合作、病人教育、家屬溝通、臨床指導</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">榮譽</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">護理學院臨床傑出表現獎</div>
+            <div class="resume-entry-organization">香港大學護理學院</div>
+          </div>
+          <div class="resume-entry-date">2020年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>表揚在臨床實習中展現卓越護理技巧、專業態度及病人溝通的畢業生。</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">優秀護士獎</div>
+            <div class="resume-entry-organization">瑪麗醫院內科及老人科</div>
+          </div>
+          <div class="resume-entry-date">2023年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>表揚在跌倒預防及病人安全教育方面的積極貢獻。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">證書</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nchk.org.hk/">註冊護士執業證明書</a></div>
+            <div class="resume-entry-organization">香港護士管理局</div>
+          </div>
+          <div class="resume-entry-date">2020年8月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://cpr.heart.org/">基本生命支援（BLS）證書</a></div>
+            <div class="resume-entry-organization">美國心臟協會</div>
+          </div>
+          <div class="resume-entry-date">2024年3月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://cpr.heart.org/">高級心血管生命支援（ACLS）證書</a></div>
+            <div class="resume-entry-organization">美國心臟協會</div>
+          </div>
+          <div class="resume-entry-date">2024年5月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-4">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ha.org.hk/">感染控制基礎課程證書</a></div>
+            <div class="resume-entry-organization">醫院管理局</div>
+          </div>
+          <div class="resume-entry-date">2023年1月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">出版刊物</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hkna.org.hk/">長者跌倒風險評估工具於內科病房的應用</a></div>
+            <div class="resume-entry-organization">香港護理雜誌</div>
+          </div>
+          <div class="resume-entry-date">2023年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>回顧常用跌倒風險評估工具在本地內科及老人科病房的適用性</p>
+            </li>
+            <li>
+              <p>分析護理人員執行評估時的常見困難及改善建議</p>
+            </li>
+            <li>
+              <p>提出結合電子健康紀錄提示的可行方案</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">項目</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ha.org.hk/qmh">病房跌倒預防質素改善計劃</a></div>
+            <div class="resume-entry-description">針對內科及老人科病房設計的跌倒預防改善項目</div>
+          </div>
+          <div class="resume-entry-date">2023年3月–2023年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>分析病房跌倒事件數據及環境風險因素</p>
+            </li>
+            <li>
+              <p>設計床邊提示卡、家屬教育單張及夜間巡房流程</p>
+            </li>
+            <li>
+              <p>與物理治療師合作推行長者平衡訓練</p>
+            </li>
+            <li>
+              <p>計劃推行後病房跌倒率下降約 18%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>： 跌倒預防、質素改善、病人安全、長者護理</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">興趣愛好</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">身心健康</span>：瑜伽、遠足、跑步</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">社區服務</span>：長者探訪、健康講座、急救教育</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">志願服務</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.redcross.org.hk/">香港紅十字會</a></div>
+            <div class="resume-entry-organization">急救義工</div>
+          </div>
+          <div class="resume-entry-date">2019年6月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>為大型社區活動提供急救支援及健康諮詢</p>
+            </li>
+            <li>
+              <p>協助舉辦心肺復甦法及基本急救訓練</p>
+            </li>
+            <li>
+              <p>向長者及照顧者推廣家居安全及跌倒預防</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="volunteer-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hohcs.org.hk/">基督教靈實協會</a></div>
+            <div class="resume-entry-organization">長者探訪義工</div>
+          </div>
+          <div class="resume-entry-date">2021年1月–2023年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>定期探訪獨居長者，提供情緒支援及健康監測</p>
+            </li>
+            <li>
+              <p>協助轉介社區資源及安排覆診交通</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>李伟 Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">李伟</h1>
+    <p class="resume-headline">运营经理 | 供应链与流程优化</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:liwei.ops@example.com" class="resume-contact-link">liwei.ops@example.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+86 138 0013 8000</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.liwei-ops.com" class="resume-contact-link">https://www.liwei-ops.com</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>中国，上海市，上海，浦东新区世纪大道100号，200120</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/liwei-ops" class="resume-contact-link">@liwei-ops</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">WeChat</span>: <a href="https://weixin.qq.com" class="resume-contact-link">@liwei_ops</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">简介</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>8 年运营管理经验，覆盖订单履约、仓储配送、供应链协同与客户服务</p>
+          </li>
+          <li>
+            <p>擅长搭建 KPI 体系、推动流程标准化，并通过数据分析持续改善运营效率</p>
+          </li>
+          <li>
+            <p>具备跨部门项目管理经验，能够协调销售、采购、财务、IT 与第三方物流</p>
+          </li>
+          <li>
+            <p>注重团队建设与人才培养，善于在快节奏环境中推动目标落地</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">教育背景</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.fudan.edu.cn">复旦大学</a></div>
+            <div class="resume-entry-organization">硕士，工商管理，成绩：3.7</div>
+          </div>
+          <div class="resume-entry-date">2014年9月–2016年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>系统学习运营管理、供应链协同与财务分析，建立从业务到经营的全局视角</p>
+            </li>
+            <li>
+              <p>参与企业运营诊断项目，围绕库存周转、履约时效与成本结构提出改善方案</p>
+            </li>
+            <li>
+              <p>毕业论文聚焦区域配送网络优化，结合数据模型评估线路整合与承运商管理策略</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>课程</span>：运营管理、供应链管理、财务管理、组织行为学、数据分析与决策、项目管理</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.sufe.edu.cn">上海财经大学</a></div>
+            <div class="resume-entry-organization">学士，物流管理，成绩：3.6</div>
+          </div>
+          <div class="resume-entry-date">2010年9月–2014年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>夯实物流与供应链基础理论，熟悉仓储、运输、采购与库存管理流程</p>
+            </li>
+            <li>
+              <p>通过课程项目完成区域配送中心选址与库存策略分析</p>
+            </li>
+            <li>
+              <p>担任班级项目负责人，锻炼团队协作与沟通表达能力</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>课程</span>：物流系统规划、仓储与库存管理、运输管理、采购管理、管理信息系统、统计学</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">工作经历</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.xinglan-tech.com">星澜科技（上海）有限公司</a></div>
+            <div class="resume-entry-organization">运营经理</div>
+          </div>
+          <div class="resume-entry-date">2021年1月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>统筹华东区运营团队，制定年度运营计划与预算，管理 35 人跨职能团队，覆盖订单、仓储、配送与客户服务</p>
+            </li>
+            <li>
+              <p>建立以履约时效、库存周转和运营成本为核心的 KPI 体系，推动月度经营分析，季度运营成本降低 12%</p>
+            </li>
+            <li>
+              <p>主导仓储数字化升级与配送网络优化项目，将订单平均履约周期由 48 小时缩短至 30 小时</p>
+            </li>
+            <li>
+              <p>协调销售、采购、财务与第三方物流，完善供应商准入和考核机制，提升跨部门协同效率</p>
+            </li>
+            <li>
+              <p>搭建运营人才梯队，制定培训与轮岗计划，核心岗位留存率提升至 92%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>：运营管理、流程优化、供应链协同、数据驱动、团队建设</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hengyuan-supply.com">恒远供应链管理有限公司</a></div>
+            <div class="resume-entry-organization">高级运营专员</div>
+          </div>
+          <div class="resume-entry-date">2016年7月–2020年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>负责华东区日常运营执行，管理订单处理、库存盘点、运输调度与异常客诉</p>
+            </li>
+            <li>
+              <p>优化库存补货模型与安全库存规则，库存周转天数下降 18%，缺货率控制在 2% 以内</p>
+            </li>
+            <li>
+              <p>参与承运商招标与绩效考核，整合区域配送线路，单票运输成本下降 9%</p>
+            </li>
+            <li>
+              <p>使用 Excel、SQL 与 Tableau 搭建运营报表，推动数据驱动的日/周/月复盘机制</p>
+            </li>
+            <li>
+              <p>协同 IT 团队上线 WMS 与 TMS 模块，完成流程梳理、用户培训与上线支持</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>：库存管理、运输调度、承运商管理、运营分析、WMS</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.boyue-trade.com">博越商贸有限公司</a></div>
+            <div class="resume-entry-organization">运营助理</div>
+          </div>
+          <div class="resume-entry-date">2014年1月–2014年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>协助运营主管处理日常订单、发票与库存数据，确保系统记录准确</p>
+            </li>
+            <li>
+              <p>跟进客户订单交付进度，协调仓储与物流解决发货异常</p>
+            </li>
+            <li>
+              <p>参与月度库存盘点，整理差异报告并提出改进建议</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>：订单处理、库存盘点、客户沟通</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">语言</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">中文<span class="resume-language-fluency">：母语或双语水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>关键字</span>：普通话二级甲等</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">英语<span class="resume-language-fluency">：完全专业水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>关键字</span>：CET-6、商务谈判</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">日语<span class="resume-language-fluency">：初级水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>关键字</span>：JLPT N4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">专业技能</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">运营管理<span class="resume-skill-level">：专家</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：流程优化、成本控制、KPI体系、运营分析、跨部门协作</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">供应链与仓储<span class="resume-skill-level">：高级</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：库存管理、采购协同、物流配送、供应商管理</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">数据分析<span class="resume-skill-level">：高级</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：Excel、SQL、Tableau、Power BI</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">项目管理<span class="resume-skill-level">：高级</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：PMP、敏捷管理、风险管理、里程碑管理</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">系统工具<span class="resume-skill-level">：中级</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>关键字</span>：SAP S/4HANA、WMS、TMS、Jira、Confluence</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">荣誉</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">年度优秀管理者</div>
+            <div class="resume-entry-organization">星澜科技（上海）有限公司</div>
+          </div>
+          <div class="resume-entry-date">2023年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>因在华东区运营效率提升、成本优化与团队建设方面表现突出而获奖</p>
+            </li>
+            <li>
+              <p>主导的仓储数字化项目实现履约周期显著缩短，并形成可复制的运营标准</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">流程优化金奖</div>
+            <div class="resume-entry-organization">恒远供应链管理有限公司</div>
+          </div>
+          <div class="resume-entry-date">2019年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>通过重构库存补货规则与配送线路，降低库存周转天数与单票运输成本</p>
+            </li>
+            <li>
+              <p>项目成果在华东区多个业务单元推广，带来持续的成本与时效改善</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">证书</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.pmi.org/certifications/project-management-pmp">PMP项目管理专业人士认证</a></div>
+            <div class="resume-entry-organization">项目管理协会 PMI</div>
+          </div>
+          <div class="resume-entry-date">2019年6月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://asq.org/cert/six-sigma-green-belt">六西格玛绿带认证</a></div>
+            <div class="resume-entry-organization">美国质量学会 ASQ</div>
+          </div>
+          <div class="resume-entry-date">2018年3月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">出版刊物</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.logistics-review.com/articles/digital-warehouse">区域运营中的数字化仓储实践</a></div>
+            <div class="resume-entry-organization">现代物流管理</div>
+          </div>
+          <div class="resume-entry-date">2022年8月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>分析 WMS 与自动化分拣设备在区域仓储场景中的落地路径</p>
+            </li>
+            <li>
+              <p>总结库位优化、波次拣选与库存准确性提升的实践经验</p>
+            </li>
+            <li>
+              <p>提出以数据看板驱动仓储持续改善的管理建议</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">项目</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.xinglan-tech.com/projects/warehouse-digitalization">华东区仓储数字化升级项目</a></div>
+            <div class="resume-entry-description">通过 WMS 与自动化分拣设备提升仓储作业效率</div>
+          </div>
+          <div class="resume-entry-date">2021年3月–2022年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>主导需求调研、流程设计与供应商选型，分三期完成 WMS 与自动化分拣设备上线</p>
+            </li>
+            <li>
+              <p>设计库位优化与波次拣选规则，拣货效率提升 35%，库存准确率达到 99.5%</p>
+            </li>
+            <li>
+              <p>建立项目里程碑与风险清单，协调 IT、仓储、财务与外部供应商按期交付</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>： 数字化仓储、WMS、自动化分拣、效率提升</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hengyuan-supply.com/projects/delivery-network">城市配送网络优化项目</a></div>
+            <div class="resume-entry-description">重构华东区城市配送路线与承运商组合</div>
+          </div>
+          <div class="resume-entry-date">2019年4月–2020年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>基于历史订单与地理数据重构华东区配送分区，优化线路与波次安排</p>
+            </li>
+            <li>
+              <p>引入承运商月度评分机制，结合时效、破损率与成本进行动态分配</p>
+            </li>
+            <li>
+              <p>推动配送时效达成率由 88% 提升至 96%，单票成本下降 9%</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>关键字</span>： 配送网络、路线优化、承运商管理、成本控制</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">兴趣爱好</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">运动健康</span>：马拉松、骑行、游泳</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">阅读与研究</span>：运营管理、供应链创新、商业传记</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">摄影</span>：城市风光、人文纪实</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">志愿服务</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.shyouth.org">上海青年企业家协会</a></div>
+            <div class="resume-entry-organization">运营志愿者</div>
+          </div>
+          <div class="resume-entry-date">2022年3月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>参与协会月度沙龙与行业交流活动的策划、报名管理和现场执行</p>
+            </li>
+            <li>
+              <p>协助整理会员企业运营案例，形成可复用的活动运营手册</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="volunteer-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.community-service.org">社区公益服务中心</a></div>
+            <div class="resume-entry-organization">活动组织志愿者</div>
+          </div>
+          <div class="resume-entry-date">2018年9月–2021年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>组织社区便民活动与物资捐赠，协调场地、物资与志愿者排班</p>
+            </li>
+            <li>
+              <p>建立活动复盘表，持续优化报名、签到与现场服务流程</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

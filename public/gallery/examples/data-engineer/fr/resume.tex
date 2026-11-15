@@ -1,0 +1,275 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for French language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-french.html
+\usepackage[french]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Camille Morel}{}
+\title{Ingénieur Données et Plateformes}
+\phone[mobile]{+33 6 12 34 56 78}
+\email{camille.morel@dataforge.fr}
+\homepage{https://camillemorel-data.fr}
+
+\address{24 rue des Lilas, Lyon, Auvergne-Rhône-Alpes, France, 69003}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/camille-morel-data}{@camille-morel-data} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/camillemorel-data}{@camillemorel-data}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informations de base}
+
+\cvline{}{Ingénieur données avec plus de 5 ans d'expérience dans la conception et l'exploitation de plateformes data à grande échelle. J'accompagne les équipes métier et produit dans la valorisation de leurs données, de l'ingestion à la mise à disposition dans des outils décisionnels.
+%
+\begin{itemize}
+\item Conception de pipelines ETL/ELT robustes et orchestrés avec Airflow et dbt
+\item Modélisation d'entrepôts de données et de lacs de données sur Snowflake, BigQuery et AWS
+\item Mise en place de pratiques DataOps : tests automatisés, CI/CD, observabilité et gouvernance
+\item Collaboration étroite avec les scientifiques des données, analystes et équipes plateforme
+\item Encadrement et mentorat de développeurs juniors
+\end{itemize}}
+\section{Formation}
+
+\cventry{sept. 2016–juil. 2021}
+        {Master, Informatique et Science des Données, Score : Mention Bien}
+        {INSA Lyon}
+        {\url{https://www.insa-lyon.fr}}
+        {}
+        {\begin{itemize}
+\item Formation d'ingénieur orientée ingénierie des données, statistiques et systèmes distribués
+\item Projet de fin d'études sur l'optimisation de requêtes dans un entrepôt de données cloud
+\item Stage de 6 mois en équipe plateforme data chez un éditeur logiciel lyonnais
+\end{itemize}
+\textbf{Cours} : Bases de données avancées, Algorithmique distribuée, Apprentissage automatique, Entrepôts de données, Cloud computing, Statistiques appliquées, Architecture logicielle, Sécurité des données}
+\section{Expérience professionnelle}
+
+\cventry{mars 2023–Present}
+        {Ingénieur Données Senior}
+        {DataForge}
+        {\url{https://www.dataforge.fr}}
+        {}
+        {\begin{itemize}
+\item Conception et maintien de pipelines ELT orchestrés avec Airflow et dbt pour 12 sources hétérogènes
+\item Modélisation d'un entrepôt Snowflake et mise en place de tests de qualité automatisés
+\item Réduction de 35 \% du temps de traitement des flux critiques grâce à l'optimisation SQL et au parallélisme
+\item Contribution à la gouvernance des données : catalogage, documentation et gestion des accès
+\item Mentorat de deux ingénieurs données juniors et animation de revues de code hebdomadaires
+\end{itemize}
+\textbf{Mots-clés} : Airflow, dbt, Snowflake, DataOps, Gouvernance}
+
+\cventry{sept. 2021–févr. 2023}
+        {Ingénieur Données}
+        {Groupe Voltaire}
+        {\url{https://www.groupe-voltaire.fr}}
+        {}
+        {\begin{itemize}
+\item Développement de flux d'ingestion temps réel avec Kafka et traitement batch avec Spark
+\item Migration d'un entrepôt PostgreSQL vers BigQuery avec réduction des coûts de 20 \%
+\item Industrialisation des déploiements via GitLab CI et conteneurs Docker
+\item Participation à la définition du modèle de données et des indicateurs métier avec les analystes
+\end{itemize}
+\textbf{Mots-clés} : Python, SQL, Kafka, BigQuery, CI/CD}
+
+\cventry{févr. 2021–août 2021}
+        {Ingénieur Données Junior}
+        {Lumière Analytics}
+        {\url{https://www.lumiere-analytics.fr}}
+        {}
+        {\begin{itemize}
+\item Création de jobs ETL Python pour alimenter un entrepôt PostgreSQL à partir de sources CRM et ERP
+\item Automatisation de contrôles de cohérence et de rapports de qualité des données
+\item Développement de tableaux de bord Power BI pour les équipes commerciales
+\item Rédaction de la documentation technique et des procédures d'exploitation
+\end{itemize}
+\textbf{Mots-clés} : ETL, PostgreSQL, Docker, Power BI}
+\section{Langues}
+
+\cvline{Français}{Niveau natif ou bilingue \hfill \textbf{Mots-clés} : Langue maternelle}
+\cvline{Anglais}{Niveau professionnel complet \hfill \textbf{Mots-clés} : TOEIC 950, Travail en équipe internationale}
+\cvline{Espagnol}{Niveau de travail limité \hfill \textbf{Mots-clés} : Conversation professionnelle}
+\section{Compétences}
+
+\cvline{Ingénierie des données}{Expert \hfill \textbf{Mots-clés} : Python, SQL, dbt, Apache Airflow, Apache Spark, Kafka, Snowflake, BigQuery}
+\cvline{Cloud \& DevOps}{Avancé \hfill \textbf{Mots-clés} : AWS, GCP, Docker, Kubernetes, Terraform, GitLab CI, GitHub Actions}
+\cvline{Bases de données}{Avancé \hfill \textbf{Mots-clés} : PostgreSQL, Snowflake, BigQuery, MongoDB, Redis, Elasticsearch}
+\cvline{Visualisation et BI}{Intermédiaire \hfill \textbf{Mots-clés} : Power BI, Tableau, Looker, Metabase}
+\section{Récompenses}
+
+\cventry{juin 2024}
+        {DataForge}
+        {Prix de l'impact data}
+        {}
+        {}
+        {Récompense interne attribuée pour la refonte de la plateforme d'ingestion et l'amélioration significative de la fiabilité des données.}
+
+\cventry{juil. 2021}
+        {INSA Lyon}
+        {Meilleur projet de fin d'études}
+        {}
+        {}
+        {Projet sur l'optimisation de requêtes analytiques dans un entrepôt cloud, distingué pour sa rigueur technique et son impact pédagogique.}
+\section{Certificats}
+
+\cventry{avr. 2024}
+        {Amazon Web Services}
+        {AWS Certified Data Engineer - Associate}
+        {\url{https://aws.amazon.com/certification/certified-data-engineer-associate/}}
+        {}
+        {}
+
+\cventry{nov. 2023}
+        {dbt Labs}
+        {dbt Certified Developer}
+        {\url{https://www.getdbt.com/certifications/}}
+        {}
+        {}
+
+\cventry{sept. 2022}
+        {Google Cloud}
+        {Google Cloud Professional Data Engineer}
+        {\url{https://cloud.google.com/certification/data-engineer}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{févr. 2024}
+        {Modernisation d'un entrepôt de données : retour d'expérience}
+        {Revue Data \& Systèmes}
+        {\url{https://www.revue-data-systemes.fr/articles/modernisation-entrepot}}
+        {}
+        {\begin{itemize}
+\item Présentation d'une démarche de migration vers Snowflake menée en équipe
+\item Retour sur les choix d'architecture, la qualité des données et la conduite du changement
+\item Bonnes pratiques pour industrialiser les pipelines avec dbt et Airflow
+\end{itemize}}
+\section{Projets}
+
+\cventry{janv. 2023–juin 2023}
+        {Pipeline libre de valorisation des données publiques de la métropole lyonnaise}
+        {OpenData Lyon}
+        {\url{https://github.com/camillemorel-data/opendata-lyon}}
+        {}
+        {\begin{itemize}
+\item Collecte automatisée de jeux de données ouvertes et stockage dans PostgreSQL
+\item Transformations dbt et documentation du lignage des données
+\item Tableau de bord public pour explorer les indicateurs de mobilité et de qualité de l'air
+\end{itemize}
+\textbf{Mots-clés} : Open Data, Airflow, dbt, PostgreSQL}
+
+\cventry{mars 2022–déc. 2022}
+        {Outil de surveillance de la qualité des données pour pipelines analytiques}
+        {Moniteur Qualité des Données}
+        {\url{https://github.com/camillemorel-data/data-quality-monitor}}
+        {}
+        {\begin{itemize}
+\item Définition de règles de validation configurables et génération de rapports quotidiens
+\item Intégration dans une chaîne CI/CD pour bloquer les déploiements en cas d'anomalie critique
+\item Réduction du temps de détection des incidents de données de plusieurs heures à quelques minutes
+\end{itemize}
+\textbf{Mots-clés} : Qualité des données, Python, Great Expectations, Docker}
+\section{Centres d'intérêt}
+
+\cvline{Sport}{Course à pied, Escalade, Randonnée}
+\cvline{Musique}{Guitare, Jazz}
+\cvline{Communauté}{Rencontres professionnelles, Mentorat}
+\section{Bénévolat}
+
+\cventry{janv. 2022–déc. 2024}
+        {Bénévole en ingénierie des données}
+        {Data for Good Lyon}
+        {\url{https://dataforgood.fr}}
+        {}
+        {\begin{itemize}
+\item Participation à des projets data à impact social avec des associations locales
+\item Conception de pipelines de collecte et de nettoyage de données ouvertes
+\item Animation d'ateliers d'initiation à la donnée pour des bénévoles non techniques
+\end{itemize}}
+    
+
+\cventry{sept. 2023–Present}
+        {Marraine}
+        {Elles bougent}
+        {\url{https://www.ellesbougent.com}}
+        {}
+        {\begin{itemize}
+\item Intervention dans des collèges et lycées pour promouvoir les carrières scientifiques et techniques auprès des jeunes filles
+\item Organisation d'ateliers de découverte des métiers de la donnée et de l'ingénierie
+\end{itemize}}
+    
+\end{document}

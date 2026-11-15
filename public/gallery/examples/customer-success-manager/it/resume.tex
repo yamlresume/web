@@ -1,0 +1,276 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Giulia Bianchi}{}
+\title{Customer Success Manager | SaaS e trasformazione digitale}
+\phone[mobile]{+39 345 678 9012}
+\email{giulia.bianchi.csm@email.it}
+\homepage{https://www.giuliabianchi-csm.it}
+
+\address{Via della Moscova 18, Milano, Lombardia, Italia, 20121}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/giulia-bianchi-csm}{@giulia-bianchi-csm} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@giuliabianchi\_csm}{@giuliabianchi\_csm}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{Customer Success Manager con oltre 8 anni di esperienza nella gestione di portafogli clienti B2B SaaS, con una solida propensione alla fidelizzazione, all'adozione del prodotto e alla crescita del valore del cliente.
+%
+\begin{itemize}
+\item Responsabile di un portafoglio da 2,5 milioni di euro di ARR, con una riduzione del churn del 18\% in due anni.
+\item Esperta nella costruzione di processi di onboarding scalabili, piani di successo del cliente e business review trimestrali.
+\item Forte orientamento ai dati, alla collaborazione cross-funzionale e alla comunicazione con stakeholder senior.
+\item Abituata a lavorare in contesti internazionali e a tradurre le esigenze del cliente in roadmap di prodotto.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{ott 2012–lug 2014}
+        {Laurea magistrale, Marketing e Comunicazione d'Impresa, Punteggio: 110/110 con lode}
+        {Università Commerciale Luigi Bocconi}
+        {\url{https://www.unibocconi.it}}
+        {}
+        {\begin{itemize}
+\item Percorso specialistico focalizzato sulla gestione della relazione con il cliente e sulla misurazione della soddisfazione.
+\item Tesi sperimentale sull'impatto della customer experience sulla fidelizzazione nei servizi digitali.
+\item Progetti di gruppo con aziende del settore tecnologico e retail.
+\end{itemize}
+\textbf{Corsi}: Marketing strategico, Comportamento del consumatore, Ricerche di mercato, Gestione della relazione con il cliente, Business analytics, Comunicazione d'impresa}
+
+\cventry{set 2009–lug 2012}
+        {Laurea triennale, Scienze della Comunicazione, Punteggio: 108/110}
+        {Università degli Studi di Milano}
+        {\url{https://www.unimi.it}}
+        {}
+        {\begin{itemize}
+\item Solida base in comunicazione interpersonale, analisi dei bisogni e tecniche di negoziazione.
+\item Attività di laboratorio su customer journey e ricerca qualitativa.
+\end{itemize}
+\textbf{Corsi}: Sociologia della comunicazione, Psicologia del consumatore, Statistica, Linguaggi digitali, Public speaking}
+\section{Esperienza professionale}
+
+\cventry{gen 2021–Presente}
+        {Senior Customer Success Manager}
+        {NexaCloud Italia}
+        {\url{https://www.nexacloud.it}}
+        {}
+        {\begin{itemize}
+\item Gestione di un portafoglio di 45 clienti enterprise e mid-market, per un ARR complessivo di 2,5 milioni di euro.
+\item Definizione e implementazione di piani di successo del cliente con obiettivi misurabili su adozione, valore e rinnovo.
+\item Riduzione del churn del 18\% e aumento del tasso di rinnovo al 94\% in due anni.
+\item Conduzione di business review trimestrali con C-level, HR e responsabili IT per allineare le priorità e dimostrare il ROI.
+\item Collaborazione con Product e Sales per raccogliere feedback, identificare opportunità di upselling e migliorare la roadmap.
+\item Mentoring di due Customer Success Manager junior e definizione delle best practice di onboarding.
+\end{itemize}
+\textbf{Parole chiave}: Customer Success, SaaS, Churn reduction, QBR, Onboarding, Upselling}
+
+\cventry{mar 2018–dic 2020}
+        {Customer Success Manager}
+        {SaaSNow S.r.l.}
+        {\url{https://www.saasnow.it}}
+        {}
+        {\begin{itemize}
+\item Responsabile di un portafoglio di 80 clienti SMB nel settore software gestionale, con focus su adozione e soddisfazione.
+\item Progettazione di un percorso di onboarding strutturato che ha ridotto il time-to-value medio da 60 a 35 giorni.
+\item Monitoraggio di KPI di salute del cliente tramite CRM e dashboard, con interventi proattivi sui clienti a rischio.
+\item Gestione delle escalation e coordinamento tra supporto tecnico, prodotto e sales.
+\item Contributo alla creazione del team Customer Success e alla definizione dei processi interni.
+\end{itemize}
+\textbf{Parole chiave}: Onboarding, Time-to-value, KPI, CRM, Escalation}
+
+\cventry{set 2014–feb 2018}
+        {Account Manager}
+        {Digitalia Consulting}
+        {\url{https://www.digitaliaconsulting.it}}
+        {}
+        {\begin{itemize}
+\item Gestione della relazione commerciale con clienti nei settori manifatturiero e servizi, per un portafoglio da 1,2 milioni di euro.
+\item Analisi dei bisogni, presentazione di soluzioni digitali e negoziazione dei contratti.
+\item Coordinamento di progetti di trasformazione digitale con team interni e partner esterni.
+\item Raggiungimento del 115\% degli obiettivi di vendita annuali nel 2017.
+\end{itemize}
+\textbf{Parole chiave}: Account Management, Negotiation, Digital Transformation, Sales}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: C1, Business English}
+\cvline{Francese}{Competenza professionale limitata \hfill \textbf{Parole chiave}: A2, Conversazione di base}
+\section{Competenze}
+
+\cvline{Customer Success Management}{Esperto \hfill \textbf{Parole chiave}: Onboarding, Fidelizzazione, Customer Journey, QBR, Churn prevention, Upselling}
+\cvline{CRM e Analisi Dati}{Avanzato \hfill \textbf{Parole chiave}: Salesforce, HubSpot, Gainsight, Power BI, Tableau, Excel avanzato}
+\cvline{Comunicazione e Negoziazione}{Avanzato \hfill \textbf{Parole chiave}: Presentazioni executive, Gestione escalation, Mediazione, Storytelling}
+\cvline{Project Management}{Avanzato \hfill \textbf{Parole chiave}: Agile, Jira, Asana, Gestione stakeholder}
+\section{Premi}
+
+\cventry{nov 2023}
+        {NexaCloud Italia}
+        {Customer Success Leader of the Year}
+        {}
+        {}
+        {Riconoscimento interno per i risultati ottenuti nella riduzione del churn e nella costruzione di un modello di customer success scalabile per il segmento enterprise.}
+
+\cventry{feb 2020}
+        {SaaSNow S.r.l.}
+        {Excellence in Customer Retention}
+        {}
+        {}
+        {Premio assegnato per il miglior tasso di rinnovo del portafoglio SMB e per l'implementazione di un programma di adozione proattiva.}
+\section{Certificazioni}
+
+\cventry{mar 2022}
+        {SuccessCOACHING}
+        {Certified Customer Success Manager (CCSM)}
+        {\url{https://www.successcoaching.com/certified-customer-success-manager}}
+        {}
+        {}
+
+\cventry{giu 2021}
+        {Salesforce}
+        {Salesforce Certified Administrator}
+        {\url{https://trailhead.salesforce.com/credentials/administrator}}
+        {}
+        {}
+
+\cventry{set 2020}
+        {HubSpot Academy}
+        {HubSpot Sales Software Certification}
+        {\url{https://academy.hubspot.com/courses/sales-software}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{giu 2023}
+        {Ridurre il churn con l'adozione proattiva}
+        {Customer Success Italia}
+        {\url{https://www.customersuccessitalia.it/whitepaper/churn-adozione-proattiva}}
+        {}
+        {\begin{itemize}
+\item Analisi delle principali cause di abbandono nei SaaS B2B e delle metriche di early warning.
+\item Modello operativo per segmentare i clienti in base al rischio e attivare interventi mirati.
+\item Casi studio su onboarding, health score e business review.
+\end{itemize}}
+\section{Progetti}
+
+\cventry{gen 2022–dic 2022}
+        {Percorso di onboarding standardizzato per clienti enterprise e mid-market.}
+        {Programma di onboarding scale-up}
+        {\url{https://www.nexacloud.it/customer-success}}
+        {}
+        {\begin{itemize}
+\item Ridisegno del percorso di onboarding con template, milestone e responsabilità chiare.
+\item Riduzione del time-to-first-value del 30\% e aumento del CSAT post-onboarding da 4,2 a 4,7.
+\item Creazione di una libreria di contenuti self-service e formazione per i clienti.
+\end{itemize}
+\textbf{Parole chiave}: Onboarding, Time-to-value, CSAT, Self-service}
+
+\cventry{mar 2023–set 2023}
+        {Modello predittivo per identificare i clienti a rischio di abbandono.}
+        {Health score per il portafoglio clienti}
+        {\url{https://www.nexacloud.it/insights/health-score}}
+        {}
+        {\begin{itemize}
+\item Definizione di indicatori di adozione, engagement e soddisfazione ponderati per segmento.
+\item Integrazione del modello con CRM e dashboard operative per i Customer Success Manager.
+\item Aumento del 25\% degli interventi proattivi sui clienti a rischio.
+\end{itemize}
+\textbf{Parole chiave}: Health score, Analytics, Churn, CRM}
+\section{Interessi}
+
+\cvline{Innovazione digitale}{AI generativa, Product-led growth, Design thinking}
+\cvline{Sport e benessere}{Running, Yoga, Trekking}
+\cvline{Comunità e formazione}{Mentoring, Public speaking}
+\section{Volontariato}
+
+\cventry{set 2021–Presente}
+        {Mentor}
+        {Women in Tech Italia}
+        {\url{https://www.womenintechitalia.it}}
+        {}
+        {\begin{itemize}
+\item Mentoring individuale per giovani professioniste che desiderano intraprendere carriere nel customer success e nelle vendite SaaS.
+\item Partecipazione a incontri di orientamento e workshop su comunicazione, negoziazione e crescita professionale.
+\item Supporto alla community nella creazione di percorsi di sviluppo e networking.
+\end{itemize}}
+    
+\end{document}

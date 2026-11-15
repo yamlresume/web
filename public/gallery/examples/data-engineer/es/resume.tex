@@ -1,0 +1,284 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Spanish language
+% \usepackage[spanish]{babel} has some conflicting issues with moderncv
+% so we have to use enable the following options to make it work
+%
+% ref:
+% - https://tex.stackexchange.com/a/140161/36007
+\usepackage[spanish,es-lcroman]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Lucía Fernández Moreno}{}
+\title{Ingeniera de Datos Senior}
+\phone[mobile]{+34 612 345 678}
+\email{lucia.fernandez@example.com}
+\homepage{https://luciafernandez.dev}
+
+\address{Calle de Alcalá 123, Madrid, Comunidad de Madrid, España, 28009}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/lucia-fernandez-data}{@lucia-fernandez-data} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/luciafdez}{@luciafdez}}
+
+\begin{document}
+
+\maketitle
+
+\section{Información básica}
+
+\cvline{}{\begin{itemize}
+\item Ingeniera de Datos con más de 10 años de experiencia diseñando y construyendo plataformas de datos escalables.
+\item Especializada en arquitecturas de datos modernas, pipelines ETL/ELT y soluciones analíticas en la nube.
+\item Sólida experiencia en modelado dimensional, optimización de consultas y gobierno del dato.
+\item Colaboradora habitual con equipos de negocio, analítica y ciencia de datos para convertir requisitos en soluciones medibles.
+\end{itemize}}
+\section{Educación}
+
+\cventry{sept 2012–jul 2014}
+        {Maestría, Ciencia de Datos e Ingeniería de Datos, Puntuación: 9.1}
+        {Universidad Politécnica de Madrid}
+        {\url{https://www.upm.es}}
+        {}
+        {\begin{itemize}
+\item Formación avanzada en diseño de sistemas de datos, analítica y aprendizaje automático.
+\item Proyecto fin de máster centrado en la optimización de pipelines de ingestión en tiempo real.
+\end{itemize}
+\textbf{Cursos}: Arquitecturas de Datos Escalables, Procesamiento Distribuido, Minería de Datos, Bases de Datos Avanzadas, Aprendizaje Automático}
+
+\cventry{sept 2008–jun 2012}
+        {Licenciatura, Ingeniería Informática, Puntuación: 8.7}
+        {Universidad de Sevilla}
+        {\url{https://www.us.es}}
+        {}
+        {\begin{itemize}
+\item Base sólida en programación, sistemas distribuidos y fundamentos de bases de datos.
+\end{itemize}
+\textbf{Cursos}: Estructuras de Datos, Algoritmos, Sistemas Operativos, Redes de Computadores, Bases de Datos}
+\section{Experiencia laboral}
+
+\cventry{mar 2021 hasta la fecha}
+        {Ingeniera de Datos Senior}
+        {Iberia Data Solutions}
+        {\url{https://www.iberiadata.example.com}}
+        {}
+        {\begin{itemize}
+\item Lideré el diseño de una plataforma de datos en Google Cloud Platform para centralizar información de 12 áreas de negocio.
+\item Implementé pipelines ELT con dbt, BigQuery y Airflow, reduciendo el tiempo de publicación de datos en un 60 \%.
+\item Definí estándares de modelado dimensional y gobierno del dato, mejorando la calidad y trazabilidad de los datasets.
+\item Mentoré a tres ingenieros junior y coordiné revisiones técnicas de código y arquitectura.
+\end{itemize}
+\textbf{Palabras clave}: Google Cloud Platform, BigQuery, dbt, Airflow, Gobierno del dato}
+
+\cventry{ene 2017–feb 2021}
+        {Ingeniera de Datos}
+        {Telefónica Tech}
+        {\url{https://www.telefonicatech.com}}
+        {}
+        {\begin{itemize}
+\item Desarrollé pipelines ETL en Python y Spark para procesar más de 2 TB diarios de datos de red y negocio.
+\item Modelé datos en Amazon Redshift y optimicé consultas analíticas para equipos de BI y marketing.
+\item Automaticé validaciones de calidad con Great Expectations y monitoreo de jobs con Grafana y Prometheus.
+\item Participé en la migración de un almacén de datos on-premise a AWS con enfoque en mínima interrupción.
+\end{itemize}
+\textbf{Palabras clave}: Python, Apache Spark, AWS, Redshift, ETL}
+
+\cventry{sept 2014–dic 2016}
+        {Analista de Datos}
+        {Accenture España}
+        {\url{https://www.accenture.com/es-es}}
+        {}
+        {\begin{itemize}
+\item Construí informes y cuadros de mando en Power BI para clientes de banca y seguros.
+\item Escribí consultas SQL complejas y procedimientos almacenados para extraer y transformar datos.
+\item Documenté requisitos funcionales y colaboré con equipos de negocio en la definición de KPIs.
+\end{itemize}
+\textbf{Palabras clave}: SQL, Power BI, Análisis de Datos, Banca}
+\section{Idiomas}
+
+\cvline{Español}{Competencia nativa o bilingüe \hfill \textbf{Palabras clave}: Español nativo}
+\cvline{Inglés}{Competencia profesional plena \hfill \textbf{Palabras clave}: C1, Uso profesional}
+\cvline{Catalán}{Competencia limitada de trabajo \hfill \textbf{Palabras clave}: Conversación básica}
+\section{Competencias}
+
+\cvline{Ingeniería de Datos}{Experto \hfill \textbf{Palabras clave}: ETL/ELT, Modelado dimensional, Almacén de datos, Calidad del dato, Gobierno del dato}
+\cvline{Computación en la Nube}{Avanzado \hfill \textbf{Palabras clave}: Google Cloud Platform, AWS, BigQuery, Redshift, Azure Data Factory}
+\cvline{Big Data y Procesamiento}{Avanzado \hfill \textbf{Palabras clave}: Apache Spark, Apache Airflow, Apache Kafka, dbt, Databricks}
+\cvline{Lenguajes y Bases de Datos}{Avanzado \hfill \textbf{Palabras clave}: Python, SQL, Scala, PostgreSQL, MongoDB}
+\section{Premios}
+
+\cventry{nov 2023}
+        {Iberia Data Solutions}
+        {Premio a la Innovación en Datos}
+        {}
+        {}
+        {\begin{itemize}
+\item Reconocimiento por el diseño de una plataforma de datos que redujo el time-to-insight en un 45 \%.
+\end{itemize}}
+
+\cventry{jul 2014}
+        {Universidad Politécnica de Madrid}
+        {Matrícula de Honor en Proyecto Fin de Máster}
+        {}
+        {}
+        {\begin{itemize}
+\item Galardón al mejor proyecto de la promoción en el área de procesamiento distribuido.
+\end{itemize}}
+\section{Certificados}
+
+\cventry{mar 2022}
+        {Google Cloud}
+        {Google Cloud Professional Data Engineer}
+        {\url{https://cloud.google.com/certification/data-engineer}}
+        {}
+        {}
+
+\cventry{sept 2021}
+        {Amazon Web Services}
+        {AWS Certified Data Analytics - Specialty}
+        {\url{https://aws.amazon.com/certification/certified-data-analytics-specialty/}}
+        {}
+        {}
+
+\cventry{may 2023}
+        {dbt Labs}
+        {dbt Analytics Engineering Certification}
+        {\url{https://www.getdbt.com/certifications/}}
+        {}
+        {}
+\section{Publicaciones}
+
+\cventry{oct 2022}
+        {Diseño de pipelines de datos en tiempo real para analítica operativa}
+        {Revista Española de Ingeniería de Datos}
+        {\url{https://www.revista-ingenieria-datos.example.com/articulos/pipelines-tiempo-real}}
+        {}
+        {\begin{itemize}
+\item Artículo técnico sobre patrones de ingestión y procesamiento continuo con Kafka y Spark Structured Streaming.
+\item Analiza estrategias de particionado, exactly-once y monitorización de latencia.
+\end{itemize}}
+\section{Proyectos}
+
+\cventry{ene 2023–jun 2023}
+        {Plataforma reproducible para ingerir, validar y publicar datasets abiertos de administraciones públicas.}
+        {Observatorio de Datos Abiertos}
+        {\url{https://github.com/luciafdez/observatorio-datos-abiertos}}
+        {}
+        {\begin{itemize}
+\item Diseñé un pipeline con Airflow y dbt que ingesta datos de portales open data y genera tablas analíticas listas para consulta.
+\item Implementé tests de calidad y documentación automática del linaje de datos.
+\item Desplegué la solución en Google Cloud Run y BigQuery con costes controlados.
+\end{itemize}
+\textbf{Palabras clave}: Open Data, Airflow, dbt, BigQuery}
+
+\cventry{mar 2020–nov 2020}
+        {Prototipo de motor de recomendación basado en datos transaccionales anonimizados.}
+        {Motor de Recomendación para Retail}
+        {\url{https://github.com/luciafdez/retail-recommender}}
+        {}
+        {\begin{itemize}
+\item Construí un pipeline de features con Spark y un modelo de filtrado colaborativo en Python.
+\item Evalué el rendimiento con métricas de precisión y recall sobre un conjunto de validación temporal.
+\item Documenté la arquitectura y los resultados en un informe técnico reproducible.
+\end{itemize}
+\textbf{Palabras clave}: Spark, Python, Recomendación, Retail}
+\section{Intereses}
+
+\cvline{Datos y Tecnología}{Open Source, Arquitecturas de Datos, Automatización}
+\cvline{Actividad Física}{Senderismo, Natación, Ciclismo}
+\cvline{Cultura}{Lectura, Fotografía, Podcasts}
+\section{Voluntariado}
+
+\cventry{sept 2022 hasta la fecha}
+        {Mentora Técnica}
+        {Data Girls Madrid}
+        {\url{https://www.datagirlsmadrid.example.com}}
+        {}
+        {\begin{itemize}
+\item Acompaño a mujeres que inician su carrera en datos en la definición de objetivos y desarrollo de habilidades técnicas.
+\item Participo en talleres de SQL, Python y visualización de datos para la comunidad.
+\end{itemize}}
+    
+
+\cventry{ene 2020–ago 2022}
+        {Voluntaria de Análisis de Datos}
+        {Cáritas Madrid}
+        {\url{https://www.caritasmadrid.org}}
+        {}
+        {\begin{itemize}
+\item Apoyé al equipo social en la limpieza y análisis de datos de programas de asistencia.
+\item Automaticé informes mensuales en Power BI para facilitar la toma de decisiones.
+\end{itemize}}
+    
+\end{document}

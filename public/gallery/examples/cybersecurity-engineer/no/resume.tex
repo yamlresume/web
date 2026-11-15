@@ -1,0 +1,243 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Silje Bakken}{}
+\title{Cybersikkerhetsingeniør | SOC, hendelseshåndtering og skysikkerhet}
+\phone[mobile]{+47 123 45 678}
+\email{silje.bakken@protonmail.com}
+\homepage{https://siljebakken.no}
+
+\address{Storgata 12, Oslo, Oslo, Norge, 0155}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/siljebakken}{@siljebakken} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/siljebakken}{@siljebakken}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{\begin{itemize}
+\item Erfaren cybersikkerhetsingeniør med mastergrad i informasjonssikkerhet og 8 års erfaring fra SOC, hendelseshåndtering og sikkerhetsarkitektur.
+\item Spesialisert i trusseldeteksjon, logganalyse og automatisering av sikkerhetsprosesser i Microsoft Sentinel, Splunk og QRadar.
+\item Har ledet hendelsesrespons for kritisk infrastruktur og redusert responstid gjennom SOAR-playbooks og KQL-baserte deteksjoner.
+\item Sterk på risikovurdering, MITRE ATT\&CK, sikkerhetsrevisjoner og samarbeid på tvers av teknologi-, drift- og ledelsesmiljøer.
+\item Opptatt av å bygge en proaktiv sikkerhetskultur gjennom opplæring, mentorvirksomhet og tydelig dokumentasjon.
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2014–juni 2016}
+        {Master, Informasjonssikkerhet, Poeng: A (5)}
+        {Norges teknisk-naturvitenskapelige universitet}
+        {\url{https://www.ntnu.no}}
+        {}
+        {\begin{itemize}
+\item Fordypning i kryptografi, nettverkssikkerhet og sikker systemutvikling
+\item Gjennomførte masterprosjekt om trusseldeteksjon i kritisk infrastruktur
+\item Utviklet praktisk erfaring med risikovurdering, sikkerhetsrevisjon og hendelseshåndtering
+\end{itemize}
+\textbf{Kurs}: Kryptografi og sikkerhetsprotokoller, Nettsikkerhet, Systemering av sikre systemer, Risikostyring og personvern, Digital etterforskning, Sikkerhetsarkitektur}
+
+\cventry{aug. 2011–juni 2014}
+        {Bachelor, Informatikk, Poeng: B (4)}
+        {Universitetet i Oslo}
+        {\url{https://www.uio.no}}
+        {}
+        {\begin{itemize}
+\item Solid grunnlag i programmering, systemforståelse og datanettverk
+\item Arbeidet i prosjektgrupper med sikker utvikling og testing av programvare
+\item Skrev bacheloroppgave om autentisering og tilgangskontroll i webløsninger
+\end{itemize}
+\textbf{Kurs}: Algoritmer og datastrukturer, Operativsystemer, Databaser, Nettverk, Programmering i Java, Diskret matematikk}
+\section{Arbeidserfaring}
+
+\cventry{mars 2021–Nå}
+        {Senior cybersikkerhetsingeniør}
+        {Nordisk Energisikkerhet AS}
+        {\url{https://www.nordiskenergisikkerhet.no}}
+        {}
+        {\begin{itemize}
+\item Leder daglig SOC-drift for et energiselskap med kritisk infrastruktur og 24/7-overvåking
+\item Utvikler og forvalter deteksjonsregler i Microsoft Sentinel og Splunk med fokus på OT- og IT-konvergens
+\item Gjennomfører hendelsesrespons for komplekse hendelser, inkludert analyse, isolering og rapportering
+\item Bygget SOAR-playbooks som reduserte manuell prioritering med 35 \% og forkortet gjennomsnittlig responsstid
+\item Fungerer som teknisk rådgiver i sikkerhetsarkitektur, risikovurderinger og leverandørrevisjoner
+\end{itemize}
+\textbf{Nøkkelord}: SOC, Microsoft Sentinel, Splunk, SOAR, OT-sikkerhet, Hendelseshåndtering}
+
+\cventry{aug. 2016–feb. 2021}
+        {Cybersikkerhetsingeniør}
+        {Bergen Sikkerhetsrådgivning AS}
+        {\url{https://www.bergensikkerhet.no}}
+        {}
+        {\begin{itemize}
+\item Overvåket og analyserte sikkerhetshendelser for kunder i finans- og helsesektoren
+\item Implementerte og vedlikeholdt SIEM-løsninger (QRadar, ArcSight) og utviklet egne korrelasjonsregler
+\item Deltok i hendelsesrespons og digital etterforskning, inkludert innsamling av bevis og rapportering
+\item Gjennomførte sårbarhetsanalyser og penetrasjonstester i samarbeid med eksterne konsulenter
+\item Bidro til utvikling av sikkerhetspolicyer og opplæring av ansatte i sikker bevissthet
+\end{itemize}
+\textbf{Nøkkelord}: SIEM, QRadar, ArcSight, Sårbarhetsanalyse, Penetrasjonstesting, Digital etterforskning}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: TOEFL 110, IELTS 7.5}
+\cvline{Tysk}{Begrenset arbeidskunnskap \hfill \textbf{Nøkkelord}: Grunnleggende}
+\section{Ferdigheter}
+
+\cvline{Sikkerhetsovervåking (SOC)}{Ekspert \hfill \textbf{Nøkkelord}: Microsoft Sentinel, Splunk, QRadar, ArcSight, Logganalyse}
+\cvline{Trusseldeteksjon og hendelseshåndtering}{Ekspert \hfill \textbf{Nøkkelord}: MITRE ATT\&CK, KQL, SOAR, Playbooks, Digital etterforskning}
+\cvline{Skysikkerhet}{Avansert \hfill \textbf{Nøkkelord}: Azure Security, AWS Security, Zero Trust, Identity Management}
+\cvline{Risiko og samsvar}{Avansert \hfill \textbf{Nøkkelord}: ISO 27001, GDPR, Risikovurdering, Sikkerhetsrevisjon}
+\cvline{Programmering og automatisering}{Viderekommen \hfill \textbf{Nøkkelord}: Python, PowerShell, Bash, KQL, REST API}
+\section{Utmerkelser}
+
+\cventry{nov. 2022}
+        {Nordisk Energisikkerhet AS}
+        {Årets sikkerhetsprosjekt}
+        {}
+        {}
+        {\begin{itemize}
+\item Anerkjent for utvikling av en automatisert hendelsesresponsplattform som reduserte responstiden med 40 \%.
+\end{itemize}}
+\section{Sertifikater}
+
+\cventry{juni 2020}
+        {(ISC)²}
+        {CISSP}
+        {\url{https://www.isc2.org/certifications/cissp}}
+        {}
+        {}
+
+\cventry{sep. 2021}
+        {Microsoft}
+        {Azure Security Engineer Associate}
+        {\url{https://learn.microsoft.com/en-us/certifications/azure-security-engineer/}}
+        {}
+        {}
+
+\cventry{mars 2019}
+        {ISACA}
+        {CISM}
+        {\url{https://www.isaca.org/credentialing/cism}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{okt. 2018}
+        {Detecting Advanced Persistent Threats in Critical Infrastructure}
+        {Norsk Informasjonssikkerhetskonferanse}
+        {\url{https://www.nisk.no/paper/2018}}
+        {}
+        {\begin{itemize}
+\item Presenterer en metode for å oppdage APT-angrep i OT-miljøer ved hjelp av maskinlæring og nettverksanalyse.
+\end{itemize}}
+\section{Prosjekter}
+
+\cventry{jan. 2020–des. 2020}
+        {Et åpent kildekode-prosjekt for å detektere unormal aktivitet i industrielle kontrollsystemer.}
+        {Sanntids trusseldeteksjon for OT-nettverk}
+        {\url{https://github.com/siljebakken/ot-threat-detection}}
+        {}
+        {\begin{itemize}
+\item Utviklet en deteksjonsmotor basert på Python og Scapy for å analysere Modbus- og DNP3-trafikk.
+\item Implementerte varsling til Slack og Microsoft Teams ved mistenkelig aktivitet.
+\item Testet løsningen i et simulert OT-miljø med gode resultater.
+\end{itemize}
+\textbf{Nøkkelord}: OT-sikkerhet, Python, Scapy, Modbus, DNP3}
+\section{Interesser}
+
+\cvline{Sport}{Fjellturer, Langrenn, Klatring}
+\cvline{Musikk}{Piano, Gitar}
+\section{Frivillig arbeid}
+
+\cventry{jan. 2019–Nå}
+        {Mentor}
+        {Women in Cybersecurity Norge}
+        {\url{https://www.wics.no}}
+        {}
+        {\begin{itemize}
+\item Mentorer unge kvinner som ønsker å starte karriere innen cybersikkerhet.
+\item Holder workshopserier om SOC-drift og hendelseshåndtering.
+\item Bidrar til å øke mangfoldet i sikkerhetsmiljøet.
+\end{itemize}}
+    
+\end{document}

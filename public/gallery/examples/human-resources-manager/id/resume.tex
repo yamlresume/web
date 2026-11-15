@@ -1,0 +1,275 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Indonesian (Bahasa Indonesia) language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-indonesian.html
+\usepackage[indonesian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Budi Santoso}{}
+\title{Manajer SDM Senior | Spesialis Hubungan Karyawan \& Rekrutmen}
+\phone[mobile]{+62 812-3456-7890}
+\email{budi.santoso@email.com}
+\homepage{https://www.budisantoso-hr.id}
+
+\address{Jl. Jenderal Sudirman Kav. 52-53, Jakarta Selatan, DKI Jakarta, Indonesia, 12190}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/budisantoso-hr}{@budisantoso-hr} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/budisantoso\_hr}{@budisantoso\_hr}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informasi Dasar}
+
+\cvline{}{\begin{itemize}
+\item Manajer Sumber Daya Manusia dengan pengalaman lebih dari 10 tahun di perusahaan multinasional dan startup teknologi.
+\item Ahli dalam merancang strategi rekrutmen, mengelola hubungan industrial, dan meningkatkan keterlibatan karyawan.
+\item Berpengalaman memimpin tim HR lintas fungsi dan mengimplementasikan sistem HRIS untuk efisiensi operasional.
+\item Komitmen tinggi terhadap pengembangan budaya kerja inklusif, berintegritas, dan berorientasi pada hasil.
+\end{itemize}}
+\section{Pendidikan}
+
+\cventry{Sep 2008–Jul 2012}
+        {Sarjana, Psikologi, Nilai: 3.75}
+        {Universitas Indonesia}
+        {\url{https://www.ui.ac.id}}
+        {}
+        {\begin{itemize}
+\item Lulus dengan predikat cum laude dan meraih penghargaan mahasiswa berprestasi.
+\item Aktif dalam organisasi kemahasiswaan sebagai ketua divisi pengembangan sumber daya anggota.
+\end{itemize}
+\textbf{Mata Kuliah}: Psikologi Industri dan Organisasi, Manajemen Sumber Daya Manusia, Perilaku Organisasi, Metodologi Penelitian, Psikometri, Konseling Karir}
+
+\cventry{Agu 2013–Jun 2015}
+        {Magister, Manajemen Sumber Daya Manusia, Nilai: 3.90}
+        {Universitas Gadjah Mada}
+        {\url{https://www.ugm.ac.id}}
+        {}
+        {\begin{itemize}
+\item Tesis tentang pengaruh budaya organisasi terhadap keterlibatan karyawan di sektor teknologi.
+\item Menerima beasiswa penuh dari program pascasarjana.
+\end{itemize}}
+\section{Pengalaman Kerja}
+
+\cventry{Mar 2019–Sekarang}
+        {Manajer Sumber Daya Manusia}
+        {PT Maju Bersama Sejahtera}
+        {\url{https://www.majubersama.co.id}}
+        {}
+        {\begin{itemize}
+\item Memimpin tim HR dengan 8 anggota untuk mendukung 500+ karyawan di seluruh Indonesia.
+\item Mengembangkan dan menerapkan strategi rekrutmen yang menurunkan time-to-hire sebesar 30\%.
+\item Merancang program retensi karyawan yang meningkatkan engagement score dari 72\% menjadi 85\%.
+\item Mengelola hubungan industrial, termasuk negosiasi perjanjian kerja bersama dan penanganan perselisihan.
+\item Mengimplementasikan sistem HRIS berbasis cloud untuk otomatisasi payroll, absensi, dan manajemen kinerja.
+\end{itemize}
+\textbf{Kata Kunci}: Manajemen Talenta, Hubungan Industrial, HRIS, Engagement, Kepatuhan}
+
+\cventry{Jun 2015–Feb 2019}
+        {Supervisor Sumber Daya Manusia}
+        {PT Karya Digital Nusantara}
+        {\url{https://www.karyadigital.id}}
+        {}
+        {\begin{itemize}
+\item Mengawasi proses rekrutmen end-to-end untuk posisi teknologi dan non-teknologi.
+\item Mengembangkan program onboarding yang meningkatkan retensi karyawan baru sebesar 20\%.
+\item Mengelola administrasi kompensasi dan benefit, termasuk BPJS Kesehatan dan Ketenagakerjaan.
+\item Menjadi penghubung antara manajemen dan karyawan dalam menangani keluhan dan mediasi.
+\end{itemize}
+\textbf{Kata Kunci}: Rekrutmen, Onboarding, Kompensasi, Mediasi, BPJS}
+
+\cventry{Agu 2012–Mei 2015}
+        {Staf Rekrutmen}
+        {PT Sumber Rejeki Abadi}
+        {\url{https://www.sumberrejekiabadi.com}}
+        {}
+        {\begin{itemize}
+\item Melakukan screening CV, wawancara awal, dan koordinasi dengan manajer departemen.
+\item Mengelola database kandidat dan membuat laporan rekrutmen bulanan.
+\item Mendukung program employer branding melalui job fair dan media sosial.
+\end{itemize}
+\textbf{Kata Kunci}: Screening, Wawancara, Employer Branding, Database}
+\section{Bahasa}
+
+\cvline{Indonesia}{Bahasa Ibu / Bilingual}
+\cvline{Inggris}{Tingkat Profesional Penuh \hfill \textbf{Kata Kunci}: TOEFL 110, IELTS 8.0}
+\cvline{Mandarin}{Tingkat Kerja Terbatas \hfill \textbf{Kata Kunci}: HSK 3}
+\section{Keahlian}
+
+\cvline{Manajemen Sumber Daya Manusia}{Ahli \hfill \textbf{Kata Kunci}: Rekrutmen, Manajemen Kinerja, Hubungan Karyawan, Kompensasi \& Benefit, Pelatihan \& Pengembangan}
+\cvline{HRIS \& Analitik}{Mahir \hfill \textbf{Kata Kunci}: SAP SuccessFactors, Workday, Excel Lanjutan, Power BI, Tableau}
+\cvline{Kepatuhan \& Hukum Ketenagakerjaan}{Mahir \hfill \textbf{Kata Kunci}: UU Ketenagakerjaan, BPJS, Perjanjian Kerja, Audit HR, Hubungan Industrial}
+\cvline{Kepemimpinan \& Komunikasi}{Ahli \hfill \textbf{Kata Kunci}: Negosiasi, Mediasi, Public Speaking, Coaching, Manajemen Perubahan}
+\section{Penghargaan}
+
+\cventry{Nov 2022}
+        {Asosiasi Manajemen Sumber Daya Manusia Indonesia}
+        {HR Leader of the Year}
+        {}
+        {}
+        {Diberikan kepada profesional HR yang menunjukkan kepemimpinan luar biasa dalam mengembangkan strategi SDM dan menciptakan budaya kerja positif.}
+
+\cventry{Agu 2021}
+        {HR Asia}
+        {Employer Branding Terbaik}
+        {}
+        {}
+        {Penghargaan atas keberhasilan program employer branding yang meningkatkan jumlah pelamar berkualitas dan reputasi perusahaan sebagai tempat kerja pilihan.}
+\section{Sertifikat}
+
+\cventry{Feb 2020}
+        {Lembaga Sertifikasi Profesi HR Indonesia}
+        {Certified Human Resources Professional (CHRP)}
+        {\url{https://www.chrp-indonesia.org}}
+        {}
+        {}
+
+\cventry{Jun 2018}
+        {Society for Human Resource Management}
+        {SHRM-CP}
+        {\url{https://www.shrm.org/certification}}
+        {}
+        {}
+
+\cventry{Mar 2017}
+        {Kementerian Ketenagakerjaan RI}
+        {Ahli K3 Umum}
+        {\url{https://kemnaker.go.id}}
+        {}
+        {}
+\section{Publikasi}
+
+\cventry{Mei 2022}
+        {Membangun Budaya Kerja Inklusif di Era Hybrid}
+        {Jurnal Manajemen Indonesia}
+        {\url{https://jurnalmanajemen.id/artikel/budaya-kerja-inklusif}}
+        {}
+        {\begin{itemize}
+\item Artikel ini membahas strategi menciptakan budaya kerja inklusif bagi karyawan remote dan on-site.
+\item Studi kasus pada tiga perusahaan teknologi di Jakarta menunjukkan peningkatan kolaborasi dan kepuasan kerja.
+\end{itemize}}
+\section{Referensi}
+
+\cventry{\emaillink[siti.rahmawati@ui.ac.id]{siti.rahmawati@ui.ac.id}}
+        {Dosen Psikologi Industri dan Organisasi}
+        {Dr. Siti Rahmawati}
+        {+62 811-9876-5432}
+        {}
+        {Budi Santoso adalah profesional HR yang berintegritas dan memiliki kemampuan analitis yang kuat. Ia mampu memimpin tim dan berkomunikasi efektif dengan berbagai pemangku kepentingan.}
+\section{Proyek}
+
+\cventry{Jan 2020–Des 2020}
+        {Proyek transformasi digital untuk mengotomatisasi proses HR di perusahaan.}
+        {Implementasi HRIS Terintegrasi}
+        {}
+        {}
+        {\begin{itemize}
+\item Memimpin migrasi data karyawan dari sistem manual ke platform HRIS berbasis cloud.
+\item Melatih 50+ pengguna dan menyusun SOP baru untuk payroll, absensi, dan cuti.
+\item Mencapai pengurangan waktu proses payroll dari 5 hari menjadi 2 hari.
+\end{itemize}
+\textbf{Kata Kunci}: HRIS, Digital Transformation, Change Management}
+
+\cventry{Mar 2021–Agu 2021}
+        {Inisiatif untuk meningkatkan kesejahteraan fisik dan mental karyawan.}
+        {Program Kesejahteraan Karyawan}
+        {}
+        {}
+        {\begin{itemize}
+\item Meluncurkan program konseling online, kelas kebugaran, dan tunjangan kesehatan tambahan.
+\item Mengukur dampak melalui survei kesejahteraan dan tingkat absensi.
+\item Meningkatkan skor kesejahteraan karyawan sebesar 25\% dalam enam bulan.
+\end{itemize}
+\textbf{Kata Kunci}: Employee Wellbeing, Mental Health, Benefits}
+\section{Minat}
+
+\cvline{Pengembangan Diri}{Membaca, Public Speaking, Coaching}
+\cvline{Olahraga}{Lari, Bersepeda, Bulu Tangkis}
+\section{Kegiatan Sukarela}
+
+\cventry{Jan 2019–Des 2022}
+        {Mentor Karir}
+        {Yayasan Pendidikan Anak Bangsa}
+        {\url{https://www.ypab.org}}
+        {}
+        {\begin{itemize}
+\item Membimbing siswa SMK dalam mempersiapkan diri memasuki dunia kerja.
+\item Memberikan pelatihan CV, wawancara, dan keterampilan lunak.
+\item Membantu menyelenggarakan job fair tahunan untuk 200+ siswa.
+\end{itemize}}
+    
+\end{document}

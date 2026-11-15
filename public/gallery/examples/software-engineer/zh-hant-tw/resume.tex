@@ -1,9 +1,9 @@
 \documentclass[a4paper, serif, 10pt]{moderncv}
 
 %% moderncv
-% style and color
-\moderncvstyle{banking}
+% color and style
 \moderncvcolor{black}
+\moderncvstyle{banking}
 
 % renew moderncv command to adapt for CJK colon
 \renewcommand*{\cvitem}[3][.25em]{%
@@ -40,21 +40,23 @@
 %% CTeX
 % CJK support, used to show CJK characters in the resume
 %
-% - fontset=none: disable builtin fontset but instead set the CJK font manually
 % - heading=false: disable ctex heading
 % - punct=kaiming: use kaiming punctuations styles for CJK
 % - scheme=plain: use plain scheme, do not override \normalsize font size
 % - space=auto: space settings for CJK characters
 %
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
 % ref:
 % - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
 \usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
 
-\IfFontExistsTF{Noto Serif CJK SC}{
-  \setCJKmainfont{Noto Serif CJK SC}
+\IfFontExistsTF{Noto Serif CJK TC}{
+  \setCJKmainfont{Noto Serif CJK TC}
 }{}
-\IfFontExistsTF{Noto Sans CJK SC}{
-  \setCJKsansfont{Noto Sans CJK SC}
+\IfFontExistsTF{Noto Sans CJK TC}{
+  \setCJKsansfont{Noto Sans CJK TC}
 }{}
 
 %% line spacing
@@ -63,13 +65,6 @@
 
 %% URL styling - use normal text instead of monospace
 \urlstyle{same}
-
-% Auto-underline all links
-% Defer until \begin{document} so hyperref is already loaded
-\AtBeginDocument{%
-  \let\oldhref\href
-  \renewcommand{\href}[2]{\oldhref{#1}{\underline{#2}}}%
-}
 
 %% Patch \httplink and \httpslink to handle full URLs
 % The original moderncv macros always prepend http:// or https:// to URLs.

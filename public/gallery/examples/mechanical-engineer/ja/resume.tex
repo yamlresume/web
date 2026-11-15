@@ -1,0 +1,263 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK JP}{
+  \setCJKmainfont{Noto Serif CJK JP}
+}{}
+\IfFontExistsTF{Noto Sans CJK JP}{
+  \setCJKsansfont{Noto Sans CJK JP}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{山田 太郎}{}
+\title{シニア機械設計エンジニア}
+\phone[mobile]{+81 90-1234-5678}
+\email{taro.yamada@example.com}
+\homepage{https://www.taro-yamada.com}
+
+\address{日本、東京都、渋谷区、東京都渋谷区渋谷1-2-3、150-0002}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/taro-yamada}{@taro-yamada} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/taroyamada}{@taroyamada} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/taro\_yamada}{@taro\_yamada}}
+
+\begin{document}
+
+\maketitle
+
+\section{基本情報}
+
+\cvline{}{\begin{itemize}
+\item 機械工学の学士・修士号を取得し、10年以上の機械設計経験を持つ
+\item 産業用機器から自動車まで幅広い分野で、3D CAD/CAEを活用した設計を担当
+\item 熱解析・構造解析・トポロジー最適化などのCAE技術に精通
+\item グローバルチームでのプロジェクトリード経験があり、QCD達成に貢献
+\item 特許出願2件、技術論文発表1件
+\end{itemize}}
+\section{学歴}
+
+\cventry{2008年4月～2012年3月}
+        {学士、機械工学、成績：3.8}
+        {東京大学}
+        {\url{https://www.u-tokyo.ac.jp/}}
+        {}
+        {\begin{itemize}
+\item 機械工学の基礎を幅広く学び、特に設計・製造分野に興味を持つ
+\item 卒業研究ではロボットアームの設計と制御をテーマに取り組む
+\end{itemize}
+\textbf{コース}：材料力学、熱力学、流体力学、機械設計、制御工学、生産加工学}
+
+\cventry{2012年4月～2014年3月}
+        {修士、機械工学、成績：3.9}
+        {東京大学大学院}
+        {\url{https://www.u-tokyo.ac.jp/}}
+        {}
+        {\begin{itemize}
+\item 修士課程では計算力学を用いた構造最適化の研究に従事
+\item 国際学会で研究成果を発表
+\end{itemize}
+\textbf{コース}：先端機械設計、計算力学、ロボティクス}
+\section{職歴}
+
+\cventry{2014年4月～2019年3月}
+        {機械設計エンジニア}
+        {株式会社日立製作所}
+        {\url{https://www.hitachi.co.jp/}}
+        {}
+        {\begin{itemize}
+\item 産業用機器の機械設計を担当し、3D CAD (SolidWorks) を用いた部品設計から装配図まで作成
+\item 熱解析・構造解析 (ANSYS) を実施し、設計の妥当性を検証
+\item 生産部門と連携し、設計から製造までのプロセス改善に貢献
+\item 若手エンジニアの指導を担当
+\end{itemize}
+\textbf{キーワード}：機械設計、SolidWorks、ANSYS、熱解析、構造解析}
+
+\cventry{2019年4月～現在}
+        {シニア機械設計エンジニア}
+        {トヨタ自動車株式会社}
+        {\url{https://www.toyota.co.jp/}}
+        {}
+        {\begin{itemize}
+\item 次世代パワートレインの機械設計をリードし、軽量化と高効率化を実現
+\item グローバルチームと協働し、設計仕様の標準化を推進
+\item プロジェクトマネージャーとして、QCDを達成
+\item 特許出願2件
+\end{itemize}
+\textbf{キーワード}：パワートレイン、軽量化、プロジェクト管理、CATIA、特許}
+\section{言語}
+
+\cvline{日本語}{ネイティブ・母国語レベル}
+\cvline{英語}{完全な実務レベル \hfill \textbf{キーワード}：TOEIC 900、技術文書読解}
+\section{スキル}
+
+\cvline{機械設計}{エキスパート \hfill \textbf{キーワード}：SolidWorks、CATIA、AutoCAD、公差解析}
+\cvline{CAE}{上級 \hfill \textbf{キーワード}：ANSYS、Abaqus、熱解析、構造解析}
+\cvline{プロジェクト管理}{上級 \hfill \textbf{キーワード}：PMBOK、アジャイル、リスク管理}
+\cvline{プログラミング}{中級 \hfill \textbf{キーワード}：Python、MATLAB、VBA}
+\section{受賞・表彰}
+
+\cventry{2018年12月}
+        {株式会社日立製作所}
+        {優秀設計賞}
+        {}
+        {}
+        {\begin{itemize}
+\item 産業用機器の設計において、コスト削減と性能向上を両立させた功績により表彰
+\end{itemize}}
+
+\cventry{2022年3月}
+        {トヨタ自動車株式会社}
+        {技術開発賞}
+        {}
+        {}
+        {\begin{itemize}
+\item 次世代パワートレインの設計開発における革新的な貢献に対して授与
+\end{itemize}}
+\section{資格・免状}
+
+\cventry{2016年11月}
+        {日本機械設計工業会}
+        {機械設計技術者1級}
+        {\url{https://www.jsmdi.or.jp/}}
+        {}
+        {}
+
+\cventry{2020年1月}
+        {IIBC}
+        {TOEIC 900}
+        {\url{https://www.iibc-global.org/}}
+        {}
+        {}
+\section{出版・著作}
+
+\cventry{2016年9月}
+        {計算力学を用いた機械構造物の最適設計に関する研究}
+        {日本機械学会論文集}
+        {\url{https://www.jsme.or.jp/}}
+        {}
+        {\begin{itemize}
+\item 計算力学的手法を用いて機械構造物の最適設計手法を提案
+\item 従来手法と比較して設計時間を30\%短縮
+\end{itemize}}
+\section{プロジェクト}
+
+\cventry{2013年4月～2014年3月}
+        {修士研究プロジェクト}
+        {ロボットアームの設計と制御}
+        {\url{https://www.example.com/robot-arm}}
+        {}
+        {\begin{itemize}
+\item 6自由度ロボットアームの機械設計から制御系実装まで担当
+\item 3D CADとMATLAB/Simulinkを用いて設計・シミュレーションを実施
+\item 試作機を製作し、位置決め精度を検証
+\end{itemize}
+\textbf{キーワード}：ロボット、制御、MATLAB、3D CAD}
+
+\cventry{2020年4月～2023年3月}
+        {トヨタ自動車における社内プロジェクト}
+        {次世代パワートレイン軽量化プロジェクト}
+        {\url{https://www.toyota.co.jp/}}
+        {}
+        {\begin{itemize}
+\item 次世代パワートレインの軽量化を目的とした設計プロジェクトをリード
+\item 新材料の適用とトポロジー最適化により、重量を15\%削減
+\item 部門間連携を強化し、開発期間を20\%短縮
+\end{itemize}
+\textbf{キーワード}：軽量化、トポロジー最適化、新材料、プロジェクトリード}
+\section{興味・関心}
+
+\cvline{趣味}{登山、写真撮影、3Dプリンティング、読書}
+\section{ボランティア活動}
+
+\cventry{2018年4月～2022年3月}
+        {委員}
+        {日本機械学会 若手技術者育成委員会}
+        {\url{https://www.jsme.or.jp/}}
+        {}
+        {\begin{itemize}
+\item 若手技術者向けの設計コンテストやワークショップを企画・運営
+\item 学生や若手エンジニアへの技術指導を実施
+\end{itemize}}
+    
+\end{document}

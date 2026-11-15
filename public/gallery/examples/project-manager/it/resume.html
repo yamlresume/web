@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Marco Bianchi Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Marco Bianchi</h1>
+    <p class="resume-headline">Project Manager Senior | Trasformazione digitale e metodologie agili</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:marco.bianchi@example.it" class="resume-contact-link">marco.bianchi@example.it</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+39 347 123 4567</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.marcobianchi-pm.it" class="resume-contact-link">https://www.marcobianchi-pm.it</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Via Torino 45, Milano, Lombardia, Italia, 20123</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/marcobianchi-pm" class="resume-contact-link">@marcobianchi-pm</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Twitter</span>: <a href="https://twitter.com/marcobianchi_pm" class="resume-contact-link">@marcobianchi_pm</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Medium</span>: <a href="https://medium.com/@marcobianchi" class="resume-contact-link">@marcobianchi</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Informazioni personali</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>Project manager con oltre 8 anni di esperienza nella conduzione di progetti digitali e di trasformazione organizzativa in contesti complessi.</p>
+          </li>
+          <li>
+            <p>Specializzato in metodologie ibride (Agile, Scrum, Waterfall) e nella gestione del ciclo di vita del progetto, dall&#39;analisi dei requisiti al rilascio.</p>
+          </li>
+          <li>
+            <p>Capacità comprovata di coordinare team cross-funzionali, gestire stakeholder e garantire il rispetto di tempi, budget e qualità.</p>
+          </li>
+          <li>
+            <p>Orientato ai risultati, con forte attenzione alla comunicazione, alla gestione del rischio e al miglioramento continuo.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Formazione</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.polimi.it">Politecnico di Milano</a></div>
+            <div class="resume-entry-organization">Laurea magistrale, Ingegneria Gestionale, Punteggio: 110/110 e lode</div>
+          </div>
+          <div class="resume-entry-date">set 2013–lug 2015</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Formazione avanzata nella pianificazione, esecuzione e controllo di progetti complessi.</p>
+            </li>
+            <li>
+              <p>Approfondimento di metodologie quantitative per il supporto alle decisioni e la gestione delle risorse.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Gestione dei progetti, Economia e organizzazione aziendale, Analisi dei sistemi complessi, Gestione dell&#39;innovazione, Gestione operativa</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.unibo.it">Università degli Studi di Bologna</a></div>
+            <div class="resume-entry-organization">Laurea triennale, Economia Aziendale, Punteggio: 108/110</div>
+          </div>
+          <div class="resume-entry-date">set 2010–lug 2013</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Solida base economica e aziendale per la comprensione dei processi organizzativi.</p>
+            </li>
+            <li>
+              <p>Sviluppo di competenze analitiche e di rendicontazione.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Corsi</span>: Economia aziendale, Ragioneria generale, Statistica, Diritto privato</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Esperienza professionale</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.fintechsolutionsitalia.it">Fintech Solutions Italia</a></div>
+            <div class="resume-entry-organization">Senior Project Manager</div>
+          </div>
+          <div class="resume-entry-date">mar 2022–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Responsabile del portafoglio di progetti digitali per il lancio di nuovi prodotti di pagamento.</p>
+            </li>
+            <li>
+              <p>Coordinamento di team cross-funzionali composti da responsabili di prodotto, sviluppatori, designer e compliance.</p>
+            </li>
+            <li>
+              <p>Definizione di piani di rilascio, budget e piani di mitigazione dei rischi, con rendicontazione periodica al comitato esecutivo.</p>
+            </li>
+            <li>
+              <p>Introduzione di pratiche agili e metriche di produttività, con riduzione del 25% del tempo di immissione sul mercato.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Gestione del portafoglio, Metodologie agili, Trasformazione digitale, Gestione del rischio</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.digitalretailgroup.it">Digital Retail Group</a></div>
+            <div class="resume-entry-organization">Project Manager</div>
+          </div>
+          <div class="resume-entry-date">gen 2019–feb 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Gestione di progetti e-commerce e CRM per marchi del gruppo, con team distribuiti in Italia e all&#39;estero.</p>
+            </li>
+            <li>
+              <p>Pianificazione delle attività, allocazione delle risorse e monitoraggio dei KPI di progetto.</p>
+            </li>
+            <li>
+              <p>Facilitazione di laboratori con stakeholder interni ed esterni per la definizione dei requisiti.</p>
+            </li>
+            <li>
+              <p>Implementazione di un modello di governance basato su Scrum e Kanban.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: E-commerce, CRM, Scrum, Kanban, Governance</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.consulenzainnovazione.it">Consulenza Innovazione S.p.A.</a></div>
+            <div class="resume-entry-organization">Junior Project Manager</div>
+          </div>
+          <div class="resume-entry-date">set 2015–dic 2018</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Supporto alla direzione progetti per clienti nei settori manifatturiero e servizi.</p>
+            </li>
+            <li>
+              <p>Redazione di piani di progetto, analisi dei requisiti e documentazione di avanzamento.</p>
+            </li>
+            <li>
+              <p>Monitoraggio di tempi, costi e qualità, con aggiornamento del registro dei rischi.</p>
+            </li>
+            <li>
+              <p>Partecipazione a gare e presentazioni commerciali per nuovi incarichi.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Pianificazione, Registro dei rischi, Documentazione, Rendicontazione</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Lingue</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Italiano<span class="resume-language-fluency">: Madrelingua o bilingue</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: Madrelingua</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Inglese<span class="resume-language-fluency">: Competenza professionale completa</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: IELTS 7.5, Business English</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Spagnolo<span class="resume-language-fluency">: Competenza professionale limitata</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Parole chiave</span>: DELE B1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Competenze</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Gestione del progetto<span class="resume-skill-level">: Esperto</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Agile, Scrum, Kanban, Waterfall, PRINCE2</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Pianificazione e controllo<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Microsoft Project, Jira, Asana, Trello, Smartsheet</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Analisi dei dati<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Excel avanzato, Power BI, SQL, Tableau</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Comunicazione e leadership<span class="resume-skill-level">: Esperto</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Negoziazione, Facilitazione, Mentoraggio, Presentazioni efficaci</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Gestione del rischio<span class="resume-skill-level">: Avanzato</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Parole chiave</span>: Registro dei rischi, Mitigazione, Audit, Conformità</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Premi</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Premio Eccellenza PMI 2023</div>
+            <div class="resume-entry-organization">Associazione Italiana Project Management</div>
+          </div>
+          <div class="resume-entry-date">nov 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Riconoscimento per la gestione esemplare di un programma di trasformazione digitale con impatto misurabile su efficienza e soddisfazione del cliente.</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Miglior leader di team agile</div>
+            <div class="resume-entry-organization">Digital Retail Group</div>
+          </div>
+          <div class="resume-entry-date">giu 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Premio interno per la capacità di guidare team distribuiti e raggiungere gli obiettivi di progetto con elevati standard di qualità.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.pmi.org/certifications/project-management-pmp">Project Management Professional (PMP)</a></div>
+            <div class="resume-entry-organization">Project Management Institute</div>
+          </div>
+          <div class="resume-entry-date">mag 2021</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.scrumalliance.org/get-certified/scrum-master-track/certified-scrummaster">Certified ScrumMaster (CSM)</a></div>
+            <div class="resume-entry-organization">Scrum Alliance</div>
+          </div>
+          <div class="resume-entry-date">ott 2019</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-4-foundation">ITIL 4 Foundation</a></div>
+            <div class="resume-entry-organization">PeopleCert</div>
+          </div>
+          <div class="resume-entry-date">feb 2020</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Pubblicazioni</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.rivistaitalianapm.it/articoli/modello-ibrido">Gestione agile dei progetti complessi: un modello ibrido</a></div>
+            <div class="resume-entry-organization">Rivista Italiana di Project Management</div>
+          </div>
+          <div class="resume-entry-date">set 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Articolo dedicato all&#39;integrazione tra framework agili e approcci tradizionali.</p>
+            </li>
+            <li>
+              <p>Analisi di casi studio in ambito finanziario e retail.</p>
+            </li>
+            <li>
+              <p>Proposta di un modello di governance per programmi multi-progetto.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Progetti</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.fintechsolutionsitalia.it/progetti/onboarding-digitale">Piattaforma di onboarding digitale</a></div>
+            <div class="resume-entry-description">Progetto di digitalizzazione del processo di onboarding clienti per ridurre i tempi di attivazione e migliorare l&#39;esperienza utente.</div>
+          </div>
+          <div class="resume-entry-date">apr 2022–mag 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Coordinamento di un team di 12 persone tra prodotto, sviluppo, design e compliance.</p>
+            </li>
+            <li>
+              <p>Definizione di requisiti funzionali e flussi utente in collaborazione con il business.</p>
+            </li>
+            <li>
+              <p>Rilascio della piattaforma con riduzione del 40% dei tempi di onboarding.</p>
+            </li>
+            <li>
+              <p>Gestione del budget di 600.000 euro e rendicontazione mensile agli stakeholder.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: Onboarding digitale, UX, Conformità, Gestione del budget</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.digitalretailgroup.it/progetti/trasformazione-erp">Programma di trasformazione ERP</a></div>
+            <div class="resume-entry-description">Programma pluriennale di migrazione dei sistemi ERP e integrazione dei processi amministrativi, della catena di fornitura e delle vendite.</div>
+          </div>
+          <div class="resume-entry-date">mar 2019–dic 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Pianificazione e coordinamento di 5 flussi di lavoro con team interni e fornitori esterni.</p>
+            </li>
+            <li>
+              <p>Gestione del cambiamento organizzativo e formazione di oltre 200 utenti.</p>
+            </li>
+            <li>
+              <p>Raggiungimento degli obiettivi di avvio operativo entro tempi e budget previsti.</p>
+            </li>
+            <li>
+              <p>Implementazione di un cruscotto di monitoraggio dei KPI dopo l&#39;avvio.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Parole chiave</span>: ERP, Gestione del cambiamento, Formazione, KPI</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interessi</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Sport</span>: Corsa, Ciclismo, Nuoto</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Lettura</span>: Saggistica, Romanzi storici</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Volontariato</span>: Mentoraggio, Formazione</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Volontariato</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.aipm.it">Associazione Italiana Project Management</a></div>
+            <div class="resume-entry-organization">Mentore volontario</div>
+          </div>
+          <div class="resume-entry-date">gen 2021–Presente</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Attività di mentore per giovani professionisti e studenti che si avvicinano alla gestione dei progetti.</p>
+            </li>
+            <li>
+              <p>Organizzazione di laboratori su metodologie agili e pianificazione.</p>
+            </li>
+            <li>
+              <p>Contributo alla comunità con articoli e incontri tematici.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="volunteer-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.fondazioneformazionelavoro.it">Fondazione Formazione e Lavoro</a></div>
+            <div class="resume-entry-organization">Formatore volontario</div>
+          </div>
+          <div class="resume-entry-date">set 2018–dic 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Docenza in corsi base di gestione del progetto per persone in cerca di occupazione.</p>
+            </li>
+            <li>
+              <p>Preparazione di materiali didattici e simulazioni pratiche.</p>
+            </li>
+            <li>
+              <p>Tutoraggio individuale per l&#39;inserimento lavorativo.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

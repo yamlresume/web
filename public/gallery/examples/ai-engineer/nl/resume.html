@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Sanne de Vries Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Sanne de Vries</h1>
+    <p class="resume-headline">AI-engineer | Machine Learning &amp; MLOps</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:sanne@sannedevries.nl" class="resume-contact-link">sanne@sannedevries.nl</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+31 6 1234 5678</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.sannedevries.nl" class="resume-contact-link">https://www.sannedevries.nl</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Keizersgracht 123, Amsterdam, Noord-Holland, Nederland, 1015 CJ</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/sannedevries-ai" class="resume-contact-link">@sannedevries-ai</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/sannedevries" class="resume-contact-link">@sannedevries</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Stack Overflow</span>: <a href="https://stackoverflow.com/users/18422031/sanne-de-vries" class="resume-contact-link">@sanne-de-vries</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Basis Informatie</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <p>AI-engineer met 6+ jaar ervaring in het ontwerpen, bouwen en opschalen van machine learning-oplossingen van prototype tot productie. Sterk in het vertalen van businessvragen naar meetbare modellen en het neerzetten van betrouwbare MLOps-pipelines.</p>
+        <ul>
+          <li>
+            <p>Ervaren in Python, PyTorch, TensorFlow en cloudplatformen (AWS, Azure, GCP)</p>
+          </li>
+          <li>
+            <p>Combineert kennis van natuurlijke taalverwerking en computer vision met pragmatische software-engineering</p>
+          </li>
+          <li>
+            <p>Gedreven teamspeler die graag kennis deelt en multidisciplinaire teams meeneemt in verantwoorde AI</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Opleidingen</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.tudelft.nl">Technische Universiteit Delft</a></div>
+            <div class="resume-entry-organization">Master, Computerwetenschappen - Kunstmatige Intelligentie, Score: 8.2/10</div>
+          </div>
+          <div class="resume-entry-date">sep 2017–jul 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Gespecialiseerd in machine learning, natuurlijke taalverwerking en uitlegbaarheid van modellen</p>
+            </li>
+            <li>
+              <p>Afstudeerproject over transparante deep learning-modellen voor klinische besluitvorming, beoordeeld met een 9,0</p>
+            </li>
+            <li>
+              <p>Praktijkervaring opgedaan via onderzoekssamenwerkingen met twee industriële partners</p>
+            </li>
+            <li>
+              <p>Vakken op het snijvlak van algoritmiek, statistiek en verantwoorde AI</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cursussen</span>: Machine Learning, Deep Learning, Natuurlijke taalverwerking, Computer Vision, Reinforcement Learning, MLOps en Cloud Computing, Ethiek van AI, Data Engineering</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.uu.nl">Universiteit Utrecht</a></div>
+            <div class="resume-entry-organization">Bachelor, Informatiekunde, Score: 7.8/10</div>
+          </div>
+          <div class="resume-entry-date">sep 2014–jun 2017</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Brede basis in informatiesystemen, data-analyse en softwareontwikkeling</p>
+            </li>
+            <li>
+              <p>Minor gevolgd in toegepaste statistiek en datawetenschap</p>
+            </li>
+            <li>
+              <p>Scriptie over predictive analytics voor openbare voorzieningen, afgerond met een 8,5</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cursussen</span>: Programmeren in Python, Databases en SQL, Statistiek en Kansrekening, Algoritmen en Datastructuren, Informatiesystemen, Inleiding Machine Learning</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Werkervaring</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.aidenanalytics.nl">Aiden Analytics</a></div>
+            <div class="resume-entry-organization">Senior AI-engineer</div>
+          </div>
+          <div class="resume-entry-date">mrt 2022–Heden</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Leidt een team van vier engineers dat generatieve AI-toepassingen bouwt voor klanten in de financiële sector en de zorg</p>
+            </li>
+            <li>
+              <p>Ontwierp een retrieval-augmented generatiearchitectuur die de responstijd met 45% verlaagde en de feitelijke nauwkeurigheid meetbaar verbeterde</p>
+            </li>
+            <li>
+              <p>Zette een MLOps-platform op met CI/CD, modelregistratie, monitoring en drift-detectie, waardoor releases van weken naar dagen gingen</p>
+            </li>
+            <li>
+              <p>Stelde interne richtlijnen op voor verantwoorde AI, inclusief bias-testen, modelkaarten en menselijke controle bij hoog-risico beslissingen</p>
+            </li>
+            <li>
+              <p>Coacht junior engineers en verzorgt kennissessies over LLM-evaluatie en prompt-engineering</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: MLOps, Generatieve AI, LLM-evaluatie, Kubernetes, Verantwoorde AI</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.mediqdata.nl">MediQ Data</a></div>
+            <div class="resume-entry-organization">Machine Learning Engineer</div>
+          </div>
+          <div class="resume-entry-date">sep 2019–feb 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ontwikkelde en productiseerde voorspelmodellen voor patiëntstromen, met een reductie van 18% in gemiste afspraken</p>
+            </li>
+            <li>
+              <p>Bouwde NLP-pipelines voor het anonimiseren en structureren van vrije tekst uit elektronische patiëntendossiers</p>
+            </li>
+            <li>
+              <p>Automatiseerde het trainingsproces met PyTorch en Airflow, inclusief reproduceerbare experimenten en versiebeheer van datasets</p>
+            </li>
+            <li>
+              <p>Werkte samen met data-ethici en juristen om te voldoen aan de AVG en medische richtlijnen</p>
+            </li>
+            <li>
+              <p>Presenteerde resultaten aan niet-technische stakeholders en vertaalde die naar concrete productkeuzes</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: PyTorch, NLP, Airflow, AVG, Voorspelmodellen</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.blauwdrukdigital.nl">Blauwdruk Digital</a></div>
+            <div class="resume-entry-organization">Data Scientist</div>
+          </div>
+          <div class="resume-entry-date">aug 2018–aug 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Analyseerde klantgedrag voor e-commerceklanten en bouwde aanbevelingsmodellen die de conversie met 12% verhoogden</p>
+            </li>
+            <li>
+              <p>Ontwikkelde herbruikbare feature-engineering-bibliotheek in Python die door drie teams werd gebruikt</p>
+            </li>
+            <li>
+              <p>Realiseerde dashboards en rapportages in samenwerking met marketing- en productteams</p>
+            </li>
+            <li>
+              <p>Verkende en vergeleek modellen met A/B-testen en statistische validatie</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Python, Aanbevelingssystemen, A/B-testen, SQL, Feature Engineering</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Talen</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Nederlands<span class="resume-language-fluency">: Moedertaal of tweetalige vaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: Moedertaal</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Engels<span class="resume-language-fluency">: Volledige professionele vaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: Dagelijks gebruikt op het werk, Technische documentatie</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Duits<span class="resume-language-fluency">: Beperkte werkvaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: Basale gesprekken</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Vaardigheden</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Machine Learning<span class="resume-skill-level">: Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: PyTorch, TensorFlow, Scikit-learn, XGBoost, Hugging Face</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">MLOps en Infrastructuur<span class="resume-skill-level">: Geavanceerd</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Docker, Kubernetes, MLflow, Airflow, Terraform</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Data Engineering<span class="resume-skill-level">: Geavanceerd</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Python, SQL, Spark, dbt, Kafka</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Cloud<span class="resume-skill-level">: Geavanceerd</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: AWS SageMaker, Azure ML, Google Vertex AI</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">AI-ethiek en Governance<span class="resume-skill-level">: Intermediair</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Modelkaarten, Bias-detectie, Uitlegbaarheid, AVG</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Onderscheidingen</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Beste AI-project van het jaar</div>
+            <div class="resume-entry-organization">Dutch Data Science Awards</div>
+          </div>
+          <div class="resume-entry-date">nov 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Toegekend voor een retrieval-augmented generatieoplossing die klantmedewerkers ondersteunt bij complexe vragen, met aantoonbaar hogere nauwkeurigheid en kortere afhandeltijd.</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Cum laude afstudeerproject</div>
+            <div class="resume-entry-organization">Technische Universiteit Delft</div>
+          </div>
+          <div class="resume-entry-date">jul 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Scriptie over uitlegbaarheid van deep learning in de zorg beoordeeld met een 9,0 en genomineerd voor de facultaire scriptieprijs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificaten</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://aws.amazon.com/certification/">AWS Certified Machine Learning - Specialty</a></div>
+            <div class="resume-entry-organization">Amazon Web Services</div>
+          </div>
+          <div class="resume-entry-date">apr 2023</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://cloud.google.com/learn/certification">Professional Machine Learning Engineer</a></div>
+            <div class="resume-entry-organization">Google Cloud</div>
+          </div>
+          <div class="resume-entry-date">jun 2022</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.coursera.org/specializations/deep-learning">Deep Learning Specialization</a></div>
+            <div class="resume-entry-organization">DeepLearning.AI</div>
+          </div>
+          <div class="resume-entry-date">feb 2021</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Publicaties</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.sciencedirect.com/journal/journal-of-biomedical-informatics">Uitlegbare voorspelmodellen voor klinische besluitvorming: een praktijkstudie</a></div>
+            <div class="resume-entry-organization">Journal of Biomedical Informatics</div>
+          </div>
+          <div class="resume-entry-date">mrt 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Onderzoekt hoe attention-visualisaties en counterfactual explanations clinici ondersteunen bij het interpreteren van modeluitkomsten</p>
+            </li>
+            <li>
+              <p>Beschrijft een evaluatie met 42 clinici in twee ziekenhuizen</p>
+            </li>
+            <li>
+              <p>Geeft praktische richtlijnen voor het documenteren en valideren van klinische modellen</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="references" data-section="references">
+    <h2 class="resume-section-title">Referenties</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="references-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="mailto:m.vandenberg@tudelft.nl">Dr. Marijke van den Berg</a></div>
+            <div class="resume-entry-organization">Hoogleraar Kunstmatige Intelligentie</div>
+          </div>
+          <div>+31 15 278 1234</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Sanne combineert sterke technische vaardigheden met een scherp oog voor de maatschappelijke impact van AI. Ze is zelfstandig, communiceert helder met niet-technische stakeholders en tilt teams naar een hoger niveau.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Projecten</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/sannedevries/vraagbaak">Vraagbaak</a></div>
+            <div class="resume-entry-description">Open-source assistent die interne documentatie doorzoekbaar maakt met retrieval-augmented generatie</div>
+          </div>
+          <div class="resume-entry-date">jan 2023–Heden</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Combineert een vector-database met een taalmodel voor betrouwbare antwoorden met bronverwijzingen</p>
+            </li>
+            <li>
+              <p>Inclusief evaluatieharness voor hallucinatiedetectie en antwoordkwaliteit</p>
+            </li>
+            <li>
+              <p>Wordt door drie organisaties in productie gebruikt</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: RAG, Vector Database, LLM, Open Source</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/sannedevries/beeldscan">Beeldscan</a></div>
+            <div class="resume-entry-description">Computer vision-pipeline voor het automatisch classificeren van inspectiefoto&#39;s in de maakindustrie</div>
+          </div>
+          <div class="resume-entry-date">mei 2021–dec 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Transfer learning met een CNN backbone, getraind op een gelabelde dataset van 120.000 afbeeldingen</p>
+            </li>
+            <li>
+              <p>Bereikte een gemiddelde precisie van 96% bij vier schadecategorieën</p>
+            </li>
+            <li>
+              <p>Geïmplementeerd als containerized inference-service met monitoring op datadrift</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Computer Vision, Transfer Learning, Docker</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interesses</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Sport</span>: Hardlopen, Wielrennen, Zwemmen</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Muziek</span>: Piano, Jazz</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Overig</span>: Schaken, Open Source, Filosofie van AI</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Vrijwilligerswerk</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.aivooriedereen.nl">Stichting AI voor Iedereen</a></div>
+            <div class="resume-entry-organization">Mentor datawetenschap</div>
+          </div>
+          <div class="resume-entry-date">sep 2020–Heden</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Begeleidt jaarlijks vier carrièreswitchers bij hun eerste stappen in machine learning</p>
+            </li>
+            <li>
+              <p>Verzorgt gastlessen over AI-geletterdheid op middelbare scholen</p>
+            </li>
+            <li>
+              <p>Organiseert maandelijkse bijeenkomsten voor de open-source community</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="volunteer-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nlaic.nl">NL AI Coalitie</a></div>
+            <div class="resume-entry-organization">Vrijwilliger werkgroep Ethiek</div>
+          </div>
+          <div class="resume-entry-date">feb 2022–Heden</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Draagt bij aan publieke richtlijnen voor transparante en uitlegbare AI-toepassingen</p>
+            </li>
+            <li>
+              <p>Reviewt praktijkcases van organisaties die hun AI-systemen willen documenteren</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

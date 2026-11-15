@@ -1,0 +1,232 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Johannes Fischer}{}
+\title{Maschinenbauingenieur – Leichtbau, Simulation und Fahrzeugtechnik}
+\phone[mobile]{+49 30 4876 2190}
+\email{johannes.fischer@fischer-engineering.de}
+\homepage{https://www.johannes-fischer-engineering.de}
+
+\address{Friedrichstraße 112, Berlin, Berlin, Germany, 10117}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/johannes-fischer-engineering}{@johannes-fischer-engineering} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/jfischer-engineering}{@jfischer-engineering}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{Maschinenbauingenieur mit über sieben Jahren Erfahrung in der Entwicklung, Simulation und Industrialisierung komplexer mechanischer Systeme. Schwerpunkte: Leichtbau, Fahrzeugtechnik, Hydraulik und fertigungsgerechte Konstruktion.
+%
+\begin{itemize}
+\item Sicher im Umgang mit CATIA V5, Siemens NX, ANSYS und MATLAB/Simulink
+\item Erfahrung in der Leitung interdisziplinärer Projekte von der Konzeptphase bis zur Serienreife
+\item Strukturierte, lösungsorientierte Arbeitsweise mit starkem Qualitäts- und Kostenbewusstsein
+\end{itemize}}
+\section{Education}
+
+\cventry{Oct 2014–Sep 2017}
+        {Master, Maschinenbau – Produktionstechnik, Score: 1,3}
+        {Technische Universität Berlin}
+        {\url{https://www.tu.berlin}}
+        {}
+        {\begin{itemize}
+\item Vertiefung in Produktionstechnik, Leichtbau und Finite-Elemente-Methoden
+\item Masterarbeit zur Topologieoptimierung von Tragstrukturen mit ANSYS
+\item Praktische Erfahrung in Laborprojekten zu Werkstoffprüfung und Fertigungsverfahren
+\end{itemize}
+\textbf{Courses}: Technische Mechanik, Thermodynamik, Strömungsmechanik, Konstruktionslehre, Fertigungsverfahren, Regelungstechnik, Finite-Elemente-Methoden, Werkstoffkunde}
+
+\cventry{Oct 2011–Sep 2014}
+        {Bachelor, Maschinenbau, Score: 1,7}
+        {Hochschule München}
+        {\url{https://www.hm.edu}}
+        {}
+        {\begin{itemize}
+\item Grundlagen in Technischer Mechanik, Thermodynamik und Konstruktionslehre
+\item Bachelorarbeit zur Auslegung einer Getriebekomponente
+\item Mitglied der Hochschulgruppe Fahrzeugtechnik
+\end{itemize}
+\textbf{Courses}: Technische Mechanik, Thermodynamik, Konstruktionslehre, Fertigungsverfahren, Werkstoffkunde, Elektrotechnik}
+\section{Work}
+
+\cventry{Apr 2021–Present}
+        {Senior Entwicklungsingenieur – Fahrzeugtechnik}
+        {Nordbahn Mobility GmbH}
+        {\url{https://www.nordbahn-mobility.de}}
+        {}
+        {\begin{itemize}
+\item Technische Leitung von Entwicklungsprojekten für Fahrwerks- und Karosseriestrukturen im Schienenfahrzeugbau
+\item Konstruktion und Auslegung leichter Tragstrukturen unter Berücksichtigung von Normen (EN 12663, EN 15085)
+\item Durchführung von FEM-Berechnungen und Validierung der Ergebnisse durch Tests und Messkampagnen
+\item Steuerung externer Zulieferer und Abstimmung mit Fertigung, Einkauf und Qualitätssicherung
+\item Mentoring von Nachwuchsingenieuren und Aufbau eines internen CAD-Standards
+\end{itemize}
+\textbf{Keywords}: Leichtbau, Fahrzeugtechnik, CATIA V5, FEM, EN 12663, Serienentwicklung}
+
+\cventry{Oct 2017–Mar 2021}
+        {Entwicklungsingenieur – Hydrauliksysteme}
+        {RheinHydraulik Systems AG}
+        {\url{https://www.rheinhydraulik.de}}
+        {}
+        {\begin{itemize}
+\item Entwicklung und Optimierung hydraulischer Komponenten und Systeme für mobile Arbeitsmaschinen
+\item Erstellung von 3D-Modellen, Fertigungszeichnungen und Stücklisten mit SolidWorks und PDM
+\item Durchführung von Toleranzanalysen, Festigkeitsberechnungen und Design-FMEA
+\item Begleitung von Prototypenbau, Prüfstandsversuchen und Serienanlauf
+\item Identifikation von Kosteneinsparungen durch konstruktive Optimierungen und Werkstoffauswahl
+\end{itemize}
+\textbf{Keywords}: Hydraulik, SolidWorks, PDM, Design-FMEA, Serienanlauf, Kostenoptimierung}
+\section{Languages}
+
+\cvline{German}{Native or Bilingual Proficiency \hfill \textbf{Keywords}: Muttersprache}
+\cvline{English}{Full Professional Proficiency \hfill \textbf{Keywords}: TOEFL iBT 108, Technisches Englisch}
+\cvline{Spanish}{Limited Working Proficiency \hfill \textbf{Keywords}: Grundkenntnisse, Reiseerfahrung}
+\section{Skills}
+
+\cvline{CAD-Konstruktion}{Expert \hfill \textbf{Keywords}: CATIA V5, Siemens NX, SolidWorks, AutoCAD, PDM/PLM}
+\cvline{Berechnung \& Simulation}{Advanced \hfill \textbf{Keywords}: FEM, ANSYS, Abaqus, CFD, MATLAB/Simulink}
+\cvline{Fertigung \& Produktion}{Advanced \hfill \textbf{Keywords}: Drehen, Fräsen, Schweißen, Lean Production, Qualitätssicherung}
+\cvline{Projektmanagement}{Intermediate \hfill \textbf{Keywords}: Agile Methoden, Meilensteinplanung, Kostenkontrolle, Stakeholder}
+\cvline{Programmierung \& Datenanalyse}{Intermediate \hfill \textbf{Keywords}: Python, VBA, SQL, Datenvisualisierung}
+\section{Awards}
+
+\cventry{Mar 2018}
+        {VDI – Verein Deutscher Ingenieure}
+        {VDI Förderpreis für hervorragende Abschlussarbeiten}
+        {}
+        {}
+        {Auszeichnung für die Masterarbeit zur Topologieoptimierung von Leichtbaustrukturen im Schienenfahrzeugbau.}
+
+\cventry{Nov 2017}
+        {Technische Universität Berlin}
+        {Preis für die beste Masterarbeit}
+        {}
+        {}
+        {Auszeichnung des Fachgebiets Konstruktion und Produktionstechnik für herausragende wissenschaftliche Arbeit.}
+\section{Certificates}
+
+\cventry{Jun 2019}
+        {Dassault Systèmes}
+        {Certified SolidWorks Professional (CSWP)}
+        {\url{https://www.solidworks.com/certification}}
+        {}
+        {}
+
+\cventry{Sep 2020}
+        {TÜV Rheinland}
+        {Six Sigma Green Belt}
+        {\url{https://www.tuv.com}}
+        {}
+        {}
+
+\cventry{May 2022}
+        {IPMA}
+        {IPMA Level D – Projektmanagement}
+        {\url{https://www.ipma.world}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Oct 2020}
+        {Leichtbauoptimierung von Schienenfahrzeugstrukturen mittels parametrischer FEM}
+        {VDI-Verlag}
+        {\url{https://www.vdi.de/verlag}}
+        {}
+        {\begin{itemize}
+\item Untersuchung parametrischer FEM-Modelle zur Gewichtsreduktion von Schienenfahrzeugstrukturen
+\item Vergleich von Aluminium- und Faserverbundwerkstoffen hinsichtlich Steifigkeit, Kosten und Fertigbarkeit
+\item Handlungsempfehlungen für die frühe Entwicklungsphase im Schienenfahrzeugbau
+\end{itemize}}
+\section{Projects}
+
+\cventry{Jan 2022–Nov 2023}
+        {Entwicklung eines hybriden Tragrahmens aus Aluminium und Faserverbundwerkstoffen zur Reduktion des Fahrzeuggewichts bei gleichbleibender Steifigkeit.}
+        {Hybrid-Leichtbau-Tragrahmen für Schienenfahrzeuge}
+        {\url{https://www.nordbahn-mobility.de/projekte/leichtbau-tragrahmen}}
+        {}
+        {\begin{itemize}
+\item Konzeptentwicklung und Variantenbewertung in enger Abstimmung mit Fahrzeugarchitektur und Fertigung
+\item Parametrische FEM-Modelle zur Auslegung und Optimierung der Wandstärken und Fügepunkte
+\item Planung und Begleitung von Prüfstandsversuchen zur Validierung der Auslegung
+\item Dokumentation der Ergebnisse und Vorbereitung der Serienentscheidung
+\end{itemize}
+\textbf{Keywords}: Hybrid-Leichtbau, Faserverbund, FEM}
+\end{document}

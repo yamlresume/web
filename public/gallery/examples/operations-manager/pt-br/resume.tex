@@ -1,0 +1,278 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Brazilian Portuguese language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-portuguese.html
+\usepackage[brazilian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Mariana Costa Almeida}{}
+\title{Gerente de Operações | Logística, S\&OP e Melhoria Contínua}
+\phone[mobile]{+55 11 98765-4321}
+\email{mariana.almeida@example.com}
+\homepage{https://www.marianaalmeida.com.br}
+
+\address{Rua das Acácias, 245, São Paulo, São Paulo, Brasil, 04567-000}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/mariana-almeida-ops}{@mariana-almeida-ops} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@marianaalmeida-ops}{@marianaalmeida-ops}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informações Básicas}
+
+\cvline{}{Gerente de Operações com mais de 10 anos de experiência em logística, planejamento e melhoria contínua. Histórico comprovado na liderança de equipes multidisciplinares, otimização de processos e redução de custos operacionais em empresas de médio e grande porte.
+%
+\begin{itemize}
+\item Especialista em S\&OP, gestão de estoques e indicadores de desempenho (KPIs)
+\item Experiência com Lean Six Sigma, mapeamento de processos e gestão de mudanças
+\item Forte atuação em negociação com fornecedores, transportadoras e parceiros estratégicos
+\item Perfil analítico, orientado a dados e focado em resultados sustentáveis
+\end{itemize}}
+\section{Formação}
+
+\cventry{fev. de 2010–dez. de 2014}
+        {Bacharelado, Engenharia de Produção, Nota: 8.7/10}
+        {Universidade de São Paulo}
+        {\url{https://www.usp.br}}
+        {}
+        {\begin{itemize}
+\item Formação com foco em engenharia de operações, logística e melhoria de processos
+\item Projeto de conclusão sobre otimização de rotas de distribuição
+\item Participação em empresa júnior e projetos de consultoria operacional
+\end{itemize}
+\textbf{Cursos}: Gestão de Operações, Logística e Cadeia de Suprimentos, Planejamento e Controle da Produção, Pesquisa Operacional, Gestão da Qualidade, Engenharia Econômica, Simulação de Sistemas, Gestão de Projetos}
+
+\cventry{jan. de 2016–dez. de 2017}
+        {Mestrado, Gestão de Operações e Cadeia de Suprimentos, Nota: 9.2/10}
+        {Fundação Getulio Vargas}
+        {\url{https://www.fgv.br}}
+        {}
+        {\begin{itemize}
+\item Especialização em gestão estratégica de operações e cadeia de suprimentos
+\item Desenvolvimento de projeto aplicado à redução de custos logísticos
+\item Ênfase em liderança, negociação e transformação digital
+\end{itemize}}
+\section{Experiência Profissional}
+
+\cventry{mar. de 2021–Atual}
+        {Gerente de Operações}
+        {LogiRota Soluções Logísticas}
+        {\url{https://www.logirota.com.br}}
+        {}
+        {\begin{itemize}
+\item Lidero equipe de 45 pessoas nas áreas de transporte, armazenagem e planejamento operacional
+\item Reduzi o custo logístico em 18\% por meio de renegociação de contratos e otimização de rotas
+\item Implementei rotina de S\&OP integrada às áreas comercial, compras e produção
+\item Estruturei painéis de KPIs para acompanhamento diário de nível de serviço, custo por entrega e produtividade
+\item Conduzi projeto de automação de processos com integração entre WMS e TMS
+\end{itemize}
+\textbf{Palavras-chave}: Gestão de operações, Logística, S\&OP, Lean, KPIs, Liderança}
+
+\cventry{jan. de 2018–fev. de 2021}
+        {Coordenadora de Operações}
+        {Distribuidora Nova Era}
+        {\url{https://www.distribuidoranovaera.com.br}}
+        {}
+        {\begin{itemize}
+\item Coordenei operações de distribuição em três centros de distribuição regionais
+\item Reduzi o lead time médio de entrega em 22\% com revisão de processos e roteirização
+\item Implantei programa 5S e rotinas de auditoria operacional nas unidades
+\item Gerenciei orçamento anual de R\$ 12 milhões, com acompanhamento mensal de desvios
+\item Desenvolvi indicadores de acuracidade de estoque e nível de atendimento ao cliente
+\end{itemize}
+\textbf{Palavras-chave}: Distribuição, Estoques, 5S, Melhoria contínua, Gestão de equipes}
+
+\cventry{jul. de 2014–dez. de 2017}
+        {Analista de Operações Sênior}
+        {Transportes Bandeirante}
+        {\url{https://www.transportesbandeirante.com.br}}
+        {}
+        {\begin{itemize}
+\item Analisei indicadores operacionais e elaborei relatórios gerenciais para a diretoria
+\item Desenvolvi previsões de demanda e apoiei o planejamento de capacidade da frota
+\item Apoiei a implantação do sistema WMS e treinamento das equipes operacionais
+\item Participei de projetos de redução de custos com transporte e consolidação de cargas
+\item Realizei negociações com fornecedores e transportadoras parceiras
+\end{itemize}
+\textbf{Palavras-chave}: Análise de dados, Previsão de demanda, WMS, Transporte}
+\section{Idiomas}
+
+\cvline{Português}{Nativo ou Bilíngue}
+\cvline{Inglês}{Proficiência Profissional Fluente \hfill \textbf{Palavras-chave}: TOEFL 108, Reuniões internacionais}
+\cvline{Espanhol}{Proficiência Profissional Limitada \hfill \textbf{Palavras-chave}: DELE B2}
+\section{Competências}
+
+\cvline{Gestão de Operações}{Especialista \hfill \textbf{Palavras-chave}: Planejamento de demanda, S\&OP, Lean Six Sigma, Gestão de indicadores, Redução de custos}
+\cvline{Logística e Distribuição}{Avançado \hfill \textbf{Palavras-chave}: Roteirização, WMS, TMS, Armazenagem, Gestão de estoques}
+\cvline{Análise de Dados}{Avançado \hfill \textbf{Palavras-chave}: Excel avançado, Power BI, SQL, Dashboards, Análise de indicadores}
+\cvline{Liderança e Pessoas}{Especialista \hfill \textbf{Palavras-chave}: Gestão de equipes, Coaching, Cultura de segurança, Desenvolvimento de talentos}
+\cvline{Gestão de Projetos}{Avançado \hfill \textbf{Palavras-chave}: PMBOK, Scrum, Melhoria contínua, Gestão de mudanças}
+\section{Prêmios}
+
+\cventry{nov. de 2023}
+        {LogiRota Soluções Logísticas}
+        {Prêmio de Excelência Operacional}
+        {}
+        {}
+        {Reconhecimento pela liderança do projeto de centralização do controle logístico, com ganho de 15\% em produtividade e melhoria consistente no nível de serviço ao cliente.}
+
+\cventry{dez. de 2020}
+        {Distribuidora Nova Era}
+        {Reconhecimento por Redução de Custos}
+        {}
+        {}
+        {Premiação pelo resultado de redução de 22\% no lead time de entrega e melhoria da acuracidade de estoque nas operações regionais.}
+\section{Certificados}
+
+\cventry{jun. de 2019}
+        {ASQ}
+        {Lean Six Sigma Green Belt}
+        {\url{https://asq.org/cert/lean-six-sigma-green-belt}}
+        {}
+        {}
+
+\cventry{set. de 2020}
+        {ASCM}
+        {Certified Supply Chain Professional (CSCP)}
+        {\url{https://www.ascm.org/credentials-certifications/ascm-certifications/cscp/}}
+        {}
+        {}
+
+\cventry{mar. de 2022}
+        {Scrum Alliance}
+        {Scrum Master Certified}
+        {\url{https://www.scrumalliance.org/get-certified/scrum-master-track/certified-scrummaster}}
+        {}
+        {}
+\section{Publicações}
+
+\cventry{ago. de 2022}
+        {Análise preditiva aplicada à gestão de estoques no varejo}
+        {Revista Brasileira de Logística}
+        {\url{https://www.revistabrasileiradelogistica.com.br/artigos/analise-preditiva-estoques}}
+        {}
+        {\begin{itemize}
+\item Estudo sobre o uso de modelos preditivos para melhorar a acuracidade de estoque
+\item Discussão de impactos na redução de rupturas e no capital de giro
+\item Apresentação de casos práticos em operações de distribuição
+\end{itemize}}
+\section{Projetos}
+
+\cventry{jan. de 2022–jul. de 2022}
+        {Projeto de centralização do monitoramento de entregas e indicadores operacionais.}
+        {Centro de Controle Logístico}
+        {}
+        {}
+        {\begin{itemize}
+\item Implantação de sala de controle com acompanhamento em tempo real das operações
+\item Integração de dados de WMS, TMS e atendimento ao cliente
+\item Redução de 12\% no tempo de resposta a ocorrências logísticas
+\end{itemize}
+\textbf{Palavras-chave}: Logística, Controle operacional, KPIs, Integração de sistemas}
+
+\cventry{mar. de 2019–nov. de 2019}
+        {Programa de melhoria contínua aplicado aos processos de separação e expedição.}
+        {Programa Lean na Distribuição}
+        {}
+        {}
+        {\begin{itemize}
+\item Mapeamento de fluxo de valor e identificação de desperdícios
+\item Implantação de padrões operacionais e rotinas de gestão à vista
+\item Ganho de 20\% em produtividade nas equipes de separação
+\end{itemize}
+\textbf{Palavras-chave}: Lean, Melhoria contínua, Produtividade, Gestão à vista}
+\section{Interesses}
+
+\cvline{Esportes}{Corrida, Ciclismo, Vôlei}
+\cvline{Leitura}{Gestão, Biografias, Economia}
+\cvline{Culinária}{Cozinha italiana, Panificação}
+\section{Voluntariado}
+
+\cventry{fev. de 2020–Atual}
+        {Mentora de Jovens em Logística}
+        {Instituto Rede Solidária}
+        {\url{https://www.institutoredesolidaria.org.br}}
+        {}
+        {\begin{itemize}
+\item Mentoria para jovens em início de carreira nas áreas de logística e operações
+\item Apoio na elaboração de currículos e preparação para entrevistas
+\item Participação em workshops sobre planejamento de carreira e competências técnicas
+\item Colaboração com a organização de feiras de empregabilidade comunitárias
+\end{itemize}}
+    
+\end{document}

@@ -1,0 +1,225 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Giulia Rossi}{}
+\title{Infermiera Professionale con 8 anni di esperienza}
+\phone[mobile]{+39 333 123 4567}
+\email{giulia.rossi@email.it}
+\homepage{https://www.linkedin.com/in/giuliarossi}
+
+\address{Via Roma 15, Milano, Lombardia, Italia, 20121}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/giuliarossi}{@giuliarossi} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/giuliarossi\_inf}{@giuliarossi\_inf}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{\begin{itemize}
+\item Infermiera con solida esperienza in reparti di medicina interna e chirurgia, con particolare attenzione alla cura del paziente e alla sicurezza clinica.
+\item Competenze avanzate nella gestione del dolore, medicazioni complesse e supporto psicologico ai pazienti e alle famiglie.
+\item Esperta nella somministrazione di terapie endovenose, gestione di cateteri venosi centrali e periferici e monitoraggio dei parametri vitali.
+\item Forte capacità di lavorare in équipe multidisciplinari, con ottime doti comunicative e organizzative.
+\item Impegnata nella formazione continua e nell'aggiornamento delle pratiche cliniche basate su evidenze scientifiche.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2010–lug 2013}
+        {Laurea triennale, Infermieristica, Punteggio: 110/110 e lode}
+        {Università degli Studi di Milano}
+        {\url{https://www.unimi.it}}
+        {}
+        {\begin{itemize}
+\item Formazione teorica e pratica completa in ambito infermieristico
+\item Tirocinio clinico presso l'Ospedale Maggiore di Milano
+\item Approfondimento delle tecniche di comunicazione terapeutica
+\item Partecipazione a progetti di ricerca infermieristica
+\end{itemize}
+\textbf{Corsi}: Anatomia Umana, Fisiologia, Patologia Generale, Infermieristica Clinica, Farmacologia, Scienze Infermieristiche, Medicina Interna, Chirurgia Generale}
+\section{Esperienza professionale}
+
+\cventry{gen 2018–Presente}
+        {Infermiera Strumentista}
+        {Ospedale Niguarda Ca' Granda}
+        {\url{https://www.ospedaleniguarda.it}}
+        {}
+        {\begin{itemize}
+\item Gestione del paziente in sala operatoria, assistenza al chirurgo e all'équipe anestesiologica
+\item Preparazione e sterilizzazione degli strumenti chirurgici
+\item Monitoraggio dei parametri vitali e assistenza post-operatoria
+\item Collaborazione nella gestione delle emergenze e delle complicanze intraoperatorie
+\item Formazione di nuovi infermieri e studenti
+\end{itemize}
+\textbf{Parole chiave}: Sala operatoria, Sterilizzazione, Monitoraggio, Assistenza chirurgica, Formazione}
+
+\cventry{set 2013–dic 2017}
+        {Infermiera di Reparto}
+        {Ospedale San Raffaele}
+        {\url{https://www.hsr.it}}
+        {}
+        {\begin{itemize}
+\item Assistenza infermieristica a pazienti affetti da patologie croniche e acute in reparto di medicina interna
+\item Somministrazione di terapie farmacologiche e gestione di accessi venosi
+\item Educazione sanitaria ai pazienti e ai familiari
+\item Gestione della documentazione clinica e collaborazione con l'équipe multidisciplinare
+\item Partecipazione a progetti di miglioramento della qualità delle cure
+\end{itemize}
+\textbf{Parole chiave}: Medicina interna, Terapia farmacologica, Educazione sanitaria, Gestione documentale, Qualità delle cure}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 7.5, Certificazione C1}
+\cvline{Francese}{Competenza professionale limitata \hfill \textbf{Parole chiave}: DELF B1}
+\section{Competenze}
+
+\cvline{Assistenza Infermieristica}{Esperto \hfill \textbf{Parole chiave}: Gestione del paziente, Medicazioni complesse, Terapia endovenosa, Monitoraggio parametri vitali, Cateterismo vescicale}
+\cvline{Area Chirurgica}{Avanzato \hfill \textbf{Parole chiave}: Strumentazione chirurgica, Sterilizzazione, Assistenza intraoperatoria, Gestione sala operatoria}
+\cvline{Competenze Trasversali}{Avanzato \hfill \textbf{Parole chiave}: Comunicazione terapeutica, Lavoro di squadra, Problem solving, Gestione dello stress, Formazione}
+\section{Premi}
+
+\cventry{dic 2020}
+        {Ospedale Niguarda Ca' Granda}
+        {Infermiere dell'Anno}
+        {}
+        {}
+        {Riconoscimento per l'eccellenza nell'assistenza infermieristica e per l'impegno nella formazione del personale.}
+\section{Certificazioni}
+
+\cventry{mar 2021}
+        {Italian Resuscitation Council}
+        {Certificazione BLS-D}
+        {\url{https://www.ircouncil.it}}
+        {}
+        {}
+
+\cventry{giu 2019}
+        {Università di Milano}
+        {Corso di Specializzazione in Wound Care}
+        {\url{https://www.unimi.it}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{apr 2022}
+        {La gestione del dolore post-operatorio: nuove frontiere}
+        {Rivista Italiana di Infermieristica}
+        {\url{https://www.rii.it/articolo}}
+        {}
+        {\begin{itemize}
+\item Articolo di ricerca sulla gestione del dolore post-operatorio
+\item Analisi delle migliori pratiche basate su evidenze
+\item Proposta di un protocollo innovativo
+\end{itemize}}
+\section{Progetti}
+
+\cventry{gen 2020–dic 2021}
+        {Programma di educazione sanitaria per pazienti con patologie croniche}
+        {Progetto Patient Education}
+        {\url{https://www.hsr.it/progetti/patient-education}}
+        {}
+        {\begin{itemize}
+\item Sviluppo di materiale informativo multilingue
+\item Organizzazione di incontri formativi per pazienti e familiari
+\item Valutazione dell'impatto del progetto sull'aderenza terapeutica
+\end{itemize}
+\textbf{Parole chiave}: Educazione sanitaria, Patologie croniche, Multilingua, Aderenza terapeutica}
+\section{Interessi}
+
+\cvline{Volontariato}{Croce Rossa Italiana, Assistenza anziani}
+\cvline{Sport}{Nuoto, Yoga, Corsa}
+\cvline{Lettura}{Narrativa, Saggi scientifici}
+\section{Volontariato}
+
+\cventry{gen 2015–Presente}
+        {Infermiera Volontaria}
+        {Croce Rossa Italiana}
+        {\url{https://www.cri.it}}
+        {}
+        {\begin{itemize}
+\item Assistenza sanitaria durante eventi pubblici e manifestazioni
+\item Supporto nelle campagne di vaccinazione e screening
+\item Formazione della popolazione sulle manovre di primo soccorso
+\item Partecipazione a missioni di emergenza
+\end{itemize}}
+    
+\end{document}

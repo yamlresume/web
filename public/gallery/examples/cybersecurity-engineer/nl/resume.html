@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Sanne van Dijk Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Sanne van Dijk</h1>
+    <p class="resume-headline">Senior beveiligingsingenieur met focus op zero trust en incidentrespons</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:sanne.vandijk@vandijk-security.nl" class="resume-contact-link">sanne.vandijk@vandijk-security.nl</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+31 6 184 27 395</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.vandijk-security.nl" class="resume-contact-link">https://www.vandijk-security.nl</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Maliebaan 45, Utrecht, Utrecht, Nederland, 3581 CD</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/sannevandijk-cyber" class="resume-contact-link">@sannevandijk-cyber</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/sannevandijk" class="resume-contact-link">@sannevandijk</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Basis Informatie</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>Ervaren beveiligingsingenieur met meer dan 8 jaar ervaring in het ontwerpen, implementeren en beheren van weerbare IT-omgevingen.</p>
+          </li>
+          <li>
+            <p>Gespecialiseerd in zero-trustarchitectuur, dreigingsdetectie, cloudbeveiliging en incidentrespons voor financiële en zorgorganisaties.</p>
+          </li>
+          <li>
+            <p>Combineert technische diepgang met heldere communicatie richting CISO, auditors en niet-technische stakeholders.</p>
+          </li>
+          <li>
+            <p>Aantoonbaar resultaatgericht in het verlagen van cyberrisico&#39;s en het verhogen van de volwassenheid van securityprocessen.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Opleidingen</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.tudelft.nl">Technische Universiteit Delft</a></div>
+            <div class="resume-entry-organization">Master, Cybersecurity, Score: 8.1</div>
+          </div>
+          <div class="resume-entry-date">sep 2014–jul 2017</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Afstudeeronderzoek naar detectie van supply-chainaanvallen in CI/CD-pipelines.</p>
+            </li>
+            <li>
+              <p>Organiseerde Capture the Flag-evenementen en begeleidde eerstejaars bij securityvakken.</p>
+            </li>
+            <li>
+              <p>Ontwikkelde een prototype voor geautomatiseerde kwetsbaarheidsanalyse in containeromgevingen.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cursussen</span>: Cryptografie, Netwerkbeveiliging, Beveiligingsgovernance, Penetratietesten, Forensische Analyse, Privacy en Gegevensbescherming, Cloudbeveiliging, Risicomanagement</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hu.nl">Hogeschool Utrecht</a></div>
+            <div class="resume-entry-organization">Bachelor, ICT &amp; Security, Score: 8.4</div>
+          </div>
+          <div class="resume-entry-date">sep 2010–jul 2014</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Minor gevolgd in digitale forensica en incidentonderzoek.</p>
+            </li>
+            <li>
+              <p>Stage gelopen bij een regionale zorginstelling en daar een basis-SOC ingericht.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cursussen</span>: Netwerkarchitectuur, Besturingssystemen, Ethisch Hacken, Digitale Forensica, Informatiebeveiliging, Programmeerprincipes</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Werkervaring</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.veiligedomeinen.nl">Veiligedomeinen B.V.</a></div>
+            <div class="resume-entry-organization">Senior beveiligingsingenieur</div>
+          </div>
+          <div class="resume-entry-date">apr 2023–Heden</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Leidt het zero-trustprogramma voor twaalf bedrijfsonderdelen en adviseert de CISO over risicogebaseerde prioritering.</p>
+            </li>
+            <li>
+              <p>Ontwerpt en implementeert SIEM-detectieregels, SOAR-playbooks en EDR-beleid voor een 24/7 SOC.</p>
+            </li>
+            <li>
+              <p>Voert dreigingsmodellering volgens STRIDE en MITRE ATT&amp;CK uit voor cloudmigraties naar Azure.</p>
+            </li>
+            <li>
+              <p>Coördineert incidentrespons bij ernstige incidenten, inclusief forensisch onderzoek, crisiscommunicatie en herstelvalidatie.</p>
+            </li>
+            <li>
+              <p>Beheert ISO 27001- en NIS2-compliance en begeleidt interne en externe audits.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Zero Trust, SIEM, SOAR, Azure-beveiliging, ISO 27001, NIS2, Dreigingsmodellering</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.noordzeefintech.nl">Noordzee Fintech</a></div>
+            <div class="resume-entry-organization">Beveiligingsanalist</div>
+          </div>
+          <div class="resume-entry-date">jun 2019–mrt 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Bouwde en beheerde detectiecontent in Splunk en Microsoft Sentinel voor betalings- en klantprocessen.</p>
+            </li>
+            <li>
+              <p>Leidde phishing-, malware- en fraudeonderzoeken en vertaalde bevindingen naar concrete maatregelen.</p>
+            </li>
+            <li>
+              <p>Automatiseerde vulnerability management en verkortte de gemiddelde hersteltijd van kritieke kwetsbaarheden met 38%.</p>
+            </li>
+            <li>
+              <p>Droeg bij aan GDPR- en PSD2-audits en het opstellen van securityrapportages voor het bestuur.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: SOC, Splunk, Microsoft Sentinel, Phishing, Malwareanalyse, GDPR</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.utrechtzorgsystemen.nl">Utrecht Zorgsystemen</a></div>
+            <div class="resume-entry-organization">IT-beveiligingsspecialist</div>
+          </div>
+          <div class="resume-entry-date">sep 2017–mei 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Beveiligde zorgapplicaties en medische netwerken volgens NEN 7510 en interne beveiligingsrichtlijnen.</p>
+            </li>
+            <li>
+              <p>Implementeerde meerfactorauthenticatie, patchmanagement en netwerksegmentatie voor 3.500 werkplekken.</p>
+            </li>
+            <li>
+              <p>Voerde risicoanalyses uit en ondersteunde teams bij het herstellen van geconstateerde kwetsbaarheden.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: MFA, Patchmanagement, Risicoanalyse, NEN 7510, Firewalls</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Talen</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Nederlands<span class="resume-language-fluency">: Moedertaal of tweetalige vaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: Moedertaal</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Engels<span class="resume-language-fluency">: Volledige professionele vaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: TOEFL iBT 112, C1</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Duits<span class="resume-language-fluency">: Beperkte werkvaardigheid</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Trefwoorden</span>: Goethe B1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Vaardigheden</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Beveiligingsarchitectuur<span class="resume-skill-level">: Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Zero Trust, Netwerksegmentatie, Firewalls, VPN, IDS/IPS</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Dreigingsdetectie<span class="resume-skill-level">: Geavanceerd</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: SIEM, Splunk, Microsoft Sentinel, EDR, Dreigingsjacht</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Cloudbeveiliging<span class="resume-skill-level">: Geavanceerd</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Azure, AWS, IAM, Kubernetes, Terraform</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Compliance en Risicobeheer<span class="resume-skill-level">: Geavanceerd</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: ISO 27001, NIST CSF, GDPR, Risicobeoordeling, Audits</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Incidentrespons<span class="resume-skill-level">: Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Trefwoorden</span>: Incidentrespons, Digitale Forensica, Malwareanalyse, SOAR, Crisisbeheersing</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Onderscheidingen</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Prijs voor Cybersecurity-Excellentie</div>
+            <div class="resume-entry-organization">Nederlandse Vereniging voor Cybersecurity</div>
+          </div>
+          <div class="resume-entry-date">okt 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Uitgereikt voor het succesvol opzetten van een organisatiebreed zero-trustprogramma en het meetbaar verlagen van het aantal kritieke security-incidenten.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificaten</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.isc2.org/certifications/cissp">Certified Information Systems Security Professional (CISSP)</a></div>
+            <div class="resume-entry-organization">(ISC)²</div>
+          </div>
+          <div class="resume-entry-date">mei 2022</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://learn.microsoft.com/en-us/certifications/azure-security-engineer/">Azure Security Engineer Associate (AZ-500)</a></div>
+            <div class="resume-entry-organization">Microsoft</div>
+          </div>
+          <div class="resume-entry-date">nov 2021</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.eccouncil.org/programs/certified-ethical-hacker-ceh/">Certified Ethical Hacker (CEH)</a></div>
+            <div class="resume-entry-organization">EC-Council</div>
+          </div>
+          <div class="resume-entry-date">mrt 2020</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Publicaties</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.cybersecuritymagazine.nl/zero-trust-praktijk">Zero Trust in de Praktijk: een blauwdruk voor middelgrote organisaties</a></div>
+            <div class="resume-entry-organization">Cybersecurity Magazine NL</div>
+          </div>
+          <div class="resume-entry-date">apr 2024</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Beschrijft een gefaseerde aanpak voor zero-trustarchitectuur binnen middelgrote organisaties.</p>
+            </li>
+            <li>
+              <p>Gaat in op identiteitsbeheer, netwerksegmentatie, detectie en het meten van securityvolwassenheid.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Projecten</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/sannevandijk/zero-trust-blueprint">Zero Trust Referentiearchitectuur</a></div>
+            <div class="resume-entry-description">Openbare referentiearchitectuur met beleidsregels, dreigingsmodellen en implementatiechecklisten voor zero trust.</div>
+          </div>
+          <div class="resume-entry-date">jun 2023–feb 2024</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Ontwikkelde een herbruikbare blauwdruk met identity-first principes, microsegmentatie en continue verificatie.</p>
+            </li>
+            <li>
+              <p>Valideerde de architectuur in een Azure-testomgeving met automatische compliancecontroles.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Zero Trust, Azure, Microsegmentatie, Compliance</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/sannevandijk/phishing-detection-platform">Phishingdetectieplatform</a></div>
+            <div class="resume-entry-description">Platform dat e-mailheaders, URL-reputatie en gebruikersmeldingen combineert om phishing sneller te detecteren.</div>
+          </div>
+          <div class="resume-entry-date">feb 2021–dec 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Verwerkte dagelijks meer dan 50.000 e-mails en reduceerde valse positieven met 27%.</p>
+            </li>
+            <li>
+              <p>Integreerde automatische verrijking met dreigingsinformatie en SOAR-playbooks.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Trefwoorden</span>: Phishing, Dreigingsinformatie, SOAR, Python</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interesses</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Duursport</span>: Hardlopen, Wielrennen, Wandelen</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Muziek</span>: Gitaar, Piano</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Kennis delen</span>: Meetups, Mentoring, Capture the Flag</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Vrijwilligerswerk</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.veiligonlineutrecht.nl">Veilig Online Utrecht</a></div>
+            <div class="resume-entry-organization">Vrijwilliger Digitale Weerbaarheid</div>
+          </div>
+          <div class="resume-entry-date">sep 2021–dec 2024</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Gaf voorlichting aan ouderen en kleine ondernemers over phishing, wachtwoordbeheer en online veiligheid.</p>
+            </li>
+            <li>
+              <p>Organiseerde kwartaalworkshops en stelde laagdrempelig voorlichtingsmateriaal op.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

@@ -1,0 +1,286 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Italian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-italian.html
+\usepackage[italian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Marco Bianchi}{}
+\title{Project Manager Senior | Trasformazione digitale e metodologie agili}
+\phone[mobile]{+39 347 123 4567}
+\email{marco.bianchi@example.it}
+\homepage{https://www.marcobianchi-pm.it}
+
+\address{Via Torino 45, Milano, Lombardia, Italia, 20123}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/marcobianchi-pm}{@marcobianchi-pm} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/marcobianchi\_pm}{@marcobianchi\_pm} {} {} {} • {} {} {} 
+{\small \faMedium}\ \href{https://medium.com/@marcobianchi}{@marcobianchi}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informazioni personali}
+
+\cvline{}{\begin{itemize}
+\item Project manager con oltre 8 anni di esperienza nella conduzione di progetti digitali e di trasformazione organizzativa in contesti complessi.
+\item Specializzato in metodologie ibride (Agile, Scrum, Waterfall) e nella gestione del ciclo di vita del progetto, dall'analisi dei requisiti al rilascio.
+\item Capacità comprovata di coordinare team cross-funzionali, gestire stakeholder e garantire il rispetto di tempi, budget e qualità.
+\item Orientato ai risultati, con forte attenzione alla comunicazione, alla gestione del rischio e al miglioramento continuo.
+\end{itemize}}
+\section{Formazione}
+
+\cventry{set 2013–lug 2015}
+        {Laurea magistrale, Ingegneria Gestionale, Punteggio: 110/110 e lode}
+        {Politecnico di Milano}
+        {\url{https://www.polimi.it}}
+        {}
+        {\begin{itemize}
+\item Formazione avanzata nella pianificazione, esecuzione e controllo di progetti complessi.
+\item Approfondimento di metodologie quantitative per il supporto alle decisioni e la gestione delle risorse.
+\end{itemize}
+\textbf{Corsi}: Gestione dei progetti, Economia e organizzazione aziendale, Analisi dei sistemi complessi, Gestione dell'innovazione, Gestione operativa}
+
+\cventry{set 2010–lug 2013}
+        {Laurea triennale, Economia Aziendale, Punteggio: 108/110}
+        {Università degli Studi di Bologna}
+        {\url{https://www.unibo.it}}
+        {}
+        {\begin{itemize}
+\item Solida base economica e aziendale per la comprensione dei processi organizzativi.
+\item Sviluppo di competenze analitiche e di rendicontazione.
+\end{itemize}
+\textbf{Corsi}: Economia aziendale, Ragioneria generale, Statistica, Diritto privato}
+\section{Esperienza professionale}
+
+\cventry{mar 2022–Presente}
+        {Senior Project Manager}
+        {Fintech Solutions Italia}
+        {\url{https://www.fintechsolutionsitalia.it}}
+        {}
+        {\begin{itemize}
+\item Responsabile del portafoglio di progetti digitali per il lancio di nuovi prodotti di pagamento.
+\item Coordinamento di team cross-funzionali composti da responsabili di prodotto, sviluppatori, designer e compliance.
+\item Definizione di piani di rilascio, budget e piani di mitigazione dei rischi, con rendicontazione periodica al comitato esecutivo.
+\item Introduzione di pratiche agili e metriche di produttività, con riduzione del 25\% del tempo di immissione sul mercato.
+\end{itemize}
+\textbf{Parole chiave}: Gestione del portafoglio, Metodologie agili, Trasformazione digitale, Gestione del rischio}
+
+\cventry{gen 2019–feb 2022}
+        {Project Manager}
+        {Digital Retail Group}
+        {\url{https://www.digitalretailgroup.it}}
+        {}
+        {\begin{itemize}
+\item Gestione di progetti e-commerce e CRM per marchi del gruppo, con team distribuiti in Italia e all'estero.
+\item Pianificazione delle attività, allocazione delle risorse e monitoraggio dei KPI di progetto.
+\item Facilitazione di laboratori con stakeholder interni ed esterni per la definizione dei requisiti.
+\item Implementazione di un modello di governance basato su Scrum e Kanban.
+\end{itemize}
+\textbf{Parole chiave}: E-commerce, CRM, Scrum, Kanban, Governance}
+
+\cventry{set 2015–dic 2018}
+        {Junior Project Manager}
+        {Consulenza Innovazione S.p.A.}
+        {\url{https://www.consulenzainnovazione.it}}
+        {}
+        {\begin{itemize}
+\item Supporto alla direzione progetti per clienti nei settori manifatturiero e servizi.
+\item Redazione di piani di progetto, analisi dei requisiti e documentazione di avanzamento.
+\item Monitoraggio di tempi, costi e qualità, con aggiornamento del registro dei rischi.
+\item Partecipazione a gare e presentazioni commerciali per nuovi incarichi.
+\end{itemize}
+\textbf{Parole chiave}: Pianificazione, Registro dei rischi, Documentazione, Rendicontazione}
+\section{Lingue}
+
+\cvline{Italiano}{Madrelingua o bilingue \hfill \textbf{Parole chiave}: Madrelingua}
+\cvline{Inglese}{Competenza professionale completa \hfill \textbf{Parole chiave}: IELTS 7.5, Business English}
+\cvline{Spagnolo}{Competenza professionale limitata \hfill \textbf{Parole chiave}: DELE B1}
+\section{Competenze}
+
+\cvline{Gestione del progetto}{Esperto \hfill \textbf{Parole chiave}: Agile, Scrum, Kanban, Waterfall, PRINCE2}
+\cvline{Pianificazione e controllo}{Avanzato \hfill \textbf{Parole chiave}: Microsoft Project, Jira, Asana, Trello, Smartsheet}
+\cvline{Analisi dei dati}{Avanzato \hfill \textbf{Parole chiave}: Excel avanzato, Power BI, SQL, Tableau}
+\cvline{Comunicazione e leadership}{Esperto \hfill \textbf{Parole chiave}: Negoziazione, Facilitazione, Mentoraggio, Presentazioni efficaci}
+\cvline{Gestione del rischio}{Avanzato \hfill \textbf{Parole chiave}: Registro dei rischi, Mitigazione, Audit, Conformità}
+\section{Premi}
+
+\cventry{nov 2023}
+        {Associazione Italiana Project Management}
+        {Premio Eccellenza PMI 2023}
+        {}
+        {}
+        {Riconoscimento per la gestione esemplare di un programma di trasformazione digitale con impatto misurabile su efficienza e soddisfazione del cliente.}
+
+\cventry{giu 2021}
+        {Digital Retail Group}
+        {Miglior leader di team agile}
+        {}
+        {}
+        {Premio interno per la capacità di guidare team distribuiti e raggiungere gli obiettivi di progetto con elevati standard di qualità.}
+\section{Certificazioni}
+
+\cventry{mag 2021}
+        {Project Management Institute}
+        {Project Management Professional (PMP)}
+        {\url{https://www.pmi.org/certifications/project-management-pmp}}
+        {}
+        {}
+
+\cventry{ott 2019}
+        {Scrum Alliance}
+        {Certified ScrumMaster (CSM)}
+        {\url{https://www.scrumalliance.org/get-certified/scrum-master-track/certified-scrummaster}}
+        {}
+        {}
+
+\cventry{feb 2020}
+        {PeopleCert}
+        {ITIL 4 Foundation}
+        {\url{https://www.peoplecert.org/browse-certifications/it-governance-and-service-management/ITIL-1/itil-4-foundation}}
+        {}
+        {}
+\section{Pubblicazioni}
+
+\cventry{set 2022}
+        {Gestione agile dei progetti complessi: un modello ibrido}
+        {Rivista Italiana di Project Management}
+        {\url{https://www.rivistaitalianapm.it/articoli/modello-ibrido}}
+        {}
+        {\begin{itemize}
+\item Articolo dedicato all'integrazione tra framework agili e approcci tradizionali.
+\item Analisi di casi studio in ambito finanziario e retail.
+\item Proposta di un modello di governance per programmi multi-progetto.
+\end{itemize}}
+\section{Progetti}
+
+\cventry{apr 2022–mag 2023}
+        {Progetto di digitalizzazione del processo di onboarding clienti per ridurre i tempi di attivazione e migliorare l'esperienza utente.}
+        {Piattaforma di onboarding digitale}
+        {\url{https://www.fintechsolutionsitalia.it/progetti/onboarding-digitale}}
+        {}
+        {\begin{itemize}
+\item Coordinamento di un team di 12 persone tra prodotto, sviluppo, design e compliance.
+\item Definizione di requisiti funzionali e flussi utente in collaborazione con il business.
+\item Rilascio della piattaforma con riduzione del 40\% dei tempi di onboarding.
+\item Gestione del budget di 600.000 euro e rendicontazione mensile agli stakeholder.
+\end{itemize}
+\textbf{Parole chiave}: Onboarding digitale, UX, Conformità, Gestione del budget}
+
+\cventry{mar 2019–dic 2021}
+        {Programma pluriennale di migrazione dei sistemi ERP e integrazione dei processi amministrativi, della catena di fornitura e delle vendite.}
+        {Programma di trasformazione ERP}
+        {\url{https://www.digitalretailgroup.it/progetti/trasformazione-erp}}
+        {}
+        {\begin{itemize}
+\item Pianificazione e coordinamento di 5 flussi di lavoro con team interni e fornitori esterni.
+\item Gestione del cambiamento organizzativo e formazione di oltre 200 utenti.
+\item Raggiungimento degli obiettivi di avvio operativo entro tempi e budget previsti.
+\item Implementazione di un cruscotto di monitoraggio dei KPI dopo l'avvio.
+\end{itemize}
+\textbf{Parole chiave}: ERP, Gestione del cambiamento, Formazione, KPI}
+\section{Interessi}
+
+\cvline{Sport}{Corsa, Ciclismo, Nuoto}
+\cvline{Lettura}{Saggistica, Romanzi storici}
+\cvline{Volontariato}{Mentoraggio, Formazione}
+\section{Volontariato}
+
+\cventry{gen 2021–Presente}
+        {Mentore volontario}
+        {Associazione Italiana Project Management}
+        {\url{https://www.aipm.it}}
+        {}
+        {\begin{itemize}
+\item Attività di mentore per giovani professionisti e studenti che si avvicinano alla gestione dei progetti.
+\item Organizzazione di laboratori su metodologie agili e pianificazione.
+\item Contributo alla comunità con articoli e incontri tematici.
+\end{itemize}}
+    
+
+\cventry{set 2018–dic 2020}
+        {Formatore volontario}
+        {Fondazione Formazione e Lavoro}
+        {\url{https://www.fondazioneformazionelavoro.it}}
+        {}
+        {\begin{itemize}
+\item Docenza in corsi base di gestione del progetto per persone in cerca di occupazione.
+\item Preparazione di materiali didattici e simulazioni pratiche.
+\item Tutoraggio individuale per l'inserimento lavorativo.
+\end{itemize}}
+    
+\end{document}

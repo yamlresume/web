@@ -1,0 +1,238 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Brazilian Portuguese language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-portuguese.html
+\usepackage[brazilian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Mariana Costa Almeida}{}
+\title{Engenheira de QA | Automação de Testes | Qualidade de Software}
+\phone[mobile]{+55 11 98765-4321}
+\email{mariana.almeida@example.com}
+\homepage{https://marianaalmeida.dev}
+
+\address{Rua das Palmeiras, 123, São Paulo, SP, Brasil, 01234-567}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/marianacalmeida}{@marianacalmeida} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/marianaalmeida}{@marianaalmeida}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informações Básicas}
+
+\cvline{}{Engenheira de QA com mais de 8 anos de experiência em garantia de qualidade de software, especializada em automação de testes e melhoria contínua de processos. Atuação em ambientes ágeis, colaborando com equipes multidisciplinares para entregar produtos com alta qualidade e confiabilidade.
+%
+\begin{itemize}
+\item Experiência sólida em testes manuais e automatizados (web, API e mobile)
+\item Domínio de ferramentas como Selenium, Cypress, Playwright, Appium e REST Assured
+\item Conhecimento em CI/CD, Docker e boas práticas de DevOps
+\item Forte habilidade em análise de requisitos, criação de casos de teste e documentação
+\item Mentalidade analítica, proativa e orientada a resultados
+\end{itemize}}
+\section{Formação}
+
+\cventry{fev. de 2015–dez. de 2019}
+        {Bacharelado, Engenharia de Computação, Nota: 8.7}
+        {Universidade de São Paulo}
+        {\url{https://www.usp.br}}
+        {}
+        {\begin{itemize}
+\item Formação sólida em engenharia de software, com ênfase em qualidade e testes
+\item Participação em projetos de extensão voltados à inclusão digital
+\end{itemize}
+\textbf{Cursos}: Engenharia de Software, Banco de Dados, Redes de Computadores, Sistemas Operacionais, Algoritmos e Estruturas de Dados, Qualidade de Software, Testes de Software}
+\section{Experiência Profissional}
+
+\cventry{mar. de 2022–Atual}
+        {Engenheira de QA Sênior}
+        {InovaTech Solutions}
+        {\url{https://www.inovatechsolutions.com.br}}
+        {}
+        {\begin{itemize}
+\item Liderança técnica da equipe de QA, com 4 pessoas sob minha orientação
+\item Definição e implementação da estratégia de testes automatizados para aplicações web e APIs
+\item Criação de frameworks de automação com Cypress e Playwright, reduzindo o tempo de regressão em 60\%
+\item Integração dos testes automatizados ao pipeline de CI/CD (GitLab CI), garantindo feedback rápido
+\item Colaboração com squads de desenvolvimento e produto para garantir critérios de aceite claros e testáveis
+\item Condução de análises de causa raiz e proposição de melhorias contínuas no processo de qualidade
+\end{itemize}
+\textbf{Palavras-chave}: Cypress, Playwright, CI/CD, Liderança, Qualidade}
+
+\cventry{jan. de 2020–fev. de 2022}
+        {Engenheira de QA Pleno}
+        {DataTrust Systems}
+        {\url{https://www.datatrustsystems.com}}
+        {}
+        {\begin{itemize}
+\item Responsável pela garantia de qualidade de uma plataforma SaaS de gestão de dados
+\item Desenvolvimento de testes automatizados de API utilizando REST Assured e Postman
+\item Execução de testes manuais exploratórios e funcionais em ambientes web e mobile
+\item Criação e manutenção de planos de teste, casos de teste e relatórios de bugs no Jira
+\item Participação ativa em cerimônias ágeis (Scrum) e revisões de sprint
+\item Apoio na implementação de testes de performance com JMeter
+\end{itemize}
+\textbf{Palavras-chave}: REST Assured, Postman, Jira, Scrum, JMeter}
+
+\cventry{mar. de 2018–dez. de 2019}
+        {Analista de QA Júnior}
+        {QualiSoft Consultoria}
+        {\url{https://www.qualisoft.com.br}}
+        {}
+        {\begin{itemize}
+\item Execução de testes manuais em sistemas web e mobile para clientes de diversos setores
+\item Elaboração de casos de teste e documentação de evidências
+\item Reporte e acompanhamento de defeitos até a resolução
+\item Suporte à automação de testes com Selenium WebDriver
+\item Participação em treinamentos internos sobre boas práticas de qualidade
+\end{itemize}
+\textbf{Palavras-chave}: Selenium, Testes manuais, Documentação, Bug tracking}
+\section{Idiomas}
+
+\cvline{Português}{Nativo ou Bilíngue}
+\cvline{Inglês}{Proficiência Profissional Fluente \hfill \textbf{Palavras-chave}: TOEFL 105, Leitura e escrita técnica}
+\cvline{Espanhol}{Proficiência Profissional Limitada}
+\section{Competências}
+
+\cvline{Automação de Testes}{Especialista \hfill \textbf{Palavras-chave}: Selenium, Cypress, Playwright, Appium, REST Assured}
+\cvline{Testes Manuais}{Avançado \hfill \textbf{Palavras-chave}: Testes exploratórios, Casos de teste, Testes de regressão, Testes de aceitação}
+\cvline{Ferramentas de Gestão}{Avançado \hfill \textbf{Palavras-chave}: Jira, TestRail, Azure DevOps, Confluence}
+\cvline{CI/CD e DevOps}{Intermediário \hfill \textbf{Palavras-chave}: GitLab CI, Jenkins, GitHub Actions, Docker}
+\cvline{Programação}{Avançado \hfill \textbf{Palavras-chave}: Python, JavaScript, Java, SQL}
+\cvline{Metodologias Ágeis}{Avançado \hfill \textbf{Palavras-chave}: Scrum, Kanban, BDD, TDD}
+\section{Prêmios}
+
+\cventry{dez. de 2023}
+        {InovaTech Solutions}
+        {Prêmio de Excelência em Qualidade}
+        {}
+        {}
+        {Reconhecimento por liderar a iniciativa de automação de testes que reduziu em 60\% o tempo de regressão e aumentou a cobertura de testes para 85\%.}
+\section{Certificados}
+
+\cventry{jun. de 2020}
+        {ISTQB}
+        {ISTQB Certified Tester Foundation Level}
+        {\url{https://www.istqb.org}}
+        {}
+        {}
+
+\cventry{nov. de 2021}
+        {ISTQB}
+        {Certified Agile Tester}
+        {\url{https://www.istqb.org}}
+        {}
+        {}
+\section{Publicações}
+
+\cventry{ago. de 2023}
+        {Automação de Testes com Cypress: Boas Práticas}
+        {Comunidade QA Brasil}
+        {\url{https://medium.com/@marianaalmeida/automacao-de-testes-com-cypress}}
+        {}
+        {Artigo técnico abordando estratégias para criação de testes automatizados robustos e maintíveis com Cypress, incluindo organização de pastas, uso de fixtures e integração com CI/CD.}
+\section{Projetos}
+
+\cventry{jan. de 2023–Atual}
+        {Framework modular para automação de testes web e API com Cypress e REST Assured}
+        {Framework de Automação Open Source}
+        {\url{https://github.com/marianaalmeida/qa-automation-framework}}
+        {}
+        {\begin{itemize}
+\item Projeto open source para compartilhar boas práticas de automação de testes
+\item Suporte a testes data-driven e geração de relatórios
+\item Documentação completa e exemplos de uso
+\end{itemize}
+\textbf{Palavras-chave}: Cypress, REST Assured, Open Source, Automação}
+\section{Interesses}
+
+\cvline{Música}{Violão, Canto}
+\cvline{Esportes}{Corrida, Yoga, Trilhas}
+\section{Voluntariado}
+
+\cventry{jan. de 2022–Atual}
+        {Mentora}
+        {Comunidade QA Brasil}
+        {\url{https://www.comunidadeqabrasil.com.br}}
+        {}
+        {\begin{itemize}
+\item Mentoria para profissionais iniciantes em QA, com foco em automação de testes e boas práticas
+\item Participação em eventos e workshops da comunidade
+\item Apoio na organização de meetups sobre qualidade de software
+\end{itemize}}
+    
+\end{document}

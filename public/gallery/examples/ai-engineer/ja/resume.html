@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>佐藤 健太 Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">佐藤 健太</h1>
+    <p class="resume-headline">AIエンジニア / 機械学習スペシャリスト</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:kenta.sato.ai@example.com" class="resume-contact-link">kenta.sato.ai@example.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+81 90-1234-5678</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://kentasato-ai.dev" class="resume-contact-link">https://kentasato-ai.dev</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>日本、東京都、渋谷区、東京都渋谷区神南1-2-3、150-0041</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/kenta-sato-ai" class="resume-contact-link">@kenta-sato-ai</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/kenta-sato-ai" class="resume-contact-link">@kenta-sato-ai</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Twitter</span>: <a href="https://twitter.com/kenta_sato_ai" class="resume-contact-link">@kenta_sato_ai</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">基本情報</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>機械学習と深層学習を活用したAIソリューションの設計・開発に7年以上従事</p>
+          </li>
+          <li>
+            <p>自然言語処理（NLP）とコンピュータビジョン分野の実務経験が豊富</p>
+          </li>
+          <li>
+            <p>Python、PyTorch、TensorFlowを用いたモデル構築からMLOpsによる運用まで一貫して対応</p>
+          </li>
+          <li>
+            <p>ビジネス課題を技術要件に落とし込み、クロスファンクショナルチームをリードした実績</p>
+          </li>
+          <li>
+            <p>論文執筆や技術コミュニティでの登壇を通じた知識共有に積極的</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">学歴</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.u-tokyo.ac.jp">東京大学</a></div>
+            <div class="resume-entry-organization">修士、情報理工学系研究科 コンピュータ科学専攻、成績：3.9/4.0</div>
+          </div>
+          <div class="resume-entry-date">2016年4月～2018年3月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>機械学習とデータサイエンスを専攻し、理論と実践の両面を習得</p>
+            </li>
+            <li>
+              <p>修士論文では深層学習を用いた文書分類モデルに関する研究に従事</p>
+            </li>
+            <li>
+              <p>学内のAI研究プロジェクトに参加し、実データを用いたモデル開発を経験</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>コース</span>：機械学習、深層学習、自然言語処理、コンピュータビジョン、データマイニング、アルゴリズム論、統計的学習理論</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">職歴</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.neurotech.co.jp">株式会社ニューロテック</a></div>
+            <div class="resume-entry-organization">シニアAIエンジニア</div>
+          </div>
+          <div class="resume-entry-date">2021年4月～現在</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>大規模言語モデル（LLM）を活用した社内ナレッジ検索システムの企画・開発をリード</p>
+            </li>
+            <li>
+              <p>自然言語処理チームを率いて、顧客問い合わせの自動分類モデルを本番環境に導入</p>
+            </li>
+            <li>
+              <p>MLOps基盤を構築し、モデルの継続的トレーニングとデプロイメントを自動化</p>
+            </li>
+            <li>
+              <p>ジュニアエンジニアの育成とコードレビューを通じた品質向上に貢献</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>キーワード</span>：LLM、自然言語処理、MLOps、Python、PyTorch、AWS、チームリード</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.dslab.co.jp">株式会社データサイエンスラボ</a></div>
+            <div class="resume-entry-organization">AIエンジニア</div>
+          </div>
+          <div class="resume-entry-date">2018年4月～2021年3月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>製造業向けの画像検査AIシステムを開発し、検査工程の自動化を実現</p>
+            </li>
+            <li>
+              <p>需要予測モデルを構築し、在庫最適化によるコスト削減に貢献</p>
+            </li>
+            <li>
+              <p>顧客向けのレコメンデーションエンジンを設計・実装</p>
+            </li>
+            <li>
+              <p>データ前処理からモデル評価までのパイプラインを整備</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>キーワード</span>：コンピュータビジョン、需要予測、レコメンデーション、TensorFlow、scikit-learn、SQL</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">言語</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">日本語<span class="resume-language-fluency">：ネイティブ・母国語レベル</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>キーワード</span>：日本語ネイティブ</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">英語<span class="resume-language-fluency">：完全な実務レベル</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>キーワード</span>：TOEIC 950、技術文書読解</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">中国語<span class="resume-language-fluency">：限定的な実務レベル</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>キーワード</span>：HSK 4級</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">スキル</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">機械学習<span class="resume-skill-level">：エキスパート</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>キーワード</span>：Python、PyTorch、TensorFlow、scikit-learn、pandas、NumPy</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">自然言語処理<span class="resume-skill-level">：上級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>キーワード</span>：Transformers、BERT、GPT、Hugging Face、spaCy、固有表現抽出</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">コンピュータビジョン<span class="resume-skill-level">：上級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>キーワード</span>：OpenCV、YOLO、ResNet、画像分類、物体検出</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">MLOps<span class="resume-skill-level">：上級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>キーワード</span>：Docker、Kubernetes、MLflow、AWS SageMaker、GCP Vertex AI、CI/CD</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">データエンジニアリング<span class="resume-skill-level">：中級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>キーワード</span>：SQL、Spark、Airflow、BigQuery、ETL</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">ソフトウェア開発<span class="resume-skill-level">：上級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>キーワード</span>：Python、Go、Git、REST API、マイクロサービス</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">受賞・表彰</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">人工知能学会 優秀論文賞</div>
+            <div class="resume-entry-organization">人工知能学会</div>
+          </div>
+          <div class="resume-entry-date">2022年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>深層学習を用いた顧客行動予測に関する論文が評価され受賞</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">社内技術革新賞</div>
+            <div class="resume-entry-organization">株式会社データサイエンスラボ</div>
+          </div>
+          <div class="resume-entry-date">2020年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>画像検査AIシステムの開発と事業貢献が認められ受賞</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">資格・免状</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://aws.amazon.com/certification/">AWS認定機械学習 - スペシャリスト</a></div>
+            <div class="resume-entry-organization">アマゾン ウェブ サービス</div>
+          </div>
+          <div class="resume-entry-date">2021年3月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://cloud.google.com/certification/machine-learning-engineer">グーグル クラウド プロフェッショナル 機械学習エンジニア</a></div>
+            <div class="resume-entry-organization">グーグル クラウド</div>
+          </div>
+          <div class="resume-entry-date">2022年9月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">出版・著作</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ai-gakkai.or.jp/">深層学習を用いた顧客行動予測モデルの構築</a></div>
+            <div class="resume-entry-organization">人工知能学会全国大会</div>
+          </div>
+          <div class="resume-entry-date">2021年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>顧客の購買履歴と行動ログを活用した予測モデルを提案</p>
+            </li>
+            <li>
+              <p>従来手法と比較して予測精度が12%向上したことを示した</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="resume-entry" id="publications-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.anlp.jp/">大規模言語モデルによる社内文書検索の高度化</a></div>
+            <div class="resume-entry-organization">言語処理学会年次大会</div>
+          </div>
+          <div class="resume-entry-date">2023年3月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>LLMを活用したセマンティック検索の実装と評価</p>
+            </li>
+            <li>
+              <p>検索精度とユーザビリティの両面で改善を確認</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">プロジェクト</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.neurotech.co.jp/projects/knowledge-search">社内ナレッジ検索システム</a></div>
+            <div class="resume-entry-description">LLMを活用した社内文書のセマンティック検索システム</div>
+          </div>
+          <div class="resume-entry-date">2022年1月～2023年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>自然言語による問い合わせに対して関連文書を返す検索基盤を構築</p>
+            </li>
+            <li>
+              <p>ベクトルデータベースと埋め込みモデルを組み合わせたアーキテクチャを設計</p>
+            </li>
+            <li>
+              <p>社内の問い合わせ対応時間を約30%削減</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>キーワード</span>： LLM、セマンティック検索、ベクトルDB、RAG</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.dslab.co.jp/projects/demand-forecast">需要予測AIプラットフォーム</a></div>
+            <div class="resume-entry-description">小売業向けの需要予測と在庫最適化を支援するAIプラットフォーム</div>
+          </div>
+          <div class="resume-entry-date">2019年4月～2020年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>時系列データを用いた需要予測モデルを開発</p>
+            </li>
+            <li>
+              <p>ダッシュボードによる可視化とアラート機能を実装</p>
+            </li>
+            <li>
+              <p>導入企業の在庫コストを平均15%削減</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>キーワード</span>： 需要予測、時系列分析、在庫最適化、ダッシュボード</div>
+      </div>
+      <div class="resume-entry" id="projects-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.dslab.co.jp/projects/vision-inspection">画像検査AIシステム</a></div>
+            <div class="resume-entry-description">製造業の生産ライン向け画像検査自動化システム</div>
+          </div>
+          <div class="resume-entry-date">2018年6月～2019年3月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>畳み込みニューラルネットワークによる不良品検出モデルを構築</p>
+            </li>
+            <li>
+              <p>エッジデバイス上でのリアルタイム推論を実現</p>
+            </li>
+            <li>
+              <p>検査員の作業負荷を軽減し、検出精度を95%以上に向上</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>キーワード</span>： 画像認識、CNN、エッジAI、品質管理</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">興味・関心</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">技術</span>：機械学習、オープンソース、論文読解</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">趣味</span>：ランニング、写真撮影、旅行</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">ボランティア活動</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ai-japan.dev">AI開発者コミュニティ「AI-Japan」</a></div>
+            <div class="resume-entry-organization">メンター</div>
+          </div>
+          <div class="resume-entry-date">2020年4月～2023年3月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>機械学習を学ぶ学生や社会人に対してメンタリングを実施</p>
+            </li>
+            <li>
+              <p>ハンズオン勉強会の企画・運営に参画</p>
+            </li>
+            <li>
+              <p>コミュニティ内の技術相談やコードレビューを担当</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

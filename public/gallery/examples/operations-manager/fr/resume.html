@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Camille Moreau Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Camille Moreau</h1>
+    <p class="resume-headline">Responsable des opérations</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:camille.moreau@example.fr" class="resume-contact-link">camille.moreau@example.fr</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+33 6 12 34 56 78</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.camille-moreau.fr" class="resume-contact-link">https://www.camille-moreau.fr</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>24 rue des Archives, Paris, Île-de-France, France, 75004</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/camille-moreau-ops" class="resume-contact-link">@camille-moreau-ops</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Twitter</span>: <a href="https://twitter.com/camille_ops" class="resume-contact-link">@camille_ops</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Informations de base</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>Responsable des opérations avec plus de 10 ans d&#39;expérience dans la logistique, la supply chain et le pilotage de sites.</p>
+          </li>
+          <li>
+            <p>Solide expertise en management d&#39;équipes pluridisciplinaires, en amélioration continue et en optimisation des processus.</p>
+          </li>
+          <li>
+            <p>Capacité démontrée à piloter des budgets, des indicateurs de performance et des projets transverses.</p>
+          </li>
+          <li>
+            <p>Anglais professionnel et pratique courante des outils de reporting et d&#39;analyse de données.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Formation</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.dauphine.psl.eu">Université Paris-Dauphine</a></div>
+            <div class="resume-entry-organization">Master, Management des opérations et de la supply chain, Score : Mention Bien</div>
+          </div>
+          <div class="resume-entry-date">sept. 2012–juin 2014</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Formation solide en pilotage des opérations et en gestion des flux.</p>
+            </li>
+            <li>
+              <p>Projets académiques consacrés à l&#39;optimisation logistique et à la performance industrielle.</p>
+            </li>
+            <li>
+              <p>Développement de compétences en analyse quantitative et en management d&#39;équipe.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cours</span> : Gestion des opérations, Supply Chain Management, Contrôle de gestion, Gestion de projet, Analyse de données, Management d&#39;équipe</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Expérience professionnelle</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.groupehorizon.fr">Groupe Horizon</a></div>
+            <div class="resume-entry-organization">Responsable des opérations</div>
+          </div>
+          <div class="resume-entry-date">janv. 2020–Present</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Pilotage quotidien des opérations d&#39;un site logistique de 120 collaborateurs.</p>
+            </li>
+            <li>
+              <p>Management direct de 18 personnes et animation d&#39;une équipe transverse de 6 responsables.</p>
+            </li>
+            <li>
+              <p>Déploiement d&#39;indicateurs de performance et de tableaux de bord hebdomadaires.</p>
+            </li>
+            <li>
+              <p>Réduction des coûts opérationnels de 12 % en deux ans grâce à la refonte des processus.</p>
+            </li>
+            <li>
+              <p>Coordination des relations avec les transporteurs, fournisseurs et clients grands comptes.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : Pilotage opérationnel, Management d&#39;équipe, Amélioration continue, KPI, Budget</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.logifret-solutions.fr">LogiFret Solutions</a></div>
+            <div class="resume-entry-organization">Chef d&#39;équipe logistique</div>
+          </div>
+          <div class="resume-entry-date">mars 2017–déc. 2019</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Encadrement d&#39;une équipe de 25 préparateurs et caristes sur deux shifts.</p>
+            </li>
+            <li>
+              <p>Mise en place d&#39;un plan de formation et de polyvalence pour réduire les ruptures de service.</p>
+            </li>
+            <li>
+              <p>Suivi des stocks, des expéditions et de la qualité de service client.</p>
+            </li>
+            <li>
+              <p>Participation active à la certification ISO 9001 du site.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : Logistique, Planification, Sécurité, Performance, Qualité</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.maison-delcourt.fr">Maison Delcourt</a></div>
+            <div class="resume-entry-organization">Coordinateur des opérations</div>
+          </div>
+          <div class="resume-entry-date">sept. 2014–févr. 2017</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Coordination des approvisionnements et des livraisons pour trois sites régionaux.</p>
+            </li>
+            <li>
+              <p>Optimisation des tournées de transport et réduction des délais de livraison.</p>
+            </li>
+            <li>
+              <p>Suivi budgétaire des achats et négociation avec les fournisseurs.</p>
+            </li>
+            <li>
+              <p>Amélioration de la satisfaction client par la mise en place d&#39;un suivi des réclamations.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : Coordination, Approvisionnement, Stocks, Transport, Relation fournisseurs</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Langues</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Français<span class="resume-language-fluency"> : Niveau natif ou bilingue</span></div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Anglais<span class="resume-language-fluency"> : Niveau professionnel complet</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Mots-clés</span> : TOEIC 920</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Espagnol<span class="resume-language-fluency"> : Niveau de travail limité</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Mots-clés</span> : Niveau B1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Compétences</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Gestion des opérations<span class="resume-skill-level"> : Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Planification, Organisation, Processus, Qualité</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Management d&#39;équipe<span class="resume-skill-level"> : Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Recrutement, Coaching, Animation, Évaluation</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Amélioration continue<span class="resume-skill-level"> : Avancé</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Lean, Six Sigma, Kaizen, PDCA</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Supply chain<span class="resume-skill-level"> : Avancé</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Approvisionnement, Stocks, Transport, Logistique</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Analyse et pilotage<span class="resume-skill-level"> : Intermédiaire</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : KPI, Tableaux de bord, Excel, Power BI</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Récompenses</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Prix de l&#39;innovation opérationnelle</div>
+            <div class="resume-entry-organization">Groupe Horizon</div>
+          </div>
+          <div class="resume-entry-date">mars 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Distinction attribuée pour la refonte d&#39;un processus logistique ayant permis de réduire les coûts et les délais de traitement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificats</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.iassc.org">Ceinture Verte Lean Six Sigma</a></div>
+            <div class="resume-entry-organization">IASSC</div>
+          </div>
+          <div class="resume-entry-date">juin 2021</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ascm.org">Certification en gestion de la supply chain</a></div>
+            <div class="resume-entry-organization">ASCM</div>
+          </div>
+          <div class="resume-entry-date">janv. 2022</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Projets</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.groupehorizon.fr/projets/erp">Déploiement ERP</a></div>
+            <div class="resume-entry-description">Migration et déploiement d&#39;un ERP pour les opérations logistiques et achats.</div>
+          </div>
+          <div class="resume-entry-date">janv. 2021–nov. 2021</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Coordination des équipes métiers, informatiques et fournisseurs.</p>
+            </li>
+            <li>
+              <p>Cartographie et simplification des processus avant migration.</p>
+            </li>
+            <li>
+              <p>Plan de formation des utilisateurs et accompagnement du changement.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : ERP, Conduite du changement, Processus, Formation</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.logifret-solutions.fr/projets/tournees">Optimisation des tournées</a></div>
+            <div class="resume-entry-description">Refonte des tournées de livraison pour améliorer la ponctualité et réduire les coûts.</div>
+          </div>
+          <div class="resume-entry-date">avr. 2018–oct. 2018</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Analyse des données de transport et des contraintes clients.</p>
+            </li>
+            <li>
+              <p>Nouveau découpage des zones et ajustement des fréquences de livraison.</p>
+            </li>
+            <li>
+              <p>Réduction des kilomètres parcourus et amélioration du taux de service.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : Optimisation, Tournées, Coûts, Délais</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Centres d&#39;intérêt</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Randonnée</span> : Sentiers, Nature, Photographie</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Cuisine</span> : Cuisine française, Pâtisserie, Œnologie</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Bénévolat</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.restosducoeur.org">Les Restos du Cœur</a></div>
+            <div class="resume-entry-organization">Bénévole logistique</div>
+          </div>
+          <div class="resume-entry-date">oct. 2019–Present</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Participation à la collecte et à la distribution de denrées alimentaires.</p>
+            </li>
+            <li>
+              <p>Aide à l&#39;organisation des stocks et à la préparation des campagnes hivernales.</p>
+            </li>
+            <li>
+              <p>Sensibilisation des équipes bénévoles aux bonnes pratiques logistiques.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

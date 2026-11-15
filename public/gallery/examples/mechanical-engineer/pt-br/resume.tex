@@ -1,0 +1,282 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Brazilian Portuguese language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-portuguese.html
+\usepackage[brazilian]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Mariana Costa Albuquerque}{}
+\title{Engenheira Mecânica Sênior | Projetos, Simulação e Manufatura}
+\phone[mobile]{+55 11 98765-4321}
+\email{mariana.albuquerque@engmail.com.br}
+\homepage{https://www.marianaalbuquerque.eng.br}
+
+\address{Av. Paulista, 1578, Bela Vista, São Paulo, São Paulo, Brasil, 01310-100}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/mariana-albuquerque}{@mariana-albuquerque} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/mariana-albuquerque}{@mariana-albuquerque} {} {} {} • {} {} {} 
+{\small \faStackOverflow}\ \href{https://stackoverflow.com/users/12345678/mariana-albuquerque}{@mariana-albuquerque}}
+
+\begin{document}
+
+\maketitle
+
+\section{Informações Básicas}
+
+\cvline{}{Engenheira mecânica com mais de 10 anos de experiência em projeto, simulação e industrialização de sistemas mecânicos para os setores automotivo, energético e de bens de capital.
+%
+\begin{itemize}
+\item Especialista em CAD 3D, análise estrutural por elementos finitos e otimização de componentes.
+\item Histórico comprovado na redução de custos, melhoria de desempenho e transferência de produtos para a manufatura.
+\item Experiência em gestão de projetos multidisciplinares, normas ISO 9001 e metodologias Lean Six Sigma.
+\item Perfil colaborativo, com forte comunicação técnica e mentoria de equipes de engenharia.
+\end{itemize}}
+\section{Formação}
+
+\cventry{mar. de 2012–fev. de 2014}
+        {Mestrado, Engenharia Mecânica, Nota: 3.9/4.0}
+        {Universidade Estadual de Campinas}
+        {\url{https://www.unicamp.br}}
+        {}
+        {\begin{itemize}
+\item Dissertação voltada à otimização topológica de suportes estruturais, com validação experimental e simulação numérica.
+\item Desenvolvimento de métodos para reduzir massa mantendo rigidez e confiabilidade em aplicações automotivas.
+\item Publicação de resultados em congresso nacional de engenharia mecânica.
+\end{itemize}
+\textbf{Cursos}: Mecânica dos Sólidos Computacional, Dinâmica de Sistemas Mecânicos, Tribologia e Lubrificação, Materiais Compósitos, Metodologia de Pesquisa Experimental, Otimização Estrutural}
+
+\cventry{mar. de 2006–dez. de 2010}
+        {Bacharelado, Engenharia Mecânica, Nota: 3.7/4.0}
+        {Universidade Federal de Santa Catarina}
+        {\url{https://www.ufsc.br}}
+        {}
+        {\begin{itemize}
+\item Formação sólida em projeto mecânico, materiais e processos de fabricação.
+\item Participação em equipe de competição universitária com foco em eficiência energética.
+\item Experiência prática em laboratórios de ensaios mecânicos e metrologia.
+\end{itemize}
+\textbf{Cursos}: Cálculo Diferencial e Integral, Resistência dos Materiais, Termodinâmica Aplicada, Mecânica dos Fluidos, Processos de Fabricação, Desenho Técnico Mecânico, Controle de Sistemas Dinâmicos}
+\section{Experiência Profissional}
+
+\cventry{jan. de 2021–Atual}
+        {Engenheira Mecânica Sênior}
+        {AeroTech Engenharia de Sistemas}
+        {\url{https://www.aerotech-engenharia.com.br}}
+        {}
+        {\begin{itemize}
+\item Liderança técnica de uma equipe de 8 engenheiros e projetistas no desenvolvimento de sistemas térmicos e estruturais.
+\item Responsável pela especificação, cálculo e validação de componentes críticos, atendendo requisitos de desempenho e segurança.
+\item Implantação de fluxo de simulação CAE integrado ao CAD, reduzindo o ciclo de prototipagem em 30\%.
+\item Gestão de fornecedores e transferência de projetos para a produção, com foco em qualidade e custo.
+\item Aplicação de FMEA, análise de causa raiz e planos de ação para melhoria contínua.
+\end{itemize}
+\textbf{Palavras-chave}: Projeto mecânico, Simulação estrutural, ISO 9001, Manufatura enxuta, Gestão de equipes}
+
+\cventry{abr. de 2018–dez. de 2020}
+        {Engenheira de Projetos}
+        {Metalúrgica Nova Era S.A.}
+        {\url{https://www.metalurgicanovaera.com.br}}
+        {}
+        {\begin{itemize}
+\item Desenvolvimento de produtos metálicos sob medida, desde o conceito até a liberação para fabricação.
+\item Criação de modelos 3D, desenhos 2D e memoriais de cálculo com foco em manufaturabilidade.
+\item Análise de falhas em campo e proposição de melhorias em projetos e processos.
+\item Negociação com fornecedores e apoio à engenharia de processos na definição de tolerâncias.
+\item Redução de 12\% no custo de matéria-prima por meio de revisão de projetos e padronização de componentes.
+\end{itemize}
+\textbf{Palavras-chave}: Desenvolvimento de produto, CAD 3D, Análise de falhas, Fornecedores, Redução de custos}
+
+\cventry{jan. de 2016–mar. de 2018}
+        {Engenheira Mecânica Júnior}
+        {Hidráulica Vale Bombas e Sistemas}
+        {\url{https://www.hidraulicavale.com.br}}
+        {}
+        {\begin{itemize}
+\item Suporte ao projeto e à melhoria de bombas centrífugas e sistemas hidráulicos industriais.
+\item Execução de ensaios de desempenho, análise de dados e elaboração de relatórios técnicos.
+\item Atualização de desenhos e documentação técnica conforme normas internas e ABNT.
+\item Apoio à manutenção e à equipe de campo na solução de problemas de instalação.
+\end{itemize}
+\textbf{Palavras-chave}: Bombas centrífugas, Ensaios de desempenho, Manutenção, Normas técnicas, CAD 2D}
+\section{Idiomas}
+
+\cvline{Português}{Nativo ou Bilíngue \hfill \textbf{Palavras-chave}: Nativo}
+\cvline{Inglês}{Proficiência Profissional Fluente \hfill \textbf{Palavras-chave}: TOEFL iBT 105, Inglês técnico}
+\cvline{Espanhol}{Proficiência Profissional Limitada \hfill \textbf{Palavras-chave}: Comunicação técnica}
+\section{Competências}
+
+\cvline{Projeto Mecânico e CAD}{Especialista \hfill \textbf{Palavras-chave}: SolidWorks, Siemens NX, CATIA V5, AutoCAD, GD\&T, Desenho técnico}
+\cvline{Simulação e Análise Estrutural}{Avançado \hfill \textbf{Palavras-chave}: ANSYS Mechanical, Abaqus, FEA, CFD, MATLAB, Otimização topológica}
+\cvline{Manufatura e Processos}{Avançado \hfill \textbf{Palavras-chave}: Usinagem CNC, Soldagem, Conformação de metais, Lean Manufacturing, Six Sigma, Metrologia}
+\cvline{Gestão de Projetos e Qualidade}{Avançado \hfill \textbf{Palavras-chave}: PMBOK, FMEA, ISO 9001, APQP, SAP ERP, Minitab}
+\cvline{Programação e Automação}{Intermediário \hfill \textbf{Palavras-chave}: Python, VBA, MATLAB/Simulink, Arduino, CLP Siemens, Git}
+\section{Prêmios}
+
+\cventry{nov. de 2022}
+        {AeroTech Engenharia de Sistemas}
+        {Prêmio de Inovação em Engenharia}
+        {}
+        {}
+        {\begin{itemize}
+\item Reconhecimento pelo desenvolvimento de um sistema de resfriamento modular com redução de 18\% no consumo energético.
+\item Projeto conduzido em parceria com as áreas de manufatura, qualidade e suprimentos.
+\end{itemize}}
+
+\cventry{mar. de 2015}
+        {Universidade Estadual de Campinas}
+        {Menção Honrosa em Dissertação de Mestrado}
+        {}
+        {}
+        {\begin{itemize}
+\item Distinção pela qualidade técnica e aplicabilidade industrial da pesquisa em otimização topológica.
+\end{itemize}}
+\section{Certificados}
+
+\cventry{ago. de 2019}
+        {ASQ}
+        {Certificação Lean Six Sigma Green Belt}
+        {\url{https://asq.org/cert/lean-six-sigma-green-belt}}
+        {}
+        {}
+
+\cventry{jun. de 2017}
+        {Dassault Systèmes}
+        {SolidWorks Professional}
+        {\url{https://www.solidworks.com/certification}}
+        {}
+        {}
+
+\cventry{set. de 2020}
+        {PMI}
+        {Curso de Gestão de Projetos - PMBOK}
+        {\url{https://www.pmi.org/certifications/project-management-pmp}}
+        {}
+        {}
+\section{Publicações}
+
+\cventry{jul. de 2018}
+        {Otimização Topológica de Componentes Estruturais para Veículos Comerciais}
+        {Revista Brasileira de Engenharia Mecânica}
+        {\url{https://www.rbem.org.br/artigo/otimizacao-topologica-veiculos}}
+        {}
+        {\begin{itemize}
+\item Estudo comparativo entre métodos de otimização topológica aplicados a suportes estruturais.
+\item Validação por elementos finitos e ensaios experimentais em protótipos metálicos.
+\item Discussão sobre ganhos de massa, rigidez e custo de fabricação.
+\end{itemize}}
+\section{Projetos}
+
+\cventry{fev. de 2022–nov. de 2023}
+        {Projeto de trocador de calor compacto para reduzir consumo energético em linhas de produção.}
+        {Sistema de Resfriamento Modular para Equipamentos Industriais}
+        {\url{https://www.aerotech-engenharia.com.br/projetos/resfriamento-modular}}
+        {}
+        {\begin{itemize}
+\item Coordenação do projeto desde a concepção até a validação em campo.
+\item Simulação CFD para dimensionamento térmico e otimização do fluxo de ar.
+\item Uso de manufatura aditiva na produção de componentes de teste.
+\end{itemize}
+\textbf{Palavras-chave}: Trocador de calor, CFD, Sustentabilidade, Manufatura aditiva}
+
+\cventry{mai. de 2017–dez. de 2018}
+        {Bancada automatizada para medição de vazão, pressão e eficiência de bombas.}
+        {Plataforma de Ensaio de Bombas Centrífugas}
+        {\url{https://www.hidraulicavale.com.br/projetos/plataforma-ensaio}}
+        {}
+        {\begin{itemize}
+\item Especificação de instrumentação, aquisição de dados e painel de controle.
+\item Padronização de ensaios conforme a norma ISO 9906.
+\item Treinamento da equipe técnica para operação e manutenção da bancada.
+\end{itemize}
+\textbf{Palavras-chave}: Instrumentação, Aquisição de dados, Norma ISO 9906, Automação}
+\section{Interesses}
+
+\cvline{Esportes}{Corrida de rua, Ciclismo, Natação, Trilhas}
+\cvline{Cultura e Tecnologia}{Leitura, Impressão 3D, Fotografia, Astronomia}
+\section{Voluntariado}
+
+\cventry{ago. de 2019–Atual}
+        {Mentora de Projetos}
+        {Instituto Engenheiros do Amanhã}
+        {\url{https://www.engenheirosdoamanha.org.br}}
+        {}
+        {\begin{itemize}
+\item Mentoria de estudantes de engenharia em projetos de mobilidade e eficiência energética.
+\item Apoio na estruturação de cronogramas, orçamentos e apresentações técnicas.
+\item Organização de workshops sobre CAD, simulação e boas práticas de projeto.
+\end{itemize}}
+    
+\end{document}

@@ -1,0 +1,239 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+% renew moderncv command to adapt for CJK colon
+\renewcommand*{\cvitem}[3][.25em]{%
+  \ifstrempty{#2}{}{\hintstyle{#2}：}{#3}%
+  \par\addvspace{#1}}
+
+\renewcommand*{\cvitemwithcomment}[4][.25em]{%
+  \savebox{\cvitemwithcommentmainbox}{\ifstrempty{#2}{}{\hintstyle{#2}：}#3}%
+  \setlength{\cvitemwithcommentmainlength}{\widthof{\usebox{\cvitemwithcommentmainbox}}}%
+  \setlength{\cvitemwithcommentcommentlength}{\maincolumnwidth-\separatorcolumnwidth-\cvitemwithcommentmainlength}%
+  \begin{minipage}[t]{\cvitemwithcommentmainlength}\usebox{\cvitemwithcommentmainbox}\end{minipage}%
+  \hfill% fill of \separatorcolumnwidth
+  \begin{minipage}[t]{\cvitemwithcommentcommentlength}\raggedleft\small\itshape#4\end{minipage}%
+  \par\addvspace{#1}}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=Lining, ItalicFont=Linux Libertine O]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK JP}{
+  \setCJKmainfont{Noto Serif CJK JP}
+}{}
+\IfFontExistsTF{Noto Sans CJK JP}{
+  \setCJKsansfont{Noto Sans CJK JP}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{佐藤 健一}{}
+\title{サイバーセキュリティエンジニア}
+\phone[mobile]{+81 90-1234-5678}
+\email{kenichi.sato@example.com}
+\homepage{https://kenichi-sato.dev}
+
+\address{日本、東京都、千代田区、東京都千代田区丸の内1-2-3、100-0001}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/kenichi-sato}{@kenichi-sato} {} {} {} • {} {} {} 
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/kenichi-sato}{@kenichi-sato} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/kenichi\_sato}{@kenichi\_sato}}
+
+\begin{document}
+
+\maketitle
+
+\section{基本情報}
+
+\cvline{}{セキュリティエンジニアとして5年以上の経験を持ち、ネットワークセキュリティ、脆弱性診断、インシデント対応に精通しています。
+特にペネトレーションテストとセキュリティアーキテクチャの設計に強みを持ち、金融機関やEコマース企業のセキュリティ強化に貢献してきました。
+チームをリードし、セキュリティ意識向上のためのトレーニングを実施した経験もあります。
+常に最新の脅威情報を追い、プロアクティブな防御策を提案することを心がけています。}
+\section{学歴}
+
+\cventry{2013年4月～2015年3月}
+        {修士、情報理工学系研究科 コンピュータ科学専攻、成績：3.8/4.0}
+        {東京大学}
+        {\url{https://www.u-tokyo.ac.jp}}
+        {}
+        {情報セキュリティを専攻し、暗号プロトコルとネットワーク防御に関する研究に従事。
+修士論文では「機械学習を用いた異常検知による侵入検知システムの改善」をテーマに研究。
+\textbf{コース}：情報セキュリティ、暗号理論、ネットワーク工学、オペレーティングシステム、データベースシステム}
+\section{職歴}
+
+\cventry{2019年4月～現在}
+        {シニアセキュリティエンジニア}
+        {株式会社サイバーディフェンス}
+        {\url{https://www.cyberdefense.co.jp}}
+        {}
+        {\begin{itemize}
+\item 金融機関向けのセキュリティアーキテクチャ設計と実装をリード
+\item 脆弱性診断およびペネトレーションテストを実施し、重大な脆弱性を複数発見・修正
+\item インシデント対応チームのリーダーとして、セキュリティインシデントの調査と復旧を指揮
+\item セキュリティポリシーの策定と従業員向けセキュリティトレーニングを実施
+\item 最新の脅威情報を収集し、プロアクティブな防御策を提案
+\end{itemize}
+\textbf{キーワード}：ネットワークセキュリティ、ペネトレーションテスト、インシデント対応、セキュリティアーキテクチャ}
+
+\cventry{2015年4月～2019年3月}
+        {セキュリティエンジニア}
+        {株式会社セキュアテック}
+        {\url{https://www.securetech.co.jp}}
+        {}
+        {\begin{itemize}
+\item Webアプリケーションの脆弱性診断を担当し、SQLインジェクションやXSSなどの脆弱性を特定
+\item セキュリティ監視システムの運用と改善を実施
+\item セキュリティインシデントの一次対応と報告書作成
+\item 社内セキュリティガイドラインの整備に貢献
+\end{itemize}
+\textbf{キーワード}：脆弱性診断、Webセキュリティ、セキュリティ監視}
+\section{言語}
+
+\cvline{日本語}{ネイティブ・母国語レベル \hfill \textbf{キーワード}：日本語ネイティブ}
+\cvline{英語}{完全な実務レベル \hfill \textbf{キーワード}：TOEIC 900点、技術文書読解}
+\section{スキル}
+
+\cvline{ネットワークセキュリティ}{エキスパート \hfill \textbf{キーワード}：ファイアウォール、IDS/IPS、VPN、パケット解析、ネットワーク設計}
+\cvline{ペネトレーションテスト}{上級 \hfill \textbf{キーワード}：Metasploit、Burp Suite、Nmap、Wireshark、Kali Linux}
+\cvline{クラウドセキュリティ}{中級 \hfill \textbf{キーワード}：AWS、Azure、GCP、IAM、セキュリティグループ}
+\cvline{暗号技術}{上級 \hfill \textbf{キーワード}：PKI、TLS/SSL、暗号化アルゴリズム、鍵管理}
+\section{受賞・表彰}
+
+\cventry{2022年12月}
+        {株式会社サイバーディフェンス}
+        {年間最優秀セキュリティエンジニア賞}
+        {}
+        {}
+        {金融機関向けのセキュリティプロジェクトにおける卓越したリーダーシップと技術的貢献に対して授与。}
+
+\cventry{2015年3月}
+        {東京大学}
+        {セキュリティ研究優秀賞}
+        {}
+        {}
+        {修士論文「機械学習を用いた異常検知による侵入検知システムの改善」が高く評価され授与。}
+\section{資格・免状}
+
+\cventry{2020年6月}
+        {(ISC)²}
+        {CISSP（情報システムセキュリティ専門家）}
+        {\url{https://www.isc2.org/Certifications/CISSP}}
+        {}
+        {}
+
+\cventry{2018年11月}
+        {Offensive Security}
+        {OSCP（Offensive Security Certified Professional）}
+        {\url{https://www.offensive-security.com/pwk-oscp/}}
+        {}
+        {}
+
+\cventry{2017年4月}
+        {情報処理推進機構}
+        {情報処理安全確保支援士}
+        {\url{https://www.ipa.go.jp/shiken/kubun/sc.html}}
+        {}
+        {}
+\section{出版・著作}
+
+\cventry{2015年3月}
+        {機械学習を用いた異常検知による侵入検知システムの改善}
+        {情報処理学会 論文誌}
+        {\url{https://www.ipsj.or.jp}}
+        {}
+        {侵入検知システムの精度向上を目的として、機械学習アルゴリズムを適用した異常検知手法を提案。
+従来手法と比較して検知率が15\%向上し、誤検知率が20\%低減することを示した。}
+\section{プロジェクト}
+
+\cventry{2021年1月～2021年6月}
+        {複数のセキュリティログを統合し、リアルタイムで可視化するダッシュボード}
+        {セキュリティ監視ダッシュボード}
+        {\url{https://github.com/kenichi-sato/security-dashboard}}
+        {}
+        {\begin{itemize}
+\item Elasticsearch、Logstash、Kibana (ELKスタック) を使用してセキュリティログを収集・分析
+\item 異常検知アラートをSlackに通知する機能を実装
+\item セキュリティ運用チームの効率を30\%向上
+\end{itemize}
+\textbf{キーワード}：セキュリティ監視、ELK、ログ分析、可視化}
+\section{興味・関心}
+
+\cvline{CTF (Capture The Flag)}{Web、暗号、フォレンジック}
+\cvline{読書}{セキュリティ関連書籍、技術書}
+\section{ボランティア活動}
+
+\cventry{2018年4月～2023年3月}
+        {セキュリティトレーナー}
+        {日本サイバーセキュリティコミュニティ}
+        {\url{https://www.jcsc.org}}
+        {}
+        {\begin{itemize}
+\item 初心者向けのセキュリティワークショップを定期的に開催
+\item CTF大会の運営スタッフとして参加
+\item セキュリティ意識向上のための講演を実施
+\end{itemize}}
+    
+\end{document}

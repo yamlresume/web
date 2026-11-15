@@ -1,0 +1,263 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Kristoffer A. Løken}{}
+\title{Senior finansanalytiker med fokus på verdsettelse, risiko og kapitalmarkeder}
+\phone[mobile]{+47 912 34 567}
+\email{kristoffer.loken@fjordkapital.no}
+\homepage{https://www.kristofferloken.no}
+
+\address{Storgata 45, Oslo, Oslo, Norge, 0182}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/kristoffer-loken}{@kristoffer-loken} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/kloken-finance}{@kloken-finance}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{\begin{itemize}
+\item Finansanalytiker med mastergrad i finansiell økonomi og flere års erfaring fra bank og kapitalforvaltning
+\item Sterk kompetanse i verdsettelse, kredittanalyse, makroøkonomi og risikostyring
+\item Erfaren med å bygge modeller og automatiserte rapporter i Excel, SQL, Python og Power BI
+\item Opptatt av å omsette analyse til tydelige anbefalinger for beslutningstakere
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2015–juni 2017}
+        {Master, Finansiell økonomi, Poeng: 3,9/4,0}
+        {Norges Handelshøyskole}
+        {\url{https://www.nhh.no}}
+        {}
+        {\begin{itemize}
+\item Fordypning i verdsettelse, kapitalmarkeder og kvantitativ analyse
+\item Masteroppgave om kredittrisiko i nordiske obligasjonsfond
+\item Gjennomsnittskarakter 3,9 av 4,0
+\end{itemize}
+\textbf{Kurs}: Selskapsfinans, Verdsettelse og investeringsanalyse, Risikostyring og derivater, Regnskapsanalyse, Makroøkonomi, Porteføljeteori, Kvantitative metoder, ESG og bærekraftig finans}
+
+\cventry{aug. 2012–juni 2015}
+        {Bachelor, Samfunnsøkonomi, Poeng: 3,7/4,0}
+        {Universitetet i Oslo}
+        {\url{https://www.uio.no}}
+        {}
+        {\begin{itemize}
+\item Grunnleggende fordypning i samfunnsøkonomi og statistikk
+\item Prosjektoppgave om renteutvikling og boligmarkedet i Norge
+\end{itemize}
+\textbf{Kurs}: Mikroøkonomi, Makroøkonomi, Statistikk, Økonometri, Finansmarkeder, Regnskap og budsjettering}
+\section{Arbeidserfaring}
+
+\cventry{jan. 2021–Nå}
+        {Senior finansanalytiker}
+        {Fjordkapital Forvaltning}
+        {\url{https://www.fjordkapital.no}}
+        {}
+        {\begin{itemize}
+\item Ansvarlig for verdsettelsesmodeller (DCF, DDM) for nordiske aksjer og obligasjoner
+\item Utarbeider kvartalsvise investeringsanbefalinger til porteføljeforvaltere og risikokomité
+\item Bygger automatiserte rapporter i Power BI og Python som reduserer manuell rapportering med 30 \%
+\item Overvåker makro-, rente- og kredittmarkeder og bidrar i ESG-analyse
+\item Mentorerer to junioranalytikere og kvalitetssikrer modeller og investeringsnotater
+\end{itemize}
+\textbf{Nøkkelord}: Verdsettelse, DCF, ESG, Porteføljestyring, Power BI, Risikoanalyse}
+
+\cventry{sep. 2017–des. 2020}
+        {Finansanalytiker}
+        {Nordlys Bank}
+        {\url{https://www.nordlysbank.no}}
+        {}
+        {\begin{itemize}
+\item Analyserte kredittporteføljer og laget månedlige risikorapporter til ledelsen
+\item Utviklet stresscenarier og makroøkonomiske prognoser for kapitalplanlegging
+\item Forbedret datakvalitet i SQL-baserte rapporteringsløsninger
+\item Presenterte funn for kredittkomité og bidro til beslutningsgrunnlag
+\end{itemize}
+\textbf{Nøkkelord}: Kredittanalyse, Stresscenarier, SQL, Rapportutvikling, Kapitalplanlegging}
+
+\cventry{juni 2016–aug. 2016}
+        {Sommeranalytiker}
+        {Oslo Analytics Partners}
+        {\url{https://www.osloanalytics.no}}
+        {}
+        {\begin{itemize}
+\item Bygget markedspaneler og scenarioanalyser for energisektoren
+\item Støttet senioranalytikere med datainnsamling og kvalitetssikring
+\item Laget Excel-modeller for kostnads- og inntektsprognoser
+\end{itemize}
+\textbf{Nøkkelord}: Excel, Markedsanalyse, Energi, Modellering}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: C1, Forretningsengelsk}
+\cvline{Tysk}{Begrenset arbeidskunnskap \hfill \textbf{Nøkkelord}: A2, Grunnleggende}
+\section{Ferdigheter}
+
+\cvline{Finansiell modellering}{Ekspert \hfill \textbf{Nøkkelord}: DCF, DDM, LBO, Scenarioanalyse, Excel, VBA}
+\cvline{Dataanalyse og visualisering}{Avansert \hfill \textbf{Nøkkelord}: SQL, Python, Pandas, Power BI, Tableau, R}
+\cvline{Risiko og kapitalstyring}{Avansert \hfill \textbf{Nøkkelord}: Kredittrisiko, Markedsrisiko, Stresscenarier, Basel III, ICAAP}
+\cvline{Investeringsanalyse}{Avansert \hfill \textbf{Nøkkelord}: Aksjeanalyse, Obligasjoner, Makroøkonomi, Porteføljeteori, ESG}
+\cvline{Kommunikasjon og rådgivning}{Ekspert \hfill \textbf{Nøkkelord}: Investeringsnotater, Presentasjoner, Interessentstyring, Mentoring}
+\section{Utmerkelser}
+
+\cventry{des. 2023}
+        {Fjordkapital Forvaltning}
+        {Årets analytiker}
+        {}
+        {}
+        {Tildelt for fremragende analysearbeid og bidrag til forbedret investeringsprosess i nordiske aksjer.}
+
+\cventry{juni 2017}
+        {Norges Handelshøyskole}
+        {Beste masteroppgave i finansiell økonomi}
+        {}
+        {}
+        {Pris for masteroppgave om kredittrisiko og likviditet i nordiske obligasjonsfond.}
+\section{Sertifikater}
+
+\cventry{aug. 2020}
+        {CFA Institute}
+        {CFA nivå II}
+        {\url{https://www.cfainstitute.org/programs/cfa}}
+        {}
+        {}
+
+\cventry{mars 2019}
+        {Corporate Finance Institute}
+        {FMVA – finansiell modellering og verdsettelse}
+        {\url{https://corporatefinanceinstitute.com/certifications/fmva/}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{nov. 2018}
+        {Kredittrisiko i nordiske obligasjonsfond}
+        {Nordisk tidsskrift for finans}
+        {\url{https://www.nordiskfinans.no/artikler/kredittrisiko-i-nordiske-obligasjonsfond}}
+        {}
+        {\begin{itemize}
+\item Analyserer hvordan likviditet og kredittspreader påvirker avkastning i nordiske obligasjonsfond
+\item Funn tyder på at stresstester bør inkludere likviditetspremier i større grad
+\end{itemize}}
+\section{Prosjekter}
+
+\cventry{jan. 2022–okt. 2023}
+        {Modell for å integrere ESG-indikatorer i verdsettelse og risikovurdering}
+        {ESG-risikomodell for nordiske aksjer}
+        {\url{https://www.fjordkapital.no/innsikt/esg-risikomodell}}
+        {}
+        {\begin{itemize}
+\item Utviklet scoringsrammeverk for klimarisiko, styring og sosiale forhold
+\item Integrerte modellen i kvartalsvis investeringsprosess
+\item Presenterte resultater for investeringskomité og kunder
+\end{itemize}
+\textbf{Nøkkelord}: ESG, Klimarisiko, Verdsettelse, Power BI}
+
+\cventry{feb. 2019–nov. 2020}
+        {Python-basert rapportløsning som samler kredittdata og nøkkeltall}
+        {Automatisert månedsrapport for kredittportefølje}
+        {\url{https://www.nordlysbank.no/om-oss/rapportering}}
+        {}
+        {\begin{itemize}
+\item Reduserte manuell rapporttid fra tre dager til fire timer
+\item Sikret konsistent datakvalitet og sporbarhet i rapporteringen
+\item Bygget dashboards for ledelsen i Power BI
+\end{itemize}
+\textbf{Nøkkelord}: Python, SQL, Power BI, Automatisering}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fjellturer, Langrenn, Kajakk}
+\cvline{Samfunn og økonomi}{Makroøkonomi, Bærekraft, Litteratur}
+\section{Frivillig arbeid}
+
+\cventry{jan. 2022–des. 2024}
+        {Mentor og fagansvarlig}
+        {Norsk Forum for Finansanalyse}
+        {\url{https://www.norskfinansanalyse.no}}
+        {}
+        {\begin{itemize}
+\item Mentorerer studenter og nyutdannede innen finansiell analyse
+\item Bidrar til fagkvelder om verdsettelse, makro og ESG
+\item Koordinerer case-konkurranse for studenter
+\end{itemize}}
+    
+\end{document}

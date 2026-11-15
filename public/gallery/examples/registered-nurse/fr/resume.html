@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Camille Lefèvre Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Camille Lefèvre</h1>
+    <p class="resume-headline">Infirmière diplômée d&#39;État</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:camille.lefevre@example.fr" class="resume-contact-link">camille.lefevre@example.fr</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+33 6 12 34 56 78</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.camille-lefevre-infirmiere.fr" class="resume-contact-link">https://www.camille-lefevre-infirmiere.fr</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>45 Rue de la République, Lyon, Auvergne-Rhône-Alpes, France, 69003</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/camille-lefevre" class="resume-contact-link">@camille-lefevre</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Instagram</span>: <a href="https://www.instagram.com/camille.infirmiere" class="resume-contact-link">@camille.infirmiere</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Informations de base</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <ul>
+          <li>
+            <p>Infirmière diplômée d&#39;État avec 5 ans d&#39;expérience en milieu hospitalier, spécialisée en soins généraux et urgences</p>
+          </li>
+          <li>
+            <p>Excellente capacité à travailler en équipe pluridisciplinaire et à communiquer avec les patients et leurs familles</p>
+          </li>
+          <li>
+            <p>Maîtrise des protocoles de soins, de l&#39;hygiène hospitalière et de la gestion des dossiers patients informatisés</p>
+          </li>
+          <li>
+            <p>Reconnue pour son sens de l&#39;écoute, sa rigueur et sa réactivité face aux situations d&#39;urgence</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Formation</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ifsi-lyon.fr">Institut de Formation en Soins Infirmiers (IFSI) de Lyon</a></div>
+            <div class="resume-entry-organization">Licence, Soins Infirmiers, Score : Mention Bien</div>
+          </div>
+          <div class="resume-entry-date">sept. 2017–juil. 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Formation complète aux soins infirmiers, incluant stages en hôpital, EHPAD et soins à domicile</p>
+            </li>
+            <li>
+              <p>Acquisition de compétences techniques et relationnelles pour la prise en charge globale du patient</p>
+            </li>
+            <li>
+              <p>Participation à des projets de recherche en soins infirmiers</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Cours</span> : Sciences infirmières, Anatomie et physiologie, Pharmacologie, Soins d&#39;urgence, Hygiène hospitalière, Relation d&#39;aide, Santé publique, Stages cliniques</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Expérience professionnelle</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.chu-lyon.fr">CHU de Lyon - Hôpital Édouard Herriot</a></div>
+            <div class="resume-entry-organization">Infirmière diplômée d&#39;État</div>
+          </div>
+          <div class="resume-entry-date">mars 2023–Present</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Prise en charge de patients en service de médecine polyvalente (30 lits)</p>
+            </li>
+            <li>
+              <p>Réalisation des soins techniques : prises de sang, injections, pansements, sondages</p>
+            </li>
+            <li>
+              <p>Gestion des dossiers patients informatisés et coordination avec les médecins et aides-soignants</p>
+            </li>
+            <li>
+              <p>Éducation thérapeutique des patients et de leurs familles</p>
+            </li>
+            <li>
+              <p>Participation à la démarche qualité et à la lutte contre les infections nosocomiales</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : Soins généraux, Médecine polyvalente, Éducation thérapeutique, Dossier patient informatisé</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.clinique-sauvegarde.fr">Clinique de la Sauvegarde</a></div>
+            <div class="resume-entry-organization">Infirmière diplômée d&#39;État</div>
+          </div>
+          <div class="resume-entry-date">sept. 2020–févr. 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Soins infirmiers en service de chirurgie orthopédique (25 lits)</p>
+            </li>
+            <li>
+              <p>Préparation et suivi des patients avant et après opération</p>
+            </li>
+            <li>
+              <p>Administration des traitements antalgiques et surveillance post-opératoire</p>
+            </li>
+            <li>
+              <p>Collaboration avec les chirurgiens, kinésithérapeutes et équipes de rééducation</p>
+            </li>
+            <li>
+              <p>Accompagnement des patients dans leur parcours de soins et de rééducation</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : Chirurgie orthopédique, Soins post-opératoires, Gestion de la douleur, Rééducation</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Langues</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Français<span class="resume-language-fluency"> : Niveau natif ou bilingue</span></div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Anglais<span class="resume-language-fluency"> : Niveau professionnel complet</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Mots-clés</span> : TOEIC 850, Communication médicale</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Espagnol<span class="resume-language-fluency"> : Niveau élémentaire</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Compétences</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Soins infirmiers<span class="resume-skill-level"> : Expert</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Prise de constantes, Injections, Pansements, Sondages, Prélèvements sanguins</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Urgences<span class="resume-skill-level"> : Avancé</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Gestion du stress, Protocoles d&#39;urgence, AFGSU 2</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Relation d&#39;aide<span class="resume-skill-level"> : Avancé</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : Écoute active, Communication, Éducation thérapeutique</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Informatique médicale<span class="resume-skill-level"> : Intermédiaire</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Mots-clés</span> : DPI, Logiciel Hôpital, Microsoft Office</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Récompenses</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Prix d&#39;excellence en soins infirmiers</div>
+            <div class="resume-entry-organization">IFSI de Lyon</div>
+          </div>
+          <div class="resume-entry-date">juil. 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Récompense décernée pour la qualité des soins prodigués lors des stages et l&#39;implication dans la formation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Certificats</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.cesu-lyon.fr">AFGSU 2 - Attestation de Formation aux Gestes et Soins d&#39;Urgence</a></div>
+            <div class="resume-entry-organization">CESU de Lyon</div>
+          </div>
+          <div class="resume-entry-date">sept. 2021</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.chu-lyon.fr/formation-hygiene">Formation aux bonnes pratiques d&#39;hygiène</a></div>
+            <div class="resume-entry-organization">Hospices Civils de Lyon</div>
+          </div>
+          <div class="resume-entry-date">janv. 2022</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.univ-lyon1.fr">Certification en éducation thérapeutique du patient</a></div>
+            <div class="resume-entry-organization">Université Claude Bernard Lyon 1</div>
+          </div>
+          <div class="resume-entry-date">juin 2023</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Publications</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.congres-infirmiers.fr">Prise en charge infirmière de la douleur post-opératoire : une revue de la littérature</a></div>
+            <div class="resume-entry-organization">Congrès National des Infirmiers</div>
+          </div>
+          <div class="resume-entry-date">oct. 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Poster présenté lors du congrès annuel</p>
+            </li>
+            <li>
+              <p>Analyse des pratiques et recommandations pour l&#39;amélioration de la prise en charge</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Projets</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.chu-lyon.fr/projet-douleur">Projet d&#39;amélioration de la prise en charge des patients douloureux</a></div>
+            <div class="resume-entry-description">Mise en place d&#39;un protocole d&#39;évaluation systématique de la douleur en service de chirurgie orthopédique</div>
+          </div>
+          <div class="resume-entry-date">janv. 2023–juin 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Élaboration d&#39;un outil d&#39;évaluation de la douleur (EVA) et formation des équipes</p>
+            </li>
+            <li>
+              <p>Réduction de 30% des douleurs non contrôlées signalées</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Mots-clés</span> : Douleur, Qualité, Protocole</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Centres d&#39;intérêt</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Sports</span> : Randonnée, Yoga, Natation</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Culture</span> : Lecture, Cinéma, Musique</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Bénévolat</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.croix-rouge.fr">Croix-Rouge française - Unité locale de Lyon</a></div>
+            <div class="resume-entry-organization">Infirmière bénévole</div>
+          </div>
+          <div class="resume-entry-date">janv. 2021–Present</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Participation à des maraudes et à des consultations infirmières pour personnes précaires</p>
+            </li>
+            <li>
+              <p>Réalisation de soins de base, prévention et orientation vers les structures de soins</p>
+            </li>
+            <li>
+              <p>Sensibilisation aux gestes de premiers secours</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

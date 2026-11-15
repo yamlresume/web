@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>Maximilian Brandt Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">Maximilian Brandt</h1>
+    <p class="resume-headline">Senior Business Analyst mit Fokus auf Prozessoptimierung, Datenanalyse und Anforderungsmanagement</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:maximilian.brandt@example.de" class="resume-contact-link">maximilian.brandt@example.de</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+49 30 12345678</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.maximilian-brandt.de" class="resume-contact-link">https://www.maximilian-brandt.de</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>Friedrichstraße 123, Berlin, Berlin, Deutschland, 10115</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/maximilian-brandt-ba" class="resume-contact-link">@maximilian-brandt-ba</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">GitHub</span>: <a href="https://github.com/mbrandt-analytics" class="resume-contact-link">@mbrandt-analytics</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">Basisinformationen</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <p>Senior Business Analyst mit über fünf Jahren Erfahrung in der Analyse, Gestaltung und Optimierung von Geschäftsprozessen. Schwerpunkt auf der Übersetzung fachlicher Anforderungen in umsetzbare IT-Lösungen sowie auf datengetriebener Entscheidungsunterstützung.</p>
+        <ul>
+          <li>
+            <p>Erhebung, Priorisierung und Dokumentation von Anforderungen mit Stakeholdern aus Fach- und IT-Bereichen</p>
+          </li>
+          <li>
+            <p>Modellierung von Ist- und Soll-Prozessen mit BPMN und UML</p>
+          </li>
+          <li>
+            <p>Entwicklung von Kennzahlensystemen und Dashboards mit SQL, Power BI und Tableau</p>
+          </li>
+          <li>
+            <p>Moderation von Workshops, agilem Requirements Engineering und professioneller Stakeholder-Kommunikation</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">Ausbildung</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hu-berlin.de">Humboldt-Universität zu Berlin</a></div>
+            <div class="resume-entry-organization">Master, Wirtschaftsinformatik, Punkte: 1,7</div>
+          </div>
+          <div class="resume-entry-date">Okt. 2018–Sept. 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Fokus auf der Verbindung von betriebswirtschaftlichen Fragestellungen und IT-Lösungen</p>
+            </li>
+            <li>
+              <p>Praxisprojekte zu Process Mining, Reporting und Anforderungsanalyse</p>
+            </li>
+            <li>
+              <p>Masterarbeit zu datengetriebener Prozessoptimierung im Finanzdienstleistungssektor</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Kurse</span>: Geschäftsprozessmodellierung, Datenbanken und Datenmanagement, Business Intelligence, Anforderungsmanagement, Projektmanagement, Wirtschaftsrecht</div>
+      </div>
+      <div class="resume-entry" id="education-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.tum.de">Technische Universität München</a></div>
+            <div class="resume-entry-organization">Bachelor, Betriebswirtschaftslehre, Punkte: 1,9</div>
+          </div>
+          <div class="resume-entry-date">Okt. 2014–Sept. 2018</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Grundlagen in Betriebswirtschaft, Statistik und quantitativer Analyse</p>
+            </li>
+            <li>
+              <p>Erste Projekte zu Kennzahlenanalyse und Prozessdokumentation</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Kurse</span>: Statistik, Finanzwirtschaft, Marketing, Operations Management, Wirtschaftsinformatik, Controlling</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">Berufserfahrung</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nordstern-consulting.de">Nordstern Consulting GmbH</a></div>
+            <div class="resume-entry-organization">Senior Business Analyst</div>
+          </div>
+          <div class="resume-entry-date">März 2022–Heute</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Leitung der Anforderungsanalyse für digitale Transformationsprojekte in den Bereichen Finanzdienstleistungen und E-Commerce</p>
+            </li>
+            <li>
+              <p>Übersetzung komplexer Fachanforderungen in User Stories, Prozessmodelle und Akzeptanzkriterien</p>
+            </li>
+            <li>
+              <p>Moderation von Workshops mit Stakeholdern aus Fachbereichen, IT und Management</p>
+            </li>
+            <li>
+              <p>Steuerung von Backlog-Priorisierung und fachlicher Qualitätssicherung in agilen Projektteams</p>
+            </li>
+            <li>
+              <p>Mentoring von zwei Junior Business Analysts und Etablierung einheitlicher Dokumentationsstandards</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Schlüsselwörter</span>: Anforderungsmanagement, Prozessoptimierung, Stakeholder-Management, Agile Methoden, Datenanalyse</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.fintech-solutions.de">FinTech Solutions AG</a></div>
+            <div class="resume-entry-organization">Business Analyst</div>
+          </div>
+          <div class="resume-entry-date">Juli 2020–Feb. 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Analyse und Dokumentation von Geschäftsprozessen im Online-Kreditgeschäft</p>
+            </li>
+            <li>
+              <p>Erstellung von Lasten- und Pflichtenheften sowie Pflege von Anforderungsspezifikationen</p>
+            </li>
+            <li>
+              <p>Entwicklung von SQL-Auswertungen und Power-BI-Reports für das Produktmanagement</p>
+            </li>
+            <li>
+              <p>Unterstützung bei Testfällen, Abnahmetests und der Einführung neuer Softwarefunktionen</p>
+            </li>
+            <li>
+              <p>Zusammenarbeit mit Compliance und Revision zur Sicherstellung regulatorischer Anforderungen</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Schlüsselwörter</span>: Anforderungsanalyse, SQL, Power BI, Testmanagement, Scrum</div>
+      </div>
+      <div class="resume-entry" id="work-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.handelshaus-weber.de">Handelshaus Weber GmbH</a></div>
+            <div class="resume-entry-organization">Junior Business Analyst</div>
+          </div>
+          <div class="resume-entry-date">Okt. 2018–Juni 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Erstellung von Prozessdokumentationen und Auswertungen für Einkauf und Logistik</p>
+            </li>
+            <li>
+              <p>Pflege von Excel-basierten Reports und Vorbereitung von Management-Präsentationen</p>
+            </li>
+            <li>
+              <p>Unterstützung bei der Einführung eines neuen Warenwirtschaftssystems</p>
+            </li>
+            <li>
+              <p>Aufnahme von Anwenderfeedback und Ableitung von Verbesserungsmaßnahmen</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Schlüsselwörter</span>: Excel, BPMN, Prozessdokumentation, Reporting</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">Sprachen</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">Deutsch<span class="resume-language-fluency">: Muttersprache oder zweisprachig</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Schlüsselwörter</span>: Muttersprache, Verhandlungssicher</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Englisch<span class="resume-language-fluency">: Verhandlungssichere Kenntnisse</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Schlüsselwörter</span>: C1, Business English</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">Französisch<span class="resume-language-fluency">: Gute Kenntnisse</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>Schlüsselwörter</span>: B1, Grundkenntnisse</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">Fähigkeiten</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Business Analyse<span class="resume-skill-level">: Experte</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Schlüsselwörter</span>: Anforderungsmanagement, Prozessmodellierung, BPMN, UML, User Stories</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Datenanalyse &amp; Reporting<span class="resume-skill-level">: Erfahren</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Schlüsselwörter</span>: SQL, Power BI, Tableau, Excel, Python (Pandas)</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Projektmanagement &amp; Agile<span class="resume-skill-level">: Erfahren</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Schlüsselwörter</span>: Scrum, Kanban, Jira, Confluence, Stakeholder-Kommunikation</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">Domänenwissen<span class="resume-skill-level">: Erfahren</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>Schlüsselwörter</span>: Finanzdienstleistungen, E-Commerce, Regulatorik, SAP ERP</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">Auszeichnungen</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">Preis für das beste Praxisprojekt</div>
+            <div class="resume-entry-organization">Humboldt-Universität zu Berlin</div>
+          </div>
+          <div class="resume-entry-date">Juli 2020</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>Ausgezeichnet für die Entwicklung eines datengetriebenen Dashboard-Konzepts zur Steuerung von Vertriebsprozessen im Rahmen des Masterstudiums.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">Zertifikate</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.iiba.org/certification/cbap">Certified Business Analysis Professional (CBAP)</a></div>
+            <div class="resume-entry-organization">IIBA</div>
+          </div>
+          <div class="resume-entry-date">Feb. 2023</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.scrum.org/professional-scrum-certifications/professional-scrum-master-i">Professional Scrum Master I</a></div>
+            <div class="resume-entry-organization">Scrum.org</div>
+          </div>
+          <div class="resume-entry-date">Nov. 2021</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-3">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://learn.microsoft.com/en-us/certifications/power-bi-data-analyst-associate/">Microsoft Certified: Power BI Data Analyst Associate</a></div>
+            <div class="resume-entry-organization">Microsoft</div>
+          </div>
+          <div class="resume-entry-date">Apr. 2022</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">Veröffentlichungen</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.business-analysis-journal.de/anforderungsmanagement-regulierte-maerkte">Anforderungsmanagement in regulierten Märkten</a></div>
+            <div class="resume-entry-organization">Business Analysis Journal</div>
+          </div>
+          <div class="resume-entry-date">März 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Praxisorientierter Beitrag zu Methoden der Anforderungserhebung in regulierten Finanzmärkten</p>
+            </li>
+            <li>
+              <p>Fokus auf Traceability, Stakeholder-Alignment und dokumentierte Entscheidungswege</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">Projekte</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nordstern-consulting.de/projekte/crm-prozessanalyse">CRM-Prozessanalyse und Reporting</a></div>
+            <div class="resume-entry-description">Analyse und Neugestaltung eines CRM-Prozesses für einen Finanzdienstleister</div>
+          </div>
+          <div class="resume-entry-date">Jan. 2023–Aug. 2023</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Aufnahme und Priorisierung von Anforderungen mit Fach- und IT-Abteilungen</p>
+            </li>
+            <li>
+              <p>Modellierung des Soll-Prozesses in BPMN und Ableitung von User Stories</p>
+            </li>
+            <li>
+              <p>Entwicklung eines Power-BI-Dashboards zur Steuerung von Leads und Abschlüssen</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Schlüsselwörter</span>: CRM, BPMN, Power BI, Anforderungsmanagement</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.nordstern-consulting.de/projekte/vertriebssteuerung">Datengetriebene Vertriebssteuerung</a></div>
+            <div class="resume-entry-description">Konzeption eines Kennzahlensystems für Vertrieb und Kundenservice</div>
+          </div>
+          <div class="resume-entry-date">März 2022–Dez. 2022</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Definition von KPIs und Datenanforderungen gemeinsam mit dem Controlling</p>
+            </li>
+            <li>
+              <p>Erstellung von Auswertungen und Self-Service-Reports in Tableau</p>
+            </li>
+            <li>
+              <p>Schulung von Fachanwendern im Umgang mit den neuen Reporting-Standards</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>Schlüsselwörter</span>: KPI, Tableau, Datenmodellierung, Reporting</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">Interessen</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">Datenvisualisierung</span>: Tableau, Power BI, Infografiken</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Sport</span>: Laufen, Radsport, Wandern</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">Musik</span>: Klavier, Jazz</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">Ehrenamtliche Tätigkeiten</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ba-berlin.de">Business Analysts Berlin e.V.</a></div>
+            <div class="resume-entry-organization">Mentor für Nachwuchs-Business-Analysten</div>
+          </div>
+          <div class="resume-entry-date">Jan. 2022–Heute</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>Begleitung von Berufseinsteigern bei der Entwicklung praktischer Analysefähigkeiten</p>
+            </li>
+            <li>
+              <p>Organisation von Workshops zu Anforderungsmanagement und Stakeholder-Kommunikation</p>
+            </li>
+            <li>
+              <p>Mitwirkung an Netzwerkveranstaltungen für die Berliner Business-Analyse-Community</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

@@ -1,0 +1,221 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Ingrid Solberg}{}
+\title{QA-ingeniør med fokus på testautomatisering og kvalitetssikring}
+\phone[mobile]{+47 912 34 567}
+\email{ingrid.solberg@example.no}
+\homepage{https://www.ingridsolberg.no}
+
+\address{Storgata 42, Oslo, Oslo, Norge, 0182}{}{}
+
+\extrainfo{{\small \faGithub}\ \href{https://github.com/ingridsolbergqa}{@ingridsolbergqa} {} {} {} • {} {} {} 
+{\small \faLinkedin}\ \href{https://www.linkedin.com/in/ingrid-solberg-qa}{@ingrid-solberg-qa}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{\begin{itemize}
+\item Erfaren QA-ingeniør med seks års bakgrunn fra test av web- og API-baserte helseløsninger
+\item Sterk på testautomatisering med Playwright, Cypress og Postman, og på å bygge robuste regresjonssuiter
+\item Systematisk og kvalitetsbevisst, med erfaring fra Scrum, CI/CD og tverrfaglig produktutvikling
+\item Opptatt av tydelig teststrategi, gode feilrapporter og kontinuerlig forbedring av kvalitetsprosesser
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2015–juni 2018}
+        {Bachelor, Informatikk: design, bruk og interaksjon, Poeng: 4.2}
+        {Universitetet i Oslo}
+        {\url{https://www.uio.no}}
+        {}
+        {\begin{itemize}
+\item Bygget solid grunnlag i systemutvikling, databaser og brukersentrert design
+\item Gjennomførte testprosjekter med både manuell og automatisert testing
+\item Arbeidet i tverrfaglige studentteam med kravanalyse, utvikling og kvalitetssikring
+\end{itemize}
+\textbf{Kurs}: Programmering og systemutvikling, Algoritmer og datastrukturer, Databaser, Testing av programvare, Webutvikling, Prosjektstyring}
+\section{Arbeidserfaring}
+
+\cventry{mars 2021–Nå}
+        {QA-ingeniør}
+        {Nordisk HelseTech AS}
+        {\url{https://www.nordiskhelsetech.no}}
+        {}
+        {\begin{itemize}
+\item Ansvarlig for teststrategi og kvalitetssikring av pasientrettet webplattform og tilhørende API-er
+\item Bygget og vedlikeholdt automatiserte regresjonssuiter i Playwright og Cypress, med daglig kjøring i CI/CD
+\item Utførte API-testing med Postman og REST-assured, inkludert validering av autentisering, datakvalitet og feilhåndtering
+\item Ledet testgjennomganger og triage av feil i tett samarbeid med utviklere, produktleder og designere
+\item Forbedret feilrapporteringsmaler og testdokumentasjon, noe som reduserte gjennomsnittlig tid til retting
+\end{itemize}
+\textbf{Nøkkelord}: Teststrategi, Testautomatisering, Playwright, Cypress, API-testing, CI/CD, Regresjonstesting, Kvalitetssikring}
+
+\cventry{aug. 2018–feb. 2021}
+        {Testautomatiseringsutvikler}
+        {Oslo Digital AS}
+        {\url{https://www.oslodigital.no}}
+        {}
+        {\begin{itemize}
+\item Utviklet automatiserte tester for nettbaserte tjenester innen offentlig sektor
+\item Skrev testkode i JavaScript og Python, og integrerte testene i Azure DevOps-pipelines
+\item Gjennomførte manuell utforskende testing og sikret god dekning av kritiske brukerreiser
+\item Bidro til å innføre BDD med Cucumber og tydeligere akseptansekriterier i Scrum-teamet
+\item Dokumenterte testresultater og presenterte kvalitetsstatus i sprintgjennomganger
+\end{itemize}
+\textbf{Nøkkelord}: JavaScript, Python, Azure DevOps, BDD, Cucumber, Utforskende testing, Scrum}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål, Fagtekster}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: TOEFL 105, Teknisk dokumentasjon}
+\section{Ferdigheter}
+
+\cvline{Testing og kvalitet}{Ekspert \hfill \textbf{Nøkkelord}: Teststrategi, Testautomatisering, Regresjonstesting, API-testing, Ytelsestesting, Utforskende testing}
+\cvline{Verktøy}{Avansert \hfill \textbf{Nøkkelord}: Playwright, Cypress, Postman, JMeter, Git, Jira, Azure DevOps}
+\cvline{Programmering}{Viderekommen \hfill \textbf{Nøkkelord}: JavaScript, TypeScript, Python, SQL, Bash}
+\cvline{Metodikk}{Avansert \hfill \textbf{Nøkkelord}: Scrum, Agile, CI/CD, TDD, BDD, Risikobasert testing}
+\section{Utmerkelser}
+
+\cventry{nov. 2023}
+        {Nordisk HelseTech AS}
+        {Årets kvalitetspris}
+        {}
+        {}
+        {Tildelt for arbeidet med å redusere produksjonsfeil og øke testdekningen på pasientplattformen gjennom automatisering og tydeligere kvalitetsrutiner.}
+\section{Sertifikater}
+
+\cventry{mai 2019}
+        {ISTQB}
+        {ISTQB-sertifisert tester, grunnleggende nivå}
+        {\url{https://www.istqb.org/certifications/certified-tester-foundation-level}}
+        {}
+        {}
+
+\cventry{sep. 2020}
+        {ISTQB}
+        {ISTQB Agile Tester Extension}
+        {\url{https://www.istqb.org/certifications/agile-tester-extension}}
+        {}
+        {}
+\section{Prosjekter}
+
+\cventry{jan. 2022–des. 2023}
+        {Regresjonssuite som verifiserer kritiske pasientreiser og API-kontrakter ved hver utrulling}
+        {Automatisert regresjonssuite for pasientplattform}
+        {\url{https://www.nordiskhelsetech.no}}
+        {}
+        {\begin{itemize}
+\item Designet testpyramide og prioriterte kritiske brukerreiser for automatisering
+\item Reduserte manuell regresjonstid fra tre dager til under fire timer
+\item Etablerte rapportering av testresultater og sporbarhet mot krav i Jira
+\end{itemize}
+\textbf{Nøkkelord}: Playwright, API-testing, Regresjonstesting, CI/CD}
+
+\cventry{apr. 2020–okt. 2020}
+        {Dashboard som samler testresultater, feiltrender og dekningsgrad for produktteam}
+        {Kvalitetsdashboard for tverrfaglige team}
+        {}
+        {}
+        {\begin{itemize}
+\item Bygget en enkel løsning for å visualisere teststatus fra Azure DevOps
+\item Ga teamene raskere innsikt i flaky tester og gjentakende feil
+\item Forbedret beslutningsgrunnlaget i sprintplanlegging og release-møter
+\end{itemize}
+\textbf{Nøkkelord}: Azure DevOps, JavaScript, Testmetrikk, Rapportering}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fjellturer, Langrenn, Kajakk}
+\cvline{Teknologi}{Åpen kildekode, Testmiljøer, Podkaster}
+\section{Frivillig arbeid}
+
+\cventry{jan. 2022–Nå}
+        {Frivillig arrangør}
+        {Oslo QA-community}
+        {\url{https://www.meetup.com/oslo-qa-community/}}
+        {}
+        {\begin{itemize}
+\item Arrangerer månedlige fagmøter om testautomatisering, kvalitet og sikkerhet
+\item Koordinerer foredragsholdere og fasiliterer erfaringsutveksling mellom QA-miljøer i Oslo
+\item Bidrar til et inkluderende fagmiljø for juniorer og erfarne testere
+\end{itemize}}
+    
+\end{document}

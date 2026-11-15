@@ -1,0 +1,224 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Norwegian language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-norwegian.html
+\usepackage[norsk]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Ingrid Johansen}{}
+\title{Registrert sykepleier med erfaring fra akuttmottak}
+\phone[mobile]{+47 912 34 567}
+\email{ingrid.johansen@example.no}
+\homepage{https://www.ingridjohansen.no}
+
+\address{Storgata 42, Oslo, Oslo, Norge, 0182}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/ingrid-johansen-rn}{@ingrid-johansen-rn}}
+
+\begin{document}
+
+\maketitle
+
+\section{Grunnleggende informasjon}
+
+\cvline{}{\begin{itemize}
+\item Registrert sykepleier med bachelor i sykepleie og åtte års erfaring fra akuttmottak og medisinsk sengepost
+\item Trygg på systematisk pasientvurdering, triage, medikamenthåndtering og tverrfaglig samarbeid
+\item Erfaren med journalsystemene DIPS og Epic, og med å dokumentere i henhold til gjeldende rutiner
+\item Opptatt av pasientsikkerhet, faglig utvikling og gode pasientforløp
+\end{itemize}}
+\section{Utdanning}
+
+\cventry{aug. 2014–juni 2017}
+        {Bachelor, Sykepleie, Poeng: 3,8}
+        {OsloMet – storbyuniversitetet}
+        {\url{https://www.oslomet.no}}
+        {}
+        {\begin{itemize}
+\item Utviklet klinisk vurderingsevne gjennom praksis i medisinsk og kirurgisk sengepost
+\item Fikk grunnleggende opplæring i legemiddelhåndtering, prosedyrer og pasientobservasjon
+\item Arbeidet i tverrfaglige grupper med pasientsikkerhet og etiske problemstillinger som tema
+\item Skrev bacheloroppgave om tidlig identifisering av sepsis i akuttmottak
+\end{itemize}
+\textbf{Kurs}: Anatomi og fysiologi, Farmakologi og legemiddelhåndtering, Akuttmedisin og intensivsykepleie, Psykisk helse og rus, Klinisk praksis i medisinsk sengepost, Klinisk praksis i kirurgisk sengepost, Sykepleieteori og etikk, Helseinformatikk og dokumentasjon}
+\section{Arbeidserfaring}
+
+\cventry{sep. 2020–Nå}
+        {Registrert sykepleier, akuttmottak}
+        {Oslo universitetssykehus HF}
+        {\url{https://www.oslouniversitetssykehus.no}}
+        {}
+        {\begin{itemize}
+\item Utfører systematisk triage og initiell pasientvurdering etter ABCDE-prinsippet
+\item Observerer og behandler pasienter med akutte medisinske og kirurgiske tilstander
+\item Administrerer og dokumenterer legemidler i DIPS i henhold til gjeldende prosedyrer
+\item Samarbeider tett med leger, spesialsykepleiere og andre faggrupper i akutte forløp
+\item Bidrar til simuleringstrening og opplæring av nyansatte og studenter
+\end{itemize}
+\textbf{Nøkkelord}: Akuttmedisin, Triage, Pasientsikkerhet, Tverrfaglig samarbeid}
+
+\cventry{aug. 2017–aug. 2020}
+        {Sykepleier, medisinsk sengepost}
+        {Diakonhjemmet sykehus}
+        {\url{https://www.diakonhjemmet.no}}
+        {}
+        {\begin{itemize}
+\item Hadde ansvar for pasientobservasjon, medikamenthåndtering og dokumentasjon på medisinsk sengepost
+\item Utførte prosedyrer som blodprøvetaking, kateterisering og sårbehandling
+\item Deltok i tverrfaglige visittrunder og oppfølging av individuelle pasientforløp
+\item Veiledet studenter og nyansatte i kliniske prosedyrer og journalsystem
+\item Bidro til forbedringsarbeid knyttet til fallforebygging og ernæringskartlegging
+\end{itemize}
+\textbf{Nøkkelord}: Medisinsk sykepleie, Pasientobservasjon, Medikamenthåndtering, Dokumentasjon}
+\section{Språk}
+
+\cvline{Norsk}{Morsmål eller tospråklig nivå \hfill \textbf{Nøkkelord}: Morsmål, Skriftlig, Muntlig}
+\cvline{Engelsk}{Fullt profesjonelt nivå \hfill \textbf{Nøkkelord}: Faglig kommunikasjon, Dokumentasjon, Presentasjoner}
+\cvline{Spansk}{Begrenset arbeidskunnskap \hfill \textbf{Nøkkelord}: Pasientkommunikasjon, Grunnleggende}
+\section{Ferdigheter}
+
+\cvline{Klinisk sykepleie}{Ekspert \hfill \textbf{Nøkkelord}: Pasientvurdering, Medikamenthåndtering, Sårbehandling, Kateterisering, Blodprøvetaking}
+\cvline{Akuttmedisin}{Avansert \hfill \textbf{Nøkkelord}: Triage, HLR, ABCDE-vurdering, Akuttmottak, Trauma}
+\cvline{Kommunikasjon og samarbeid}{Avansert \hfill \textbf{Nøkkelord}: Pasientkommunikasjon, Tverrfaglig samarbeid, Dokumentasjon, Veiledning, Konflikthåndtering}
+\cvline{Teknologi og journalsystemer}{Viderekommen \hfill \textbf{Nøkkelord}: DIPS, Epic, Helsenorge.no, Medikamentmodul, Pasientadministrasjon}
+\section{Utmerkelser}
+
+\cventry{des. 2023}
+        {Oslo universitetssykehus HF}
+        {Årets sykepleier 2023}
+        {}
+        {}
+        {\begin{itemize}
+\item Tildelt for fremragende klinisk vurderingsevne og tydelig pasientfokus i akuttmottak
+\item Anerkjent for å ha bidratt til tryggere pasientforløp og godt tverrfaglig samarbeid
+\end{itemize}}
+\section{Sertifikater}
+
+\cventry{mars 2023}
+        {Norsk Resuscitasjonsråd}
+        {HLR for helsepersonell}
+        {\url{https://www.nrr.org}}
+        {}
+        {}
+
+\cventry{jan. 2022}
+        {DIPS AS}
+        {Sertifisering i DIPS Arena}
+        {\url{https://www.dips.com}}
+        {}
+        {}
+\section{Publikasjoner}
+
+\cventry{mai 2023}
+        {Tidlig identifisering av sepsis i akuttmottak}
+        {Sykepleien Fag}
+        {\url{https://sykepleien.no/fag/artikkel/sepsis-akuttmottak}}
+        {}
+        {\begin{itemize}
+\item Fagartikkel om systematisk screening og tidlig behandling av sepsis i akuttmottak
+\item Oppsummerer erfaringer fra eget forbedringsarbeid og relevante faglige anbefalinger
+\end{itemize}}
+\section{Prosjekter}
+
+\cventry{jan. 2022–des. 2022}
+        {Et kvalitetsforbedringsprosjekt ved medisinsk sengepost for å redusere forekomsten av liggesår.}
+        {Forbedringsprosjekt: Reduksjon av liggesår}
+        {\url{https://www.oslouniversitetssykehus.no/forbedringsprosjekt-liggesar}}
+        {}
+        {\begin{itemize}
+\item Kartla risiko og igangsatte systematiske hudvurderinger ved innleggelse
+\item Innførte sjekklister og opplæring i trykkavlastning for pleiepersonell
+\item Resultatene viste en tydelig reduksjon i antall registrerte liggesår
+\end{itemize}
+\textbf{Nøkkelord}: Kvalitetsforbedring, Pasientsikkerhet, Trykkavlastning, Hudvurdering}
+\section{Interesser}
+
+\cvline{Friluftsliv}{Fjellturer, Langrenn, Kajakk}
+\cvline{Faglig utvikling}{Simuleringstrening, Fagartikler, Kurs}
+\section{Frivillig arbeid}
+
+\cventry{jan. 2018–Nå}
+        {Førstehjelpsinstruktør}
+        {Norsk Røde Kors}
+        {\url{https://www.rodekors.no}}
+        {}
+        {\begin{itemize}
+\item Holder førstehjelpskurs for frivillige og lokalsamfunn
+\item Underviser i HLR, skadestedsledelse og praktisk førstehjelp
+\item Bidrar til å styrke beredskapen og tryggheten i nærmiljøet
+\end{itemize}}
+    
+\end{document}

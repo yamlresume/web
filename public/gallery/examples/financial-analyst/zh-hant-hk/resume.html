@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-hant-hk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="YAMLResume (https://yamlresume.dev)">
+
+
+  <title>陳家豪 Resume</title>
+  <style>
+    :root {
+      --text-font-size: 16px;
+      --text-font-family: var(--text-default-font-family);
+      --line-height: 1.5;
+    }
+
+    /* Modified from: https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+    /* 1. Use a more-intuitive box-sizing model */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* 2. Remove default margin */
+    *:not(dialog) {
+      margin: 0;
+    }
+
+    body {
+      /* 3. Improve text rendering */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root {
+      --border-color: #d0d0d0;
+
+      /* text colors */
+      --text-color-primary: #000000;
+      --text-color-secondary: #333333;
+
+      /* spacing */
+      --spacing-xss: 2px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 40px;
+      --spacing-xxxl: 80px;
+
+      /* font sizes */
+      --font-size-xs: 0.8rem;
+      --font-size-sm: 0.9rem;
+      --font-size-md: 1rem;
+      --font-size-lg: 1.1rem;
+      --font-size-xl: 1.25rem;
+      --font-size-xxl: 2.5rem;
+
+      /* layout */
+      --page-max-width: 900px;
+
+      /* typography */
+      --text-default-font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, sans-serif;
+    }
+
+    html {
+      font-size: var(--text-font-size);
+    }
+
+    body {
+      /* font & text */
+      color: var(--text-color-primary);
+      font-family: var(--text-font-family);
+      /* this variable is defined by `typography.fontSize` in resume html layout */
+      text-autospace: normal;
+
+      /* layout */
+      line-height: var(--line-height);
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-xxxl) var(--spacing-xxl) var(--spacing-xxl);
+    }
+
+    /* header */
+    .resume-header {
+      margin-bottom: var(--spacing-xxl);
+      text-align: center;
+    }
+
+    .resume-name {
+      font-size: var(--font-size-xxl);
+      font-weight: 600;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .resume-headline {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* contact info */
+    .resume-contact-info {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: var(--spacing-lg);
+      row-gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .resume-contact-icon,
+    .resume-contact-label {
+      margin-right: var(--spacing-sm);
+      vertical-align: middle;
+    }
+
+    /* links: modern typographic style */
+    a {
+      color: var(--accent-color, var(--text-color-primary));
+      text-decoration: underline;
+      text-decoration-color: var(--border-color);
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+      transition: text-decoration-color 0.2s;
+    }
+
+    a:hover {
+      text-decoration-color: var(--accent-color, var(--text-color-primary));
+    }
+
+    /* sections */
+    .resume-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .resume-section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 500;
+      color: var(--accent-color, var(--text-color-primary));
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--accent-color, var(--border-color));
+      padding-bottom: var(--spacing-xs);
+    }
+
+    /* entries */
+    .resume-entry {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .resume-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .resume-entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-entry-title {
+      font-weight: 500;
+      margin-bottom: var(--spacing-xss);
+    }
+
+    .resume-entry-summary p,
+    .resume-summary-content p {
+      margin-bottom: var(--spacing-xs);
+    }
+
+    /* lists */
+    .resume-entry-summary ul,
+    .resume-entry-summary ol,
+    .resume-summary-content ul,
+    .resume-summary-content ol {
+      padding-left: var(--spacing-lg);
+      list-style-type: circle;
+    }
+
+    /* labeled lists (courses, keywords, etc.) */
+    .resume-labeled-list span {
+      font-weight: 500;
+    }
+
+    /* skills grid */
+    .resume-skill-item,
+    .resume-language-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .resume-skill-name,
+    .resume-language-name {
+      font-weight: 500;
+    }
+
+    .resume-skill-level,
+    .resume-language-fluency {
+      font-weight: 400;
+    }
+
+    /* mobile */
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-xl);
+      }
+
+      .resume-header {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .resume-contact-info {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .resume-entry-header {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* footer */
+    .resume-footer {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-color);
+      font-size: var(--font-size-sm);
+      color: var(--text-color-secondary);
+    }
+
+    @media print {
+      .resume-footer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="resume-header">
+    <h1 class="resume-name">陳家豪</h1>
+    <p class="resume-headline">高級財務分析師 | CFA 特許金融分析師</p>
+    <div class="resume-contact-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📧</span><a href="mailto:ka.ho.chan@example.com" class="resume-contact-link">ka.ho.chan@example.com</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">📞</span>+852 9123 4567</span>
+      <span class="resume-contact-item"><span class="resume-contact-icon">🔗</span><a href="https://www.chan-kaho-finance.com" class="resume-contact-link">https://www.chan-kaho-finance.com</a></span>
+    </div>
+    <div class="resume-contact-info resume-location-info">
+      <span class="resume-contact-item"><span class="resume-contact-icon">📍</span>中國香港，香港島，香港，香港中環皇后大道中99號</span>
+    </div>
+    <div class="resume-contact-info resume-profiles-info">
+      <span class="resume-contact-item"><span class="resume-contact-label">LinkedIn</span>: <a href="https://www.linkedin.com/in/chan-ka-ho-finance" class="resume-contact-link">@chan-ka-ho-finance</a></span>
+      <span class="resume-contact-item"><span class="resume-contact-label">Medium</span>: <a href="https://medium.com/@chan.kaho.finance" class="resume-contact-link">@chan.kaho.finance</a></span>
+    </div>
+  </header>
+  <section class="resume-section" id="summary" data-section="summary">
+    <h2 class="resume-section-title">簡介</h2>
+    <div class="resume-section-content">
+      <div class="resume-summary-content">
+        <p>具備 7 年投資銀行與資產管理經驗的高級財務分析師，專注於財務建模、估值分析、預算預測及管理層決策支援。</p>
+        <ul>
+          <li>
+            <p>精通三表模型、DCF、可比公司分析及情境分析，能將複雜數據轉化為可執行洞察</p>
+          </li>
+          <li>
+            <p>熟悉香港上市公司財務披露、IFRS 及 ESG 報告要求</p>
+          </li>
+          <li>
+            <p>擅長以 Excel、SQL、Python 及 Power BI 建立自動化儀表板，提升月度結算與差異分析效率</p>
+          </li>
+          <li>
+            <p>持有 CFA 特許資格，具備優秀的中英文溝通及跨部門協作能力</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="education" data-section="education">
+    <h2 class="resume-section-title">教育背景</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="education-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.cuhk.edu.hk">香港中文大學</a></div>
+            <div class="resume-entry-organization">學士，計量金融學，成績：3.7/4.0</div>
+          </div>
+          <div class="resume-entry-date">2014年9月–2018年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>主修計量金融，成績排名前 10%，連續兩年獲院長榮譽錄</p>
+            </li>
+            <li>
+              <p>完成企業估值、投資組合管理及固定收益證券等專題研究</p>
+            </li>
+            <li>
+              <p>擔任金融學會學術幹事，組織行業分享會及模擬投資比賽</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>課程</span>：財務管理、投資分析與資產定價、衍生工具與風險管理、計量方法與統計推論、會計學原理、企業估值、金融市場與機構、程式設計與數據分析</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="work" data-section="work">
+    <h2 class="resume-section-title">工作經歷</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="work-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hkex.com.hk">香港交易所</a></div>
+            <div class="resume-entry-organization">高級財務分析師</div>
+          </div>
+          <div class="resume-entry-date">2021年3月至今</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>負責集團月度及季度財務分析，涵蓋收入、成本、資本開支及現金流，支援管理層制定年度預算</p>
+            </li>
+            <li>
+              <p>建立並維護三表財務模型、DCF 及可比公司估值模型，用於新業務投資及策略評估</p>
+            </li>
+            <li>
+              <p>主導差異分析與滾動預測，將預測週期由 4 週縮短至 10 個工作天</p>
+            </li>
+            <li>
+              <p>與業務、風險及合規部門協作，編製董事會及監管機構匯報材料</p>
+            </li>
+            <li>
+              <p>指導初級分析師，制定財務建模及數據視覺化最佳實務</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：財務建模、估值分析、預算預測、差異分析、管理層匯報、團隊指導</div>
+      </div>
+      <div class="resume-entry" id="work-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hangseng.com">恒生銀行</a></div>
+            <div class="resume-entry-organization">財務分析師</div>
+          </div>
+          <div class="resume-entry-date">2018年7月–2021年2月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>支援零售銀行業務的預算編製、月度結算及績效追蹤，管理年度預算逾 8 億港元</p>
+            </li>
+            <li>
+              <p>分析產品盈利能力及客戶分群表現，提出定價及資源配置建議</p>
+            </li>
+            <li>
+              <p>開發 Excel VBA 及 Power BI 自動化報表，減少每月手動處理時間約 60%</p>
+            </li>
+            <li>
+              <p>參與 IFRS 9 撥備模型校驗及監管報表準備工作</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>：預算管理、績效分析、產品盈利、監管報表、Power BI、Excel VBA</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="languages" data-section="languages">
+    <h2 class="resume-section-title">語言</h2>
+    <div class="resume-section-content">
+      <div class="resume-languages-list">
+        <div class="resume-language-item">
+          <div class="resume-language-name">粵語<span class="resume-language-fluency">：母語或雙語水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：母語</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">英語<span class="resume-language-fluency">：完全專業水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：IELTS 7.5、商務簡報</div>
+          </div>
+        </div>
+        <div class="resume-language-item">
+          <div class="resume-language-name">普通話<span class="resume-language-fluency">：完全專業水平</span></div>
+          <div>
+            <div class="resume-labeled-list"><span>關鍵字</span>：普通話水平測試二級甲等、跨區業務溝通</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="skills" data-section="skills">
+    <h2 class="resume-section-title">專業技能</h2>
+    <div class="resume-section-content">
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">財務分析與建模<span class="resume-skill-level">：專家</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：三表財務模型、DCF 估值、可比公司分析、情境與敏感度分析</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">數據分析與視覺化<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：Excel VBA、SQL、Python、Power BI、Tableau</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">會計與報告<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：IFRS、管理層報告、預算與預測、差異分析</div>
+        </div>
+      </div>
+      <div class="resume-skill-item">
+        <div class="resume-skill-name">金融工具<span class="resume-skill-level">：高級</span></div>
+        <div>
+          <div class="resume-labeled-list"><span>關鍵字</span>：Bloomberg Terminal、Capital IQ、FactSet、SAP ERP</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="awards" data-section="awards">
+    <h2 class="resume-section-title">榮譽</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="awards-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">最佳財務分析項目獎</div>
+            <div class="resume-entry-organization">香港交易所</div>
+          </div>
+          <div class="resume-entry-date">2022年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>表揚在集團新業務投資評估中建立自動化估值模型，將分析週期縮短 35%，並提升董事會決策資料的準確性。</p>
+        </div>
+      </div>
+      <div class="resume-entry" id="awards-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title">院長榮譽錄</div>
+            <div class="resume-entry-organization">香港中文大學</div>
+          </div>
+          <div class="resume-entry-date">2017年5月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <p>因學術成績優異而獲頒，連續兩年位列商學院前 10%。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="certificates" data-section="certificates">
+    <h2 class="resume-section-title">證書</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="certificates-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.cfainstitute.org">CFA 特許金融分析師資格</a></div>
+            <div class="resume-entry-organization">CFA 協會</div>
+          </div>
+          <div class="resume-entry-date">2022年8月</div>
+        </div>
+      </div>
+      <div class="resume-entry" id="certificates-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.garp.org">金融風險管理師（FRM）</a></div>
+            <div class="resume-entry-organization">全球風險管理專業人員協會</div>
+          </div>
+          <div class="resume-entry-date">2020年11月</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="publications" data-section="publications">
+    <h2 class="resume-section-title">出版刊物</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="publications-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.hksfa.org/publications/esg-valuation">香港上市公司 ESG 披露與估值相關性研究</a></div>
+            <div class="resume-entry-organization">香港財務分析師學會期刊</div>
+          </div>
+          <div class="resume-entry-date">2023年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>分析 2018 至 2022 年香港上市公司 ESG 評分與市盈率、資金成本的關係</p>
+            </li>
+            <li>
+              <p>發現高 ESG 評分企業在市場波動期間展現較低資金成本</p>
+            </li>
+            <li>
+              <p>提出適用於本地市場的 ESG 整合估值框架</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="projects" data-section="projects">
+    <h2 class="resume-section-title">項目</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="projects-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/chan-ka-ho-finance/esg-valuation-model">港股 ESG 估值整合模型</a></div>
+            <div class="resume-entry-description">結合 ESG 評分、財務預測及情境分析的可配置估值模型，供投資研究團隊使用。</div>
+          </div>
+          <div class="resume-entry-date">2023年1月–2023年6月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>以 Python 串接公開 ESG 數據及財務報表，自動計算調整後資金成本</p>
+            </li>
+            <li>
+              <p>建立行業中性評分及敏感度分析，支援投資委員會討論</p>
+            </li>
+            <li>
+              <p>模型獲研究部門採用於 20 間恒生指數成分股之初步篩選</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>： ESG、估值模型、Python、情境分析</div>
+      </div>
+      <div class="resume-entry" id="projects-2">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://github.com/chan-ka-ho-finance/budget-dashboard">零售銀行預算自動化儀表板</a></div>
+            <div class="resume-entry-description">為零售銀行業務設計的預算監控與差異分析儀表板，整合多個資料來源並自動更新。</div>
+          </div>
+          <div class="resume-entry-date">2020年2月–2020年11月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>使用 SQL 及 Power BI 建立產品、渠道及客戶分群維度的預算追蹤</p>
+            </li>
+            <li>
+              <p>將每月管理報表編製時間由 3 天縮短至半天</p>
+            </li>
+            <li>
+              <p>增設異常警示及下鑽分析，協助業務主管快速定位偏差原因</p>
+            </li>
+          </ul>
+        </div>
+        <div class="resume-labeled-list"><span>關鍵字</span>： Power BI、SQL、預算管理、差異分析</div>
+      </div>
+    </div>
+  </section>
+  <section class="resume-section" id="interests" data-section="interests">
+    <h2 class="resume-section-title">興趣愛好</h2>
+    <div class="resume-section-content">
+      <div class="resume-interest-item"><span class="resume-interest-name">金融科技</span>：區塊鏈、量化交易、數據視覺化</div>
+      <div class="resume-interest-item"><span class="resume-interest-name">運動</span>：跑步、羽毛球、遠足</div>
+    </div>
+  </section>
+  <section class="resume-section" id="volunteer" data-section="volunteer">
+    <h2 class="resume-section-title">志願服務</h2>
+    <div class="resume-section-content">
+      <div class="resume-entry" id="volunteer-1">
+        <div class="resume-entry-header">
+          <div>
+            <div class="resume-entry-title"><a href="https://www.ifphk.org">香港財務策劃師學會</a></div>
+            <div class="resume-entry-organization">社區理財教育義工</div>
+          </div>
+          <div class="resume-entry-date">2019年9月–2023年12月</div>
+        </div>
+        <div class="resume-entry-summary">
+          <ul>
+            <li>
+              <p>為中學生及基層家庭主持理財教育工作坊，主題包括預算管理、儲蓄及風險保障</p>
+            </li>
+            <li>
+              <p>協助設計互動教材及案例，累計服務超過 300 名參加者</p>
+            </li>
+            <li>
+              <p>與社區中心合作統籌年度理財同樂日，協調義工及活動流程</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="resume-footer">Generated by <a href="https://yamlresume.dev">YAMLResume</a></footer>
+</body>
+
+</html>

@@ -1,0 +1,245 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for Dutch language
+% ref:
+% - https://latex3.github.io/babel/guides/locale-dutch.html
+\usepackage[dutch]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Sanne de Vries}{}
+\title{Data Engineer met focus op schaalbare dataplatformen}
+\phone[mobile]{+31 6 12345678}
+\email{sanne.devries@example.com}
+\homepage{https://sanne-devries.nl}
+
+\address{Keizersgracht 123, Amsterdam, Noord-Holland, Nederland, 1015 CJ}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/sannedevries}{@sannedevries} {} {} {} • {} {} {} 
+{\small \faGithub}\ \href{https://github.com/sannedevries}{@sannedevries}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basis Informatie}
+
+\cvline{}{Data Engineer met 6+ jaar ervaring in het ontwerpen en bouwen van betrouwbare, schaalbare dataplatformen. Sterk in het vertalen van bedrijfsbehoeften naar robuuste ETL/ELT-pipelines en datamodellen.
+%
+\begin{itemize}
+\item Ervaren met cloud-native oplossingen (AWS, Azure) en moderne data stacks zoals Spark, dbt en Airflow
+\item Focus op datakwaliteit, governance en het leveren van betrouwbare analyses voor BI- en ML-teams
+\item Teamspeler die graag kennis deelt en junior collega's begeleidt
+\end{itemize}}
+\section{Opleidingen}
+
+\cventry{sep 2015–jul 2017}
+        {Master, Data Science en Technologie, Score: 8.2}
+        {Technische Universiteit Delft}
+        {\url{https://www.tudelft.nl}}
+        {}
+        {\begin{itemize}
+\item Specialisatie in grootschalige dataverwerking en datamodellering
+\item Afstudeeronderzoek naar schaalbare streaming-pipelines voor sensordata
+\item Ervaring opgedaan met Python, Spark, Kafka en cloudplatformen
+\end{itemize}
+\textbf{Cursussen}: Gedistribueerde systemen, Databasetechnologie, Machine Learning, Big Data Architectuur, Cloud Computing, Data-ethiek en Privacy}
+\section{Werkervaring}
+
+\cventry{jan 2021–Heden}
+        {Senior Data Engineer}
+        {Rabobank}
+        {\url{https://www.rabobank.nl}}
+        {}
+        {\begin{itemize}
+\item Ontwierp en implementeerde een cloud-native dataplatform op AWS voor de afdeling Risk \& Compliance
+\item Bouwde schaalbare ETL-pipelines met Python, Spark en Airflow, goed voor circa 2 TB dagelijkse data
+\item Introduceerde dbt voor datamodellering en verbeterde de datakwaliteit met geautomatiseerde tests
+\item Werkt samen met data scientists en BI-analisten om dataproducten van idee tot productie te brengen
+\item Bewaakt governance en privacy (AVG) en begeleidt junior data engineers
+\end{itemize}
+\textbf{Trefwoorden}: AWS, Spark, Airflow, dbt, Data Governance}
+
+\cventry{mrt 2018–dec 2020}
+        {Data Engineer}
+        {KPN}
+        {\url{https://www.kpn.com}}
+        {}
+        {\begin{itemize}
+\item Ontwikkelde batch- en streaming-pipelines met Kafka, Spark en Python voor netwerk- en klantdata
+\item Migreerde een on-premise datawarehouse naar Azure Data Lake en Synapse
+\item Automatiseerde datakwaliteitscontroles en monitoring, waardoor incidenten met 30\% daalden
+\item Werkte in een agile team en droeg bij aan architectuurkeuzes en code reviews
+\end{itemize}
+\textbf{Trefwoorden}: Kafka, Azure, Python, Streaming, Datakwaliteit}
+
+\cventry{sep 2017–feb 2018}
+        {Junior Data Analist}
+        {Achmea}
+        {\url{https://www.achmea.nl}}
+        {}
+        {\begin{itemize}
+\item Bouwde rapportages en dashboards in Power BI voor schade- en klantdata
+\item Schreef SQL-queries en automatiseerde rapportages met Python
+\item Ondersteunde data-engineering bij het opschonen en modelleren van brondata
+\end{itemize}
+\textbf{Trefwoorden}: SQL, Power BI, Python, Rapportage}
+\section{Talen}
+
+\cvline{Nederlands}{Moedertaal of tweetalige vaardigheid}
+\cvline{Engels}{Volledige professionele vaardigheid \hfill \textbf{Trefwoorden}: Cambridge C1, Werktaal}
+\cvline{Duits}{Beperkte werkvaardigheid \hfill \textbf{Trefwoorden}: Goethe B1, Leesvaardig}
+\section{Vaardigheden}
+
+\cvline{Data Engineering}{Expert \hfill \textbf{Trefwoorden}: Python, SQL, Spark, Airflow, dbt}
+\cvline{Cloudplatformen}{Geavanceerd \hfill \textbf{Trefwoorden}: AWS, Azure, Databricks, Snowflake}
+\cvline{Datawarehousing}{Geavanceerd \hfill \textbf{Trefwoorden}: Redshift, Synapse, BigQuery, Kimball}
+\cvline{Streaming en messaging}{Geavanceerd \hfill \textbf{Trefwoorden}: Kafka, Kinesis, Event Hubs}
+\cvline{Datagovernance}{Intermediair \hfill \textbf{Trefwoorden}: Datakwaliteit, Lineage, AVG, Metadata}
+\cvline{Programmeren}{Geavanceerd \hfill \textbf{Trefwoorden}: Python, Scala, Bash, Git}
+\section{Onderscheidingen}
+
+\cventry{dec 2023}
+        {Rabobank}
+        {Data Engineer of the Year}
+        {}
+        {}
+        {Erkend voor het ontwerpen van een schaalbaar en kostenefficiënt dataplatform dat meerdere teams binnen Risk \& Compliance ondersteunt.}
+\section{Certificaten}
+
+\cventry{jun 2022}
+        {Amazon Web Services}
+        {AWS Certified Data Analytics - Specialty}
+        {\url{https://aws.amazon.com/certification/}}
+        {}
+        {}
+
+\cventry{nov 2020}
+        {Microsoft}
+        {Microsoft Certified: Azure Data Engineer Associate}
+        {\url{https://learn.microsoft.com/en-us/certifications/azure-data-engineer/}}
+        {}
+        {}
+\section{Publicaties}
+
+\cventry{mrt 2022}
+        {Schaalbare datapipelines in de cloud}
+        {Data Magazine NL}
+        {\url{https://www.datamagazine.nl/artikelen/schaalbare-datapipelines}}
+        {}
+        {\begin{itemize}
+\item Praktijkartikel over het ontwerpen van betrouwbare en schaalbare datapipelines
+\item Gaat in op orchestratie, datakwaliteit en kostenbeheersing in cloudomgevingen
+\item Gebaseerd op ervaringen met AWS, Spark, Airflow en dbt
+\end{itemize}}
+\section{Referenties}
+
+\cventry{\emaillink[m.jansen@tudelft.nl]{m.jansen@tudelft.nl}}
+        {Hoogleraar Data Science}
+        {Dr. Marleen Jansen}
+        {+31 15 278 1234}
+        {}
+        {Sanne combineert sterke technische vaardigheden met een scherp oog voor datakwaliteit en governance. Zij is een betrouwbare teamspeler die complexe dataproblemen gestructureerd aanpakt.}
+\section{Projecten}
+
+\cventry{jan 2023–jun 2023}
+        {Open-source dashboard voor het inzichtelijk maken van energieverbruik in Nederlandse wijken}
+        {EnergieDashboard}
+        {\url{https://github.com/sannedevries/energiedashboard}}
+        {}
+        {\begin{itemize}
+\item Verzamelt en verwerkt openbare energie- en weerdata via API's
+\item Pipeline gebouwd met Python, dbt en DuckDB, georkestreerd met Airflow
+\item Dashboard in Streamlit voor bewoners en beleidsmakers
+\end{itemize}
+\textbf{Trefwoorden}: Open Data, Duurzaamheid, Python, Streamlit}
+\section{Interesses}
+
+\cvline{Duurzaamheid}{Energie, Circulaire economie, Open data}
+\cvline{Sport}{Hardlopen, Wielrennen, Klimmen}
+\cvline{Muziek}{Gitaar, Festivals}
+\section{Vrijwilligerswerk}
+
+\cventry{sep 2021–Heden}
+        {Vrijwilliger Data Mentor}
+        {Stichting Code voor Nederland}
+        {\url{https://www.codevoornederland.nl}}
+        {}
+        {\begin{itemize}
+\item Begeleidt jongeren en zij-instromers bij hun eerste stappen in data-analyse en Python
+\item Organiseert maandelijkse workshops over datakwaliteit en open data
+\item Droeg bij aan een open-source datapipeline voor het verwerken van gemeentelijke open data
+\end{itemize}}
+    
+\end{document}

@@ -1,0 +1,236 @@
+\documentclass[a4paper, serif, 10pt]{moderncv}
+
+%% moderncv
+% color and style
+\moderncvcolor{black}
+\moderncvstyle{banking}
+
+%% page layout/margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\nopagenumbers{}
+
+%% Babel config for English language
+\usepackage[english]{babel}
+
+%% fontspec
+\usepackage{fontspec}
+
+\IfFontExistsTF{Linux Libertine}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine}
+}{}
+\IfFontExistsTF{Linux Libertine O}{
+  \setmainfont[Ligatures={TeX, Common}, Numbers=OldStyle]{Linux Libertine O}
+}{}
+
+%% CTeX
+% CJK support, used to show CJK characters in the resume
+%
+% - heading=false: disable ctex heading
+% - punct=kaiming: use kaiming punctuations styles for CJK
+% - scheme=plain: use plain scheme, do not override \normalsize font size
+% - space=auto: space settings for CJK characters
+%
+% CJK fonts are resolved per locale language, e.g. Noto Serif/Sans CJK JP
+% for Japanese resumes, with fallback to the next region if not installed
+%
+% ref:
+% - http://ctan.mirrorcatalogs.com/language/chinese/ctex/ctex.pdf
+\usepackage[UTF8, heading=false, punct=kaiming, scheme=plain, space=auto]{ctex}
+
+\IfFontExistsTF{Noto Serif CJK SC}{
+  \setCJKmainfont{Noto Serif CJK SC}
+}{}
+\IfFontExistsTF{Noto Sans CJK SC}{
+  \setCJKsansfont{Noto Sans CJK SC}
+}{}
+
+%% line spacing
+\usepackage{setspace}
+\setstretch{1.125}
+
+%% URL styling - use normal text instead of monospace
+\urlstyle{same}
+
+%% Patch \httplink and \httpslink to handle full URLs
+% The original moderncv macros always prepend http:// or https:// to URLs.
+% This causes issues when the URL already has a protocol (e.g., https://example.com)
+% resulting in malformed URLs like https://https://example.com.
+% This patch checks if the URL already contains "://" and uses it directly if so.
+% Note: We use \str_set:Nx (x-expansion) to expand macros like \@homepage first.
+\ExplSyntaxOn
+\str_new:N \g_yamlresume_url_str
+
+\RenewDocumentCommand{\httpslink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{https://#2} }
+}
+
+\RenewDocumentCommand{\httplink}{O{}m}{
+  \str_set:Nx \g_yamlresume_url_str {#2}
+  \str_if_in:NnTF \g_yamlresume_url_str {://}
+    { \url{#2} }
+    { \url{http://#2} }
+}
+\ExplSyntaxOff
+
+\name{Jordan Alexis Rivera}{}
+\title{Registered Nurse | BSN, RN | Medical-Surgical \& Telemetry}
+\phone[mobile]{(512) 555-0184}
+\email{jordan.rivera.rn@outlook.com}
+\homepage{https://www.jordanrivera-rn.com}
+
+\address{4821 Cedar Springs Road, Austin, Texas, United States, 78731}{}{}
+
+\extrainfo{{\small \faLinkedin}\ \href{https://www.linkedin.com/in/jordanrivera-rn}{@jordanrivera-rn} {} {} {} • {} {} {} 
+{\small \faTwitter}\ \href{https://twitter.com/jordanrivera\_rn}{@jordanrivera\_rn}}
+
+\begin{document}
+
+\maketitle
+
+\section{Basics}
+
+\cvline{}{Compassionate and detail-oriented Registered Nurse with over six years of experience in medical-surgical and telemetry units. Skilled in comprehensive patient assessment, medication administration, wound care, and patient education. Proven ability to collaborate with interdisciplinary teams to deliver safe, high-quality care in fast-paced hospital environments. Strong advocate for patient safety and evidence-based practice. Committed to continuous professional development and mentoring new nurses.}
+\section{Education}
+
+\cventry{Aug 2012–May 2016}
+        {Bachelor, Nursing, Score: 3.7}
+        {University of Texas at Austin}
+        {\url{https://www.utexas.edu/}}
+        {}
+        {\begin{itemize}
+\item Graduated cum laude with a BSN
+\item Completed 800+ clinical hours in acute care, community, and pediatric settings
+\item Served as student nurse association treasurer
+\end{itemize}
+\textbf{Courses}: Health Assessment, Pharmacology, Medical-Surgical Nursing, Maternal-Child Nursing, Critical Care Nursing, Community Health Nursing, Nursing Leadership and Management}
+\section{Work}
+
+\cventry{Jun 2019–Present}
+        {Registered Nurse, Medical-Surgical/Telemetry}
+        {St. David's Medical Center}
+        {\url{https://www.stdavids.com/}}
+        {}
+        {\begin{itemize}
+\item Provide direct nursing care to 5-6 patients per shift on a 36-bed medical-surgical/telemetry unit
+\item Conduct comprehensive assessments, monitor vital signs, and interpret cardiac telemetry rhythms
+\item Administer medications, IV therapies, and blood products per physician orders and hospital protocols
+\item Collaborate with interdisciplinary team to develop and implement individualized care plans
+\item Educate patients and families on disease management, medication adherence, and discharge planning
+\item Precept new graduate nurses and serve as a charge nurse relief
+\end{itemize}
+\textbf{Keywords}: Medical-Surgical, Telemetry, Patient Assessment, Medication Administration, Care Planning}
+
+\cventry{Jul 2016–May 2019}
+        {Registered Nurse, Medical-Surgical}
+        {Ascension Seton Northwest}
+        {\url{https://healthcare.ascension.org/}}
+        {}
+        {\begin{itemize}
+\item Delivered compassionate care to diverse patient populations with acute and chronic conditions
+\item Performed wound care, catheterizations, and ostomy management
+\item Monitored patients for changes in condition and escalated concerns to physicians promptly
+\item Documented assessments and interventions accurately in EPIC EHR
+\item Participated in unit-based quality improvement initiatives to reduce fall rates
+\end{itemize}
+\textbf{Keywords}: Wound Care, EPIC, Quality Improvement, Patient Education, Acute Care}
+\section{Languages}
+
+\cvline{English}{Native or Bilingual Proficiency \hfill \textbf{Keywords}: Native speaker}
+\cvline{Spanish}{Full Professional Proficiency \hfill \textbf{Keywords}: Medical Spanish, Bilingual patient education}
+\section{Skills}
+
+\cvline{Clinical Skills}{Expert \hfill \textbf{Keywords}: Patient Assessment, Medication Administration, IV Therapy, Wound Care, Telemetry Monitoring, Catheterization, Ostomy Care, Blood Transfusion}
+\cvline{Patient Care}{Expert \hfill \textbf{Keywords}: Care Planning, Patient Education, Discharge Planning, Pain Management, Fall Prevention, Infection Control}
+\cvline{Technology}{Advanced \hfill \textbf{Keywords}: EPIC EHR, Cerner, Pyxis, Telemetry Systems, Microsoft Office}
+\cvline{Leadership}{Advanced \hfill \textbf{Keywords}: Charge Nurse, Preceptorship, Interdisciplinary Collaboration, Quality Improvement, Mentoring}
+\section{Awards}
+
+\cventry{Nov 2022}
+        {St. David's Medical Center}
+        {DAISY Award for Extraordinary Nurses}
+        {}
+        {}
+        {Recognized for compassionate care and exceptional clinical skills by patients and colleagues.}
+
+\cventry{May 2015}
+        {University of Texas at Austin}
+        {Dean's List}
+        {}
+        {}
+        {Achieved academic excellence for multiple semesters.}
+\section{Certificates}
+
+\cventry{Jun 2016}
+        {Texas Board of Nursing}
+        {Registered Nurse (RN) License}
+        {\url{https://www.bon.texas.gov/}}
+        {}
+        {}
+
+\cventry{Jan 2024}
+        {American Heart Association}
+        {Basic Life Support (BLS)}
+        {\url{https://www.heart.org/}}
+        {}
+        {}
+
+\cventry{Feb 2024}
+        {American Heart Association}
+        {Advanced Cardiovascular Life Support (ACLS)}
+        {\url{https://www.heart.org/}}
+        {}
+        {}
+
+\cventry{Sep 2021}
+        {Medical-Surgical Nursing Certification Board}
+        {Certified Medical-Surgical Registered Nurse (CMSRN)}
+        {\url{https://www.msncb.org/}}
+        {}
+        {}
+\section{Publications}
+
+\cventry{Mar 2022}
+        {Reducing Hospital-Acquired Pressure Injuries Through Nurse-Led Turn Team}
+        {Journal of Wound, Ostomy and Continence Nursing}
+        {\url{https://journals.lww.com/jwocnonline/}}
+        {}
+        {\begin{itemize}
+\item Quality improvement project demonstrating a 40\% reduction in pressure injuries
+\item Implemented standardized turning protocol and staff education
+\end{itemize}}
+\section{Projects}
+
+\cventry{Jan 2021–Dec 2021}
+        {Unit-based quality improvement project to reduce inpatient falls}
+        {Nurse-Led Fall Prevention Initiative}
+        {\url{https://www.stdavids.com/quality}}
+        {}
+        {\begin{itemize}
+\item Conducted fall risk assessments and implemented personalized prevention plans
+\item Educated staff on evidence-based fall prevention strategies
+\item Reduced fall rate by 25\% on the unit
+\end{itemize}
+\textbf{Keywords}: Fall Prevention, Quality Improvement, Patient Safety}
+\section{Interests}
+
+\cvline{Health \& Wellness}{Yoga, Running, Nutrition}
+\cvline{Community}{Volunteering, Health Education}
+\cvline{Hobbies}{Reading, Travel, Cooking}
+\section{Volunteer}
+
+\cventry{Jan 2018–Present}
+        {Volunteer Registered Nurse}
+        {Austin Community Health Clinic}
+        {\url{https://www.austincommunityhealth.org/}}
+        {}
+        {\begin{itemize}
+\item Provide health screenings and patient education at monthly community health fairs
+\item Assist with vaccination clinics and chronic disease management workshops
+\item Mentor nursing students during volunteer shifts
+\end{itemize}}
+    
+\end{document}
