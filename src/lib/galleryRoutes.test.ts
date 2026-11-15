@@ -119,6 +119,27 @@ describe('galleryRoutes', () => {
     ])
   })
 
+  it('uses Typst source downloads for the Typst Jake template', () => {
+    const detail = resolveTemplateGalleryDetail('typst', 'jake')
+
+    expect(detail?.yamlContent).toContain('engine: typst')
+    expect(detail?.yamlContent).toContain('template: jake')
+    expect(detail?.downloads).toEqual([
+      {
+        format: 'pdf',
+        href: '/gallery/templates/typst/jake/resume.pdf',
+      },
+      {
+        format: 'typ',
+        href: '/gallery/templates/typst/jake/resume.typ',
+      },
+      {
+        format: 'webp',
+        href: '/gallery/templates/typst/jake/resume.webp',
+      },
+    ])
+  })
+
   it('rejects invalid engine and template combinations', () => {
     expect(resolveTemplateGalleryDetail('latex', 'calm')).toBeUndefined()
     expect(resolveTemplateGalleryDetail('unknown', 'calm')).toBeUndefined()
@@ -142,8 +163,8 @@ describe('galleryRoutes', () => {
     expect(detail?.yamlContent).toContain(
       '# yaml-language-server: $schema=https://yamlresume.dev/schema.json'
     )
-    expect(yaml.parse(getYamlContent(detail)).layouts).toHaveLength(4)
-    expect(detail?.downloads).toHaveLength(6)
+    expect(yaml.parse(getYamlContent(detail)).layouts).toHaveLength(5)
+    expect(detail?.downloads).toHaveLength(7)
     expect(detail?.canonicalPath).toBe('/gallery/languages/ja')
   })
 
@@ -161,7 +182,7 @@ describe('galleryRoutes', () => {
     expect(detail?.yamlContent).toContain(
       '# yaml-language-server: $schema=https://yamlresume.dev/schema.json'
     )
-    expect(yaml.parse(getYamlContent(detail)).layouts).toHaveLength(4)
+    expect(yaml.parse(getYamlContent(detail)).layouts).toHaveLength(5)
     expect(detail?.item.thumbnailUrl).toBe(
       '/gallery/examples/software-engineer/ja/resume.webp'
     )

@@ -20,7 +20,12 @@ describe('gallery YAML API', () => {
       '# yaml-language-server: $schema=https://yamlresume.dev/schema.json'
     )
     expect(yamlContent).toContain('Andy Dufresne')
-    expect(resume.layouts).toHaveLength(4)
+    expect(resume.layouts).toHaveLength(5)
+    expect(resume.layouts).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ engine: 'typst', template: 'jake' }),
+      ])
+    )
   })
 
   it('returns YAML with only the selected template layout', async () => {

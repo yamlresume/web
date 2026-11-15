@@ -23,16 +23,20 @@ describe('GalleryList', () => {
   it('links cards to category-specific routes', () => {
     render(<GalleryList language="en" />)
 
-    expect(screen.getByRole('link', { name: /Jake/ })).toHaveAttribute(
-      'href',
-      '/gallery/templates/latex/jake'
+    const jakeLinks = screen.getAllByRole('link', { name: /Jake/ })
+    expect(jakeLinks).toHaveLength(2)
+    expect(jakeLinks.map((link) => link.getAttribute('href'))).toEqual(
+      expect.arrayContaining([
+        '/gallery/templates/latex/jake',
+        '/gallery/templates/typst/jake',
+      ])
     )
     expect(
       screen.getByRole('heading', { name: 'English' }).closest('a')
     ).toHaveAttribute('href', '/gallery/languages/en')
     expect(
-      screen.getByRole('link', { name: /Data Scientist/ })
-    ).toHaveAttribute('href', '/gallery/examples/data-scientist/en')
+      screen.getByRole('heading', { name: 'Account Executive' }).closest('a')
+    ).toHaveAttribute('href', '/gallery/examples/account-executive/en')
   })
 
   it('renders icon headings with dividers for all showcase sections', () => {

@@ -56,6 +56,10 @@ describe('GalleryDetail', () => {
       'href',
       '/gallery/examples/software-engineer/en/resume.tex'
     )
+    expect(screen.getByRole('link', { name: 'Typst' })).toHaveAttribute(
+      'href',
+      '/gallery/examples/software-engineer/en/resume.typ'
+    )
     expect(screen.getByRole('link', { name: 'DOCX' })).toHaveAttribute(
       'href',
       '/gallery/examples/software-engineer/en/resume.docx'
