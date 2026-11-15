@@ -221,7 +221,7 @@ Defines the overall layout validation configuration.
 
 | Prop        | Type                                                                                         | Required | Validation Rules                |
 | ----------- | -------------------------------------------------------------------------------------------- | -------- | ------------------------------- |
-| `layouts[]` | [`DocxLayoutSchema`](#docxlayoutschema) \| [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | Array of layout configurations. |
+| `layouts[]` | [`DocxLayoutSchema`](#docxlayoutschema) \| [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) \| [`TypstLayoutSchema`](#typstlayoutschema) | ⬜       | Array of layout configurations. |
 
 #### Common Layout Schemas
 
@@ -302,6 +302,7 @@ Validates HTML typography settings.
 | `fontSize?`  | [`HtmlFontSize`](#htmlfontsize)   | ⬜       | Must be from predefined [font size options](#htmlfontsize) |
 | `fontFamily?`| `string`                          | ⬜       | A comma-separated list of font families.                   |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)    | ⬜       | Must be from predefined [line spacing options](#linespacing) |
+| `links?`     | `{ underline?: boolean }`       | ⬜       | true/false                                                 |
 
 #### LatexLayoutSchema
 
@@ -347,6 +348,50 @@ Validates typography settings for document formatting.
 | `fontFamily?`| `string`                    | ⬜       | A comma-separated list of font families.               |
 | `lineSpacing?`| [`LineSpacing`](#linespacing) | ⬜     | Must be from predefined [line spacing options](#linespacing) |
 | `links?`     | `{ underline?: boolean }`   | ⬜       | true/false                                             |
+
+#### TypstLayoutSchema
+
+Validates Typst layout configuration.
+
+| Prop          | Type                                                | Required | Validation Rules                                      |
+| ------------- | --------------------------------------------------- | -------- | ----------------------------------------------------- |
+| `advanced?`   | [`TypstAdvancedSchema`](#typstadvancedschema)       | ⬜       | See [advanced schema](#typstadvancedschema)           |
+| `engine`      | `'typst'`                                           | ✅       | Must be "typst"                                       |
+| `page?`       | [`TypstPageSchema`](#typstpageschema)               | ⬜       | See [page schema](#typstpageschema)                   |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | See [sections schema](#sectionsschema)                |
+| `template?`   | [`TypstTemplate`](#typsttemplate)                   | ⬜       | Must be `jake`                                        |
+| `theme?`      | [`ThemeSchema`](#themeschema)                       | ⬜       | See [theme schema](#themeschema)                      |
+| `typography?` | [`TypstTypographySchema`](#typsttypographyschema)   | ⬜       | See [typography schema](#typsttypographyschema)       |
+
+##### TypstAdvancedSchema
+
+Validates advanced Typst configuration options.
+
+| Prop         | Type      | Required | Validation Rules |
+| ------------ | --------- | -------- | ---------------- |
+| `showIcons?` | `boolean` | ⬜       | true/false       |
+| `showUrls?`  | `boolean` | ⬜       | true/false       |
+
+##### TypstPageSchema
+
+Validates Typst page-level settings.
+
+| Prop               | Type                        | Required | Validation Rules                               |
+| ------------------ | --------------------------- | -------- | ---------------------------------------------- |
+| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜       | See [margins schema](#marginsschema)           |
+| `paperSize?`       | [`TypstPaperSize`](#typstpapersize) | ⬜       | Must be `a4` or `letter`                       |
+| `showPageNumbers?` | `boolean`                   | ⬜       | true/false                                     |
+
+##### TypstTypographySchema
+
+Validates Typst typography settings.
+
+| Prop          | Type                        | Required | Validation Rules                                           |
+| ------------- | --------------------------- | -------- | ---------------------------------------------------------- |
+| `fontSize?`   | [`TypstFontSize`](#typstfontsize) | ⬜       | Must be `10pt`, `11pt` or `12pt`                           |
+| `fontFamily?` | `string`                    | ⬜       | A comma-separated list of font families.                   |
+| `lineSpacing?`| [`LineSpacing`](#linespacing) | ⬜       | Must be from predefined [line spacing options](#linespacing) |
+| `links?`      | `{ underline?: boolean }`   | ⬜       | true/false                                                 |
 
 #### MarkdownLayoutSchema
 
@@ -399,6 +444,7 @@ Validates typography settings for document formatting.
 | `fontSize?`   | [`DocxFontSize`](#docxfontsize)   | ⬜       | Must be from predefined [font size options](#docxfontsize) |
 | `fontFamily?` | `string`                          | ⬜       | A comma-separated list of font families.                   |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)     | ⬜       | Must be from predefined [line spacing options](#linespacing) |
+| `links?`      | `{ underline?: boolean }`         | ⬜       | true/false                                                 |
 
 ## Primitive Validation Schemas
 
@@ -634,6 +680,33 @@ A union type for all possible LaTeX font size options.
 - Must be one of: `10pt`, `11pt`, `12pt`
 - `10pt` is the default font size
 
+### TypstFontSize
+
+A union type for all possible Typst font size options.
+
+**Validation Rules:**
+
+- Must be one of: `10pt`, `11pt`, `12pt`
+- `10pt` is the default font size
+
+### TypstPaperSize
+
+A union type for all possible Typst paper size options.
+
+**Validation Rules:**
+
+- Must be one of: `a4`, `letter`
+- `a4` is the default paper size
+
+### TypstTemplate
+
+A union type for all possible Typst template options.
+
+**Validation Rules:**
+
+- Must be one of: `jake`
+- See also: [templates](/docs/layouts/typst/templates)
+
 ### LatexFontspecNumbers
 
 A union type for all possible latex fontspec numbers options.
@@ -666,5 +739,6 @@ A union type for all possible locale languages.
 
 **Validation Rules:**
 
-- Must be one of: `en`, `es`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`
+- Must be one of: `de`, `en`, `es`, `fr`, `id`, `it`, `ja`, `nl`, `no`,
+  `pt-br`, `zh-hans`, `zh-hant-hk`, `zh-hant-tw`
 - See also: [multi-languages](/docs/locale)

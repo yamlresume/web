@@ -218,7 +218,7 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 
 | 屬性        | 類型                                                                                         | 必需 | 驗證規則            |
 | ----------- | -------------------------------------------------------------------------------------------- | -------- | ------------------------------- |
-| `layouts[]` | [`DocxLayoutSchema`](#docxlayoutschema) \| [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) | ⬜       | 佈局配置陣列。 |
+| `layouts[]` | [`DocxLayoutSchema`](#docxlayoutschema) \| [`HtmlLayoutSchema`](#htmllayoutschema) \| [`LatexLayoutSchema`](#latexlayoutschema) \| [`MarkdownLayoutSchema`](#markdownlayoutschema) \| [`TypstLayoutSchema`](#typstlayoutschema) | ⬜       | 佈局配置陣列。 |
 
 #### 通用佈局模式
 
@@ -295,6 +295,7 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 | `fontFamily?` | `string`                          | ⬜       | 逗號分隔的字體家族列表。                   |
 | `fontSize?`   | [`HtmlFontSize`](#htmlfontsize)     | ⬜       | 必須來自預定義的[字體大小選項](#htmlfontsize) |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)      | ⬜       | 必須來自預定義的[行距選項](#linespacing) |
+| `links?`      | `{ underline?: boolean }`           | ⬜       | true/false                                           |
 
 #### LatexLayoutSchema
 
@@ -340,6 +341,50 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 | `fontFamily?` | `string`                        | ⬜       | 逗號分隔的字體家族列表。                   |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)   | ⬜       | 必須來自預定義的[行距選項](#linespacing) |
 | `links?`      | `{ underline?: boolean }`        | ⬜       | true/false                                           |
+
+#### TypstLayoutSchema
+
+驗證 Typst 佈局配置。
+
+| 屬性          | 類型                                                | 必需 | 驗證規則                                      |
+| ------------- | --------------------------------------------------- | -------- | ----------------------------------------------------- |
+| `advanced?`   | [`TypstAdvancedSchema`](#typstadvancedschema)       | ⬜       | 參見[高級模式](#typstadvancedschema)                |
+| `engine`      | `'typst'`                                           | ✅       | 必須是 "typst"                                       |
+| `page?`       | [`TypstPageSchema`](#typstpageschema)               | ⬜       | 參見[頁面模式](#typstpageschema)                   |
+| `sections?`   | [`SectionsSchema`](#sectionsschema)                 | ⬜       | 參見[分節模式](#sectionsschema)                |
+| `template?`   | [`TypstTemplate`](#typsttemplate)                   | ⬜       | 必須是 `jake`                                        |
+| `theme?`      | [`ThemeSchema`](#themeschema)                       | ⬜       | 參見[主題模式](#themeschema) |
+| `typography?` | [`TypstTypographySchema`](#typsttypographyschema)   | ⬜       | 參見[排版模式](#typsttypographyschema)      |
+
+##### TypstAdvancedSchema
+
+驗證 Typst 的高級配置選項。
+
+| 屬性         | 類型      | 必需 | 驗證規則 |
+| ------------ | --------- | -------- | ---------------- |
+| `showIcons?` | `boolean` | ⬜       | true/false       |
+| `showUrls?`  | `boolean` | ⬜       | true/false       |
+
+##### TypstPageSchema
+
+驗證 Typst 的頁面級設置。
+
+| 屬性               | 類型                        | 必需 | 驗證規則                 |
+| ------------------ | --------------------------- | -------- | ------------------------------------ |
+| `margins?`         | [`MarginsSchema`](#marginsschema) | ⬜       | 參見[頁邊距模式](#marginsschema) |
+| `paperSize?`       | [`TypstPaperSize`](#typstpapersize) | ⬜       | 必須是 `a4` 或 `letter`              |
+| `showPageNumbers?` | `boolean`                   | ⬜       | true/false                           |
+
+##### TypstTypographySchema
+
+驗證 Typst 的排版設置。
+
+| 屬性          | 類型                        | 必需 | 驗證規則                                            |
+| ------------- | --------------------------- | -------- | ----------------------------------------------------- |
+| `fontSize?`   | [`TypstFontSize`](#typstfontsize) | ⬜       | 必須是 `10pt`、`11pt` 或 `12pt`                       |
+| `fontFamily?` | `string`                    | ⬜       | 逗號分隔的字體家族列表。                   |
+| `lineSpacing?`| [`LineSpacing`](#linespacing) | ⬜       | 必須來自預定義的[行距選項](#linespacing) |
+| `links?`      | `{ underline?: boolean }`   | ⬜       | true/false                                           |
 
 #### MarkdownLayoutSchema
 
@@ -392,6 +437,7 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 | `fontSize?`   | [`DocxFontSize`](#docxfontsize)   | ⬜       | 必須來自預定義的[字體大小選項](#docxfontsize) |
 | `fontFamily?` | `string`                          | ⬜       | 逗號分隔的字體家族列表。                   |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)     | ⬜       | 必須來自預定義的[行距選項](#linespacing) |
+| `links?`      | `{ underline?: boolean }`         | ⬜       | true/false                                 |
 
 ## 原始驗證模式
 
@@ -607,13 +653,41 @@ YAMLResume 採用 [zod](https://zod.dev) 在執行時驗證履歷資料。
 - 必須是以下之一：`calm`、`kami`、`vscode`
 - 另請參閱：[模板](/zh-tw/docs/layouts/html/templates)
 
+### TypstFontSize
+
+所有可能的 Typst 字體大小選項的聯合類型。
+
+**驗證規則：**
+
+- 必須是以下之一：`10pt`、`11pt`、`12pt`
+- `10pt` 是預設字體大小
+
+### TypstPaperSize
+
+所有可能的 Typst 紙張大小選項的聯合類型。
+
+**驗證規則：**
+
+- 必須是以下之一：`a4`、`letter`
+- `a4` 是預設紙張大小
+
+### TypstTemplate
+
+所有可能的 Typst 模板選項的聯合類型。
+
+**驗證規則：**
+
+- 必須是以下之一：`jake`
+- 另請參閱：[模板](/zh-tw/docs/layouts/typst/templates)
+
 ### LocaleLanguage
 
 所有可能區域語言的聯合類型。
 
 **驗證規則：**
 
-- 必須是以下之一：`en`、`es`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`
+- 必須是以下之一：`de`、`en`、`es`、`fr`、`id`、`it`、`ja`、`nl`、`no`、
+  `pt-br`、`zh-hans`、`zh-hant-hk`、`zh-hant-tw`
 - 另請參閱：[多語言](/zh-tw/docs/locale)
 
 ### LatexFontspecNumbers

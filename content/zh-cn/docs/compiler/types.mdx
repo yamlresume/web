@@ -56,6 +56,7 @@ B1[DocxLayout]
 B2[HtmlLayout]
 B3[LatexLayout]
 B4[MarkdownLayout]
+B5[TypstLayout]
 end
 
 subgraph Content
@@ -77,6 +78,7 @@ B --> B1
 B --> B2
 B --> B3
 B --> B4
+B --> B5
 C --> C1
 C --> C2
 C --> C3
@@ -289,7 +291,7 @@ C --> C8
 
 | 属性        | 类型                                                                 | 必需 | 描述                            |
 | ----------- | -------------------------------------------------------------------- | -------- | -------------------------------------- |
-| `layouts[]` | [`DocxLayout`](#docxlayout) \| [`HtmlLayout`](#htmllayout) \| [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜       | 多个输出布局配置。 |
+| `layouts[]` | [`DocxLayout`](#docxlayout) \| [`HtmlLayout`](#htmllayout) \| [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) \| [`TypstLayout`](#typstlayout) | ⬜       | 多个输出布局配置。 |
 
 #### 通用布局类型
 
@@ -358,6 +360,7 @@ HTML 布局配置。
 | `fontFamily?` | `string`                            | ⬜       | 要使用的逗号分隔的字体家族列表。 |
 | `fontSize?`   | [`HtmlFontSize`](#htmlfontsize)     | ⬜       | 文档的基础字体大小。 |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)       | ⬜       | 文档的行间距。      |
+| `links?`      | `{ underline?: boolean }`           | ⬜       | 链接样式设置。           |
 
 #### LatexLayout
 
@@ -402,6 +405,50 @@ LaTeX 布局配置。
 | `fontSize?`   | [`LatexFontSize`](#latexfontsize)   | ⬜       | 文档的基础字体大小。 |
 | `fontFamily?` | `string`                            | ⬜       | 要使用的逗号分隔的字体家族列表。 |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)       | ⬜       | 文档的行间距。        |
+| `links?`      | `{ underline?: boolean }`           | ⬜       | 链接样式设置。           |
+
+#### TypstLayout
+
+Typst 布局配置。
+
+| 属性          | 类型                                    | 必需 | 描述                                           |
+| ------------- | --------------------------------------- | -------- | ----------------------------------------------------- |
+| `engine`      | `'typst'`                               | ✅       | 生成简历的引擎。                    |
+| `advanced?`   | [`TypstAdvanced`](#typstadvanced)       | ⬜       | 定义高级配置选项。               |
+| `page?`       | [`TypstPage`](#typstpage)               | ⬜       | 定义文档演示的页面级设置。|
+| `sections?`   | [`Sections`](#sections)                 | ⬜       | 定义分节自定义设置。               |
+| `template?`   | [`TypstTemplate`](#typsttemplate)       | ⬜       | 定义选定的模板。                        |
+| `theme?`      | [`Theme`](#theme)                       | ⬜       | 定义简历的视觉主题设置。                |
+| `typography?` | [`TypstTypography`](#typsttypography)   | ⬜       | 定义文档格式的排版设置。  |
+
+##### TypstAdvanced
+
+定义 Typst 的高级配置选项。
+
+| 属性         | 类型      | 必需 | 描述                                          |
+| ------------ | --------- | -------- | ---------------------------------------------------- |
+| `showIcons?` | `boolean` | ⬜       | 是否显示链接和社交主页的图标。     |
+| `showUrls?`  | `boolean` | ⬜       | 是否显示原始 URL 或将其隐藏在合理的文本后面。 |
+
+##### TypstPage
+
+定义 Typst 的文档演示页面级设置。
+
+| 属性               | 类型                           | 必需 | 描述                      |
+| ------------------ | ------------------------------ | -------- | -------------------------------- |
+| `margins?`         | [`Margins`](#margins)          | ⬜       | 定义页边距设置。    |
+| `paperSize?`       | [`TypstPaperSize`](#typstpapersize) | ⬜       | 定义纸张大小。 |
+| `showPageNumbers?` | `boolean`                      | ⬜       | 是否显示页码。 |
+
+##### TypstTypography
+
+定义 Typst 的文档格式排版设置。
+
+| 属性          | 类型                                | 必需 | 描述                        |
+| ------------- | ----------------------------------- | -------- | -------------------------------- |
+| `fontSize?`   | [`TypstFontSize`](#typstfontsize)   | ⬜       | 文档的基础字体大小。 |
+| `fontFamily?` | `string`                            | ⬜       | 要使用的逗号分隔的字体家族列表。 |
+| `lineSpacing?`| [`LineSpacing`](#linespacing)       | ⬜       | 文档的行间距。        |
 | `links?`      | `{ underline?: boolean }`           | ⬜       | 链接样式设置。           |
 
 #### MarkdownLayout
@@ -455,6 +502,7 @@ DOCX 布局配置。
 | `fontSize?`   | [`DocxFontSize`](#docxfontsize)     | ⬜       | 文档的基础字体大小。 |
 | `fontFamily?` | `string`                            | ⬜       | 要使用的逗号分隔的字体家族列表。 |
 | `lineSpacing?` | [`LineSpacing`](#linespacing)      | ⬜       | 文档的行间距。        |
+| `links?`      | `{ underline?: boolean }`           | ⬜       | 链接样式设置。           |
 
 ## 枚举类型
 
@@ -605,6 +653,29 @@ HTML 引擎支持 14px 到 20px 的字体大小：
 - `moderncv-casual`
 - `moderncv-classic`
 
+#### TypstFontSize
+
+所有可能的 Typst 字体大小选项的联合类型。
+
+- `10pt` - 10pt 字体大小（默认）
+- `11pt` - 11pt 字体大小
+- `12pt` - 12pt 字体大小
+
+#### TypstPaperSize
+
+所有可能的 Typst 纸张大小选项的联合类型。
+
+- `a4` (默认)
+- `letter`
+
+#### TypstTemplate
+
+所有可能的 Typst 模板选项的联合类型。
+
+另请参阅：[模板](/zh-cn/docs/layouts/typst/templates)
+
+- `jake`
+
 #### PaperSize
 
 所有可能的 LaTeX 纸张大小选项的联合类型。
@@ -620,8 +691,16 @@ HTML 引擎支持 14px 到 20px 的字体大小：
 
 另请参阅：[多语言](/zh-cn/docs/locale)
 
+- `de`
 - `en`
 - `es`
+- `fr`
+- `id`
+- `it`
+- `ja`
+- `nl`
+- `no`
+- `pt-br`
 - `zh-hans`
 - `zh-hant-hk`
 - `zh-hant-tw`

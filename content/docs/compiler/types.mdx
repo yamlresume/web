@@ -65,6 +65,7 @@ B1[DocxLayout]
 B2[HtmlLayout]
 B3[LatexLayout]
 B4[MarkdownLayout]
+B5[TypstLayout]
 end
 
 subgraph Content
@@ -86,6 +87,7 @@ B --> B1
 B --> B2
 B --> B3
 B --> B4
+B --> B5
 C --> C1
 C --> C2
 C --> C3
@@ -298,7 +300,7 @@ Array of layout items supporting multiple output formats.
 
 | Prop        | Type                                                                 | Required | Description                            |
 | ----------- | -------------------------------------------------------------------- | -------- | -------------------------------------- |
-| `layouts[]` | [`DocxLayout`](#docxlayout) \| [`HtmlLayout`](#htmllayout) \| [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) | ⬜       | Multiple output layout configurations. |
+| `layouts[]` | [`DocxLayout`](#docxlayout) \| [`HtmlLayout`](#htmllayout) \| [`LatexLayout`](#latexlayout) \| [`MarkdownLayout`](#markdownlayout) \| [`TypstLayout`](#typstlayout) | ⬜       | Multiple output layout configurations. |
 
 #### Common Layout Types
 
@@ -371,6 +373,7 @@ Defines HTML typography settings for document formatting.
 | `fontSize?`  | [`HtmlFontSize`](#htmlfontsize)   | ⬜       | Base font size for the document. |
 | `fontFamily?`| `string`                          | ⬜       | A comma-separated list of font families to use. |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)    | ⬜       | Line spacing for the document.  |
+| `links?`     | `{ underline?: boolean }`       | ⬜       | Link styling settings.           |
 
 #### LatexLayout
 
@@ -416,6 +419,50 @@ Defines latex typography settings for document formatting.
 | `fontFamily?`| `string`                            | ⬜       | A comma-separated list of font families to use. |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)      | ⬜       | Line spacing for the document.  |
 | `links?`     | `{ underline?: boolean }`           | ⬜       | Link styling settings.           |
+
+#### TypstLayout
+
+Typst layout configuration.
+
+| Prop          | Type                                    | Required | Description                                           |
+| ------------- | --------------------------------------- | -------- | ----------------------------------------------------- |
+| `engine`      | `'typst'`                               | ✅       | The engine to generate the resume.                    |
+| `advanced?`   | [`TypstAdvanced`](#typstadvanced)       | ⬜       | Defines advanced configuration options.               |
+| `page?`       | [`TypstPage`](#typstpage)               | ⬜       | Defines page-level settings for document presentation.|
+| `sections?`   | [`Sections`](#sections)                 | ⬜       | Defines section customization settings.               |
+| `template?`   | [`TypstTemplate`](#typsttemplate)       | ⬜       | Defines the selected template.                        |
+| `theme?`      | [`Theme`](#theme)                       | ⬜       | Defines visual theme settings for the resume.         |
+| `typography?` | [`TypstTypography`](#typsttypography)   | ⬜       | Defines typography settings for document formatting.  |
+
+##### TypstAdvanced
+
+Defines advanced Typst configuration options.
+
+| Prop         | Type      | Required | Description                                          |
+| ------------ | --------- | -------- | ---------------------------------------------------- |
+| `showIcons?` | `boolean` | ⬜       | Whether to display icons for links and profiles.     |
+| `showUrls?`  | `boolean` | ⬜       | Whether to show raw URLs or hide them behind reasonable text. |
+
+##### TypstPage
+
+Defines Typst page-level settings for document presentation.
+
+| Prop               | Type                           | Required | Description                          |
+| ------------------ | ------------------------------ | -------- | ------------------------------------ |
+| `margins?`         | [`Margins`](#margins)          | ⬜       | Defines page margin settings.        |
+| `paperSize?`       | [`TypstPaperSize`](#typstpapersize) | ⬜       | Defines the paper size.              |
+| `showPageNumbers?` | `boolean`                      | ⬜       | Whether to display page numbers.     |
+
+##### TypstTypography
+
+Defines Typst typography settings for document formatting.
+
+| Prop          | Type                                | Required | Description                      |
+| ------------- | ----------------------------------- | -------- | -------------------------------- |
+| `fontSize?`   | [`TypstFontSize`](#typstfontsize)   | ⬜       | Base font size for the document. |
+| `fontFamily?` | `string`                            | ⬜       | A comma-separated list of font families to use. |
+| `lineSpacing?`| [`LineSpacing`](#linespacing)       | ⬜       | Line spacing for the document.   |
+| `links?`      | `{ underline?: boolean }`           | ⬜       | Link styling settings.           |
 
 #### MarkdownLayout
 
@@ -468,6 +515,7 @@ Defines DOCX typography settings for document formatting.
 | `fontSize?`   | [`DocxFontSize`](#docxfontsize)     | ⬜       | Base font size for the document. |
 | `fontFamily?` | `string`                            | ⬜       | A comma-separated list of font families to use. |
 | `lineSpacing?`| [`LineSpacing`](#linespacing)       | ⬜       | Line spacing for the document.   |
+| `links?`      | `{ underline?: boolean }`           | ⬜       | Link styling settings.           |
 
 ## Enum Types
 
@@ -623,6 +671,29 @@ See also: [templates](/docs/layouts/latex/templates)
 - `moderncv-casual`
 - `moderncv-classic`
 
+#### TypstFontSize
+
+A union type for all possible Typst font size options.
+
+- `10pt` - 10pt font size (default)
+- `11pt` - 11pt font size
+- `12pt` - 12pt font size
+
+#### TypstPaperSize
+
+A union type for all possible Typst paper size options.
+
+- `a4` (default)
+- `letter`
+
+#### TypstTemplate
+
+A union type for all possible Typst template options.
+
+See also: [templates](/docs/layouts/typst/templates)
+
+- `jake`
+
 #### PaperSize
 
 A union type for all possible LaTeX paper size options.
@@ -638,8 +709,16 @@ A union type for all possible locale languages.
 
 See also: [multi-languages](/docs/locale)
 
+- `de`
 - `en`
 - `es`
+- `fr`
+- `id`
+- `it`
+- `ja`
+- `nl`
+- `no`
+- `pt-br`
 - `zh-hans`
 - `zh-hant-hk`
 - `zh-hant-tw`
