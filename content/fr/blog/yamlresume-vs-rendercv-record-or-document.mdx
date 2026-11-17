@@ -1,0 +1,593 @@
+---
+title: "YAMLResume vs RenderCV : enregistrement ou document ?"
+description: >-
+  Vous cherchez une alternative à RenderCV ? Les deux outils acceptent du YAML,
+  mais l'un modélise le CV comme un enregistrement interrogeable et l'autre comme
+  un document libre. Voici ce que cette différence coûte — et épargne — dans
+  Postgres et MongoDB.
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-11-17
+---
+
+Si vous comparez [YAMLResume](https://yamlresume.dev) et
+[RenderCV](https://rendercv.com), les différences évidentes sont les moteurs de
+rendu et le nombre de réglages visuels. Nous avons déjà traité ce sujet dans la
+[comparaison côte à côte](/fr/docs/comparisons/rendercv). Cet article porte sur
+quelque chose de plus étroit et, pour quiconque construit un système plutôt qu'un
+seul PDF, de bien plus déterminant : **la forme des données**.
+
+Les deux outils acceptent du YAML, le valident et produisent un PDF. Mais ils
+modélisent deux choses différentes :
+
+- YAMLResume modélise le CV comme un **enregistrement (record)** — une ligne dont
+  toutes les lignes partagent le même schéma.
+- RenderCV modélise le CV comme un **document** — un arbre dont l'auteur contrôle
+  la forme.
+
+Ce n'est pas une distinction cosmétique. Elle détermine si « trouver toutes les
+personnes titulaires d'un master » est une requête SQL ou un projet d'analyse en
+couche applicative. Examinons donc concrètement les deux modèles, puis ce qu'ils
+vous coûtent dans un générateur de CV, un système RH ou un ERP.
+
+## Deux modèles, un même CV
+
+Voici les données de la même personne dans chaque format. Rien d'artificiel — c'est
+à peu près ce que produisent `yamlresume new` et `rendercv new`.
+
+```yml title="yamlresume.yml"
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Backend Engineer
+    email: andy@example.com
+  location:
+    city: San Francisco
+    region: California
+    country: United States
+  profiles:
+    - network: GitHub
+      username: andy
+  education:
+    - institution: University of Southern California
+      degree: Bachelor
+      area: Computer Engineering
+      startDate: Sep 1, 2016
+      endDate: Jul 1, 2020
+  work:
+    - name: PPResume
+      position: Senior Software Engineer
+      startDate: Dec 1, 2022
+      endDate:
+      summary: |
+        - Built the LaTeX rendering pipeline
+layouts:
+  - engine: latex
+    template: moderncv-classic
+```
+
+```yml title="rendercv.yml"
+cv:
+  name: Andy Dufresne
+  headline: Backend Engineer
+  email: andy@example.com
+  location: San Francisco, CA
+  social_networks:
+    - network: GitHub
+      username: andy
+  sections:
+    education:
+      - institution: University of Southern California
+        degree: BS
+        area: Computer Engineering
+        start_date: 2016-09
+        end_date: 2020-07
+    experience:
+      - company: PPResume
+        position: Senior Software Engineer
+        start_date: 2022-12
+        end_date: present
+        highlights:
+          - Built the LaTeX rendering pipeline
+design:
+  theme: classic
+```
+
+À première vue, ils se ressemblent. Ils ne le sont pas. Quatre décisions
+structurelles les séparent, et chacune a une conséquence directe au niveau du
+stockage.
+
+### 1. Les clés de section sont-elles fixes ?
+
+YAMLResume possède un ensemble fermé de clés de section. Le
+[schéma de contenu](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/content/content.ts)
+fusionne exactement quatorze clés : `basics`, `location`, `profiles`,
+`education`, `work`, `volunteer`, `awards`, `certificates`, `publications`,
+`skills`, `languages`, `interests`, `references`, `projects`. Un CV qui écrit
+`certifcates` au lieu de `certificates` n'a pas de section certificats — il
+n'existe aucun moyen d'exprimer une section absente de cette liste.
+
+L'équivalent chez RenderCV tient en une ligne de Pydantic :
+
+```py
+sections: dict[str, Section] | None
+```
+
+La clé est un `str`. Aucun mot réservé. Un utilisateur peut écrire `education`,
+`Education`, `education_and_training`, `Academic Background`, `教育` ou
+`Things I Did`. Dans le
+[JSON Schema](https://github.com/rendercv/rendercv/blob/main/schema.json) généré,
+ce champ est littéralement
+`additionalProperties: { "$ref": "#/$defs/Section" }` — le schéma dit au
+validateur « n'importe quelle clé convient », et rien de plus.
+
+### 2. Les noms de champs ont-ils le même sens partout ?
+
+C'est la partie facile à manquer, et celle qui fait le plus mal en base de
+données. RenderCV n'a pas un schéma d'entrée unique ; il a neuf *types* d'entrée
+(`ExperienceEntry`, `EducationEntry`, `PublicationEntry`, `NormalEntry`,
+`OneLineEntry`, `BulletEntry`, `NumberedEntry`, `ReversedNumberedEntry`), plus
+une simple chaîne appelée `TextEntry`. Le type d'une section est déduit de la
+première entrée qui correspond, à l'aide d'une table de « champs
+caractéristiques » — les champs propres à chaque type :
+
+```py
+# rendercv/src/rendercv/schema/models/cv/section.py
+characteristic_entry_fields = get_characteristic_entry_fields(available_entry_models)
+```
+
+Une entrée contenant `institution` est une `EducationEntry`, car aucun autre type
+ne déclare `institution`. Une entrée avec seulement `name` est une `NormalEntry`.
+Ensuite, `validate_section()` exige que **toutes les entrées de cette section
+soient du même type**.
+
+Conséquence : le nom du champ désignant « l'organisation » dépend du type que
+l'utilisateur a implicitement choisi.
+
+| Concept | `ExperienceEntry` | `EducationEntry` | `NormalEntry` |
+| --- | --- | --- | --- |
+| Organisation | `company` | `institution` | `name` |
+| Rôle / sujet | `position` | `area` | — |
+| Diplôme | — | `degree` | — |
+
+Notez ce qui *n'est pas* dans ce tableau. Les dates, `location`, `summary` et
+`highlights` sont identiques dans les trois types : ils ne peuvent donc pas non
+plus vous aider à les distinguer — les seuls signaux sont les trois lignes
+ci-dessus.
+
+Ainsi, « où cette personne a-t-elle travaillé » est `cv.sections.*[*].company`
+*si* elle a utilisé `ExperienceEntry`, et `...name` *si* elle a utilisé
+`NormalEntry` pour la même information. Et une section peut n'être faite que de
+chaînes brutes, puisque `TextEntry` est un `str` — ce qui signifie que `entries`
+est structurellement `list[str] | list[dict]`, sans aucune garantie de forme.
+
+YAMLResume ne connaît pas cette dérive : l'entreprise est toujours `work[].name`,
+l'établissement toujours `education[].institution`, et une section de compétences
+toujours `{name, level, keywords}`.
+
+### 3. Les valeurs viennent-elles d'un vocabulaire contrôlé ?
+
+YAMLResume fixe les valeurs que les systèmes ont généralement besoin de comparer :
+
+- `degree` ∈ `Middle School | High School | Diploma | Associate | Bachelor | Master | Doctor`
+- `level` (compétences) ∈ `Novice | Beginner | Intermediate | Advanced | Expert | Master`
+- `fluency` ∈ cinq [niveaux dérivés de l'ILR](https://www.languagetesting.com/ilr-scale), de `Elementary Proficiency` à `Native or Bilingual Proficiency`
+- `country`, `language`, `network` — de longues listes fixes, également utilisées pour la traduction
+
+Le `degree` de RenderCV est `str | None`. Son propre CV d'exemple utilise `PhD` et
+`BS`. C'est parfaitement raisonnable pour la composition typographique — et cela
+signifie qu'un corpus de fichiers RenderCV contient `PhD`, `Ph.D.`, `Doctorate`,
+`BS`, `BSc`, `Bachelor of Science`, `MS`, `MSc`, `M.S.`, `Master of Science`,
+tous ne signifiant que deux choses.
+
+Un détail à porter au crédit de YAMLResume : la valeur canonique n'est stockée
+qu'une fois, en anglais, et localisée au moment du rendu. Le CV chinois et le CV
+anglais de la même personne portent des valeurs canoniques identiques. Avec des
+chaînes libres, la valeur est ce que l'auteur a tapé dans sa langue, ce qui rend
+l'agrégation inter-locales pratiquement impossible.
+
+### 4. Où réside la présentation ?
+
+Chez RenderCV, le **titre affiché de la section est la clé du dict**, et l'**ordre
+d'affichage est l'ordre d'insertion du dict** (`get_rendercv_sections()` parcourt
+`sections.items()` et met les clés snake_case en Title Case). Changez l'apparence
+du CV et vous avez changé les données.
+
+Chez YAMLResume, les deux résident dans `layouts[]`, sous `sections.aliases` et
+`sections.order`. Le contenu conserve des clés et un ordre canoniques, et chaque
+format de sortie peut les présenter différemment.
+
+## Une décision, quatre symptômes
+
+Ces quatre réponses ne sont pas indépendantes. Elles découlent toutes d'une même
+posture de conception, et la nommer rend l'arbitrage plus facile à raisonner :
+
+- **YAMLResume est opinionated par conception.** Le schéma prend les décisions —
+  quelles sections existent, comment chaque champ s'appelle, quelles valeurs sont
+  autorisées, où la présentation s'arrête et où le contenu commence. L'auteur
+  remplit une forme qu'il n'a pas choisie.
+- **RenderCV est free-form par conception.** L'auteur prend les décisions. Le
+  schéma valide que chaque entrée est bien formée en interne, puis s'efface.
+
+Les deux sont légitimes, et les coûts sont symétriques :
+
+**Le coût d'être opinionated est un plafond d'expressivité.** Si votre CV a besoin
+d'une section « Patents » ou « Invited Talks » qui ne figure pas parmi les
+quatorze clés de YAMLResume, vous ne pouvez pas l'exprimer nativement. Vous
+disposez de douze titres de section renommables, ce qui suffit à la plupart des CV
+mais pas à tous.
+
+**Le coût d'être free-form est un plancher sémantique.** Le schéma ne peut pas
+promettre que quoi que ce soit dans le document soit comparable à autre chose.
+Deux auteurs exprimant des faits identiques produisent des documents qui ne
+partagent ni clés, ni vocabulaire, ni structure — ce qui convient tant que
+quelque chose d'autre qu'un lecteur humain n'a pas besoin de les consommer.
+
+L'asymétrie qui compte pour cet article est *quand* vous payez. Le modèle
+opinionated vous facture à l'écriture, une fois, en petite monnaie : vous ne
+pouvez pas dire une chose que vous vouliez dire. Le modèle free-form vous facture
+à la lecture, pour toujours, dans une monnaie qui se compose : chaque nouveau
+titre de section inventé par un utilisateur et chaque nouvelle orthographe de
+`Master` est une branche de plus dans un analyseur en aval. Un coût est payé une
+fois par un auteur ; l'autre est payé à répétition par chaque système qui touche
+les données ensuite.
+
+C'est pourquoi la suite de cet article porte sur les lecteurs — bases de données,
+pipelines ATS, imports HRIS — plutôt que sur les rédacteurs.
+
+## Ce que cela coûte dans Postgres
+
+Supposons le schéma évident — celui auquel aboutit chaque générateur de CV :
+
+```sql
+CREATE TABLE resumes (
+  id         uuid PRIMARY KEY,
+  content    jsonb NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+```
+
+Avec le modèle de YAMLResume, les chemins sont connus avant l'arrivée des données,
+vous pouvez donc les indexer et les interroger directement.
+
+```sql
+-- Toutes les personnes titulaires d'un master
+SELECT id, content -> 'basics' ->> 'name' AS name
+FROM resumes
+WHERE content -> 'education' @> '[{"degree": "Master"}]';
+
+-- Les candidats ayant Kubernetes sur leur CV
+SELECT id, content -> 'basics' ->> 'name' AS name
+FROM resumes
+WHERE content @? '$.skills[*].keywords[*] ? (@ == "Kubernetes")';
+
+-- Répartition par diplôme, sans étape de normalisation
+SELECT e ->> 'degree' AS degree, count(*) AS n
+FROM resumes, jsonb_array_elements(content -> 'education') AS e
+WHERE e ->> 'degree' IS NOT NULL
+GROUP BY e ->> 'degree'
+ORDER BY n DESC;
+```
+
+La dernière est tout l'argument en quelques lignes. C'est un simple `GROUP BY` sur
+un vocabulaire fermé, et le résultat est immédiatement correct.
+
+Voici maintenant l'équivalent RenderCV. Les noms de section sont inconnus, il faut
+donc les parcourir ; les formes d'entrée sont inconnues, il faut donc sonder un
+champ qui identifie une entrée d'éducation :
+
+```sql
+SELECT r.id, e ->> 'institution' AS institution, e ->> 'degree' AS degree
+FROM resumes r
+CROSS JOIN LATERAL jsonb_each(
+  CASE WHEN jsonb_typeof(r.content -> 'cv' -> 'sections') = 'object'
+       THEN r.content -> 'cv' -> 'sections'
+       ELSE '{}'::jsonb END
+) AS s(title, entries)
+CROSS JOIN LATERAL jsonb_array_elements(s.entries) AS e
+WHERE s.title ~* '(education|academic|study)'
+  AND jsonb_typeof(e) = 'object'
+  AND e ? 'institution';
+```
+
+Ce `CASE WHEN` n'est pas un bruit défensif : `sections` est nullable dans le
+modèle de RenderCV, et `COALESCE` n'aide pas, car le `null` JSON n'est pas un
+`NULL` SQL — `jsonb_each` lève
+`cannot call jsonb_each on a non-object`. Le garde
+`jsonb_typeof(e) = 'object'` compte pour la même raison : une section `TextEntry`
+est une liste de chaînes brutes, et `jsonb_array_elements` vous les remettra comme
+éléments.
+
+Trois problèmes, par ordre croissant de nuisance :
+
+1. **`s.title ~* '(education|academic|study)'`** est une supposition. Il rate
+   `Bildungsweg`, `Things I Did` et `edu`. Il produit aussi des faux positifs si
+   quelqu'un nomme une section « Education Policy Publications ».
+2. **Vous pouvez corriger cela en partie** en supprimant le filtre de titre et en
+   ne vous appuyant que sur `e ? 'institution'`. Il faut être juste : les types
+   d'entrée de RenderCV sont ici une véritable atténuation — le type d'entrée est
+   un ancrage sémantique qui survit au renommage. Mais cela ne fonctionne que si
+   l'auteur a choisi `EducationEntry`. Écrit comme `NormalEntry`, la même
+   formation devient `{name: "...", ...}` et `institution` n'existe pas.
+3. **Les valeurs restent sales.** Même après avoir trouvé chaque champ de diplôme,
+   vous obtenez ceci :
+
+```sql
+SELECT lower(trim(e ->> 'degree')) AS degree_raw, count(*)
+FROM resumes r
+CROSS JOIN LATERAL jsonb_each(
+  CASE WHEN jsonb_typeof(r.content -> 'cv' -> 'sections') = 'object'
+       THEN r.content -> 'cv' -> 'sections'
+       ELSE '{}'::jsonb END
+) AS s(title, entries)
+CROSS JOIN LATERAL jsonb_array_elements(s.entries) AS e
+WHERE jsonb_typeof(e) = 'object' AND e ? 'degree'
+GROUP BY lower(trim(e ->> 'degree'));
+```
+
+```text
+ degree_raw        | count
+-------------------+-------
+ bs                |   412
+ b.sc.             |    37
+ bachelor          |    21
+ bachelor of science|     9
+ phd               |   188
+ ph.d.             |    44
+ doctorate         |     6
+ ms                |   301
+ msc               |    58
+ master of science |    27
+```
+
+Les chiffres ci-dessus sont illustratifs. Ils montrent la forme de la distribution
+à laquelle vous attendre, et non le résultat d'un corpus précis.
+
+Vous avez maintenant besoin d'une table de synonymes, et vous devrez la maintenir
+pour toujours, car rien dans le schéma n'empêche le prochain utilisateur
+d'inventer une nouvelle orthographe. C'est la « taxe de code applicatif », et elle
+croît avec votre corpus plutôt que de rester fixe.
+
+### Le problème de la projection
+
+Le véritable bénéfice d'un modèle fixe est que vous pouvez projeter du JSONB dans
+des tables relationnelles de façon déclarative — sans analyse, sans heuristique,
+sans clés inconnues :
+
+```sql
+CREATE VIEW resume_work AS
+SELECT r.id AS resume_id,
+       w ->> 'name'      AS company,
+       w ->> 'position'  AS position,
+       w ->> 'startDate' AS start_date,
+       w ->> 'endDate'   AS end_date
+FROM resumes r,
+     jsonb_array_elements(r.content -> 'work') AS w;
+```
+
+Cette vue est stable sur tout votre corpus. Vous pouvez y brancher un tableau de
+bord ATS, un outil BI, ou une `JOIN` avec votre table `employees`. La même
+instruction pour RenderCV n'est pas seulement plus difficile — elle est *mal
+définie*, car « entreprise » peut être `company` ou `name`, et la section qui la
+contient peut s'appeler n'importe quoi.
+
+Si vous ingérez des fichiers YAMLResume, vous pouvez aussi dériver vos contraintes
+de base de données du même schéma que celui utilisé par le CLI pour valider, au
+lieu de maintenir à la main une copie parallèle :
+
+```sql
+ALTER TABLE resumes
+  ADD CONSTRAINT degree_valid CHECK (
+    content -> 'education' IS NULL
+    OR NOT jsonb_path_exists(
+      content,
+      '$.education[*].degree ? (@ != "Middle School" && @ != "High School"
+        && @ != "Diploma" && @ != "Associate" && @ != "Bachelor"
+        && @ != "Master" && @ != "Doctor")'
+    )
+  );
+```
+
+Verbeux, mais généré — et il tient pour chaque ligne, pour toujours.
+
+### Indexation
+
+Pour les données YAMLResume, un seul index GIN couvre les requêtes ci-dessus :
+
+```sql
+CREATE INDEX resumes_content_gin ON resumes USING gin (content jsonb_path_ops);
+```
+
+`jsonb_path_ops` prend en charge `@>`, `@?` et `@@`, ce qui correspond exactement
+aux opérateurs nécessaires : la contenance pour les correspondances d'énumération,
+le chemin JSON pour la recherche par mots-clés. Si vous filtrez fréquemment sur un
+tableau, indexez le tableau entier plutôt qu'un seul élément :
+
+```sql
+CREATE INDEX resumes_education_gin
+  ON resumes USING gin ((content -> 'education') jsonb_path_ops);
+```
+
+Indexer `content -> 'education' -> 0 ->> 'degree'` serait une erreur, et une
+erreur subtile : cela n'indexe que la *première* formation d'un candidat, donc
+quiconque a son master en deuxième position devient invisible à cet index. Indexer
+le tableau lui-même n'a pas ce mode de défaillance.
+
+Pour les données RenderCV, il n'existe pas de chemin stable à indexer. Il faudrait
+créer une colonne générée par concept sémantique, et chacune exige de résoudre
+d'abord en SQL la question « quelle section est l'éducation ». La réponse pratique
+vers laquelle se tournent les équipes est une tâche de normalisation nocturne —
+c'est-à-dire qu'elles finissent par construire le schéma fixe de toute façon, mais
+plus tard, dans un second système, avec perte de données en chemin.
+
+## La même histoire dans MongoDB
+
+MongoDB est plus accommodant avec les documents de CV imbriqués, et la différence
+apparaît au même endroit : la requête est-elle un filtre ou un script ?
+
+Avec YAMLResume, la requête et l'index sont tous deux directs :
+
+```js
+db.resumes.createIndex({ 'content.education.degree': 1 })
+db.resumes.createIndex({ 'content.skills.keywords': 1 })
+
+db.resumes.find(
+  { 'content.education.degree': 'Master' },
+  { 'content.basics.name': 1 }
+)
+
+db.resumes.aggregate([
+  { $unwind: '$content.education' },
+  { $group: { _id: '$content.education.degree', n: { $sum: 1 } } },
+  { $sort: { n: -1 } },
+])
+```
+
+Ce sont des index multikey sur un chemin connu, donc le serveur fait le travail.
+
+Avec RenderCV, `cv.sections` est une map aux clés inconnues, vous ne pouvez donc
+pas indexer un chemin que vous ignorez. Le mieux que vous puissiez faire est de
+normaliser à la lecture :
+
+```js
+db.resumes.aggregate([
+  { $project: { sections: { $objectToArray: '$cv.sections' } } },
+  { $unwind: '$sections' },
+  { $unwind: '$sections.v' },
+  {
+    $match: {
+      $or: [
+        { 'sections.v.institution': { $exists: true } },
+        { 'sections.k': /education/i },
+      ],
+    },
+  },
+  { $group: { _id: '$sections.v.degree', n: { $sum: 1 } } },
+])
+```
+
+Cela fonctionne, mais c'est un balayage de collection avec une expression
+régulière et une sonde `$exists`. Il ne peut pas utiliser d'index, et son sens
+évolue à mesure que les utilisateurs inventent de nouvelles orthographes et de
+nouveaux noms de section. À quelques centaines de documents, cela va bien. À
+quelques centaines de milliers, c'est une tâche par lots.
+
+## Là où le modèle de RenderCV peut être meilleur
+
+Une lecture équitable doit admettre plusieurs points où le modèle document libre
+l'emporte, et où un schéma fixe vous coûte :
+
+- **Les dates.** Les `start_date` / `end_date` de RenderCV sont contraints à
+  `YYYY-MM-DD`, `YYYY-MM`, `YYYY` ou au littéral `present`, analysés en véritables
+  objets `date` pour le calcul de durée et la validation `start > end`. Les dates
+  de YAMLResume sont tout ce que `Date.parse` accepte — parfait pour taper
+  `Sep 1, 2016` et pour une localisation idiomatique, médiocre pour les requêtes
+  de plage. Si vous construisez un système RH sur YAMLResume, stockez une colonne
+  `start_date date` normalisée à côté du contenu ; n'essayez pas d'interroger la
+  chaîne d'affichage par plage.
+- **Sections arbitraires.** Un doctorant veut « Invited Talks », « Patents »,
+  « Teaching ». RenderCV les prend en charge nativement. YAMLResume a douze
+  sections renommables, ce qui pourrait couvrir la plupart des CV mais pas tous.
+- **Extensibilité au niveau de l'entrée.** Les modèles d'entrée de RenderCV sont
+  `extra="allow"`, donc les templates peuvent attacher des champs dérivés (chaînes
+  de date rendues, durées calculées) sans casser la validation. C'est une astuce
+  de stratification propre.
+- **Réseaux sociaux.** RenderCV valide 17 plateformes avec des règles de nom
+  d'utilisateur par plateforme (Mastodon exige `@user@domain`, ORCID un ID en forme
+  de somme de contrôle, StackOverflow `id/name`) et dérive l'URL du profil.
+  YAMLResume accepte une énumération `network` et un `username` libre, et prend
+  l'URL telle que fournie.
+- **Rejeter les fautes de frappe.** Les modèles de premier niveau de RenderCV sont
+  `extra="forbid"`, donc une clé mal orthographiée est une erreur. YAMLResume
+  s'appuie sur le comportement par défaut des objets Zod, qui **supprime** les clés
+  inconnues — ce qui signifie qu'une faute comme `certifcates` est silencieusement
+  écartée plutôt que signalée. Si vous exploitez un pipeline d'ingestion, validez
+  contre le JSON Schema avec `additionalProperties: false` de votre côté avant de
+  faire confiance à un document.
+
+Rien de tout cela n'inverse la conclusion. Cela la délimite simplement : le modèle
+de RenderCV est meilleur pour rédiger un CV avec précision, et moins bon pour
+raisonner sur beaucoup.
+
+## Verdicts par scénario
+
+**Générateur de CV (SaaS multi-tenant).** Vous avez besoin de documents par
+utilisateur, d'historique de versions, de diffs et de changement de template. Des
+clés fixes rendent les diffs significatifs — un changement est
+`content.work[2].position`, pas « une ligne quelque part dans un dict ». Elles
+rendent aussi le changement de template sûr, car `layouts` est un tableau séparé
+et le contenu ne bouge jamais. Le modèle de YAMLResume est le meilleur substrat.
+Celui de RenderCV est plus simple si vous n'avez jamais besoin d'interroger entre
+utilisateurs et que vos utilisateurs exigent des sections inhabituelles.
+
+**Pipeline RH / ATS.** C'est le cas le plus clair. Vous ne stockez pas des CV ;
+vous stockez des candidats, et le CV n'est qu'un attribut. Vous avez besoin de
+jointures avec les postes, les étapes et les employés, plus du reporting (« combien
+de candidats présélectionnés ont un master ? »). Un schéma fixe avec des
+vocabulaires d'énumération vous donne tout cela en SQL. Un modèle document libre
+vous pousse vers un `etl/normalize.py` qui n'est jamais terminé.
+
+**ERP / HRIS.** Les CV sont une petite partie d'un vaste monde normalisé. Le sens
+de l'intégration compte plus que le stockage : des clés fixes vous permettent de
+générer mécaniquement un mapping du JSON du CV vers vos entités canoniques
+`Person`, `Education` et `Employment`. Des clés arbitraires signifient qu'un humain
+écrit et maintient ce mapping client par client.
+
+**Échange de données.** Le schéma de YAMLResume suit la forme de
+[JSON Resume](https://jsonresume.org/), et
+[`json2yamlresume`](/fr/docs/ecosystem/json2yamlresume) convertit entre les deux
+formats. Cela compte pour mapper des données de CV dans votre propre modèle sans
+inventer un format au préalable, et non comme une affirmation sur la santé d'un
+écosystème tiers. Un fichier RenderCV est un document bien défini, mais sa forme
+est ajustée pour la composition typographique plutôt que pour l'échange.
+
+**Une personne, un beau PDF.** RenderCV l'emporte nettement. Sections arbitraires,
+dates typées, style par élément et mathématiques Typst sont exactement ce qu'il
+faut quand le public est un lecteur humain plutôt qu'une base de données.
+
+## La recette pratique
+
+Si vous construisez un système et que le choix vous revient, stockez le modèle
+enregistrement et traitez le modèle document comme une affaire de rendu.
+Concrètement :
+
+1. Conservez un enregistrement canonique et validé par schéma par CV (`content`
+   dans YAMLResume). Validez à l'écriture, à la frontière.
+2. Ne stockez jamais les chaînes d'affichage comme source de vérité. Stockez des
+   dates normalisées et des valeurs d'énumération ; localisez à la lecture.
+3. Gardez la présentation — template, alias, ordre des sections, couleurs — dans
+   une colonne ou une table séparée. C'est un état de vue, pas une donnée de CV.
+4. Si vous devez ingérer des documents de style RenderCV, stockez le YAML brut pour
+   la fidélité **et** projetez-le vers la forme normalisée à l'ingestion. Faites la
+   supposition une fois, sous revue, plutôt qu'à chaque rapport.
+
+## Résumé
+
+Les deux outils relèvent du « resume as code », et les deux le font bien. Mais
+leurs modèles de données répondent à des questions différentes :
+
+| Propriété | YAMLResume | RenderCV |
+| --- | --- | --- |
+| Clés de section | Fixes, 14 clés connues | Chaînes arbitraires |
+| Forme d'entrée | Fixe par section | 9 types déduits + chaînes |
+| Degree / level / fluency | Énumération, traduite | Chaînes libres |
+| Dates | Libres, localisation d'abord | Typées `YYYY-MM[p-D]` + `present` |
+| Ordre et titres des sections | Dans `layouts[]` | Ordre et noms des clés du dict |
+| Clés inconnues | Supprimées (silencieusement) | Interdites au premier niveau |
+| Interrogeable sans code applicatif | Oui | Partiellement, via les champs de type d'entrée |
+| Sections arbitraires | Non (12 renommables) | Oui |
+| Origine du schéma | Forme JSON Resume | Forme de document propre |
+
+YAMLResume modélise le CV comme un **enregistrement** : les mêmes clés, le même
+vocabulaire, le même sens, pour chaque document de votre corpus. RenderCV le
+modélise comme un **document** : toute la liberté voulue à la rédaction, et toute
+l'ambiguïté qui l'accompagne quand vous lisez à l'échelle.
+
+Aucun n'a tort. Ce sont des optimisations pour des lecteurs différents — une base
+de données, ou une personne tenant un PDF.
+
+Pour la vue plus large, fonctionnalité par fonctionnalité, y compris les moteurs,
+les locales et l'outillage, voir
+[YAMLResume vs RenderCV](/fr/docs/comparisons/rendercv). Pour le schéma lui-même, la
+[référence des types](/fr/docs/compiler/types) et le
+[JSON Schema](/fr/docs/compiler/schema/json) font autorité.

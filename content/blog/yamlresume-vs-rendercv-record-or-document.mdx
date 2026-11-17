@@ -1,0 +1,573 @@
+---
+title: "YAMLResume vs RenderCV: Record or Document?"
+description: >-
+  Looking for a RenderCV alternative? Both tools take YAML, but one models a
+  resume as a queryable record and the other as a free-form document. Here is
+  what that difference costs — and saves — in Postgres and MongoDB.
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-11-17
+---
+
+If you compare [YAMLResume](https://yamlresume.dev) and
+[RenderCV](https://rendercv.com), the obvious differences are the rendering
+engines and the number of visual knobs. We already covered that in the
+[side-by-side comparison](/docs/comparisons/rendercv). This post is about
+something narrower and, for anyone building a system rather than a single PDF,
+much more consequential: **the shape of the data**.
+
+Both tools take YAML. Both validate it. Both turn it into a PDF. But they are
+modeling two different things:
+
+- YAMLResume models a resume as a **record** — a row with a schema every row
+  shares.
+- RenderCV models a resume as a **document** — a tree whose shape the author
+  controls.
+
+That is not a cosmetic distinction. It determines whether "find everyone with a
+master's degree" is a SQL query or an application-level parsing project. So
+let's look at the two models concretely, then work through what they cost you
+in a resume builder, an HR system, or an ERP.
+
+## Two models, one resume
+
+Here is the same person's data in each format. Nothing contrived — this is
+roughly what `yamlresume new` and `rendercv new` give you.
+
+```yml title="yamlresume.yml"
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Backend Engineer
+    email: andy@example.com
+  location:
+    city: San Francisco
+    region: California
+    country: United States
+  profiles:
+    - network: GitHub
+      username: andy
+  education:
+    - institution: University of Southern California
+      degree: Bachelor
+      area: Computer Engineering
+      startDate: Sep 1, 2016
+      endDate: Jul 1, 2020
+  work:
+    - name: PPResume
+      position: Senior Software Engineer
+      startDate: Dec 1, 2022
+      endDate:
+      summary: |
+        - Built the LaTeX rendering pipeline
+layouts:
+  - engine: latex
+    template: moderncv-classic
+```
+
+```yml title="rendercv.yml"
+cv:
+  name: Andy Dufresne
+  headline: Backend Engineer
+  email: andy@example.com
+  location: San Francisco, CA
+  social_networks:
+    - network: GitHub
+      username: andy
+  sections:
+    education:
+      - institution: University of Southern California
+        degree: BS
+        area: Computer Engineering
+        start_date: 2016-09
+        end_date: 2020-07
+    experience:
+      - company: PPResume
+        position: Senior Software Engineer
+        start_date: 2022-12
+        end_date: present
+        highlights:
+          - Built the LaTeX rendering pipeline
+design:
+  theme: classic
+```
+
+At a glance they look like cousins. They are not. Four structural decisions
+separate them, and each one has a direct consequence at the storage layer.
+
+### 1. Are the section keys fixed?
+
+YAMLResume has a closed set of section keys. The
+[content schema](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/content/content.ts)
+merges exactly fourteen: `basics`, `location`, `profiles`, `education`, `work`,
+`volunteer`, `awards`, `certificates`, `publications`, `skills`, `languages`,
+`interests`, `references`, `projects`. A resume with a `certifcates` typo does
+not have a certificates section — there is no way to express one that isn't in
+the list.
+
+RenderCV's equivalent is one line of Pydantic:
+
+```py
+sections: dict[str, Section] | None
+```
+
+The key is a `str`. There are no reserved words. A user can write `education`,
+`Education`, `education_and_training`, `Academic Background`, `教育`, or
+`Things I Did`. In the generated
+[JSON Schema](https://github.com/rendercv/rendercv/blob/main/schema.json) that
+field is literally `additionalProperties: { "$ref": "#/$defs/Section" }` — the
+schema tells a validator "any key is fine", and nothing more.
+
+### 2. Do field names mean the same thing everywhere?
+
+This is the part that is easy to miss, and it is the one that hurts most in a
+database. RenderCV does not have one entry schema; it has nine entry *types*
+(`ExperienceEntry`, `EducationEntry`, `PublicationEntry`, `NormalEntry`,
+`OneLineEntry`, `BulletEntry`, `NumberedEntry`, `ReversedNumberedEntry`, plus a
+bare string called `TextEntry`). A section's type is inferred from the first
+entry that matches, using a table of "characteristic fields" — the fields unique
+to each type:
+
+```py
+# rendercv/src/rendercv/schema/models/cv/section.py
+characteristic_entry_fields = get_characteristic_entry_fields(available_entry_models)
+```
+
+An entry containing `institution` is an `EducationEntry`, because no other type
+declares `institution`. An entry with only `name` is a `NormalEntry`. Then
+`validate_section()` requires **every entry in that section to be the same
+type**.
+
+The consequence: the field name for "the organization" depends on which type
+the user implicitly picked.
+
+| Concept | `ExperienceEntry` | `EducationEntry` | `NormalEntry` |
+| --- | --- | --- | --- |
+| Organization | `company` | `institution` | `name` |
+| Role / subject | `position` | `area` | — |
+| Degree | — | `degree` | — |
+
+Note what is *not* in that table. Dates, `location`, `summary`, and `highlights`
+are identical across all three types, so they cannot help you tell them apart
+either — the only signals are the three rows above.
+
+So "where did this person work" is `cv.sections.*[*].company` *if* they used
+`ExperienceEntry`, and `...name` *if* they used `NormalEntry` for the same
+information. And a section may be nothing but plain strings, since `TextEntry`
+is a `str` — meaning `entries` is structurally `list[str] | list[dict]` with no
+guaranteed shape at all.
+
+YAMLResume has no such drift: company is always `work[].name`, institution is
+always `education[].institution`, and a skills section is always
+`{name, level, keywords}`.
+
+### 3. Are values from a controlled vocabulary?
+
+YAMLResume pins the values that systems typically need to compare:
+
+- `degree` ∈ `Middle School | High School | Diploma | Associate | Bachelor | Master | Doctor`
+- `level` (skills) ∈ `Novice | Beginner | Intermediate | Advanced | Expert | Master`
+- `fluency` ∈ five [ILR-derived levels](https://www.languagetesting.com/ilr-scale), from `Elementary Proficiency` to `Native or Bilingual Proficiency`
+- `country`, `language`, `network` — long fixed lists, also used for translation
+
+RenderCV's `degree` is `str | None`. Its own sample CV uses `PhD` and `BS`. That
+is perfectly reasonable for typesetting — and it means a corpus of RenderCV
+files contains `PhD`, `Ph.D.`, `Doctorate`, `BS`, `BSc`, `Bachelor of Science`,
+`MS`, `MSc`, `M.S.`, `Master of Science`, all meaning two things.
+
+A detail worth noting in YAMLResume's favor: the canonical value is stored once,
+in English, and localized at render time. A Chinese resume and an English resume
+of the same person carry identical canonical values. With free-form strings, the
+value is whatever the author typed in their language, which makes
+cross-locale aggregation essentially impossible.
+
+### 4. Where does presentation live?
+
+In RenderCV, the section's **display title is the dict key**, and the **display
+order is the dict insertion order** (`get_rendercv_sections()` walks
+`sections.items()` and title-cases snake_case keys). Change how the resume looks
+and you have changed the data.
+
+In YAMLResume, both live in `layouts[]` under `sections.aliases` and
+`sections.order`. The content keeps canonical keys and canonical order, and each
+output format can present them differently.
+
+## One decision, four symptoms
+
+Those four answers are not independent. They are all consequences of a single
+design stance, and naming it makes the trade-off easier to reason about:
+
+- **YAMLResume is opinionated by design.** The schema makes the decisions — which
+  sections exist, what each field is called, which values are allowed, where
+  presentation ends and content begins. The author fills in a shape they did not
+  choose.
+- **RenderCV is free-form by design.** The author makes the decisions. The schema
+  validates that each entry is internally well-formed, then gets out of the way.
+
+Both are legitimate, and the costs are symmetric:
+
+**The cost of being opinionated is expressive ceiling.** If your resume needs a
+"Patents" or "Invited Talks" section and it is not one of YAMLResume's fourteen
+keys, you cannot express it natively. You get twelve aliasable section titles,
+which is plenty for most resumes and not enough for every CV.
+
+**The cost of being free-form is a semantic floor.** The schema cannot promise
+that anything in the document is comparable to anything else. Two authors
+expressing identical facts produce documents that share no keys, no vocabulary,
+and no structure — which is fine until something other than a human reader needs
+to consume them.
+
+The asymmetry that matters for this post is *when* you pay. The opinionated
+model charges you at authoring time, once, in a small coin: you cannot say a
+thing you wanted to say. The free-form model charges you at read time, forever,
+in a currency that compounds: every new section title a user invents, and every
+new spelling of `Master`, is another branch in some downstream parser. One cost
+is paid once by an author; the other is paid repeatedly by every system that
+touches the data afterwards.
+
+That is why the rest of this post is about readers — databases, ATS pipelines,
+HRIS imports — rather than about writers.
+
+## What that costs in Postgres
+
+Assume the obvious schema — the one every resume builder ends up with:
+
+```sql
+CREATE TABLE resumes (
+  id         uuid PRIMARY KEY,
+  content    jsonb NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+```
+
+With YAMLResume's model, the paths are known before any data arrives, so you can
+index and query them directly.
+
+```sql
+-- Everyone holding a master's degree
+SELECT id, content -> 'basics' ->> 'name' AS name
+FROM resumes
+WHERE content -> 'education' @> '[{"degree": "Master"}]';
+
+-- Candidates with Kubernetes on their resume
+SELECT id, content -> 'basics' ->> 'name' AS name
+FROM resumes
+WHERE content @? '$.skills[*].keywords[*] ? (@ == "Kubernetes")';
+
+-- Headcount by degree, no normalization step
+SELECT e ->> 'degree' AS degree, count(*) AS n
+FROM resumes, jsonb_array_elements(content -> 'education') AS e
+WHERE e ->> 'degree' IS NOT NULL
+GROUP BY e ->> 'degree'
+ORDER BY n DESC;
+```
+
+That last one is the whole argument in a few lines. It is a plain `GROUP BY`
+over a closed vocabulary, and the output is immediately correct.
+
+Now the RenderCV equivalent. Section names are unknown, so you must iterate
+them; entry shapes are unknown, so you must probe for a field that identifies an
+education entry:
+
+```sql
+SELECT r.id, e ->> 'institution' AS institution, e ->> 'degree' AS degree
+FROM resumes r
+CROSS JOIN LATERAL jsonb_each(
+  CASE WHEN jsonb_typeof(r.content -> 'cv' -> 'sections') = 'object'
+       THEN r.content -> 'cv' -> 'sections'
+       ELSE '{}'::jsonb END
+) AS s(title, entries)
+CROSS JOIN LATERAL jsonb_array_elements(s.entries) AS e
+WHERE s.title ~* '(education|academic|study)'
+  AND jsonb_typeof(e) = 'object'
+  AND e ? 'institution';
+```
+
+The `CASE WHEN` is not defensive noise: `sections` is nullable in RenderCV's
+model, and `COALESCE` does not help, because JSON `null` is not SQL `NULL` —
+`jsonb_each` raises `cannot call jsonb_each on a non-object`. The
+`jsonb_typeof(e) = 'object'` guard matters for the same reason: a `TextEntry`
+section is a list of plain strings, and `jsonb_array_elements` will hand you
+those strings as elements.
+
+Three problems, in increasing order of annoyance:
+
+1. **`s.title ~* '(education|academic|study)'`** is a guess. It misses
+   `Bildungsweg`, `Things I Did`, and `edu`. It also produces false positives if
+   someone names a section "Education Policy Publications".
+2. **You can partly fix that** by dropping the title filter and keying only on
+   `e ? 'institution'`. RenderCV's entry types are, to be fair, a real
+   mitigation here: entry type is a semantic anchor that survives renaming. But
+   it only works if the author chose `EducationEntry`. Written as `NormalEntry`,
+   the same education is `{name: "...", ...}` and `institution` does not exist.
+3. **The values are still dirty.** Even after you find every degree field, you
+   get this:
+
+```sql
+SELECT lower(trim(e ->> 'degree')) AS degree_raw, count(*)
+FROM resumes r
+CROSS JOIN LATERAL jsonb_each(
+  CASE WHEN jsonb_typeof(r.content -> 'cv' -> 'sections') = 'object'
+       THEN r.content -> 'cv' -> 'sections'
+       ELSE '{}'::jsonb END
+) AS s(title, entries)
+CROSS JOIN LATERAL jsonb_array_elements(s.entries) AS e
+WHERE jsonb_typeof(e) = 'object' AND e ? 'degree'
+GROUP BY lower(trim(e ->> 'degree'));
+```
+
+```text
+ degree_raw        | count
+-------------------+-------
+ bs                |   412
+ b.sc.             |    37
+ bachelor          |    21
+ bachelor of science|    9
+ phd               |   188
+ ph.d.             |    44
+ doctorate         |     6
+ ms                |   301
+ msc               |    58
+ master of science |    27
+```
+
+The counts above are illustrative. They show the shape of the distribution you
+should expect, not the results of one specific corpus.
+
+You now need a synonym table, and you need to maintain it forever, because
+nothing in the schema stops the next user from inventing a new spelling. That is
+the "application-layer code" tax, and it grows with your corpus rather than
+staying fixed.
+
+### The projection problem
+
+The real payoff of a fixed model is that you can project JSONB into relational
+tables declaratively — with no parsing, no heuristics, no unknown keys:
+
+```sql
+CREATE VIEW resume_work AS
+SELECT r.id AS resume_id,
+       w ->> 'name'      AS company,
+       w ->> 'position'  AS position,
+       w ->> 'startDate' AS start_date,
+       w ->> 'endDate'   AS end_date
+FROM resumes r,
+     jsonb_array_elements(r.content -> 'work') AS w;
+```
+
+That view is stable across your entire corpus. You can put an ATS dashboard, a
+BI tool, or a `JOIN` against your `employees` table on top of it. The same
+statement for RenderCV is not merely harder — it is *ill-defined*, because
+"company" might be `company` or `name`, and the section holding it might be
+titled anything.
+
+If you are ingesting YAMLResume files, you can also derive your database
+constraints from the same schema the CLI validates against, instead of
+hand-maintaining a parallel copy:
+
+```sql
+ALTER TABLE resumes
+  ADD CONSTRAINT degree_valid CHECK (
+    content -> 'education' IS NULL
+    OR NOT jsonb_path_exists(
+      content,
+      '$.education[*].degree ? (@ != "Middle School" && @ != "High School"
+        && @ != "Diploma" && @ != "Associate" && @ != "Bachelor"
+        && @ != "Master" && @ != "Doctor")'
+    )
+  );
+```
+
+Verbose, but generated — and it holds for every row, forever.
+
+### Indexing
+
+For YAMLResume data, a single GIN index covers the queries above:
+
+```sql
+CREATE INDEX resumes_content_gin ON resumes USING gin (content jsonb_path_ops);
+```
+
+`jsonb_path_ops` supports `@>`, `@?`, and `@@`, which is exactly the set of
+operators you need: containment for enum matches, JSON path for keyword
+searches. If you frequently filter on one array, index the whole array rather
+than one element:
+
+```sql
+CREATE INDEX resumes_education_gin
+  ON resumes USING gin ((content -> 'education') jsonb_path_ops);
+```
+
+Indexing `content -> 'education' -> 0 ->> 'degree'` would be a mistake, and a
+subtle one: it indexes only a candidate's *first* education entry, so anyone
+whose master's degree is listed second becomes invisible to that index. Indexing
+the array itself does not have that failure mode.
+
+For RenderCV data there is no stable path to index. You would have to create a
+generated column per semantic concept, and each one requires solving the
+"which section is education" problem in SQL first. The practical answer teams
+reach for is a nightly normalization job — which is to say, they end up building
+the fixed schema anyway, just later, in a second system, with data loss along
+the way.
+
+## The same story in MongoDB
+
+MongoDB is friendlier to nested resume documents, and the difference shows up in
+the same place: whether the query is a filter or a script.
+
+With YAMLResume, both the query and the index are direct:
+
+```js
+db.resumes.createIndex({ 'content.education.degree': 1 })
+db.resumes.createIndex({ 'content.skills.keywords': 1 })
+
+db.resumes.find(
+  { 'content.education.degree': 'Master' },
+  { 'content.basics.name': 1 }
+)
+
+db.resumes.aggregate([
+  { $unwind: '$content.education' },
+  { $group: { _id: '$content.education.degree', n: { $sum: 1 } } },
+  { $sort: { n: -1 } },
+])
+```
+
+Those are multikey indexes over a known path, so the server does the work.
+
+With RenderCV, `cv.sections` is a map with unknown keys, so you cannot index a
+path you don't know. The best you can do is normalise at read time:
+
+```js
+db.resumes.aggregate([
+  { $project: { sections: { $objectToArray: '$cv.sections' } } },
+  { $unwind: '$sections' },
+  { $unwind: '$sections.v' },
+  {
+    $match: {
+      $or: [
+        { 'sections.v.institution': { $exists: true } },
+        { 'sections.k': /education/i },
+      ],
+    },
+  },
+  { $group: { _id: '$sections.v.degree', n: { $sum: 1 } } },
+])
+```
+
+This works, but it is a collection scan with a regex and a `$exists` probe. It
+cannot use an index, and its meaning shifts as users invent new spellings and
+section names. At a few hundred documents that is fine. At a few hundred
+thousand it is a batch job.
+
+## Where RenderCV's model may be better
+
+A fair reading has to admit several places where the flexible document model
+wins, and where a fixed schema costs you:
+
+- **Dates.** RenderCV's `start_date` / `end_date` are constrained to
+  `YYYY-MM-DD`, `YYYY-MM`, `YYYY`, or the literal `present`, parsed into real
+  `date` objects for duration math and `start > end` validation. YAMLResume's
+  dates are whatever `Date.parse` accepts — great for typing `Sep 1, 2016` and
+  for idiomatic localization, poor for range queries. If you are building an HR
+  system on YAMLResume, store a normalized `start_date date` column alongside
+  the content; do not try to range-query the display string.
+- **Arbitrary sections.** A PhD candidate wants "Invited Talks", "Patents",
+  "Teaching". RenderCV supports them natively. YAMLResume has twelve aliasable
+  sections, which could cover most resumes but not all CVs.
+- **Entry-level extensibility.** RenderCV's entry models are
+  `extra="allow"`, so templates can attach derived fields (rendered date
+  strings, computed spans) without breaking validation. That is a clean
+  layering trick.
+- **Social networks.** RenderCV validates 17 platforms with per-platform
+  username rules (Mastodon needs `@user@domain`, ORCID needs a checksum-shaped
+  ID, StackOverflow needs `id/name`) and derives the profile URL. YAMLResume
+  accepts a `network` enum and a free `username`, and takes the URL as given.
+- **Rejecting typos.** RenderCV's top-level models are `extra="forbid"`, so a
+  misspelled key is an error. YAMLResume relies on Zod's default object
+  behavior, which **strips** unknown keys — meaning a typo like `certifcates`
+  is silently dropped rather than reported. If you run an ingestion pipeline,
+  validate against the JSON Schema with `additionalProperties: false` on your
+  side before you trust a document.
+
+None of this reverses the conclusion. It just scopes it: RenderCV's model is
+better for authoring one CV precisely, and worse for reasoning about many.
+
+## Scenario verdicts
+
+**Resume builder (multi-tenant SaaS).** You need per-user documents, version
+history, diffs, and template switching. Fixed keys make diffs meaningful — a
+change is `content.work[2].position`, not "some line in a dict". They also make
+template switching safe, because `layouts` is a separate array and the content
+never moves. YAMLResume's model is the better substrate. RenderCV's is easier if
+you never need to query across users and your users demand unusual sections.
+
+**HR / ATS pipeline.** This is the clearest case. You are not storing resumes;
+you are storing candidates, and resumes are one attribute. You need joins
+against requisitions, stages, and employees, plus reporting ("how many
+shortlisted candidates have a master's?"). A fixed schema with enum vocabularies
+gives you all of that in SQL. A free-form document model pushes you into an
+`etl/normalize.py` that is permanently unfinished.
+
+**ERP / HRIS.** Resumes are a small part of a large normalized world. The
+integration direction matters more than the storage: fixed keys let you generate
+a mapping from resume JSON to your canonical `Person`, `Education`, and
+`Employment` entities mechanically. Arbitrary keys mean a human writes and
+maintains that mapping per customer.
+
+**Data exchange.** YAMLResume's schema follows the shape of
+[JSON Resume](https://jsonresume.org/), and
+[`json2yamlresume`](/docs/ecosystem/json2yamlresume) converts between the two
+formats. That matters for mapping resume data into your own model without
+inventing a format first, not as a claim about the health of any third-party
+ecosystem. A RenderCV file is a well-defined document, but its shape is tuned for
+typesetting rather than for interchange.
+
+**One person, one beautiful PDF.** RenderCV wins outright. Arbitrary sections,
+typed dates, per-element styling, and Typst math are exactly right when the
+audience is a human reader rather than a database.
+
+## The practical recipe
+
+If you are building a system and you get to choose, store the record model and
+treat the document model as a rendering concern. Concretely:
+
+1. Keep one canonical, schema-validated record per resume (`content` in
+   YAMLResume). Validate on write, at the boundary.
+2. Never store display strings as the source of truth. Store normalized dates
+   and enum values; localize on read.
+3. Keep presentation — template, aliases, section order, colors — in a separate
+   column or table. It is view state, not resume data.
+4. If you must ingest RenderCV-style documents, store the raw YAML for fidelity
+   **and** project it into the normalized shape on ingest. Do the guessing once,
+   under review, rather than on every report.
+
+## Summary
+
+Both tools are "resume as code", and both are good at it. But the data models
+answer different questions:
+
+| Property | YAMLResume | RenderCV |
+| --- | --- | --- |
+| Section keys | Fixed, 14 known keys | Arbitrary strings |
+| Entry shape | Fixed per section | 9 inferred types + strings |
+| Degree / level / fluency | Enum, translated | Free-form strings |
+| Dates | Free-form, localization-first | Typed `YYYY-MM[p-D]` + `present` |
+| Section order & titles | In `layouts[]` | Dict key order and key names |
+| Unknown keys | Stripped (silently) | Forbidden at top level |
+| Queryable without app code | Yes | Partially, via entry-type fields |
+| Arbitrary sections | No (12 aliasable) | Yes |
+| Schema lineage | JSON Resume shape | Own document shape |
+
+YAMLResume models a resume as a **record**: the same keys, the same
+vocabulary, the same meaning, for every document in your corpus. RenderCV models
+it as a **document**: every freedom you might want while authoring, and every
+ambiguity that comes with it when you read at scale.
+
+Neither is wrong. They are optimizations for different readers — a database, or
+a person holding a PDF.
+
+If you want the broader feature-by-feature view, including engines, locales, and
+tooling, see [YAMLResume vs RenderCV](/docs/comparisons/rendercv). For the
+schema itself, the [types reference](/docs/compiler/types) and the
+[JSON Schema](/docs/compiler/schema/json) are the authoritative sources.

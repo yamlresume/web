@@ -1,0 +1,560 @@
+---
+title: "YAMLResume vs RenderCV：レコードかドキュメントか？"
+description: >-
+  RenderCV の代替を探していますか？どちらのツールも YAML を受け付けますが、一方は
+  履歴書をクエリ可能なレコードとして、もう一方は自由形式のドキュメントとしてモデル化
+  します。この違いが Postgres と MongoDB で何を犠牲にし、何を節約するのかを解説します。
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-11-17
+---
+
+[YAMLResume](https://yamlresume.dev) と [RenderCV](https://rendercv.com) を比べると、
+明らかな違いはレンダリングエンジンと視覚的な調整項目の数です。それについてはすでに
+[項目別の比較](/ja/docs/comparisons/rendercv)で扱いました。この記事はもっと狭く、しかも
+一枚の PDF ではなくシステムを構築する人にとってはるかに重要な問題を扱います。
+**データの形**です。
+
+どちらのツールも YAML を受け付け、検証し、PDF を生成します。しかしモデル化している
+対象が違います。
+
+- YAMLResume は履歴書を**レコード（record）**としてモデル化します。すべての行が同じ
+  schema を共有する、一行のデータです。
+- RenderCV は履歴書を**ドキュメント（document）**としてモデル化します。形を著者が
+  決める木構造です。
+
+これは見た目だけの違いではありません。「修士号を持つ人を全員探す」が SQL 一行で済む
+のか、それともアプリケーション層のパース作業になるのかを決める違いです。以下では
+まず二つのモデルを具体的に見て、それが履歴書ビルダー、HR システム、ERP でどんな
+コストになるのかを順に追います。
+
+## 同じ履歴書、二つのモデル
+
+同じ人のデータをそれぞれの形式で書いてみます。作為的なものではありません。
+`yamlresume new` と `rendercv new` がおおよそ出力するものです。
+
+```yml title="yamlresume.yml"
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Backend Engineer
+    email: andy@example.com
+  location:
+    city: San Francisco
+    region: California
+    country: United States
+  profiles:
+    - network: GitHub
+      username: andy
+  education:
+    - institution: University of Southern California
+      degree: Bachelor
+      area: Computer Engineering
+      startDate: Sep 1, 2016
+      endDate: Jul 1, 2020
+  work:
+    - name: PPResume
+      position: Senior Software Engineer
+      startDate: Dec 1, 2022
+      endDate:
+      summary: |
+        - Built the LaTeX rendering pipeline
+layouts:
+  - engine: latex
+    template: moderncv-classic
+```
+
+```yml title="rendercv.yml"
+cv:
+  name: Andy Dufresne
+  headline: Backend Engineer
+  email: andy@example.com
+  location: San Francisco, CA
+  social_networks:
+    - network: GitHub
+      username: andy
+  sections:
+    education:
+      - institution: University of Southern California
+        degree: BS
+        area: Computer Engineering
+        start_date: 2016-09
+        end_date: 2020-07
+    experience:
+      - company: PPResume
+        position: Senior Software Engineer
+        start_date: 2022-12
+        end_date: present
+        highlights:
+          - Built the LaTeX rendering pipeline
+design:
+  theme: classic
+```
+
+一見すると両者はいとこのように見えます。そうではありません。四つの構造的な決定が
+両者を分けており、そのそれぞれがストレージ層に直接の帰結を持ちます。
+
+### 1. section の key は固定か？
+
+YAMLResume の section key は閉じた集合です。
+[content schema](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/content/content.ts)
+はちょうど十四個をマージします。`basics`、`location`、`profiles`、`education`、
+`work`、`volunteer`、`awards`、`certificates`、`publications`、`skills`、
+`languages`、`interests`、`references`、`projects` です。`certificates` を
+`certifcates` と誤記した履歴書には、証明書の section は存在しません。リストにない
+section を表現する方法がないからです。
+
+RenderCV の対応物は Pydantic の一行です。
+
+```py
+sections: dict[str, Section] | None
+```
+
+key は `str` です。予約語はありません。ユーザーは `education`、`Education`、
+`education_and_training`、`Academic Background`、`教育`、あるいは `Things I Did` と
+書けます。生成される [JSON Schema](https://github.com/rendercv/rendercv/blob/main/schema.json)
+では、このフィールドは文字通り
+`additionalProperties: { "$ref": "#/$defs/Section" }` です。つまり schema が検証器に
+伝える情報は「どの key でもよい」だけであり、それ以上ではありません。
+
+### 2. フィールド名はどこでも同じ意味か？
+
+これは見落としやすく、データベースで最も痛い部分です。RenderCV には単一の entry
+schema はありません。九つの entry **型**（`ExperienceEntry`、`EducationEntry`、
+`PublicationEntry`、`NormalEntry`、`OneLineEntry`、`BulletEntry`、`NumberedEntry`、
+`ReversedNumberedEntry`）に加えて、`TextEntry` という裸の文字列があります。
+section の型は「最初にマッチした entry」から、「特徴フィールド」の表、つまり各型に
+固有のフィールドを使って推論されます。
+
+```py
+# rendercv/src/rendercv/schema/models/cv/section.py
+characteristic_entry_fields = get_characteristic_entry_fields(available_entry_models)
+```
+
+`institution` を含む entry は `EducationEntry` です。他の型が `institution` を宣言して
+いないからです。`name` だけを持つ entry は `NormalEntry` です。そして
+`validate_section()` は、**その section 内のすべての entry が同じ型であること**を要求
+します。
+
+結果として、「組織名」のフィールド名は、ユーザーが暗黙に選んだ型に依存します。
+
+| 概念 | `ExperienceEntry` | `EducationEntry` | `NormalEntry` |
+| --- | --- | --- | --- |
+| 組織 | `company` | `institution` | `name` |
+| 役割 / 主題 | `position` | `area` | — |
+| 学位 | — | `degree` | — |
+
+この表に**ない**ものに注目してください。日付、`location`、`summary`、`highlights` は
+三つの型すべてで同一なので、型を区別する助けにはなりません。唯一の手がかりは上の
+三行だけです。
+
+つまり「この人はどこで働いたか」は、`ExperienceEntry` を使っていれば
+`cv.sections.*[*].company` であり、同じ情報を `NormalEntry` で書いていれば `...name`
+です。さらに極端な場合、section は純粋な文字列だけでもかまいません。`TextEntry` は
+`str` だからです。つまり `entries` は構造的に `list[str] | list[dict]` であり、形の
+保証がまったくありません。
+
+YAMLResume にはこのような揺れがありません。会社は常に `work[].name`、機関は常に
+`education[].institution`、skills section は常に `{name, level, keywords}` です。
+
+### 3. 値は統制語彙から来ているか？
+
+YAMLResume は、システムが通常比較する必要のある値を固定しています。
+
+- `degree` ∈ `Middle School | High School | Diploma | Associate | Bachelor | Master | Doctor`
+- `level`（スキル）∈ `Novice | Beginner | Intermediate | Advanced | Expert | Master`
+- `fluency` ∈ [ILR 尺度](https://www.languagetesting.com/ilr-scale)（Interagency Language Roundtable、米国省庁間言語円卓会議）由来の五段階。`Elementary Proficiency` から `Native or Bilingual Proficiency` まで
+- `country`、`language`、`network` — 長い固定リスト。翻訳にも使われます
+
+RenderCV の `degree` は `str | None` です。自身のサンプル CV では `PhD` と `BS` を
+使っています。組版のためには完全に合理的ですが、その結果として RenderCV ファイルの
+コーパスには `PhD`、`Ph.D.`、`Doctorate`、`BS`、`BSc`、`Bachelor of Science`、`MS`、
+`MSc`、`M.S.`、`Master of Science` が混在し、それらは二つのことしか意味しません。
+
+YAMLResume に有利な点として記しておくべき細部があります。正規値（canonical value）は
+英語で一度だけ保存され、レンダリング時にローカライズされます。同じ人の中国語履歴書と
+英語履歴書は、まったく同じ正規値を持ちます。自由形式の文字列では、値は著者が自分の
+言語で入力したそのままの文字列であり、ロケールをまたぐ集計を事実上不可能にします。
+
+### 4. プレゼンテーションはどこに住むか？
+
+RenderCV では、section の**表示タイトルは dict の key** であり、**表示順は dict の
+挿入順** です（`get_rendercv_sections()` が `sections.items()` を走査し、snake_case の
+key を Title Case に変換します）。履歴書の見た目を変えることは、データを変えること
+です。
+
+YAMLResume では、両方とも `layouts[]` の `sections.aliases` と `sections.order` の
+下にあります。内容は正規の key と正規の順序を保ち、出力形式ごとに異なる見せ方が
+できます。
+
+## 一つの決定、四つの症状
+
+これら四つの答えは独立ではありません。すべて単一の設計姿勢の帰結であり、その姿勢に
+名前を付けるとトレードオフを推論しやすくなります。
+
+- **YAMLResume は設計上 opinionated（意見を持っている）。** schema が決定します。
+  どの section が存在するか、各フィールドが何と呼ばれるか、どの値が許されるか、
+  プレゼンテーションがどこで終わり内容がどこから始まるか。著者は自分が選んでいない
+  形を埋めていきます。
+- **RenderCV は設計上 free-form（自由形式）である。** 著者が決定します。schema は
+  各 entry が内部的に整形式であることを検証し、それから身を引きます。
+
+どちらも正当であり、コストは対称的です。
+
+**opinionated であることのコストは表現力の上限です。** 履歴書に "Patents" や
+"Invited Talks" section が必要で、それが YAMLResume の十四個の key にないなら、
+ネイティブには表現できません。十二個の改名可能な section タイトルがありますが、
+ほとんどの履歴書には十分で、すべての CV には十分ではありません。
+
+**free-form であることのコストは意味論の下限です。** schema は、ドキュメント内の何かが
+他の何かと比較可能であることを約束できません。同じ事実を表現する二人の著者が作る
+ドキュメントは、key も語彙も構造も一切共有しません。これは、人間の読者以外の何かが
+それらを消費する必要が出るまでは問題ありません。
+
+この記事で重要なのは**いつ**支払うかという非対称性です。opinionated モデルは執筆時に
+一度だけ、小さな硬貨で請求します。言いたかったことを言えない、という形で。free-form
+モデルは読み取り時に、永遠に、複利で請求します。ユーザーが発明する新しい section
+タイトル、`Master` の新しい綴りは、どれも下流のパーサーに一本の分岐を追加します。
+一方のコストは著者が一度払い、もう一方のコストはその後データに触れるすべてのシステムが
+繰り返し払います。
+
+だからこそ、この記事の残りは**読み取り側**、つまりデータベース、ATS パイプライン、
+HRIS のインポートについてであり、書き手についてではありません。
+
+## Postgres でのコスト
+
+最も素直な schema を仮定します。すべての履歴書ビルダーが最終的に行き着くものです。
+
+```sql
+CREATE TABLE resumes (
+  id         uuid PRIMARY KEY,
+  content    jsonb NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+```
+
+YAMLResume のモデルでは、パスはデータが到着する前に既知なので、直接インデックスを
+作成しクエリできます。
+
+```sql
+-- 修士号を持つすべての人
+SELECT id, content -> 'basics' ->> 'name' AS name
+FROM resumes
+WHERE content -> 'education' @> '[{"degree": "Master"}]';
+
+-- 履歴書に Kubernetes がある候補者
+SELECT id, content -> 'basics' ->> 'name' AS name
+FROM resumes
+WHERE content @? '$.skills[*].keywords[*] ? (@ == "Kubernetes")';
+
+-- 学位別の人数。正規化の手順は不要
+SELECT e ->> 'degree' AS degree, count(*) AS n
+FROM resumes, jsonb_array_elements(content -> 'education') AS e
+WHERE e ->> 'degree' IS NOT NULL
+GROUP BY e ->> 'degree'
+ORDER BY n DESC;
+```
+
+最後の一つがこの記事の論点そのものです。数行で書けます。閉じた語彙に対する普通の
+`GROUP BY` であり、出力は即座に正しいものです。
+
+次に RenderCV の等価なクエリです。section 名は未知なので走査する必要があり、entry の
+形も未知なので、教育 entry を識別するフィールドを探る必要があります。
+
+```sql
+SELECT r.id, e ->> 'institution' AS institution, e ->> 'degree' AS degree
+FROM resumes r
+CROSS JOIN LATERAL jsonb_each(
+  CASE WHEN jsonb_typeof(r.content -> 'cv' -> 'sections') = 'object'
+       THEN r.content -> 'cv' -> 'sections'
+       ELSE '{}'::jsonb END
+) AS s(title, entries)
+CROSS JOIN LATERAL jsonb_array_elements(s.entries) AS e
+WHERE s.title ~* '(education|academic|study)'
+  AND jsonb_typeof(e) = 'object'
+  AND e ? 'institution';
+```
+
+この `CASE WHEN` は余計な防御ではありません。`sections` は RenderCV のモデルでは
+nullable であり、`COALESCE` は助けになりません。JSON の `null` は SQL の `NULL` では
+ないからです。`jsonb_each` は
+`cannot call jsonb_each on a non-object` を投げます。`jsonb_typeof(e) = 'object'` の
+ガードも同じ理由で重要です。`TextEntry` の section は純粋な文字列のリストであり、
+`jsonb_array_elements` はそれらの文字列を要素として返します。
+
+問題は三つあり、煩わしさの順に並べます。
+
+1. **`s.title ~* '(education|academic|study)'` は推測です。** `Bildungsweg`、
+   `Things I Did`、`edu` を取りこぼします。また、誰かが section を
+   "Education Policy Publications" と名付けると誤検出します。
+2. **部分的に修正できます。** タイトルのフィルタを外し、`e ? 'institution'` だけで
+   判定します。公平に言えば、RenderCV の entry 型はここで本当の緩和策になります。
+   entry 型は改名に耐える意味のアンカーだからです。ただしそれは著者が
+   `EducationEntry` を選んだ場合に限ります。`NormalEntry` として書かれた同じ学歴は
+   `{name: "...", ...}` になり、`institution` は存在しません。
+3. **値は依然として汚れています。** すべての degree フィールドを見つけた後でも、
+   こうなります。
+
+```sql
+SELECT lower(trim(e ->> 'degree')) AS degree_raw, count(*)
+FROM resumes r
+CROSS JOIN LATERAL jsonb_each(
+  CASE WHEN jsonb_typeof(r.content -> 'cv' -> 'sections') = 'object'
+       THEN r.content -> 'cv' -> 'sections'
+       ELSE '{}'::jsonb END
+) AS s(title, entries)
+CROSS JOIN LATERAL jsonb_array_elements(s.entries) AS e
+WHERE jsonb_typeof(e) = 'object' AND e ? 'degree'
+GROUP BY lower(trim(e ->> 'degree'));
+```
+
+```text
+ degree_raw        | count
+-------------------+-------
+ bs                |   412
+ b.sc.             |    37
+ bachelor          |    21
+ bachelor of science|     9
+ phd               |   188
+ ph.d.             |    44
+ doctorate         |     6
+ ms                |   301
+ msc               |    58
+ master of science |    27
+```
+
+上の数値は例示です。特定のコーパスを実行した結果ではなく、期待される分布の形を
+示しています。
+
+これで類義語表が必要になり、しかも永遠に保守し続ける必要があります。schema には、
+次のユーザーが新しい綴りを発明するのを止めるものが何もないからです。これが
+「アプリケーション層のコード税」であり、コーパスの規模とともに増え、一定には
+なりません。
+
+### 射影（projection）問題
+
+固定モデルの本当の見返りは、JSONB を関係表へ宣言的に射影できることです。パースも
+ヒューリスティクスも未知の key もありません。
+
+```sql
+CREATE VIEW resume_work AS
+SELECT r.id AS resume_id,
+       w ->> 'name'      AS company,
+       w ->> 'position'  AS position,
+       w ->> 'startDate' AS start_date,
+       w ->> 'endDate'   AS end_date
+FROM resumes r,
+     jsonb_array_elements(r.content -> 'work') AS w;
+```
+
+このビューはコーパス全体で安定しています。その上に ATS ダッシュボード、BI ツール、
+あるいは `employees` テーブルとの `JOIN` を載せられます。RenderCV に対する同じ
+ステートメントは、単に難しいのではありません。**定義が曖昧**なのです。「会社」は
+`company` かもしれないし `name` かもしれず、それを保持する section のタイトルは
+何でもあり得るからです。
+
+YAMLResume ファイルを取り込むなら、CLI が検証に使うのと同じ schema からデータベース
+制約を導出することもできます。並行するコピーを手で保守する必要はありません。
+
+```sql
+ALTER TABLE resumes
+  ADD CONSTRAINT degree_valid CHECK (
+    content -> 'education' IS NULL
+    OR NOT jsonb_path_exists(
+      content,
+      '$.education[*].degree ? (@ != "Middle School" && @ != "High School"
+        && @ != "Diploma" && @ != "Associate" && @ != "Bachelor"
+        && @ != "Master" && @ != "Doctor")'
+    )
+  );
+```
+
+冗長ですが、生成されたものです。そしてすべての行に対して、永遠に成立します。
+
+### インデックス
+
+YAMLResume のデータには、単一の GIN インデックスが上記のクエリすべてをカバーします。
+
+```sql
+CREATE INDEX resumes_content_gin ON resumes USING gin (content jsonb_path_ops);
+```
+
+`jsonb_path_ops` は `@>`、`@?`、`@@` をサポートします。これはまさに必要な演算子の
+集合です。列挙値の一致には包含演算、キーワード検索には JSON path を使います。
+特定の配列で頻繁に絞り込むなら、一つの要素ではなく配列全体にインデックスを張ります。
+
+```sql
+CREATE INDEX resumes_education_gin
+  ON resumes USING gin ((content -> 'education') jsonb_path_ops);
+```
+
+`content -> 'education' -> 0 ->> 'degree'` にインデックスを張るのは誤りであり、しかも
+気づきにくい誤りです。候補者の**最初の**学歴だけがインデックスされ、修士号を二番目に
+書いた人はそのインデックスから見えなくなります。配列自体にインデックスを張れば、
+そのような失敗モードはありません。
+
+RenderCV のデータには安定したインデックス可能なパスがありません。意味の概念ごとに
+生成列を作る必要があり、そのそれぞれが「どの section が教育か」という問題をまず SQL で
+解くことを要求します。チームが実際に取る答えは夜間の正規化ジョブです。つまり結局は
+固定 schema を構築することになりますが、それはより遅く、第二のシステムで、途中で
+データを失いながら行われるのです。
+
+## MongoDB でも同じ話
+
+MongoDB はネストした履歴書ドキュメントに寛容ですが、違いは同じ場所に現れます。
+クエリがフィルタなのかスクリプトなのか、という点です。
+
+YAMLResume なら、クエリもインデックスも直接的です。
+
+```js
+db.resumes.createIndex({ 'content.education.degree': 1 })
+db.resumes.createIndex({ 'content.skills.keywords': 1 })
+
+db.resumes.find(
+  { 'content.education.degree': 'Master' },
+  { 'content.basics.name': 1 }
+)
+
+db.resumes.aggregate([
+  { $unwind: '$content.education' },
+  { $group: { _id: '$content.education.degree', n: { $sum: 1 } } },
+  { $sort: { n: -1 } },
+])
+```
+
+これらは既知のパスに対するマルチキーインデックスなので、サーバーが仕事をします。
+
+RenderCV では `cv.sections` は key が未知の map なので、知らないパスにインデックスを
+張れません。できる最善は読み取り時の正規化です。
+
+```js
+db.resumes.aggregate([
+  { $project: { sections: { $objectToArray: '$cv.sections' } } },
+  { $unwind: '$sections' },
+  { $unwind: '$sections.v' },
+  {
+    $match: {
+      $or: [
+        { 'sections.v.institution': { $exists: true } },
+        { 'sections.k': /education/i },
+      ],
+    },
+  },
+  { $group: { _id: '$sections.v.degree', n: { $sum: 1 } } },
+])
+```
+
+動作はしますが、正規表現と `$exists` の探索を伴うコレクションスキャンです。
+インデックスを使えず、ユーザーが新しい綴りや section 名を発明するにつれて意味が
+変わります。数百ドキュメントなら問題ありません。数十万ならバッチジョブです。
+
+## RenderCV のモデルが優れている可能性がある点
+
+公平に読むなら、柔軟なドキュメントモデルが勝ち、固定 schema が代償を求める箇所を
+いくつか認めなければなりません。
+
+- **日付。** RenderCV の `start_date` / `end_date` は `YYYY-MM-DD`、`YYYY-MM`、
+  `YYYY`、またはリテラル `present` に制限され、実際の `date` オブジェクトに解析されて
+  期間計算や `start > end` の検証に使われます。YAMLResume の日付は `Date.parse` が
+  受け付ける任意の文字列です。`Sep 1, 2016` と入力するのにも、慣用的なローカライズにも
+  優れていますが、範囲クエリには弱いです。YAMLResume 上で HR システムを構築するなら、
+  content とは別に正規化された `start_date date` 列を保存してください。表示用文字列に
+  対して範囲クエリをしようとしてはいけません。
+- **任意の section。** 博士課程の学生は "Invited Talks"、"Patents"、"Teaching" を
+  求めるかもしれません。RenderCV はネイティブにサポートします。YAMLResume には
+  十二個の改名可能な section があり、ほとんどの履歴書はカバーできますが、すべての CV は
+  カバーできません。
+- **entry レベルの拡張性。** RenderCV の entry モデルは `extra="allow"` なので、
+  テンプレートは派生フィールド（レンダリングされた日付文字列、計算された期間）を
+  検証を壊さずに付与できます。これはきれいなレイヤリングの技法です。
+- **ソーシャルネットワーク。** RenderCV は 17 のプラットフォームを、プラットフォーム
+  ごとのユーザー名規則とともに検証します（Mastodon は `@user@domain`、ORCID は
+  チェックサム形式の ID、StackOverflow は `id/name` が必要）。さらにプロフィール URL を
+  導出します。YAMLResume は `network` の列挙と自由な `username` を受け取り、URL は
+  与えられたものをそのまま使います。
+- **タイポの拒否。** RenderCV の最上位モデルは `extra="forbid"` なので、誤記された
+  key はエラーになります。YAMLResume は Zod オブジェクトの既定の振る舞いに依存して
+  おり、未知の key を**剥ぎ取ります（strip）**。つまり `certifcates` のような誤記は
+  報告されず静かに捨てられます。取り込みパイプラインを運用するなら、ドキュメントを
+  信頼する前に、こちらの側で `additionalProperties: false` の JSON Schema に対して
+  検証してください。
+
+これはいずれも結論を覆しません。ただ範囲を定めるだけです。RenderCV のモデルは一枚の
+CV を精密に書くのに優れ、多数について推論するのには劣ります。
+
+## シナリオ別の判定
+
+**履歴書ビルダー（マルチテナント SaaS）。** ユーザーごとのドキュメント、バージョン
+履歴、diff、テンプレート切り替えが必要です。固定 key は diff を意味のあるものに
+します。変更は `content.work[2].position` であり、「dict のどこかの行」ではありません。
+またテンプレート切り替えを安全にします。`layouts` が別の配列であり、content が決して
+動かないからです。YAMLResume のモデルはより良い土台です。ユーザーをまたぐクエリが
+一切不要で、ユーザーが風変わりな section を要求するなら、RenderCV のモデルのほうが
+楽です。
+
+**HR / ATS パイプライン。** これが最も明確なケースです。あなたが保存しているのは
+履歴書ではなく候補者であり、履歴書はその一属性にすぎません。求人、選考段階、従業員と
+join し、レポートを出す必要があります（「書類選考を通過した候補者のうち何人が修士号を
+持っているか？」）。列挙語彙を伴う固定 schema は、そのすべてを SQL で可能にします。
+自由形式のドキュメントモデルは、永遠に終わらない `etl/normalize.py` へと追いやります。
+
+**ERP / HRIS。** 履歴書は大きな正規化された世界のごく一部です。ストレージよりも
+統合の方向が重要です。固定 key は、履歴書 JSON から正規の `Person`、`Education`、
+`Employment` エンティティへのマッピングを機械的に生成できます。任意の key は、その
+マッピングを顧客ごとに人間が書いて保守することを意味します。
+
+**データ交換。** YAMLResume の schema は
+[JSON Resume](https://jsonresume.org/) の形に従っており、
+[`json2yamlresume`](/ja/docs/ecosystem/json2yamlresume) が二つの形式を変換します。その
+価値は、まず独自の形式を発明することなく履歴書データを自分のモデルへマッピングできる
+ことにあり、サードパーティのエコシステムの健全性を保証することではありません。
+RenderCV ファイルはよく定義されたドキュメントですが、その形は交換のためではなく組版の
+ために調整されています。
+
+**一人の人間、一枚の美しい PDF。** RenderCV の完全な勝利です。任意の section、型付き
+の日付、要素ごとのスタイル、Typst の数式は、読者がデータベースではなく人間であるとき、
+まさに正しい選択です。
+
+## 実践的なレシピ
+
+システムを構築していて選べる立場なら、レコードモデルを保存し、ドキュメントモデルを
+レンダリングの関心事として扱ってください。具体的には。
+
+1. 履歴書ごとに、正規の schema 検証済みレコードを一つ保ちます（YAMLResume の
+   `content`）。書き込み時、境界で検証します。
+2. 表示用文字列を真実の源として保存しないこと。正規化された日付と列挙値を保存し、
+   読み取り時にローカライズします。
+3. プレゼンテーション（テンプレート、別名、section 順、色）は別の列または表に保ち
+   ます。それはビューの状態であり、履歴書のデータではありません。
+4. RenderCV 形式のドキュメントをどうしても取り込む必要があるなら、忠実性のために
+   生の YAML を保存し、**かつ**取り込み時に正規化された形へ射影します。推測は一度だけ、
+   レビューの下で行い、毎回のレポートで行わないこと。
+
+## まとめ
+
+どちらのツールも "resume as code" であり、どちらもそれを得意としています。しかし
+データモデルは異なる問いに答えています。
+
+| 特性 | YAMLResume | RenderCV |
+| --- | --- | --- |
+| section key | 固定、14 個の既知の key | 任意の文字列 |
+| entry の形 | section ごとに固定 | 9 種の推論型 + 文字列 |
+| degree / level / fluency | 列挙、翻訳可能 | 自由形式の文字列 |
+| 日付 | 自由形式、ローカライズ優先 | 型付き `YYYY-MM[p-D]` + `present` |
+| section の順序とタイトル | `layouts[]` 内 | dict key の順序と key 名 |
+| 未知の key | 剥ぎ取り（静か） | 最上位では禁止 |
+| アプリコードなしでクエリ可能 | はい | 部分的に、entry 型フィールド経由 |
+| 任意の section | いいえ（12 個改名可能） | はい |
+| schema の由来 | JSON Resume の形に準拠 | 独自のドキュメント形状 |
+
+YAMLResume は履歴書を**レコード**としてモデル化します。コーパス全体で同じ key、同じ
+語彙、同じ意味です。RenderCV は**ドキュメント**としてモデル化します。執筆中に欲しい
+かもしれないあらゆる自由と、大規模に読むときにそれに伴うあらゆる曖昧さです。
+
+どちらも間違いではありません。それらは異なる読者に対する最適化です。データベース、
+あるいは PDF を手にした人間。
+
+エンジン、ロケール、ツールを含むより広い項目別の比較については、
+[YAMLResume vs RenderCV](/ja/docs/comparisons/rendercv) をご覧ください。schema 自体に
+ついては、[型リファレンス](/ja/docs/compiler/types)と
+[JSON Schema](/ja/docs/compiler/schema/json) が権威ある情報源です。

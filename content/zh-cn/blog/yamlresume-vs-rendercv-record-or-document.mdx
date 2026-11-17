@@ -1,0 +1,516 @@
+---
+title: "YAMLResume vs RenderCV：记录还是文档？"
+description: >-
+  在找 RenderCV 的替代方案？两个工具都接受 YAML，但一个把简历建模成可查询的
+  记录，另一个建模成自由形态的文档。本文说明这个差异在 Postgres 和 MongoDB 里
+  让你付出什么、又省下什么。
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-11-17
+---
+
+如果你对比 [YAMLResume](https://yamlresume.dev) 和
+[RenderCV](https://rendercv.com)，最显眼的差异是渲染引擎和视觉可调项的数量。这些
+我们已经在[逐项对比](/zh-cn/docs/comparisons/rendercv)里讲过了。这篇文章聊的是一个更狭窄、
+但对"要建系统而不只是生成一份 PDF"的人来说重要得多的问题：**数据的形状**。
+
+两个工具都接受 YAML，都会校验，都能产出 PDF。但它们建模的是两种不同的东西：
+
+- YAMLResume 把简历建模成一条**记录（record）**——一行数据，且所有行共享同一套
+  schema。
+- RenderCV 把简历建模成一份**文档（document）**——一棵树，形状由作者决定。
+
+这不是无关紧要的措辞差别。它决定了"找出所有硕士学历的人"究竟是一条 SQL，还是一个
+应用层的解析工程。所以下面我们先具体看这两种模型，再推演它们在简历构建器、HR 系统或
+ERP 里到底让你付出什么代价。
+
+## 同一个简历，两种模型
+
+下面是同一个人的数据，各写一遍。没有刻意构造——大致就是 `yamlresume new` 和
+`rendercv new` 给你的东西。
+
+```yml title="yamlresume.yml"
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Backend Engineer
+    email: andy@example.com
+  location:
+    city: San Francisco
+    region: California
+    country: United States
+  profiles:
+    - network: GitHub
+      username: andy
+  education:
+    - institution: University of Southern California
+      degree: Bachelor
+      area: Computer Engineering
+      startDate: Sep 1, 2016
+      endDate: Jul 1, 2020
+  work:
+    - name: PPResume
+      position: Senior Software Engineer
+      startDate: Dec 1, 2022
+      endDate:
+      summary: |
+        - Built the LaTeX rendering pipeline
+layouts:
+  - engine: latex
+    template: moderncv-classic
+```
+
+```yml title="rendercv.yml"
+cv:
+  name: Andy Dufresne
+  headline: Backend Engineer
+  email: andy@example.com
+  location: San Francisco, CA
+  social_networks:
+    - network: GitHub
+      username: andy
+  sections:
+    education:
+      - institution: University of Southern California
+        degree: BS
+        area: Computer Engineering
+        start_date: 2016-09
+        end_date: 2020-07
+    experience:
+      - company: PPResume
+        position: Senior Software Engineer
+        start_date: 2022-12
+        end_date: present
+        highlights:
+          - Built the LaTeX rendering pipeline
+design:
+  theme: classic
+```
+
+乍看之下两者像表亲。其实不是。有四个结构性决策把它们分开，而每一个都会在存储层
+产生直接后果。
+
+### 1. section 的 key 是固定的吗？
+
+YAMLResume 的 section key 是一个封闭集合。
+[content schema](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/content/content.ts)
+恰好合并了十四个：`basics`、`location`、`profiles`、`education`、`work`、
+`volunteer`、`awards`、`certificates`、`publications`、`skills`、`languages`、
+`interests`、`references`、`projects`。一份把 `certificates` 打成 `certifcates`
+的简历，并没有"证书"这个 section——你无法表达一个不在列表里的 section。
+
+RenderCV 的对应物只有一行 Pydantic：
+
+```py
+sections: dict[str, Section] | None
+```
+
+key 是 `str`。没有任何保留字。用户可以写 `education`、`Education`、
+`education_and_training`、`Academic Background`、`教育`，或者 `Things I Did`。在生成的
+[JSON Schema](https://github.com/rendercv/rendercv/blob/main/schema.json) 里，这个字段
+字面上就是 `additionalProperties: { "$ref": "#/$defs/Section" }`——也就是说，schema 对
+校验器表达的唯一信息是"任何 key 都可以"，仅此而已。
+
+### 2. 字段名在各处含义一致吗？
+
+这一点容易被忽略，而它在数据库场景里伤害最大。RenderCV 并没有统一的 entry schema；
+它有九种 entry **类型**（`ExperienceEntry`、`EducationEntry`、`PublicationEntry`、
+`NormalEntry`、`OneLineEntry`、`BulletEntry`、`NumberedEntry`、
+`ReversedNumberedEntry`），外加一个名为 `TextEntry` 的裸字符串。一个 section 的类型是
+靠"第一个能匹配上的 entry"推断出来的，依据是一张"特征字段"表——即每种类型独有的字段：
+
+```py
+# rendercv/src/rendercv/schema/models/cv/section.py
+characteristic_entry_fields = get_characteristic_entry_fields(available_entry_models)
+```
+
+一个含 `institution` 的 entry 就是 `EducationEntry`，因为其他类型都不声明
+`institution`。只有一个 `name` 的 entry 则是 `NormalEntry`。接着 `validate_section()`
+要求**同一 section 内的所有 entry 必须是同一类型**。
+
+结果就是："组织名"这个字段叫什么，取决于用户隐式选了什么类型。
+
+| 概念 | `ExperienceEntry` | `EducationEntry` | `NormalEntry` |
+| --- | --- | --- | --- |
+| 组织 | `company` | `institution` | `name` |
+| 角色 / 主题 | `position` | `area` | — |
+| 学位 | — | `degree` | — |
+
+注意表里**没有**什么。日期、`location`、`summary`、`highlights` 在这三种类型里完全
+相同，所以它们也无法帮你区分类型——唯一的信号就是上面这三行。
+
+所以"这个人在哪工作过"是 `cv.sections.*[*].company`——**如果**他用了
+`ExperienceEntry`；而如果他为了表达同样的信息用了 `NormalEntry`，那就是 `...name`。
+更极端的是，一个 section 可以全是纯字符串，因为 `TextEntry` 就是 `str`——这意味着
+`entries` 在结构上是 `list[str] | list[dict]`，完全没有形状保证。
+
+YAMLResume 没有这种漂移：公司永远在 `work[].name`，机构永远在
+`education[].institution`，skills section 永远是 `{name, level, keywords}`。
+
+### 3. 值是否来自受控词表？
+
+YAMLResume 把系统通常需要比较的那些值钉死了：
+
+- `degree` ∈ `Middle School | High School | Diploma | Associate | Bachelor | Master | Doctor`
+- `level`（技能）∈ `Novice | Beginner | Intermediate | Advanced | Expert | Master`
+- `fluency` ∈ 由 [ILR 量表](https://www.languagetesting.com/ilr-scale)（Interagency Language Roundtable，美国跨部门语言圆桌会议）派生的五档，从 `Elementary Proficiency` 到 `Native or Bilingual Proficiency`
+- `country`、`language`、`network`——篇幅很长的固定列表，同时也用于翻译
+
+RenderCV 的 `degree` 是 `str | None`。它自己的示例简历里用的是 `PhD` 和 `BS`。这对排版
+来说完全合理——但这也意味着一堆 RenderCV 文件里会同时出现 `PhD`、`Ph.D.`、
+`Doctorate`、`BS`、`BSc`、`Bachelor of Science`、`MS`、`MSc`、`M.S.`、
+`Master of Science`，而它们只表示两件事。
+
+有一个细节值得为 YAMLResume 记上一笔：规范值（canonical value）只以英文存一份，渲染
+时才本地化。同一个人的中文简历和英文简历携带的是完全相同的规范值。而在自由字符串的
+世界里，值就是作者用自己语言敲进去的那串字符，这让跨语言的聚合几乎不可能。
+
+### 4. 呈现信息住在哪里？
+
+在 RenderCV 里，section 的**展示标题就是 dict 的 key**，而**展示顺序就是 dict 的插入
+顺序**（`get_rendercv_sections()` 遍历 `sections.items()`，并把 snake_case 的 key 转成
+Title Case）。你改了简历的外观，也就改了数据。
+
+在 YAMLResume 里，这两者都住在 `layouts[]` 的 `sections.aliases` 和 `sections.order`
+下面。内容保留规范 key 和规范顺序，而每一种输出格式都可以对它们做不同的呈现。
+
+## 一个决策，四个症状
+
+这四个答案不是彼此独立的。它们是同一种设计立场的四个后果，把这个立场点明，取舍就更好
+推理了：
+
+- **YAMLResume 在设计上是 opinionated（有主见的）。** 由 schema 来做决定——哪些
+  section 存在、每个字段叫什么、哪些值被允许、呈现和内容的分界线在哪。作者去填一个
+  自己没选的形状。
+- **RenderCV 在设计上是 free-form（自由形态的）。** 由作者来做决定。schema 只校验每个
+  entry 自身是否格式良好，然后就退到一边。
+
+两者都合法，而且代价是对称的：
+
+**opinionated 的代价是表达力上限。** 如果你的简历需要 "Patents" 或 "Invited Talks"
+section，而它不在 YAMLResume 那十四个 key 里，你就无法原生地表达它。你有十二个可改名
+的 section 标题，这对大多数简历够用，但对每一份 CV 都不够。
+
+**free-form 的代价是语义下限。** schema 无法承诺文档里的任何东西可以和别的什么东西
+相比较。两个作者表达完全相同的事实，产出的文档共享零个 key、零个词表、零个结构——
+这在人类读者之外还有人要消费这些数据之前，都没问题。
+
+对这篇文章而言，真正重要的是**什么时候**付费。opinionated 模型在写作时收一次费，用
+一种很小的货币：你说不了某个你想说的东西。free-form 模型在读取时收费，永远收，而且
+是复利：每一个用户发明的 section 标题、每一个 `Master` 的新拼法，都是下游某个解析器里
+多出来的一个分支。一种代价由一个作者付一次；另一种代价由之后每一个接触这批数据的系统
+反复支付。
+
+这正是为什么本文接下来关心的是**读取方**——数据库、ATS 流水线、HRIS 导入——而不是
+作者。
+
+## 这在 Postgres 里要花多少代价
+
+假设一个最直白的 schema——每一个简历构建器最后都会落到这个：
+
+```sql
+CREATE TABLE resumes (
+  id         uuid PRIMARY KEY,
+  content    jsonb NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+```
+
+用 YAMLResume 的模型，路径在数据到来之前就是已知的，所以你可以直接建索引、直接查询。
+
+```sql
+-- 所有硕士学位持有者
+SELECT id, content -> 'basics' ->> 'name' AS name
+FROM resumes
+WHERE content -> 'education' @> '[{"degree": "Master"}]';
+
+-- 简历里有 Kubernetes 的候选人
+SELECT id, content -> 'basics' ->> 'name' AS name
+FROM resumes
+WHERE content @? '$.skills[*].keywords[*] ? (@ == "Kubernetes")';
+
+-- 按学历统计人数，无需任何归一化步骤
+SELECT e ->> 'degree' AS degree, count(*) AS n
+FROM resumes, jsonb_array_elements(content -> 'education') AS e
+WHERE e ->> 'degree' IS NOT NULL
+GROUP BY e ->> 'degree'
+ORDER BY n DESC;
+```
+
+最后那条就是整个论点，几行写完。它是一个作用在封闭词表上的普通 `GROUP BY`，输出
+立即正确。
+
+再看 RenderCV 的等价写法。section 名未知，所以你必须遍历它们；entry 形状未知，所以
+你必须探测一个能识别出"这是教育条目"的字段：
+
+```sql
+SELECT r.id, e ->> 'institution' AS institution, e ->> 'degree' AS degree
+FROM resumes r
+CROSS JOIN LATERAL jsonb_each(
+  CASE WHEN jsonb_typeof(r.content -> 'cv' -> 'sections') = 'object'
+       THEN r.content -> 'cv' -> 'sections'
+       ELSE '{}'::jsonb END
+) AS s(title, entries)
+CROSS JOIN LATERAL jsonb_array_elements(s.entries) AS e
+WHERE s.title ~* '(education|academic|study)'
+  AND jsonb_typeof(e) = 'object'
+  AND e ? 'institution';
+```
+
+这个 `CASE WHEN` 不是多余的防御：`sections` 在 RenderCV 的模型里是可空的，而
+`COALESCE` 救不了你，因为 JSON 的 `null` 不是 SQL 的 `NULL`——`jsonb_each` 会直接抛
+`cannot call jsonb_each on a non-object`。那个 `jsonb_typeof(e) = 'object'` 守卫同理：
+一个 `TextEntry` section 就是一串纯字符串，`jsonb_array_elements` 会把那些字符串
+当作元素交给你。
+
+三个问题，一个比一个烦人：
+
+1. **`s.title ~* '(education|academic|study)'` 是个猜测。** 它会漏掉 `Bildungsweg`、
+   `Things I Did` 和 `edu`；同时也会误伤——如果有人把某个 section 命名为
+   "Education Policy Publications"，它就会被当成教育经历。
+2. **你可以部分修复它**：去掉标题过滤，只靠 `e ? 'institution'` 判断。公平地说，
+   RenderCV 的 entry 类型在这里是真正的缓解手段——entry 类型是一个语义锚点，能扛住
+   重命名。但它只在该作者选了 `EducationEntry` 时有效。若用 `NormalEntry` 写同一段
+   教育经历，它就成了 `{name: "...", ...}`，`institution` 根本不存在。
+3. **值仍然是脏的。** 即使你找齐了每个 degree 字段，拿到的还是这样：
+
+```sql
+SELECT lower(trim(e ->> 'degree')) AS degree_raw, count(*)
+FROM resumes r
+CROSS JOIN LATERAL jsonb_each(
+  CASE WHEN jsonb_typeof(r.content -> 'cv' -> 'sections') = 'object'
+       THEN r.content -> 'cv' -> 'sections'
+       ELSE '{}'::jsonb END
+) AS s(title, entries)
+CROSS JOIN LATERAL jsonb_array_elements(s.entries) AS e
+WHERE jsonb_typeof(e) = 'object' AND e ? 'degree'
+GROUP BY lower(trim(e ->> 'degree'));
+```
+
+```text
+ degree_raw        | count
+-------------------+-------
+ bs                |   412
+ b.sc.             |    37
+ bachelor          |    21
+ bachelor of science|     9
+ phd               |   188
+ ph.d.             |    44
+ doctorate         |     6
+ ms                |   301
+ msc               |    58
+ master of science |    27
+```
+
+上面的数字是示意值。它们展示的是你应该预期看到的分布形状，而不是某一份具体语料的运行结果。
+
+现在你需要一张同义词表，而且得永远维护它，因为 schema 里没有任何东西能阻止下一个
+用户发明新的拼法。这就是"应用层代码税"，它随语料规模增长，而不是保持恒定。
+
+### 投影（projection）问题
+
+固定模型的真正回报是：你可以声明式地把 JSONB 投影进关系表——没有解析、没有启发式、
+没有未知 key：
+
+```sql
+CREATE VIEW resume_work AS
+SELECT r.id AS resume_id,
+       w ->> 'name'      AS company,
+       w ->> 'position'  AS position,
+       w ->> 'startDate' AS start_date,
+       w ->> 'endDate'   AS end_date
+FROM resumes r,
+     jsonb_array_elements(r.content -> 'work') AS w;
+```
+
+这个视图在你的整个语料上都是稳定的。你可以在它上面搭 ATS 看板、BI 工具，或者跟你的
+`employees` 表做 `JOIN`。同样的语句放在 RenderCV 上不只是更难——它是**没有明确定义
+的**，因为"公司"可能是 `company` 也可能是 `name`，而承载它的 section 又叫什么都行。
+
+如果你摄取的是 YAMLResume 文件，你还可以用 CLI 校验所用的同一份 schema 来推导数据库
+约束，而不必手工维护一份平行副本：
+
+```sql
+ALTER TABLE resumes
+  ADD CONSTRAINT degree_valid CHECK (
+    content -> 'education' IS NULL
+    OR NOT jsonb_path_exists(
+      content,
+      '$.education[*].degree ? (@ != "Middle School" && @ != "High School"
+        && @ != "Diploma" && @ != "Associate" && @ != "Bachelor"
+        && @ != "Master" && @ != "Doctor")'
+    )
+  );
+```
+
+啰嗦，但它是生成的——而且对每一行、永远成立。
+
+### 索引
+
+对 YAMLResume 的数据，一个 GIN 索引就能覆盖上面的所有查询：
+
+```sql
+CREATE INDEX resumes_content_gin ON resumes USING gin (content jsonb_path_ops);
+```
+
+`jsonb_path_ops` 支持 `@>`、`@?` 和 `@@`，这恰好就是你需要的算子集合：包含操作用于
+枚举匹配，JSON path 用于关键词检索。如果你经常按某个数组过滤，就索引整个数组，
+而不是其中一个元素：
+
+```sql
+CREATE INDEX resumes_education_gin
+  ON resumes USING gin ((content -> 'education') jsonb_path_ops);
+```
+
+索引 `content -> 'education' -> 0 ->> 'degree'` 会是个错误，而且很隐蔽：它只索引一个人
+**第一条**教育经历，于是任何把硕士学历写在第二条的人，在这个索引里都是不可见的。
+直接索引数组本身就没有这个失效模式。
+
+对 RenderCV 的数据，没有稳定的路径可供索引。你只能为每个语义概念建一个生成列，而每个
+生成列都要先在 SQL 里解决"哪个 section 才是教育经历"的问题。团队实际会采用的答案是
+一个每晚跑的归一化任务——换句话说，他们最终还是把固定 schema 建起来了，只是更晚、
+在第二个系统里、并且沿途丢数据。
+
+## MongoDB 里的同一个故事
+
+MongoDB 对嵌套的简历文档更友好，而差异仍然出现在同一个地方：查询到底是一个 filter，
+还是一段脚本。
+
+用 YAMLResume，查询和索引都是直接的：
+
+```js
+db.resumes.createIndex({ 'content.education.degree': 1 })
+db.resumes.createIndex({ 'content.skills.keywords': 1 })
+
+db.resumes.find(
+  { 'content.education.degree': 'Master' },
+  { 'content.basics.name': 1 }
+)
+
+db.resumes.aggregate([
+  { $unwind: '$content.education' },
+  { $group: { _id: '$content.education.degree', n: { $sum: 1 } } },
+  { $sort: { n: -1 } },
+])
+```
+
+这些是在已知路径上的 multikey 索引，服务端会替你干活。
+
+用 RenderCV，`cv.sections` 是一个 key 未知的 map，所以你无法为一条你不知道的路径建
+索引。能做到的最好情况是在读取时归一化：
+
+```js
+db.resumes.aggregate([
+  { $project: { sections: { $objectToArray: '$cv.sections' } } },
+  { $unwind: '$sections' },
+  { $unwind: '$sections.v' },
+  {
+    $match: {
+      $or: [
+        { 'sections.v.institution': { $exists: true } },
+        { 'sections.k': /education/i },
+      ],
+    },
+  },
+  { $group: { _id: '$sections.v.degree', n: { $sum: 1 } } },
+])
+```
+
+它能跑，但这是一次带正则和 `$exists` 探测的集合扫描。它用不上索引，而且语义会随着
+用户发明新的拼法和 section 名而变化。几百份文档时没问题；几十万份时它就是个批处理
+任务。
+
+## RenderCV 的模型可能更好的地方
+
+公平地读，必须承认有几处灵活文档模型占优、而固定 schema 会让你付出代价：
+
+- **日期。** RenderCV 的 `start_date` / `end_date` 被限定为 `YYYY-MM-DD`、`YYYY-MM`、
+  `YYYY`，或字面量 `present`，并被解析成真正的 `date` 对象，用于时长计算和
+  `start > end` 校验。YAMLResume 的日期是 `Date.parse` 能接受的任何字符串——这很适合
+  敲 `Sep 1, 2016`，也很适合做地道的本地化，但不利于范围查询。如果你要在 YAMLResume
+  上建 HR 系统，就在 content 之外另存一个规范化的 `start_date date` 列，不要试图对
+  展示字符串做范围查询。
+- **任意 section。** 一个博士生想放 "Invited Talks"、"Patents"、"Teaching"。RenderCV
+  原生支持。YAMLResume 有十二个可改名的 section，能覆盖大多数简历，但覆盖不了所有 CV。
+- **entry 级别的可扩展性。** RenderCV 的 entry 模型是 `extra="allow"`，所以模板可以
+  挂上派生字段（渲染后的日期字符串、计算出的时长）而不破坏校验。这是一个干净的分层
+  手法。
+- **社交网络。** RenderCV 校验 17 个平台，并带各平台的用户名规则（Mastodon 需要
+  `@user@domain`，ORCID 需要形如校验位的 ID，StackOverflow 需要 `id/name`），还会
+  推导出主页 URL。YAMLResume 接受一个 `network` 枚举加一个自由 `username`，URL 由你
+  自己给。
+- **拒绝拼写错误。** RenderCV 的顶层模型是 `extra="forbid"`，所以拼错的 key 会报错。
+  YAMLResume 依赖 Zod 对象的默认行为，也就是**剥离（strip）**未知 key——这意味着
+  `certifcates` 这类拼写错误会被静默丢弃，而不是被报告出来。如果你在跑摄取管道，
+  请在信任一份文档之前，先在你这一侧用 `additionalProperties: false` 的 JSON Schema
+  校验它。
+
+这些都不推翻结论，只是给它划定了范围：RenderCV 的模型更适合精雕一份 CV，更不适合
+对很多份做推理。
+
+## 场景裁决
+
+**简历构建器（多租户 SaaS）。** 你需要按用户存文档、版本历史、diff 和模板切换。固定
+key 让 diff 有意义——一次改动是 `content.work[2].position`，而不是"dict 里的某一行"。
+它们也让模板切换安全，因为 `layouts` 是独立的数组，content 从不搬家。YAMLResume 的
+模型是更好的底座。如果你从不需要跨用户查询、而你的用户又非要奇怪的 section，那么
+RenderCV 的模型更省事。
+
+**HR / ATS 流水线。** 这是最清晰的案例。你存的不是简历，而是候选人，简历只是其中
+一个属性。你需要跟职位、阶段、员工做 join，还要出报表（"有多少进入面试的候选人拥有
+硕士学位？"）。带枚举词表的固定 schema 让你用 SQL 就能完成这一切。自由形态的文档
+模型则把你推进一个永远写不完的 `etl/normalize.py`。
+
+**ERP / HRIS。** 简历是庞大的规范化世界里的一小块。比存储更重要的是集成的方向：
+固定 key 让你机械地生成从简历 JSON 到你的 `Person`、`Education`、`Employment` 规范
+实体的映射。任意 key 则意味着要有人逐个客户地写和维护这份映射。
+
+**数据交换。** YAMLResume 的 schema 沿用了 [JSON Resume](https://jsonresume.org/)
+的形状，并由 [`json2yamlresume`](/zh-cn/docs/ecosystem/json2yamlresume) 在两种格式之间转换。
+它的价值在于让你无需先发明一套格式就能把简历数据映射进自己的模型，而不是对某个第三方
+生态的健康度做背书。一份 RenderCV 文件是一份定义良好的文档，但它的形状是为排版优化的，
+而不是为交换优化的。
+
+**一个人，一份漂亮的 PDF。** RenderCV 完胜。任意 section、强类型日期、逐元素样式、
+Typst 数学，当读者是人类而不是数据库时，这些都恰到好处。
+
+## 实操配方
+
+如果你在建系统、并且由你来选，那么存记录模型，把文档模型当作渲染层的事。具体来说：
+
+1. 为每份简历保留一条规范的、经过 schema 校验的记录（YAMLResume 里的 `content`）。
+   在写入时、在边界上做校验。
+2. 永远不要把展示字符串当作事实来源。存规范化后的日期和枚举值；读的时候再本地化。
+3. 把呈现——模板、别名、section 顺序、颜色——放在单独的列或表里。它是视图状态，
+   不是简历数据。
+4. 如果你必须摄取 RenderCV 风格的文档，就把原始 YAML 存下来以保证保真度，**同时**
+   在摄取时投影进规范化形状。把"猜"这件事做一次、并在审核之下完成，而不是在每一次
+   报表里都做。
+
+## 小结
+
+两个工具都是 "resume as code"，而且都做得不错。但它们的数据模型回答的是不同的
+问题：
+
+| 属性 | YAMLResume | RenderCV |
+| --- | --- | --- |
+| section key | 固定，14 个已知 key | 任意字符串 |
+| entry 形状 | 每个 section 固定 | 9 种推断类型 + 字符串 |
+| degree / level / fluency | 枚举，可翻译 | 自由字符串 |
+| 日期 | 自由形态，本地化优先 | 强类型 `YYYY-MM[p-D]` + `present` |
+| section 顺序与标题 | 在 `layouts[]` 里 | dict key 顺序与 key 名 |
+| 未知 key | 剥离（静默） | 顶层禁止 |
+| 无需应用层代码即可查询 | 是 | 部分可以，靠 entry 类型字段 |
+| 任意 section | 否（12 个可改名） | 是 |
+| schema 来源 | 沿用 JSON Resume 形状 | 自有文档形状 |
+
+YAMLResume 把简历建模成一条**记录**：在你整个语料里，同样的 key、同样的词表、同样
+的含义。RenderCV 把它建模成一份**文档**：创作时你想要的一切自由，以及批量读取时随之
+而来的一切歧义。
+
+两者都不错。它们是针对不同读者的优化——一个数据库，或者一个拿着 PDF 的人。
+
+如果你想要更宏观的逐项对比（包含引擎、本地化和工具链），请看
+[YAMLResume vs RenderCV](/zh-cn/docs/comparisons/rendercv)。至于 schema 本身，
+[类型参考](/zh-cn/docs/compiler/types)和 [JSON Schema](/zh-cn/docs/compiler/schema/json) 是
+权威来源。

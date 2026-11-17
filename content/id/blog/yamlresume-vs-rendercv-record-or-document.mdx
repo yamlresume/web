@@ -1,0 +1,587 @@
+---
+title: "YAMLResume vs RenderCV: Record atau Dokumen?"
+description: >-
+  Mencari alternatif RenderCV? Kedua alat menerima YAML, tetapi yang satu
+  memodelkan resume sebagai record yang dapat di-query dan yang lain sebagai
+  dokumen bebas. Inilah biaya — dan penghematan — dari perbedaan itu di Postgres
+  dan MongoDB.
+author: Xiao Hanyu
+profile: https://x.com/xiaohanyu1988
+date: 2026-11-17
+---
+
+Jika Anda membandingkan [YAMLResume](https://yamlresume.dev) dan
+[RenderCV](https://rendercv.com), perbedaan yang jelas adalah mesin rendering dan
+jumlah pengaturan visual. Itu sudah kita bahas di
+[perbandingan berdampingan](/id/docs/comparisons/rendercv). Artikel ini membahas
+sesuatu yang lebih sempit dan, bagi siapa pun yang membangun sistem dan bukan
+sekadar satu PDF, jauh lebih menentukan: **bentuk data**.
+
+Kedua alat menerima YAML, memvalidasinya, dan mengubahnya menjadi PDF. Namun
+keduanya memodelkan dua hal yang berbeda:
+
+- YAMLResume memodelkan resume sebagai **record** — satu baris yang skemanya
+  dibagi oleh semua baris.
+- RenderCV memodelkan resume sebagai **dokumen** — sebuah pohon yang bentuknya
+  dikendalikan oleh penulis.
+
+Ini bukan perbedaan kosmetik. Ini menentukan apakah "temukan semua orang dengan
+gelar master" adalah satu query SQL atau sebuah proyek parsing di lapisan
+aplikasi. Jadi mari kita lihat kedua model secara konkret, lalu telusuri apa
+biayanya dalam resume builder, sistem HR, atau ERP.
+
+## Dua model, satu resume
+
+Berikut data orang yang sama dalam masing-masing format. Tidak ada yang dibuat-buat
+— kurang lebih inilah yang dihasilkan `yamlresume new` dan `rendercv new`.
+
+```yml title="yamlresume.yml"
+content:
+  basics:
+    name: Andy Dufresne
+    headline: Backend Engineer
+    email: andy@example.com
+  location:
+    city: San Francisco
+    region: California
+    country: United States
+  profiles:
+    - network: GitHub
+      username: andy
+  education:
+    - institution: University of Southern California
+      degree: Bachelor
+      area: Computer Engineering
+      startDate: Sep 1, 2016
+      endDate: Jul 1, 2020
+  work:
+    - name: PPResume
+      position: Senior Software Engineer
+      startDate: Dec 1, 2022
+      endDate:
+      summary: |
+        - Built the LaTeX rendering pipeline
+layouts:
+  - engine: latex
+    template: moderncv-classic
+```
+
+```yml title="rendercv.yml"
+cv:
+  name: Andy Dufresne
+  headline: Backend Engineer
+  email: andy@example.com
+  location: San Francisco, CA
+  social_networks:
+    - network: GitHub
+      username: andy
+  sections:
+    education:
+      - institution: University of Southern California
+        degree: BS
+        area: Computer Engineering
+        start_date: 2016-09
+        end_date: 2020-07
+    experience:
+      - company: PPResume
+        position: Senior Software Engineer
+        start_date: 2022-12
+        end_date: present
+        highlights:
+          - Built the LaTeX rendering pipeline
+design:
+  theme: classic
+```
+
+Sekilas keduanya tampak seperti sepupu. Ternyata bukan. Empat keputusan struktural
+memisahkan keduanya, dan masing-masing memiliki konsekuensi langsung di lapisan
+penyimpanan.
+
+### 1. Apakah kunci section bersifat tetap?
+
+YAMLResume memiliki himpunan kunci section yang tertutup.
+[skema konten](https://github.com/yamlresume/yamlresume/blob/main/packages/core/src/schema/content/content.ts)
+menggabungkan tepat empat belas: `basics`, `location`, `profiles`, `education`,
+`work`, `volunteer`, `awards`, `certificates`, `publications`, `skills`,
+`languages`, `interests`, `references`, `projects`. Resume yang salah menulis
+`certifcates` tidak memiliki section sertifikat — tidak ada cara untuk
+mengekspresikan section yang tidak ada dalam daftar.
+
+Padanan di RenderCV hanyalah satu baris Pydantic:
+
+```py
+sections: dict[str, Section] | None
+```
+
+Kuncinya adalah `str`. Tidak ada kata kunci yang dicadangkan. Pengguna dapat
+menulis `education`, `Education`, `education_and_training`, `Academic Background`,
+`教育`, atau `Things I Did`. Dalam
+[JSON Schema](https://github.com/rendercv/rendercv/blob/main/schema.json) yang
+dihasilkan, field itu secara literal adalah
+`additionalProperties: { "$ref": "#/$defs/Section" }` — skema memberi tahu
+validator "kunci apa pun boleh", dan tidak lebih.
+
+### 2. Apakah nama field bermakna sama di semua tempat?
+
+Inilah bagian yang mudah terlewat, dan yang paling menyakitkan di basis data.
+RenderCV tidak memiliki satu skema entry; ia memiliki sembilan *tipe* entry
+(`ExperienceEntry`, `EducationEntry`, `PublicationEntry`, `NormalEntry`,
+`OneLineEntry`, `BulletEntry`, `NumberedEntry`, `ReversedNumberedEntry`), plus
+sebuah string polos bernama `TextEntry`. Tipe sebuah section disimpulkan dari entry
+pertama yang cocok, menggunakan tabel "field karakteristik" — field yang unik untuk
+setiap tipe:
+
+```py
+# rendercv/src/rendercv/schema/models/cv/section.py
+characteristic_entry_fields = get_characteristic_entry_fields(available_entry_models)
+```
+
+Entry yang berisi `institution` adalah `EducationEntry`, karena tidak ada tipe lain
+yang mendeklarasikan `institution`. Entry dengan hanya `name` adalah `NormalEntry`.
+Lalu `validate_section()` mewajibkan **setiap entry dalam section itu bertipe
+sama**.
+
+Konsekuensinya: nama field untuk "organisasi" bergantung pada tipe yang dipilih
+pengguna secara implisit.
+
+| Konsep | `ExperienceEntry` | `EducationEntry` | `NormalEntry` |
+| --- | --- | --- | --- |
+| Organisasi | `company` | `institution` | `name` |
+| Peran / subjek | `position` | `area` | — |
+| Gelar | — | `degree` | — |
+
+Perhatikan apa yang *tidak* ada dalam tabel itu. Tanggal, `location`, `summary`,
+dan `highlights` identik di ketiga tipe, jadi itu juga tidak membantu Anda
+membedakannya — satu-satunya sinyal adalah tiga baris di atas.
+
+Jadi "di mana orang ini bekerja" adalah `cv.sections.*[*].company` *jika* ia
+menggunakan `ExperienceEntry`, dan `...name` *jika* ia menggunakan `NormalEntry`
+untuk informasi yang sama. Dan sebuah section bisa berisi string polos saja, karena
+`TextEntry` adalah `str` — artinya `entries` secara struktural adalah
+`list[str] | list[dict]` tanpa jaminan bentuk sama sekali.
+
+YAMLResume tidak memiliki penyimpangan seperti itu: perusahaan selalu
+`work[].name`, institusi selalu `education[].institution`, dan section skills
+selalu `{name, level, keywords}`.
+
+### 3. Apakah nilai berasal dari kosakata terkontrol?
+
+YAMLResume mematok nilai-nilai yang biasanya perlu dibandingkan oleh sistem:
+
+- `degree` ∈ `Middle School | High School | Diploma | Associate | Bachelor | Master | Doctor`
+- `level` (skills) ∈ `Novice | Beginner | Intermediate | Advanced | Expert | Master`
+- `fluency` ∈ lima [level turunan ILR](https://www.languagetesting.com/ilr-scale), dari `Elementary Proficiency` hingga `Native or Bilingual Proficiency`
+- `country`, `language`, `network` — daftar tetap yang panjang, juga dipakai untuk terjemahan
+
+`degree` di RenderCV adalah `str | None`. CV contohnya sendiri memakai `PhD` dan
+`BS`. Itu sepenuhnya wajar untuk tata letak — dan itu berarti korpus file RenderCV
+berisi `PhD`, `Ph.D.`, `Doctorate`, `BS`, `BSc`, `Bachelor of Science`, `MS`,
+`MSc`, `M.S.`, `Master of Science`, yang semuanya hanya bermakna dua hal.
+
+Satu detail yang layak dicatat untuk YAMLResume: nilai kanonik disimpan sekali,
+dalam bahasa Inggris, dan dilokalkan saat render. Resume berbahasa Mandarin dan
+resume berbahasa Inggris milik orang yang sama membawa nilai kanonik yang identik.
+Dengan string bebas, nilainya adalah apa pun yang diketik penulis dalam bahasanya,
+yang membuat agregasi lintas locale praktis mustahil.
+
+### 4. Di mana presentasi berada?
+
+Di RenderCV, **judul tampilan section adalah kunci dict**, dan **urutan tampilan
+adalah urutan penyisipan dict** (`get_rendercv_sections()` menelusuri
+`sections.items()` dan mengubah kunci snake_case menjadi Title Case). Ubah tampilan
+resume dan Anda telah mengubah datanya.
+
+Di YAMLResume, keduanya berada di `layouts[]`, di bawah `sections.aliases` dan
+`sections.order`. Konten mempertahankan kunci dan urutan kanonik, dan setiap format
+output dapat menyajikannya secara berbeda.
+
+## Satu keputusan, empat gejala
+
+Keempat jawaban itu tidak independen. Semuanya adalah konsekuensi dari satu sikap
+desain, dan menamainya membuat trade-off lebih mudah dinalar:
+
+- **YAMLResume bersifat opinionated secara desain.** Skema yang mengambil keputusan
+  — section mana yang ada, apa nama setiap field, nilai mana yang diizinkan, di
+  mana presentasi berakhir dan konten dimulai. Penulis mengisi bentuk yang tidak ia
+  pilih.
+- **RenderCV bersifat free-form secara desain.** Penulis yang mengambil keputusan.
+  Skema memvalidasi bahwa setiap entry terbentuk dengan baik secara internal, lalu
+  menyingkir.
+
+Keduanya sah, dan biayanya simetris:
+
+**Biaya menjadi opinionated adalah plafon ekspresif.** Jika resume Anda memerlukan
+section "Patents" atau "Invited Talks" yang tidak ada di antara empat belas kunci
+YAMLResume, Anda tidak dapat mengekspresikannya secara native. Anda mendapatkan
+dua belas judul section yang dapat diganti nama, yang cukup untuk sebagian besar
+resume tetapi tidak untuk semua CV.
+
+**Biaya menjadi free-form adalah lantai semantik.** Skema tidak dapat menjanjikan
+bahwa apa pun dalam dokumen dapat dibandingkan dengan apa pun yang lain. Dua
+penulis yang mengekspresikan fakta identik menghasilkan dokumen yang tidak berbagi
+kunci, kosakata, maupun struktur — dan itu tidak masalah sampai ada sesuatu selain
+pembaca manusia yang perlu mengonsumsinya.
+
+Asimetri yang penting untuk artikel ini adalah *kapan* Anda membayar. Model
+opinionated menagih Anda saat menulis, sekali, dengan koin kecil: Anda tidak bisa
+mengatakan sesuatu yang ingin Anda katakan. Model free-form menagih Anda saat
+membaca, selamanya, dalam mata uang yang berbunga: setiap judul section baru yang
+diciptakan pengguna, dan setiap ejaan baru `Master`, adalah satu cabang lagi di
+suatu parser hilir. Satu biaya dibayar sekali oleh seorang penulis; yang lain
+dibayar berulang kali oleh setiap sistem yang menyentuh data itu setelahnya.
+
+Itulah sebabnya sisa artikel ini membahas pembaca — basis data, pipeline ATS,
+impor HRIS — bukan penulis.
+
+## Berapa biayanya di Postgres
+
+Asumsikan skema yang paling jelas — yang menjadi tujuan akhir setiap resume
+builder:
+
+```sql
+CREATE TABLE resumes (
+  id         uuid PRIMARY KEY,
+  content    jsonb NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+```
+
+Dengan model YAMLResume, path sudah diketahui sebelum data apa pun tiba, jadi Anda
+dapat mengindeks dan melakukan query secara langsung.
+
+```sql
+-- Semua pemegang gelar master
+SELECT id, content -> 'basics' ->> 'name' AS name
+FROM resumes
+WHERE content -> 'education' @> '[{"degree": "Master"}]';
+
+-- Kandidat dengan Kubernetes di resume mereka
+SELECT id, content -> 'basics' ->> 'name' AS name
+FROM resumes
+WHERE content @? '$.skills[*].keywords[*] ? (@ == "Kubernetes")';
+
+-- Jumlah per gelar, tanpa langkah normalisasi
+SELECT e ->> 'degree' AS degree, count(*) AS n
+FROM resumes, jsonb_array_elements(content -> 'education') AS e
+WHERE e ->> 'degree' IS NOT NULL
+GROUP BY e ->> 'degree'
+ORDER BY n DESC;
+```
+
+Yang terakhir adalah keseluruhan argumen dalam beberapa baris. Itu adalah `GROUP BY`
+biasa atas kosakata tertutup, dan hasilnya langsung benar.
+
+Sekarang padanan RenderCV-nya. Nama section tidak diketahui, jadi Anda harus
+menelusurinya; bentuk entry tidak diketahui, jadi Anda harus menyelidiki field yang
+mengidentifikasi entry pendidikan:
+
+```sql
+SELECT r.id, e ->> 'institution' AS institution, e ->> 'degree' AS degree
+FROM resumes r
+CROSS JOIN LATERAL jsonb_each(
+  CASE WHEN jsonb_typeof(r.content -> 'cv' -> 'sections') = 'object'
+       THEN r.content -> 'cv' -> 'sections'
+       ELSE '{}'::jsonb END
+) AS s(title, entries)
+CROSS JOIN LATERAL jsonb_array_elements(s.entries) AS e
+WHERE s.title ~* '(education|academic|study)'
+  AND jsonb_typeof(e) = 'object'
+  AND e ? 'institution';
+```
+
+`CASE WHEN` itu bukan perlindungan berlebihan: `sections` bersifat nullable dalam
+model RenderCV, dan `COALESCE` tidak membantu, karena `null` JSON bukan `NULL`
+SQL — `jsonb_each` melempar `cannot call jsonb_each on a non-object`. Penjaga
+`jsonb_typeof(e) = 'object'` penting karena alasan yang sama: section `TextEntry`
+adalah daftar string polos, dan `jsonb_array_elements` akan menyerahkan string itu
+sebagai elemen.
+
+Tiga masalah, dalam urutan yang semakin menjengkelkan:
+
+1. **`s.title ~* '(education|academic|study)'`** adalah tebakan. Ia melewatkan
+   `Bildungsweg`, `Things I Did`, dan `edu`. Ia juga menghasilkan positif palsu jika
+   seseorang menamai section "Education Policy Publications".
+2. **Anda dapat memperbaikinya sebagian** dengan menghapus filter judul dan hanya
+   mengandalkan `e ? 'institution'`. Adil untuk dikatakan: tipe entry RenderCV
+   adalah mitigasi nyata di sini — tipe entry adalah jangkar semantik yang bertahan
+   terhadap penggantian nama. Tetapi itu hanya berfungsi jika penulis memilih
+   `EducationEntry`. Jika ditulis sebagai `NormalEntry`, pendidikan yang sama
+   menjadi `{name: "...", ...}` dan `institution` tidak ada.
+3. **Nilainya masih kotor.** Bahkan setelah Anda menemukan setiap field gelar,
+   Anda mendapatkan ini:
+
+```sql
+SELECT lower(trim(e ->> 'degree')) AS degree_raw, count(*)
+FROM resumes r
+CROSS JOIN LATERAL jsonb_each(
+  CASE WHEN jsonb_typeof(r.content -> 'cv' -> 'sections') = 'object'
+       THEN r.content -> 'cv' -> 'sections'
+       ELSE '{}'::jsonb END
+) AS s(title, entries)
+CROSS JOIN LATERAL jsonb_array_elements(s.entries) AS e
+WHERE jsonb_typeof(e) = 'object' AND e ? 'degree'
+GROUP BY lower(trim(e ->> 'degree'));
+```
+
+```text
+ degree_raw        | count
+-------------------+-------
+ bs                |   412
+ b.sc.             |    37
+ bachelor          |    21
+ bachelor of science|     9
+ phd               |   188
+ ph.d.             |    44
+ doctorate         |     6
+ ms                |   301
+ msc               |    58
+ master of science |    27
+```
+
+Angka di atas bersifat ilustratif. Angka itu menunjukkan bentuk distribusi yang
+seharusnya Anda perkirakan, bukan hasil dari korpus tertentu.
+
+Sekarang Anda memerlukan tabel sinonim, dan Anda harus memeliharanya selamanya,
+karena tidak ada dalam skema yang menghentikan pengguna berikutnya menciptakan
+ejaan baru. Itulah "pajak kode lapisan aplikasi", dan ia tumbuh seiring korpus
+Anda alih-alih tetap.
+
+### Masalah proyeksi
+
+Hasil nyata dari model tetap adalah Anda dapat memproyeksikan JSONB ke tabel
+relasional secara deklaratif — tanpa parsing, tanpa heuristik, tanpa kunci tak
+dikenal:
+
+```sql
+CREATE VIEW resume_work AS
+SELECT r.id AS resume_id,
+       w ->> 'name'      AS company,
+       w ->> 'position'  AS position,
+       w ->> 'startDate' AS start_date,
+       w ->> 'endDate'   AS end_date
+FROM resumes r,
+     jsonb_array_elements(r.content -> 'work') AS w;
+```
+
+View itu stabil di seluruh korpus Anda. Anda dapat meletakkan dasbor ATS, alat BI,
+atau `JOIN` dengan tabel `employees` Anda di atasnya. Pernyataan yang sama untuk
+RenderCV bukan hanya lebih sulit — ia *tidak terdefinisi dengan baik*, karena
+"perusahaan" bisa `company` atau `name`, dan section yang menampungnya bisa berjudul
+apa saja.
+
+Jika Anda mengimpor file YAMLResume, Anda juga dapat menurunkan batasan basis data
+Anda dari skema yang sama yang dipakai CLI untuk memvalidasi, alih-alih memelihara
+salinan paralel secara manual:
+
+```sql
+ALTER TABLE resumes
+  ADD CONSTRAINT degree_valid CHECK (
+    content -> 'education' IS NULL
+    OR NOT jsonb_path_exists(
+      content,
+      '$.education[*].degree ? (@ != "Middle School" && @ != "High School"
+        && @ != "Diploma" && @ != "Associate" && @ != "Bachelor"
+        && @ != "Master" && @ != "Doctor")'
+    )
+  );
+```
+
+Bertele-tele, tetapi dihasilkan — dan berlaku untuk setiap baris, selamanya.
+
+### Pengindeksan
+
+Untuk data YAMLResume, satu indeks GIN menutupi query di atas:
+
+```sql
+CREATE INDEX resumes_content_gin ON resumes USING gin (content jsonb_path_ops);
+```
+
+`jsonb_path_ops` mendukung `@>`, `@?`, dan `@@`, yang persis merupakan himpunan
+operator yang Anda butuhkan: containment untuk pencocokan enum, JSON path untuk
+pencarian kata kunci. Jika Anda sering memfilter pada satu array, indeks seluruh
+array alih-alih satu elemen:
+
+```sql
+CREATE INDEX resumes_education_gin
+  ON resumes USING gin ((content -> 'education') jsonb_path_ops);
+```
+
+Mengindeks `content -> 'education' -> 0 ->> 'degree'` akan menjadi kesalahan, dan
+yang halus: ia hanya mengindeks pendidikan *pertama* seorang kandidat, sehingga
+siapa pun yang gelar masternya tercantum kedua menjadi tak terlihat oleh indeks itu.
+Mengindeks array itu sendiri tidak memiliki mode kegagalan tersebut.
+
+Untuk data RenderCV tidak ada path stabil untuk diindeks. Anda harus membuat kolom
+tergenerasi per konsep semantik, dan masing-masing memerlukan penyelesaian masalah
+"section mana yang merupakan pendidikan" di SQL terlebih dahulu. Jawaban praktis
+yang diambil tim adalah pekerjaan normalisasi semalam — artinya, mereka akhirnya
+membangun skema tetap itu juga, hanya lebih lambat, di sistem kedua, dengan
+kehilangan data di sepanjang jalan.
+
+## Kisah yang sama di MongoDB
+
+MongoDB lebih ramah terhadap dokumen resume bersarang, dan perbedaannya muncul di
+tempat yang sama: apakah query itu filter atau skrip.
+
+Dengan YAMLResume, query dan indeksnya sama-sama langsung:
+
+```js
+db.resumes.createIndex({ 'content.education.degree': 1 })
+db.resumes.createIndex({ 'content.skills.keywords': 1 })
+
+db.resumes.find(
+  { 'content.education.degree': 'Master' },
+  { 'content.basics.name': 1 }
+)
+
+db.resumes.aggregate([
+  { $unwind: '$content.education' },
+  { $group: { _id: '$content.education.degree', n: { $sum: 1 } } },
+  { $sort: { n: -1 } },
+])
+```
+
+Itu adalah indeks multikey pada path yang diketahui, jadi server yang mengerjakan
+pekerjaannya.
+
+Dengan RenderCV, `cv.sections` adalah peta dengan kunci tak dikenal, jadi Anda
+tidak dapat mengindeks path yang tidak Anda ketahui. Yang terbaik yang bisa Anda
+lakukan adalah menormalisasi saat membaca:
+
+```js
+db.resumes.aggregate([
+  { $project: { sections: { $objectToArray: '$cv.sections' } } },
+  { $unwind: '$sections' },
+  { $unwind: '$sections.v' },
+  {
+    $match: {
+      $or: [
+        { 'sections.v.institution': { $exists: true } },
+        { 'sections.k': /education/i },
+      ],
+    },
+  },
+  { $group: { _id: '$sections.v.degree', n: { $sum: 1 } } },
+])
+```
+
+Ini berfungsi, tetapi merupakan pemindaian koleksi dengan regex dan penyelidikan
+`$exists`. Ia tidak dapat menggunakan indeks, dan maknanya bergeser seiring
+pengguna menciptakan ejaan dan nama section baru. Pada beberapa ratus dokumen itu
+tidak masalah. Pada beberapa ratus ribu itu adalah pekerjaan batch.
+
+## Di mana model RenderCV mungkin lebih baik
+
+Pembacaan yang adil harus mengakui beberapa tempat di mana model dokumen bebas
+menang, dan di mana skema tetap merugikan Anda:
+
+- **Tanggal.** `start_date` / `end_date` RenderCV dibatasi pada `YYYY-MM-DD`,
+  `YYYY-MM`, `YYYY`, atau literal `present`, di-parse menjadi objek `date` nyata
+  untuk perhitungan durasi dan validasi `start > end`. Tanggal YAMLResume adalah
+  apa pun yang diterima `Date.parse` — bagus untuk mengetik `Sep 1, 2016` dan untuk
+  lokalisasi idiomatik, buruk untuk query rentang. Jika Anda membangun sistem HR
+  di atas YAMLResume, simpan kolom `start_date date` yang ternormalisasi di
+  samping konten; jangan mencoba melakukan query rentang pada string tampilan.
+- **Section arbitrer.** Seorang kandidat PhD menginginkan "Invited Talks",
+  "Patents", "Teaching". RenderCV mendukungnya secara native. YAMLResume memiliki
+  dua belas section yang dapat diganti nama, yang bisa mencakup sebagian besar
+  resume tetapi tidak semua CV.
+- **Ekstensibilitas tingkat entry.** Model entry RenderCV adalah `extra="allow"`,
+  sehingga template dapat melampirkan field turunan (string tanggal yang
+  dirender, rentang yang dihitung) tanpa merusak validasi. Itu trik pelapisan yang
+  bersih.
+- **Jaringan sosial.** RenderCV memvalidasi 17 platform dengan aturan nama
+  pengguna per platform (Mastodon memerlukan `@user@domain`, ORCID memerlukan ID
+  berbentuk checksum, StackOverflow memerlukan `id/name`) dan menurunkan URL
+  profil. YAMLResume menerima enum `network` dan `username` bebas, dan mengambil
+  URL apa adanya.
+- **Menolak salah ketik.** Model tingkat atas RenderCV adalah `extra="forbid"`,
+  jadi kunci yang salah eja menjadi error. YAMLResume mengandalkan perilaku default
+  objek Zod, yang **membuang** kunci tak dikenal — artinya salah ketik seperti
+  `certifcates` dibuang secara diam-diam alih-alih dilaporkan. Jika Anda
+  menjalankan pipeline impor, validasi terhadap JSON Schema dengan
+  `additionalProperties: false` di sisi Anda sebelum mempercayai sebuah dokumen.
+
+Tidak satu pun dari ini membalikkan kesimpulan. Ia hanya membatasi cakupannya:
+model RenderCV lebih baik untuk menulis satu CV dengan presisi, dan lebih buruk
+untuk bernalar tentang banyak CV.
+
+## Putusan per skenario
+
+**Resume builder (SaaS multi-tenant).** Anda memerlukan dokumen per pengguna,
+riwayat versi, diff, dan pergantian template. Kunci tetap membuat diff bermakna —
+perubahan adalah `content.work[2].position`, bukan "beberapa baris di dalam dict".
+Itu juga membuat pergantian template aman, karena `layouts` adalah array terpisah
+dan konten tidak pernah berpindah. Model YAMLResume adalah landasan yang lebih
+baik. Model RenderCV lebih mudah jika Anda tidak pernah perlu melakukan query
+lintas pengguna dan pengguna Anda menuntut section yang tidak biasa.
+
+**Pipeline HR / ATS.** Ini kasus yang paling jelas. Anda tidak menyimpan resume;
+Anda menyimpan kandidat, dan resume hanyalah salah satu atribut. Anda memerlukan
+join dengan lowongan, tahapan, dan karyawan, plus pelaporan ("berapa banyak
+kandidat yang masuk daftar pendek memiliki gelar master?"). Skema tetap dengan
+kosakata enum memberi Anda semua itu dalam SQL. Model dokumen bebas mendorong Anda
+ke sebuah `etl/normalize.py` yang tidak pernah selesai.
+
+**ERP / HRIS.** Resume adalah bagian kecil dari dunia ternormalisasi yang besar.
+Arah integrasi lebih penting daripada penyimpanan: kunci tetap memungkinkan Anda
+menghasilkan pemetaan dari JSON resume ke entitas kanonik `Person`, `Education`,
+dan `Employment` secara mekanis. Kunci arbitrer berarti seorang manusia menulis dan
+memelihara pemetaan itu per pelanggan.
+
+**Pertukaran data.** Skema YAMLResume mengikuti bentuk
+[JSON Resume](https://jsonresume.org/), dan
+[`json2yamlresume`](/id/docs/ecosystem/json2yamlresume) mengonversi antara kedua
+format. Itu penting untuk memetakan data resume ke model Anda sendiri tanpa lebih
+dulu menciptakan sebuah format, bukan sebagai klaim tentang kesehatan ekosistem
+pihak ketiga. File RenderCV adalah dokumen yang terdefinisi dengan baik, tetapi
+bentuknya disesuaikan untuk tata letak, bukan untuk pertukaran.
+
+**Satu orang, satu PDF yang indah.** RenderCV menang telak. Section arbitrer,
+tanggal bertipe, gaya per elemen, dan matematika Typst tepat sekali ketika audiens
+adalah pembaca manusia alih-alih basis data.
+
+## Resep praktis
+
+Jika Anda membangun sistem dan Anda bisa memilih, simpan model record dan perlakukan
+model dokumen sebagai urusan rendering. Secara konkret:
+
+1. Simpan satu record kanonik yang tervalidasi skema per resume (`content` di
+   YAMLResume). Validasi saat menulis, di batas.
+2. Jangan pernah menyimpan string tampilan sebagai sumber kebenaran. Simpan tanggal
+   ternormalisasi dan nilai enum; lokalkan saat membaca.
+3. Simpan presentasi — template, alias, urutan section, warna — di kolom atau
+   tabel terpisah. Itu adalah keadaan view, bukan data resume.
+4. Jika Anda harus mengimpor dokumen bergaya RenderCV, simpan YAML mentah untuk
+   kesetiaan **dan** proyeksikan ke bentuk ternormalisasi saat impor. Lakukan
+   tebakan sekali, di bawah tinjauan, alih-alih pada setiap laporan.
+
+## Ringkasan
+
+Kedua alat adalah "resume as code", dan keduanya baik dalam hal itu. Tetapi model
+data mereka menjawab pertanyaan yang berbeda:
+
+| Properti | YAMLResume | RenderCV |
+| --- | --- | --- |
+| Kunci section | Tetap, 14 kunci diketahui | String arbitrer |
+| Bentuk entry | Tetap per section | 9 tipe tersimpul + string |
+| Degree / level / fluency | Enum, diterjemahkan | String bebas |
+| Tanggal | Bebas, lokalisasi diutamakan | Bertipe `YYYY-MM[p-D]` + `present` |
+| Urutan dan judul section | Di `layouts[]` | Urutan dan nama kunci dict |
+| Kunci tak dikenal | Dibuang (diam-diam) | Dilarang di tingkat atas |
+| Dapat di-query tanpa kode aplikasi | Ya | Sebagian, via field tipe entry |
+| Section arbitrer | Tidak (12 dapat diganti nama) | Ya |
+| Asal skema | Bentuk JSON Resume | Bentuk dokumen sendiri |
+
+YAMLResume memodelkan resume sebagai **record**: kunci yang sama, kosakata yang
+sama, makna yang sama, untuk setiap dokumen di korpus Anda. RenderCV memodelkannya
+sebagai **dokumen**: setiap kebebasan yang mungkin Anda inginkan saat menulis, dan
+setiap ambiguitas yang menyertainya ketika Anda membaca dalam skala besar.
+
+Tidak ada yang salah. Keduanya adalah optimalisasi untuk pembaca yang berbeda —
+basis data, atau orang yang memegang PDF.
+
+Untuk pandangan yang lebih luas, fitur demi fitur, termasuk mesin, locale, dan
+perkakas, lihat [YAMLResume vs RenderCV](/id/docs/comparisons/rendercv). Untuk skema
+itu sendiri, [referensi tipe](/id/docs/compiler/types) dan
+[JSON Schema](/id/docs/compiler/schema/json) adalah sumber otoritatif.
