@@ -16,7 +16,11 @@ RUN apt-get update \
 FROM base AS deps
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# The postinstall `fumadocs-mdx` step bundles source.config.ts, and that config
+# imports this barrel, so the files it re-exports must exist before the install
+# runs.
 COPY next.config.mjs source.config.ts ./
+COPY src/lib/mdx.ts src/lib/cjk.ts ./src/lib/
 RUN HUSKY=0 pnpm install --frozen-lockfile
 
 FROM base AS builder

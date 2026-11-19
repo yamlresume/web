@@ -6,11 +6,23 @@ import {
 } from 'fumadocs-mdx/config'
 import lastModified from 'fumadocs-mdx/plugins/last-modified'
 import { z } from 'zod'
+import {
+  remarkCjkLineBreaks,
+  tightenCjkSpacing,
+} from './src/lib/mdx'
+
+// YAML folds a wrapped frontmatter value into a space, and that string never
+// reaches the remark pipeline, so descriptions need the same CJK join applied
+// at the schema boundary.
+const cjkDescription = z.string().transform(tightenCjkSpacing).optional()
 
 // Shared collection options. Keeping them here means a new locale is one
 // `defineDocs` / `defineCollections` call instead of a copy-pasted block.
 const docsOptions = {
   docs: {
+    schema: frontmatterSchema.extend({
+      description: cjkDescription,
+    }),
     postprocess: {
       includeProcessedMarkdown: true,
     },
@@ -26,6 +38,7 @@ const blogOptions = {
     author: z.string(),
     date: z.string().date().or(z.date()),
     profile: z.string(),
+    description: cjkDescription,
   }),
 } as const
 
@@ -72,7 +85,7 @@ export const docsId = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
-    // MDX options
+    remarkPlugins: [remarkCjkLineBreaks],
   },
   plugins: [lastModified()],
 })
